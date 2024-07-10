@@ -127,8 +127,8 @@
                     "label": "Health facility"
                   },
                   {
-                    "concept": "MSF health facility",
-                    "label": "MSF health facility"
+                    "concept": "UVL health facility",
+                    "label": "UVL health facility"
                   },
                   {
                     "concept": "Mobile clinic",
@@ -171,19 +171,19 @@
               }
             },
             {
-              "label": "Specify MSF Health Facility",
+              "label": "Specify UVL Health Facility",
               "type": "obs",
               "required": false,
               "id": "specify_msf_health_facility",
               "questionOptions": {
                 "rendering": "text",
-                "concept": "Location of intervention - If MSF Health Facility, specify",
+                "concept": "Location of intervention - If UVL Health Facility, specify",
                 "conceptMappings": [],
                 "answers": []
               },
               "validators": [],
               "hide": {
-                "hideWhenExpression": "location_of_intervention !== 'MSF health facility'"
+                "hideWhenExpression": "location_of_intervention !== 'UVL health facility'"
               }
             },
             {
@@ -263,36 +263,36 @@
                 "conceptMappings": [],
                 "answers": [
                   {
-                    "concept": "IPD MSF",
-                    "label": "IPD MSF"
+                    "concept": "IPD UVL",
+                    "label": "IPD UVL"
                   },
                   {
-                    "concept": "Emergency department MSF",
-                    "label": "Emergency department MSF"
+                    "concept": "Emergency department UVL",
+                    "label": "Emergency department UVL"
                   },
                   {
-                    "concept": "Primary Health Center MSF",
-                    "label": "Primary Health Center MSF"
+                    "concept": "Primary Health Center UVL",
+                    "label": "Primary Health Center UVL"
                   },
                   {
                     "concept": "Health Promotion/sensitization",
                     "label": "Health Promotion/sensitization"
                   },
                   {
-                    "concept": "Other MSF personnel",
-                    "label": "Other MSF personnel"
+                    "concept": "Other UVL personnel",
+                    "label": "Other UVL personnel"
                   },
                   {
-                    "concept": "MSF social worker",
-                    "label": "MSF social worker"
+                    "concept": "UVL social worker",
+                    "label": "UVL social worker"
                   },
                   {
                     "concept": "Other health structure",
                     "label": "Other health structure"
                   },
                   {
-                    "concept": "Local health worker (non-MSF)",
-                    "label": "Local health worker (non-MSF)"
+                    "concept": "Local health worker (non-UVL)",
+                    "label": "Local health worker (non-UVL)"
                   },
                   {
                     "concept": "Institutions (NGOs/Church/IGO)",
@@ -2650,12 +2650,12 @@
                 "conceptMappings": [],
                 "answers": [
                   {
-                    "concept": "MSF",
-                    "label": "MSF"
+                    "concept": "UVL",
+                    "label": "UVL"
                   },
                   {
-                    "concept": "Non MSF",
-                    "label": "Non MSF"
+                    "concept": "Non UVL",
+                    "label": "Non UVL"
                   }
                 ]
               },
@@ -3746,16 +3746,16 @@
                 "conceptMappings": [],
                 "answers": [
                   {
-                    "concept": "Medical care (MSF, MoH, NGO)",
-                    "label": "Medical care (MSF, MoH, NGO)"
+                    "concept": "Medical care (UVL, MoH, NGO)",
+                    "label": "Medical care (UVL, MoH, NGO)"
                   },
                   {
-                    "concept": "MSF psychiatric services",
-                    "label": "MSF psychiatric services"
+                    "concept": "UVL psychiatric services",
+                    "label": "UVL psychiatric services"
                   },
                   {
-                    "concept": "Non-MSF psychiatrist services",
-                    "label": "Non-MSF psychiatrist services"
+                    "concept": "Non-UVL psychiatrist services",
+                    "label": "Non-UVL psychiatrist services"
                   },
                   {
                     "concept": "Social services",

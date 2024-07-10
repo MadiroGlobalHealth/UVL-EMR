@@ -1,5 +1,5 @@
 tasks:
-  - name: Run Ozone Ozone MSF
+  - name: Run Ozone Ozone UVL
     before: sudo apt-get update && sudo apt-get install -y gettext-base && sudo rm -rf /var/lib/apt/lists/*
     init: ./scripts/mvnw clean package
     command: source target/go-to-scripts-dir.sh && ./start.sh

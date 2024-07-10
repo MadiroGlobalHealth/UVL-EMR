@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.ozonemsf</groupId>
-  <artifactId>ozone-msf-erbil</artifactId>
+  <artifactId>ozone-uvl-erbil</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
@@ -17,7 +17,7 @@
 
   <dependencies>
     <dependency>
-      <artifactId>ozone-msf-iraq</artifactId>
+      <artifactId>ozone-uvl-burundi</artifactId>
       <groupId>com.ozonemsf</groupId>
       <version>1.0.0-SNAPSHOT</version>
       <type>zip</type>
@@ -26,22 +26,22 @@
 
   <build>
     <plugins>
-      <!-- Unpack Ozone MSF zip -->
+      <!-- Unpack Ozone UVL zip -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
         <version>3.6.1</version>
         <executions>
           <execution>
-            <id>Unpack Ozone MSF</id>
+            <id>Unpack Ozone UVL</id>
             <phase>generate-resources</phase>
             <goals>
               <goal>unpack-dependencies</goal>
             </goals>
             <configuration>
               <excludeTransitive>true</excludeTransitive>
-              <outputDirectory>${project.build.directory}/ozone-msf-iraq</outputDirectory>
-              <includeArtifactIds>ozone-msf-iraq</includeArtifactIds>
+              <outputDirectory>${project.build.directory}/ozone-uvl-burundi</outputDirectory>
+              <includeArtifactIds>ozone-uvl-burundi</includeArtifactIds>
             </configuration>
           </execution>
         </executions>
@@ -52,8 +52,8 @@
         <version>3.3.1</version>
         <executions>
           <execution>
-            <!-- Copy Ozone MSF files -->
-            <id>Copy Ozone MSF files</id>
+            <!-- Copy Ozone UVL files -->
+            <id>Copy Ozone UVL files</id>
             <phase>process-resources</phase>
             <goals>
               <goal>copy-resources</goal>
@@ -64,7 +64,7 @@
               <overwrite>true</overwrite>
               <resources>
                 <resource>
-                  <directory>${project.build.directory}/ozone-msf-iraq</directory>
+                  <directory>${project.build.directory}/ozone-uvl-burundi</directory>
                   <excludes>
                     <exclude>distro/configs/**/addresshierarchy/*.*</exclude>
                     <exclude>distro/configs/**/locations/*.*</exclude>
@@ -126,16 +126,16 @@
         <version>3.1.0</version>
         <executions>
           <execution>
-            <id>Add MSF Erbil Frontend Configuration</id>
+            <id>Add UVL Erbil Frontend Configuration</id>
             <phase>process-resources</phase>
             <goals>
               <goal>run</goal>
             </goals>
             <configuration>
               <target>
-                <echo message="Adding MSF Erbil frontend config"/>
+                <echo message="Adding UVL Erbil frontend config"/>
                 <replaceregexp file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/.env"
-                               match="(SPA_CONFIG_URLS=.+)" replace="\1,/openmrs/spa/ozone/msf-erbil-frontend-config.json" />
+                               match="(SPA_CONFIG_URLS=.+)" replace="\1,/openmrs/spa/ozone/uvl-erbil-frontend-config.json" />
               </target>
             </configuration>
           </execution>
@@ -150,21 +150,21 @@
       <url>https://nexus.mekomsolutions.net/repository/maven-public/</url>
     </repository>
     <repository>
-      <id>msf-ocg-github-lime-emr</id>
-      <url>https://maven.pkg.github.com/MSF-OCG/LIME-EMR/</url>
+      <id>uvl-ocg-github-lime-emr</id>
+      <url>https://maven.pkg.github.com/UVL-OCG/LIME-EMR/</url>
     </repository>
   </repositories>
   
   <distributionManagement>
     <repository>
-      <name>MSF repo for releases</name>
-      <id>msf-ocg-github-lime-emr</id>
-      <url>https://maven.pkg.github.com/MSF-OCG/LIME-EMR</url>
+      <name>UVL repo for releases</name>
+      <id>uvl-ocg-github-lime-emr</id>
+      <url>https://maven.pkg.github.com/UVL-OCG/LIME-EMR</url>
     </repository>
     <snapshotRepository>
-      <name>MSF repo for snapshots</name>
-      <id>msf-ocg-github-lime-emr</id>
-      <url>https://maven.pkg.github.com/MSF-OCG/LIME-EMR</url>
+      <name>UVL repo for snapshots</name>
+      <id>uvl-ocg-github-lime-emr</id>
+      <url>https://maven.pkg.github.com/UVL-OCG/LIME-EMR</url>
     </snapshotRepository>
   </distributionManagement>
   

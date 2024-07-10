@@ -1,6 +1,6 @@
 name: Upload MSf artifacts
 
-description: 'Custom action used to upload MSF artifacts ie execution ready .zip files to GitHub'
+description: 'Custom action used to upload UVL artifacts ie execution ready .zip files to GitHub'
 
 inputs:
   artifact-path:
@@ -37,7 +37,7 @@ runs:
       with:
         servers: |
           [{
-            "id": "msf-ocg-github-lime-emr",
+            "id": "uvl-ocg-github-lime-emr",
             "username": "${{ inputs.maven-server-username }}",
             "password": "${{ inputs.maven-server-token }}"
           }]
@@ -47,19 +47,19 @@ runs:
     #   run: 'mvn --batch-mode clean deploy'
     #   shell: bash
 
-    - name: Get MSF ${{ inputs.artifact-name }} version
+    - name: Get UVL ${{ inputs.artifact-name }} version
       working-directory: ${{ inputs.artifact-path }}
       id: get_version
       run: echo "VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
       shell: bash
   
-    - name: Get MSF ${{ inputs.artifact-name }} artifactId
+    - name: Get UVL ${{ inputs.artifact-name }} artifactId
       working-directory: ${{ inputs.artifact-path }}
       id: get_artifactId
       run: echo "ARTIFACTID=$(mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout)" >> $GITHUB_ENV
       shell: bash
 
-    - name: Upload MSF ${{ inputs.artifact-name }} GitHub
+    - name: Upload UVL ${{ inputs.artifact-name }} GitHub
       if: success()
       uses: actions/upload-artifact@v4
       with:
