@@ -4,21 +4,21 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.ozonemsf</groupId>
-  <artifactId>ozone-msf-aggregator</artifactId>
+  <artifactId>ozone-uvl-aggregator</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <modules>
     <module>distro</module>
-    <module>countries/iraq</module>
-    <module>sites/mosul</module>
+    <module>countries/burundi</module>
+    <module>sites/mugamba</module>
     <module>sites/erbil</module>
   </modules>
 
   <scm>
-    <connection>scm:git:git@github.com:MSF-OCG/LIME-EMR.git</connection>
+    <connection>scm:git:git@github.com:UVL-OCG/LIME-EMR.git</connection>
     <developerConnection>${project.scm.connection}</developerConnection>
-    <url>https://github.com/MSF-OCG/LIME-EMR</url>
+    <url>https://github.com/UVL-OCG/LIME-EMR</url>
     <tag>HEAD</tag>
   </scm>
 
@@ -34,21 +34,21 @@
       <url>https://nexus.mekomsolutions.net/repository/maven-public/</url>
     </repository>
     <repository>
-      <id>msf-ocg-github-lime-emr</id>
-      <url>https://maven.pkg.github.com/MSF-OCG/LIME-EMR/</url>
+      <id>uvl-ocg-github-lime-emr</id>
+      <url>https://maven.pkg.github.com/UVL-OCG/LIME-EMR/</url>
     </repository>
   </repositories>
   
   <distributionManagement>
     <repository>
-      <name>MSF repo for releases</name>
-      <id>msf-ocg-github-lime-emr</id>
-      <url>https://maven.pkg.github.com/MSF-OCG/LIME-EMR</url>
+      <name>UVL repo for releases</name>
+      <id>uvl-ocg-github-lime-emr</id>
+      <url>https://maven.pkg.github.com/UVL-OCG/LIME-EMR</url>
     </repository>
     <snapshotRepository>
-      <name>MSF repo for snapshots</name>
-      <id>msf-ocg-github-lime-emr</id>
-      <url>https://maven.pkg.github.com/MSF-OCG/LIME-EMR</url>
+      <name>UVL repo for snapshots</name>
+      <id>uvl-ocg-github-lime-emr</id>
+      <url>https://maven.pkg.github.com/UVL-OCG/LIME-EMR</url>
     </snapshotRepository>
   </distributionManagement>
 

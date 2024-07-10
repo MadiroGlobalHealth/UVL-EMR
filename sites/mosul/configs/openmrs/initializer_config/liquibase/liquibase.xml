@@ -10,7 +10,7 @@
     <!-- persons -->
     <changeSet id="add_mosul_person_for_user-202406191255" author="Joshua">
         <comment>
-            Add Mosul Persons to database
+            Add Mugamba Persons to database
         </comment>
         <insert tableName="person">
             <column name="person_id" value="30" />
@@ -106,7 +106,7 @@
     <!-- users -->
     <changeSet id="add_mosul_users-202406191255" author="Joshua">
         <comment>
-            Add Mosul Users to database
+            Add Mugamba Users to database
         </comment>
         <insert tableName="users">
             <column name="user_id" value="30" />

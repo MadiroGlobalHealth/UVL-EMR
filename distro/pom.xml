@@ -11,7 +11,7 @@
   </parent>
 
   <groupId>com.ozonemsf</groupId>
-  <artifactId>ozone-msf-distro</artifactId>
+  <artifactId>ozone-uvl-distro</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
@@ -33,9 +33,9 @@
   </dependencies>
 
   <scm>
-    <connection>scm:git:git@github.com:MSF-OCG/LIME-EMR.git</connection>
+    <connection>scm:git:git@github.com:UVL-OCG/LIME-EMR.git</connection>
     <developerConnection>${project.scm.connection}</developerConnection>
-    <url>https://github.com/MSF-OCG/LIME-EMR</url>
+    <url>https://github.com/UVL-OCG/LIME-EMR</url>
     <tag>HEAD</tag>
   </scm>
 
@@ -67,8 +67,8 @@
         <artifactId>maven-resources-plugin</artifactId>
         <executions>
           <execution>
-            <!-- Copy MSF reference-application-spa-assemble-config.json to frontend working directory -->
-            <id>Copy MSF reference-application-spa-assemble-config.json to local working directory</id>
+            <!-- Copy UVL reference-application-spa-assemble-config.json to frontend working directory -->
+            <id>Copy UVL reference-application-spa-assemble-config.json to local working directory</id>
             <phase>generate-resources</phase>
             <goals>
               <goal>copy-resources</goal>
@@ -140,8 +140,8 @@
           </execution>
 
           <execution>
-            <!-- Copy MSF Disto docker compose .txt file -->
-            <id>Copy MSF Disto docker compose .txt file</id>
+            <!-- Copy UVL Disto docker compose .txt file -->
+            <id>Copy UVL Disto docker compose .txt file</id>
             <phase>prepare-package</phase>
             <goals>
               <goal>copy-resources</goal>
@@ -170,28 +170,28 @@
         <version>3.1.0</version>
         <executions>
           <execution>
-            <id>Add MSF-OCG LIME Frontend Configuration to ozone</id>
+            <id>Add UVL-OCG LIME Frontend Configuration to ozone</id>
             <phase>process-resources</phase>
             <goals>
               <goal>run</goal>
             </goals>
             <configuration>
               <target>
-                <echo message="Adding msf frontend config"/>
+                <echo message="Adding uvl frontend config"/>
                 <replaceregexp file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/.env"
-                              match="ozone-frontend-config.json" replace="msf-frontend-config.json" />
+                              match="ozone-frontend-config.json" replace="uvl-frontend-config.json" />
               </target>
             </configuration>
           </execution>
           <execution>
-            <id>Add MSF-OCG LIME docker image Configuration to ozone</id>
+            <id>Add UVL-OCG LIME docker image Configuration to ozone</id>
             <phase>process-resources</phase>
             <goals>
               <goal>run</goal>
             </goals>
             <configuration>
               <target>
-                <echo message="Adding msf docker image version"/>
+                <echo message="Adding uvl docker image version"/>
                 <replaceregexp file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/.env"
                               match="O3_DOCKER_IMAGE_TAG=.*" replace="O3_DOCKER_IMAGE_TAG=${MSFReferenceapplicationDockerVersion}" />
               </target>
@@ -243,21 +243,21 @@
       <url>https://nexus.mekomsolutions.net/repository/maven-public/</url>
     </repository>
     <repository>
-      <id>msf-ocg-github-lime-emr</id>
-      <url>https://maven.pkg.github.com/MSF-OCG/LIME-EMR/</url>
+      <id>uvl-ocg-github-lime-emr</id>
+      <url>https://maven.pkg.github.com/UVL-OCG/LIME-EMR/</url>
     </repository>
   </repositories>
 
   <distributionManagement>
     <repository>
-      <name>MSF repo for releases</name>
-      <id>msf-ocg-github-lime-emr</id>
-      <url>https://maven.pkg.github.com/MSF-OCG/LIME-EMR</url>
+      <name>UVL repo for releases</name>
+      <id>uvl-ocg-github-lime-emr</id>
+      <url>https://maven.pkg.github.com/UVL-OCG/LIME-EMR</url>
     </repository>
     <snapshotRepository>
-      <name>MSF repo for snapshots</name>
-      <id>msf-ocg-github-lime-emr</id>
-      <url>https://maven.pkg.github.com/MSF-OCG/LIME-EMR</url>
+      <name>UVL repo for snapshots</name>
+      <id>uvl-ocg-github-lime-emr</id>
+      <url>https://maven.pkg.github.com/UVL-OCG/LIME-EMR</url>
     </snapshotRepository>
   </distributionManagement>
 

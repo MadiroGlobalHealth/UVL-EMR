@@ -4,8 +4,8 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.ozonemsf</groupId>
-  <artifactId>ozone-msf-iraq</artifactId>
+  <groupId>com.ozoneuvl</groupId>
+  <artifactId>ozone-uvl-burundi</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
@@ -17,8 +17,8 @@
 
   <dependencies>
     <dependency>
-      <artifactId>ozone-msf-distro</artifactId>
-      <groupId>com.ozonemsf</groupId>
+      <artifactId>ozone-uvl-distro</artifactId>
+      <groupId>com.ozoneuvl</groupId>
       <version>1.0.0-SNAPSHOT</version>
       <type>zip</type>
     </dependency>
@@ -26,22 +26,22 @@
 
   <build>
     <plugins>
-      <!-- Unpack Ozone MSF zip -->
+      <!-- Unpack Ozone UVL zip -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
         <version>3.6.1</version>
         <executions>
           <execution>
-            <id>Unpack Ozone MSF</id>
+            <id>Unpack Ozone UVL</id>
             <phase>generate-resources</phase>
             <goals>
               <goal>unpack-dependencies</goal>
             </goals>
             <configuration>
               <excludeTransitive>true</excludeTransitive>
-              <outputDirectory>${project.build.directory}/ozone-msf-distro</outputDirectory>
-              <includeArtifactIds>ozone-msf-distro</includeArtifactIds>
+              <outputDirectory>${project.build.directory}/ozone-uvl-distro</outputDirectory>
+              <includeArtifactIds>ozone-uvl-distro</includeArtifactIds>
             </configuration>
           </execution>
         </executions>
@@ -52,8 +52,8 @@
         <version>3.3.1</version>
         <executions>
           <execution>
-            <!-- Copy Ozone MSF files -->
-            <id>Copy Ozone MSF files</id>
+            <!-- Copy Ozone UVL files -->
+            <id>Copy Ozone UVL files</id>
             <phase>process-resources</phase>
             <goals>
               <goal>copy-resources</goal>
@@ -64,7 +64,7 @@
               <overwrite>true</overwrite>
               <resources>
                 <resource>
-                  <directory>${project.build.directory}/ozone-msf-distro</directory>
+                  <directory>${project.build.directory}/ozone-uvl-distro</directory>
                   <excludes>
                     <exclude>distro/configs/**/roles/*.*</exclude>
                   </excludes>
@@ -128,21 +128,21 @@
       <url>https://nexus.mekomsolutions.net/repository/maven-public/</url>
     </repository>
     <repository>
-      <id>msf-ocg-github-lime-emr</id>
-      <url>https://maven.pkg.github.com/MSF-OCG/LIME-EMR/</url>
+      <id>uvl-ocg-github-lime-emr</id>
+      <url>https://maven.pkg.github.com/UVL-OCG/LIME-EMR/</url>
     </repository>
   </repositories>
   
   <distributionManagement>
     <repository>
-      <name>MSF repo for releases</name>
-      <id>msf-ocg-github-lime-emr</id>
-      <url>https://maven.pkg.github.com/MSF-OCG/LIME-EMR</url>
+      <name>UVL repo for releases</name>
+      <id>uvl-ocg-github-lime-emr</id>
+      <url>https://maven.pkg.github.com/UVL-OCG/LIME-EMR</url>
     </repository>
     <snapshotRepository>
-      <name>MSF repo for snapshots</name>
-      <id>msf-ocg-github-lime-emr</id>
-      <url>https://maven.pkg.github.com/MSF-OCG/LIME-EMR</url>
+      <name>UVL repo for snapshots</name>
+      <id>uvl-ocg-github-lime-emr</id>
+      <url>https://maven.pkg.github.com/UVL-OCG/LIME-EMR</url>
     </snapshotRepository>
   </distributionManagement>
   

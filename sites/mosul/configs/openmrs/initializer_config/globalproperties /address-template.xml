@@ -18,9 +18,9 @@
             &lt;property name="address1" value="100"/&gt;
         &lt;/sizeMappings&gt;
         &lt;elementDefaults class="properties"&gt;
-            &lt;property name="country" value="Iraq"/&gt;
+            &lt;property name="country" value="Burundi"/&gt;
             &lt;property name="stateProvince" value="Ninewa"/&gt;
-            &lt;property name="countyDistrict" value="Mosul"/&gt;
+            &lt;property name="countyDistrict" value="Mugamba"/&gt;
         &lt;/elementDefaults&gt;
         &lt;requiredElements&gt;
             &lt;string&gt;country&lt;/string&gt;

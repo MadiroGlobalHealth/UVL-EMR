@@ -1,6 +1,6 @@
 {
     "name": "F02-MHPSS_Follow-up",
-    "description": "MSF Form - F02-MHPSS_Follow-up",
+    "description": "UVL Form - F02-MHPSS_Follow-up",
     "version": "1",
     "published": true,
     "uuid": "",
@@ -110,7 +110,7 @@
                                         "concept": "healthFacility"
                                     },
                                     {
-                                        "label": "MSF health facility",
+                                        "label": "UVL health facility",
                                         "concept": "msfHealthFacility"
                                     },
                                     {
@@ -155,7 +155,7 @@
                         },
                         {
                             "id": "specifyMsfHealthFacility",
-                            "label": "Specify MSF Health Facility",
+                            "label": "Specify UVL Health Facility",
                             "type": "obs",
                             "required": false,
                             "questionOptions": {
@@ -163,7 +163,7 @@
                                 "concept": "specifyMsfHealthFacility"
                             },
                             "validators": null,
-                            "questionInfo": "Specify MSF Health Facility",
+                            "questionInfo": "Specify UVL Health Facility",
                             "hide": {
                                 "hideWhenExpression": "locationOfIntervention !== 'msfHealthFacility'"
                             }
@@ -1374,11 +1374,11 @@
                                 "concept": "prescribedBy",
                                 "answers": [
                                     {
-                                        "label": "MSF",
-                                        "concept": "msf"
+                                        "label": "UVL",
+                                        "concept": "uvl"
                                     },
                                     {
-                                        "label": "Non MSF",
+                                        "label": "Non UVL",
                                         "concept": "nonMsf"
                                     }
                                 ]
@@ -1613,15 +1613,15 @@
                                 "concept": "typeOfReferral",
                                 "answers": [
                                     {
-                                        "label": "Medical care (MSF MoH NGO)",
+                                        "label": "Medical care (UVL MoH NGO)",
                                         "concept": "medicalCare"
                                     },
                                     {
-                                        "label": "MSF psychiatric services",
+                                        "label": "UVL psychiatric services",
                                         "concept": "msfPsychiatricServices"
                                     },
                                     {
-                                        "label": "Non-MSF psychiatrist services",
+                                        "label": "Non-UVL psychiatrist services",
                                         "concept": "nonMsfPsychiatristServices"
                                     },
                                     {

@@ -25,7 +25,7 @@ jobs:
         with:
           servers: |
             [{
-              "id": "msf-ocg-github-lime-emr",
+              "id": "uvl-ocg-github-lime-emr",
               "username": "${{ secrets.MAVEN_GITHUB_ACTIONS_DEPLOY_USERNAME }}",
               "password": "${{ secrets.MAVEN_GITHUB_ACTIONS_DEPLOY_TOKEN }}"
             }]
@@ -49,15 +49,15 @@ jobs:
       run: |
         if [[ $(git diff --name-only ${{ github.event.before }} ${{ github.sha }}) == *"distro"* ]]; then
           echo "Triggering the 'release-distro' job and its children"
-          DIRECTORIES=("distro", "iraq", "mosul")
+          DIRECTORIES=("distro", "burundi", "mugamba")
           echo "directories=${DIRECTORIES}" >> $GITHUB_OUTPUT
-        elif [[ $(git diff --name-only ${{ github.event.before }} ${{ github.sha }}) == *"iraq"* ]]; then
-          echo "Triggering the 'release-iraq' job and its children"
-          DIRECTORIES=("iraq", "mosul")
+        elif [[ $(git diff --name-only ${{ github.event.before }} ${{ github.sha }}) == *"burundi"* ]]; then
+          echo "Triggering the 'release-burundi' job and its children"
+          DIRECTORIES=("burundi", "mugamba")
           echo "directories=${DIRECTORIES}" >> $GITHUB_OUTPUT
-        elif [[ $(git diff --name-only ${{ github.event.before }} ${{ github.sha }}) == *"mosul"* ]]; then
-          echo "Triggering the 'release-mosul' job"
-          DIRECTORIES=("mosul")
+        elif [[ $(git diff --name-only ${{ github.event.before }} ${{ github.sha }}) == *"mugamba"* ]]; then
+          echo "Triggering the 'release-mugamba' job"
+          DIRECTORIES=("mugamba")
           echo "directories=${DIRECTORIES}" >> $GITHUB_OUTPUT
         else
           echo "No relevant directory changes, skipping build job"
@@ -74,47 +74,47 @@ jobs:
       packages: write
     steps:
     - uses: actions/checkout@v4
-    - name: Publish MSF distro artifacts to GitHub
+    - name: Publish UVL distro artifacts to GitHub
       uses: ./.github/actions/upload-maven-artifacts
       with:
         artifact-name: "distro"
         artifact-path: "${{ github.workspace }}/distro"
         maven-server-username: "${{ secrets.MAVEN_GITHUB_ACTIONS_DEPLOY_USERNAME }}"
         maven-server-token: "${{ secrets.MAVEN_GITHUB_ACTIONS_DEPLOY_TOKEN }}"
-  release-iraq:
+  release-burundi:
     needs: [release, release-distro]
     if: |
       ( always() && !failure() ) &&
-      contains(needs.release.outputs.directories, 'iraq')
+      contains(needs.release.outputs.directories, 'burundi')
     runs-on: ubuntu-latest
     permissions: 
       contents: read
       packages: write
     steps:
     - uses: actions/checkout@v4
-    - name: Publish MSF Mosul to artifacts GitHub
+    - name: Publish UVL Mugamba to artifacts GitHub
       uses: ./.github/actions/upload-maven-artifacts
       with:
-        artifact-name: "Iraq"
-        artifact-path: "${{ github.workspace }}/countries/iraq"
+        artifact-name: "Burundi"
+        artifact-path: "${{ github.workspace }}/countries/burundi"
         maven-server-username: "${{ secrets.MAVEN_GITHUB_ACTIONS_DEPLOY_USERNAME }}"
         maven-server-token: "${{ secrets.MAVEN_GITHUB_ACTIONS_DEPLOY_TOKEN }}"
 
-  release-mosul:
-    needs: [release, release-iraq]
+  release-mugamba:
+    needs: [release, release-burundi]
     if: |
       ( always() && !failure() ) &&
-      contains(needs.release.outputs.directories, 'mosul')
+      contains(needs.release.outputs.directories, 'mugamba')
     runs-on: ubuntu-latest
     permissions: 
       contents: read
       packages: write
     steps:
     - uses: actions/checkout@v4
-    - name: Publish MSF Iraq artifacts to GitHub
+    - name: Publish UVL Burundi artifacts to GitHub
       uses: ./.github/actions/upload-maven-artifacts
       with:
-        artifact-name: "Mosul"
-        artifact-path: "${{ github.workspace }}/sites/mosul"
+        artifact-name: "Mugamba"
+        artifact-path: "${{ github.workspace }}/sites/mugamba"
         maven-server-username: "${{ secrets.MAVEN_GITHUB_ACTIONS_DEPLOY_USERNAME }}"
         maven-server-token: "${{ secrets.MAVEN_GITHUB_ACTIONS_DEPLOY_TOKEN }}"
