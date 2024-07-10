@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.ozonemsf</groupId>
+  <artifactId>ozone-msf-aggregator</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <modules>
+    <module>distro</module>
+    <module>countries/iraq</module>
+    <module>sites/mosul</module>
+    <module>sites/erbil</module>
+  </modules>
+
+  <scm>
+    <connection>scm:git:git@github.com:MSF-OCG/LIME-EMR.git</connection>
+    <developerConnection>${project.scm.connection}</developerConnection>
+    <url>https://github.com/MSF-OCG/LIME-EMR</url>
+    <tag>HEAD</tag>
+  </scm>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>8</maven.compiler.source>
+    <maven.compiler.target>8</maven.compiler.target>
+  </properties>
+
+  <repositories>
+    <repository>
+      <id>mks-nexus-public</id>
+      <url>https://nexus.mekomsolutions.net/repository/maven-public/</url>
+    </repository>
+    <repository>
+      <id>msf-ocg-github-lime-emr</id>
+      <url>https://maven.pkg.github.com/MSF-OCG/LIME-EMR/</url>
+    </repository>
+  </repositories>
+  
+  <distributionManagement>
+    <repository>
+      <name>MSF repo for releases</name>
+      <id>msf-ocg-github-lime-emr</id>
+      <url>https://maven.pkg.github.com/MSF-OCG/LIME-EMR</url>
+    </repository>
+    <snapshotRepository>
+      <name>MSF repo for snapshots</name>
+      <id>msf-ocg-github-lime-emr</id>
+      <url>https://maven.pkg.github.com/MSF-OCG/LIME-EMR</url>
+    </snapshotRepository>
+  </distributionManagement>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-deploy-plugin</artifactId>
+          <version>3.1.0</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+
+</project>

@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.ozonehis</groupId>
+    <artifactId>maven-parent</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <relativePath />
+  </parent>
+
+  <groupId>com.ozonemsf</groupId>
+  <artifactId>ozone-msf-distro</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>8</maven.compiler.source>
+    <maven.compiler.target>8</maven.compiler.target>
+    <PatientIdentifierGeneratorVersion>0.1.0</PatientIdentifierGeneratorVersion>
+    <MSFReferenceapplicationDockerVersion>qa</MSFReferenceapplicationDockerVersion>
+  </properties>
+
+  <dependencies>
+    <!-- TODO: Add any implementation-specific dependencies -->
+    <dependency>
+      <groupId>org.openmrs.module</groupId>
+      <artifactId>patientidentifiergenerator-omod</artifactId>
+      <version>${PatientIdentifierGeneratorVersion}</version>
+    </dependency>
+  </dependencies>
+
+  <scm>
+    <connection>scm:git:git@github.com:MSF-OCG/LIME-EMR.git</connection>
+    <developerConnection>${project.scm.connection}</developerConnection>
+    <url>https://github.com/MSF-OCG/LIME-EMR</url>
+    <tag>HEAD</tag>
+  </scm>
+
+  <build>
+    <plugins>
+      <!-- packaging the distro as a installable/deployable file -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>Package distro artifacts</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+            <configuration>
+              <appendAssemblyId>false</appendAssemblyId>
+              <descriptors>
+                <descriptor>assembly.xml</descriptor>
+              </descriptors>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <executions>
+          <execution>
+            <!-- Copy MSF reference-application-spa-assemble-config.json to frontend working directory -->
+            <id>Copy MSF reference-application-spa-assemble-config.json to local working directory</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/openmrs_frontend</outputDirectory>
+              <overwrite>true</overwrite>
+              <resources>
+                <resource>
+                  <directory>${project.basedir}/configs/openmrs/frontend_assembly</directory>
+                  <filtering>false</filtering>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+          <execution>
+            <!-- Override the Ozone files exclusion execution so to inherit all O3 Ref App files -->
+            <id>Exclude unneeded Ozone files</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>
+                ${project.build.directory}/${project.artifactId}-${project.version}</outputDirectory>
+              <overwrite>true</overwrite>
+              <resources>
+                <resource>
+                  <directory>${project.build.directory}/ozone</directory>
+                  <excludes>
+                    <exclude>distro/configs/**/ampathforms/*.*</exclude>
+                    <exclude>distro/configs/**/ampathformstranslations/*.*</exclude>
+                    <exclude>distro/configs/**/appointmentservicedefinitions/*.*</exclude>
+                    <exclude>distro/configs/**/appointmentservicetypes/*.*</exclude>
+                    <exclude>distro/configs/**/appointmentspecialities/*.*</exclude>
+                    <exclude>distro/configs/**/attributetypes/*.*</exclude>
+                    <exclude>distro/configs/**/autogenerationoptions/*.*</exclude>
+                    <exclude>distro/configs/**/cohorttypes/*.*</exclude>
+                    <exclude>distro/configs/**/conceptclasses/*.*</exclude>
+                    <exclude>distro/configs/**/concepts/*.*</exclude>
+                    <exclude>distro/configs/**/conceptsources/*.*</exclude>
+                    <exclude>distro/configs/**/drugs/*.*</exclude>
+                    <exclude>distro/configs/**/encounterroles/*.*</exclude>
+                    <exclude>distro/configs/**/encountertypes/*.*</exclude>
+                    <exclude>distro/configs/**/fhirconceptsources/*.*</exclude>
+                    <exclude>distro/configs/**/globalproperties/*.*</exclude>
+                    <exclude>distro/configs/**/idgen/*.*</exclude>
+                    <exclude>distro/configs/**/locationtags/*.*</exclude>
+                    <exclude>distro/configs/**/metadatasets/*.*</exclude>
+                    <exclude>distro/configs/**/metadatasharing/*.*</exclude>
+                    <exclude>distro/configs/**/metadatatermmappings/*.*</exclude>
+                    <exclude>distro/configs/**/ocl/*.*</exclude>
+                    <exclude>distro/configs/**/orderfrequencies/*.*</exclude>
+                    <exclude>distro/configs/**/patientidentifiertypes/*.*</exclude>
+                    <exclude>distro/configs/**/privileges/*.*</exclude>
+                    <exclude>distro/configs/**/programs/*.*</exclude>
+                    <exclude>distro/configs/**/programworkflows/*.*</exclude>
+                    <exclude>distro/configs/**/programworkflowstates/*.*</exclude>
+                    <exclude>distro/configs/**/relationshiptypes/*.*</exclude>
+                    <exclude>distro/configs/**/visittypes/*.*</exclude>
+                    <!-- Temporarily remove Ozone -->
+                    <exclude>distro/binaries/openmrs/modules/referencedemodata*.omod</exclude>
+                    <!-- Remove Ozone frontend config -->
+                    <exclude>distro/configs/openmrs/frontend_config/ozone*.*</exclude>
+                  </excludes>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+
+          <execution>
+            <!-- Copy MSF Disto docker compose .txt file -->
+            <id>Copy MSF Disto docker compose .txt file</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>
+                ${project.build.directory}/${project.artifactId}-${project.version}/run/docker/scripts</outputDirectory>
+              <overwrite>true</overwrite>
+              <resources>
+                <resource>
+                  <directory>${project.basedir}/../scripts</directory>
+                  <includes>
+                    <include>
+                      docker-compose-files.txt
+                    </include>
+                  </includes>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>3.1.0</version>
+        <executions>
+          <execution>
+            <id>Add MSF-OCG LIME Frontend Configuration to ozone</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
+                <echo message="Adding msf frontend config"/>
+                <replaceregexp file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/.env"
+                              match="ozone-frontend-config.json" replace="msf-frontend-config.json" />
+              </target>
+            </configuration>
+          </execution>
+          <execution>
+            <id>Add MSF-OCG LIME docker image Configuration to ozone</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
+                <echo message="Adding msf docker image version"/>
+                <replaceregexp file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/.env"
+                              match="O3_DOCKER_IMAGE_TAG=.*" replace="O3_DOCKER_IMAGE_TAG=${MSFReferenceapplicationDockerVersion}" />
+              </target>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+  <profiles>
+    <profile>
+      <id>validator</id>
+      <activation>
+        <jdk>1.8</jdk>
+        <property>
+          <name>env.CI</name>
+          <value>true</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <!-- hooking the OpenMRS config validation to the integration-test phase -->
+          <plugin>
+            <groupId>org.openmrs.maven.plugins</groupId>
+            <artifactId>openmrs-packager-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>Validate OpenMRS configuration</id>
+                <phase>integration-test</phase>
+                <goals>
+                  <goal>validate-configurations</goal>
+                </goals>
+                <configuration>
+                  <sourceDir>
+                    ${project.build.directory}/${project.artifactId}-${project.version}/distro/configs/openmrs/initializer_config</sourceDir>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
+  <repositories>
+    <repository>
+      <id>mks-nexus-public</id>
+      <url>https://nexus.mekomsolutions.net/repository/maven-public/</url>
+    </repository>
+    <repository>
+      <id>msf-ocg-github-lime-emr</id>
+      <url>https://maven.pkg.github.com/MSF-OCG/LIME-EMR/</url>
+    </repository>
+  </repositories>
+
+  <distributionManagement>
+    <repository>
+      <name>MSF repo for releases</name>
+      <id>msf-ocg-github-lime-emr</id>
+      <url>https://maven.pkg.github.com/MSF-OCG/LIME-EMR</url>
+    </repository>
+    <snapshotRepository>
+      <name>MSF repo for snapshots</name>
+      <id>msf-ocg-github-lime-emr</id>
+      <url>https://maven.pkg.github.com/MSF-OCG/LIME-EMR</url>
+    </snapshotRepository>
+  </distributionManagement>
+
+</project>

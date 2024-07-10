@@ -1,0 +1,9 @@
+Uuid,Privilege name,Description,_order:1000
+9e33ad60-5f8d-4729-a85c-67442f3ea654,Manage Immunization Summary,Able to manage Patient immunisation,
+55933d7f-1cdc-49fd-b8e0-a6d6c6368a6b,Manage Patient Medication,Able to manage Patient Medications,
+c8fbca3f-8fb3-49fb-937a-39ff054ea417,Patient Dashboard - View Conditions,Able to see patient Conditions,
+435755cf-ef59-449b-818b-c9ce74460daf,Manage Patient Attachments,Able to manage Patient Attachments,
+79956262-4712-46d9-8464-aa6ef15a90c3,Manage Order Basket,Able to manage Order Basket,
+ea379da7-49f9-444c-96b0-40cec91293af,Manage Visit Note,Able to manage Visit Note,
+8783db13-f516-4a9a-b936-e5ffd37e7cce,Manage Clinical Forms,Able to manage Clinical Forms,
+2a975a20-97b7-403d-a4ae-fafe2320006d,Manage Patient Orders, Able to manage Patient Orders,

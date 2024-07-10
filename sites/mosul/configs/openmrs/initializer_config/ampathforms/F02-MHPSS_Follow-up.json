@@ -1,0 +1,1694 @@
+{
+    "name": "F02-MHPSS_Follow-up",
+    "description": "MSF Form - F02-MHPSS_Follow-up",
+    "version": "1",
+    "published": true,
+    "uuid": "",
+    "processor": "EncounterFormProcessor",
+    "encounter": "Consultation",
+    "retired": false,
+    "referencedForms": [],
+    "pages": [
+        {
+            "label": "MHPSS Follow-Up Consultation - page 1",
+            "sections": [
+                {
+                    "label": "Consultation information",
+                    "isExpanded": false,
+                    "questions": [
+                        {
+                            "id": "sessionNumber",
+                            "label": "Session number",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "numeric",
+                                "concept": "sessionNumber"
+                            },
+                            "validators": null,
+                            "default": "(calculated - # of session)",
+                            "questionInfo": "Session number"
+                        },
+                        {
+                            "id": "typeOfConsultation",
+                            "label": "Type of consultation",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "radio",
+                                "concept": "typeOfConsultation",
+                                "answers": [
+                                    {
+                                        "label": "Individual",
+                                        "concept": "individual"
+                                    },
+                                    {
+                                        "label": "Couple",
+                                        "concept": "couple"
+                                    },
+                                    {
+                                        "label": "Family",
+                                        "concept": "family"
+                                    },
+                                    {
+                                        "label": "Parent-Child",
+                                        "concept": "parentChild"
+                                    }
+                                ]
+                            },
+                            "validators": null,
+                            "questionInfo": "Type of consultation"
+                        },
+                        {
+                            "id": "totalNumberOfBeneficiariesInFamilyConsultation",
+                            "label": "Total number of beneficiaries in family consultation",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "numeric",
+                                "concept": "totalNumberOfBeneficiariesInFamilyConsultation"
+                            },
+                            "validators": null,
+                            "questionInfo": "Total number of beneficiaries in family consultation",
+                            "hide": {
+                                "hideWhenExpression": "consultationType !== 'family'"
+                            }
+                        },
+                        {
+                            "id": "consultationDoneBy",
+                            "label": "Consultation done by",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "radio",
+                                "concept": "consultationDoneBy",
+                                "answers": [
+                                    {
+                                        "label": "Psychologist",
+                                        "concept": "psychologist"
+                                    },
+                                    {
+                                        "label": "Counsellor",
+                                        "concept": "counsellor"
+                                    }
+                                ]
+                            },
+                            "validators": null,
+                            "questionInfo": "Consultation done by"
+                        },
+                        {
+                            "id": "locationOfIntervention",
+                            "label": "Location of intervention",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "radio",
+                                "concept": "locationOfIntervention",
+                                "answers": [
+                                    {
+                                        "label": "Health facility",
+                                        "concept": "healthFacility"
+                                    },
+                                    {
+                                        "label": "MSF health facility",
+                                        "concept": "msfHealthFacility"
+                                    },
+                                    {
+                                        "label": "Mobile clinic",
+                                        "concept": "mobileClinic"
+                                    },
+                                    {
+                                        "label": "Home visit",
+                                        "concept": "homeVisit"
+                                    },
+                                    {
+                                        "label": "School visit",
+                                        "concept": "schoolVisit"
+                                    },
+                                    {
+                                        "label": "Remote / phone",
+                                        "concept": "remoteOrPhone"
+                                    },
+                                    {
+                                        "label": "Other",
+                                        "concept": "locationOfInterventionOther"
+                                    }
+                                ]
+                            },
+                            "validators": null,
+                            "questionInfo": "Location of intervention"
+                        },
+                        {
+                            "id": "specifyHealthFacility",
+                            "label": "Specify Health Facility",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "text",
+                                "concept": "specifyHealthFacility"
+                            },
+                            "validators": null,
+                            "questionInfo": "Specify Health Facility",
+                            "hide": {
+                                "hideWhenExpression": "locationOfIntervention !== 'healthFacility'"
+                            }
+                        },
+                        {
+                            "id": "specifyMsfHealthFacility",
+                            "label": "Specify MSF Health Facility",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "text",
+                                "concept": "specifyMsfHealthFacility"
+                            },
+                            "validators": null,
+                            "questionInfo": "Specify MSF Health Facility",
+                            "hide": {
+                                "hideWhenExpression": "locationOfIntervention !== 'msfHealthFacility'"
+                            }
+                        },
+                        {
+                            "id": "specifyMobileClinic",
+                            "label": "Specify Mobile Clinic",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "text",
+                                "concept": "specifyMobileClinic"
+                            },
+                            "validators": null,
+                            "questionInfo": "Specify Mobile Clinic",
+                            "hide": {
+                                "hideWhenExpression": "locationOfIntervention !== 'mobileClinic'"
+                            }
+                        },
+                        {
+                            "id": "ifOtherSpecify",
+                            "label": "If other specify",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "text",
+                                "concept": "ifOtherSpecify"
+                            },
+                            "validators": null,
+                            "questionInfo": "If other specify",
+                            "hide": {
+                                "hideWhenExpression": "locationOfIntervention !== 'locationOfInterventionOther'"
+                            }
+                        },
+                        {
+                            "id": "typeOfIntervention",
+                            "label": "Type of intervention",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "radio",
+                                "concept": "typeOfIntervention",
+                                "answers": [
+                                    {
+                                        "label": "Counselling",
+                                        "concept": "counselling"
+                                    },
+                                    {
+                                        "label": "Psychotherapy",
+                                        "concept": "psychotherapy"
+                                    }
+                                ]
+                            },
+                            "validators": null,
+                            "questionInfo": "Type of intervention"
+                        }
+                    ]
+                },
+                {
+                    "label": "Missed session",
+                    "isExpanded": false,
+                    "questions": [
+                        {
+                            "id": "thePatientDidNotCome",
+                            "label": "The patient did not come",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "radio",
+                                "concept": "thePatientDidNotCome"
+                            },
+                            "validators": null,
+                            "questionInfo": "The patient did not come"
+                        },
+                        {
+                            "id": "numberOfAppointmentsMissed",
+                            "label": "Number of appointments missed",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "numeric",
+                                "concept": "numberOfAppointmentsMissed"
+                            },
+                            "validators": null,
+                            "questionInfo": "Number of appointments missed",
+                            "hide": {
+                                "hideWhenExpression": "Invalid expression format"
+                            }
+                        },
+                        {
+                            "id": "patientRescheduledFillTheExitForm",
+                            "label": "Patient rescheduled (if Yes fill the Follow-up section at the end of this form. If No (closing file or patient no longer wants services) fill the Exit form.)",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "radio",
+                                "concept": "patientRescheduledFillTheExitForm"
+                            },
+                            "validators": null,
+                            "questionInfo": "Patient rescheduled (if Yes fill the Follow-up section at the end of this form. If No (closing file or patient no longer wants services) fill the Exit form.)",
+                            "hide": {
+                                "hideWhenExpression": "Invalid expression format"
+                            }
+                        },
+                        {
+                            "id": "reasonForMissedAppointment",
+                            "label": "Reason for missed appointment",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "radio",
+                                "concept": "reasonForMissedAppointment",
+                                "answers": [
+                                    {
+                                        "label": "Patient forgot about session",
+                                        "concept": "patientForgotAboutSession"
+                                    },
+                                    {
+                                        "label": "No transportation / unable to attend",
+                                        "concept": "noTransportationOrUnableToAttend"
+                                    },
+                                    {
+                                        "label": "Patient unreachable",
+                                        "concept": "patientUnreachable"
+                                    },
+                                    {
+                                        "label": "Patient no longer wants services",
+                                        "concept": "patientNoLongerWantsServices"
+                                    },
+                                    {
+                                        "label": "Patient was busy",
+                                        "concept": "patientWasBusy"
+                                    },
+                                    {
+                                        "label": "Other",
+                                        "concept": "reasonForMissedAppointmentOther"
+                                    }
+                                ]
+                            },
+                            "validators": null,
+                            "questionInfo": "Reason for missed appointment",
+                            "hide": {
+                                "hideWhenExpression": "Invalid expression format"
+                            }
+                        },
+                        {
+                            "id": "ifOtherSpecify",
+                            "label": "If other specify",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "text",
+                                "concept": "ifOtherSpecify"
+                            },
+                            "validators": null,
+                            "questionInfo": "If other specify",
+                            "hide": {
+                                "hideWhenExpression": "reasonForMissedAppointment !== 'reasonForMissedAppointmentOther'"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "label": "Patient\u2019s progress",
+                    "isExpanded": false,
+                    "questions": [
+                        {
+                            "id": "patientsProgressSinceTheLastSessionHowHasThePatientBeenFeelingOrHowHaveThingsBeenGoingInThePatientsLife",
+                            "label": "Patients progress since the last session how has the patient been feeling/how have things been going in the patients life",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "text",
+                                "concept": "patientsProgressSinceTheLastSessionHowHasThePatientBeenFeelingOrHowHaveThingsBeenGoingInThePatientsLife"
+                            },
+                            "validators": null,
+                            "questionInfo": "Patients progress since the last session how has the patient been feeling/how have things been going in the patients life"
+                        }
+                    ]
+                },
+                {
+                    "label": "Resilience & coping",
+                    "isExpanded": false,
+                    "questions": [
+                        {
+                            "id": "positiveFunctionalityIsThePatientCapableOfBeingIndependentCaringForThemselvesGoingToWorkOrSchoolEtc",
+                            "label": "Positive Functionality Is the patient capable of being independent caring for themselves (bathing/eating) going to work/school etc.",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "radio",
+                                "concept": "positiveFunctionalityIsThePatientCapableOfBeingIndependentCaringForThemselvesGoingToWorkOrSchoolEtc"
+                            },
+                            "validators": null,
+                            "questionInfo": "Positive Functionality Is the patient capable of being independent caring for themselves (bathing/eating) going to work/school etc."
+                        },
+                        {
+                            "id": "internalResourcesDoesThePatientBelieveThatTheyHaveTheAbilitiesNeededToOvercomeTheCurrentProblemOrDoTheyHaveHopeForTheirFuture",
+                            "label": "Internal Resources Does the patient believe that they have the abilities needed to overcome the current problem / do they have hope for their future",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "radio",
+                                "concept": "internalResourcesDoesThePatientBelieveThatTheyHaveTheAbilitiesNeededToOvercomeTheCurrentProblemOrDoTheyHaveHopeForTheirFuture"
+                            },
+                            "validators": null,
+                            "questionInfo": "Internal Resources Does the patient believe that they have the abilities needed to overcome the current problem / do they have hope for their future"
+                        },
+                        {
+                            "id": "externalResourcesDoesThePatientBelieveThatTheyHaveSomeoneWhoTheyCanRelyOnForHelpInTheirLives",
+                            "label": "External Resources Does the patient believe that they have someone who they can rely on for help in their lives",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "radio",
+                                "concept": "externalResourcesDoesThePatientBelieveThatTheyHaveSomeoneWhoTheyCanRelyOnForHelpInTheirLives"
+                            },
+                            "validators": null,
+                            "questionInfo": "External Resources Does the patient believe that they have someone who they can rely on for help in their lives"
+                        },
+                        {
+                            "id": "spiritualOrMoralResourcesAreThePatientsBeliefsASourceOfStrengthForThemWhenDealingWithProblems",
+                            "label": "Spiritual / Moral Resources Are the patients beliefs a source of strength for them when dealing with problems",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "radio",
+                                "concept": "spiritualOrMoralResourcesAreThePatientsBeliefsASourceOfStrengthForThemWhenDealingWithProblems"
+                            },
+                            "validators": null,
+                            "questionInfo": "Spiritual / Moral Resources Are the patients beliefs a source of strength for them when dealing with problems"
+                        }
+                    ]
+                },
+                {
+                    "label": "Main problem or reason for referral",
+                    "isExpanded": false,
+                    "questions": [
+                        {
+                            "id": "mainProblemOrReasonForReferral",
+                            "label": "Main problem or reason for referral (Why is the patient coming to the MH department Write in patients words)",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "text",
+                                "concept": "mainProblemOrReasonForReferral"
+                            },
+                            "validators": null,
+                            "questionInfo": "Main problem or reason for referral (Why is the patient coming to the MH department Write in patients words)"
+                        }
+                    ]
+                },
+                {
+                    "label": "MHOS (required) - In the past week\u2026",
+                    "isExpanded": false,
+                    "questions": [
+                        {
+                            "id": "didYouHaveProblemsPerformingDailyActivitiesSuchAsCookingBathingOrChoresOutsideTheHousehold",
+                            "label": "Did you have problems performing daily activities such as cooking bathing or chores outside the household",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "radio",
+                                "concept": "didYouHaveProblemsPerformingDailyActivitiesSuchAsCookingBathingOrChoresOutsideTheHousehold",
+                                "answers": [
+                                    {
+                                        "label": "Not at all",
+                                        "concept": "notAtAll"
+                                    },
+                                    {
+                                        "label": "A little",
+                                        "concept": "aLittle"
+                                    },
+                                    {
+                                        "label": "Some",
+                                        "concept": "some"
+                                    },
+                                    {
+                                        "label": "Fair amount",
+                                        "concept": "fairAmount"
+                                    },
+                                    {
+                                        "label": "A lot",
+                                        "concept": "aLot"
+                                    }
+                                ]
+                            },
+                            "validators": null,
+                            "questionInfo": "Did you have problems performing daily activities such as cooking bathing or chores outside the household"
+                        },
+                        {
+                            "id": "didYouHaveProblemsGettingAlongWithFamilyOrFriends",
+                            "label": "Did you have problems getting along with family or friends",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "radio",
+                                "concept": "didYouHaveProblemsGettingAlongWithFamilyOrFriends",
+                                "answers": [
+                                    {
+                                        "label": "Not at all",
+                                        "concept": "notAtAll"
+                                    },
+                                    {
+                                        "label": "A little",
+                                        "concept": "aLittle"
+                                    },
+                                    {
+                                        "label": "Some",
+                                        "concept": "some"
+                                    },
+                                    {
+                                        "label": "Fair amount",
+                                        "concept": "fairAmount"
+                                    },
+                                    {
+                                        "label": "A lot",
+                                        "concept": "aLot"
+                                    }
+                                ]
+                            },
+                            "validators": null,
+                            "questionInfo": "Did you have problems getting along with family or friends"
+                        },
+                        {
+                            "id": "didYouHaveAnyProblemsSleepingSuchAsSleepingTooMuchOrNotEnough",
+                            "label": "Did you have any problems sleeping such as sleeping too much or not enough",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "radio",
+                                "concept": "didYouHaveAnyProblemsSleepingSuchAsSleepingTooMuchOrNotEnough",
+                                "answers": [
+                                    {
+                                        "label": "Not at all",
+                                        "concept": "notAtAll"
+                                    },
+                                    {
+                                        "label": "A little",
+                                        "concept": "aLittle"
+                                    },
+                                    {
+                                        "label": "Some",
+                                        "concept": "some"
+                                    },
+                                    {
+                                        "label": "Fair amount",
+                                        "concept": "fairAmount"
+                                    },
+                                    {
+                                        "label": "A lot",
+                                        "concept": "aLot"
+                                    }
+                                ]
+                            },
+                            "validators": null,
+                            "questionInfo": "Did you have any problems sleeping such as sleeping too much or not enough"
+                        },
+                        {
+                            "id": "haveYouBeenBotheredByUnpleasantThoughtsWorriesOrIdeas",
+                            "label": "Have you been bothered by unpleasant thoughts worries or ideas",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "radio",
+                                "concept": "haveYouBeenBotheredByUnpleasantThoughtsWorriesOrIdeas",
+                                "answers": [
+                                    {
+                                        "label": "Not at all",
+                                        "concept": "notAtAll"
+                                    },
+                                    {
+                                        "label": "A little",
+                                        "concept": "aLittle"
+                                    },
+                                    {
+                                        "label": "Some",
+                                        "concept": "some"
+                                    },
+                                    {
+                                        "label": "Fair amount",
+                                        "concept": "fairAmount"
+                                    },
+                                    {
+                                        "label": "A lot",
+                                        "concept": "aLot"
+                                    }
+                                ]
+                            },
+                            "validators": null,
+                            "questionInfo": "Have you been bothered by unpleasant thoughts worries or ideas"
+                        },
+                        {
+                            "id": "haveYouFeltSadOrNervous",
+                            "label": "Have you felt sad or nervous",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "radio",
+                                "concept": "haveYouFeltSadOrNervous",
+                                "answers": [
+                                    {
+                                        "label": "Not at all",
+                                        "concept": "notAtAll"
+                                    },
+                                    {
+                                        "label": "A little",
+                                        "concept": "aLittle"
+                                    },
+                                    {
+                                        "label": "Some",
+                                        "concept": "some"
+                                    },
+                                    {
+                                        "label": "Fair amount",
+                                        "concept": "fairAmount"
+                                    },
+                                    {
+                                        "label": "A lot",
+                                        "concept": "aLot"
+                                    }
+                                ]
+                            },
+                            "validators": null,
+                            "questionInfo": "Have you felt sad or nervous"
+                        },
+                        {
+                            "id": "haveYouBeenSuffering",
+                            "label": "Have you been suffering",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "radio",
+                                "concept": "haveYouBeenSuffering",
+                                "answers": [
+                                    {
+                                        "label": "Not at all",
+                                        "concept": "notAtAll"
+                                    },
+                                    {
+                                        "label": "A little",
+                                        "concept": "aLittle"
+                                    },
+                                    {
+                                        "label": "Some",
+                                        "concept": "some"
+                                    },
+                                    {
+                                        "label": "Fair amount",
+                                        "concept": "fairAmount"
+                                    },
+                                    {
+                                        "label": "A lot",
+                                        "concept": "aLot"
+                                    }
+                                ]
+                            },
+                            "validators": null,
+                            "questionInfo": "Have you been suffering"
+                        },
+                        {
+                            "id": "mhosScore",
+                            "label": "MHOS score",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "numeric",
+                                "concept": "mhosScore"
+                            },
+                            "validators": null,
+                            "questionInfo": "MHOS score"
+                        }
+                    ]
+                },
+                {
+                    "label": "PHQ-9 (only for depression) - Over the last two weeks, how often have you been bothered by any of the following problems?",
+                    "isExpanded": false,
+                    "questions": [
+                        {
+                            "id": "littleInterestOrPleasureInDoingThings",
+                            "label": "Little interest or pleasure in doing things",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "radio",
+                                "concept": "littleInterestOrPleasureInDoingThings",
+                                "answers": [
+                                    {
+                                        "label": "Not at all",
+                                        "concept": "notAtAll"
+                                    },
+                                    {
+                                        "label": "Several days",
+                                        "concept": "severalDays"
+                                    },
+                                    {
+                                        "label": "More than half the days",
+                                        "concept": "moreThanHalfTheDays"
+                                    },
+                                    {
+                                        "label": "Nearly every day",
+                                        "concept": "nearlyEveryDay"
+                                    }
+                                ]
+                            },
+                            "validators": null,
+                            "questionInfo": "Little interest or pleasure in doing things"
+                        },
+                        {
+                            "id": "feelingDownDepressedOrHopeless",
+                            "label": "Feeling down depressed or hopeless",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "radio",
+                                "concept": "feelingDownDepressedOrHopeless",
+                                "answers": [
+                                    {
+                                        "label": "Not at all",
+                                        "concept": "notAtAll"
+                                    },
+                                    {
+                                        "label": "Several days",
+                                        "concept": "severalDays"
+                                    },
+                                    {
+                                        "label": "More than half the days",
+                                        "concept": "moreThanHalfTheDays"
+                                    },
+                                    {
+                                        "label": "Nearly every day",
+                                        "concept": "nearlyEveryDay"
+                                    }
+                                ]
+                            },
+                            "validators": null,
+                            "questionInfo": "Feeling down depressed or hopeless"
+                        },
+                        {
+                            "id": "troubleFallingOrStayingAsleepOrSleepingTooMuch",
+                            "label": "Trouble falling or staying asleep or sleeping too much",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "radio",
+                                "concept": "troubleFallingOrStayingAsleepOrSleepingTooMuch",
+                                "answers": [
+                                    {
+                                        "label": "Not at all",
+                                        "concept": "notAtAll"
+                                    },
+                                    {
+                                        "label": "Several days",
+                                        "concept": "severalDays"
+                                    },
+                                    {
+                                        "label": "More than half the days",
+                                        "concept": "moreThanHalfTheDays"
+                                    },
+                                    {
+                                        "label": "Nearly every day",
+                                        "concept": "nearlyEveryDay"
+                                    }
+                                ]
+                            },
+                            "validators": null,
+                            "questionInfo": "Trouble falling or staying asleep or sleeping too much"
+                        },
+                        {
+                            "id": "feelingTiredOrHavingLittleEnergy",
+                            "label": "Feeling tired or having little energy",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "radio",
+                                "concept": "feelingTiredOrHavingLittleEnergy",
+                                "answers": [
+                                    {
+                                        "label": "Not at all",
+                                        "concept": "notAtAll"
+                                    },
+                                    {
+                                        "label": "Several days",
+                                        "concept": "severalDays"
+                                    },
+                                    {
+                                        "label": "More than half the days",
+                                        "concept": "moreThanHalfTheDays"
+                                    },
+                                    {
+                                        "label": "Nearly every day",
+                                        "concept": "nearlyEveryDay"
+                                    }
+                                ]
+                            },
+                            "validators": null,
+                            "questionInfo": "Feeling tired or having little energy"
+                        },
+                        {
+                            "id": "poorAppetiteOrOvereating",
+                            "label": "Poor appetite or overeating",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "radio",
+                                "concept": "poorAppetiteOrOvereating",
+                                "answers": [
+                                    {
+                                        "label": "Not at all",
+                                        "concept": "notAtAll"
+                                    },
+                                    {
+                                        "label": "Several days",
+                                        "concept": "severalDays"
+                                    },
+                                    {
+                                        "label": "More than half the days",
+                                        "concept": "moreThanHalfTheDays"
+                                    },
+                                    {
+                                        "label": "Nearly every day",
+                                        "concept": "nearlyEveryDay"
+                                    }
+                                ]
+                            },
+                            "validators": null,
+                            "questionInfo": "Poor appetite or overeating"
+                        },
+                        {
+                            "id": "feelingBadAboutYourselfOrThatYouAreAFailureOrHaveLetYourselfOrYourFamilyDown",
+                            "label": "Feeling bad about yourself - or that you are a failure or have let yourself or your family down",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "radio",
+                                "concept": "feelingBadAboutYourselfOrThatYouAreAFailureOrHaveLetYourselfOrYourFamilyDown",
+                                "answers": [
+                                    {
+                                        "label": "Not at all",
+                                        "concept": "notAtAll"
+                                    },
+                                    {
+                                        "label": "Several days",
+                                        "concept": "severalDays"
+                                    },
+                                    {
+                                        "label": "More than half the days",
+                                        "concept": "moreThanHalfTheDays"
+                                    },
+                                    {
+                                        "label": "Nearly every day",
+                                        "concept": "nearlyEveryDay"
+                                    }
+                                ]
+                            },
+                            "validators": null,
+                            "questionInfo": "Feeling bad about yourself - or that you are a failure or have let yourself or your family down"
+                        },
+                        {
+                            "id": "troubleConcentratingOnThingsSuchAsReadingTheNewspaperOrWatchingTelevision",
+                            "label": "Trouble concentrating on things such as reading the newspaper or watching television",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "radio",
+                                "concept": "troubleConcentratingOnThingsSuchAsReadingTheNewspaperOrWatchingTelevision",
+                                "answers": [
+                                    {
+                                        "label": "Not at all",
+                                        "concept": "notAtAll"
+                                    },
+                                    {
+                                        "label": "Several days",
+                                        "concept": "severalDays"
+                                    },
+                                    {
+                                        "label": "More than half the days",
+                                        "concept": "moreThanHalfTheDays"
+                                    },
+                                    {
+                                        "label": "Nearly every day",
+                                        "concept": "nearlyEveryDay"
+                                    }
+                                ]
+                            },
+                            "validators": null,
+                            "questionInfo": "Trouble concentrating on things such as reading the newspaper or watching television"
+                        },
+                        {
+                            "id": "movingOrSpeakingSoSlowlyThatOtherPeopleCouldHaveNoticedOrTheOppositeBeingSoFidgetyOrRestlessThatYouHaveBeenMovingAroundALotMoreThanUsual",
+                            "label": "Moving or speaking so slowly that other people could have noticed Or the opposite - being so fidgety or restless that you have been moving around a lot more than usual",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "radio",
+                                "concept": "movingOrSpeakingSoSlowlyThatOtherPeopleCouldHaveNoticedOrTheOppositeBeingSoFidgetyOrRestlessThatYouHaveBeenMovingAroundALotMoreThanUsual",
+                                "answers": [
+                                    {
+                                        "label": "Not at all",
+                                        "concept": "notAtAll"
+                                    },
+                                    {
+                                        "label": "Several days",
+                                        "concept": "severalDays"
+                                    },
+                                    {
+                                        "label": "More than half the days",
+                                        "concept": "moreThanHalfTheDays"
+                                    },
+                                    {
+                                        "label": "Nearly every day",
+                                        "concept": "nearlyEveryDay"
+                                    }
+                                ]
+                            },
+                            "validators": null,
+                            "questionInfo": "Moving or speaking so slowly that other people could have noticed Or the opposite - being so fidgety or restless that you have been moving around a lot more than usual"
+                        },
+                        {
+                            "id": "thoughtsThatYouWouldBeBetterOffDeadOrOfHurtingYourselfInSomeWay",
+                            "label": "Thoughts that you would be better off dead or of hurting yourself in some way",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "radio",
+                                "concept": "thoughtsThatYouWouldBeBetterOffDeadOrOfHurtingYourselfInSomeWay",
+                                "answers": [
+                                    {
+                                        "label": "Not at all",
+                                        "concept": "notAtAll"
+                                    },
+                                    {
+                                        "label": "Several days",
+                                        "concept": "severalDays"
+                                    },
+                                    {
+                                        "label": "More than half the days",
+                                        "concept": "moreThanHalfTheDays"
+                                    },
+                                    {
+                                        "label": "Nearly every day",
+                                        "concept": "nearlyEveryDay"
+                                    }
+                                ]
+                            },
+                            "validators": null,
+                            "questionInfo": "Thoughts that you would be better off dead or of hurting yourself in some way"
+                        },
+                        {
+                            "id": "phq9Score",
+                            "label": "PHQ-9 score",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "numeric",
+                                "concept": "phq9Score"
+                            },
+                            "validators": null,
+                            "questionInfo": "PHQ-9 score"
+                        }
+                    ]
+                },
+                {
+                    "label": "CGI - Clinical Global Impression",
+                    "isExpanded": false,
+                    "questions": [
+                        {
+                            "id": "cgiS",
+                            "label": "CGI-S (rating of severity CGI-S how mentally ill is the patient at this time)",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "radio",
+                                "concept": "cgiS",
+                                "answers": [
+                                    {
+                                        "label": "- Not assessed",
+                                        "concept": "notAssessed"
+                                    },
+                                    {
+                                        "label": "- Normal/not ill",
+                                        "concept": "normalOrNotIll"
+                                    },
+                                    {
+                                        "label": "- Suspected mentally ill",
+                                        "concept": "suspectedMentallyIll"
+                                    },
+                                    {
+                                        "label": "- Mildly ill",
+                                        "concept": "mildlyIll"
+                                    },
+                                    {
+                                        "label": "- Moderately ill",
+                                        "concept": "moderatelyIll"
+                                    },
+                                    {
+                                        "label": "- Markedly ill",
+                                        "concept": "markedlyIll"
+                                    },
+                                    {
+                                        "label": "- Severely ill",
+                                        "concept": "severelyIll"
+                                    },
+                                    {
+                                        "label": "- Extremely ill patient",
+                                        "concept": "extremelyIllPatient"
+                                    }
+                                ]
+                            },
+                            "validators": null,
+                            "questionInfo": "CGI-S (rating of severity CGI-S how mentally ill is the patient at this time)"
+                        },
+                        {
+                            "id": "cgiI",
+                            "label": "CGI-I (rating of  improvement CGI-I how much has the patient improved at this time)",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "radio",
+                                "concept": "cgiI",
+                                "answers": [
+                                    {
+                                        "label": "- Not assessed",
+                                        "concept": "notAssessed"
+                                    },
+                                    {
+                                        "label": "- Very much improved",
+                                        "concept": "veryMuchImproved"
+                                    },
+                                    {
+                                        "label": "- Much improved",
+                                        "concept": "muchImproved"
+                                    },
+                                    {
+                                        "label": "- Minimally improved",
+                                        "concept": "minimallyImproved"
+                                    },
+                                    {
+                                        "label": "- No change",
+                                        "concept": "noChange"
+                                    },
+                                    {
+                                        "label": "- Minimally worse",
+                                        "concept": "minimallyWorse"
+                                    },
+                                    {
+                                        "label": "- Much worse",
+                                        "concept": "muchWorse"
+                                    },
+                                    {
+                                        "label": "- Very much worse",
+                                        "concept": "veryMuchWorse"
+                                    }
+                                ]
+                            },
+                            "validators": null,
+                            "questionInfo": "CGI-I (rating of  improvement CGI-I how much has the patient improved at this time)"
+                        }
+                    ]
+                },
+                {
+                    "label": "Evolution of symptoms/complaints",
+                    "isExpanded": false,
+                    "questions": [
+                        {
+                            "id": "evolutionOfSymptomsOrComplaints",
+                            "label": "Evolution of symptoms/complaints (since the last session have the patients symptoms or complaints changed Please describe in the patients words)",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "text",
+                                "concept": "evolutionOfSymptomsOrComplaints"
+                            },
+                            "validators": null,
+                            "questionInfo": "Evolution of symptoms/complaints (since the last session have the patients symptoms or complaints changed Please describe in the patients words)"
+                        }
+                    ]
+                },
+                {
+                    "label": "Clinical diagnosis",
+                    "isExpanded": false,
+                    "questions": [
+                        {
+                            "id": "clinicalDiagnosis",
+                            "label": "Clinical diagnosis (only to be established by a psychologist)",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "radio",
+                                "concept": "clinicalDiagnosis",
+                                "answers": [
+                                    {
+                                        "label": "Acute stress reaction",
+                                        "concept": "acuteStressReaction"
+                                    },
+                                    {
+                                        "label": "Bereavement/grief",
+                                        "concept": "bereavementOrGrief"
+                                    },
+                                    {
+                                        "label": "Post-Traumatic Stress Disorder",
+                                        "concept": "postTraumaticStressDisorder"
+                                    },
+                                    {
+                                        "label": "Conversion/Dissociative reaction",
+                                        "concept": "conversionOrDissociativeReaction"
+                                    },
+                                    {
+                                        "label": "Anxiety Disorder",
+                                        "concept": "anxietyDisorder"
+                                    },
+                                    {
+                                        "label": "Medically Unexplained Physical Symptoms (MUPS)",
+                                        "concept": "medicallyUnexplainedPhysicalSymptoms"
+                                    },
+                                    {
+                                        "label": "Depression",
+                                        "concept": "depression"
+                                    },
+                                    {
+                                        "label": "Self-harming behavior/suicide attempt",
+                                        "concept": "selfHarmingBehaviorOrSuicideAttempt"
+                                    },
+                                    {
+                                        "label": "Acute psychosis (incl. post-partum psychosis)",
+                                        "concept": "acutePsychosis"
+                                    },
+                                    {
+                                        "label": "Chronic psychosis (incl. schizophrenia)",
+                                        "concept": "chronicPsychosis"
+                                    },
+                                    {
+                                        "label": "Bipolar disorder (incl. mania)",
+                                        "concept": "bipolarDisorder"
+                                    },
+                                    {
+                                        "label": "Enuresis / Encopresis",
+                                        "concept": "enuresisOrEncopresis"
+                                    },
+                                    {
+                                        "label": "Developmental disorder (incl. intellectual disability autism)",
+                                        "concept": "developmentalDisorder"
+                                    },
+                                    {
+                                        "label": "Childhood behavioral disorder (incl. ADHD conduct disorder)",
+                                        "concept": "childhoodBehavioralDisorder"
+                                    },
+                                    {
+                                        "label": "Childhood emotional disorder",
+                                        "concept": "childhoodEmotionalDisorder"
+                                    },
+                                    {
+                                        "label": "Substance-related disorder",
+                                        "concept": "substanceRelatedDisorder"
+                                    },
+                                    {
+                                        "label": "Epilepsy / seizures",
+                                        "concept": "epilepsyOrSeizures"
+                                    },
+                                    {
+                                        "label": "Other disorder",
+                                        "concept": "otherDisorder"
+                                    },
+                                    {
+                                        "label": "No diagnosis",
+                                        "concept": "noDiagnosis"
+                                    }
+                                ]
+                            },
+                            "validators": null,
+                            "questionInfo": "Clinical diagnosis (only to be established by a psychologist)",
+                            "hide": {
+                                "hideWhenExpression": "consultationDoneBy !== 'psychologist'"
+                            }
+                        },
+                        {
+                            "id": "ifOtherSpecify",
+                            "label": "If other specify",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "text",
+                                "concept": "ifOtherSpecify"
+                            },
+                            "validators": null,
+                            "questionInfo": "If other specify",
+                            "hide": {
+                                "hideWhenExpression": "clinicalDiagnosis !== 'otherDisorder'"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "label": "Homework / action plan",
+                    "isExpanded": false,
+                    "questions": [
+                        {
+                            "id": "homeworkOrActionPlan",
+                            "label": "Homework / action plan (did the patient complete their homework Did it help improve the current situation Specify homework from previous session and results)",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "text",
+                                "concept": "homeworkOrActionPlan"
+                            },
+                            "validators": null,
+                            "questionInfo": "Homework / action plan (did the patient complete their homework Did it help improve the current situation Specify homework from previous session and results)"
+                        },
+                        {
+                            "id": "patientCompletedHomework",
+                            "label": "Patient completed homework ",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "radio",
+                                "concept": "patientCompletedHomework"
+                            },
+                            "validators": null,
+                            "questionInfo": "Patient completed homework "
+                        }
+                    ]
+                },
+                {
+                    "label": "Risk Factors (since the last session. . .)",
+                    "isExpanded": false,
+                    "questions": [
+                        {
+                            "id": "hasThePatientHadThoughtsOfDeathOrSuicide",
+                            "label": "Has the patient had thoughts of death or suicide",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "radio",
+                                "concept": "hasThePatientHadThoughtsOfDeathOrSuicide"
+                            },
+                            "validators": null,
+                            "questionInfo": "Has the patient had thoughts of death or suicide"
+                        },
+                        {
+                            "id": "frequency",
+                            "label": "Frequency",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "text",
+                                "concept": "frequency"
+                            },
+                            "validators": null,
+                            "questionInfo": "Frequency",
+                            "hide": {
+                                "hideWhenExpression": "hasThePatientHadThoughtsOfDeathOrSuicide !== '1065AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'"
+                            }
+                        },
+                        {
+                            "id": "hasThePatientHurtThemselvesOrCausedSelfHarm",
+                            "label": "Has the patient hurt themselves / caused self-harm",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "radio",
+                                "concept": "hasThePatientHurtThemselvesOrCausedSelfHarm"
+                            },
+                            "validators": null,
+                            "questionInfo": "Has the patient hurt themselves / caused self-harm"
+                        },
+                        {
+                            "id": "typeOfBehaviorAndFrequency",
+                            "label": "Type of behavior and frequency",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "text",
+                                "concept": "typeOfBehaviorAndFrequency"
+                            },
+                            "validators": null,
+                            "questionInfo": "Type of behavior and frequency",
+                            "hide": {
+                                "hideWhenExpression": "hasThePatientHurtThemselvesOrCausedSelfHarm !== '1065AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'"
+                            }
+                        },
+                        {
+                            "id": "hasThePatientAttemptedSuicideOrTriedToKillThemselves",
+                            "label": "Has the patient attempted suicide or tried to kill themselves",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "radio",
+                                "concept": "hasThePatientAttemptedSuicideOrTriedToKillThemselves"
+                            },
+                            "validators": null,
+                            "questionInfo": "Has the patient attempted suicide or tried to kill themselves"
+                        },
+                        {
+                            "id": "numberOfAttemptsAndMethod",
+                            "label": "Number of attempts and method",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "text",
+                                "concept": "numberOfAttemptsAndMethod"
+                            },
+                            "validators": null,
+                            "questionInfo": "Number of attempts and method",
+                            "hide": {
+                                "hideWhenExpression": "hasThePatientAttemptedSuicideOrTriedToKillThemselves !== '1065AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'"
+                            }
+                        },
+                        {
+                            "id": "isThePatientCurrentlyAtRiskOfHurtingHimselfOrHerselfOrAttemptingSuicide",
+                            "label": "Is the patient currently at risk of hurting himself/herself or attempting suicide",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "radio",
+                                "concept": "isThePatientCurrentlyAtRiskOfHurtingHimselfOrHerselfOrAttemptingSuicide"
+                            },
+                            "validators": null,
+                            "questionInfo": "Is the patient currently at risk of hurting himself/herself or attempting suicide"
+                        },
+                        {
+                            "id": "actionTakenToReduceRisk",
+                            "label": "Action taken to reduce risk ",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "text",
+                                "concept": "actionTakenToReduceRisk"
+                            },
+                            "validators": null,
+                            "questionInfo": "Action taken to reduce risk ",
+                            "hide": {
+                                "hideWhenExpression": "isThePatientCurrentlyAtRiskOfHurtingHimselfOrHerselfOrAttemptingSuicide !== '1065AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'"
+                            }
+                        },
+                        {
+                            "id": "isThePatientCurrentlyAtRiskOfHurtingOthers",
+                            "label": "Is the patient currently at risk of hurting others",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "radio",
+                                "concept": "isThePatientCurrentlyAtRiskOfHurtingOthers"
+                            },
+                            "validators": null,
+                            "questionInfo": "Is the patient currently at risk of hurting others"
+                        },
+                        {
+                            "id": "actionTakenToReduceRisk",
+                            "label": "Action taken to reduce risk ",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "text",
+                                "concept": "actionTakenToReduceRisk"
+                            },
+                            "validators": null,
+                            "questionInfo": "Action taken to reduce risk ",
+                            "hide": {
+                                "hideWhenExpression": "isThePatientCurrentlyAtRiskOfHurtingOthers !== '1065AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'"
+                            }
+                        },
+                        {
+                            "id": "doesThePatientRegularlyUseAlcoholOrSubstancesToBecomeIntoxicated",
+                            "label": "Does the patient regularly use alcohol / substances to become intoxicated",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "radio",
+                                "concept": "doesThePatientRegularlyUseAlcoholOrSubstancesToBecomeIntoxicated"
+                            },
+                            "validators": null,
+                            "questionInfo": "Does the patient regularly use alcohol / substances to become intoxicated"
+                        },
+                        {
+                            "id": "typeOfSubstanceAndFrequency",
+                            "label": "Type of substance and frequency ",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "text",
+                                "concept": "typeOfSubstanceAndFrequency"
+                            },
+                            "validators": null,
+                            "questionInfo": "Type of substance and frequency ",
+                            "hide": {
+                                "hideWhenExpression": "doesThePatientRegularlyUseAlcoholOrSubstancesToBecomeIntoxicated !== '1065AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'"
+                            }
+                        },
+                        {
+                            "id": "isThePatientCurrentlyOnPsychotropicOrPsychiatricMedication",
+                            "label": "Is the patient currently on psychotropic / psychiatric medication",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "radio",
+                                "concept": "isThePatientCurrentlyOnPsychotropicOrPsychiatricMedication"
+                            },
+                            "validators": null,
+                            "questionInfo": "Is the patient currently on psychotropic / psychiatric medication"
+                        },
+                        {
+                            "id": "prescribedBy",
+                            "label": "Prescribed by",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "radio",
+                                "concept": "prescribedBy",
+                                "answers": [
+                                    {
+                                        "label": "MSF",
+                                        "concept": "msf"
+                                    },
+                                    {
+                                        "label": "Non MSF",
+                                        "concept": "nonMsf"
+                                    }
+                                ]
+                            },
+                            "validators": null,
+                            "questionInfo": "Prescribed by",
+                            "hide": {
+                                "hideWhenExpression": "isThePatientCurrentlyOnPsychotropicOrPsychiatricMedication !== '1065AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'"
+                            }
+                        },
+                        {
+                            "id": "hasThePatientExperiencedAnActOfAggressionOrViolence",
+                            "label": "Has the patient experienced an act of aggression or violence",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "radio",
+                                "concept": "hasThePatientExperiencedAnActOfAggressionOrViolence"
+                            },
+                            "validators": null,
+                            "questionInfo": "Has the patient experienced an act of aggression or violence"
+                        },
+                        {
+                            "id": "whatTypeOfViolence",
+                            "label": "What type(s) of violence",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "radio",
+                                "concept": "whatTypeOfViolence",
+                                "answers": [
+                                    {
+                                        "label": "Sexual",
+                                        "concept": "sexual"
+                                    },
+                                    {
+                                        "label": "Physical",
+                                        "concept": "physical"
+                                    },
+                                    {
+                                        "label": "Verbal",
+                                        "concept": "verbal"
+                                    },
+                                    {
+                                        "label": "Psychological",
+                                        "concept": "psychological"
+                                    },
+                                    {
+                                        "label": "Other",
+                                        "concept": "whatTypeOfViolenceOther"
+                                    }
+                                ]
+                            },
+                            "validators": null,
+                            "questionInfo": "What type(s) of violence",
+                            "hide": {
+                                "hideWhenExpression": "hasThePatientExperiencedAnActOfAggressionOrViolence !== '1065AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'"
+                            }
+                        },
+                        {
+                            "id": "ifOtherSpecify",
+                            "label": "If other specify",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "text",
+                                "concept": "ifOtherSpecify"
+                            },
+                            "validators": null,
+                            "questionInfo": "If other specify",
+                            "hide": {
+                                "hideWhenExpression": "ifYesWhatTypeOfViolence !== 'other'"
+                            }
+                        },
+                        {
+                            "id": "timeBetweenViolenceEventAndConsultation",
+                            "label": "Time between violence event and consultation",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "radio",
+                                "concept": "timeBetweenViolenceEventAndConsultation",
+                                "answers": [
+                                    {
+                                        "label": "Less than 1 month",
+                                        "concept": "lessThan1Month"
+                                    },
+                                    {
+                                        "label": "Less than 1 year",
+                                        "concept": "lessThan1Year"
+                                    },
+                                    {
+                                        "label": "> 1 year",
+                                        "concept": "moreThan1Year"
+                                    },
+                                    {
+                                        "label": "Unknown",
+                                        "concept": "unknown"
+                                    }
+                                ]
+                            },
+                            "validators": null,
+                            "questionInfo": "Time between violence event and consultation",
+                            "hide": {
+                                "hideWhenExpression": "hasThePatientExperiencedAnActOfAggressionOrViolence !== '1065AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'"
+                            }
+                        },
+                        {
+                            "id": "ifYesWouldThePatientLikeAReferralToTheMedicalDepartmentForTreatment",
+                            "label": "If yes would the patient like a referral to the medical department for treatment (or midwife/maternity for sexual violence)",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "radio",
+                                "concept": "ifYesWouldThePatientLikeAReferralToTheMedicalDepartmentForTreatment"
+                            },
+                            "validators": null,
+                            "questionInfo": "If yes would the patient like a referral to the medical department for treatment (or midwife/maternity for sexual violence)",
+                            "hide": {
+                                "hideWhenExpression": "ifYesWhatTypeOfViolence !== 'sexual'"
+                            }
+                        },
+                        {
+                            "id": "actionTaken",
+                            "label": "Action taken",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "text",
+                                "concept": "actionTaken"
+                            },
+                            "validators": null,
+                            "questionInfo": "Action taken",
+                            "hide": {
+                                "hideWhenExpression": "ifYesWhatTypeOfViolence !== 'sexual'"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "label": "Intervention",
+                    "isExpanded": false,
+                    "questions": [
+                        {
+                            "id": "overallGoalsForTherapy",
+                            "label": "Overall goals for therapy (what are you trying to accomplish over several sessions with the patient Try to be specific  define these with the patient. Only complete if goals for therapy have changed)",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "text",
+                                "concept": "overallGoalsForTherapy"
+                            },
+                            "validators": null,
+                            "questionInfo": "Overall goals for therapy (what are you trying to accomplish over several sessions with the patient Try to be specific  define these with the patient. Only complete if goals for therapy have changed)"
+                        },
+                        {
+                            "id": "todaysSession",
+                            "label": "Todays session (what did you do today in session)",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "text",
+                                "concept": "todaysSession"
+                            },
+                            "validators": null,
+                            "questionInfo": "Todays session (what did you do today in session)"
+                        },
+                        {
+                            "id": "homework",
+                            "label": "Homework (what will the patient do before next session)",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "text",
+                                "concept": "homework"
+                            },
+                            "validators": null,
+                            "questionInfo": "Homework (what will the patient do before next session)"
+                        }
+                    ]
+                },
+                {
+                    "label": "Follow-up",
+                    "isExpanded": false,
+                    "questions": [
+                        {
+                            "id": "followUpSessionRequired",
+                            "label": "Follow up session required (If no fill the Exit form)",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "radio",
+                                "concept": "followUpSessionRequired"
+                            },
+                            "validators": null,
+                            "questionInfo": "Follow up session required (If no fill the Exit form)"
+                        },
+                        {
+                            "id": "nextSessionDate",
+                            "label": "Next session date",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "date",
+                                "concept": "nextSessionDate"
+                            },
+                            "validators": null,
+                            "questionInfo": "Next session date",
+                            "hide": {
+                                "hideWhenExpression": "followUpSessionRequired !== '1065AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'"
+                            }
+                        },
+                        {
+                            "id": "referralDone",
+                            "label": "Referral done",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "radio",
+                                "concept": "referralDone"
+                            },
+                            "validators": null,
+                            "questionInfo": "Referral done"
+                        },
+                        {
+                            "id": "typeOfReferral",
+                            "label": "Type of referral",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "radio",
+                                "concept": "typeOfReferral",
+                                "answers": [
+                                    {
+                                        "label": "Medical care (MSF MoH NGO)",
+                                        "concept": "medicalCare"
+                                    },
+                                    {
+                                        "label": "MSF psychiatric services",
+                                        "concept": "msfPsychiatricServices"
+                                    },
+                                    {
+                                        "label": "Non-MSF psychiatrist services",
+                                        "concept": "nonMsfPsychiatristServices"
+                                    },
+                                    {
+                                        "label": "Social services",
+                                        "concept": "socialServices"
+                                    },
+                                    {
+                                        "label": "Legal services",
+                                        "concept": "legalServices"
+                                    },
+                                    {
+                                        "label": "Protection services",
+                                        "concept": "protectionServices"
+                                    },
+                                    {
+                                        "label": "Hospitalisation",
+                                        "concept": "hospitalisation"
+                                    },
+                                    {
+                                        "label": "CHW",
+                                        "concept": "chw"
+                                    },
+                                    {
+                                        "label": "Other",
+                                        "concept": "typeOfReferralOther"
+                                    }
+                                ]
+                            },
+                            "validators": null,
+                            "questionInfo": "Type of referral",
+                            "hide": {
+                                "hideWhenExpression": "Invalid expression format"
+                            }
+                        },
+                        {
+                            "id": "ifOtherSpecify",
+                            "label": "If other specify",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "text",
+                                "concept": "ifOtherSpecify"
+                            },
+                            "validators": null,
+                            "questionInfo": "If other specify",
+                            "hide": {
+                                "hideWhenExpression": "typeOfReferral !== 'typeOfReferralOther'"
+                            }
+                        },
+                        {
+                            "id": "reasonForReferral",
+                            "label": "Reason for referral",
+                            "type": "obs",
+                            "required": false,
+                            "questionOptions": {
+                                "rendering": "text",
+                                "concept": "reasonForReferral"
+                            },
+                            "validators": null,
+                            "questionInfo": "Reason for referral",
+                            "hide": {
+                                "hideWhenExpression": "Invalid expression format"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

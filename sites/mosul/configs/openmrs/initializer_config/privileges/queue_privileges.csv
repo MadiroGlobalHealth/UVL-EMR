@@ -1,0 +1,10 @@
+Uuid,Privilege name,Description,_order:1000
+317df821-9f17-4f90-bf9e-b40c1dc77c6d,Get Queue Entries,Able to get/view queue entries,
+590edfd9-aae7-44c3-8a10-9ac6e671c271,Get Queue Rooms,Able to get/view queue rooms,
+86f4d737-50a8-4a46-a4f9-abb30eb9ae70,Get Queues,Able to get/view queues,
+0b3f1f2c-6cee-4d7c-bb8c-5e0ba42395ea,Manage Queue Entries,Able to add/edit/retire queue entries,
+4bd576f5-3da6-49f5-8dbb-94fe87e31e1c,Manage Queue Rooms,Able to add/edit/retire queue rooms,
+a70a928e-e3a7-4ef7-91cc-8b1269daf186,Manage Queues,Able to add/edit/retire queues,
+ae782470-9186-42c4-b21d-51a2e4bf6641,Purge Queue Entries,Purge Queue Entries,
+b8f66d11-ebb6-484f-84d9-b8c6b5115e35,Purge Queue Rooms,Purge Queue Rooms,
+810b9335-7a71-4f18-967b-a788c3cd9f76,Purge Queues,Purge Queues,

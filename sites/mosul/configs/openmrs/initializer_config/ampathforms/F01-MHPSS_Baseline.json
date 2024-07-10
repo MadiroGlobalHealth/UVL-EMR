@@ -1,0 +1,3829 @@
+{
+  "name": "F01-MHPSS_Baseline",
+  "description": "F01-MHPSS_Baseline",
+  "version": "3",
+  "published": true,
+  "retired": false,
+  "encounter": "Consultation",
+  "processor": "EncounterFormProcessor",
+  "referencedForms": [],
+  "uuid": "50a87753-f941-4c9f-9da2-7e768a21b91c",
+  "pages": [
+    {
+      "label": "MHPSS Baseline Consultation",
+      "sections": [
+        {
+          "label": "Admission",
+          "isExpanded": false,
+          "questions": [
+            {
+              "label": "Admission type",
+              "type": "obs",
+              "required": false,
+              "id": "admission_type",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "Admission type",
+                "conceptMappings": [],
+                "answers": [
+                  {
+                    "concept": "New admission",
+                    "label": "New admission"
+                  },
+                  {
+                    "concept": "Readmission",
+                    "label": "Readmission"
+                  }
+                ]
+              },
+              "validators": []
+            }
+          ]
+        },
+        {
+          "label": "Consultation information",
+          "isExpanded": false,
+          "questions": [
+            {
+              "label": "Type of consultation",
+              "type": "obs",
+              "required": false,
+              "id": "type_of_consultation",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "Type of consultation",
+                "conceptMappings": [],
+                "answers": [
+                  {
+                    "concept": "Individual",
+                    "label": "Individual"
+                  },
+                  {
+                    "concept": "Couple",
+                    "label": "Couple"
+                  },
+                  {
+                    "concept": "Family",
+                    "label": "Family"
+                  },
+                  {
+                    "concept": "Parent-Child",
+                    "label": "Parent-Child"
+                  }
+                ]
+              },
+              "validators": []
+            },
+            {
+              "label": "Total number of beneficiaries in family consultation",
+              "type": "obs",
+              "required": false,
+              "id": "total_number_of_beneficiaries_in_family_consultation",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "Total number of beneficiaries in family consultation",
+                "conceptMappings": [],
+                "answers": []
+              },
+              "validators": [],
+              "hide": {
+                "hideWhenExpression": "type_of_consultation !== 'Family'"
+              }
+            },
+            {
+              "label": "Consultation done by",
+              "type": "obs",
+              "required": false,
+              "id": "consultation_done_by",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "Consultation done by",
+                "conceptMappings": [],
+                "answers": [
+                  {
+                    "concept": "Psychologist",
+                    "label": "Psychologist"
+                  },
+                  {
+                    "concept": "Counsellor",
+                    "label": "Counsellor"
+                  }
+                ]
+              },
+              "validators": []
+            },
+            {
+              "label": "Location of intervention",
+              "type": "obs",
+              "required": false,
+              "id": "location_of_intervention",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "Location of intervention",
+                "conceptMappings": [],
+                "answers": [
+                  {
+                    "concept": "Health facility",
+                    "label": "Health facility"
+                  },
+                  {
+                    "concept": "MSF health facility",
+                    "label": "MSF health facility"
+                  },
+                  {
+                    "concept": "Mobile clinic",
+                    "label": "Mobile clinic"
+                  },
+                  {
+                    "concept": "Home visit",
+                    "label": "Home visit"
+                  },
+                  {
+                    "concept": "School visit",
+                    "label": "School visit"
+                  },
+                  {
+                    "concept": "Remote / phone",
+                    "label": "Remote / phone"
+                  },
+                  {
+                    "concept": "Other",
+                    "label": "Other"
+                  }
+                ]
+              },
+              "validators": []
+            },
+            {
+              "label": "Specify Health Facility",
+              "type": "obs",
+              "required": false,
+              "id": "specify_health_facility",
+              "questionOptions": {
+                "rendering": "text",
+                "concept": "Location of intervention - If Health Facility, specify",
+                "conceptMappings": [],
+                "answers": []
+              },
+              "validators": [],
+              "hide": {
+                "hideWhenExpression": "location_of_intervention !== 'Health facility'"
+              }
+            },
+            {
+              "label": "Specify MSF Health Facility",
+              "type": "obs",
+              "required": false,
+              "id": "specify_msf_health_facility",
+              "questionOptions": {
+                "rendering": "text",
+                "concept": "Location of intervention - If MSF Health Facility, specify",
+                "conceptMappings": [],
+                "answers": []
+              },
+              "validators": [],
+              "hide": {
+                "hideWhenExpression": "location_of_intervention !== 'MSF health facility'"
+              }
+            },
+            {
+              "label": "Specify Mobile Clinic",
+              "type": "obs",
+              "required": false,
+              "id": "specify_mobile_clinic",
+              "questionOptions": {
+                "rendering": "text",
+                "concept": "Location of intervention - If Mobile Clinic, specify",
+                "conceptMappings": [],
+                "answers": []
+              },
+              "validators": [],
+              "hide": {
+                "hideWhenExpression": "location_of_intervention !== 'Mobile clinic'"
+              }
+            },
+            {
+              "label": "If other, specify",
+              "type": "obs",
+              "required": false,
+              "id": "if_other_specify",
+              "questionOptions": {
+                "rendering": "text",
+                "concept": "Location of intervention - If other, specify",
+                "conceptMappings": [],
+                "answers": []
+              },
+              "validators": [],
+              "hide": {
+                "hideWhenExpression": "location_of_intervention !== 'Other'"
+              }
+            }
+          ]
+        },
+        {
+          "label": "Intervention",
+          "isExpanded": false,
+          "questions": [
+            {
+              "label": "Type of intervention",
+              "type": "obs",
+              "required": false,
+              "id": "type_of_intervention",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "Type of intervention",
+                "conceptMappings": [],
+                "answers": [
+                  {
+                    "concept": "Counselling",
+                    "label": "Counselling"
+                  },
+                  {
+                    "concept": "Psychotherapy",
+                    "label": "Psychotherapy"
+                  }
+                ]
+              },
+              "validators": []
+            }
+          ]
+        },
+        {
+          "label": "Referral source",
+          "isExpanded": false,
+          "questions": [
+            {
+              "label": "Patient referred by",
+              "type": "obs",
+              "required": false,
+              "id": "patient_referred_by",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "Patient referred by",
+                "conceptMappings": [],
+                "answers": [
+                  {
+                    "concept": "IPD MSF",
+                    "label": "IPD MSF"
+                  },
+                  {
+                    "concept": "Emergency department MSF",
+                    "label": "Emergency department MSF"
+                  },
+                  {
+                    "concept": "Primary Health Center MSF",
+                    "label": "Primary Health Center MSF"
+                  },
+                  {
+                    "concept": "Health Promotion/sensitization",
+                    "label": "Health Promotion/sensitization"
+                  },
+                  {
+                    "concept": "Other MSF personnel",
+                    "label": "Other MSF personnel"
+                  },
+                  {
+                    "concept": "MSF social worker",
+                    "label": "MSF social worker"
+                  },
+                  {
+                    "concept": "Other health structure",
+                    "label": "Other health structure"
+                  },
+                  {
+                    "concept": "Local health worker (non-MSF)",
+                    "label": "Local health worker (non-MSF)"
+                  },
+                  {
+                    "concept": "Institutions (NGOs/Church/IGO)",
+                    "label": "Institutions (NGOs/Church/IGO)"
+                  },
+                  {
+                    "concept": "Self-referred",
+                    "label": "Self-referred"
+                  },
+                  {
+                    "concept": "Family member / friend /neighbor",
+                    "label": "Family member / friend /neighbor"
+                  },
+                  {
+                    "concept": "Community leader",
+                    "label": "Community leader"
+                  },
+                  {
+                    "concept": "School / University",
+                    "label": "School / University"
+                  },
+                  {
+                    "concept": "Authorities",
+                    "label": "Authorities"
+                  },
+                  {
+                    "concept": "Legal attorney office",
+                    "label": "Legal attorney office"
+                  },
+                  {
+                    "concept": "Prosecutor office",
+                    "label": "Prosecutor office"
+                  },
+                  {
+                    "concept": "Forensic department",
+                    "label": "Forensic department"
+                  },
+                  {
+                    "concept": "CHOW (Community Health Outreach Worker)",
+                    "label": "CHOW (Community Health Outreach Worker)"
+                  },
+                  {
+                    "concept": "Community educator",
+                    "label": "Community educator"
+                  }
+                ]
+              },
+              "validators": []
+            }
+          ]
+        },
+        {
+          "label": "Main problem or reason for referral",
+          "isExpanded": false,
+          "questions": [
+            {
+              "label": "Main problem or reason for referral (Why is the patient coming to the MH department? Write in patient’s words)",
+              "type": "obs",
+              "required": false,
+              "id": "main_problem_or_reason_for_referral_why_is_the_patient_coming_to_the_mh_department_write_in_patient_s_words_",
+              "questionOptions": {
+                "rendering": "text",
+                "concept": "Main problem or reason for referral",
+                "conceptMappings": [],
+                "answers": []
+              },
+              "validators": []
+            }
+          ]
+        },
+        {
+          "label": "Current Symptoms or Complaints (What is the patient reporting / what are you seeing?)",
+          "isExpanded": false,
+          "questions": [
+            {
+              "label": "1. Psychosomatic",
+              "type": "obs",
+              "required": false,
+              "id": "1_psychosomatic",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "Current symptoms or complaints - 1. Psychosomatic",
+                "conceptMappings": [],
+                "answers": [
+                  {
+                    "concept": "Body pain or complaints (headache, palpitations, breathing problems, gastrointestinal, etc)",
+                    "label": "Body pain or complaints (headache, palpitations, breathing problems, gastrointestinal, etc)"
+                  },
+                  {
+                    "concept": "Eating problems",
+                    "label": "Eating problems"
+                  },
+                  {
+                    "concept": "Sleeping problems",
+                    "label": "Sleeping problems"
+                  },
+                  {
+                    "concept": "Bedwetting / retention problems",
+                    "label": "Bedwetting / retention problems"
+                  },
+                  {
+                    "concept": "Sexual problems",
+                    "label": "Sexual problems"
+                  },
+                  {
+                    "concept": "Unexplained physical reaction (non-epileptic seizures, paralysis, unable to walk, unexplained fainting)",
+                    "label": "Unexplained physical reaction (non-epileptic seizures, paralysis, unable to walk, unexplained fainting)"
+                  }
+                ]
+              },
+              "validators": []
+            },
+            {
+              "label": "2. Depression related",
+              "type": "obs",
+              "required": false,
+              "id": "2_depression_related",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "Current symptoms or complaints - 2. Depression related",
+                "conceptMappings": [],
+                "answers": [
+                  {
+                    "concept": "Sad mood",
+                    "label": "Sad mood"
+                  },
+                  {
+                    "concept": "Irritability / anger",
+                    "label": "Irritability / anger"
+                  },
+                  {
+                    "concept": "Loss of interest / anhedonia",
+                    "label": "Loss of interest / anhedonia"
+                  },
+                  {
+                    "concept": "Hopelessness",
+                    "label": "Hopelessness"
+                  },
+                  {
+                    "concept": "Guilt/self-blame/worthlessness",
+                    "label": "Guilt/self-blame/worthlessness"
+                  },
+                  {
+                    "concept": "Current suicidal thoughts",
+                    "label": "Current suicidal thoughts"
+                  },
+                  {
+                    "concept": "Recent suicidal attempt",
+                    "label": "Recent suicidal attempt"
+                  },
+                  {
+                    "concept": "Recent self-harm",
+                    "label": "Recent self-harm"
+                  },
+                  {
+                    "concept": "Changes in appetite",
+                    "label": "Changes in appetite"
+                  }
+                ]
+              },
+              "validators": []
+            },
+            {
+              "label": "3. Anxiety related",
+              "type": "obs",
+              "required": false,
+              "id": "3_anxiety_related",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "Current symptoms or complaints - 3. Anxiety related",
+                "conceptMappings": [],
+                "answers": [
+                  {
+                    "concept": "Constant stress",
+                    "label": "Constant stress"
+                  },
+                  {
+                    "concept": "Persistent worry",
+                    "label": "Persistent worry"
+                  },
+                  {
+                    "concept": "Intense fear / phobia / feeling threatened",
+                    "label": "Intense fear / phobia / feeling threatened"
+                  },
+                  {
+                    "concept": "Panic attack (sudden intense fear with somatic symptoms such as chest pain)",
+                    "label": "Panic attack (sudden intense fear with somatic symptoms such as chest pain)"
+                  },
+                  {
+                    "concept": "Compulsive or repetitive behavior",
+                    "label": "Compulsive or repetitive behavior"
+                  }
+                ]
+              },
+              "validators": []
+            },
+            {
+              "label": "4. Trauma related",
+              "type": "obs",
+              "required": false,
+              "id": "4_trauma_related",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "Current symptoms or complaints - 4. Trauma related",
+                "conceptMappings": [],
+                "answers": [
+                  {
+                    "concept": "Intrusive feelings, thoughts",
+                    "label": "Intrusive feelings, thoughts"
+                  },
+                  {
+                    "concept": "Flashbacks",
+                    "label": "Flashbacks"
+                  },
+                  {
+                    "concept": "Avoidance of traumatic stimuli",
+                    "label": "Avoidance of traumatic stimuli"
+                  },
+                  {
+                    "concept": "Hypervigilance / excessive startle response",
+                    "label": "Hypervigilance / excessive startle response"
+                  },
+                  {
+                    "concept": "Trauma-related hallucinations (hearing voices associated with the traumatic event, seeing dead persons as cultural expression of distress)",
+                    "label": "Trauma-related hallucinations (hearing voices associated with the traumatic event, seeing dead persons as cultural expression of distress)"
+                  },
+                  {
+                    "concept": "Child has stopped talking",
+                    "label": "Child has stopped talking"
+                  }
+                ]
+              },
+              "validators": []
+            },
+            {
+              "label": "5. Psychosis related",
+              "type": "obs",
+              "required": false,
+              "id": "5_psychosis_related",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "Current symptoms or complaints - 5. Psychosis related",
+                "conceptMappings": [],
+                "answers": [
+                  {
+                    "concept": "Delusions (false beliefs)",
+                    "label": "Delusions (false beliefs)"
+                  },
+                  {
+                    "concept": "Visual hallucinations",
+                    "label": "Visual hallucinations"
+                  },
+                  {
+                    "concept": "Auditory hallucinations",
+                    "label": "Auditory hallucinations"
+                  },
+                  {
+                    "concept": "Disorganized thought /speech",
+                    "label": "Disorganized thought /speech"
+                  },
+                  {
+                    "concept": "Bizarre behavior",
+                    "label": "Bizarre behavior"
+                  },
+                  {
+                    "concept": "Psychotic agitation",
+                    "label": "Psychotic agitation"
+                  }
+                ]
+              },
+              "validators": []
+            },
+            {
+              "label": "6. Neurocognitive problems",
+              "type": "obs",
+              "required": false,
+              "id": "6_neurocognitive_problems",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "Current symptoms or complaints - 6. Neurocognitive problems",
+                "conceptMappings": [],
+                "answers": [
+                  {
+                    "concept": "Problems with concentration memory or reasoning",
+                    "label": "Problems with concentration memory or reasoning"
+                  },
+                  {
+                    "concept": "Delayed development (milestones)",
+                    "label": "Delayed development (milestones)"
+                  },
+                  {
+                    "concept": "Abnormal social interaction and communication",
+                    "label": "Abnormal social interaction and communication"
+                  },
+                  {
+                    "concept": "Learning difficulties",
+                    "label": "Learning difficulties"
+                  },
+                  {
+                    "concept": "Epileptic seizures",
+                    "label": "Epileptic seizures"
+                  }
+                ]
+              },
+              "validators": []
+            },
+            {
+              "label": "7. Behavior problems",
+              "type": "obs",
+              "required": false,
+              "id": "7_behavior_problems",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "Current symptoms or complaints - 7. Behavior problems",
+                "conceptMappings": [],
+                "answers": [
+                  {
+                    "concept": "Alcohol / substance abuse",
+                    "label": "Alcohol / substance abuse"
+                  },
+                  {
+                    "concept": "Aggressiveness",
+                    "label": "Aggressiveness"
+                  },
+                  {
+                    "concept": "Conduct problems in children (aggression/destructive behavior/ stealing /repeated lying/rule violation)",
+                    "label": "Conduct problems in children (aggression/destructive behavior/ stealing /repeated lying/rule violation)"
+                  },
+                  {
+                    "concept": "Hypo- or hyperactivity",
+                    "label": "Hypo- or hyperactivity"
+                  },
+                  {
+                    "concept": "Impulsivity",
+                    "label": "Impulsivity"
+                  },
+                  {
+                    "concept": "Regression in development",
+                    "label": "Regression in development"
+                  },
+                  {
+                    "concept": "Social withdrawal (isolation/reduced attachment/involvement)",
+                    "label": "Social withdrawal (isolation/reduced attachment/involvement)"
+                  }
+                ]
+              },
+              "validators": []
+            },
+            {
+              "label": "8. Other symptoms",
+              "type": "obs",
+              "required": false,
+              "id": "current_symptoms_or_complaints_1_other",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "Other symptoms",
+                "conceptMappings": [],
+                "answers": [
+                  {
+                    "concept": "Other",
+                    "label": "Other"
+                  }
+                ]
+              },
+              "validators": []
+            },
+            {
+              "label": "If other, specify",
+              "type": "obs",
+              "required": false,
+              "id": "current_symptoms_or_complaints_1_other_answer",
+              "questionOptions": {
+                "rendering": "text",
+                "concept": "Other Current symptoms or complaints",
+                "conceptMappings": [],
+                "answers": []
+              },
+              "validators": [],
+              "hide": {
+                "hideWhenExpression": "current_symptoms_or_complaints_1_other !== 'Other'"
+              }
+            }
+          ]
+        },
+        {
+          "label": "Clinical diagnosis",
+          "isExpanded": false,
+          "questions": [
+            {
+              "label": "Clinical diagnosis (To be established only by psychologist)",
+              "type": "obs",
+              "required": false,
+              "id": "clinical_diagnosis_to_be_established_only_by_psychologist",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "Clinical diagnosis",
+                "conceptMappings": [],
+                "answers": [
+                  {
+                    "concept": "Acute stress reaction",
+                    "label": "Acute stress reaction"
+                  },
+                  {
+                    "concept": "Bereavement/grief",
+                    "label": "Bereavement/grief"
+                  },
+                  {
+                    "concept": "Post-Traumatic Stress Disorder",
+                    "label": "Post-Traumatic Stress Disorder"
+                  },
+                  {
+                    "concept": "Conversion/Dissociative reaction",
+                    "label": "Conversion/Dissociative reaction"
+                  },
+                  {
+                    "concept": "Anxiety Disorder",
+                    "label": "Anxiety Disorder"
+                  },
+                  {
+                    "concept": "Medically Unexplained Physical Symptoms (MUPS)",
+                    "label": "Medically Unexplained Physical Symptoms (MUPS)"
+                  },
+                  {
+                    "concept": "Depression",
+                    "label": "Depression"
+                  },
+                  {
+                    "concept": "Self-harming behavior/suicide attempt",
+                    "label": "Self-harming behavior/suicide attempt"
+                  },
+                  {
+                    "concept": "Acute psychosis (inclpost-partum psychosis)",
+                    "label": "Acute psychosis (inclpost-partum psychosis)"
+                  },
+                  {
+                    "concept": "Chronic psychosis (inclschizophrenia)",
+                    "label": "Chronic psychosis (inclschizophrenia)"
+                  },
+                  {
+                    "concept": "Bipolar disorder (inclmania)",
+                    "label": "Bipolar disorder (inclmania)"
+                  },
+                  {
+                    "concept": "Enuresis / Encopresis",
+                    "label": "Enuresis / Encopresis"
+                  },
+                  {
+                    "concept": "Developmental disorder (inclintellectual disability, autism)",
+                    "label": "Developmental disorder (inclintellectual disability, autism)"
+                  },
+                  {
+                    "concept": "Childhood behavioral disorder (inclADHD, conduct disorder)",
+                    "label": "Childhood behavioral disorder (inclADHD, conduct disorder)"
+                  },
+                  {
+                    "concept": "Childhood emotional disorder",
+                    "label": "Childhood emotional disorder"
+                  },
+                  {
+                    "concept": "Substance-related disorder",
+                    "label": "Substance-related disorder"
+                  },
+                  {
+                    "concept": "Epilepsy / seizures",
+                    "label": "Epilepsy / seizures"
+                  },
+                  {
+                    "concept": "Abnormal behaviour",
+                    "label": "Abnormal behaviour"
+                  },
+                  {
+                    "concept": "Acute and transient psychosis",
+                    "label": "Acute and transient psychosis"
+                  },
+                  {
+                    "concept": "Acute stress reaction",
+                    "label": "Acute stress reaction"
+                  },
+                  {
+                    "concept": "Adjustment reaction",
+                    "label": "Adjustment reaction"
+                  },
+                  {
+                    "concept": "Anxiety disorder",
+                    "label": "Anxiety disorder"
+                  },
+                  {
+                    "concept": "Asthma",
+                    "label": "Asthma"
+                  },
+                  {
+                    "concept": "Bipolar disorder",
+                    "label": "Bipolar disorder"
+                  },
+                  {
+                    "concept": "Cardiovascular disease",
+                    "label": "Cardiovascular disease"
+                  },
+                  {
+                    "concept": "Child attention deficit disorder",
+                    "label": "Child attention deficit disorder"
+                  },
+                  {
+                    "concept": "Childhood emotional disorder",
+                    "label": "Childhood emotional disorder"
+                  },
+                  {
+                    "concept": "Chronic kidney disease",
+                    "label": "Chronic kidney disease"
+                  },
+                  {
+                    "concept": "Chronic non-psychotic brain syndrome",
+                    "label": "Chronic non-psychotic brain syndrome"
+                  },
+                  {
+                    "concept": "Chronic obstructive pulmonary disease",
+                    "label": "Chronic obstructive pulmonary disease"
+                  },
+                  {
+                    "concept": "Compression device used",
+                    "label": "Compression device used"
+                  },
+                  {
+                    "concept": "Conduct disorders",
+                    "label": "Conduct disorders"
+                  },
+                  {
+                    "concept": "Delirium",
+                    "label": "Delirium"
+                  },
+                  {
+                    "concept": "Dementia",
+                    "label": "Dementia"
+                  },
+                  {
+                    "concept": "Diabetes mellitus, type 1",
+                    "label": "Diabetes mellitus, type 1"
+                  },
+                  {
+                    "concept": "Diabetes mellitus, type 2",
+                    "label": "Diabetes mellitus, type 2"
+                  },
+                  {
+                    "concept": "Dissociative and conversion disorder",
+                    "label": "Dissociative and conversion disorder"
+                  },
+                  {
+                    "concept": "Dissociative convulsions",
+                    "label": "Dissociative convulsions"
+                  },
+                  {
+                    "concept": "Epilepsy",
+                    "label": "Epilepsy"
+                  },
+                  {
+                    "concept": "Focal epilepsy",
+                    "label": "Focal epilepsy"
+                  },
+                  {
+                    "concept": "Generalised epilepsy",
+                    "label": "Generalised epilepsy"
+                  },
+                  {
+                    "concept": "Hyperkinetic disorder",
+                    "label": "Hyperkinetic disorder"
+                  },
+                  {
+                    "concept": "Hypertension",
+                    "label": "Hypertension"
+                  },
+                  {
+                    "concept": "Hyperthyroidism",
+                    "label": "Hyperthyroidism"
+                  },
+                  {
+                    "concept": "Hypothyroidism",
+                    "label": "Hypothyroidism"
+                  },
+                  {
+                    "concept": "Intellectual disability",
+                    "label": "Intellectual disability"
+                  },
+                  {
+                    "concept": "Mental or behavioural disorder due to use of alcohol",
+                    "label": "Mental or behavioural disorder due to use of alcohol"
+                  },
+                  {
+                    "concept": "Mental or behavioural disorders due to psychoactive substances",
+                    "label": "Mental or behavioural disorders due to psychoactive substances"
+                  },
+                  {
+                    "concept": "Nonorganic enuresis",
+                    "label": "Nonorganic enuresis"
+                  },
+                  {
+                    "concept": "Obsessive-compulsive disorder",
+                    "label": "Obsessive-compulsive disorder"
+                  },
+                  {
+                    "concept": "Panic disorder",
+                    "label": "Panic disorder"
+                  },
+                  {
+                    "concept": "Persistent delusional disorder",
+                    "label": "Persistent delusional disorder"
+                  },
+                  {
+                    "concept": "Pervasive developmental disorder, Active",
+                    "label": "Pervasive developmental disorder, Active"
+                  },
+                  {
+                    "concept": "Phobic disorder",
+                    "label": "Phobic disorder"
+                  },
+                  {
+                    "concept": "Post Traumatic Stress Disorder",
+                    "label": "Post Traumatic Stress Disorder"
+                  },
+                  {
+                    "concept": "Post-partum depression",
+                    "label": "Post-partum depression"
+                  },
+                  {
+                    "concept": "Post-partum psychosis",
+                    "label": "Post-partum psychosis"
+                  },
+                  {
+                    "concept": "Psychosomatic problems",
+                    "label": "Psychosomatic problems"
+                  },
+                  {
+                    "concept": "Puerperal psychosis",
+                    "label": "Puerperal psychosis"
+                  },
+                  {
+                    "concept": "Reaction to severe stress",
+                    "label": "Reaction to severe stress"
+                  },
+                  {
+                    "concept": "Recurrent major depressive episodes, mild",
+                    "label": "Recurrent major depressive episodes, mild"
+                  },
+                  {
+                    "concept": "Recurrent major depressive episodes, moderate",
+                    "label": "Recurrent major depressive episodes, moderate"
+                  },
+                  {
+                    "concept": "Schizoaffective disorder",
+                    "label": "Schizoaffective disorder"
+                  },
+                  {
+                    "concept": "Schizophrenia",
+                    "label": "Schizophrenia"
+                  },
+                  {
+                    "concept": "Separation anxiety disorder of childhood",
+                    "label": "Separation anxiety disorder of childhood"
+                  },
+                  {
+                    "concept": "Severe recurrent major depression with psychotic features",
+                    "label": "Severe recurrent major depression with psychotic features"
+                  },
+                  {
+                    "concept": "Severe recurrent major depression without psychotic features",
+                    "label": "Severe recurrent major depression without psychotic features"
+                  },
+                  {
+                    "concept": "Sibling rivalry disorder",
+                    "label": "Sibling rivalry disorder"
+                  },
+                  {
+                    "concept": "Social anxiety disorder of childhood",
+                    "label": "Social anxiety disorder of childhood"
+                  },
+                  {
+                    "concept": "Somatoform disorders",
+                    "label": "Somatoform disorders"
+                  },
+                  {
+                    "concept": "Other disorder",
+                    "label": "Other disorder"
+                  },
+                  {
+                    "concept": "No diagnosis",
+                    "label": "No diagnosis"
+                  }
+                ]
+              },
+              "validators": [],
+              "hide": {
+                "hideWhenExpression": "consultation_done_by !== 'Psychologist'"
+              }
+            },
+            {
+              "label": "If other disorder, specify",
+              "type": "obs",
+              "required": false,
+              "id": "other_disorder_answer",
+              "questionOptions": {
+                "rendering": "text",
+                "concept": "Other disorder",
+                "conceptMappings": [],
+                "answers": []
+              },
+              "validators": [],
+              "hide": {
+                "hideWhenExpression": "clinical_diagnosis_to_be_established_only_by_psychologist !== 'Other disorder'"
+              }
+            }
+          ]
+        },
+        {
+          "label": "Prioritize and write down the code of the three current symptoms or complaints (If current suicidal thoughts, recent suicide attempt, or current psychotic symptoms consider referral to psychologist /  mhGAP clinician)",
+          "isExpanded": false,
+          "questions": [
+            {
+              "label": "Current symptoms or complaints 1",
+              "type": "obs",
+              "required": false,
+              "id": "current_symptoms_or_complaints_1",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "Current symptoms or complaints 1",
+                "conceptMappings": [],
+                "answers": [
+                  {
+                    "concept": "Body pain or complaints (headache, palpitations, breathing problems, gastrointestinal, etc)",
+                    "label": "Body pain or complaints (headache, palpitations, breathing problems, gastrointestinal, etc)"
+                  },
+                  {
+                    "concept": "Eating problems",
+                    "label": "Eating problems"
+                  },
+                  {
+                    "concept": "Sleeping problems",
+                    "label": "Sleeping problems"
+                  },
+                  {
+                    "concept": "Bedwetting / retention problems",
+                    "label": "Bedwetting / retention problems"
+                  },
+                  {
+                    "concept": "Sexual problems",
+                    "label": "Sexual problems"
+                  },
+                  {
+                    "concept": "Unexplained physical reaction (non-epileptic seizures, paralysis, unable to walk, unexplained fainting)",
+                    "label": "Unexplained physical reaction (non-epileptic seizures, paralysis, unable to walk, unexplained fainting)"
+                  },
+                  {
+                    "concept": "Sad mood",
+                    "label": "Sad mood"
+                  },
+                  {
+                    "concept": "Irritability / anger",
+                    "label": "Irritability / anger"
+                  },
+                  {
+                    "concept": "Loss of interest / anhedonia",
+                    "label": "Loss of interest / anhedonia"
+                  },
+                  {
+                    "concept": "Hopelessness",
+                    "label": "Hopelessness"
+                  },
+                  {
+                    "concept": "Guilt/self-blame/worthlessness",
+                    "label": "Guilt/self-blame/worthlessness"
+                  },
+                  {
+                    "concept": "Current suicidal thoughts",
+                    "label": "Current suicidal thoughts"
+                  },
+                  {
+                    "concept": "Recent suicidal attempt",
+                    "label": "Recent suicidal attempt"
+                  },
+                  {
+                    "concept": "Recent self-harm",
+                    "label": "Recent self-harm"
+                  },
+                  {
+                    "concept": "Changes in appetite",
+                    "label": "Changes in appetite"
+                  },
+                  {
+                    "concept": "Constant stress",
+                    "label": "Constant stress"
+                  },
+                  {
+                    "concept": "Persistent worry",
+                    "label": "Persistent worry"
+                  },
+                  {
+                    "concept": "Intense fear / phobia / feeling threatened",
+                    "label": "Intense fear / phobia / feeling threatened"
+                  },
+                  {
+                    "concept": "Panic attack (sudden intense fear with somatic symptoms such as chest pain)",
+                    "label": "Panic attack (sudden intense fear with somatic symptoms such as chest pain)"
+                  },
+                  {
+                    "concept": "Compulsive or repetitive behavior",
+                    "label": "Compulsive or repetitive behavior"
+                  },
+                  {
+                    "concept": "Intrusive feelings, thoughts",
+                    "label": "Intrusive feelings, thoughts"
+                  },
+                  {
+                    "concept": "Flashbacks",
+                    "label": "Flashbacks"
+                  },
+                  {
+                    "concept": "Avoidance of traumatic stimuli",
+                    "label": "Avoidance of traumatic stimuli"
+                  },
+                  {
+                    "concept": "Hypervigilance / excessive startle response",
+                    "label": "Hypervigilance / excessive startle response"
+                  },
+                  {
+                    "concept": "Trauma-related hallucinations (hearing voices associated with the traumatic event, seeing dead persons as cultural expression of distress)",
+                    "label": "Trauma-related hallucinations (hearing voices associated with the traumatic event, seeing dead persons as cultural expression of distress)"
+                  },
+                  {
+                    "concept": "Child has stopped talking",
+                    "label": "Child has stopped talking"
+                  },
+                  {
+                    "concept": "Delusions (false beliefs)",
+                    "label": "Delusions (false beliefs)"
+                  },
+                  {
+                    "concept": "Visual hallucinations",
+                    "label": "Visual hallucinations"
+                  },
+                  {
+                    "concept": "Auditory hallucinations",
+                    "label": "Auditory hallucinations"
+                  },
+                  {
+                    "concept": "Disorganized thought /speech",
+                    "label": "Disorganized thought /speech"
+                  },
+                  {
+                    "concept": "Bizarre behavior",
+                    "label": "Bizarre behavior"
+                  },
+                  {
+                    "concept": "Psychotic agitation",
+                    "label": "Psychotic agitation"
+                  },
+                  {
+                    "concept": "Problems with concentration, memory or reasoning",
+                    "label": "Problems with concentration, memory or reasoning"
+                  },
+                  {
+                    "concept": "Delayed development (milestones)",
+                    "label": "Delayed development (milestones)"
+                  },
+                  {
+                    "concept": "Abnormal social interaction and communication",
+                    "label": "Abnormal social interaction and communication"
+                  },
+                  {
+                    "concept": "Learning difficulties",
+                    "label": "Learning difficulties"
+                  },
+                  {
+                    "concept": "Epileptic seizures",
+                    "label": "Epileptic seizures"
+                  },
+                  {
+                    "concept": "Alcohol / substance abuse",
+                    "label": "Alcohol / substance abuse"
+                  },
+                  {
+                    "concept": "Aggressiveness",
+                    "label": "Aggressiveness"
+                  },
+                  {
+                    "concept": "Conduct problems in children (aggression/destructive behavior/ stealing /repeated lying/rule violation)",
+                    "label": "Conduct problems in children (aggression/destructive behavior/ stealing /repeated lying/rule violation)"
+                  },
+                  {
+                    "concept": "Hypo- or hyperactivity",
+                    "label": "Hypo- or hyperactivity"
+                  },
+                  {
+                    "concept": "Impulsivity",
+                    "label": "Impulsivity"
+                  },
+                  {
+                    "concept": "Regression in development",
+                    "label": "Regression in development"
+                  },
+                  {
+                    "concept": "Social withdrawal (isolation/reduced attachment/involvement)",
+                    "label": "Social withdrawal (isolation/reduced attachment/involvement)"
+                  },
+                  {
+                    "concept": "Other",
+                    "label": "Other"
+                  }
+                ]
+              },
+              "validators": []
+            },
+            {
+              "label": "If other, specify",
+              "type": "obs",
+              "required": false,
+              "id": "other_symptoms_1_answer",
+              "questionOptions": {
+                "rendering": "text",
+                "concept": "Other Symptoms 1",
+                "conceptMappings": [],
+                "answers": []
+              },
+              "validators": [],
+              "hide": {
+                "hideWhenExpression": "current_symptoms_or_complaints_1 !== 'Other'"
+              }
+            },
+            {
+              "label": "Current symptoms or complaints 2",
+              "type": "obs",
+              "required": false,
+              "id": "current_symptoms_or_complaints_2",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "Current symptoms or complaints 2",
+                "conceptMappings": [],
+                "answers": [
+                  {
+                    "concept": "Body pain or complaints (headache, palpitations, breathing problems, gastrointestinal, etc)",
+                    "label": "Body pain or complaints (headache, palpitations, breathing problems, gastrointestinal, etc)"
+                  },
+                  {
+                    "concept": "Eating problems",
+                    "label": "Eating problems"
+                  },
+                  {
+                    "concept": "Sleeping problems",
+                    "label": "Sleeping problems"
+                  },
+                  {
+                    "concept": "Bedwetting / retention problems",
+                    "label": "Bedwetting / retention problems"
+                  },
+                  {
+                    "concept": "Sexual problems",
+                    "label": "Sexual problems"
+                  },
+                  {
+                    "concept": "Unexplained physical reaction (non-epileptic seizures, paralysis, unable to walk, unexplained fainting)",
+                    "label": "Unexplained physical reaction (non-epileptic seizures, paralysis, unable to walk, unexplained fainting)"
+                  },
+                  {
+                    "concept": "Sad mood",
+                    "label": "Sad mood"
+                  },
+                  {
+                    "concept": "Irritability / anger",
+                    "label": "Irritability / anger"
+                  },
+                  {
+                    "concept": "Loss of interest / anhedonia",
+                    "label": "Loss of interest / anhedonia"
+                  },
+                  {
+                    "concept": "Hopelessness",
+                    "label": "Hopelessness"
+                  },
+                  {
+                    "concept": "Guilt/self-blame/worthlessness",
+                    "label": "Guilt/self-blame/worthlessness"
+                  },
+                  {
+                    "concept": "Current suicidal thoughts",
+                    "label": "Current suicidal thoughts"
+                  },
+                  {
+                    "concept": "Recent suicidal attempt",
+                    "label": "Recent suicidal attempt"
+                  },
+                  {
+                    "concept": "Recent self-harm",
+                    "label": "Recent self-harm"
+                  },
+                  {
+                    "concept": "Changes in appetite",
+                    "label": "Changes in appetite"
+                  },
+                  {
+                    "concept": "Constant stress",
+                    "label": "Constant stress"
+                  },
+                  {
+                    "concept": "Persistent worry",
+                    "label": "Persistent worry"
+                  },
+                  {
+                    "concept": "Intense fear / phobia / feeling threatened",
+                    "label": "Intense fear / phobia / feeling threatened"
+                  },
+                  {
+                    "concept": "Panic attack (sudden intense fear with somatic symptoms such as chest pain)",
+                    "label": "Panic attack (sudden intense fear with somatic symptoms such as chest pain)"
+                  },
+                  {
+                    "concept": "Compulsive or repetitive behavior",
+                    "label": "Compulsive or repetitive behavior"
+                  },
+                  {
+                    "concept": "Intrusive feelings, thoughts",
+                    "label": "Intrusive feelings, thoughts"
+                  },
+                  {
+                    "concept": "Flashbacks",
+                    "label": "Flashbacks"
+                  },
+                  {
+                    "concept": "Avoidance of traumatic stimuli",
+                    "label": "Avoidance of traumatic stimuli"
+                  },
+                  {
+                    "concept": "Hypervigilance / excessive startle response",
+                    "label": "Hypervigilance / excessive startle response"
+                  },
+                  {
+                    "concept": "Trauma-related hallucinations (hearing voices associated with the traumatic event, seeing dead persons as cultural expression of distress)",
+                    "label": "Trauma-related hallucinations (hearing voices associated with the traumatic event, seeing dead persons as cultural expression of distress)"
+                  },
+                  {
+                    "concept": "Child has stopped talking",
+                    "label": "Child has stopped talking"
+                  },
+                  {
+                    "concept": "Delusions (false beliefs)",
+                    "label": "Delusions (false beliefs)"
+                  },
+                  {
+                    "concept": "Visual hallucinations",
+                    "label": "Visual hallucinations"
+                  },
+                  {
+                    "concept": "Auditory hallucinations",
+                    "label": "Auditory hallucinations"
+                  },
+                  {
+                    "concept": "Disorganized thought /speech",
+                    "label": "Disorganized thought /speech"
+                  },
+                  {
+                    "concept": "Bizarre behavior",
+                    "label": "Bizarre behavior"
+                  },
+                  {
+                    "concept": "Psychotic agitation",
+                    "label": "Psychotic agitation"
+                  },
+                  {
+                    "concept": "Problems with concentration, memory or reasoning",
+                    "label": "Problems with concentration, memory or reasoning"
+                  },
+                  {
+                    "concept": "Delayed development (milestones)",
+                    "label": "Delayed development (milestones)"
+                  },
+                  {
+                    "concept": "Abnormal social interaction and communication",
+                    "label": "Abnormal social interaction and communication"
+                  },
+                  {
+                    "concept": "Learning difficulties",
+                    "label": "Learning difficulties"
+                  },
+                  {
+                    "concept": "Epileptic seizures",
+                    "label": "Epileptic seizures"
+                  },
+                  {
+                    "concept": "Alcohol / substance abuse",
+                    "label": "Alcohol / substance abuse"
+                  },
+                  {
+                    "concept": "Aggressiveness",
+                    "label": "Aggressiveness"
+                  },
+                  {
+                    "concept": "Conduct problems in children (aggression/destructive behavior/ stealing /repeated lying/rule violation)",
+                    "label": "Conduct problems in children (aggression/destructive behavior/ stealing /repeated lying/rule violation)"
+                  },
+                  {
+                    "concept": "Hypo- or hyperactivity",
+                    "label": "Hypo- or hyperactivity"
+                  },
+                  {
+                    "concept": "Impulsivity",
+                    "label": "Impulsivity"
+                  },
+                  {
+                    "concept": "Regression in development",
+                    "label": "Regression in development"
+                  },
+                  {
+                    "concept": "Social withdrawal (isolation/reduced attachment/involvement)",
+                    "label": "Social withdrawal (isolation/reduced attachment/involvement)"
+                  },
+                  {
+                    "concept": "Other",
+                    "label": "Other"
+                  }
+                ]
+              },
+              "validators": []
+            },
+            {
+              "label": "If other, specify",
+              "type": "obs",
+              "required": false,
+              "id": "other_symptoms_2_answer",
+              "questionOptions": {
+                "rendering": "text",
+                "concept": "Other Symptoms 2",
+                "conceptMappings": [],
+                "answers": []
+              },
+              "validators": [],
+              "hide": {
+                "hideWhenExpression": "current_symptoms_or_complaints_2 !== 'Other'"
+              }
+            },
+            {
+              "label": "Current symptoms or complaints 3",
+              "type": "obs",
+              "required": false,
+              "id": "current_symptoms_or_complaints_3",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "Current symptoms or complaints 3",
+                "conceptMappings": [],
+                "answers": [
+                  {
+                    "concept": "Body pain or complaints (headache, palpitations, breathing problems, gastrointestinal, etc)",
+                    "label": "Body pain or complaints (headache, palpitations, breathing problems, gastrointestinal, etc)"
+                  },
+                  {
+                    "concept": "Eating problems",
+                    "label": "Eating problems"
+                  },
+                  {
+                    "concept": "Sleeping problems",
+                    "label": "Sleeping problems"
+                  },
+                  {
+                    "concept": "Bedwetting / retention problems",
+                    "label": "Bedwetting / retention problems"
+                  },
+                  {
+                    "concept": "Sexual problems",
+                    "label": "Sexual problems"
+                  },
+                  {
+                    "concept": "Unexplained physical reaction (non-epileptic seizures, paralysis, unable to walk, unexplained fainting)",
+                    "label": "Unexplained physical reaction (non-epileptic seizures, paralysis, unable to walk, unexplained fainting)"
+                  },
+                  {
+                    "concept": "Sad mood",
+                    "label": "Sad mood"
+                  },
+                  {
+                    "concept": "Irritability / anger",
+                    "label": "Irritability / anger"
+                  },
+                  {
+                    "concept": "Loss of interest / anhedonia",
+                    "label": "Loss of interest / anhedonia"
+                  },
+                  {
+                    "concept": "Hopelessness",
+                    "label": "Hopelessness"
+                  },
+                  {
+                    "concept": "Guilt/self-blame/worthlessness",
+                    "label": "Guilt/self-blame/worthlessness"
+                  },
+                  {
+                    "concept": "Current suicidal thoughts",
+                    "label": "Current suicidal thoughts"
+                  },
+                  {
+                    "concept": "Recent suicidal attempt",
+                    "label": "Recent suicidal attempt"
+                  },
+                  {
+                    "concept": "Recent self-harm",
+                    "label": "Recent self-harm"
+                  },
+                  {
+                    "concept": "Changes in appetite",
+                    "label": "Changes in appetite"
+                  },
+                  {
+                    "concept": "Constant stress",
+                    "label": "Constant stress"
+                  },
+                  {
+                    "concept": "Persistent worry",
+                    "label": "Persistent worry"
+                  },
+                  {
+                    "concept": "Intense fear / phobia / feeling threatened",
+                    "label": "Intense fear / phobia / feeling threatened"
+                  },
+                  {
+                    "concept": "Panic attack (sudden intense fear with somatic symptoms such as chest pain)",
+                    "label": "Panic attack (sudden intense fear with somatic symptoms such as chest pain)"
+                  },
+                  {
+                    "concept": "Compulsive or repetitive behavior",
+                    "label": "Compulsive or repetitive behavior"
+                  },
+                  {
+                    "concept": "Intrusive feelings, thoughts",
+                    "label": "Intrusive feelings, thoughts"
+                  },
+                  {
+                    "concept": "Flashbacks",
+                    "label": "Flashbacks"
+                  },
+                  {
+                    "concept": "Avoidance of traumatic stimuli",
+                    "label": "Avoidance of traumatic stimuli"
+                  },
+                  {
+                    "concept": "Hypervigilance / excessive startle response",
+                    "label": "Hypervigilance / excessive startle response"
+                  },
+                  {
+                    "concept": "Trauma-related hallucinations (hearing voices associated with the traumatic event, seeing dead persons as cultural expression of distress)",
+                    "label": "Trauma-related hallucinations (hearing voices associated with the traumatic event, seeing dead persons as cultural expression of distress)"
+                  },
+                  {
+                    "concept": "Child has stopped talking",
+                    "label": "Child has stopped talking"
+                  },
+                  {
+                    "concept": "Delusions (false beliefs)",
+                    "label": "Delusions (false beliefs)"
+                  },
+                  {
+                    "concept": "Visual hallucinations",
+                    "label": "Visual hallucinations"
+                  },
+                  {
+                    "concept": "Auditory hallucinations",
+                    "label": "Auditory hallucinations"
+                  },
+                  {
+                    "concept": "Disorganized thought /speech",
+                    "label": "Disorganized thought /speech"
+                  },
+                  {
+                    "concept": "Bizarre behavior",
+                    "label": "Bizarre behavior"
+                  },
+                  {
+                    "concept": "Psychotic agitation",
+                    "label": "Psychotic agitation"
+                  },
+                  {
+                    "concept": "Problems with concentration, memory or reasoning",
+                    "label": "Problems with concentration, memory or reasoning"
+                  },
+                  {
+                    "concept": "Delayed development (milestones)",
+                    "label": "Delayed development (milestones)"
+                  },
+                  {
+                    "concept": "Abnormal social interaction and communication",
+                    "label": "Abnormal social interaction and communication"
+                  },
+                  {
+                    "concept": "Learning difficulties",
+                    "label": "Learning difficulties"
+                  },
+                  {
+                    "concept": "Epileptic seizures",
+                    "label": "Epileptic seizures"
+                  },
+                  {
+                    "concept": "Alcohol / substance abuse",
+                    "label": "Alcohol / substance abuse"
+                  },
+                  {
+                    "concept": "Aggressiveness",
+                    "label": "Aggressiveness"
+                  },
+                  {
+                    "concept": "Conduct problems in children (aggression/destructive behavior/ stealing /repeated lying/rule violation)",
+                    "label": "Conduct problems in children (aggression/destructive behavior/ stealing /repeated lying/rule violation)"
+                  },
+                  {
+                    "concept": "Hypo- or hyperactivity",
+                    "label": "Hypo- or hyperactivity"
+                  },
+                  {
+                    "concept": "Impulsivity",
+                    "label": "Impulsivity"
+                  },
+                  {
+                    "concept": "Regression in development",
+                    "label": "Regression in development"
+                  },
+                  {
+                    "concept": "Social withdrawal (isolation/reduced attachment/involvement)",
+                    "label": "Social withdrawal (isolation/reduced attachment/involvement)"
+                  },
+                  {
+                    "concept": "Other",
+                    "label": "Other"
+                  }
+                ]
+              },
+              "validators": []
+            },
+            {
+              "label": "If other, specify",
+              "type": "obs",
+              "required": false,
+              "id": "other_symptoms_3_answer",
+              "questionOptions": {
+                "rendering": "text",
+                "concept": "Other Symptoms 3",
+                "conceptMappings": [],
+                "answers": []
+              },
+              "validators": [],
+              "hide": {
+                "hideWhenExpression": "current_symptoms_or_complaints_3 !== 'Other'"
+              }
+            }
+          ]
+        },
+        {
+          "label": "Current Symptoms or Complaints (continuation)",
+          "isExpanded": false,
+          "questions": [
+            {
+              "label": "Main category of symptoms",
+              "type": "obs",
+              "required": false,
+              "id": "main_category_of_symptoms",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "Main category of symptoms",
+                "conceptMappings": [],
+                "answers": [
+                  {
+                    "concept": "Psychosomatic",
+                    "label": "Psychosomatic"
+                  },
+                  {
+                    "concept": "Depression related",
+                    "label": "Depression related"
+                  },
+                  {
+                    "concept": "Anxiety related",
+                    "label": "Anxiety related"
+                  },
+                  {
+                    "concept": "Trauma related",
+                    "label": "Trauma related"
+                  },
+                  {
+                    "concept": "Psychosis related",
+                    "label": "Psychosis related"
+                  },
+                  {
+                    "concept": "Neuro cognitive problems",
+                    "label": "Neuro cognitive problems"
+                  },
+                  {
+                    "concept": "Behaviour problems",
+                    "label": "Behaviour problems"
+                  },
+                  {
+                    "concept": "Other symptoms",
+                    "label": "Other symptoms"
+                  }
+                ]
+              },
+              "validators": []
+            },
+            {
+              "label": "Duration of the main symptom",
+              "type": "obs",
+              "required": false,
+              "id": "duration_of_the_main_symptom",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "Duration of the main symptom",
+                "conceptMappings": [],
+                "answers": [
+                  {
+                    "concept": "- 3 days",
+                    "label": "- 3 days"
+                  },
+                  {
+                    "concept": "- 7 days",
+                    "label": "- 7 days"
+                  },
+                  {
+                    "concept": "- 4 weeks",
+                    "label": "- 4 weeks"
+                  },
+                  {
+                    "concept": "- 6 months",
+                    "label": "- 6 months"
+                  },
+                  {
+                    "concept": "- 12 months",
+                    "label": "- 12 months"
+                  },
+                  {
+                    "concept": "> 1 year",
+                    "label": "> 1 year"
+                  }
+                ]
+              },
+              "validators": []
+            },
+            {
+              "label": "Important details of the main problem: How long have they had the problem (significant events, etc.)?",
+              "type": "obs",
+              "required": false,
+              "id": "important_details_of_the_main_problem_how_long_have_they_had_the_problem_significant_events_etc_",
+              "questionOptions": {
+                "rendering": "text",
+                "concept": "Important details of the main problem",
+                "conceptMappings": [],
+                "answers": []
+              },
+              "validators": []
+            },
+            {
+              "label": "Patient presentation: How do they look or speak / motor activity / mood / thoughts / perceptions? Is the patient oriented in time / space / person / recent events?",
+              "type": "obs",
+              "required": false,
+              "id": "patient_presentation",
+              "questionOptions": {
+                "rendering": "text",
+                "concept": "Patient presentation",
+                "conceptMappings": [],
+                "answers": []
+              },
+              "validators": []
+            }
+          ]
+        },
+        {
+          "label": "MHOS (required) - Over the last two weeks, how often have you been bothered by any of the following problems?",
+          "isExpanded": false,
+          "questions": [
+            {
+              "label": "Did you have problems performing daily activities, such as cooking, bathing, or chores outside the household?",
+              "type": "obs",
+              "required": false,
+              "id": "did_you_have_problems_performing_daily_activities",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "Did you have problems performing daily activities, such as cooking, bathing, or chores outside the household?",
+                "conceptMappings": [],
+                "answers": [
+                  {
+                    "concept": "160215AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "label": "Not at all"
+                  },
+                  {
+                    "concept": "f6a5ea2d-fc7d-4e9e-8dfd-dbbea05cd9a0",
+                    "label": "A little"
+                  },
+                  {
+                    "concept": "164493AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "label": "Some"
+                  },
+                  {
+                    "concept": "de7fa192-bf2e-4991-a81f-582c4b50ae51",
+                    "label": "Fair amount"
+                  },
+                  {
+                    "concept": "0f074510-1ff6-4924-bfef-effdcffd44f8",
+                    "label": "A lot"
+                  }
+                ]
+              },
+              "validators": []
+            },
+            {
+              "label": "Did you have problems getting along with family or friends?",
+              "type": "obs",
+              "required": false,
+              "id": "did_you_have_problems_getting_along_with_family_or_friends",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "Did you have problems getting along with family or friends?",
+                "conceptMappings": [],
+                "answers": [
+                  {
+                    "concept": "160215AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "label": "Not at all"
+                  },
+                  {
+                    "concept": "f6a5ea2d-fc7d-4e9e-8dfd-dbbea05cd9a0",
+                    "label": "A little"
+                  },
+                  {
+                    "concept": "164493AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "label": "Some"
+                  },
+                  {
+                    "concept": "de7fa192-bf2e-4991-a81f-582c4b50ae51",
+                    "label": "Fair amount"
+                  },
+                  {
+                    "concept": "0f074510-1ff6-4924-bfef-effdcffd44f8",
+                    "label": "A lot"
+                  }
+                ]
+              },
+              "validators": []
+            },
+            {
+              "label": "Did you have any problems sleeping, such as sleeping too much or not enough?",
+              "type": "obs",
+              "required": false,
+              "id": "did_you_have_any_problems_sleeping",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": " Did you have any problems sleeping, such as sleeping too much or not enough?",
+                "conceptMappings": [],
+                "answers": [
+                  {
+                    "concept": "160215AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "label": "Not at all"
+                  },
+                  {
+                    "concept": "f6a5ea2d-fc7d-4e9e-8dfd-dbbea05cd9a0",
+                    "label": "A little"
+                  },
+                  {
+                    "concept": "164493AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "label": "Some"
+                  },
+                  {
+                    "concept": "de7fa192-bf2e-4991-a81f-582c4b50ae51",
+                    "label": "Fair amount"
+                  },
+                  {
+                    "concept": "0f074510-1ff6-4924-bfef-effdcffd44f8",
+                    "label": "A lot"
+                  }
+                ]
+              },
+              "validators": []
+            },
+            {
+              "label": "Have you been bothered by unpleasant thoughts, worries or ideas?",
+              "type": "obs",
+              "required": false,
+              "id": "have_you_been_bothered_by_unpleasant_thoughts_worries_or_ideas",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "Have you been bothered by unpleasant thoughts, worries or ideas?",
+                "conceptMappings": [],
+                "answers": [
+                  {
+                    "concept": "160215AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "label": "Not at all"
+                  },
+                  {
+                    "concept": "f6a5ea2d-fc7d-4e9e-8dfd-dbbea05cd9a0",
+                    "label": "A little"
+                  },
+                  {
+                    "concept": "164493AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "label": "Some"
+                  },
+                  {
+                    "concept": "de7fa192-bf2e-4991-a81f-582c4b50ae51",
+                    "label": "Fair amount"
+                  },
+                  {
+                    "concept": "0f074510-1ff6-4924-bfef-effdcffd44f8",
+                    "label": "A lot"
+                  }
+                ]
+              },
+              "validators": []
+            },
+            {
+              "label": "Have you felt sad or nervous?",
+              "type": "obs",
+              "required": false,
+              "id": "have_you_felt_sad_or_nervous",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "Have you felt sad or nervous?",
+                "conceptMappings": [],
+                "answers": [
+                  {
+                    "concept": "160215AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "label": "Not at all"
+                  },
+                  {
+                    "concept": "f6a5ea2d-fc7d-4e9e-8dfd-dbbea05cd9a0",
+                    "label": "A little"
+                  },
+                  {
+                    "concept": "164493AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "label": "Some"
+                  },
+                  {
+                    "concept": "de7fa192-bf2e-4991-a81f-582c4b50ae51",
+                    "label": "Fair amount"
+                  },
+                  {
+                    "concept": "0f074510-1ff6-4924-bfef-effdcffd44f8",
+                    "label": "A lot"
+                  }
+                ]
+              },
+              "validators": []
+            },
+            {
+              "label": "Have you been suffering?",
+              "type": "obs",
+              "required": false,
+              "id": "have_you_been_suffering",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "Have you been suffering?",
+                "conceptMappings": [],
+                "answers": [
+                  {
+                    "concept": "160215AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "label": "Not at all"
+                  },
+                  {
+                    "concept": "f6a5ea2d-fc7d-4e9e-8dfd-dbbea05cd9a0",
+                    "label": "A little"
+                  },
+                  {
+                    "concept": "164493AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "label": "Some"
+                  },
+                  {
+                    "concept": "de7fa192-bf2e-4991-a81f-582c4b50ae51",
+                    "label": "Fair amount"
+                  },
+                  {
+                    "concept": "0f074510-1ff6-4924-bfef-effdcffd44f8",
+                    "label": "A lot"
+                  }
+                ]
+              },
+              "validators": []
+            },
+            {
+              "label": "MHOS score",
+              "required": false,
+              "id": "mhos_score",
+              "questionOptions": {
+                "rendering": "text",
+                "concept": "MHOS score",
+                "calculate": {
+                  "calculateExpression": "(!isEmpty(did_you_have_problems_performing_daily_activities) || !isEmpty(did_you_have_problems_getting_along_with_family_or_friends) || !isEmpty(did_you_have_any_problems_sleeping) || !isEmpty(have_you_been_bothered_by_unpleasant_thoughts_worries_or_ideas) || !isEmpty(have_you_felt_sad_or_nervous) || !isEmpty(have_you_been_suffering)) && (did_you_have_problems_performing_daily_activities === '160215AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' ? 1 : (did_you_have_problems_performing_daily_activities === 'f6a5ea2d-fc7d-4e9e-8dfd-dbbea05cd9a0' ? 2 : (did_you_have_problems_performing_daily_activities === '164493AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' ? 3 : (did_you_have_problems_performing_daily_activities === 'de7fa192-bf2e-4991-a81f-582c4b50ae51' ? 4 : (did_you_have_problems_performing_daily_activities === '0f074510-1ff6-4924-bfef-effdcffd44f8' ? 5 : 0))))) + (did_you_have_problems_performing_daily_activities === '160215AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' ? 1 : (did_you_have_problems_getting_along_with_family_or_friends === 'f6a5ea2d-fc7d-4e9e-8dfd-dbbea05cd9a0' ? 2 : (did_you_have_problems_getting_along_with_family_or_friends === '164493AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' ? 3 : (did_you_have_problems_getting_along_with_family_or_friends === 'de7fa192-bf2e-4991-a81f-582c4b50ae51' ? 4 : (did_you_have_problems_getting_along_with_family_or_friends === '0f074510-1ff6-4924-bfef-effdcffd44f8' ? 5 : 0))))) + (did_you_have_any_problems_sleeping === '160215AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' ? 1 : (did_you_have_any_problems_sleeping === 'f6a5ea2d-fc7d-4e9e-8dfd-dbbea05cd9a0' ? 2 : (did_you_have_any_problems_sleeping === '164493AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' ? 3 : (did_you_have_any_problems_sleeping === 'de7fa192-bf2e-4991-a81f-582c4b50ae51' ? 4 : (did_you_have_any_problems_sleeping === '0f074510-1ff6-4924-bfef-effdcffd44f8' ? 5 : 0))))) + (have_you_been_bothered_by_unpleasant_thoughts_worries_or_ideas === '160215AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' ? 1 : (have_you_been_bothered_by_unpleasant_thoughts_worries_or_ideas === 'f6a5ea2d-fc7d-4e9e-8dfd-dbbea05cd9a0' ? 2 : (have_you_been_bothered_by_unpleasant_thoughts_worries_or_ideas === '164493AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' ? 3 : (have_you_been_bothered_by_unpleasant_thoughts_worries_or_ideas === 'de7fa192-bf2e-4991-a81f-582c4b50ae51' ? 4 : (have_you_been_bothered_by_unpleasant_thoughts_worries_or_ideas === '0f074510-1ff6-4924-bfef-effdcffd44f8' ? 5 : 0))))) + (have_you_felt_sad_or_nervous === '160215AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' ? 1 : (have_you_felt_sad_or_nervous === 'f6a5ea2d-fc7d-4e9e-8dfd-dbbea05cd9a0' ? 2 : (have_you_felt_sad_or_nervous === '164493AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' ? 3 : (have_you_felt_sad_or_nervous === 'de7fa192-bf2e-4991-a81f-582c4b50ae51' ? 4 : (have_you_felt_sad_or_nervous === '0f074510-1ff6-4924-bfef-effdcffd44f8' ? 5 : 0) + (have_you_been_suffering === '160215AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' ? 1 : (have_you_been_suffering === 'f6a5ea2d-fc7d-4e9e-8dfd-dbbea05cd9a0' ? 2 : (have_you_been_suffering === '164493AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' ? 3 : (have_you_been_suffering === 'de7fa192-bf2e-4991-a81f-582c4b50ae51' ? 4 : (have_you_been_suffering === '0f074510-1ff6-4924-bfef-effdcffd44f8' ? 5 : 0)))))))))"
+                }
+              },
+              "validators": []
+            }
+          ]
+        },
+        {
+          "label": "PHQ-9 (only for depression) - Over the last two weeks, how often have you been bothered by any of the following problems?",
+          "isExpanded": false,
+          "questions": [
+            {
+              "label": "Little interest or pleasure in doing things",
+              "type": "control",
+              "id": "little_interest_in_doing_things",
+              "questionOptions": {
+                "concept": "",
+                "rendering": "radio",
+                "answers": [
+                  {
+                    "concept": "163733AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "label": "Not at all"
+                  },
+                  {
+                    "concept": "163734AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "label": "Several days "
+                  },
+                  {
+                    "concept": "163735AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "label": "More than half the days"
+                  },
+                  {
+                    "concept": "163736AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "label": "Nearly every day"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Feeling down, depressed, or hopeless",
+              "type": "control",
+              "id": "feeling_down_depressed",
+              "questionOptions": {
+                "concept": "",
+                "rendering": "radio",
+                "answers": [
+                  {
+                    "concept": "163733AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "label": "Not at all"
+                  },
+                  {
+                    "concept": "163734AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "label": "Several days "
+                  },
+                  {
+                    "concept": "163735AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "label": "More than half the days"
+                  },
+                  {
+                    "concept": "163736AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "label": "Nearly every day"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Trouble falling or staying asleep, or sleeping too much ",
+              "type": "control",
+              "id": "trouble_with_sleep",
+              "questionOptions": {
+                "concept": "",
+                "rendering": "radio",
+                "answers": [
+                  {
+                    "concept": "163733AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "label": "Not at all"
+                  },
+                  {
+                    "concept": "163734AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "label": "Several days "
+                  },
+                  {
+                    "concept": "163735AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "label": "More than half the days"
+                  },
+                  {
+                    "concept": "163736AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "label": "Nearly every day"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Feeling tired or having little energy",
+              "type": "control",
+              "id": "feelingTired",
+              "questionOptions": {
+                "concept": "",
+                "rendering": "radio",
+                "answers": [
+                  {
+                    "concept": "163733AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "label": "Not at all"
+                  },
+                  {
+                    "concept": "163734AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "label": "Several days "
+                  },
+                  {
+                    "concept": "163735AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "label": "More than half the days"
+                  },
+                  {
+                    "concept": "163736AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "label": "Nearly every day"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Poor appetite or overeating",
+              "type": "control",
+              "id": "poorAppetite",
+              "questionOptions": {
+                "concept": "",
+                "rendering": "radio",
+                "answers": [
+                  {
+                    "concept": "163733AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "label": "Not at all"
+                  },
+                  {
+                    "concept": "163734AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "label": "Several days "
+                  },
+                  {
+                    "concept": "163735AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "label": "More than half the days"
+                  },
+                  {
+                    "concept": "163736AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "label": "Nearly every day"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Feeling bad about yourself, or that you are a failure,or that you have let yourself or your family down",
+              "type": "control",
+              "id": "feelingBad",
+              "questionOptions": {
+                "concept": "",
+                "rendering": "radio",
+                "answers": [
+                  {
+                    "concept": "163733AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "label": "Not at all"
+                  },
+                  {
+                    "concept": "163734AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "label": "Several days "
+                  },
+                  {
+                    "concept": "163735AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "label": "More than half the days"
+                  },
+                  {
+                    "concept": "163736AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "label": "Nearly every day"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Trouble concentrating on things (linked with patient usual activities,such as reading the newspaper or listening to a radio programme)",
+              "type": "control",
+              "id": "troubled",
+              "questionOptions": {
+                "concept": "",
+                "rendering": "radio",
+                "answers": [
+                  {
+                    "concept": "163733AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "label": "Not at all"
+                  },
+                  {
+                    "concept": "163734AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "label": "Several days "
+                  },
+                  {
+                    "concept": "163735AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "label": "More than half the days"
+                  },
+                  {
+                    "concept": "163736AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "label": "Nearly every day"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Moving or speaking so slowly that other people could have noticed.Or the opposite, being so fidgety or restless that you have been moving around a lot more than usual",
+              "type": "control",
+              "id": "speakingSlowly",
+              "questionOptions": {
+                "concept": "",
+                "rendering": "radio",
+                "answers": [
+                  {
+                    "concept": "163733AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "label": "Not at all"
+                  },
+                  {
+                    "concept": "163734AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "label": "Several days "
+                  },
+                  {
+                    "concept": "163735AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "label": "More than half the days"
+                  },
+                  {
+                    "concept": "163736AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "label": "Nearly every day"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Thoughts that you would be better off dead or of hurting yourself in some way",
+              "type": "control",
+              "id": "betterDead",
+              "questionOptions": {
+                "concept": "",
+                "rendering": "radio",
+                "answers": [
+                  {
+                    "concept": "163733AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "label": "Not at all"
+                  },
+                  {
+                    "concept": "163734AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "label": "Several days "
+                  },
+                  {
+                    "concept": "163735AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "label": "More than half the days"
+                  },
+                  {
+                    "concept": "163736AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "label": "Nearly every day"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Anxiety score rating:",
+              "id": "anxietyScore",
+              "questionOptions": {
+                "concept": "Anxiety score rating",
+                "rendering": "text",
+                "calculate": {
+                  "calculateExpression": "(!isEmpty(little_interest_in_doing_things) || !isEmpty(feeling_down_depressed) || !isEmpty(trouble_with_sleep) || !isEmpty(feelingTired) || !isEmpty(poorAppetite) || !isEmpty(troubled) || !isEmpty(feelingBad)|| !isEmpty(speakingSlowly)|| !isEmpty(betterDead)) && (little_interest_in_doing_things === '163734AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' ? 1 : little_interest_in_doing_things === '163735AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' ? 2 : little_interest_in_doing_things === '163736AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' ? 3 : 0) + (feeling_down_depressed === '163734AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' ? 1 : feeling_down_depressed === '163735AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' ? 2 :  feeling_down_depressed==='163736AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' ? 3 : 0) + (trouble_with_sleep === '163734AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' ? 1 : trouble_with_sleep === '163735AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' ? 2 : trouble_with_sleep === '163736AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' ? 3 : 0) + (feelingTired === '163734AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' ? 1 : feelingTired === '163735AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' ? 2 : feelingTired === '163736AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' ? 3 : 0) +(poorAppetite === '163734AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' ? 1 : poorAppetite === '163735AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' ? 2 : poorAppetite === '163736AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' ? 3 : 0) + (troubled === '163734AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' ? 1 : troubled === '163735AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' ? 2 : troubled === '163736AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' ? 3 : 0) + (feelingBad === '163734AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' ? 1 : feelingBad === '163735AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' ? 2 : feelingBad === '163736AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' ? 3 : 0) + (speakingSlowly === '163734AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' ? 1 : speakingSlowly === '163735AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' ? 2 : speakingSlowly === '163736AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' ? 3 : 0) + (betterDead === '163734AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' ? 1 : betterDead === '163735AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' ? 2 : betterDead === '163736AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' ? 3 : 0)"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "label": "CGI-S",
+          "isExpanded": false,
+          "questions": [
+            {
+              "label": "CGI-S score",
+              "type": "obs",
+              "required": false,
+              "id": "cgi_s_score",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "CGI-S score",
+                "conceptMappings": [],
+                "answers": [
+                  {
+                    "concept": "- Not assessed",
+                    "label": "- Not assessed"
+                  },
+                  {
+                    "concept": "- Normal/not ill",
+                    "label": "- Normal/not ill"
+                  },
+                  {
+                    "concept": "- Suspected mentally ill",
+                    "label": "- Suspected mentally ill"
+                  },
+                  {
+                    "concept": "- Mildly ill",
+                    "label": "- Mildly ill"
+                  },
+                  {
+                    "concept": "- Moderately ill",
+                    "label": "- Moderately ill"
+                  },
+                  {
+                    "concept": "- Markedly ill",
+                    "label": "- Markedly ill"
+                  },
+                  {
+                    "concept": "- Severely ill",
+                    "label": "- Severely ill"
+                  },
+                  {
+                    "concept": "- Extremely ill patient",
+                    "label": "- Extremely ill patient"
+                  }
+                ]
+              },
+              "validators": []
+            }
+          ]
+        },
+        {
+          "label": "Resilience & Coping",
+          "isExpanded": false,
+          "questions": [
+            {
+              "label": "Positive Functionality: Is the patient capable of being independent, caring for themselves (bathing/eating), going to work/school, etc.?",
+              "type": "obs",
+              "required": false,
+              "id": "positive_functionality_is_the_patient_capable_of_being_independent_caring_for_themselves_bathing_eating_going_to_work_school_etc_",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "Positive Functionality",
+                "conceptMappings": [],
+                "answers": [
+                  {
+                    "concept": "Yes",
+                    "label": "Yes"
+                  },
+                  {
+                    "concept": "No",
+                    "label": "No"
+                  }
+                ]
+              },
+              "validators": []
+            },
+            {
+              "label": "Internal Resources: Does the patient believe that they have the abilities needed to overcome the current problem / do they have hope for their future?",
+              "type": "obs",
+              "required": false,
+              "id": "internal_resources_does_the_patient_believe_that_they_have_the_abilities_needed_to_overcome_the_current_problem_do_they_have_hope_for_their_future_",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "Internal Resources",
+                "conceptMappings": [],
+                "answers": [
+                  {
+                    "concept": "Yes",
+                    "label": "Yes"
+                  },
+                  {
+                    "concept": "No",
+                    "label": "No"
+                  }
+                ]
+              },
+              "validators": []
+            },
+            {
+              "label": "External Resources: Does the patient believe that they have someone who they can rely on for help in their lives?",
+              "type": "obs",
+              "required": false,
+              "id": "external_resources_does_the_patient_believe_that_they_have_someone_who_they_can_rely_on_for_help_in_their_lives_",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "External Resources",
+                "conceptMappings": [],
+                "answers": [
+                  {
+                    "concept": "Yes",
+                    "label": "Yes"
+                  },
+                  {
+                    "concept": "No",
+                    "label": "No"
+                  }
+                ]
+              },
+              "validators": []
+            },
+            {
+              "label": "Spiritual / Moral Resources: Are the patient’s beliefs a source of strength for them when dealing with problems?",
+              "type": "obs",
+              "required": false,
+              "id": "spiritual_moral_resources_are_the_patient_s_beliefs_a_source_of_strength_for_them_when_dealing_with_problems_",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "Spiritual / Moral Resources",
+                "conceptMappings": [],
+                "answers": [
+                  {
+                    "concept": "Yes",
+                    "label": "Yes"
+                  },
+                  {
+                    "concept": "No",
+                    "label": "No"
+                  }
+                ]
+              },
+              "validators": []
+            }
+          ]
+        },
+        {
+          "label": "Risk Factors (in the last 6 months, except for question 8)",
+          "isExpanded": false,
+          "questions": [
+            {
+              "label": "Has the patient had thoughts of death or suicide?",
+              "type": "obs",
+              "required": false,
+              "id": "has_the_patient_had_thoughts_of_death_or_suicide",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "Has the patient had thoughts of death or suicide?",
+                "conceptMappings": [],
+                "answers": [
+                  {
+                    "concept": "Yes",
+                    "label": "Yes"
+                  },
+                  {
+                    "concept": "No",
+                    "label": "No"
+                  }
+                ]
+              },
+              "validators": []
+            },
+            {
+              "label": "Frequency",
+              "type": "obs",
+              "required": false,
+              "id": "frequency",
+              "questionOptions": {
+                "rendering": "text",
+                "concept": "Thoughts of death or suicide - Frequency",
+                "conceptMappings": [],
+                "answers": []
+              },
+              "validators": [],
+              "hide": {
+                "hideWhenExpression": "has_the_patient_had_thoughts_of_death_or_suicide !== 'Yes'"
+              }
+            },
+            {
+              "label": "Has the patient hurt themselves / caused self-harm?",
+              "type": "obs",
+              "required": false,
+              "id": "has_the_patient_hurt_themselves_caused_self_harm",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "Has the patient hurt themselves / caused self-harm?",
+                "conceptMappings": [],
+                "answers": [
+                  {
+                    "concept": "Yes",
+                    "label": "Yes"
+                  },
+                  {
+                    "concept": "No",
+                    "label": "No"
+                  }
+                ]
+              },
+              "validators": []
+            },
+            {
+              "label": "Type of behavior and frequency",
+              "type": "obs",
+              "required": false,
+              "id": "type_of_behavior_and_frequency",
+              "questionOptions": {
+                "rendering": "text",
+                "concept": "Patient hurt themselves / caused self-harm - Type of behavior and frequency",
+                "conceptMappings": [],
+                "answers": []
+              },
+              "validators": [],
+              "hide": {
+                "hideWhenExpression": "has_the_patient_hurt_themselves_caused_self_harm !== 'Yes'"
+              }
+            },
+            {
+              "label": "Has the patient attempted suicide or tried to kill themselves?",
+              "type": "obs",
+              "required": false,
+              "id": "has_the_patient_attempted_suicide_or_tried_to_kill_themselves",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "Has the patient attempted suicide or tried to kill themselves?",
+                "conceptMappings": [],
+                "answers": [
+                  {
+                    "concept": "Yes",
+                    "label": "Yes"
+                  },
+                  {
+                    "concept": "No",
+                    "label": "No"
+                  }
+                ]
+              },
+              "validators": []
+            },
+            {
+              "label": "Number of attempts and method",
+              "type": "obs",
+              "required": false,
+              "id": "number_of_attempts_and_method",
+              "questionOptions": {
+                "rendering": "text",
+                "concept": "Patient attempted suicide or tried to kill themselves - Number of attempts and method",
+                "conceptMappings": [],
+                "answers": []
+              },
+              "validators": [],
+              "hide": {
+                "hideWhenExpression": "has_the_patient_attempted_suicide_or_tried_to_kill_themselves !== 'Yes'"
+              }
+            },
+            {
+              "label": "Is the patient currently at risk of hurting himself/herself or attempting suicide?",
+              "type": "obs",
+              "required": false,
+              "id": "is_the_patient_currently_at_risk_of_hurting_himself_herself_or_attempting_suicide",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "Is the patient currently at risk of hurting himself/herself or attempting suicide?",
+                "conceptMappings": [],
+                "answers": [
+                  {
+                    "concept": "Yes",
+                    "label": "Yes"
+                  },
+                  {
+                    "concept": "No",
+                    "label": "No"
+                  }
+                ]
+              },
+              "validators": []
+            },
+            {
+              "label": "Action taken to reduce risk ",
+              "type": "obs",
+              "required": false,
+              "id": "action_taken_to_reduce_risk",
+              "questionOptions": {
+                "rendering": "text",
+                "concept": "Patient currently at risk of hurting himself/herself or attempting suicide - Action taken to reduce risk ",
+                "conceptMappings": [],
+                "answers": []
+              },
+              "validators": [],
+              "hide": {
+                "hideWhenExpression": "is_the_patient_currently_at_risk_of_hurting_himself_herself_or_attempting_suicide !== 'Yes'"
+              }
+            },
+            {
+              "label": "Is the patient currently at risk of hurting others?",
+              "type": "obs",
+              "required": false,
+              "id": "is_the_patient_currently_at_risk_of_hurting_others",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "Is the patient currently at risk of hurting others?",
+                "conceptMappings": [],
+                "answers": [
+                  {
+                    "concept": "Yes",
+                    "label": "Yes"
+                  },
+                  {
+                    "concept": "No",
+                    "label": "No"
+                  }
+                ]
+              },
+              "validators": []
+            },
+            {
+              "label": "Action taken to reduce risk ",
+              "type": "obs",
+              "required": false,
+              "id": "action_taken_to_reduce_risk_of_hurting_others",
+              "questionOptions": {
+                "rendering": "text",
+                "concept": "Patient currently at risk of hurting others - Action taken to reduce risk ",
+                "conceptMappings": [],
+                "answers": []
+              },
+              "validators": [],
+              "hide": {
+                "hideWhenExpression": "is_the_patient_currently_at_risk_of_hurting_others !== 'Yes'"
+              }
+            },
+            {
+              "label": "Does the patient regularly use alcohol / substances to become intoxicated?",
+              "type": "obs",
+              "required": false,
+              "id": "does_the_patient_regularly_use_alcohol_substances_to_become_intoxicated",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "Does the patient regularly use alcohol / substances to become intoxicated?",
+                "conceptMappings": [],
+                "answers": [
+                  {
+                    "concept": "Yes",
+                    "label": "Yes"
+                  },
+                  {
+                    "concept": "No",
+                    "label": "No"
+                  }
+                ]
+              },
+              "validators": []
+            },
+            {
+              "label": "Type of substance and frequency ",
+              "type": "obs",
+              "required": false,
+              "id": "type_of_substance_and_frequency_",
+              "questionOptions": {
+                "rendering": "text",
+                "concept": "Patient regularly uses alcohol / substances to become intoxicated - Type of substance and frequency ",
+                "conceptMappings": [],
+                "answers": []
+              },
+              "validators": [],
+              "hide": {
+                "hideWhenExpression": "does_the_patient_regularly_use_alcohol_substances_to_become_intoxicated !== 'Yes'"
+              }
+            },
+            {
+              "label": "Is the patient currently on psychotropic / psychiatric medication?",
+              "type": "obs",
+              "required": false,
+              "id": "is_the_patient_currently_on_psychotropic_psychiatric_medication",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "Is the patient currently on psychotropic / psychiatric medication?",
+                "conceptMappings": [],
+                "answers": [
+                  {
+                    "concept": "Yes",
+                    "label": "Yes"
+                  },
+                  {
+                    "concept": "No",
+                    "label": "No"
+                  }
+                ]
+              },
+              "validators": []
+            },
+            {
+              "label": "Prescribed by",
+              "type": "obs",
+              "required": false,
+              "id": "prescribed_by",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "Patient currently on psychotropic / psychiatric medication - Prescribed by",
+                "conceptMappings": [],
+                "answers": [
+                  {
+                    "concept": "MSF",
+                    "label": "MSF"
+                  },
+                  {
+                    "concept": "Non MSF",
+                    "label": "Non MSF"
+                  }
+                ]
+              },
+              "validators": [],
+              "hide": {
+                "hideWhenExpression": "is_the_patient_currently_on_psychotropic_psychiatric_medication !== 'Yes'"
+              }
+            },
+            {
+              "label": "Has the patient experienced an act of aggression or violence?",
+              "type": "obs",
+              "required": false,
+              "id": "has_the_patient_experienced_an_act_of_aggression_or_violence",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "Has the patient experienced an act of aggression or violence?",
+                "conceptMappings": [],
+                "answers": [
+                  {
+                    "concept": "Yes",
+                    "label": "Yes"
+                  },
+                  {
+                    "concept": "No",
+                    "label": "No"
+                  }
+                ]
+              },
+              "validators": []
+            },
+            {
+              "label": "What type(s) of violence?",
+              "type": "obs",
+              "required": false,
+              "id": "what_types_of_violence",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "Patient experienced an act of aggression or violence - What type(s) of violence?",
+                "conceptMappings": [],
+                "answers": [
+                  {
+                    "concept": "Sexual",
+                    "label": "Sexual"
+                  },
+                  {
+                    "concept": "Physical",
+                    "label": "Physical"
+                  },
+                  {
+                    "concept": "Verbal",
+                    "label": "Verbal"
+                  },
+                  {
+                    "concept": "Psychological",
+                    "label": "Psychological"
+                  },
+                  {
+                    "concept": "Other",
+                    "label": "Other"
+                  }
+                ]
+              },
+              "validators": [],
+              "hide": {
+                "hideWhenExpression": "has_the_patient_experienced_an_act_of_aggression_or_violence !== 'Yes'"
+              }
+            },
+            {
+              "label": "Time between violence event and consultation",
+              "type": "obs",
+              "required": false,
+              "id": "time_between_violence_event_and_consultation",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "Patient experienced an act of aggression or violence - Time between violence event and consultation",
+                "conceptMappings": [],
+                "answers": [
+                  {
+                    "concept": "Less than 1 month",
+                    "label": "Less than 1 month"
+                  },
+                  {
+                    "concept": "Less than 1 year",
+                    "label": "Less than 1 year"
+                  },
+                  {
+                    "concept": ">= 1 year",
+                    "label": ">= 1 year"
+                  },
+                  {
+                    "concept": "Unknown",
+                    "label": "Unknown"
+                  }
+                ]
+              },
+              "validators": [],
+              "hide": {
+                "hideWhenExpression": "has_the_patient_experienced_an_act_of_aggression_or_violence !== 'Yes'"
+              }
+            },
+            {
+              "label": "If yes, would the patient like a referral to the medical department for treatment (or midwife/maternity for sexual violence)?",
+              "type": "obs",
+              "required": false,
+              "id": "would_the_patient_like_a_referral_to_the_medical_department_for_treatment",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "Would the patient like a referral to the medical department for treatment?",
+                "conceptMappings": [],
+                "answers": [
+                  {
+                    "concept": "Yes",
+                    "label": "Yes"
+                  },
+                  {
+                    "concept": "No",
+                    "label": "No"
+                  }
+                ]
+              },
+              "validators": [],
+              "hide": {
+                "hideWhenExpression": "what_types_of_violence !== 'Sexual'"
+              }
+            },
+            {
+              "label": "Action taken",
+              "type": "obs",
+              "required": false,
+              "id": "action_taken",
+              "questionOptions": {
+                "rendering": "text",
+                "concept": "Patient would like a referral to the medical department for treatment - Action taken",
+                "conceptMappings": [],
+                "answers": []
+              },
+              "validators": [],
+              "hide": {
+                "hideWhenExpression": "what_types_of_violence !== 'Sexual'"
+              }
+            },
+            {
+              "label": "Other type of violence",
+              "type": "obs",
+              "required": false,
+              "id": "other_type_of_violence",
+              "questionOptions": {
+                "rendering": "text",
+                "concept": "Other type of violence",
+                "conceptMappings": [],
+                "answers": []
+              },
+              "validators": [],
+              "hide": {
+                "hideWhenExpression": "what_types_of_violence !== 'Other'"
+              }
+            }
+          ]
+        },
+        {
+          "label": "Past / Precipitating Events (possible reasons or causes linked to current problem)",
+          "isExpanded": false,
+          "questions": [
+            {
+              "label": "Medical conditions",
+              "type": "obs",
+              "required": false,
+              "id": "medical_conditions",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "Past / Precipitating Events - Medical conditions",
+                "conceptMappings": [],
+                "answers": [
+                  {
+                    "concept": "Highly stigmatizing disease (HIV/AIDS, FHF, cancer, etc)",
+                    "label": "Highly stigmatizing disease (HIV/AIDS, FHF, cancer, etc)"
+                  },
+                  {
+                    "concept": "Severe medical condition (malnutrition, disability, sexual or reproductive problems, etc)",
+                    "label": "Severe medical condition (malnutrition, disability, sexual or reproductive problems, etc)"
+                  },
+                  {
+                    "concept": "Unwanted pregnancy",
+                    "label": "Unwanted pregnancy"
+                  },
+                  {
+                    "concept": "History of psychiatric problems",
+                    "label": "History of psychiatric problems"
+                  },
+                  {
+                    "concept": "Chronic disease (diabetes, hypertension, cancer, etc) ",
+                    "label": "Chronic disease (diabetes, hypertension, cancer, etc) "
+                  },
+                  {
+                    "concept": "Family member with a serious medical condition",
+                    "label": "Family member with a serious medical condition"
+                  }
+                ]
+              },
+              "validators": []
+            },
+            {
+              "label": "Violence",
+              "type": "obs",
+              "required": false,
+              "id": "violence",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "Past / Precipitating Events - Violence",
+                "conceptMappings": [],
+                "answers": [
+                  {
+                    "concept": "Sexual violence within the family",
+                    "label": "Sexual violence within the family"
+                  },
+                  {
+                    "concept": "Sexual violence outside the family",
+                    "label": "Sexual violence outside the family"
+                  },
+                  {
+                    "concept": "Exposed to war",
+                    "label": "Exposed to war"
+                  },
+                  {
+                    "concept": "Incarceration/detention",
+                    "label": "Incarceration/detention"
+                  },
+                  {
+                    "concept": "Hostage/kidnapping/forced recruitment",
+                    "label": "Hostage/kidnapping/forced recruitment"
+                  },
+                  {
+                    "concept": "Deportation",
+                    "label": "Deportation"
+                  },
+                  {
+                    "concept": "Domestic violence",
+                    "label": "Domestic violence"
+                  },
+                  {
+                    "concept": "Victim of threats",
+                    "label": "Victim of threats"
+                  },
+                  {
+                    "concept": "Victim of human trafficking or smuggling",
+                    "label": "Victim of human trafficking or smuggling"
+                  },
+                  {
+                    "concept": "Witness violence/killings/threats",
+                    "label": "Witness violence/killings/threats"
+                  },
+                  {
+                    "concept": "Forced to flee (IDP/refugee/migrant)",
+                    "label": "Forced to flee (IDP/refugee/migrant)"
+                  },
+                  {
+                    "concept": "Target of stigma/discrimination/marginalization",
+                    "label": "Target of stigma/discrimination/marginalization"
+                  },
+                  {
+                    "concept": "Other violence (wounded/beaten/torture)",
+                    "label": "Other violence (wounded/beaten/torture)"
+                  },
+                  {
+                    "concept": "Forced curfew or confinement",
+                    "label": "Forced curfew or confinement"
+                  },
+                  {
+                    "concept": "History of suicide attempts",
+                    "label": "History of suicide attempts"
+                  },
+                  {
+                    "concept": "History of self-harm/mutilation",
+                    "label": "History of self-harm/mutilation"
+                  },
+                  {
+                    "concept": "Family members lived a violent experience",
+                    "label": "Family members lived a violent experience"
+                  },
+                  {
+                    "concept": "Adult forced marriage ",
+                    "label": "Adult forced marriage "
+                  },
+                  {
+                    "concept": "Child marriage",
+                    "label": "Child marriage"
+                  }
+                ]
+              },
+              "validators": []
+            },
+            {
+              "label": "Separation or loss",
+              "type": "obs",
+              "required": false,
+              "id": "separation_or_loss",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "Past / Precipitating Events - Separation or loss",
+                "conceptMappings": [],
+                "answers": [
+                  {
+                    "concept": "Family member killed or missing (arrested / detained / disappeared) ",
+                    "label": "Family member killed or missing (arrested / detained / disappeared) "
+                  },
+                  {
+                    "concept": "Unaccompanied minor or orphaned",
+                    "label": "Unaccompanied minor or orphaned"
+                  },
+                  {
+                    "concept": "Negligence of caretakers",
+                    "label": "Negligence of caretakers"
+                  },
+                  {
+                    "concept": "Property destroyed or lost",
+                    "label": "Property destroyed or lost"
+                  },
+                  {
+                    "concept": "Loss of income",
+                    "label": "Loss of income"
+                  },
+                  {
+                    "concept": "Death of family member (natural or accidental death)",
+                    "label": "Death of family member (natural or accidental death)"
+                  },
+                  {
+                    "concept": "Relationship problems",
+                    "label": "Relationship problems"
+                  },
+                  {
+                    "concept": "Divorce/separation",
+                    "label": "Divorce/separation"
+                  },
+                  {
+                    "concept": "Migration due to financial reasons",
+                    "label": "Migration due to financial reasons"
+                  }
+                ]
+              },
+              "validators": []
+            },
+            {
+              "label": "Disaster",
+              "type": "obs",
+              "required": false,
+              "id": "disaster",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "Past / Precipitating Events - Disaster",
+                "conceptMappings": [],
+                "answers": [
+                  {
+                    "concept": "Natural disaster (earthquake, tsunami, flood, hurricane etc)",
+                    "label": "Natural disaster (earthquake, tsunami, flood, hurricane etc)"
+                  },
+                  {
+                    "concept": "Road accident",
+                    "label": "Road accident"
+                  }
+                ]
+              },
+              "validators": []
+            },
+            {
+              "label": "5. Other",
+              "type": "obs",
+              "required": false,
+              "id": "5_other",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "Past / Precipitating Events - Other",
+                "conceptMappings": [],
+                "answers": [
+                  {
+                    "concept": "Financial problems",
+                    "label": "Financial problems"
+                  },
+                  {
+                    "concept": "Difficult living conditions",
+                    "label": "Difficult living conditions"
+                  },
+                  {
+                    "concept": "Other",
+                    "label": "Other"
+                  }
+                ]
+              },
+              "validators": []
+            },
+            {
+              "label": "Other Past or Precipitating Events",
+              "type": "obs",
+              "required": false,
+              "id": "other_past_event_answer",
+              "questionOptions": {
+                "rendering": "text",
+                "concept": "Other Past or Precipitating Events",
+                "conceptMappings": [],
+                "answers": []
+              },
+              "validators": [],
+              "hide": {
+                "hideWhenExpression": "5_other !== 'Other'"
+              }
+            }
+          ]
+        },
+        {
+          "label": "Prioritize and write down the code of the three main past or precipitating events",
+          "isExpanded": false,
+          "questions": [
+            {
+              "label": "Main past or precipitating events - 1",
+              "type": "obs",
+              "required": false,
+              "id": "main_past_or_precipitating_events_1",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "Main past or precipitating events - 1",
+                "conceptMappings": [],
+                "answers": [
+                  {
+                    "concept": "Highly stigmatizing disease (HIV/AIDS, FHF, cancer, etc)",
+                    "label": "Highly stigmatizing disease (HIV/AIDS, FHF, cancer, etc)"
+                  },
+                  {
+                    "concept": "Severe medical condition (malnutrition, disability, sexual or reproductive problems, etc)",
+                    "label": "Severe medical condition (malnutrition, disability, sexual or reproductive problems, etc)"
+                  },
+                  {
+                    "concept": "Unwanted pregnancy",
+                    "label": "Unwanted pregnancy"
+                  },
+                  {
+                    "concept": "History of psychiatric problems",
+                    "label": "History of psychiatric problems"
+                  },
+                  {
+                    "concept": "Chronic disease (diabetes, hypertension, cancer, etc) ",
+                    "label": "Chronic disease (diabetes, hypertension, cancer, etc) "
+                  },
+                  {
+                    "concept": "Family member with a serious medical condition",
+                    "label": "Family member with a serious medical condition"
+                  },
+                  {
+                    "concept": "Sexual violence within the family",
+                    "label": "Sexual violence within the family"
+                  },
+                  {
+                    "concept": "Sexual violence outside the family",
+                    "label": "Sexual violence outside the family"
+                  },
+                  {
+                    "concept": "Exposed to war",
+                    "label": "Exposed to war"
+                  },
+                  {
+                    "concept": "Incarceration/detention",
+                    "label": "Incarceration/detention"
+                  },
+                  {
+                    "concept": "Hostage/kidnapping/forced recruitment",
+                    "label": "Hostage/kidnapping/forced recruitment"
+                  },
+                  {
+                    "concept": "Deportation",
+                    "label": "Deportation"
+                  },
+                  {
+                    "concept": "Domestic violence",
+                    "label": "Domestic violence"
+                  },
+                  {
+                    "concept": "Victim of threats",
+                    "label": "Victim of threats"
+                  },
+                  {
+                    "concept": "Victim of human trafficking or smuggling",
+                    "label": "Victim of human trafficking or smuggling"
+                  },
+                  {
+                    "concept": "Witness violence/killings/threats",
+                    "label": "Witness violence/killings/threats"
+                  },
+                  {
+                    "concept": "Forced to flee (IDP/refugee/migrant)",
+                    "label": "Forced to flee (IDP/refugee/migrant)"
+                  },
+                  {
+                    "concept": "Target of stigma/discrimination/marginalization",
+                    "label": "Target of stigma/discrimination/marginalization"
+                  },
+                  {
+                    "concept": "Other violence (wounded/beaten/torture)",
+                    "label": "Other violence (wounded/beaten/torture)"
+                  },
+                  {
+                    "concept": "Forced curfew or confinement",
+                    "label": "Forced curfew or confinement"
+                  },
+                  {
+                    "concept": "History of suicide attempts",
+                    "label": "History of suicide attempts"
+                  },
+                  {
+                    "concept": "History of self-harm/mutilation",
+                    "label": "History of self-harm/mutilation"
+                  },
+                  {
+                    "concept": "Family members lived a violent experience",
+                    "label": "Family members lived a violent experience"
+                  },
+                  {
+                    "concept": "Adult forced marriage ",
+                    "label": "Adult forced marriage "
+                  },
+                  {
+                    "concept": "Child marriage",
+                    "label": "Child marriage"
+                  },
+                  {
+                    "concept": "Family member killed or missing (arrested / detained / disappeared) ",
+                    "label": "Family member killed or missing (arrested / detained / disappeared) "
+                  },
+                  {
+                    "concept": "Unaccompanied minor or orphaned",
+                    "label": "Unaccompanied minor or orphaned"
+                  },
+                  {
+                    "concept": "Negligence of caretakers",
+                    "label": "Negligence of caretakers"
+                  },
+                  {
+                    "concept": "Property destroyed or lost",
+                    "label": "Property destroyed or lost"
+                  },
+                  {
+                    "concept": "Loss of income",
+                    "label": "Loss of income"
+                  },
+                  {
+                    "concept": "Death of family member (natural or accidental death)",
+                    "label": "Death of family member (natural or accidental death)"
+                  },
+                  {
+                    "concept": "Relationship problems",
+                    "label": "Relationship problems"
+                  },
+                  {
+                    "concept": "Divorce/separation",
+                    "label": "Divorce/separation"
+                  },
+                  {
+                    "concept": "Migration due to financial reasons",
+                    "label": "Migration due to financial reasons"
+                  },
+                  {
+                    "concept": "Natural disaster (earthquake, tsunami, flood, hurricane etc)",
+                    "label": "Natural disaster (earthquake, tsunami, flood, hurricane etc)"
+                  },
+                  {
+                    "concept": "Road accident",
+                    "label": "Road accident"
+                  },
+                  {
+                    "concept": "Financial problems",
+                    "label": "Financial problems"
+                  },
+                  {
+                    "concept": "Difficult living conditions",
+                    "label": "Difficult living conditions"
+                  },
+                  {
+                    "concept": "Other",
+                    "label": "Other"
+                  }
+                ]
+              },
+              "validators": []
+            },
+            {
+              "label": "Main past or precipitating events - 2",
+              "type": "obs",
+              "required": false,
+              "id": "main_past_or_precipitating_events_2",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "Main past or precipitating events - 2",
+                "conceptMappings": [],
+                "answers": [
+                  {
+                    "concept": "Highly stigmatizing disease (HIV/AIDS, FHF, cancer, etc)",
+                    "label": "Highly stigmatizing disease (HIV/AIDS, FHF, cancer, etc)"
+                  },
+                  {
+                    "concept": "Severe medical condition (malnutrition, disability, sexual or reproductive problems, etc)",
+                    "label": "Severe medical condition (malnutrition, disability, sexual or reproductive problems, etc)"
+                  },
+                  {
+                    "concept": "Unwanted pregnancy",
+                    "label": "Unwanted pregnancy"
+                  },
+                  {
+                    "concept": "History of psychiatric problems",
+                    "label": "History of psychiatric problems"
+                  },
+                  {
+                    "concept": "Chronic disease (diabetes, hypertension, cancer, etc) ",
+                    "label": "Chronic disease (diabetes, hypertension, cancer, etc) "
+                  },
+                  {
+                    "concept": "Family member with a serious medical condition",
+                    "label": "Family member with a serious medical condition"
+                  },
+                  {
+                    "concept": "Sexual violence within the family",
+                    "label": "Sexual violence within the family"
+                  },
+                  {
+                    "concept": "Sexual violence outside the family",
+                    "label": "Sexual violence outside the family"
+                  },
+                  {
+                    "concept": "Exposed to war",
+                    "label": "Exposed to war"
+                  },
+                  {
+                    "concept": "Incarceration/detention",
+                    "label": "Incarceration/detention"
+                  },
+                  {
+                    "concept": "Hostage/kidnapping/forced recruitment",
+                    "label": "Hostage/kidnapping/forced recruitment"
+                  },
+                  {
+                    "concept": "Deportation",
+                    "label": "Deportation"
+                  },
+                  {
+                    "concept": "Domestic violence",
+                    "label": "Domestic violence"
+                  },
+                  {
+                    "concept": "Victim of threats",
+                    "label": "Victim of threats"
+                  },
+                  {
+                    "concept": "Victim of human trafficking or smuggling",
+                    "label": "Victim of human trafficking or smuggling"
+                  },
+                  {
+                    "concept": "Witness violence/killings/threats",
+                    "label": "Witness violence/killings/threats"
+                  },
+                  {
+                    "concept": "Forced to flee (IDP/refugee/migrant)",
+                    "label": "Forced to flee (IDP/refugee/migrant)"
+                  },
+                  {
+                    "concept": "Target of stigma/discrimination/marginalization",
+                    "label": "Target of stigma/discrimination/marginalization"
+                  },
+                  {
+                    "concept": "Other violence (wounded/beaten/torture)",
+                    "label": "Other violence (wounded/beaten/torture)"
+                  },
+                  {
+                    "concept": "Forced curfew or confinement",
+                    "label": "Forced curfew or confinement"
+                  },
+                  {
+                    "concept": "History of suicide attempts",
+                    "label": "History of suicide attempts"
+                  },
+                  {
+                    "concept": "History of self-harm/mutilation",
+                    "label": "History of self-harm/mutilation"
+                  },
+                  {
+                    "concept": "Family members lived a violent experience",
+                    "label": "Family members lived a violent experience"
+                  },
+                  {
+                    "concept": "Adult forced marriage ",
+                    "label": "Adult forced marriage "
+                  },
+                  {
+                    "concept": "Child marriage",
+                    "label": "Child marriage"
+                  },
+                  {
+                    "concept": "Family member killed or missing (arrested / detained / disappeared) ",
+                    "label": "Family member killed or missing (arrested / detained / disappeared) "
+                  },
+                  {
+                    "concept": "Unaccompanied minor or orphaned",
+                    "label": "Unaccompanied minor or orphaned"
+                  },
+                  {
+                    "concept": "Negligence of caretakers",
+                    "label": "Negligence of caretakers"
+                  },
+                  {
+                    "concept": "Property destroyed or lost",
+                    "label": "Property destroyed or lost"
+                  },
+                  {
+                    "concept": "Loss of income",
+                    "label": "Loss of income"
+                  },
+                  {
+                    "concept": "Death of family member (natural or accidental death)",
+                    "label": "Death of family member (natural or accidental death)"
+                  },
+                  {
+                    "concept": "Relationship problems",
+                    "label": "Relationship problems"
+                  },
+                  {
+                    "concept": "Divorce/separation",
+                    "label": "Divorce/separation"
+                  },
+                  {
+                    "concept": "Migration due to financial reasons",
+                    "label": "Migration due to financial reasons"
+                  },
+                  {
+                    "concept": "Natural disaster (earthquake, tsunami, flood, hurricane etc)",
+                    "label": "Natural disaster (earthquake, tsunami, flood, hurricane etc)"
+                  },
+                  {
+                    "concept": "Road accident",
+                    "label": "Road accident"
+                  },
+                  {
+                    "concept": "Financial problems",
+                    "label": "Financial problems"
+                  },
+                  {
+                    "concept": "Difficult living conditions",
+                    "label": "Difficult living conditions"
+                  },
+                  {
+                    "concept": "Other",
+                    "label": "Other"
+                  }
+                ]
+              },
+              "validators": []
+            },
+            {
+              "label": "Main past or precipitating events - 3",
+              "type": "obs",
+              "required": false,
+              "id": "main_past_or_precipitating_events_3",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "Main past or precipitating events - 3",
+                "conceptMappings": [],
+                "answers": [
+                  {
+                    "concept": "Highly stigmatizing disease (HIV/AIDS, FHF, cancer, etc)",
+                    "label": "Highly stigmatizing disease (HIV/AIDS, FHF, cancer, etc)"
+                  },
+                  {
+                    "concept": "Severe medical condition (malnutrition, disability, sexual or reproductive problems, etc)",
+                    "label": "Severe medical condition (malnutrition, disability, sexual or reproductive problems, etc)"
+                  },
+                  {
+                    "concept": "Unwanted pregnancy",
+                    "label": "Unwanted pregnancy"
+                  },
+                  {
+                    "concept": "History of psychiatric problems",
+                    "label": "History of psychiatric problems"
+                  },
+                  {
+                    "concept": "Chronic disease (diabetes, hypertension, cancer, etc) ",
+                    "label": "Chronic disease (diabetes, hypertension, cancer, etc) "
+                  },
+                  {
+                    "concept": "Family member with a serious medical condition",
+                    "label": "Family member with a serious medical condition"
+                  },
+                  {
+                    "concept": "Sexual violence within the family",
+                    "label": "Sexual violence within the family"
+                  },
+                  {
+                    "concept": "Sexual violence outside the family",
+                    "label": "Sexual violence outside the family"
+                  },
+                  {
+                    "concept": "Exposed to war",
+                    "label": "Exposed to war"
+                  },
+                  {
+                    "concept": "Incarceration/detention",
+                    "label": "Incarceration/detention"
+                  },
+                  {
+                    "concept": "Hostage/kidnapping/forced recruitment",
+                    "label": "Hostage/kidnapping/forced recruitment"
+                  },
+                  {
+                    "concept": "Deportation",
+                    "label": "Deportation"
+                  },
+                  {
+                    "concept": "Domestic violence",
+                    "label": "Domestic violence"
+                  },
+                  {
+                    "concept": "Victim of threats",
+                    "label": "Victim of threats"
+                  },
+                  {
+                    "concept": "Victim of human trafficking or smuggling",
+                    "label": "Victim of human trafficking or smuggling"
+                  },
+                  {
+                    "concept": "Witness violence/killings/threats",
+                    "label": "Witness violence/killings/threats"
+                  },
+                  {
+                    "concept": "Forced to flee (IDP/refugee/migrant)",
+                    "label": "Forced to flee (IDP/refugee/migrant)"
+                  },
+                  {
+                    "concept": "Target of stigma/discrimination/marginalization",
+                    "label": "Target of stigma/discrimination/marginalization"
+                  },
+                  {
+                    "concept": "Other violence (wounded/beaten/torture)",
+                    "label": "Other violence (wounded/beaten/torture)"
+                  },
+                  {
+                    "concept": "Forced curfew or confinement",
+                    "label": "Forced curfew or confinement"
+                  },
+                  {
+                    "concept": "History of suicide attempts",
+                    "label": "History of suicide attempts"
+                  },
+                  {
+                    "concept": "History of self-harm/mutilation",
+                    "label": "History of self-harm/mutilation"
+                  },
+                  {
+                    "concept": "Family members lived a violent experience",
+                    "label": "Family members lived a violent experience"
+                  },
+                  {
+                    "concept": "Adult forced marriage ",
+                    "label": "Adult forced marriage "
+                  },
+                  {
+                    "concept": "Child marriage",
+                    "label": "Child marriage"
+                  },
+                  {
+                    "concept": "Family member killed or missing (arrested / detained / disappeared) ",
+                    "label": "Family member killed or missing (arrested / detained / disappeared) "
+                  },
+                  {
+                    "concept": "Unaccompanied minor or orphaned",
+                    "label": "Unaccompanied minor or orphaned"
+                  },
+                  {
+                    "concept": "Negligence of caretakers",
+                    "label": "Negligence of caretakers"
+                  },
+                  {
+                    "concept": "Property destroyed or lost",
+                    "label": "Property destroyed or lost"
+                  },
+                  {
+                    "concept": "Loss of income",
+                    "label": "Loss of income"
+                  },
+                  {
+                    "concept": "Death of family member (natural or accidental death)",
+                    "label": "Death of family member (natural or accidental death)"
+                  },
+                  {
+                    "concept": "Relationship problems",
+                    "label": "Relationship problems"
+                  },
+                  {
+                    "concept": "Divorce/separation",
+                    "label": "Divorce/separation"
+                  },
+                  {
+                    "concept": "Migration due to financial reasons",
+                    "label": "Migration due to financial reasons"
+                  },
+                  {
+                    "concept": "Natural disaster (earthquake, tsunami, flood, hurricane etc)",
+                    "label": "Natural disaster (earthquake, tsunami, flood, hurricane etc)"
+                  },
+                  {
+                    "concept": "Road accident",
+                    "label": "Road accident"
+                  },
+                  {
+                    "concept": "Financial problems",
+                    "label": "Financial problems"
+                  },
+                  {
+                    "concept": "Difficult living conditions",
+                    "label": "Difficult living conditions"
+                  },
+                  {
+                    "concept": "Other",
+                    "label": "Other"
+                  }
+                ]
+              },
+              "validators": []
+            },
+            {
+              "label": "Main category of precipitating event",
+              "type": "obs",
+              "required": false,
+              "id": "main_category_of_precipitating_event",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "Main category of precipitating event",
+                "conceptMappings": [],
+                "answers": [
+                  {
+                    "concept": "Medical Conditions",
+                    "label": "Medical Conditions"
+                  },
+                  {
+                    "concept": "Violence",
+                    "label": "Violence"
+                  },
+                  {
+                    "concept": "Separation or Loss",
+                    "label": "Separation or Loss"
+                  },
+                  {
+                    "concept": "Disaster",
+                    "label": "Disaster"
+                  },
+                  {
+                    "concept": "Other",
+                    "label": "Other"
+                  }
+                ]
+              },
+              "validators": []
+            },
+            {
+              "label": "Relevant details of the past / precipitating events",
+              "type": "obs",
+              "required": false,
+              "id": "relevant_details_of_the_past_precipitating_events",
+              "questionOptions": {
+                "rendering": "text",
+                "concept": "Relevant details of the past / precipitating events",
+                "conceptMappings": [],
+                "answers": []
+              },
+              "validators": []
+            }
+          ]
+        },
+        {
+          "label": "Intervention",
+          "isExpanded": false,
+          "questions": [
+            {
+              "label": "Overall Goals for therapy (what are you trying to accomplish over several sessions with the patient? Try to be specific & define these with the patient)",
+              "type": "obs",
+              "required": false,
+              "id": "overall_goals_for_therapy_what_are_you_trying_to_accomplish_over_several_sessions_with_the_patient_try_to_be_specific_define_these_with_the_patient_",
+              "questionOptions": {
+                "rendering": "text",
+                "concept": "Overall goals for therapy",
+                "conceptMappings": [],
+                "answers": []
+              },
+              "validators": []
+            },
+            {
+              "label": "Today’s Session (what did you do today in session?)",
+              "type": "obs",
+              "required": false,
+              "id": "today_s_session_what_did_you_do_today_in_session_",
+              "questionOptions": {
+                "rendering": "text",
+                "concept": "Today’s session",
+                "conceptMappings": [],
+                "answers": []
+              },
+              "validators": []
+            },
+            {
+              "label": "Homework (what will the patient do before next session?)",
+              "type": "obs",
+              "required": false,
+              "id": "homework_what_will_the_patient_do_before_next_session_",
+              "questionOptions": {
+                "rendering": "text",
+                "concept": "Homework",
+                "conceptMappings": [],
+                "answers": []
+              },
+              "validators": []
+            }
+          ]
+        },
+        {
+          "label": "Follow-up",
+          "isExpanded": false,
+          "questions": [
+            {
+              "label": "Follow up session required? (If no, fill the Exit form)",
+              "type": "obs",
+              "required": false,
+              "id": "follow_up_session_required",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "Follow up session required?",
+                "conceptMappings": [],
+                "answers": [
+                  {
+                    "concept": "Yes",
+                    "label": "Yes"
+                  },
+                  {
+                    "concept": "No",
+                    "label": "No"
+                  }
+                ]
+              },
+              "validators": []
+            },
+            {
+              "label": "Next session date",
+              "type": "obs",
+              "required": false,
+              "id": "next_session_date",
+              "questionOptions": {
+                "rendering": "date",
+                "concept": "Next session date",
+                "conceptMappings": [],
+                "answers": []
+              },
+              "validators": [],
+              "hide": {
+                "hideWhenExpression": "follow_up_session_required !== 'Yes'"
+              }
+            },
+            {
+              "label": "Referral done",
+              "type": "obs",
+              "required": false,
+              "id": "referral_done",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "Referral done",
+                "conceptMappings": [],
+                "answers": [
+                  {
+                    "concept": "Yes",
+                    "label": "Yes"
+                  },
+                  {
+                    "concept": "No",
+                    "label": "No"
+                  }
+                ]
+              },
+              "validators": []
+            },
+            {
+              "label": "Type of referral",
+              "type": "obs",
+              "required": false,
+              "id": "type_of_referral",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "Type of referral",
+                "conceptMappings": [],
+                "answers": [
+                  {
+                    "concept": "Medical care (MSF, MoH, NGO)",
+                    "label": "Medical care (MSF, MoH, NGO)"
+                  },
+                  {
+                    "concept": "MSF psychiatric services",
+                    "label": "MSF psychiatric services"
+                  },
+                  {
+                    "concept": "Non-MSF psychiatrist services",
+                    "label": "Non-MSF psychiatrist services"
+                  },
+                  {
+                    "concept": "Social services",
+                    "label": "Social services"
+                  },
+                  {
+                    "concept": "Legal services",
+                    "label": "Legal services"
+                  },
+                  {
+                    "concept": "Protection services",
+                    "label": "Protection services"
+                  },
+                  {
+                    "concept": "Hospitalisation",
+                    "label": "Hospitalisation"
+                  },
+                  {
+                    "concept": "CHW",
+                    "label": "CHW"
+                  },
+                  {
+                    "concept": "Other",
+                    "label": "Other"
+                  }
+                ]
+              },
+              "validators": [],
+              "hide": {
+                "hideWhenExpression": "referral_done !== 'Yes'"
+              }
+            },
+            {
+              "label": "Other type of referral",
+              "type": "obs",
+              "required": false,
+              "id": "other_type_of_referral",
+              "questionOptions": {
+                "rendering": "text",
+                "concept": "Other type of referral",
+                "conceptMappings": [],
+                "answers": []
+              },
+              "validators": [],
+              "hide": {
+                "hideWhenExpression": "type_of_referral !== 'Other'"
+              }
+            },
+            {
+              "label": "Reason for referral",
+              "type": "obs",
+              "required": false,
+              "id": "reason_for_referral",
+              "questionOptions": {
+                "rendering": "text",
+                "concept": "Reason for referral",
+                "conceptMappings": [],
+                "answers": []
+              },
+              "validators": [],
+              "hide": {
+                "hideWhenExpression": "referral_done !== 'Yes'"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "encounterType": "dd528487-82a5-4082-9c72-ed246bd49591"
+}
