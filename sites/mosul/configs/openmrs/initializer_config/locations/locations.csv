@@ -1,0 +1,7 @@
+Uuid,Void/Retire,Name,Description,Parent,Tags,Tag|Facility Location,Attribute|9eca4f4e-707f-4bb8-8289-2f9b6e93803c,Attribute|Last Audit Date,Address 1,Address 2,Address 3,Address 4,Address 5,Address 6,City/Village,County/District,State/Province,Postal Code,Country,_order:1000
+ee7770e4-57d6-42db-886e-cdba2954dd70,,Emergency Room (ER),Emergency Room (ER),,Login Location,TRUE,,,,,,,,,,,,,,
+cf6fa7d4-1f19-4c85-ac50-ff824805c51c,,Mental Health (MH),Mental Health (MH),,Login Location;Appointment Location,TRUE,,,,,,,,,,,,,,
+0632a4e3-aa42-46f2-8dea-2d3aec764755,,Maternity (MAT),Maternity (MAT),,Login Location,TRUE,,,,,,,,,,,,,,
+03ec3455-1dd2-40e2-8a99-e052f5ced04c,,Triage (TRI),Triage (TRI),,Login Location,TRUE,,,,,,,,,,,,,,
+ba685651-ed3b-4e63-9b35-78893060758a,,Inpatient Ward (IPD),Inpatient Ward (IPD),,Login Location,TRUE,,,,,,,,,,,,,,
+50601d04-e1cd-4c09-b1b8-2058d8342957,,Registration Counter (REG) / تسجيل المستشفى,Registration Counter (REG) / تسجيل المستشفى,,Login Location,TRUE,,,,,,,,,,,,,,

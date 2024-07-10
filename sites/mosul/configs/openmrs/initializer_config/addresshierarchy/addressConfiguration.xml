@@ -1,0 +1,47 @@
+<addressConfiguration>
+  <wipe>true</wipe>
+  <addressComponents>
+    <addressComponent>
+      <field>COUNTRY</field>
+      <nameMapping>Location.country</nameMapping>
+      <sizeMapping>40</sizeMapping>
+      <elementDefault>Iraq</elementDefault>
+      <requiredInHierarchy>true</requiredInHierarchy>
+    </addressComponent>
+    <addressComponent>
+      <field>STATE_PROVINCE</field>
+      <nameMapping>Location.province</nameMapping>
+      <sizeMapping>40</sizeMapping>
+      <elementDefault>Ninewa</elementDefault>
+      <requiredInHierarchy>true</requiredInHierarchy>
+    </addressComponent>
+    <addressComponent>
+      <field>COUNTY_DISTRICT</field>
+      <nameMapping>Location.district</nameMapping>
+      <sizeMapping>40</sizeMapping>
+      <elementDefault>Mosul</elementDefault>
+      <requiredInHierarchy>true</requiredInHierarchy>
+    </addressComponent>
+    <addressComponent>
+      <field>CITY_VILLAGE</field>
+      <nameMapping>Location.village</nameMapping>
+      <sizeMapping>80</sizeMapping>
+      <requiredInHierarchy>true</requiredInHierarchy>
+    </addressComponent>
+    <addressComponent>
+      <field>ADDRESS_1</field>
+      <nameMapping>Location.address1</nameMapping>
+      <sizeMapping>40</sizeMapping>
+      <requiredInHierarchy>true</requiredInHierarchy>
+    </addressComponent>
+  </addressComponents>
+  <lineByLineFormat>
+            <string>cityVillage countyDistrict stateProvince country</string>
+            <string>address1</string>
+  </lineByLineFormat>
+  <addressHierarchyFile>
+    <filename>addresshierarchy_iraq.csv</filename>
+    <entryDelimiter>,</entryDelimiter>
+    <identifierDelimiter>%</identifierDelimiter>
+  </addressHierarchyFile>
+</addressConfiguration>

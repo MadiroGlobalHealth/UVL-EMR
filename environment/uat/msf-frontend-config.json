@@ -1,0 +1,34 @@
+{
+  "@openmrs/esm-patient-chart-app": {
+    "logo": {
+      "src": "ozone/header-logo.png"
+    },
+    "Display conditions": {
+      "roles": [
+        "Organizational: Nurse"
+      ]
+    }
+  },
+  "@openmrs/esm-login-app": {
+    "logo": {
+      "src": "ozone/logo.png"
+    }
+  },
+  "@openmrs/esm-primary-navigation-app": {
+    "logo": {
+      "src": "ozone/header-logo.png"
+    },
+    "extensionSlots": {
+      "patient-chart-dashboard-slot": {
+        "remove": [
+          "offline-tools-patient-chart-actions-dashboard-link"
+        ]
+      }
+    }
+  },
+  "@openmrs/esm-styleguide": {
+    "Brand color #1": "#D7211E",
+    "Brand color #2": "#414141",
+    "Brand color #3": "#D7211E"
+  }
+}

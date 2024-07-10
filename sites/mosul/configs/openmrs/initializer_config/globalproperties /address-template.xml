@@ -1,0 +1,36 @@
+<config>
+	<globalProperties>
+		<globalProperty>
+			<property>layout.address.format</property>
+			<value>&lt;org.openmrs.layout.address.AddressTemplate&gt;
+        &lt;nameMappings class="properties"&gt;
+            &lt;property name="country" value="Location.country"/&gt;
+            &lt;property name="stateProvince" value="Location.stateProvince"/&gt;
+            &lt;property name="countyDistrict" value="Location.district"/&gt;
+            &lt;property name="cityVillage" value="Location.cityVillage"/&gt;
+            &lt;property name="address1" value="Location.address1"/&gt;
+        &lt;/nameMappings&gt;
+        &lt;sizeMappings class="properties"&gt;
+            &lt;property name="country" value="30"/&gt;
+            &lt;property name="stateProvince" value="40"/&gt;
+            &lt;property name="countyDistrict" value="40"/&gt;
+            &lt;property name="cityVillage" value="40"/&gt;
+            &lt;property name="address1" value="100"/&gt;
+        &lt;/sizeMappings&gt;
+        &lt;elementDefaults class="properties"&gt;
+            &lt;property name="country" value="Iraq"/&gt;
+            &lt;property name="stateProvince" value="Ninewa"/&gt;
+            &lt;property name="countyDistrict" value="Mosul"/&gt;
+        &lt;/elementDefaults&gt;
+        &lt;requiredElements&gt;
+            &lt;string&gt;country&lt;/string&gt;
+            &lt;string&gt;stateProvince&lt;/string&gt;
+        &lt;/requiredElements&gt;
+        &lt;lineByLineFormat&gt;
+            &lt;string&gt;cityVillage countyDistrict stateProvince country&lt;/string&gt;
+            &lt;string&gt;address1&lt;/string&gt;
+        &lt;/lineByLineFormat&gt;
+    &lt;/org.openmrs.layout.address.AddressTemplate&gt;</value>
+		</globalProperty>
+	</globalProperties>
+</config>

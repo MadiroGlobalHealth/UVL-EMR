@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!-- persons -->
+    <changeSet id="add_mosul_person_for_user-202406191255" author="Joshua">
+        <comment>
+            Add Mosul Persons to database
+        </comment>
+        <insert tableName="person">
+            <column name="person_id" value="30" />
+            <column name="gender" value="M"/>
+            <column name="date_created" value="2024-06-19 12:55:00" />
+            <column name="uuid" value="41cd41d6-88b2-4f90-a27a-c73344df878a" />
+        </insert>
+        <insert tableName="person">
+            <column name="person_id" value="31" />
+            <column name="gender" value="M"/>
+            <column name="date_created" value="2024-06-19 12:55:00" />
+            <column name="uuid" value="bc67a082-ef49-4b2e-a08c-a47766d8ff9d" />
+        </insert>
+        <insert tableName="person">
+            <column name="person_id" value="32" />
+            <column name="gender" value="M"/>
+            <column name="date_created" value="2024-06-19 12:55:00" />
+            <column name="uuid" value="01e0b6d8-f6b7-42dd-a5c9-d23798bf3f5e" />
+        </insert>
+        <insert tableName="person">
+            <column name="person_id" value="33" />
+            <column name="gender" value="M"/>
+            <column name="date_created" value="2024-06-19 12:55:00" />
+            <column name="uuid" value="c8c0e7fa-5904-476c-8985-87c4cfe282f6" />
+        </insert>
+        <insert tableName="person">
+            <column name="person_id" value="34" />
+            <column name="gender" value="M"/>
+            <column name="date_created" value="2024-06-19 12:55:00" />
+            <column name="uuid" value="23accfd8-eff8-4982-959f-e585bf95c69d" />
+        </insert>
+    </changeSet>
+
+    <!-- Person Names -->
+    <changeSet id="add_mosul_person_names_for_user-202406191255" author="Joshua">
+        <insert tableName="person_name">
+            <column name="person_name_id" valueNumeric="30"/>
+            <column name="preferred" valueBoolean="true"/>
+            <column name="person_id" valueNumeric="30"/>
+            <column name="given_name" value="Registration Officer"/>
+            <column name="family_name" value="User"/>
+            <column name="creator" valueNumeric="1"/>
+            <column name="date_created" value="2024-06-19 12:55:00"/>
+            <column name="voided" valueBoolean="false"/>
+            <column name="uuid" value="e00f8528-a21b-41bd-aca1-94a29bc330f1"/>
+        </insert>
+        <insert tableName="person_name">
+            <column name="person_name_id" valueNumeric="31"/>
+            <column name="preferred" valueBoolean="true"/>
+            <column name="person_id" valueNumeric="31"/>
+            <column name="given_name" value="Mental Health Nurse"/>
+            <column name="family_name" value="User"/>
+            <column name="creator" valueNumeric="1"/>
+            <column name="date_created" value="2024-06-19 12:55:00"/>
+            <column name="voided" valueBoolean="false"/>
+            <column name="uuid" value="70eb796f-1449-49bb-95fb-b0e85329cdf3"/>
+        </insert>
+        <insert tableName="person_name">
+            <column name="person_name_id" valueNumeric="32"/>
+            <column name="preferred" valueBoolean="true"/>
+            <column name="person_id" valueNumeric="32"/>
+            <column name="given_name" value="Mental Health Counselor"/>
+            <column name="family_name" value="User"/>
+            <column name="creator" valueNumeric="1"/>
+            <column name="date_created" value="2024-06-19 12:55:00"/>
+            <column name="voided" valueBoolean="false"/>
+            <column name="uuid" value="c4d2e9cd-d02c-438b-b3d1-54d748fb6fa7"/>
+        </insert>
+        <insert tableName="person_name">
+            <column name="person_name_id" valueNumeric="33"/>
+            <column name="preferred" valueBoolean="true"/>
+            <column name="person_id" valueNumeric="33"/>
+            <column name="given_name" value="Mental Health Doctor"/>
+            <column name="family_name" value="User"/>
+            <column name="creator" valueNumeric="1"/>
+            <column name="date_created" value="2024-06-19 12:55:00"/>
+            <column name="voided" valueBoolean="false"/>
+            <column name="uuid" value="e27e954c-c2e5-466c-bafc-3fd9248b4095"/>
+        </insert>
+        <insert tableName="person_name">
+            <column name="person_name_id" valueNumeric="34"/>
+            <column name="preferred" valueBoolean="true"/>
+            <column name="person_id" valueNumeric="34"/>
+            <column name="given_name" value="Maternity Nurse"/>
+            <column name="family_name" value="User"/>
+            <column name="creator" valueNumeric="1"/>
+            <column name="date_created" value="2024-06-19 12:55:00"/>
+            <column name="voided" valueBoolean="false"/>
+            <column name="uuid" value="af07b5f7-9e67-4c10-8cb6-898abe1af2ed"/>
+        </insert>
+    </changeSet>
+
+    <!-- users -->
+    <changeSet id="add_mosul_users-202406191255" author="Joshua">
+        <comment>
+            Add Mosul Users to database
+        </comment>
+        <insert tableName="users">
+            <column name="user_id" value="30" />
+            <column name="system_id" value="REG_officer" />
+            <column name="username" value="REG_officer" />
+            <column name="password" value="e57803f05704936892416eeb894a261aa7bb0f3327b81d51bb1c1dc8e229a98c4515de3e9de652d045b8e004fbfb4cfaa458374a6e65ca3658d97e92059e5f89" />
+            <column name="salt" value="bdf469e93449e50a829ed46e9c9f39e926f3483acd8f0b79718d6d48cd72ba5f8cb8d4006127e51c5588663ba77114c566fd94d5a64d9e3e9c85ef8525e66b07" />
+            <column name="person_id" value="30" />
+            <column name="uuid" value="c6a48caa-06fe-4f35-9ca3-5d7bda29534e" />
+            <column name="creator" value="1" />
+            <column name="date_created" value="2024-06-19 12:55:00" />
+        </insert>
+        <insert tableName="users">
+            <column name="user_id" value="31" />
+            <column name="system_id" value="MH_nurse" />
+            <column name="username" value="MH_nurse" />
+            <column name="password" value="e57803f05704936892416eeb894a261aa7bb0f3327b81d51bb1c1dc8e229a98c4515de3e9de652d045b8e004fbfb4cfaa458374a6e65ca3658d97e92059e5f89" />
+            <column name="salt" value="bdf469e93449e50a829ed46e9c9f39e926f3483acd8f0b79718d6d48cd72ba5f8cb8d4006127e51c5588663ba77114c566fd94d5a64d9e3e9c85ef8525e66b07" />
+            <column name="person_id" value="31" />
+            <column name="uuid" value="c61a5521-2f4b-4f4c-9c71-4fa7ba0b838b" />
+            <column name="creator" value="1" />
+            <column name="date_created" value="2024-06-19 12:55:00" />
+        </insert>
+        <insert tableName="users">
+            <column name="user_id" value="32" />
+            <column name="system_id" value="MH_counselor" />
+            <column name="username" value="MH_counselor" />
+            <column name="password" value="e57803f05704936892416eeb894a261aa7bb0f3327b81d51bb1c1dc8e229a98c4515de3e9de652d045b8e004fbfb4cfaa458374a6e65ca3658d97e92059e5f89" />
+            <column name="salt" value="bdf469e93449e50a829ed46e9c9f39e926f3483acd8f0b79718d6d48cd72ba5f8cb8d4006127e51c5588663ba77114c566fd94d5a64d9e3e9c85ef8525e66b07" />
+            <column name="person_id" value="32" />
+            <column name="uuid" value="0d1ae3b7-e73c-4a82-bd76-df770cfd9c67" />
+            <column name="creator" value="1" />
+            <column name="date_created" value="2024-06-19 12:55:00" />
+        </insert>
+        <insert tableName="users">
+            <column name="user_id" value="33" />
+            <column name="system_id" value="MH_doctor" />
+            <column name="username" value="MH_doctor" />
+            <column name="password" value="e57803f05704936892416eeb894a261aa7bb0f3327b81d51bb1c1dc8e229a98c4515de3e9de652d045b8e004fbfb4cfaa458374a6e65ca3658d97e92059e5f89" />
+            <column name="salt" value="bdf469e93449e50a829ed46e9c9f39e926f3483acd8f0b79718d6d48cd72ba5f8cb8d4006127e51c5588663ba77114c566fd94d5a64d9e3e9c85ef8525e66b07" />
+            <column name="person_id" value="33" />
+            <column name="uuid" value="ee3e15fe-3d75-4df2-97bc-ac8fc5e74109" />
+            <column name="creator" value="1" />
+            <column name="date_created" value="2024-06-19 12:55:00" />
+        </insert>
+        <insert tableName="users">
+            <column name="user_id" value="34" />
+            <column name="system_id" value="MAT_nurse" />
+            <column name="username" value="MAT_nurse" />
+            <column name="password" value="e57803f05704936892416eeb894a261aa7bb0f3327b81d51bb1c1dc8e229a98c4515de3e9de652d045b8e004fbfb4cfaa458374a6e65ca3658d97e92059e5f89" />
+            <column name="salt" value="bdf469e93449e50a829ed46e9c9f39e926f3483acd8f0b79718d6d48cd72ba5f8cb8d4006127e51c5588663ba77114c566fd94d5a64d9e3e9c85ef8525e66b07" />
+            <column name="person_id" value="34" />
+            <column name="uuid" value="a7e991bb-8973-4613-a5fc-9d7d95fded67" />
+            <column name="creator" value="1" />
+            <column name="date_created" value="2024-06-19 12:55:00" />
+        </insert>
+    </changeSet>
+
+    <!-- Person attributes - emergency contact relationship change from string to concept -->
+    <changeSet id="update_person_attribute-202406191265" author="pirupius">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT CASE WHEN COUNT(*) > 0 THEN 1 ELSE 0 END FROM person_attribute a
+                    INNER JOIN person_attribute_type t ON a.person_attribute_type_id = t.person_attribute_type_id
+                WHERE t.uuid IN ('057e07a8-2170-4422-b257-26e401e3c151', '486da62c-12a8-463c-ada9-4e8f6488075e');
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            Update person attribute value for emergency contact relationship 1 and emergency contact relationship 2 with concept uuid
+        </comment>
+        <sql>
+            UPDATE person_attribute SET value = '972AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' WHERE value = 'sister' OR value = 'brother';
+            UPDATE person_attribute SET value = '5618AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' WHERE value = 'friend';
+            UPDATE person_attribute SET value = '1527AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' WHERE value = 'mother' OR value = 'father';
+            DELETE FROM person_attribute WHERE value = 'test';
+        </sql>
+    </changeSet>
+</databaseChangeLog>

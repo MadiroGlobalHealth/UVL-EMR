@@ -1,0 +1,70 @@
+name: Upload MSf artifacts
+
+description: 'Custom action used to upload MSF artifacts ie execution ready .zip files to GitHub'
+
+inputs:
+  artifact-path:
+    description: 'Path to the artifact(s) to upload'
+    required: false
+    default: ''
+  artifact-name:
+    description: 'Name of the artifact(s) to upload'
+    required: false
+    default: 'distro'
+  maven-server-username:
+    description: 'username of the server for maven settings.xml file'
+    required: true
+    default: ''
+  maven-server-token:
+    description: 'token of the server for maven settings.xml file'
+    required: true
+    default: ''
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v4
+      with:
+        clean: false
+
+    - uses: actions/setup-java@v4
+      with:
+          java-version: '8'
+          distribution: 'adopt'
+  
+    - name: Set settings.xml
+      uses: s4u/maven-settings-action@v3.0.0
+      with:
+        servers: |
+          [{
+            "id": "msf-ocg-github-lime-emr",
+            "username": "${{ inputs.maven-server-username }}",
+            "password": "${{ inputs.maven-server-token }}"
+          }]
+
+    # - name: Publish ${{ inputs.artifact-name }} maven artifacts
+    #   working-directory: ${{ inputs.artifact-path }}
+    #   run: 'mvn --batch-mode clean deploy'
+    #   shell: bash
+
+    - name: Get MSF ${{ inputs.artifact-name }} version
+      working-directory: ${{ inputs.artifact-path }}
+      id: get_version
+      run: echo "VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
+      shell: bash
+  
+    - name: Get MSF ${{ inputs.artifact-name }} artifactId
+      working-directory: ${{ inputs.artifact-path }}
+      id: get_artifactId
+      run: echo "ARTIFACTID=$(mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout)" >> $GITHUB_ENV
+      shell: bash
+
+    - name: Upload MSF ${{ inputs.artifact-name }} GitHub
+      if: success()
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ env.ARTIFACTID }}-${{ env.VERSION }}
+        path: ${{ inputs.artifact-path }}/target/${{ env.ARTIFACTID }}-${{ env.VERSION }}.zip
+        compression-level: 0
+        overwrite: true
+        if-no-files-found: error
