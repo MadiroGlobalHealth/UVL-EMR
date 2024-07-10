@@ -3,7 +3,7 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.ozonemsf</groupId>
+  <groupId>com.ozoneuvl</groupId>
   <artifactId>ozone-uvl-aggregator</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
@@ -12,13 +12,12 @@
     <module>distro</module>
     <module>countries/burundi</module>
     <module>sites/mugamba</module>
-    <module>sites/erbil</module>
   </modules>
 
   <scm>
-    <connection>scm:git:git@github.com:UVL-OCG/LIME-EMR.git</connection>
+    <connection>scm:git:git@github.com:Madiro-org/uvl-emr.git</connection>
     <developerConnection>${project.scm.connection}</developerConnection>
-    <url>https://github.com/UVL-OCG/LIME-EMR</url>
+    <url>https://github.com/Madiro-org/uvl-emr/</url>
     <tag>HEAD</tag>
   </scm>
 
@@ -34,21 +33,21 @@
       <url>https://nexus.mekomsolutions.net/repository/maven-public/</url>
     </repository>
     <repository>
-      <id>uvl-ocg-github-lime-emr</id>
-      <url>https://maven.pkg.github.com/UVL-OCG/LIME-EMR/</url>
+      <id>madiro-github-uvl-emr</id>
+      <url>https://maven.pkg.github.com/Madiro-org/uvl-emr/</url>
     </repository>
   </repositories>
   
   <distributionManagement>
     <repository>
       <name>UVL repo for releases</name>
-      <id>uvl-ocg-github-lime-emr</id>
-      <url>https://maven.pkg.github.com/UVL-OCG/LIME-EMR</url>
+      <id>madiro-github-uvl-emr</id>
+      <url>https://maven.pkg.github.com/Madiro-org/uvl-emr/</url>
     </repository>
     <snapshotRepository>
       <name>UVL repo for snapshots</name>
-      <id>uvl-ocg-github-lime-emr</id>
-      <url>https://maven.pkg.github.com/UVL-OCG/LIME-EMR</url>
+      <id>madiro-github-uvl-emr</id>
+      <url>https://maven.pkg.github.com/Madiro-org/uvl-emr/</url>
     </snapshotRepository>
   </distributionManagement>
 

@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.ozonemsf</groupId>
-  <artifactId>ozone-uvl-erbil</artifactId>
+  <artifactId>ozone-uvl-mugamba</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
@@ -126,16 +126,16 @@
         <version>3.1.0</version>
         <executions>
           <execution>
-            <id>Add UVL Erbil Frontend Configuration</id>
+            <id>Add UVL Mugamba Frontend Configuration</id>
             <phase>process-resources</phase>
             <goals>
               <goal>run</goal>
             </goals>
             <configuration>
               <target>
-                <echo message="Adding UVL Erbil frontend config"/>
+                <echo message="Adding UVL Mugamba frontend config"/>
                 <replaceregexp file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/.env"
-                               match="(SPA_CONFIG_URLS=.+)" replace="\1,/openmrs/spa/ozone/uvl-erbil-frontend-config.json" />
+                               match="(SPA_CONFIG_URLS=.+)" replace="\1,/openmrs/spa/ozone/uvl-mugamba-frontend-config.json" />
               </target>
             </configuration>
           </execution>
@@ -150,7 +150,7 @@
       <url>https://nexus.mekomsolutions.net/repository/maven-public/</url>
     </repository>
     <repository>
-      <id>uvl-ocg-github-lime-emr</id>
+      <id>uvl-emr-github-lime-emr</id>
       <url>https://maven.pkg.github.com/UVL-OCG/LIME-EMR/</url>
     </repository>
   </repositories>
@@ -158,12 +158,12 @@
   <distributionManagement>
     <repository>
       <name>UVL repo for releases</name>
-      <id>uvl-ocg-github-lime-emr</id>
+      <id>uvl-emr-github-lime-emr</id>
       <url>https://maven.pkg.github.com/UVL-OCG/LIME-EMR</url>
     </repository>
     <snapshotRepository>
       <name>UVL repo for snapshots</name>
-      <id>uvl-ocg-github-lime-emr</id>
+      <id>uvl-emr-github-lime-emr</id>
       <url>https://maven.pkg.github.com/UVL-OCG/LIME-EMR</url>
     </snapshotRepository>
   </distributionManagement>
