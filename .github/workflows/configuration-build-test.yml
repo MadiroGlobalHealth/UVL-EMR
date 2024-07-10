@@ -25,7 +25,7 @@ jobs:
         with:
           servers: |
             [{
-              "id": "uvl-ocg-github-lime-emr",
+              "id": "uvl-emr-github-lime-emr",
               "username": "${{ secrets.MAVEN_GITHUB_ACTIONS_DEPLOY_USERNAME }}",
               "password": "${{ secrets.MAVEN_GITHUB_ACTIONS_DEPLOY_TOKEN }}"
             }]

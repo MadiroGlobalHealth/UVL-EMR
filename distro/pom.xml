@@ -33,9 +33,9 @@
   </dependencies>
 
   <scm>
-    <connection>scm:git:git@github.com:UVL-OCG/LIME-EMR.git</connection>
+    <connection>scm:git:git@github.com:Madiro-org/uvl-emr.git</connection>
     <developerConnection>${project.scm.connection}</developerConnection>
-    <url>https://github.com/UVL-OCG/LIME-EMR</url>
+    <url>https://github.com/Madiro-org/uvl-emr</url>
     <tag>HEAD</tag>
   </scm>
 
@@ -243,21 +243,21 @@
       <url>https://nexus.mekomsolutions.net/repository/maven-public/</url>
     </repository>
     <repository>
-      <id>uvl-ocg-github-lime-emr</id>
-      <url>https://maven.pkg.github.com/UVL-OCG/LIME-EMR/</url>
+      <id>uvl-emr-github-lime-emr</id>
+      <url>https://maven.pkg.github.com/Madiro-org/uvl-emr/</url>
     </repository>
   </repositories>
 
   <distributionManagement>
     <repository>
       <name>UVL repo for releases</name>
-      <id>uvl-ocg-github-lime-emr</id>
-      <url>https://maven.pkg.github.com/UVL-OCG/LIME-EMR</url>
+      <id>uvl-emr-github-lime-emr</id>
+      <url>https://maven.pkg.github.com/Madiro-org/uvl-emr</url>
     </repository>
     <snapshotRepository>
       <name>UVL repo for snapshots</name>
-      <id>uvl-ocg-github-lime-emr</id>
-      <url>https://maven.pkg.github.com/UVL-OCG/LIME-EMR</url>
+      <id>uvl-emr-github-lime-emr</id>
+      <url>https://maven.pkg.github.com/Madiro-org/uvl-emr</url>
     </snapshotRepository>
   </distributionManagement>
 

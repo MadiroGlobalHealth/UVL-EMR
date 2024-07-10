@@ -128,21 +128,21 @@
       <url>https://nexus.mekomsolutions.net/repository/maven-public/</url>
     </repository>
     <repository>
-      <id>uvl-ocg-github-lime-emr</id>
-      <url>https://maven.pkg.github.com/UVL-OCG/LIME-EMR/</url>
+      <id>madiro-github-uvl-emr</id>
+      <url>https://maven.pkg.github.com/Madiro-org/uvl-emr/</url>
     </repository>
   </repositories>
   
   <distributionManagement>
     <repository>
       <name>UVL repo for releases</name>
-      <id>uvl-ocg-github-lime-emr</id>
-      <url>https://maven.pkg.github.com/UVL-OCG/LIME-EMR</url>
+      <id>madiro-github-uvl-emr</id>
+      <url>https://maven.pkg.github.com/Madiro-org/uvl-emr/</url>
     </repository>
     <snapshotRepository>
       <name>UVL repo for snapshots</name>
-      <id>uvl-ocg-github-lime-emr</id>
-      <url>https://maven.pkg.github.com/UVL-OCG/LIME-EMR</url>
+      <id>madiro-github-uvl-emr</id>
+      <url>https://maven.pkg.github.com/Madiro-org/uvl-emr/</url>
     </snapshotRepository>
   </distributionManagement>
   
