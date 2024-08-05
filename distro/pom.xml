@@ -10,7 +10,7 @@
     <relativePath />
   </parent>
 
-  <groupId>com.ozonemsf</groupId>
+  <groupId>com.ozoneuvl</groupId>
   <artifactId>ozone-uvl-distro</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
@@ -20,7 +20,7 @@
     <maven.compiler.source>8</maven.compiler.source>
     <maven.compiler.target>8</maven.compiler.target>
     <PatientIdentifierGeneratorVersion>0.1.0</PatientIdentifierGeneratorVersion>
-    <MSFReferenceapplicationDockerVersion>qa</MSFReferenceapplicationDockerVersion>
+    <UVLReferenceapplicationDockerVersion>qa</UVLReferenceapplicationDockerVersion>
   </properties>
 
   <dependencies>
@@ -170,7 +170,7 @@
         <version>3.1.0</version>
         <executions>
           <execution>
-            <id>Add UVL-OCG LIME Frontend Configuration to ozone</id>
+            <id>Add UVL-OCG Frontend Configuration to ozone</id>
             <phase>process-resources</phase>
             <goals>
               <goal>run</goal>
@@ -184,7 +184,7 @@
             </configuration>
           </execution>
           <execution>
-            <id>Add UVL-OCG LIME docker image Configuration to ozone</id>
+            <id>Add UVL EMR docker image Configuration to ozone</id>
             <phase>process-resources</phase>
             <goals>
               <goal>run</goal>
@@ -193,7 +193,7 @@
               <target>
                 <echo message="Adding uvl docker image version"/>
                 <replaceregexp file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/.env"
-                              match="O3_DOCKER_IMAGE_TAG=.*" replace="O3_DOCKER_IMAGE_TAG=${MSFReferenceapplicationDockerVersion}" />
+                              match="O3_DOCKER_IMAGE_TAG=.*" replace="O3_DOCKER_IMAGE_TAG=${UVLReferenceapplicationDockerVersion}" />
               </target>
             </configuration>
           </execution>
@@ -243,7 +243,7 @@
       <url>https://nexus.mekomsolutions.net/repository/maven-public/</url>
     </repository>
     <repository>
-      <id>uvl-emr-github-lime-emr</id>
+      <id>madiro-org-github-uvl-emr</id>
       <url>https://maven.pkg.github.com/Madiro-org/uvl-emr/</url>
     </repository>
   </repositories>
@@ -251,12 +251,12 @@
   <distributionManagement>
     <repository>
       <name>UVL repo for releases</name>
-      <id>uvl-emr-github-lime-emr</id>
+      <id>madiro-org-github-uvl-emr</id>
       <url>https://maven.pkg.github.com/Madiro-org/uvl-emr</url>
     </repository>
     <snapshotRepository>
       <name>UVL repo for snapshots</name>
-      <id>uvl-emr-github-lime-emr</id>
+      <id>madiro-org-github-uvl-emr</id>
       <url>https://maven.pkg.github.com/Madiro-org/uvl-emr</url>
     </snapshotRepository>
   </distributionManagement>
