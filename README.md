@@ -1,67 +1,6 @@
 # UVL LIME EMR
 Using Ozone Approach
 
-## Configuration hierarchy and inheritance
-
-### Assumptions
-- There are **3 levels** of configurations: Distro < Country < Site
-- The default **ineritance logic** is for lower levels to overwrite above ones
-- **Configurations** includes backend and frontend binaries, frontend configs, initializer metadata, and assets like logos.
-- It **primarly support OpenMRS**, but aims to be flexible and also support Senaite, Superset, OpenFN, FHIR, etc.
-
-#### Hierarchy overview - example
-```
-── pom.xml - Aggredator / Orchestrator
-      └── /distro/pom.xml - Organizational-wide Config
-      └── /countries - Country-specific Config
-            └── /burundi/pom.xl
-      └── /sites - Site-specific Config
-            └── /mugamba/pom.xl
-```
-
-### Workflow diagram
-
-```mermaid
-%%{init: {'theme':'forest'}}%%
-flowchart TD
-
-subgraph Z["Github Repository 'LIME EMR'"]
-direction LR
-  A[Configuration in Github repository] -->|Release of Distro config| B[Build in Github Actions]
-      A -->|Release of a Country config| B
-      A -->|Release of a Site config| B
-      A -->|Release of an Environment config| B
-  B --> |Generate a Distro artefact| C[Artefact Repository in Github]
-      B --> |Generate a Country artefact| C
-      B --> |Generate a Site artefact| C
-end
-
-subgraph ZA["Execution Server"]
-direction LR
-      D[Running the LIME EMR]
-end
-
-Z --> |Pulling the artefacts| ZA
-```
-
-
-## Example for configs for hierarchy demo of v1 - Week of April 8
-### Ozone Level **OpenMRS RefApp**
-- [x] Refapp stable version of [modules for frontend](https://github.com/openmrs/openmrs-distro-referenceapplication/blob/main/frontend/spa-assemble-config.json)
-- [x] Refapp stable version of [modules for backend](https://github.com/openmrs/openmrs-distro-referenceapplication/blob/main/distro/pom.xml)
-### UVL Distro **LIME EMR** repository
-- [x] UVL [branding in frontend config](https://github.com/UVL-OCG/LIME-EMR-project-demo/blob/main/frontend/custom-config.json)
-- [x] UVL [logo and assets](https://github.com/UVL-OCG/LIME-EMR-project-demo/tree/main/frontend/assets)
-- [x] [Env specific logos](https://github.com/UVL-OCG/LIME-EMR-project-demo/blob/dev/frontend/qa/assets/logo.png) for users to easily identify their environment
-### Country level: **Burundi**
-- [x] [Roles config](https://github.com/UVL-OCG/LIME-EMR-project-demo/blob/main/distro/configuration/roles/roles_core-demo.csv) for Initializer
-### Site level: **Mugamba**
-- [x] [Address hierarchy](https://github.com/UVL-OCG/LIME-EMR-project-demo/tree/main/distro/configuration/addresshierarchy) for Initializer
-- [x] [Locations](https://github.com/UVL-OCG/LIME-EMR-project-demo/blob/main/distro/configuration/locations/locations.csv) for Initializer
-- [x] [Person attributes](https://github.com/UVL-OCG/LIME-EMR-project-demo/blob/main/distro/configuration/personattributetypes/personattributetypes_core-demo.csv) for Initializer
-- [x] [Initial consultation form](https://github.com/UVL-OCG/LIME-EMR-project-demo/blob/main/distro/configuration/ampathforms/initial_consultation-lime_demo.json)
-
-
 ## Quick Start
 
 Build
@@ -86,6 +25,41 @@ Running UVL Mugamba
 cd sites/mugamba/target/ozone-uvl-mugamba-<version>/run/docker/scripts
 ./start-demo.sh
 ```
+
+## Configuration hierarchy and inheritance
+
+### Assumptions
+- There are **3 levels** of configurations: Distro < Country < Site
+- The default **ineritance logic** is for lower levels to overwrite above ones
+- **Configurations** includes backend and frontend binaries, frontend configs, initializer metadata, and assets like logos.
+- It **primarly support OpenMRS**, but aims to be flexible and also support Senaite, Superset, OpenFN, FHIR, etc.
+
+#### Hierarchy overview - example
+```
+── pom.xml - Aggredator / Orchestrator
+      └── /distro/pom.xml - UVL-wide Config
+      └── /countries - Country-specific Config
+            └── /burundi/pom.xl
+      └── /sites - Site-specific Config
+            └── /mugamba/pom.xl
+```
+
+## Example for configs for hierarchy demo of v1 - Week of April 8
+### Ozone Level **OpenMRS RefApp**
+- [x] Refapp stable version of [modules for frontend](https://github.com/openmrs/openmrs-distro-referenceapplication/blob/main/frontend/spa-assemble-config.json)
+- [x] Refapp stable version of [modules for backend](https://github.com/openmrs/openmrs-distro-referenceapplication/blob/main/distro/pom.xml)
+### UVL Distro **LIME EMR** repository
+- [x] UVL [branding in frontend config](https://github.com/UVL-OCG/LIME-EMR-project-demo/blob/main/frontend/custom-config.json)
+- [x] UVL [logo and assets](https://github.com/UVL-OCG/LIME-EMR-project-demo/tree/main/frontend/assets)
+- [x] [Env specific logos](https://github.com/UVL-OCG/LIME-EMR-project-demo/blob/dev/frontend/qa/assets/logo.png) for users to easily identify their environment
+### Country level: **Burundi**
+- [x] [Roles config](https://github.com/UVL-OCG/LIME-EMR-project-demo/blob/main/distro/configuration/roles/roles_core-demo.csv) for Initializer
+### Site level: **Mugamba**
+- [x] [Address hierarchy](https://github.com/UVL-OCG/LIME-EMR-project-demo/tree/main/distro/configuration/addresshierarchy) for Initializer
+- [x] [Locations](https://github.com/UVL-OCG/LIME-EMR-project-demo/blob/main/distro/configuration/locations/locations.csv) for Initializer
+- [x] [Person attributes](https://github.com/UVL-OCG/LIME-EMR-project-demo/blob/main/distro/configuration/personattributetypes/personattributetypes_core-demo.csv) for Initializer
+- [x] [Initial consultation form](https://github.com/UVL-OCG/LIME-EMR-project-demo/blob/main/distro/configuration/ampathforms/initial_consultation-lime_demo.json)
+
 
 ## Testing
 
