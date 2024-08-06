@@ -1,7 +1,16 @@
-# UVL LIME EMR
-Using Ozone Approach
+<img width="1407" alt="Screenshot 2024-08-06 at 4 22 22 PM" src="https://github.com/user-attachments/assets/1e82f482-3289-4097-a020-61f2c1e37034">
 
-## Quick Start
+This project is part of **Madiro's HealthTech Challenge 2024** connecting passionated people willing to engage in **Global Goods for Digital Health** with real-life needs and impactful opportunities. 
+
+This repository contains a distribution of **OpenMRS 3** that will support UVL in its digitalization of clinical operations (patient registration, consultations, laboratory, pharmacy, reporting, billing, etc.). Implementing a Digital Public Good such as OpenMRS in a rural hospital in Burundi is key for improving patient care through better record-keeping and streamlined medical data management such as laboratory test results or drug prescriptions, ensuring that healthcare providers have accurate and up-to-date information. 
+
+Additionally, it facilitates efficient tracking of public health trends and resource allocation, which is essential for addressing the unique healthcare challenges in rural settings. For example, the financial support from the government for child care and maternal care is conditional to digitalization - contributing to the long term **viability and independence** of the hospital. 
+
+### Users and teams
+<img width="1167" alt="Screenshot 2024-08-06 at 4 44 07 PM" src="https://github.com/user-attachments/assets/6a96fa28-e012-4ee1-812f-d1a8c7f744a6">
+
+
+## Quick Start on localhost
 
 Build
 ```bash
@@ -28,13 +37,7 @@ cd sites/mugamba/target/ozone-uvl-mugamba-<version>/run/docker/scripts
 
 ## Configuration hierarchy and inheritance
 
-### Assumptions
-- There are **3 levels** of configurations: Distro < Country < Site
-- The default **ineritance logic** is for lower levels to overwrite above ones
-- **Configurations** includes backend and frontend binaries, frontend configs, initializer metadata, and assets like logos.
-- It **primarly support OpenMRS**, but aims to be flexible and also support Senaite, Superset, OpenFN, FHIR, etc.
-
-#### Hierarchy overview - example
+#### Hierarchy overview
 ```
 ── pom.xml - Aggredator / Orchestrator
       └── /distro/pom.xml - UVL-wide Config
@@ -43,228 +46,51 @@ cd sites/mugamba/target/ozone-uvl-mugamba-<version>/run/docker/scripts
       └── /sites - Site-specific Config
             └── /mugamba/pom.xl
 ```
+## Contributing
 
-## Example for configs for hierarchy demo of v1 - Week of April 8
-### Ozone Level **OpenMRS RefApp**
-- [x] Refapp stable version of [modules for frontend](https://github.com/openmrs/openmrs-distro-referenceapplication/blob/main/frontend/spa-assemble-config.json)
-- [x] Refapp stable version of [modules for backend](https://github.com/openmrs/openmrs-distro-referenceapplication/blob/main/distro/pom.xml)
-### UVL Distro **LIME EMR** repository
-- [x] UVL [branding in frontend config](https://github.com/UVL-OCG/LIME-EMR-project-demo/blob/main/frontend/custom-config.json)
-- [x] UVL [logo and assets](https://github.com/UVL-OCG/LIME-EMR-project-demo/tree/main/frontend/assets)
-- [x] [Env specific logos](https://github.com/UVL-OCG/LIME-EMR-project-demo/blob/dev/frontend/qa/assets/logo.png) for users to easily identify their environment
-### Country level: **Burundi**
-- [x] [Roles config](https://github.com/UVL-OCG/LIME-EMR-project-demo/blob/main/distro/configuration/roles/roles_core-demo.csv) for Initializer
-### Site level: **Mugamba**
-- [x] [Address hierarchy](https://github.com/UVL-OCG/LIME-EMR-project-demo/tree/main/distro/configuration/addresshierarchy) for Initializer
-- [x] [Locations](https://github.com/UVL-OCG/LIME-EMR-project-demo/blob/main/distro/configuration/locations/locations.csv) for Initializer
-- [x] [Person attributes](https://github.com/UVL-OCG/LIME-EMR-project-demo/blob/main/distro/configuration/personattributetypes/personattributetypes_core-demo.csv) for Initializer
-- [x] [Initial consultation form](https://github.com/UVL-OCG/LIME-EMR-project-demo/blob/main/distro/configuration/ampathforms/initial_consultation-lime_demo.json)
+Contributions are welcome! If you have any suggestions, improvements, or bug fixes, please feel free to open an issue or submit a pull request.
 
+## Acknowledgments
 
-## Testing
+This project is made possible thanks to [OpenConceptLab](https://openconceptlab.org/) and [OpenMRS](https://openmrs.org/) communities. Special thanks to the contributors who have contributed to the development of these tools.
 
-1. Install prerequisites
-   brew install jq
-3. Clone EMR Tooling
+<div>
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/OpenMRS_logo_2008.svg/1280px-OpenMRS_logo_2008.svg.png" height=60px>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="https://pbs.twimg.com/profile_images/1699787210458038272/dvtN516-_400x400.png" height=60px>
+</div>
 
-4. Update install directory
-   ```bash
-   INSTALL_DIR="**.**/home/lime/$APP_NAME"
-   ```
-5. Disable logging in lime_emr.sh (success and error)
-Function to log success messages
-```bash
-log_success() {
-    echo "[$(date +'%Y-%m-%dT%H:%M:%S%z')] Success: $1" # >> "$SUCCESS_LOG"
-}
-```
-Comment out Function to log error messages
-```bash
-log_error() {
-    echo "[$(date +'%Y-%m-%dT%H:%M:%S%z')] Error: $1" # >> "$ERROR_LOG"
-}
-```
-6. Comment out download_msf_artefact() function
-```bash
-   # curl -L -o "$download_name.zip" -H "$GITHUB_REQUEST_TYPE" -H "$GITHUB_AUTH_HEADER" -H "$GITHUB_API_VERSION" "$download_url" && log_success "Downloaded UVL Distro for the '$artifact_branch' branch." || log_error "Failed to download UVL Distro for the '$artifact_branch' branch."
-```
-7. Remove docker and package installation if needed
+## Resources 
 
-8. Run installation script
-   chmod +x ./Procedures/lime_emr.sh
-   sh ./Procedures/lime_emr.sh install mugamba
+### OpenMRS resources
 
-## Roadmap
+**Join the conversation**
 
-- [ ] In pom files, implement a **merge logic for frontend config JSONs** at the site level. It will merge frontend configs from the Distro, Country, and Site level together. The lower level will always overwrite the above level in case of conflicts. Example: [externalRefLinks for the esm-primary-navigation-app](https://github.com/UVL-OCG/LIME-EMR/blob/main/sites/mugamba/configs/openmrs/frontend_config/uvl-frontend-config.json)
-- [ ] In pom files, replicate a similar logic for **initializer configuration files** - assumung that the lower level also always overwrite the above one.
-- [ ] Simplify the **results of the build** currently generating muliple targets for all levels, rather than a single one for the execution level, being the Site level. Example: [ozone-uvl-mugamba-1.0.0-SNAPSHOT](https://github.com/UVL-OCG/LIME-EMR/packages/2120035)
-- [ ] Ensure that the **Github Action build** is running the right level of configs upon release or manual trigger - not triggering all of them aspecially for performance savings pursposes:
-      <img width="689" alt="Screenshot 2024-04-18 at 1 30 07 PM" src="https://github.com/UVL-OCG/LIME-EMR/assets/9321036/763551d3-a2d4-4476-8aac-334a6f6e611b">
+[Slack](https://slack.openmrs.org/), [Calls](https://openmrs.atlassian.net/wiki/spaces/RES/pages/26278390), [Forum](https://talk.openmrs.org/), [Conferences](https://openmrs.atlassian.net/wiki/spaces/RES/pages/102694929/2024+Implementers+Conference), [JIRA](https://openmrs.atlassian.net/jira/dashboards/10000), [Wiki](https://openmrs.atlassian.net/wiki/spaces/projects/overview?homepageId=26935380)
 
+**Learn more**
 
-## [Configuration](#configuration)
+[OpenMRS Academy](https://openmrs.org/academy/), [Youtube](https://www.youtube.com/@OpenMRS) channel
 
-### [Inheritance hierarchy in configuration](#inheritance-hierarchy-in-configuration)
+**Code**
 
-Configurations are pulled from parent level, modified as necessary in the current level and then applied. Modifiication of configuration at the cuurent level involves either the exclusion of non-needed configuration and/or inclusion of configuration that are specific at the current level. This process maintains inheritance from parent level to child level while facilitating easy customization and maintains consistency across levels.
+Official  [Github](https://github.com/openmrs)  repositories for OpenMRS
 
-### [Backend configuration](#backend-configuration)
-We use the maven's `pom.xml` file at the root of each level to define what configuration should be applied.
-We embrace maven's [maven resources plugin](https://maven.apache.org/plugins/maven-resources-plugin) to exclude/filter and include configs as different execution processes using the `copy-resources` goal.  This allows us to add or remove files while copying them form the parent level to the current level's build directory after the parent's download.
+**Prerequisites**
 
-- #### [How to use the maven resources plugin](#how-to-use-the-maven-resources-plugin)
-    ```xml
-    <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-resources-plugin</artifactId>
-        <executions>
-            <!-- add executions to filter or add a file -->
-        </executions>
-    </plugin>
-    ```
+[Git](https://git-scm.com/), [Docker Compose](https://docs.docker.com/compose/), [Maven](https://maven.apache.org/)
 
-- #### [Excluding/Filtering files from parent level](#excluding-files-from-parent-level)
-    ```xml
-    <plugin>
-        <artifactId>maven-resources-plugin</artifactId>
-        ...
-        <execution>
-            <id>Exclude unneeded Ozone files</id>
-            <phase>process-resources</phase>
-            <goals>
-                <goal>copy-resources</goal>
-            </goals>
-            <configuration>
-                <outputDirectory>
-                    <!-- destination of the file to copy-->
-                    ${project.build.directory}/${project.artifactId}-${project.version}
-                </outputDirectory>
-                <overwrite>true</overwrite>
-                <resources>
-                <resource>
-                    <directory>${project.build.directory}/ozone</directory> <!-- source of the file to copy -->
-                    <excludes>
-                    <!-- exclude unneeded files here like: <exclude>distro/configs/**/ampathforms/*.*</exclude> -->
-                    </excludes>
-                </resource>
-                </resources>
-            </configuration>
-        </execution>
-        ...
-    </plugin>
-    ```
+**Demo** to checkout and run locally [here](https://github.com/openmrs/openmrs-distro-referenceapplication)
 
-- #### [Including files to current level](#including-files-to-current-level)
-    ```xml
-    <plugin>
-        <artifactId>maven-resources-plugin</artifactId>
-        ...
-        <execution>
-            <id>Copy UVL Disto docker compose .txt file</id>
-            <phase>prepare-package</phase>
-            <goals>
-                <goal>copy-resources</goal>
-            </goals>
-            <configuration>
-                <outputDirectory>
-                    <!-- destination of the file to copy-->
-                    ${project.build.directory}/${project.artifactId}-${project.version}/run/docker/scripts
-                </outputDirectory>
-                <overwrite>true</overwrite>
-                <resources>
-                <resource>
-                    <directory>${project.basedir}/../scripts</directory> <!-- source of the file to copy-->
-                    <includes>
-                    <!-- add more needed files here like: <include> docker-compose-files.txt</include> -->
-                    </includes>
-                </resource>
-                </resources>
-            </configuration>
-        </execution>
-        ...
-    </plugin>
-    ```
+### UVL Burundi Challenge resources 
 
-    #### [Initializer Data](#initializer-data)
-    At the current level, metadata is loaded through the Initializer module. A CSV file is added to the `configs/openmrs/initializer_config` folder at the current level and if the parent level defines the same `.csv` file, the corresponding file is excluded like showed below. Read more about the initializer configuration [here](https://github.com/mekomsolutions/openmrs-module-initializer/blob/master/README.md#introduction).
+[Slack Channel](https://join.slack.com/share/enQtNzUwNTI4NTczNzE3My01YzVhY2ZkZWNlNDQ5MzI1YjViYWEwZDYyMzg3ZGQyNGI0MWYwMGU4MmQwNThhMDVlMGE2NjMyNzdhY2IwZWRi) for all participants to discuss the project
 
-    <strong>Example</strong>
+[JIRA project](https://madiroglobalhealth.atlassian.net/jira/software/projects/UVL/boards/1/backlog)  to pick up tasks and accomplish tasks
 
-  <img width="689" alt="Screenshot 2024-04-18 at 1 30 07 PM" src="https://github.com/UVL-OCG/LIME-EMR/assets/58003327/12012490-7b42-4812-a0e5-3e79f77fd746">
+## Contact
 
-### [Frontend Configuration](#frontend-configuration)
-UVL configuration are loaded using the [uvl-frontend-config.json](https://github.com/UVL-OCG/LIME-EMR/blob/main/distro/configs/openmrs/frontend_config/uvl-frontend-config.json)
-We use the [Apache Maven AntRun Plugin](https://maven.apache.org/plugins/maven-antrun-plugin/) to execute a task that replaces the ozone configuration file in the `.env` file that docker compose uses while building the frontend. The `.env` file is located in the `target/run/docker/.env` at the current level.
+For any questions, please contact [Michael Bontyes](https://github.com/michaelbontyes) or reach out on the [OpenMRS Slack](https://slack.openmrs.org/).
 
-Below is how its done
-```xml
-<plugin>
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-antrun-plugin</artifactId>
-    <version>3.1.0</version>
-    <executions>
-        <execution>
-        <id>Add UVL-OCG LIME Frontend Configuration to ozone</id>
-        <phase>process-resources</phase>
-        <goals>
-            <goal>run</goal>
-        </goals>
-        <configuration>
-            <target>
-            <echo message="Adding uvl frontend config"/>
-            <replaceregexp
-                file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/.env"
-                match="ozone-frontend-config.json"
-                replace="uvl-frontend-config.json"
-            />
-            </target>
-        </configuration>
-        </execution>
-    </executions>
-</plugin>
-```
-This task replaces all the occurrences of the sting `ozone-frontend-config.json` with `uvl-frontend-config.json`
-After building the project using maven, the  `SPA_CONFIG_URLS` variable (it specifies the location of the frontend config file inside docker) in the `.env` file will have a value of `/openmrs/spa/ozone/uvl-frontend-config.json`
+## License
 
-> Note: Docker compose will only load the file passed to the `SPA_CONFIG_URLS` in the `.env` file.  This means that any other file present in the `target` but not added to the `SPA_CONFIG_URLS` will be ignored.
-
-### [Inheritance in Frontend Configuration](#inheritance-in-frontend-configuration)
-The OpenMRS frontend tooling supports loading a frontend configuration on top of the currently loaded configuration.  This means that we can use one file to load general frontend configuration like at `Organization level` branding and logos, and at site level, an `obs-table` on top of the patient chart.   Both these configuration will be loaded successfully.
-
-We can also use the child frontend configuration file to override the inherited frontend configuration. This implies that each level should have its own frontend configuration file in case it needs to load new frontend configuration.
-
-<strong>Examples</strong>
-- At organization level
-    in pom.xml file
-    ```xml
-    <replaceregexp
-        file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/.env"
-        match="ozone-frontend-config.json"
-        replace="uvl-frontend-config.json"
-    />
-    ```
-    result to the `.env` file after build
-    ```properties
-    SPA_CONFIG_URLS=/openmrs/spa/ozone/uvl-frontend-config.json
-    ```
-
-- Site frontend configuration inheriting from Organization level
-    in pom.xml file
-    ```xml
-    <replaceregexp
-        file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/.env"
-        match="(SPA_CONFIG_URLS=.+)"
-        replace="\1,/openmrs/spa/ozone/uvl-mugamba-frontend-config.json"
-    />
-    ```
-    result to the `.env` file after build
-    ```properties
-    SPA_CONFIG_URLS=/openmrs/spa/ozone/uvl-frontend-config.json, /openmrs/spa/ozone/uvl-mugamba-frontend-config-json
-    ```
-
-## [FAQ](#faq)
-
-## Release Notes
-
-### 1.0.0-SNAPSHOT (in progress)
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more information.
