@@ -27,9 +27,9 @@
     }
   },
   "@openmrs/esm-styleguide": {
-    "Brand color #1": "#D7211E",
+    "Brand color #1": "#1c361c",
     "Brand color #2": "#414141",
-    "Brand color #3": "#D7211E"
+    "Brand color #3": "#1c361c"
   },
   "@openmrs/esm-patient-registration-app": {
     "defaultPatientIdentifierTypes": [

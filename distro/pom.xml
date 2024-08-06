@@ -21,14 +21,21 @@
     <maven.compiler.target>8</maven.compiler.target>
     <PatientIdentifierGeneratorVersion>0.1.0</PatientIdentifierGeneratorVersion>
     <UVLReferenceapplicationDockerVersion>qa</UVLReferenceapplicationDockerVersion>
+    <!-- Stock Management and Billing -->
+    <stockmanagement.version>2.0.2-SNAPSHOT</stockmanagement.version>
+    <billing.version>1.2.0-SNAPSHOT</billing.version>
   </properties>
 
   <dependencies>
-    <!-- TODO: Add any implementation-specific dependencies -->
     <dependency>
       <groupId>org.openmrs.module</groupId>
-      <artifactId>patientidentifiergenerator-omod</artifactId>
-      <version>${PatientIdentifierGeneratorVersion}</version>
+      <artifactId>stockmanagement-omod</artifactId>
+      <version>${stockmanagement.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.openmrs.module</groupId>
+      <artifactId>billing-omod</artifactId>
+      <version>${billing.version}</version>
     </dependency>
   </dependencies>
 
