@@ -1,4 +1,4 @@
-name: Upload MSf artifacts
+name: Upload UVL artifacts
 
 description: 'Custom action used to upload UVL artifacts ie execution ready .zip files to GitHub'
 
@@ -37,7 +37,7 @@ runs:
       with:
         servers: |
           [{
-            "id": "uvl-emr-github-lime-emr",
+            "id": "madiro-org-github-uvl-emr",
             "username": "${{ inputs.maven-server-username }}",
             "password": "${{ inputs.maven-server-token }}"
           }]
