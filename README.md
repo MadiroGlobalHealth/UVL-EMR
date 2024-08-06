@@ -12,28 +12,38 @@ Additionally, it facilitates efficient tracking of public health trends and reso
 
 ## Quick Start on localhost
 
-Build
+Clone the repository locally
+```bash
+git clone https://github.com/MadiroGlobalHealth/UVL-EMR.git
+```
+
+Open the cloned folder
+```bash
+cd UVL-EMR
+```
+
+Build UVL distro/version of OpenMRS 3
 ```bash
 ./scripts/mvnw clean package
 ```
 
-Running UVL Distro
+Run UVL EMR (Mugamba polyclinic)
 ```bash
-source distro/target/go-to-scripts-dir.sh
+cd sites/mugamba/target/ozone-uvl-mugamba-1.0.0-SNAPSHOT/run/docker/scripts
 ./start-demo.sh
 ```
 
-Running UVL Burundi
+Open UVL EMR in your browser (the installation can take a few minutes)
 ```bash
-cd countries/burundi/target/ozone-uvl-burundi-<version>/run/docker/scripts
-./start-demo.sh
+open http://localhost/
 ```
 
-Running UVL Mugamba
+Open the administration of UVL EMR in your browser 
 ```bash
-cd sites/mugamba/target/ozone-uvl-mugamba-<version>/run/docker/scripts
-./start-demo.sh
+open http://localhost/openmrs/admin
 ```
+
+Note that default admin user is `admin` and password is `Admin123`.
 
 ## Configuration hierarchy and inheritance
 
