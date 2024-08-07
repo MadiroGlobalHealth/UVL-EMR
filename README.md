@@ -17,7 +17,7 @@ Additionally, it facilitates efficient tracking of public health trends and reso
 1. Install or update [Git](https://git-scm.com/downloads)
 2. Install or update [Docker Compose](https://docs.docker.com/compose/install)
 
-### Install and Run
+### Clone and Install
 
 Clone the repository locally
 ```bash
@@ -33,6 +33,8 @@ Build UVL distro/version of OpenMRS 3
 ```bash
 ./scripts/mvnw clean package
 ```
+
+### Run and Open
 
 Run UVL EMR (Mugamba polyclinic)
 ```bash
