@@ -12,6 +12,13 @@ Additionally, it facilitates efficient tracking of public health trends and reso
 
 ## Quick Start on localhost
 
+### Prerequisites
+
+1. Install or update [Git](https://git-scm.com/downloads)
+2. Install or update [Docker Compose](https://docs.docker.com/compose/install)
+
+### Install and Run
+
 Clone the repository locally
 ```bash
 git clone https://github.com/MadiroGlobalHealth/UVL-EMR.git
@@ -62,10 +69,11 @@ Contributions are welcome! If you have any suggestions, improvements, or bug fix
 
 ## Acknowledgments
 
-This project is made possible thanks to [OpenConceptLab](https://openconceptlab.org/) and [OpenMRS](https://openmrs.org/) communities. Special thanks to the contributors who have contributed to the development of these tools.
+This project is made possible thanks to [OpenMRS](https://openmrs.org/), [OzoneHIS](https://www.ozone-his.com/), and [OpenConceptLab](https://openconceptlab.org/) communities. Special thanks to the contributors who have contributed to the development of these tools.
 
 <div>
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/OpenMRS_logo_2008.svg/1280px-OpenMRS_logo_2008.svg.png" height=60px>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/OpenMRS_logo_2008.svg/1280px-OpenMRS_logo_2008.svg.png" height=60px>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="https://www.ozone-his.com/wp-content/uploads/2021/11/Ozone-Logo.png" height=60px>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <img src="https://pbs.twimg.com/profile_images/1699787210458038272/dvtN516-_400x400.png" height=60px>
 </div>
 
