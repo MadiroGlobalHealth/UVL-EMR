@@ -14,8 +14,8 @@ Additionally, it facilitates efficient tracking of public health trends and reso
 
 ### Prerequisites
 
-1. Install or update [Git](https://git-scm.com/downloads)
-2. Install or update [Docker Compose](https://docs.docker.com/compose/install)
+1. Install or update [Git](https://git-scm.com/downloads) 
+2. Install or update [Docker Compose](https://docs.docker.com/compose/install) (version ≥ 2.29)
 
 ### Clone and Install
 
