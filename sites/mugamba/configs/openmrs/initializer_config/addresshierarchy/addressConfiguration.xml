@@ -12,7 +12,7 @@
       <field>STATE_PROVINCE</field>
       <nameMapping>Location.province</nameMapping>
       <sizeMapping>40</sizeMapping>
-      <elementDefault>Ninewa</elementDefault>
+      <elementDefault>Bururi</elementDefault>
       <requiredInHierarchy>true</requiredInHierarchy>
     </addressComponent>
     <addressComponent>
@@ -40,7 +40,7 @@
             <string>address1</string>
   </lineByLineFormat>
   <addressHierarchyFile>
-    <filename>addresshierarchy_iraq.csv</filename>
+    <filename>addresshierarchy_mugamba.csv</filename>
     <entryDelimiter>,</entryDelimiter>
     <identifierDelimiter>%</identifierDelimiter>
   </addressHierarchyFile>

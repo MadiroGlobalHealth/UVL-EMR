@@ -446,5 +446,10 @@
       "encounterTypeUuid": "10d061d8-0677-47f2-8061-f302244dc48b",
       "encounterProviderRoleUuid": "240b26f9-dd88-4172-823d-4a8bfeb7841f"
     }
+  },
+  "@openmrs/esm-billing-app": {
+    "serviceTypes": {
+      "billableService": "49f1cfdf-498a-4984-8acb-eebf402c28eb"
+    }
   }
 }
