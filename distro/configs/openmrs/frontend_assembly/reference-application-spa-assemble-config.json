@@ -28,6 +28,7 @@
     "@openmrs/esm-form-engine-app": "latest",
     "@openmrs/esm-patient-vitals-app": "latest",
     "@openmrs/esm-patient-labs-app": "latest",
+    "@openmrs/esm-laboratory-app": "latest",
     "@openmrs/esm-patient-allergies-app": "latest",
     "@openmrs/esm-patient-immunizations-app": "latest",
     "@openmrs/esm-patient-attachments-app": "latest",
