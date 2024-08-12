@@ -112,7 +112,7 @@ Official  [Github](https://github.com/openmrs)  repositories for OpenMRS
 
 [Slack Channel](https://join.slack.com/share/enQtNzUwNTI4NTczNzE3My01YzVhY2ZkZWNlNDQ5MzI1YjViYWEwZDYyMzg3ZGQyNGI0MWYwMGU4MmQwNThhMDVlMGE2NjMyNzdhY2IwZWRi) for all participants to discuss the project
 
-[JIRA project](https://madiroglobalhealth.atlassian.net/jira/software/projects/UVL/boards/1/backlog)  to pick up tasks and accomplish tasks
+[JIRA project](https://madiroglobalhealth.atlassian.net/jira/software/projects/UVL/boards/1/backlog)  to pick up and accomplish tasks
 
 ## Contact
 
