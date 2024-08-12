@@ -43,12 +43,12 @@ cd sites/mugamba/target/ozone-uvl-mugamba-1.0.0-SNAPSHOT/run/docker/scripts
 ./start-demo.sh
 ```
 
-Open UVL EMR in your browser (the installation can take a few minutes)
+Open **UVL EMR for end-users** (OpenMRS 3) in your browser (the installation can take a few minutes)
 ```bash
 open http://localhost/
 ```
 
-Open the administration of UVL EMR in your browser 
+Open the **administration of UVL EMR** in your browser 
 ```bash
 open http://localhost/openmrs/admin
 ```
