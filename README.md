@@ -55,6 +55,12 @@ open http://localhost/openmrs/admin
 
 Note that default admin user is `admin` and password is `Admin123`.
 
+### Maven configuration
+In some cases, you might need to customize your Maven configuration file to build the project. 
+
+On Mac, you can edit those settings using:
+``vi ~/.m2/settings.xml``
+
 ## Configuration hierarchy and inheritance
 
 #### Hierarchy overview
