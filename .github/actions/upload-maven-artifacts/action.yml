@@ -37,7 +37,7 @@ runs:
       with:
         servers: |
           [{
-            "id": "madiro-org-github-uvl-emr",
+            "id": "madiro-global-health-github-uvl-emr",
             "username": "${{ inputs.maven-server-username }}",
             "password": "${{ inputs.maven-server-token }}"
           }]
