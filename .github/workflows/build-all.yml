@@ -62,33 +62,3 @@ jobs:
           artifact-path: "${{ github.workspace }}/sites/mugamba"
           maven-server-username: "${{ secrets.MAVEN_GITHUB_ACTIONS_DEPLOY_USERNAME }}"
           maven-server-token: "${{ secrets.MAVEN_GITHUB_ACTIONS_DEPLOY_TOKEN }}"
-
-  release:
-    if: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'release' }}    
-    runs-on: ubuntu-latest 
-    needs: build
-    permissions: 
-      contents: read
-      packages: write 
-    steps:
-      - uses: actions/checkout@v4
-        with:
-            clean: false
-      - uses: actions/setup-java@v4
-        with:
-          java-version: '8'
-          distribution: 'adopt'
-
-      - name: Set settings.xml
-        uses: s4u/maven-settings-action@v3.0.0
-        with:
-          servers: |
-            [{
-              "id": "msf-ocg-github-lime-emr",
-              "username": "${{ secrets.MAVEN_GITHUB_ACTIONS_DEPLOY_USERNAME }}",
-              "password": "${{ secrets.MAVEN_GITHUB_ACTIONS_DEPLOY_TOKEN }}"
-            }]
-
-      - name: Publish maven artifacts
-        run: 'mvn --batch-mode deploy'
-        working-directory: ${{ github.workspace }}/omod
