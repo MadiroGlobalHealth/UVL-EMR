@@ -250,21 +250,21 @@
       <url>https://nexus.mekomsolutions.net/repository/maven-public/</url>
     </repository>
     <repository>
-      <id>madiro-org-github-uvl-emr</id>
-      <url>https://maven.pkg.github.com/Madiro-org/uvl-emr/</url>
+      <id>madiro-global-health-github-uvl-emr</id>
+      <url>https://maven.pkg.github.com/MadiroGlobalHealth/UVL-EMR/</url>
     </repository>
   </repositories>
 
   <distributionManagement>
     <repository>
       <name>UVL repo for releases</name>
-      <id>madiro-org-github-uvl-emr</id>
-      <url>https://maven.pkg.github.com/Madiro-org/uvl-emr</url>
+      <id>madiro-global-health-github-uvl-emr</id>
+      <url>https://maven.pkg.github.com/MadiroGlobalHealth/UVL-EMR</url>
     </repository>
     <snapshotRepository>
       <name>UVL repo for snapshots</name>
-      <id>madiro-org-github-uvl-emr</id>
-      <url>https://maven.pkg.github.com/Madiro-org/uvl-emr</url>
+      <id>madiro-global-health-github-uvl-emr</id>
+      <url>https://maven.pkg.github.com/MadiroGlobalHealth/UVL-EMR</url>
     </snapshotRepository>
   </distributionManagement>
 
