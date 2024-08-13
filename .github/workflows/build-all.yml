@@ -35,6 +35,14 @@ jobs:
               "username": "${{ secrets.MAVEN_GITHUB_ACTIONS_DEPLOY_USERNAME }}",
               "password": "${{ secrets.MAVEN_GITHUB_ACTIONS_DEPLOY_TOKEN }}"
             }]
+
+         mirrors:  |
+         [{
+          "id": "nexus",
+          "mirrorOf": "mks-nexus-public",
+          "url": "http://nexus.mekomsolutions.net/repository/maven-public/"
+         }] 
+         disableSslCheck:true  # disabling SSL verifications first  
   
       - name: Build and Test
         run: mvn --batch-mode --update-snapshots --activate-profiles validator clean package
