@@ -1,3 +1,8 @@
+### CI status
+[![Build all configurations and deploy](https://github.com/MadiroGlobalHealth/UVL-EMR/actions/workflows/build-all.yml/badge.svg)](https://github.com/MadiroGlobalHealth/UVL-EMR/actions/workflows/build-all.yml)
+
+
+
 <img width="1407" alt="Screenshot 2024-08-06 at 4 22 22 PM" src="https://github.com/user-attachments/assets/1e82f482-3289-4097-a020-61f2c1e37034">
 
 This project is part of **Madiro's HealthTech Challenge 2024** connecting passionated people willing to engage in **Global Goods for Digital Health** with real-life needs and impactful opportunities. 
