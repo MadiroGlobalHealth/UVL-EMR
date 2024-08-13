@@ -61,6 +61,17 @@ In some cases, you might need to customize your Maven configuration file to buil
 On Mac, you can edit those settings using:
 ``vi ~/.m2/settings.xml``
 
+Add the Maven Server config and API key in your Maven settings on your laptop:
+```bash
+  <servers>
+    <server>
+      <id>madiroglobalhealth-github-uvl-emr</id>
+      <username>YOUR_GITHUB_USERNAME</username>
+      <password>YOU_GITHUB_PASSWORD</password>
+    </server>
+  </servers>
+```
+
 ## Configuration hierarchy and inheritance
 
 #### Hierarchy overview
