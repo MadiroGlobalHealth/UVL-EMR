@@ -15,9 +15,9 @@
   </modules>
 
   <scm>
-    <connection>scm:git:git@github.com:Madiro-org/uvl-emr.git</connection>
+    <connection>scm:git:git@github.com:MadiroGlobalHealth/uvl-emr.git</connection>
     <developerConnection>${project.scm.connection}</developerConnection>
-    <url>https://github.com/Madiro-org/uvl-emr/</url>
+    <url>https://github.com/MadiroGlobalHealth/UVL-EMR/</url>
     <tag>HEAD</tag>
   </scm>
 
