@@ -10,6 +10,11 @@ Additionally, it facilitates efficient tracking of public health trends and reso
 <img width="1167" alt="Screenshot 2024-08-06 at 4 44 07 PM" src="https://github.com/user-attachments/assets/6a96fa28-e012-4ee1-812f-d1a8c7f744a6">
 
 
+## Quick Start using GitPod
+You can run the project and contribute to it using GitPod in your browser or VSCode. This will allow you to easily run the project without installing dependencies on your local machine like Java SDK, Docker, etc.  
+
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/MadiroGlobalHealth/UVL-EMR/)
+
 ## Quick Start on localhost
 
 ### Prerequisites
