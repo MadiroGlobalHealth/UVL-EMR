@@ -1,4 +1,3 @@
-### CI status
 [![Build all configurations and deploy](https://github.com/MadiroGlobalHealth/UVL-EMR/actions/workflows/build-all.yml/badge.svg)](https://github.com/MadiroGlobalHealth/UVL-EMR/actions/workflows/build-all.yml)
 
 
