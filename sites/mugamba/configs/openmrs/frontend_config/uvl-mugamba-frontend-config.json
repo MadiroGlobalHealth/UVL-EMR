@@ -206,8 +206,7 @@
       "demographics",
       "contact",
       "additionalInformation",
-      "relationships",
-      "emergencyContacts"
+      "relationships"
     ],
     "fieldDefinitions": [
       {
@@ -241,99 +240,11 @@
         }
       },
       {
-        "id": "familyName3",
-        "type": "person attribute",
-        "uuid": "33829173-d444-4d1d-a407-869d322c27d4",
-        "label": "Family Name 3",
-        "placeholder": "placeholder",
-        "validation": {
-          "required": false
-        }
-      },
-      {
-        "id": "emergencycontact1firstName",
-        "type": "person attribute",
-        "uuid": "b0f6124c-7645-420e-a82b-058799209e33",
-        "label": "Emergency contact 1 First Name",
-        "validation": {
-          "required": false
-        }
-      },
-      {
-        "id": "emergencycontact1lastName",
-        "type": "person attribute",
-        "uuid": "f1512c64-4529-42c3-a795-14e30d4a157b",
-        "label": "Emergency contact 1 Last Name",
-        "validation": {
-          "required": false
-        }
-      },
-      {
-        "id": "emergencycontact1relationshipToPatient",
-        "type": "person attribute",
-        "uuid": "057e07a8-2170-4422-b257-26e401e3c151",
-        "label": "Emergency contact 1 Relationship To Patient",
-        "answerConceptSetUuid": "610e573a-157f-475b-93d3-6afbcf74e71b"
-      },
-      {
-        "id": "emergencycontact1phoneNumber",
-        "type": "person attribute",
-        "uuid": "f173f4ac-6ba2-44a4-870c-a6dab973bf3a",
-        "label": "Emergency contact 1 Phone Number",
-        "validation": {
-          "required": false
-        }
-      },
-      {
-        "id": "emergencycontact2firstName",
-        "type": "person attribute",
-        "uuid": "0d84be8a-7cfe-4af9-bf9a-9ed42e3822f2",
-        "label": "Emergency contact 2 First Name",
-        "validation": {
-          "required": false
-        }
-      },
-      {
-        "id": "emergencycontact2lastName",
-        "type": "person attribute",
-        "uuid": "63b1be4d-5bd8-4e76-902c-276c56666047",
-        "label": "Emergency contact 2 Last Name",
-        "validation": {
-          "required": false
-        }
-      },
-      {
-        "id": "emergencycontact2relationshipToPatient",
-        "type": "person attribute",
-        "uuid": "486da62c-12a8-463c-ada9-4e8f6488075e",
-        "label": "Emergency contact 2 Relationship To Patient",
-        "answerConceptSetUuid": "1cc30f31-cb1d-440c-9ea5-826bd71e2b29"
-      },
-      {
-        "id": "emergencycontact2phoneNumber",
-        "type": "person attribute",
-        "uuid": "7109ae0c-60b3-4362-9a5d-39a7b078e5dc",
-        "label": "Emergency contact 2 Phone Number",
-        "validation": {
-          "required": false
-        }
-      },
-      {
         "id": "maritalStatus",
         "type": "person attribute",
         "uuid": "3884dc76-c271-4bcb-8df8-81c6fb897f53",
         "label": "Marital status",
         "answerConceptSetUuid": "544ef960-3b65-4add-8795-96b2b084faa3"
-      },
-      {
-        "id": "currentStatus",
-        "type": "person attribute",
-        "uuid": "e0b6ed99-72c4-4847-a442-e9929eac4a0f",
-        "label": "Current Status",
-        "validation": {
-          "required": false
-        },
-        "answerConceptSetUuid": "b3767edc-78f5-4d0f-a2d8-564ae58d00cf"
       },
       {
         "id": "nationality",
@@ -344,16 +255,6 @@
           "required": false
         },
         "answerConceptSetUuid": "3dc96ee4-daea-4460-b141-6b31f7b7ae93"
-      },
-      {
-        "id": "legalStatus",
-        "type": "person attribute",
-        "uuid": "a9b2c642-097f-43f8-b96b-4d2f50ffd9b1",
-        "label": "Legal Status",
-        "validation": {
-          "required": false
-        },
-        "answerConceptSetUuid": "9728c2ff-a489-4e97-94d0-07e02f403baa"
       },
       {
         "id": "occupation",
@@ -382,7 +283,6 @@
         "fields": [
           "name",
           "familyName2",
-          "familyName3",
           "gender",
           "dob",
           "id"
@@ -392,8 +292,6 @@
         "id": "additionalInformation",
         "name": "Additional Information",
         "fields": [
-          "currentStatus",
-          "legalStatus",
           "maritalStatus",
           "numberOfChildren",
           "occupation"
@@ -407,20 +305,6 @@
           "telephoneNumber",
           "emailAddress",
           "nationality"
-        ]
-      },
-      {
-        "id": "emergencyContacts",
-        "name": "Emergency Contacts",
-        "fields": [
-          "emergencycontact1firstName",
-          "emergencycontact1lastName",
-          "emergencycontact1relationshipToPatient",
-          "emergencycontact1phoneNumber",
-          "emergencycontact2firstName",
-          "emergencycontact2lastName",
-          "emergencycontact2relationshipToPatient",
-          "emergencycontact2phoneNumber"
         ]
       }
     ],
