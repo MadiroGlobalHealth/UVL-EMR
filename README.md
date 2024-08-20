@@ -138,6 +138,10 @@ Official  [Github](https://github.com/openmrs)  repositories for OpenMRS
 
 For any questions, please contact [Michael Bontyes](https://github.com/michaelbontyes) or reach out on the [OpenMRS Slack](https://slack.openmrs.org/).
 
+## Sign-up for the challenge
+Enrollment are **open until September 1st, 2024**:   
+[https://forms.gle/R1gTWSYYw1WWAErm7](https://forms.gle/R1gTWSYYw1WWAErm7) 
+
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more information.
