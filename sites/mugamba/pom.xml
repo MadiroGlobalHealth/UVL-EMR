@@ -46,6 +46,7 @@
           </execution>
         </executions>
       </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>
@@ -99,7 +100,44 @@
         </executions>
       </plugin>
 
-      <!-- packaging the distro as a installable/deployable file -->
+      <!-- Prefix Docker container and volume names with UVL -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>3.1.0</version>
+        <executions>
+          <execution>
+            <id>Prefix Docker container and volume names with UVL</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
+                <echo message="Prefixing Docker container and volume names with UVL"/>
+
+                <replaceregexp file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/docker-compose-common.yml"
+                              match="^\s*container_name:\s*(\w+)"
+                              replace="container_name: UVL-\1"/>
+
+                <replaceregexp file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/docker-compose-common.yml"
+                              match="^\s*volumes:\s*([\s\S]*?)^\s*(\w+):\s*"
+                              replace="volumes:\n  UVL-\2: "/>
+
+                <replaceregexp file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/docker-compose-openmrs.yml"
+                              match="^\s*container_name:\s*(\w+)"
+                              replace="container_name: UVL-\1"/>
+
+                <replaceregexp file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/docker-compose-openmrs.yml"
+                              match="^\s*volumes:\s*([\s\S]*?)^\s*(\w+):\s*"
+                              replace="volumes:\n  UVL-\2: "/>
+              </target>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Packaging the distro as a deployable file -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
@@ -120,6 +158,7 @@
           </execution>
         </executions>
       </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-antrun-plugin</artifactId>
@@ -141,9 +180,10 @@
           </execution>
         </executions>
       </plugin>
+
     </plugins>
   </build>
-  
+
   <repositories>
     <repository>
       <id>mks-nexus-public</id>
@@ -167,5 +207,5 @@
       <url>https://maven.pkg.github.com/MadiroGlobalHealth/UVL-EMR</url>
     </snapshotRepository>
   </distributionManagement>
-  
+
 </project>

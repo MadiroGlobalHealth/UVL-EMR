@@ -171,36 +171,24 @@
           </execution>
         </executions>
       </plugin>
+
+      <!-- Prefix Docker container and volume names with UVL -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-antrun-plugin</artifactId>
         <version>3.1.0</version>
         <executions>
           <execution>
-            <id>Add UVL-OCG Frontend Configuration to ozone</id>
+            <id>Prefix Docker container and volume names with UVL</id>
             <phase>process-resources</phase>
             <goals>
               <goal>run</goal>
             </goals>
             <configuration>
               <target>
-                <echo message="Adding uvl frontend config"/>
-                <replaceregexp file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/.env"
-                              match="ozone-frontend-config.json" replace="uvl-frontend-config.json" />
-              </target>
-            </configuration>
-          </execution>
-          <execution>
-            <id>Add UVL EMR docker image Configuration to ozone</id>
-            <phase>process-resources</phase>
-            <goals>
-              <goal>run</goal>
-            </goals>
-            <configuration>
-              <target>
-                <echo message="Adding uvl docker image version"/>
-                <replaceregexp file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/.env"
-                              match="O3_DOCKER_IMAGE_TAG=.*" replace="O3_DOCKER_IMAGE_TAG=${UVLReferenceapplicationDockerVersion}" />
+                <echo message="Prefixing Docker container and volume names with UVL"/>
+                
+            
               </target>
             </configuration>
           </execution>
