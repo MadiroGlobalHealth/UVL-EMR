@@ -100,7 +100,6 @@
         </executions>
       </plugin>
 
-      <!-- Prefix Docker container and volume names with UVL -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-antrun-plugin</artifactId>
@@ -132,7 +131,7 @@
                               match="^\s*volumes:\s*([\s\S]*?)^\s*(\w+):\s*"
                               replace="volumes:\n  UVL-\2: "/>
               </target>
-              
+
             </configuration>
           </execution>
         </executions>

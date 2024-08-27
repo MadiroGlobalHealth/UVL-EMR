@@ -171,24 +171,40 @@
           </execution>
         </executions>
       </plugin>
-
-      <!-- Prefix Docker container and volume names with UVL -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-antrun-plugin</artifactId>
         <version>3.1.0</version>
         <executions>
           <execution>
-            <id>Prefix Docker container and volume names with UVL</id>
+            <id>Add UVL-OCG Frontend Configuration to ozone</id>
             <phase>process-resources</phase>
             <goals>
               <goal>run</goal>
             </goals>
             <configuration>
               <target>
-                <echo message="Prefixing Docker container and volume names with UVL"/>
-                
-                 <replaceregexp file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/docker-compose-common.yml"
+                <echo message="Adding uvl frontend config"/>
+                <replaceregexp file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/.env"
+                              match="ozone-frontend-config.json" replace="uvl-frontend-config.json" />
+              </target>
+            </configuration>
+          </execution>
+          <execution>
+            <id>Add UVL EMR docker image Configuration to ozone</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
+                <echo message="Adding uvl docker image version"/>
+                <replaceregexp file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/.env"
+                              match="O3_DOCKER_IMAGE_TAG=.*" replace="O3_DOCKER_IMAGE_TAG=${UVLReferenceapplicationDockerVersion}" />
+                               <echo message="Prefixing Docker container and volume names with UVL"/>
+                               
+                <replaceregexp file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/.env"	
+                              match="O3_DOCKER_IMAGE_TAG=.*" replace="O3_DOCKER_IMAGE_TAG=${UVLReferenceapplicationDockerVersion}" />	                 <replaceregexp file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/docker-compose-common.yml"
                               match="^\s*container_name:\s*(\w+)"
                               replace="container_name: UVL-\1"/>
 
@@ -203,12 +219,12 @@
                 <replaceregexp file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/docker-compose-openmrs.yml"
                               match="^\s*volumes:\s*([\s\S]*?)^\s*(\w+):\s*"
                               replace="volumes:\n  UVL-\2: "/>
-            
               </target>
             </configuration>
           </execution>
         </executions>
       </plugin>
+
     </plugins>
   </build>
 
