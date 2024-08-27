@@ -187,7 +187,21 @@
             <configuration>
               <target>
                 <echo message="Prefixing Docker container and volume names with UVL"/>
-                
+                 <replaceregexp file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/docker-compose-common.yml"
+                              match="^\s*container_name:\s*(\w+)"
+                              replace="container_name: UVL-\1"/>
+
+                <replaceregexp file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/docker-compose-common.yml"
+                              match="^\s*volumes:\s*([\s\S]*?)^\s*(\w+):\s*"
+                              replace="volumes:\n  UVL-\2: "/>
+
+                <replaceregexp file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/docker-compose-openmrs.yml"
+                              match="^\s*container_name:\s*(\w+)"
+                              replace="container_name: UVL-\1"/>
+
+                <replaceregexp file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/docker-compose-openmrs.yml"
+                              match="^\s*volumes:\s*([\s\S]*?)^\s*(\w+):\s*"
+                              replace="volumes:\n  UVL-\2: "/>
             
               </target>
             </configuration>
