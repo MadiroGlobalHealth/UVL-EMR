@@ -132,6 +132,7 @@
                               match="^\s*volumes:\s*([\s\S]*?)^\s*(\w+):\s*"
                               replace="volumes:\n  UVL-\2: "/>
               </target>
+              
             </configuration>
           </execution>
         </executions>
