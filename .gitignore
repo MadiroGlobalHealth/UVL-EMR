@@ -386,4 +386,7 @@ dist
 # SvelteKit build / generate output
 .svelte-kit
 
+# Makefile automation file
+makefile
+
 # End of https://www.toptal.com/developers/gitignore/api/node
