@@ -179,6 +179,15 @@
       }
     }
   },
+  "@openmrs/esm-home-app": {
+    "extensionSlots": {
+      "home-dashboard-slot": {
+        "add": [
+          "billing-checkin-form"
+        ]
+      }
+    }
+  },
   "@openmrs/esm-primary-navigation-app": {
     "externalRefLinks": [
       {
