@@ -38,6 +38,16 @@ Open the cloned folder
 ```bash
 cd UVL-EMR
 ```
+Add your GitHub credentials to `~/.m2/settings.xml` settings file. See [how to create a git github token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-fine-grained-personal-access-token)
+```xml
+<servers>
+  <server>
+    <id>madiro-global-health-github-uvl-emr</id>
+    <username>your_github_username</username>
+    <password>your_github_token</password>
+  </server>
+</servers>
+```
 
 Build UVL distro/version of OpenMRS 3
 ```bash
