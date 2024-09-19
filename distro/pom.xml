@@ -191,6 +191,23 @@
             </configuration>
           </execution>
           <execution>
+            <id>Add UVL to Docker volumes and Containers</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
+                <echo message="Rename project name to UVL in ozone scripts" />
+                <replace
+                  dir="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/scripts"
+                  includes="*.sh"
+                  token='-p ozone'
+                  value='-p uvl'/>
+              </target>
+            </configuration>
+          </execution>
+          <execution>
             <id>Add UVL EMR docker image Configuration to ozone</id>
             <phase>process-resources</phase>
             <goals>
