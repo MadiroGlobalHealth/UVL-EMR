@@ -1,0 +1,206 @@
+@use '@carbon/styles/scss/colors';
+@use '@carbon/styles/scss/spacing';
+@use '@carbon/styles/scss/type';
+.widgetContainer {
+    background-color: colors.$white-0;
+}
+
+.widgetHeaderContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: spacing.$spacing-04 0 spacing.$spacing-04 spacing.$spacing-05;
+    h4 {
+        &::after {
+            content: '';
+            display: block;
+            width: 2rem;
+            padding-top: 0.188rem;
+            border-bottom: 0.375rem solid var(--brand-01);
+        }
+    }
+}
+
+.toggleButtons {
+    width: fit-content;
+    margin: 0 spacing.$spacing-03;
+}
+
+.searchField {
+    width: 100%;
+    max-width: 250px;
+    border: 0 !important;
+}
+
+.container {
+    margin-top: 16px;
+    margin-left: inherit;
+    width: 100%;
+    overflow-y: hidden;
+}
+
+.tabContainer {
+    margin-top: 16px;
+    padding-left: 1rem;
+    background-color: colors.$white-0;
+}
+
+.searchbox {
+    max-width: 16rem;
+    input:focus {
+        outline: 2px solid colors.$orange-40 !important;
+    }
+}
+
+.tabContainer li button {
+    width: 100% !important;
+}
+
+.tileContainer {
+    background-color: colors.$white-0;
+    border-top: 1px solid colors.$gray-20;
+    padding: 5rem 0;
+}
+
+.tile {
+    margin: auto;
+    width: fit-content;
+}
+
+.tileContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.menuItem {
+    max-width: none;
+}
+
+.radioButtonGroup {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: spacing.$spacing-03;
+    min-height: spacing.$spacing-10;
+    width: 100%;
+    @include type.type-style('body-compact-01');
+}
+
+.radioButton {
+    padding: spacing.$spacing-02 spacing.$spacing-02;
+    margin: spacing.$spacing-03 0;
+}
+
+.sectionTitle {
+    @include type.type-style('heading-compact-02');
+    color: colors.$gray-70;
+    margin-bottom: spacing.$spacing-04;
+}
+
+.modalBody {
+    padding-bottom: spacing.$spacing-05;
+}
+
+.tabContainer div[role='tabpanel'] {
+    padding: 0 !important;
+}
+
+.tabContainer li button {
+    width: 100% !important;
+}
+
+.tableContainer {
+    margin: 0;
+    padding: 0;
+}
+
+.search {
+    max-width: 16rem;
+    input {
+        background-color: colors.$white-0 !important;
+    }
+}
+
+.toolbarWrapper {
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.tableContainer {
+    padding: 0;
+     :global(.cds--data-table-content) {
+        border: 1px solid colors.$gray-20;
+        border-bottom: none;
+        overflow-x: auto;
+        display: block;
+    }
+     :global(.cds--table-toolbar) {
+        position: relative;
+        height: 2rem;
+        min-height: 0;
+        overflow: visible;
+        top: 0;
+    }
+    &:global(.cds--data-table-container) {
+        margin: 0 1rem;
+        padding: 0;
+    }
+    a {
+        text-decoration: none;
+    }
+    tr {
+        width: spacing.$spacing-01;
+    }
+    .cds--table-sort__description {
+        display: none;
+    }
+}
+
+.toolbarAction {
+    max-width: none;
+}
+
+.patientListDownload {
+    margin-top: 10px;
+}
+
+.redCell {
+    background-color: colors.$red-40 !important;
+}
+
+.grayCell {
+    background-color: colors.$gray-30 !important;
+}
+
+.greenCell {
+    background-color: colors.$green-30 !important;
+}
+
+.yellowCell {
+    background-color: colors.$yellow-20 !important;
+}
+
+.cellStyling {
+    border-right: 1px solid colors.$gray-20;
+    border-left: 1px solid colors.$gray-20;
+}
+
+.tableHeaderStyle {
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 1px;
+}
+
+.tableHeaderFlag {
+    writing-mode: vertical-lr;
+    transform: rotate(180deg);
+}
+
+.actionButton {
+    margin-left: 1rem;
+    svg {
+        margin-right: 0.5rem;
+    }
+}

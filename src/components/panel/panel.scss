@@ -1,0 +1,25 @@
+@use '@carbon/styles/scss/colors';
+@use '@carbon/styles/scss/type';
+
+.panel {
+  background-color: colors.$white-0;
+  border: 1px solid colors.$gray-20;
+  border-radius: 0.25rem;
+  box-shadow: 0 1px 1px rgba(0,0,0,.05);
+  width: 50%;
+  min-height: 15rem;
+}
+
+.panel .heading {
+  background-color: colors.$gray-20;
+  border-color: colors.$gray-20;
+  @include type.type-style('heading-compact-01');
+}
+
+.heading {
+  border-bottom: 1px solid transparent;
+  border-top-left-radius: 0.25rem;
+  border-top-right-radius: 0.25rem;
+  padding: 0.625rem 1rem;
+}
+

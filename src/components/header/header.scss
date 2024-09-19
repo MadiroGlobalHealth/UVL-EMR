@@ -1,0 +1,71 @@
+@use '@carbon/styles/scss/colors';
+@use '@carbon/styles/scss/type';
+@use '@carbon/styles/scss/spacing';
+
+.header {
+  @include type.type-style('body-compact-02');
+  color: colors.$gray-70;
+  height: spacing.$spacing-12;
+  background-color: colors.$white-0;
+  border-bottom: 1px solid colors.$gray-20;
+  display: flex;
+  justify-content: space-between;
+}
+
+.left-justified-items {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  cursor: pointer;
+}
+
+.right-justified-items {
+  @include type.type-style('body-compact-02');
+  color: colors.$gray-70;
+  margin: 0.5rem;
+}
+
+.page-name {
+  @include type.type-style('heading-04');
+}
+
+.page-labels {
+  p:first-of-type {
+    margin-bottom: 0.25rem;
+  }
+}
+
+.date-and-location {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-right: 1rem;
+}
+
+.value {
+  margin-left: 0.25rem;
+}
+
+.middot {
+  margin: 0 0.5rem;
+}
+
+.view {
+  @include type.type-style('label-01');
+}
+
+.dropdown {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 0.25rem;
+
+  :global(.cds--dropdown__wrapper--inline) {
+    align-items: center;
+    display: flex;
+  }
+
+  :global(.cds--list-box__menu) {
+    left: -10.15rem;
+  }
+}
