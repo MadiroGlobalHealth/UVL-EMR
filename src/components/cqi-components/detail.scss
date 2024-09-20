@@ -1,0 +1,22 @@
+@use '@carbon/styles/scss/colors';
+@use '@carbon/styles/scss/type';
+
+.detailContainer {
+  width: 100%;
+  padding: 1rem;
+}
+
+.detailItem {
+  width: 25%;
+  display: inline-block;
+  padding-right: 1rem;
+}
+
+.detailLabel {
+  @include type.type-style('heading-01');
+}
+
+.detailValue {
+  margin-left: 0.5rem;
+}
+

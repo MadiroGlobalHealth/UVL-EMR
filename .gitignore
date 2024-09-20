@@ -109,7 +109,7 @@ settings.xml
 # .idea/modules.xml
 # .idea/*.iml
 # .idea/modules
-# *.iml
+*.iml
 # *.ipr
 
 # CMake
@@ -291,6 +291,9 @@ build/Release
 node_modules/
 jspm_packages/
 
+# TypeScript v1 declaration files
+typings/
+
 # Snowpack dependency directory (https://snowpack.dev/)
 web_modules/
 
@@ -388,5 +391,6 @@ dist
 
 # Makefile automation file
 makefile
+
 
 # End of https://www.toptal.com/developers/gitignore/api/node
