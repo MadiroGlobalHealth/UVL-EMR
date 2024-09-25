@@ -342,7 +342,7 @@
   },
   "@openmrs/esm-billing-app": {
     "serviceTypes": {
-      "billableService": "49f1cfdf-498a-4984-8acb-eebf402c28eb"
+      "billableService": "0dfe7d9f-1dc9-4e68-b4cb-d19e1a006c54"
     }
   }
 }
