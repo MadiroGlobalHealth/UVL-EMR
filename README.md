@@ -152,6 +152,20 @@ For any questions, please contact [Michael Bontyes](https://github.com/michaelbo
 Enrollment are **open until September 1st, 2024**:   
 [https://forms.gle/R1gTWSYYw1WWAErm7](https://forms.gle/R1gTWSYYw1WWAErm7) 
 
+### Sprint Check-in 
+## [Join Us](https://meet.google.com/bsp-wsyk-pwu)
+📅 **Every Monday and Thursday 3:30PM TO 4:00 PM EAT | 7:30AM TO 8:00 AM UTC**
+
+
+### 🏆 Key Achievements and Contributors
+We extend our heartfelt thanks to everyone who contributed to making these milestones possible! Below are the key goals achieved, along with the contributors who made them happen:
+
+| 🎯 **Goal**                                  | **Date**          | **Contributors**                               | **Relevant Links**                                                                                                      |
+|--------------------------------------------------|-------------------|------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------|
+| 🎯Cloud Architecture Overview             | 09/01/2024                 | @tendomart                                             | [Issue 17](https://github.com/MadiroGlobalHealth/UVL-EMR/issues/17) |
+| -          | -                 | -                                              | -
+
+
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more information.
