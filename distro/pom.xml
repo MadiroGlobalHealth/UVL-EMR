@@ -112,6 +112,7 @@
                 <resource>
                   <directory>${project.build.directory}/ozone</directory>
                   <excludes>
+                    <exclude>distro/configs/**/addresshierarchy/*.*</exclude>
                     <exclude>distro/configs/**/ampathforms/*.*</exclude>
                     <exclude>distro/configs/**/ampathformstranslations/*.*</exclude>
                     <exclude>distro/configs/**/appointmentservicedefinitions/*.*</exclude>
