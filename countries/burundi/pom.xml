@@ -67,6 +67,7 @@
                   <directory>${project.build.directory}/ozone-uvl-distro</directory>
                   <excludes>
                     <exclude>distro/configs/**/roles/*.*</exclude>
+                    <exclude>distro/configs/**/addresshierarchy/*.*</exclude>
                   </excludes>
                 </resource>
               </resources>
