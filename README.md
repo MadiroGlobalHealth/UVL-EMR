@@ -162,7 +162,15 @@ We extend our heartfelt thanks to everyone who contributed to making these miles
 
 | 🎯 **Goal**                                  | **Date**          | **Contributors**                               | **Relevant Links**                                                                                                      |
 |--------------------------------------------------|-------------------|------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------|
+| 🎯Add the status badge             | 08/15/2024                 | @sherrif10                                             | [PR](https://github.com/MadiroGlobalHealth/UVL-EMR/pull/1) |
+| 🎯Configure Locations             | 08/20/2024                 | @michaelbontyes                                             | [Issue 6](https://github.com/MadiroGlobalHealth/UVL-EMR/issues/6) |
+| 🎯Display "Billing" in the sidebar             | 08/30/2024                 | @dancinoman                                             | [Issue 14](https://github.com/MadiroGlobalHealth/UVL-EMR/issues/14) |
 | 🎯Cloud Architecture Overview             | 09/01/2024                 | @tendomart                                             | [Issue 17](https://github.com/MadiroGlobalHealth/UVL-EMR/issues/17) |
+| 🎯Modify the Patient ID generator             | 09/04/2024                 | @sherrif10                                             | [Issue 25](https://github.com/MadiroGlobalHealth/UVL-EMR/issues/25) |
+| 🎯Add guide on how to add uvl repository to maven setting             | 09/10/2024                 | @jnsereko                                           | [PR 27](https://github.com/MadiroGlobalHealth/UVL-EMR/pull/27) |
+| 🎯Fix Error with FHIR Backend module             | 09/25/2024                 | @wodpachua                                             | [Issue 15](https://github.com/MadiroGlobalHealth/UVL-EMR/issues/15) |
+| 🎯Test Initializer to add billable services in billing module             | 09/25/2024                 | @wodpachua                                             | [Issue 12](https://github.com/MadiroGlobalHealth/UVL-EMR/issues/12) |
+| 🎯Table to show achievements             | 09/27/2024                 | @suubi-joshua                                             | [PR 33](https://github.com/MadiroGlobalHealth/UVL-EMR/pull/33) |
 | -          | -                 | -                                              | -
 
 
