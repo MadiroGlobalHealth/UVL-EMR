@@ -3,41 +3,41 @@
   <addressComponents>
     <addressComponent>
       <field>COUNTRY</field>
-      <nameMapping>Location.country</nameMapping>
+      <nameMapping>Country</nameMapping>
       <sizeMapping>40</sizeMapping>
-      <elementDefault>Burundi</elementDefault>
       <requiredInHierarchy>true</requiredInHierarchy>
     </addressComponent>
     <addressComponent>
       <field>STATE_PROVINCE</field>
-      <nameMapping>Location.province</nameMapping>
+      <nameMapping>Province</nameMapping>
       <sizeMapping>40</sizeMapping>
-      <elementDefault>Bururi</elementDefault>
       <requiredInHierarchy>true</requiredInHierarchy>
     </addressComponent>
     <addressComponent>
       <field>COUNTY_DISTRICT</field>
-      <nameMapping>Location.district</nameMapping>
+      <nameMapping>Commune</nameMapping>
       <sizeMapping>40</sizeMapping>
-      <elementDefault>Mugamba</elementDefault>
       <requiredInHierarchy>true</requiredInHierarchy>
     </addressComponent>
-    <addressComponent>
+	<addressComponent>
       <field>CITY_VILLAGE</field>
-      <nameMapping>Location.village</nameMapping>
-      <sizeMapping>80</sizeMapping>
+      <nameMapping>Zone</nameMapping>
+      <sizeMapping>40</sizeMapping>
       <requiredInHierarchy>true</requiredInHierarchy>
     </addressComponent>
     <addressComponent>
       <field>ADDRESS_1</field>
-      <nameMapping>Location.address1</nameMapping>
+      <nameMapping>Colline</nameMapping>
       <sizeMapping>40</sizeMapping>
       <requiredInHierarchy>true</requiredInHierarchy>
     </addressComponent>
   </addressComponents>
   <lineByLineFormat>
-            <string>cityVillage countyDistrict stateProvince country</string>
-            <string>address1</string>
+    <string>address1</string>
+	<string>cityVillage</string>
+    <string>countyDistrict</string>
+	<string>stateProvince</string>
+    <string>country</string>
   </lineByLineFormat>
   <addressHierarchyFile>
     <filename>addresshierarchy_mugamba.csv</filename>
