@@ -79,3 +79,8 @@ fi
 # Clean up and delete OUTPUT_ZIP_FILE and ARTIFACT_ZIP_FILE
 rm -f "$OUTPUT_ZIP_FILE" "$ARTIFACT_ZIP_FILE"
 echo "Artifact extraction and cleanup completed successfully."
+
+# Restart Ozone from scripts located in folder run/docker/scripts/
+cd run/docker/scripts/
+./stop-demo.sh
+./start-demo.sh
