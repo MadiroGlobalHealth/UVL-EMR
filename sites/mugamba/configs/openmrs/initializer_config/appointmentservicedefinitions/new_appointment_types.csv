@@ -1,0 +1,5 @@
+Uuid,Void/Retire,Name,Description,Duration,Start Time,End Time,Max Load,Speciality,Location,Label Colour
+372b9460-7d9d-44dd-b845-b660ef568bc8,,General Follow-up consultation,Appointment for General Medicine Follow-up consultation,,,,,9f2a8cd0-32c6-4844-8df7-1ac9c4d79943,,#fcba03
+a97a199c-04e7-41f1-ac11-458dad1a9b7f,,General Surgery,Appointment for General Medicine Surgery,,,,,9f2a8cd0-32c6-4844-8df7-1ac9c4d79943,,#22ba82
+e1205249-6783-43ee-a08e-40916422cb77,,Pediatrics Follow-up consultation,Appointment for Pediatrics Follow-up consultation,,,,,14106bb7-dad6-4446-809d-737f4c128ae3,,#fcba03
+2ef92bd1-ae8f-4f85-b4b7-240a40695a03,,Pediatrics Surgery,Appointment for Pediatrics Surgery,,,,,14106bb7-dad6-4446-809d-737f4c128ae3,,#22ba82
