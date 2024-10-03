@@ -4,11 +4,11 @@
 
 <img width="1407" alt="Screenshot 2024-08-06 at 4 22 22 PM" src="https://github.com/user-attachments/assets/1e82f482-3289-4097-a020-61f2c1e37034">
 
-This project is part of **Madiro's HealthTech Challenge 2024** connecting passionated people willing to engage in **Global Goods for Digital Health** with real-life needs and impactful opportunities. 
+This project is part of **Madiro's HealthTech Challenge 2024** connecting passionate people willing to engage in **Global Goods for Digital Health** with real-life needs and impactful opportunities. 
 
 This repository contains a distribution of **OpenMRS 3** that will support UVL in its digitalization of clinical operations (patient registration, consultations, laboratory, pharmacy, reporting, billing, etc.). Implementing a Digital Public Good such as OpenMRS in a rural hospital in Burundi is key for improving patient care through better record-keeping and streamlined medical data management such as laboratory test results or drug prescriptions, ensuring that healthcare providers have accurate and up-to-date information. 
 
-Additionally, it facilitates efficient tracking of public health trends and resource allocation, which is essential for addressing the unique healthcare challenges in rural settings. For example, the financial support from the government for child care and maternal care is conditional to digitalization - contributing to the long term **viability and independence** of the hospital. 
+Additionally, it facilitates efficient tracking of public health trends and resource allocation, which is essential for addressing the unique healthcare challenges in rural settings. For example, the financial support from the government for child care and maternal care is conditional to digitalization - contributing to the long-term **viability and independence** of the hospital. 
 
 ### Users and teams
 <img width="1167" alt="Screenshot 2024-08-06 at 4 44 07 PM" src="https://github.com/user-attachments/assets/6a96fa28-e012-4ee1-812f-d1a8c7f744a6">
@@ -72,10 +72,10 @@ Open the **administration of UVL EMR** in your browser
 open http://localhost/openmrs/admin
 ```
 
-Note that default admin user is `admin` and password is `Admin123`.
+Note that the default admin user is `admin` and the password is `Admin123`.
 
 ### Maven configuration
-In some cases, you might need to customize your Maven configuration file to build the project. 
+Sometimes, you might need to customize your Maven configuration file to build the project. 
 
 On Mac, you can edit those settings using:
 ``vi ~/.m2/settings.xml``
@@ -95,7 +95,7 @@ Add the Maven Server config and API key in your Maven settings on your laptop:
 
 #### Hierarchy overview
 ```
-── pom.xml - Aggredator / Orchestrator
+── pom.xml - Aggregator / Orchestrator
       └── /distro/pom.xml - UVL-wide Config
       └── /countries - Country-specific Config
             └── /burundi/pom.xl
@@ -148,13 +148,13 @@ Official  [Github](https://github.com/openmrs)  repositories for OpenMRS
 
 For any questions, please contact [Michael Bontyes](https://github.com/michaelbontyes) or reach out on the [OpenMRS Slack](https://slack.openmrs.org/).
 
-## Sign-up for the challenge
+## Sign up for the challenge
 Enrollment are **open until September 1st, 2024**:   
 [https://forms.gle/R1gTWSYYw1WWAErm7](https://forms.gle/R1gTWSYYw1WWAErm7) 
 
 ### Sprint Check-in 
 ## [Join Us](https://meet.google.com/bsp-wsyk-pwu)
-📅 **Every Monday and Thursday 3:30PM TO 4:00 PM EAT | 7:30AM TO 8:00 AM UTC**
+📅 **Every Monday and Thursday 3:30 PM TO 4:00 PM EAT | 7:30 AM TO 8:00 AM UTC**
 
 
 ### 🏆 Key Achievements and Contributors
