@@ -184,16 +184,9 @@
             DELETE FROM person_attribute WHERE value = 'test';
         </sql>
     </changeSet>
-    <!-- <changeSet id="add_lab_test_concepts" author="wodpachua">
-		<sqlFile path="sql/lab_test_concepts.sql" relativeToChangelogFile="true" stripComments="true" />
-	</changeSet> -->
-    <!-- <changeSet id="add_billable_services" author="wodpachua">
-		<sqlFile path="sql/billable_services.sql" relativeToChangelogFile="true" stripComments="true" />
-	</changeSet> -->
-    <!-- <changeSet id="add_payment_modes" author="wodpachua">
-		<sqlFile path="sql/payment_modes.sql" relativeToChangelogFile="true" stripComments="true" />
-	</changeSet> -->
-    <!-- <changeSet id="add_item_prices" author="wodpachua">
+    <changeSet id="add_item_prices" author="wodpachua">
+        <sql>SET foreign_key_checks = 0;</sql>
 		<sqlFile path="sql/item_prices.sql" relativeToChangelogFile="true" stripComments="true" />
-	</changeSet> -->
+        <sql>SET foreign_key_checks = 1;</sql>
+	</changeSet>
 </databaseChangeLog>
