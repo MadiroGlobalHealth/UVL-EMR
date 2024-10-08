@@ -171,6 +171,38 @@
                     <include>
                       docker-compose-files.txt
                     </include>
+                    <include>
+                      item_prices.sql
+                    </include>
+                    <include>
+                      load_prices_sql.sh
+                    </include>
+                    <include>
+                      docker-compose-openmrs.override.yml
+                    </include>
+                  </includes>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+          <execution>
+            <!-- Copy docker compose openmrs override .yml file -->
+            <id>Copy docker compose openmrs override .yml file</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>
+                ${project.build.directory}/${project.artifactId}-${project.version}/run/docker</outputDirectory>
+              <overwrite>true</overwrite>
+              <resources>
+                <resource>
+                  <directory>${project.basedir}/../scripts</directory>
+                  <includes>
+                    <include>
+                      docker-compose.yml
+                    </include>
                   </includes>
                 </resource>
               </resources>
