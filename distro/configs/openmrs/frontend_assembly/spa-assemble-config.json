@@ -18,6 +18,7 @@
     "@openmrs/esm-patient-orders-app": "latest",
     "@openmrs/esm-patient-programs-app": "latest",
     "@openmrs/esm-service-queues-app": "latest",
+    "@openmrs/esm-help-menu-app": "next",
     "@openmrs/esm-generic-patient-widgets-app": "latest",
     "@openmrs/esm-patient-conditions-app": "latest",
     "@openmrs/esm-patient-forms-app": "latest",
@@ -34,7 +35,9 @@
     "@openmrs/esm-patient-medications-app": "latest",
     "@openmrs/esm-fast-data-entry-app": "latest",
     "@openmrs/esm-implementer-tools-app": "latest",
-    "@openmrs/esm-form-builder-app": "latest"
+    "@openmrs/esm-form-builder-app": "latest",
+    "@openmrs/esm-user-onboarding-app": "next"
+    
   },
   "__comment": "Excluding modules some default modules to ensure we are using the specified versions.",
   "frontendModuleExcludes": [
