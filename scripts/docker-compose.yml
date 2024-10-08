@@ -1,0 +1,18 @@
+services:
+  openmrs:
+    volumes:
+      - "./scripts/load_prices_sql.sh:/docker-entrypoint-init.d/load_prices_sql.sh"
+      - "./scripts/item_prices.sql:/openmrs/item_prices.sql"
+    entrypoint: ["/bin/bash", "/docker-entrypoint-init.d/load_prices_sql.sh"]
+      
+
+  # frontend:
+  #   depends_on:
+  #     openmrs:
+  #       condition: service_started
+  #     env-substitution:
+  #       condition: service_completed_successfully
+  #   volumes:
+  #     - "./scripts/load_prices_sql.sh:/docker-entrypoint-init.d/load_prices_sql.sh"
+  #     - "./scripts/item_prices.sql:/openmrs/item_prices.sql"
+  #   entrypoint: ["/bin/bash", "/docker-entrypoint-init.d/load_prices_sql.sh"]
