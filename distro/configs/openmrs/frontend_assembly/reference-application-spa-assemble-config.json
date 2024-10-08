@@ -38,6 +38,7 @@
     "@openmrs/esm-implementer-tools-app": "latest",
     "@openmrs/esm-form-builder-app": "latest",
     "@openmrs/esm-billing-app": "next",
-    "@openmrs/esm-stock-management-app": "next"
+    "@openmrs/esm-stock-management-app": "next",
+    "@openmrs/esm-user-onboarding-app": "next"
   }
 }
