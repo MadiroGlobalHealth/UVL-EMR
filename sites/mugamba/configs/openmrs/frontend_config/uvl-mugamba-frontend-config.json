@@ -182,9 +182,7 @@
   "@openmrs/esm-home-app": {
     "extensionSlots": {
       "home-dashboard-slot": {
-        "add": [
-          "billing-checkin-form"
-        ]
+        "add": []
       }
     }
   },

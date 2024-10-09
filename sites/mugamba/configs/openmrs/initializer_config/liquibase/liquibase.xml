@@ -184,4 +184,9 @@
             DELETE FROM person_attribute WHERE value = 'test';
         </sql>
     </changeSet>
+    <changeSet id="add_item_prices" author="wodpachua">
+        <sql>SET foreign_key_checks = 0;</sql>
+		<sqlFile path="sql/item_prices.sql" relativeToChangelogFile="true" stripComments="true" />
+        <sql>SET foreign_key_checks = 1;</sql>
+	</changeSet>
 </databaseChangeLog>
