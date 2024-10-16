@@ -1,55 +1,547 @@
 insert into cashier_item_price (`service_id`, `price`, `payment_mode`, `name`, `creator`, `date_created`, `uuid`) 
 values 
-    ('1', '8000.00', '1', 'Insured Cost', '1', '2024-10-02 10:44:34', 'faceb629-7e89-4f69-88d4-01000c0ec5f6'),
-    ('1', '10000.00', '2', 'Non-Insured Cost', '1', '2024-10-02 10:44:34', '6420f904-a081-4c5d-b78b-6fa2fd4d5f09'),
-
-    ('2', '5200.00', '1', 'Insured Cost', '1', '2024-10-02 10:44:34', '29d70cd3-71be-4d4e-9f6e-4d44cc23e4a0'),
-    ('2', '6500.00', '2', 'Non-Insured Cost', '1', '2024-10-02 10:44:34', 'a519c454-6618-4e58-a0c8-f0fa48488fc6'),
+    ('1', '5200.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('1', '6500.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
     
-    ('3', '4000.00', '1', 'Insured Cost', '1', '2024-10-02 10:44:34', '9c58b3ff-dbbf-4ddb-b7d3-e670f45e39d4'),
-    ('3', '5000.00', '2', 'Non-Insured Cost', '1', '2024-10-02 10:44:34', '1a35fbfd-f889-4a61-973c-f12e4c511d0e'),
+    ('2', '4000.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('2', '5000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
     
-    ('4', '4400.00', '1', 'Insured Cost', '1', '2024-10-02 10:44:34', '83f56e52-b6ed-4a5b-b750-370efa1df214'),
-    ('4', '5500.00', '2', 'Non-Insured Cost', '1', '2024-10-02 10:44:34', 'd900d611-8326-429b-9f51-afde0231f649'),
+    ('3', '4400.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('3', '5500.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
     
-    ('5', '5600.00', '1', 'Insured Cost', '1', '2024-10-02 10:44:34', '5767d371-07bc-4eee-8eb8-6c1e7084e76f'),
-    ('5', '7000.00', '2', 'Non-Insured Cost', '1', '2024-10-02 10:44:34', '4c489e5d-7792-4d60-9702-c7f98fe38f36'),
+    ('4', '5600.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('4', '7000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
     
-    ('6', '6800.00', '1', 'Insured Cost', '1', '2024-10-02 10:44:34', '45096e4b-a838-4b66-a00a-b054a18ed19d'),
-    ('6', '8500.00', '2', 'Non-Insured Cost', '1', '2024-10-02 10:44:34', 'b8fe8ab9-fb4f-45b1-b1b8-c6bbb3ab7f12'),
+    ('5', '6800.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('5', '8500.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
     
-    ('7', '6800.00', '1', 'Insured Cost', '1', '2024-10-02 10:44:34', '30cb0830-9c86-4623-8a80-3cc5ea8f73d5'),
-    ('7', '8500.00', '2', 'Non-Insured Cost', '1', '2024-10-02 10:44:34', 'b49bb94e-6690-4bef-a36a-b2403b71080e'),
+    ('6', '6800.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('6', '8500.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
     
-    ('8', '4400.00', '1', 'Insured Cost', '1', '2024-10-02 10:44:34', '6c9bfc37-5dba-4f25-9e6f-12f792cc2742'),
-    ('8', '5500.00', '2', 'Non-Insured Cost', '1', '2024-10-02 10:44:34', 'adcddd59-6125-4c82-b016-c9a9ca4ca8f6'),
+    ('7', '4400.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('7', '5500.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
     
-    ('9', '6800.00', '1', 'Insured Cost', '1', '2024-10-02 10:44:34', 'ec9c6118-4c0c-4a00-94d4-8e26fa2669fc'),
-    ('9', '8500.00', '2', 'Non-Insured Cost', '1', '2024-10-02 10:44:34', '6d48563e-5dac-498d-99a9-2ab3d500b7fe'),
+    ('8', '6800.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('8', '8500.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
     
-    ('10', '4000.00', '1', 'Insured Cost', '1', '2024-10-02 10:44:34', 'a07265c0-be1e-4ed9-830d-43d86d8c436b'),
-    ('10', '5000.00', '2', 'Non-Insured Cost', '1', '2024-10-02 10:44:34', '651d24e9-4318-424b-ab1e-17dd57468059'),
+    ('9', '4000.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('9', '5000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
     
-    ('11', '8000.00', '1', 'Insured Cost', '1', '2024-10-02 10:44:34', 'a46a710e-a854-4a91-a458-f6c7b4234427'),
-    ('11', '10000.00', '2', 'Non-Insured Cost', '1', '2024-10-02 10:44:34', '98a7e3ed-be46-4040-b9d7-851614bcc940'),
+    ('10', '8000.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('10', '10000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
     
-    ('12', '5600.00', '1', 'Insured Cost', '1', '2024-10-02 10:44:34', '43349430-06da-4d4f-b5b7-fdf98dd53bc1'),
-    ('12', '7000.00', '2', 'Non-Insured Cost', '1', '2024-10-02 10:44:34', 'e9ba8848-f7b0-4120-96d5-f7cd24aa8106'),
+    ('11', '5600.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('11', '7000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
     
-    ('13', '6400.00', '1', 'Insured Cost', '1', '2024-10-02 10:44:34', 'dc79ba5a-a40d-4643-992d-9cd2db15e7ae'),
-    ('13', '8000.00', '2', 'Non-Insured Cost', '1', '2024-10-02 10:44:34', '53f7a959-81a4-4f4c-8c13-7f78631b4966'),
+    ('12', '6400.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('12', '8000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
     
-    ('14', '5200.00', '1', 'Insured Cost', '1', '2024-10-02 10:44:34', '9343174a-4b99-4cb1-b60f-4ee44b57105b'),
-    ('14', '6500.00', '2', 'Non-Insured Cost', '1', '2024-10-02 10:44:34', '131be816-7e33-4e9c-93d5-2f4b93cb3e9b'),
+    ('13', '5200.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('13', '6500.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
     
-    ('15', '5200.00', '1', 'Insured Cost', '1', '2024-10-02 10:44:34', 'ae51505d-4df1-430b-b89e-0c915a1eaddf'),
-    ('15', '6500.00', '2', 'Non-Insured Cost', '1', '2024-10-02 10:44:34', 'c323e964-5ef4-4837-9359-1d781a849f25'),
+    ('14', '5200.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('14', '6500.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
     
-    ('16', '5200.00', '1', 'Insured Cost', '1', '2024-10-02 10:44:34', '3948972b-b8c0-4379-946b-1ca760dc9035'),
-    ('16', '6500.00', '2', 'Non-Insured Cost', '1', '2024-10-02 10:44:34', 'efb8d618-31c9-4a8a-90de-2b5b2b66a800'),
+    ('15', '5200.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('15', '6500.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
     
-    ('17', '6800.00', '1', 'Insured Cost', '1', '2024-10-02 10:44:34', '2085dcb2-c0ab-48f3-b519-3f7a88f1e53e'),
-    ('17', '8500.00', '2', 'Non-Insured Cost', '1', '2024-10-02 10:44:34', '7dde8c50-c60a-486f-8e14-3e1dde4272ec'),
+    ('16', '6800.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('16', '8500.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
     
-    ('18', '3600.00', '1', 'Insured Cost', '1', '2024-10-02 10:44:34', '153add6d-03da-412d-b7fc-1a2451a1ec60'),
-    ('18', '4500.00', '2', 'Non-Insured Cost', '1', '2024-10-02 10:44:34', 'acf2da4d-96c6-45d2-b55f-f83dc0d41642');
+    ('17', '3600.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('17', '4500.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('18', '360000.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('18', '450000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('19', '8000.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('19', '10000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('20', '2400.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('20', '3000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('21', '2400.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('21', '3000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('22', '4000.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('22', '5000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('23', '3200.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('23', '4000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('24', '4000.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('24', '5000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('25', '1600.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('25', '2000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('26', '5600.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('26', '7000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('27', '4000.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('27', '5000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('28', '1600.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('28', '2000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('29', '2400.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('29', '3000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('30', '16000.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('30', '20000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('31', '4800.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('31', '6000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('32', '16000.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('32', '20000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('33', '40000.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('33', '50000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('34', '16000.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('34', '20000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('35', '8000.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('35', '10000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('36', '12000.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('36', '15000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('37', '1040.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('37', '1300.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('38', '1040.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('38', '1300.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('39', '10800.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('39', '13500.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('40', '720.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('40', '900.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('41', '720.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('41', '900.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('42', '16800.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('42', '21100.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('43', '960.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('43', '1200.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('44', '24000.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('44', '30000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('45', '2960.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('45', '3700.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('46', '2960.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('46', '3700.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('47', '1680.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('47', '2100.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('48', '13200.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('48', '16500.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('49', '26960.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('49', '33700.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('50', '3360.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('50', '4200.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('51', '2880.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('51', '3600.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('52', '5680.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('52', '7100.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('53', '3200.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('53', '4000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('54', '3200.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('54', '4000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('55', '3200.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('55', '4000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('56', '3200.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('56', '4000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('57', '480.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('57', '600.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('58', '480.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('58', '600.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('59', '3200.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('59', '4000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('60', '1760.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('60', '2200.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('61', '20560.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('61', '25700.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('62', '10800.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('62', '13500.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('63', '8800.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('63', '11000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('64', '8800.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('64', '11000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('65', '1920.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('65', '2400.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('66', '1600.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('66', '2000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('67', '32640.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('67', '40800.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('68', '720.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('68', '900.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('69', '720.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('69', '900.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('70', '720.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('70', '900.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('71', '720.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('71', '900.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('72', '720.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('72', '900.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('73', '3840.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('73', '4800.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('74', '19200.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('74', '24000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('75', '5680.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('75', '7100.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('76', '480.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('76', '600.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('77', '2240.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('77', '2800.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('78', '1200.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('78', '1500.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('79', '3200.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('79', '4000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('80', '800.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('80', '1000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('81', '800.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('81', '1000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('82', '1520.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('82', '1900.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('83', '3200.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('83', '4000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('84', '10800.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('84', '13500.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('85', '14400.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('85', '18000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('86', '14400.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('86', '18000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('87', '7200.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('87', '9000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('88', '3456.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('88', '4320.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('89', '3040.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('89', '3800.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('90', '2800.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('90', '3500.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('91', '2160.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('91', '2700.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('92', '800.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('92', '1000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('93', '14880.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('93', '18600.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('94', '50800.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('94', '63500.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('95', '28800.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('95', '36000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('96', '16800.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('96', '21000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('97', '23200.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('97', '29000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('98', '7760.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('98', '9700.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('99', '1360.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('99', '1700.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('100', '2160.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('100', '2700.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('101', '960.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('101', '1200.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('102', '1040.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('102', '1300.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('103', '320.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('103', '400.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('104', '28000.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('104', '35000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('105', '7600.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('105', '9500.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('106', '720.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('106', '900.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('107', '1280.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('107', '1600.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('108', '76800.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('108', '96000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('109', '14400.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('109', '18000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('110', '23600.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('110', '29500.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('111', '37200.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('111', '46500.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('112', '19200.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('112', '24000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('113', '12000.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('113', '15000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('114', '240.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('114', '300.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('115', '4800.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('115', '6000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('116', '11520.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('116', '14400.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('117', '2000.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('117', '2500.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('118', '13440.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('118', '16800.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('119', '8400.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('119', '10500.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('120', '16240.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('120', '20300.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('121', '13440.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('121', '16800.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('122', '280.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('122', '350.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('123', '280.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('123', '350.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('124', '10320.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('124', '12900.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('125', '7600.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('125', '9500.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('126', '6800.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('126', '8500.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('127', '11600.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('127', '14500.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('128', '17280.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('128', '21600.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('129', '49920.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('129', '62400.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('130', '14720.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('130', '18400.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('131', '27840.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('131', '34800.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('132', '800.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('132', '1000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('133', '7600.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('133', '9500.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('134', '720.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('134', '900.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('135', '17600.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('135', '22000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('136', '400.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('136', '500.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('137', '1920.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('137', '2400.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('138', '720.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('138', '900.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('139', '1600.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('139', '2000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('140', '15600.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('140', '19500.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('141', '9600.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('141', '12000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('142', '960.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('142', '1200.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('143', '800.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('143', '1000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('144', '3360.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('144', '4200.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('145', '5280.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('145', '6600.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('146', '6720.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('146', '8400.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('147', '1920.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('147', '2400.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('148', '1040.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('148', '1300.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('149', '4800.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('149', '6000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('150', '960.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('150', '1200.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('151', '2000.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('151', '2500.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('152', '8640.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('152', '10800.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('153', '8640.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('153', '10800.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('154', '18400.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('154', '23000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('155', '1440.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('155', '1800.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('156', '52720.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('156', '65900.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('157', '2800.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('157', '3500.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('158', '1568.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('158', '1960.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('159', '3600.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('159', '4500.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('160', '320.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('160', '400.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('161', '2960.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('161', '3700.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('162', '2280.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('162', '2850.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('163', '4800.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('163', '6000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('164', '37200.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('164', '46500.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('165', '24000.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('165', '30000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('166', '5040.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('166', '6300.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('167', '11760.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('167', '14700.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('168', '400.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('168', '500.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('169', '1280.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('169', '1600.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('170', '15040.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('170', '18800.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('171', '2400.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('171', '3000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('172', '2400.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('172', '3000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('173', '2400.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('173', '3000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('174', '240.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('174', '300.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('175', '240.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('175', '300.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('176', '240.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('176', '300.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('177', '240.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('177', '300.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('178', '240.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('178', '300.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('179', '6400.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('179', '8000.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('180', '56.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('180', '70.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('181', '1040.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('181', '1300.00', '2', 'Non-Insured Cost', '1', NOW(), uuid()),
+    
+    ('182', '1040.00', '1', 'Insured Cost', '1', NOW(), uuid()),
+    ('182', '1300.00', '2', 'Non-Insured Cost', '1', NOW(), uuid());
