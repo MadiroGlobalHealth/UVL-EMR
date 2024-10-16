@@ -42,6 +42,45 @@
             <column name="date_created" value="2024-06-19 12:55:00" />
             <column name="uuid" value="23accfd8-eff8-4982-959f-e585bf95c69d" />
         </insert>
+         <!--/////////////////////////////////////////////////////////////////////////////////////////////////-->
+        <!--added by Allan-->
+        <insert tableName="person">
+            <column name="person_id" value="35" />
+            <column name="gender" value="M"/>
+            <column name="date_created" value="2024-10-16 20:55:00" />
+            <column name="uuid" value="d383db17-8d52-4f06-8785-c7bc68277671" />
+        </insert>
+        <insert tableName="person">
+            <column name="person_id" value="36" />
+            <column name="gender" value="M"/>
+            <column name="date_created" value="2024-10-16 20:55:00" />
+            <column name="uuid" value="1eca332e-a679-4ef5-97c6-1507081585b7" />
+        </insert>
+        <insert tableName="person">
+            <column name="person_id" value="37" />
+            <column name="gender" value="M"/>
+            <column name="date_created" value="2024-10-16 20:55:00" />
+            <column name="uuid" value="e02d96e7-6834-4d4f-8a3d-f89d5d354f65" />
+        </insert>
+        <insert tableName="person">
+            <column name="person_id" value="38" />
+            <column name="gender" value="M"/>
+            <column name="date_created" value="2024-10-16 20:55:00" />
+            <column name="uuid" value="f26fd8f5-fe75-49d0-84f9-a80ef46fb66e" />
+        </insert>
+        <insert tableName="person">
+            <column name="person_id" value="39" />
+            <column name="gender" value="M"/>
+            <column name="date_created" value="2024-10-16 20:55:00" />
+            <column name="uuid" value="a22c3c01-adf5-48d7-90a0-a06cc776fb9d" />
+        </insert>
+        <insert tableName="person">
+            <column name="person_id" value="40" />
+            <column name="gender" value="M"/>
+            <column name="date_created" value="2024-10-16 20:55:00" />
+            <column name="uuid" value="5a27f32a-45c6-4425-8923-fcf0cda8d07c" />
+        </insert>        
+         <!--/////////////////////////////////////////////////////////////////////////////////////////////////-->
     </changeSet>
 
     <!-- Person Names -->
@@ -101,6 +140,80 @@
             <column name="voided" valueBoolean="false"/>
             <column name="uuid" value="af07b5f7-9e67-4c10-8cb6-898abe1af2ed"/>
         </insert>
+        <!--/////////////////////////////////////////////////////////////////////////////////////////////////-->
+        <!--added by Allan-->
+        <insert tableName="person_name">
+            <column name="person_name_id" valueNumeric="35"/>
+            <column name="preferred" valueBoolean="true"/>
+            <column name="person_id" valueNumeric="35"/>
+            <column name="given_name" value="Registration Officer"/>
+            <column name="family_name" value="User"/>
+            <column name="creator" valueNumeric="1"/>
+            <column name="date_created" value="2024-10-16 20:55:00"/>
+            <column name="voided" valueBoolean="false"/>
+            <column name="uuid" value="62b36822-97c9-4e79-ad6a-0e46e0facfb8"/>
+        </insert>
+       
+        <insert tableName="person_name">
+            <column name="person_name_id" valueNumeric="36"/>
+            <column name="preferred" valueBoolean="true"/>
+            <column name="person_id" valueNumeric="36"/>
+            <column name="given_name" value="Nurse"/>
+            <column name="family_name" value="User"/>
+            <column name="creator" valueNumeric="1"/>
+            <column name="date_created" value="2024-10-16 20:55:00"/>
+            <column name="voided" valueBoolean="false"/>
+            <column name="uuid" value="53588704-bab9-407e-9cef-73f427318e36"/>
+        </insert>
+       
+        <insert tableName="person_name">
+            <column name="person_name_id" valueNumeric="37"/>
+            <column name="preferred" valueBoolean="true"/>
+            <column name="person_id" valueNumeric="37"/>
+            <column name="given_name" value="Doctor"/>
+            <column name="family_name" value="User"/>
+            <column name="creator" valueNumeric="1"/>
+            <column name="date_created" value="2024-10-16 20:55:00"/>
+            <column name="voided" valueBoolean="false"/>
+            <column name="uuid" value="19d3dd94-67f1-4799-8f0d-8071aa4ef55b"/>
+        </insert>
+       
+        <insert tableName="person_name">
+            <column name="person_name_id" valueNumeric="38"/>
+            <column name="preferred" valueBoolean="true"/>
+            <column name="person_id" valueNumeric="38"/>
+            <column name="given_name" value="Lab Technician"/>
+            <column name="family_name" value="User"/>
+            <column name="creator" valueNumeric="1"/>
+            <column name="date_created" value="2024-10-16 20:55:00"/>
+            <column name="voided" valueBoolean="false"/>
+            <column name="uuid" value="89b1e000-c41c-443f-a799-5aaa5e33bd54"/>
+        </insert>
+       
+        <insert tableName="person_name">
+            <column name="person_name_id" valueNumeric="39"/>
+            <column name="preferred" valueBoolean="true"/>
+            <column name="person_id" valueNumeric="39"/>
+            <column name="given_name" value="Pharmacist"/>
+            <column name="family_name" value="User"/>
+            <column name="creator" valueNumeric="1"/>
+            <column name="date_created" value="2024-10-16 20:55:00"/>
+            <column name="voided" valueBoolean="false"/>
+            <column name="uuid" value="3002ae61-8497-4fea-a122-32564f69ce23"/>
+        </insert>
+       
+        <insert tableName="person_name">
+            <column name="person_name_id" valueNumeric="40"/>
+            <column name="preferred" valueBoolean="true"/>
+            <column name="person_id" valueNumeric="40"/>
+            <column name="given_name" value="Cashier"/>
+            <column name="family_name" value="User"/>
+            <column name="creator" valueNumeric="1"/>
+            <column name="date_created" value="2024-10-16 20:55:00"/>
+            <column name="voided" valueBoolean="false"/>
+            <column name="uuid" value="3002ae61-8497-4fea-a122-32564f69ce23"/>
+        </insert>
+        <!--/////////////////////////////////////////////////////////////////////////////////////////////////-->
     </changeSet>
 
     <!-- users -->
@@ -163,6 +276,110 @@
             <column name="creator" value="1" />
             <column name="date_created" value="2024-06-19 12:55:00" />
         </insert>
+         
+        <!--/////////////////////////////////////////////////////////////////////////////////////////////////-->
+        <!--Added by Allan-->
+        <insert tableName="users">
+            <column name="user_id" value="35" />
+            <column name="system_id" value="RegistrationOfficer" />
+            <column name="username" value="RegistrationOfficer" />
+            <column name="password" value="e57803f05704936892416eeb894a261aa7bb0f3327b81d51bb1c1dc8e229a98c4515de3e9de652d045b8e004fbfb4cfaa458374a6e65ca3658d97e92059e5f89" />
+            <column name="salt" value="bdf469e93449e50a829ed46e9c9f39e926f3483acd8f0b79718d6d48cd72ba5f8cb8d4006127e51c5588663ba77114c566fd94d5a64d9e3e9c85ef8525e66b07" />
+            <column name="person_id" value="35" />
+            <column name="uuid" value="75e4d9ce-540a-49f7-ac6b-8d0964592bba" />
+            <column name="creator" value="1" />
+            <column name="date_created" value="2024-06-19 12:55:00" />
+        </insert>         
+        <insert tableName="users">
+            <column name="user_id" value="36" />
+            <column name="system_id" value="Nurse" />
+            <column name="username" value="Nurse" />
+            <column name="password" value="e57803f05704936892416eeb894a261aa7bb0f3327b81d51bb1c1dc8e229a98c4515de3e9de652d045b8e004fbfb4cfaa458374a6e65ca3658d97e92059e5f89" />
+            <column name="salt" value="bdf469e93449e50a829ed46e9c9f39e926f3483acd8f0b79718d6d48cd72ba5f8cb8d4006127e51c5588663ba77114c566fd94d5a64d9e3e9c85ef8525e66b07" />
+            <column name="person_id" value="36" />
+            <column name="uuid" value="9386e4b7-67fb-419c-9e14-98d30a45094f" />
+            <column name="creator" value="1" />
+            <column name="date_created" value="2024-06-19 12:55:00" />
+        </insert>
+        <insert tableName="users">
+            <column name="user_id" value="37" />
+            <column name="system_id" value="Doctor" />
+            <column name="username" value="Doctor" />
+            <column name="password" value="e57803f05704936892416eeb894a261aa7bb0f3327b81d51bb1c1dc8e229a98c4515de3e9de652d045b8e004fbfb4cfaa458374a6e65ca3658d97e92059e5f89" />
+            <column name="salt" value="bdf469e93449e50a829ed46e9c9f39e926f3483acd8f0b79718d6d48cd72ba5f8cb8d4006127e51c5588663ba77114c566fd94d5a64d9e3e9c85ef8525e66b07" />
+            <column name="person_id" value="37" />
+            <column name="uuid" value="71d0fd42-e712-4f66-9b6e-855c60741307" />
+            <column name="creator" value="1" />
+            <column name="date_created" value="2024-06-19 12:55:00" />
+        </insert>
+        <insert tableName="users">
+            <column name="user_id" value="38" />
+            <column name="system_id" value="LabTechnician" />
+            <column name="username" value="LabTechnician" />
+            <column name="password" value="e57803f05704936892416eeb894a261aa7bb0f3327b81d51bb1c1dc8e229a98c4515de3e9de652d045b8e004fbfb4cfaa458374a6e65ca3658d97e92059e5f89" />
+            <column name="salt" value="bdf469e93449e50a829ed46e9c9f39e926f3483acd8f0b79718d6d48cd72ba5f8cb8d4006127e51c5588663ba77114c566fd94d5a64d9e3e9c85ef8525e66b07" />
+            <column name="person_id" value="38" />
+            <column name="uuid" value="dec3bae8-1a71-4998-8884-7224b319ecfd" />
+            <column name="creator" value="1" />
+            <column name="date_created" value="2024-06-19 12:55:00" />
+        </insert>
+        <insert tableName="users">
+            <column name="user_id" value="39" />
+            <column name="system_id" value="Pharmacist" />
+            <column name="username" value="Pharmacist" />
+            <column name="password" value="e57803f05704936892416eeb894a261aa7bb0f3327b81d51bb1c1dc8e229a98c4515de3e9de652d045b8e004fbfb4cfaa458374a6e65ca3658d97e92059e5f89" />
+            <column name="salt" value="bdf469e93449e50a829ed46e9c9f39e926f3483acd8f0b79718d6d48cd72ba5f8cb8d4006127e51c5588663ba77114c566fd94d5a64d9e3e9c85ef8525e66b07" />
+            <column name="person_id" value="39" />
+            <column name="uuid" value="aa3b001e-6310-4036-aa0a-6c5a3c528844" />
+            <column name="creator" value="1" />
+            <column name="date_created" value="2024-06-19 12:55:00" />
+        </insert>
+        <insert tableName="users">
+            <column name="user_id" value="40" />
+            <column name="system_id" value="Cashier" />
+            <column name="username" value="Cashier" />
+            <column name="password" value="e57803f05704936892416eeb894a261aa7bb0f3327b81d51bb1c1dc8e229a98c4515de3e9de652d045b8e004fbfb4cfaa458374a6e65ca3658d97e92059e5f89" />
+            <column name="salt" value="bdf469e93449e50a829ed46e9c9f39e926f3483acd8f0b79718d6d48cd72ba5f8cb8d4006127e51c5588663ba77114c566fd94d5a64d9e3e9c85ef8525e66b07" />
+            <column name="person_id" value="40" />
+            <column name="uuid" value="16c9e707-cac0-4d9f-8e6b-8125f3047ab2" />
+            <column name="creator" value="1" />
+            <column name="date_created" value="2024-06-19 12:55:00" />
+        </insert>
+        <!--/////////////////////////////////////////////////////////////////////////////////////////////////-->
+    </changeSet>
+
+    <!-- user_role -->
+    <changeSet id="add_uvl_user_role-202410162055" author="Allan">
+        <comment>
+            Add Mugamba User roles to database
+        </comment> 
+        <!--Delay foregin key mapping-->
+        <sql>SET foreign_key_checks = 0;</sql>                
+        <insert tableName="user_role">
+            <column name="user_id" value="35" />
+            <column name="role" value="Registration Officer" />
+        </insert>         
+        <insert tableName="user_role">
+            <column name="user_id" value="36" />
+            <column name="role" value="Nurse" />
+        </insert>
+        <insert tableName="user_role">
+            <column name="user_id" value="37" />
+            <column name="role" value="Doctor" />
+        </insert>
+        <insert tableName="user_role">
+            <column name="user_id" value="38" />
+            <column name="role" value="Lab Technician" />
+        </insert>
+        <insert tableName="user_role">
+            <column name="user_id" value="39" />
+            <column name="role" value="Pharmacist" />
+        </insert>
+        <insert tableName="user_role">
+            <column name="user_id" value="40" />
+            <column name="role" value="Cashier" />
+        </insert>
+        <sql>SET foreign_key_checks = 1;</sql>
     </changeSet>
 
     <!-- Person attributes - emergency contact relationship change from string to concept -->
