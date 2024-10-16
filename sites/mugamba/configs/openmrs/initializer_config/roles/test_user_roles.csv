@@ -1,0 +1,7 @@
+Uuid,Role name,Description,Inherited roles,Privileges,_order:1000
+09be6e1c-6c9d-43de-b828-55ee5c67a42f,Registration Officer,Registration Officer,,Patient Registration;View Patient Queues;Manage Appointments,
+42352ea1-1b02-4a1d-a043-69e25d76bc80,Nurse,Nurse,Registration Officer,Patient Summary,
+c7b9c7b2-5b07-4897-93ec-4e3fbfa7a16b,Doctor,Doctor,Nurse,,
+82a54bb7-0404-4c8c-95d5-c87c76ff5be8,Lab Technician,Lab Technician,,Lab Feature,
+0dd299d4-6563-4f90-81d5-45624686a273,Pharmacist,Pharmacist,,Dispensing Features;Pharmacy,
+530c0a04-53ac-4627-adcf-0e08865e57dc,Cashier,Cashier,,Billing Feature,

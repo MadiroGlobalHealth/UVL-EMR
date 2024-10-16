@@ -1,0 +1,9 @@
+Uuid,Privilege name,Description,_order:1000
+2b1c9c76-4c23-434a-ba84-88c2a86cc2d3,Patient Registration,Patient Registration,
+e8e2c87a-c8b1-4205-b336-ea96683450f3,View Patient Queues,View Patient Queues,
+11fc36d4-bf0d-4dde-b805-a7d9d4d75270,Manage Appointments,Manage Appointments,
+2e733eac-3767-4d1f-b080-2a8837210321,Patient Summary ,Patient Summary ,
+9150fc52-1480-4104-8c01-dd9a975dedbb,Lab Feature,Lab Feature,
+71146449-1896-4b5d-a71e-30ae2d710b83,Pharmacy,Pharmacy,
+a8715d1f-a719-4167-929c-870e267e7c07,Dispensing Features,Dispensing Features,
+9719b330-b465-48f2-9a79-24c7879cfc85,Billing Feature,Billing Feature,
