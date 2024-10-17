@@ -1,6 +1,1 @@
 Uuid,Void/Retire,Same as mappings,Fully specified name:en,Fully specified name:fr,Fully specified name:es,Short name:en,Short name:fr,Short name:es,Description:en,Description:fr,Description:es,Data class,Data type,Members,_version:1,_order:500
-d4b4b6ef-6f3e-43a4-a3b9-9c56f3a1e2d8,,,Visit,,,Visit,,,,,,Misc,Text,,,
-3f6f6c92-8d5c-4a9e-bb1c-d3e00e4f8b71,,,Procedure,,,Procedure,,,,,,Misc,Text,,,
-550e8400-e29b-41d4-a716-446655440000,,,Drug,,,Drug,,,,,,Misc,Text,,,
-434487bb-4db2-49ae-9969-c1dd8a21a806,,,Lab Test,,,LAB,,,,,,Misc,Text,,,
-0dfe7d9f-1dc9-4e68-b4cb-d19e1a006c54,,,Service Types,,,,,,,,,ConvSet,N/A,Visit;Procedure;Drug;Lab Test,,
