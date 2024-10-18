@@ -143,6 +143,8 @@
                     <exclude>distro/configs/**/programworkflowstates/*.*</exclude>
                     <exclude>distro/configs/**/relationshiptypes/*.*</exclude>
                     <exclude>distro/configs/**/visittypes/*.*</exclude>
+                    <exclude>distro/configs/**/cashpoints/*.*</exclude>
+                    <exclude>distro/configs/**/paymentmodes/*.*</exclude>
                     <!-- Temporarily remove Ozone -->
                     <exclude>distro/binaries/openmrs/modules/referencedemodata*.omod</exclude>
                     <!-- Remove Ozone frontend config -->
