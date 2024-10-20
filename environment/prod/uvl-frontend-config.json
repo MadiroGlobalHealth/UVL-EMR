@@ -16,11 +16,11 @@
     "footer": {
       "additionalLogos": [
         {
-          "src": "./ozone.png",
+          "src": "ozone/ozone.png",
           "alt": ""
         },
         {
-          "src": "./madiro.png",
+          "src": "ozone/madiro.png",
           "alt": ""
         }
       ]
