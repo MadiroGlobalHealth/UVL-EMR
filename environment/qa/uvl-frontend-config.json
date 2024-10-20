@@ -12,6 +12,18 @@
   "@openmrs/esm-login-app": {
     "logo": {
       "src": "ozone/logo.png"
+    },
+    "footer": {
+      "additionalLogos": [
+        {
+          "src": "./ozone.png",
+          "alt": ""
+        },
+        {
+          "src": "./madiro.png",
+          "alt": ""
+        }
+      ]
     }
   },
   "@openmrs/esm-primary-navigation-app": {
