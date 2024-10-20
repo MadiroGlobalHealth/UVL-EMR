@@ -14,13 +14,13 @@
       "src": "ozone/logo.png"
     },
     "footer": {
-      "logos": [
+      "additionalLogos": [
         {
-          "src": "ozone/ozone.png",
+          "src": "./ozone.png",
           "alt": ""
         },
         {
-          "src": "ozone/madiro.png",
+          "src": "./madiro.png",
           "alt": ""
         }
       ]
