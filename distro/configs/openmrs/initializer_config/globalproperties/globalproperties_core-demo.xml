@@ -4,5 +4,10 @@
             <property>referencedemodata.createDemoPatientsOnNextStartup</property>
             <value>50</value>
         </globalProperty>
+        <globalProperty>
+            <property>webservices.rest.maxResultsDefault</property>
+            <value>1000</value>
+            <description>Testing to billable service request limit</description>
+        </globalProperty>
     </globalProperties>
 </config>
