@@ -211,7 +211,7 @@
             <column name="creator" valueNumeric="1"/>
             <column name="date_created" value="2024-10-16 20:55:00"/>
             <column name="voided" valueBoolean="false"/>
-            <column name="uuid" value="3002ae61-8497-4fea-a122-32564f69ce23"/>
+            <column name="uuid" value="07bda65d-82b8-4bb5-bb4a-5d6e5ba44457"/>
         </insert>
         <!--/////////////////////////////////////////////////////////////////////////////////////////////////-->
     </changeSet>
