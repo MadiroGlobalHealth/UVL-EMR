@@ -406,9 +406,9 @@
 		<sqlFile path="sql/item_prices.sql" relativeToChangelogFile="true" stripComments="true" />
         <sql>SET foreign_key_checks = 1;</sql>
 	  </changeSet>
-    <changeSet id="add_serial_object" author="dancinoman">
-        <sql>SET foreign_key_checks = 0;</sql>
+
+    <!-- Reports -->
+    <changeSet id="add_serial_object_child_report" author="dancinoman">
 		<sqlFile path="sql/child_report.sql" relativeToChangelogFile="true" stripComments="true" />
-        <sql>SET foreign_key_checks = 1;</sql>
-	</changeSet>
+	  </changeSet>
 </databaseChangeLog>
