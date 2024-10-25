@@ -407,20 +407,20 @@
         <sql>SET foreign_key_checks = 1;</sql>
 	  </changeSet>
 
-    <!-- Child Reports -->
-    <changeSet id="add_serial_object_child_report" author="dancinoman">
+    <!-- Reports -->
+    <changeSet id="add_serial_object_" author="dancinoman">
         <sql>SET foreign_key_checks = 0;</sql>
 		<sqlFile path="sql/serialized_object.sql" relativeToChangelogFile="true" stripComments="true" />
         <sql>SET foreign_key_checks = 1;</sql>
     </changeSet>
 
-    <changeSet id="add_reporting_report_request_child_report" author="dancinoman">
+    <changeSet id="add_reporting_report_request" author="dancinoman">
         <sql>SET foreign_key_checks = 0;</sql>
 		<sqlFile path="sql/reporting_report_request.sql" relativeToChangelogFile="true" stripComments="true" />
         <sql>SET foreign_key_checks = 1;</sql>
     </changeSet>
 
-    <changeSet id="add_reporting_report_design_child_report" author="dancinoman">
+    <changeSet id="add_reporting_report_design" author="dancinoman">
         <sql>SET foreign_key_checks = 0;</sql>
 		<sqlFile path="sql/reporting_report_design.sql" relativeToChangelogFile="true" stripComments="true" />
         <sql>SET foreign_key_checks = 1;</sql>
