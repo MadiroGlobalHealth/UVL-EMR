@@ -13,7 +13,7 @@ INSERT INTO serialized_object (`name`,`description`,`type`,`subtype`,`serializat
   <maxAge>4</maxAge>
   <maxAgeUnit>YEARS</maxAgeUnit>
   <unknownAgeIncluded>false</unknownAgeIncluded>
-</org.openmrs.module.reporting.cohort.definition.AgeCohortDefinition>','2024-10-18 14:59:17',3,'2024-10-18 15:30:04',3,0,NULL,NULL,NULL,'7931b1bf-3fba-45f6-b895-60ff2de5515c'),
+</org.openmrs.module.reporting.cohort.definition.AgeCohortDefinition>','2024-10-18 14:59:17',2,'2024-10-18 15:30:04',2,0,NULL,NULL,NULL,'7931b1bf-3fba-45f6-b895-60ff2de5515c'),
 	 ('amount of under 5 years old','','org.openmrs.module.reporting.indicator.Indicator','org.openmrs.module.reporting.indicator.CohortIndicator','org.openmrs.module.reporting.serializer.ReportingSerializer','<org.openmrs.module.reporting.indicator.CohortIndicator id="1" uuid="ec6ef910-65ee-4deb-b707-85402dd0708e" retired="false">
   <name>amount of under 5 years old</name>
   <description></description>
@@ -50,7 +50,7 @@ INSERT INTO serialized_object (`name`,`description`,`type`,`subtype`,`serializat
       </entry>
     </parameterMappings>
   </cohortDefinition>
-</org.openmrs.module.reporting.indicator.CohortIndicator>','2024-10-18 15:00:22',3,'2024-10-21 15:11:18',3,0,NULL,NULL,NULL,'ec6ef910-65ee-4deb-b707-85402dd0708e'),
+</org.openmrs.module.reporting.indicator.CohortIndicator>','2024-10-18 15:00:22',2,'2024-10-21 15:11:18',2,0,NULL,NULL,NULL,'ec6ef910-65ee-4deb-b707-85402dd0708e'),
 	 ('(Main query)Child under 5 years old seen between dates','','org.openmrs.module.reporting.cohort.definition.CohortDefinition','org.openmrs.module.reporting.cohort.definition.CompositionCohortDefinition','org.openmrs.module.reporting.serializer.ReportingSerializer','<org.openmrs.module.reporting.cohort.definition.CompositionCohortDefinition id="1" uuid="1ae29e13-abf9-4528-8007-ed6e8968e7a3" retired="false">
   <name>(Main query)Child under 5 years old seen between dates</name>
   <description></description>
@@ -99,7 +99,7 @@ INSERT INTO serialized_object (`name`,`description`,`type`,`subtype`,`serializat
       </org.openmrs.module.reporting.evaluation.parameter.Mapped>
     </entry>
   </searches>
-</org.openmrs.module.reporting.cohort.definition.CompositionCohortDefinition>','2024-10-18 15:10:18',3,'2024-10-21 21:28:25',3,0,NULL,NULL,NULL,'1ae29e13-abf9-4528-8007-ed6e8968e7a3'),
+</org.openmrs.module.reporting.cohort.definition.CompositionCohortDefinition>','2024-10-18 15:10:18',2,'2024-10-21 21:28:25',2,0,NULL,NULL,NULL,'1ae29e13-abf9-4528-8007-ed6e8968e7a3'),
 	 ('seen','','org.openmrs.module.reporting.cohort.definition.CohortDefinition','org.openmrs.module.reporting.cohort.definition.VisitCohortDefinition','org.openmrs.module.reporting.serializer.ReportingSerializer','<org.openmrs.module.reporting.cohort.definition.VisitCohortDefinition id="1" uuid="dc5fdc24-8655-4d2a-a31d-d48c20b5bcc2" retired="false">
   <name>seen</name>
   <description></description>
@@ -123,7 +123,7 @@ INSERT INTO serialized_object (`name`,`description`,`type`,`subtype`,`serializat
   </parameters>
   <id>18</id>
   <returnInverse>false</returnInverse>
-</org.openmrs.module.reporting.cohort.definition.VisitCohortDefinition>','2024-10-18 15:27:55',3,'2024-10-18 15:39:51',3,0,NULL,NULL,NULL,'dc5fdc24-8655-4d2a-a31d-d48c20b5bcc2'),
+</org.openmrs.module.reporting.cohort.definition.VisitCohortDefinition>','2024-10-18 15:27:55',2,'2024-10-18 15:39:51',2,0,NULL,NULL,NULL,'dc5fdc24-8655-4d2a-a31d-d48c20b5bcc2'),
 	 ('Report of under 5 years Data Set',NULL,'org.openmrs.module.reporting.dataset.definition.DataSetDefinition','org.openmrs.module.reporting.dataset.definition.CohortIndicatorDataSetDefinition','org.openmrs.module.reporting.serializer.ReportingSerializer','<org.openmrs.module.reporting.dataset.definition.CohortIndicatorDataSetDefinition id="1" uuid="3c4146c2-3891-42c6-940b-c1e39e98199d" retired="false">
   <name>Report of under 5 years Data Set</name>
   <creator id="2" uuid="8a1df571-b8c4-45fd-b5e3-015119c21a7a"/>
@@ -150,7 +150,7 @@ INSERT INTO serialized_object (`name`,`description`,`type`,`subtype`,`serializat
   </parameters>
   <dimensions id="8"/>
   <columns id="9"/>
-</org.openmrs.module.reporting.dataset.definition.CohortIndicatorDataSetDefinition>','2024-10-18 15:45:14',3,NULL,NULL,0,NULL,NULL,NULL,'3c4146c2-3891-42c6-940b-c1e39e98199d'),
+</org.openmrs.module.reporting.dataset.definition.CohortIndicatorDataSetDefinition>','2024-10-18 15:45:14',2,NULL,NULL,0,NULL,NULL,NULL,'3c4146c2-3891-42c6-940b-c1e39e98199d'),
 	 ('Report of child under 5 years old Data Set',NULL,'org.openmrs.module.reporting.dataset.definition.DataSetDefinition','org.openmrs.module.reporting.dataset.definition.CohortIndicatorDataSetDefinition','org.openmrs.module.reporting.serializer.ReportingSerializer','<org.openmrs.module.reporting.dataset.definition.CohortIndicatorDataSetDefinition id="1" uuid="191a310e-85d5-4cfb-86eb-bf8b93819407" retired="false">
   <name>Report of child under 5 years old Data Set</name>
   <creator id="2" uuid="8a1df571-b8c4-45fd-b5e3-015119c21a7a"/>
@@ -177,7 +177,7 @@ INSERT INTO serialized_object (`name`,`description`,`type`,`subtype`,`serializat
   </parameters>
   <dimensions id="8"/>
   <columns id="9"/>
-</org.openmrs.module.reporting.dataset.definition.CohortIndicatorDataSetDefinition>','2024-10-21 14:48:04',3,NULL,NULL,0,NULL,NULL,NULL,'191a310e-85d5-4cfb-86eb-bf8b93819407'),
+</org.openmrs.module.reporting.dataset.definition.CohortIndicatorDataSetDefinition>','2024-10-21 14:48:04',2,NULL,NULL,0,NULL,NULL,NULL,'191a310e-85d5-4cfb-86eb-bf8b93819407'),
 	 ('Child Report','Report of children under 5 years old','org.openmrs.module.reporting.report.definition.ReportDefinition','org.openmrs.module.reporting.report.definition.ReportDefinition','org.openmrs.module.reporting.serializer.ReportingSerializer','<org.openmrs.module.reporting.report.definition.ReportDefinition id="1" uuid="aa636aa4-fd96-415b-b569-f40cab389473" retired="false">
   <name>Child Report</name>
   <description>Report of children under 5 years old</description>
@@ -222,7 +222,7 @@ INSERT INTO serialized_object (`name`,`description`,`type`,`subtype`,`serializat
       </org.openmrs.module.reporting.evaluation.parameter.Mapped>
     </entry>
   </dataSetDefinitions>
-</org.openmrs.module.reporting.report.definition.ReportDefinition>','2024-10-21 15:25:21',3,'2024-10-21 18:06:34',3,0,NULL,NULL,NULL,'aa636aa4-fd96-415b-b569-f40cab389473'),
+</org.openmrs.module.reporting.report.definition.ReportDefinition>','2024-10-21 15:25:21',2,'2024-10-21 18:06:34',2,0,NULL,NULL,NULL,'aa636aa4-fd96-415b-b569-f40cab389473'),
 	 ('Small info','','org.openmrs.module.reporting.dataset.definition.DataSetDefinition','org.openmrs.module.reporting.dataset.definition.SimplePatientDataSetDefinition','org.openmrs.module.reporting.serializer.ReportingSerializer','<org.openmrs.module.reporting.dataset.definition.SimplePatientDataSetDefinition id="1" uuid="4f7a4803-eff0-4ad9-b21c-f6349cbb2e49" retired="false">
   <name>Small info</name>
   <description></description>
@@ -239,4 +239,4 @@ INSERT INTO serialized_object (`name`,`description`,`type`,`subtype`,`serializat
     <string>givenName</string>
     <string>familyName</string>
   </patientProperties>
-</org.openmrs.module.reporting.dataset.definition.SimplePatientDataSetDefinition>','2024-10-21 17:59:18',3,'2024-10-21 21:29:52',3,0,NULL,NULL,NULL,'4f7a4803-eff0-4ad9-b21c-f6349cbb2e49');
+</org.openmrs.module.reporting.dataset.definition.SimplePatientDataSetDefinition>','2024-10-21 17:59:18',2,'2024-10-21 21:29:52',2,0,NULL,NULL,NULL,'4f7a4803-eff0-4ad9-b21c-f6349cbb2e49');

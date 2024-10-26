@@ -8,4 +8,4 @@ INSERT INTO openmrs.reporting_report_request (`id`,`uuid`,`base_cohort_uuid`,`ba
     <string>endDate</string>
     <string>${end_of_today-1d}</string>
   </entry>
-</linked-hash-map>','org.openmrs.module.reporting.web.renderers.DefaultWebRenderer',NULL,3,'2024-10-21 18:20:56','NORMAL','SCHEDULED',NULL,NULL,NULL,NULL,'0 0 12 1 * ?',0,NULL);
+</linked-hash-map>','org.openmrs.module.reporting.web.renderers.DefaultWebRenderer',NULL,2,'2024-10-21 18:20:56','NORMAL','SCHEDULED',NULL,NULL,NULL,NULL,'0 0 12 1 * ?',0,NULL);
