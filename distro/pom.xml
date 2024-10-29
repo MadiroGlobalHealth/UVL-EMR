@@ -192,6 +192,8 @@
                 <echo level="info" message="Adding uvl docker image version"/>
                 <replaceregexp file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/.env"
                               match="O3_DOCKER_IMAGE_TAG=.*" replace="O3_DOCKER_IMAGE_TAG=${UVLReferenceapplicationDockerVersion}" />
+                <replace file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/docker-compose-openmrs.yml"
+                              token="3.0.0-beta.21" value="${O3_DOCKER_IMAGE_TAG:-nightly}" />
               </target>
             </configuration>
           </execution>
