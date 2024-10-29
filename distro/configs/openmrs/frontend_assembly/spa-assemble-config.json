@@ -1,4 +1,5 @@
-{
+{  
+  "coreVersion": "latest",
   "frontendModules": {
     "@openmrs/esm-cohort-builder-app": "latest",
     "@openmrs/esm-home-app": "latest",

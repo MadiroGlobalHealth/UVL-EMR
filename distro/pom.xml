@@ -6,7 +6,7 @@
   <parent>
     <groupId>com.ozonehis</groupId>
     <artifactId>maven-parent</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0-alpha.11</version>
     <relativePath />
   </parent>
 
@@ -20,7 +20,7 @@
     <maven.compiler.source>8</maven.compiler.source>
     <maven.compiler.target>8</maven.compiler.target>
     <PatientIdentifierGeneratorVersion>0.1.0</PatientIdentifierGeneratorVersion>
-    <UVLReferenceapplicationDockerVersion>qa</UVLReferenceapplicationDockerVersion>
+    <UVLReferenceapplicationDockerVersion>3.2.0-rc.3</UVLReferenceapplicationDockerVersion>
     <!-- Stock Management and Billing -->
     <stockmanagement.version>2.0.2-SNAPSHOT</stockmanagement.version>
     <billing.version>1.2.0-SNAPSHOT</billing.version>
@@ -79,24 +79,6 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>
         <executions>
-          <execution>
-            <!-- Copy UVL reference-application-spa-assemble-config.json to frontend working directory -->
-            <id>Copy UVL reference-application-spa-assemble-config.json to local working directory</id>
-            <phase>generate-resources</phase>
-            <goals>
-              <goal>copy-resources</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>${project.build.directory}/openmrs_frontend</outputDirectory>
-              <overwrite>true</overwrite>
-              <resources>
-                <resource>
-                  <directory>${project.basedir}/configs/openmrs/frontend_assembly</directory>
-                  <filtering>false</filtering>
-                </resource>
-              </resources>
-            </configuration>
-          </execution>
           <execution>
             <!-- Override the Ozone files exclusion execution so to inherit all O3 Ref App files -->
             <id>Exclude unneeded Ozone files</id>
@@ -193,7 +175,7 @@
             </goals>
             <configuration>
               <target>
-                <echo message="Adding uvl frontend config"/>
+                <echo level="info" message="Adding uvl frontend config"/>
                 <replaceregexp file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/.env"
                               match="ozone-frontend-config.json" replace="uvl-frontend-config.json" />
               </target>
@@ -207,9 +189,43 @@
             </goals>
             <configuration>
               <target>
-                <echo message="Adding uvl docker image version"/>
+                <echo level="info" message="Adding uvl docker image version"/>
                 <replaceregexp file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/.env"
                               match="O3_DOCKER_IMAGE_TAG=.*" replace="O3_DOCKER_IMAGE_TAG=${UVLReferenceapplicationDockerVersion}" />
+              </target>
+            </configuration>
+          </execution>
+          <execution>
+            <id>Add UVL addons to ozone</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
+                <echo level="info" message="Adding UVL core version"/>
+                <replaceregexp file="${project.build.directory}/openmrs/frontend_assembly/build-openmrs-frontend.groovy"
+                              match="openmrsVersion =.*" replace='openmrsVersion = slurper.parse(Paths.get("${project.build.directory}", "openmrs_frontend", "spa-assemble-config.json").toFile())["coreVersion"] ?: "next"'/>
+
+                <echo level="info" message="Adding UVL project Name to ozone" />
+                <replace
+                  dir="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/scripts"
+                  token='-p ozone'>
+                  <include name="**/*.sh"/>
+                  <replacevalue>
+                    -p $PROJECT_NAME
+                  </replacevalue>
+                </replace>
+                <replace
+                  file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/scripts/utils.sh"
+                  token='export BOLD=`tput bold`'>
+                  <replacevalue>
+                    export BOLD=`tput bold`&#10;export PROJECT_NAME="${project.artifactId}"
+                  </replacevalue>
+                </replace>
+
+                <echo level="info" message="Setting executable permissions for the Ozone start.sh script" />
+                <chmod file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/scripts/*.sh" perm="700"/>
               </target>
             </configuration>
           </execution>
