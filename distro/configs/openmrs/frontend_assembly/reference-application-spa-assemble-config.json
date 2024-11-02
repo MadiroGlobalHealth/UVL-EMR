@@ -13,7 +13,7 @@
     "@openmrs/esm-active-visits-app": "latest",
     "@openmrs/esm-patient-lists-app": "latest",
     "@openmrs/esm-patient-list-management-app": "latest",
-    "@openmrs/esm-login-app": "latest",
+    "@openmrs/esm-login-app": "next",
     "@openmrs/esm-patient-banner-app": "latest",
     "@openmrs/esm-patient-registration-app": "latest",
     "@openmrs/esm-dispensing-app": "latest",
