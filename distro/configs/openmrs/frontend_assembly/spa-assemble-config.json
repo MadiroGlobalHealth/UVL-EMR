@@ -1,6 +1,7 @@
 {  
   "coreVersion": "latest",
   "frontendModules": {
+    "@ugandaemr/esm-data-visualizer-app": "latest",
     "@openmrs/esm-cohort-builder-app": "latest",
     "@openmrs/esm-home-app": "latest",
     "@openmrs/esm-system-admin-app": "latest",
@@ -37,6 +38,8 @@
     "@openmrs/esm-fast-data-entry-app": "latest",
     "@openmrs/esm-implementer-tools-app": "latest",
     "@openmrs/esm-form-builder-app": "latest",
+    "@openmrs/esm-billing-app": "next",
+    "@openmrs/esm-stock-management-app": "next",
     "@openmrs/esm-user-onboarding-app": "next"
     
   },
