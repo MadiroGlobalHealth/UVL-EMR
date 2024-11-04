@@ -1,7 +1,7 @@
 Uuid,Void/Retire,Name,Description,Parent,Tags,Tag|Facility Location,Attribute|9eca4f4e-707f-4bb8-8289-2f9b6e93803c,Attribute|Last Audit Date,Address 1,Address 2,Address 3,Address 4,Address 5,Address 6,City/Village,County/District,State/Province,Postal Code,Country,_order:1000
 9D062929-CC4F-7A51-C700-2B968AADEC34,,Emergency room (ER),,,Login Location,TRUE,,,,,,,,,,,,,,
 BB9C7BDC-E654-060E-5E6C-4EEF309C7A04,,Registration-Triage (REG-TRI),,,Login Location;Appointment Location,TRUE,,,,,,,,,,,,,,
-5E9C804A-00B6-7624-4E04-FD6906E12AF8,,Outpatient (OPD),,,Login Location;Appointment Location,TRUE,,,,,,,,,,,,,,
+44c3efb0-2583-4c80-a79e-1f756a03c0a1,,Outpatient (OPD),,,Login Location;Appointment Location,TRUE,,,,,,,,,,,,,,
 D2C9F784-6537-EDBC-FD0E-860C2931D0A3,,Laboratory (LAB),,,Login Location,TRUE,,,,,,,,,,,,,,
 DE75F927-AC03-1C74-4A09-9216194B2A1A,,Pharmacy (Rx),,,Login Location,TRUE,,,,,,,,,,,,,,
 EBE3BE01-BA1C-0FDD-0B19-9DB2F07EA7DB,,Cashier (BIL),,,Login Location,TRUE,,,,,,,,,,,,,,

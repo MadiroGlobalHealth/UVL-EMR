@@ -79,7 +79,7 @@
             <column name="gender" value="M"/>
             <column name="date_created" value="2024-10-16 20:55:00" />
             <column name="uuid" value="5a27f32a-45c6-4425-8923-fcf0cda8d07c" />
-        </insert>        
+        </insert>
          <!--/////////////////////////////////////////////////////////////////////////////////////////////////-->
     </changeSet>
 
@@ -153,7 +153,7 @@
             <column name="voided" valueBoolean="false"/>
             <column name="uuid" value="62b36822-97c9-4e79-ad6a-0e46e0facfb8"/>
         </insert>
-       
+
         <insert tableName="person_name">
             <column name="person_name_id" valueNumeric="36"/>
             <column name="preferred" valueBoolean="true"/>
@@ -165,7 +165,7 @@
             <column name="voided" valueBoolean="false"/>
             <column name="uuid" value="53588704-bab9-407e-9cef-73f427318e36"/>
         </insert>
-       
+
         <insert tableName="person_name">
             <column name="person_name_id" valueNumeric="37"/>
             <column name="preferred" valueBoolean="true"/>
@@ -177,7 +177,7 @@
             <column name="voided" valueBoolean="false"/>
             <column name="uuid" value="19d3dd94-67f1-4799-8f0d-8071aa4ef55b"/>
         </insert>
-       
+
         <insert tableName="person_name">
             <column name="person_name_id" valueNumeric="38"/>
             <column name="preferred" valueBoolean="true"/>
@@ -189,7 +189,7 @@
             <column name="voided" valueBoolean="false"/>
             <column name="uuid" value="89b1e000-c41c-443f-a799-5aaa5e33bd54"/>
         </insert>
-       
+
         <insert tableName="person_name">
             <column name="person_name_id" valueNumeric="39"/>
             <column name="preferred" valueBoolean="true"/>
@@ -201,7 +201,7 @@
             <column name="voided" valueBoolean="false"/>
             <column name="uuid" value="3002ae61-8497-4fea-a122-32564f69ce23"/>
         </insert>
-       
+
         <insert tableName="person_name">
             <column name="person_name_id" valueNumeric="40"/>
             <column name="preferred" valueBoolean="true"/>
@@ -211,7 +211,7 @@
             <column name="creator" valueNumeric="1"/>
             <column name="date_created" value="2024-10-16 20:55:00"/>
             <column name="voided" valueBoolean="false"/>
-            <column name="uuid" value="3002ae61-8497-4fea-a122-32564f69ce23"/>
+            <column name="uuid" value="07bda65d-82b8-4bb5-bb4a-5d6e5ba44457"/>
         </insert>
         <!--/////////////////////////////////////////////////////////////////////////////////////////////////-->
     </changeSet>
@@ -276,7 +276,7 @@
             <column name="creator" value="1" />
             <column name="date_created" value="2024-06-19 12:55:00" />
         </insert>
-         
+
         <!--/////////////////////////////////////////////////////////////////////////////////////////////////-->
         <!--Added by Allan-->
         <insert tableName="users">
@@ -289,7 +289,7 @@
             <column name="uuid" value="75e4d9ce-540a-49f7-ac6b-8d0964592bba" />
             <column name="creator" value="1" />
             <column name="date_created" value="2024-06-19 12:55:00" />
-        </insert>         
+        </insert>
         <insert tableName="users">
             <column name="user_id" value="36" />
             <column name="system_id" value="Nurse" />
@@ -352,13 +352,13 @@
     <changeSet id="add_uvl_user_role-202410162055" author="Allan">
         <comment>
             Add Mugamba User roles to database
-        </comment> 
+        </comment>
         <!--Delay foregin key mapping-->
-        <sql>SET foreign_key_checks = 0;</sql>                
+        <sql>SET foreign_key_checks = 0;</sql>
         <insert tableName="user_role">
             <column name="user_id" value="35" />
             <column name="role" value="Registration Officer" />
-        </insert>         
+        </insert>
         <insert tableName="user_role">
             <column name="user_id" value="36" />
             <column name="role" value="Nurse" />
@@ -405,5 +405,24 @@
         <sql>SET foreign_key_checks = 0;</sql>
 		<sqlFile path="sql/item_prices.sql" relativeToChangelogFile="true" stripComments="true" />
         <sql>SET foreign_key_checks = 1;</sql>
-	</changeSet>
+	  </changeSet>
+
+    <!-- Reports -->
+    <changeSet id="add_serial_object_" author="dancinoman">
+        <sql>SET foreign_key_checks = 0;</sql>
+		<sqlFile path="sql/serialized_object.sql" relativeToChangelogFile="true" stripComments="true" />
+        <sql>SET foreign_key_checks = 1;</sql>
+    </changeSet>
+
+    <changeSet id="add_reporting_report_request" author="dancinoman">
+        <sql>SET foreign_key_checks = 0;</sql>
+		<sqlFile path="sql/reporting_report_request.sql" relativeToChangelogFile="true" stripComments="true" />
+        <sql>SET foreign_key_checks = 1;</sql>
+    </changeSet>
+
+    <changeSet id="add_reporting_report_design" author="dancinoman">
+        <sql>SET foreign_key_checks = 0;</sql>
+		<sqlFile path="sql/reporting_report_design.sql" relativeToChangelogFile="true" stripComments="true" />
+        <sql>SET foreign_key_checks = 1;</sql>
+    </changeSet>
 </databaseChangeLog>
