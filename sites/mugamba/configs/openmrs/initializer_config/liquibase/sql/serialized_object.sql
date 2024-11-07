@@ -1,4 +1,4 @@
-INSERT INTO serialized_object (`name`,`description`,`type`,`subtype`,`serialization_class`,`serialized_data`,`date_created`,`creator`,`date_changed`,`changed_by`,`retired`,`date_retired`,`retired_by`,`retire_reason`,`uuid`) VALUES
+INSERT INTO serialized_object (`serialized_object_id`,`name`,`description`,`type`,`subtype`,`serialization_class`,`serialized_data`,`date_created`,`creator`,`date_changed`,`changed_by`,`retired`,`date_retired`,`retired_by`,`retire_reason`,`uuid`) VALUES
 	 (12,'under 5 years old','','org.openmrs.module.reporting.cohort.definition.CohortDefinition','org.openmrs.module.reporting.cohort.definition.AgeCohortDefinition','org.openmrs.module.reporting.serializer.ReportingSerializer','<org.openmrs.module.reporting.cohort.definition.AgeCohortDefinition id="1" uuid="7931b1bf-3fba-45f6-b895-60ff2de5515c" retired="false">
   <name>under 5 years old</name>
   <description></description>
