@@ -306,8 +306,7 @@ INSERT INTO serialized_object (`name`,`description`,`type`,`subtype`,`serializat
   <sqlQuery>SELECT COUNT(DISTINCT patient_id) as unique_patients&#xd;
 FROM visit v&#xd;
 WHERE v.date_started &gt;= :startDate AND v.date_started &lt;= :endDate</sqlQuery>
-</org.openmrs.module.reporting.dataset.definition.SqlDataSetDefinition>','2024-11-02 17:47:57',2,'2024-11-02 22:13:03',2,0,NULL,NULL,NULL,'135cc414-d172-4e9c-ab21-7175dc4d53ec');
-INSERT INTO serialized_object (serialized_object_id,name,description,`type`,subtype,serialization_class,serialized_data,date_created,creator,date_changed,changed_by,retired,date_retired,retired_by,retire_reason,`uuid`) VALUES
+</org.openmrs.module.reporting.dataset.definition.SqlDataSetDefinition>','2024-11-02 17:47:57',2,'2024-11-02 22:13:03',2,0,NULL,NULL,NULL,'135cc414-d172-4e9c-ab21-7175dc4d53ec'),
 	 (22,'Get amount of unique patients under 5','','org.openmrs.module.reporting.dataset.definition.DataSetDefinition','org.openmrs.module.reporting.dataset.definition.SqlDataSetDefinition','org.openmrs.module.reporting.serializer.ReportingSerializer','<org.openmrs.module.reporting.dataset.definition.SqlDataSetDefinition id="1" uuid="06164aeb-905e-498b-a741-18a6bc3f22d6" retired="false">
   <name>Get amount of unique patients under 5</name>
   <description></description>
@@ -658,8 +657,7 @@ GROUP BY cbli.payment_status</sqlQuery>
       </org.openmrs.module.reporting.evaluation.parameter.Mapped>
     </entry>
   </dataSetDefinitions>
-</org.openmrs.module.reporting.report.definition.ReportDefinition>','2024-11-05 21:16:12',2,'2024-11-05 21:17:03',2,0,NULL,NULL,NULL,'0fc145e4-34c8-475b-960c-ad2876e451ae');
-INSERT INTO serialized_object (serialized_object_id,name,description,`type`,subtype,serialization_class,serialized_data,date_created,creator,date_changed,changed_by,retired,date_retired,retired_by,retire_reason,`uuid`) VALUES
+</org.openmrs.module.reporting.report.definition.ReportDefinition>','2024-11-05 21:16:12',2,'2024-11-05 21:17:03',2,0,NULL,NULL,NULL,'0fc145e4-34c8-475b-960c-ad2876e451ae'),
 	 (34,'List of lab test','','org.openmrs.module.reporting.report.definition.ReportDefinition','org.openmrs.module.reporting.report.definition.ReportDefinition','org.openmrs.module.reporting.serializer.ReportingSerializer','<org.openmrs.module.reporting.report.definition.ReportDefinition id="1" uuid="df98f6d0-b2d7-438f-bea5-763f2a1db79d" retired="false">
   <name>List of lab test</name>
   <description></description>
@@ -1055,8 +1053,7 @@ GROUP BY c.condition_coded </sqlQuery>
       </org.openmrs.module.reporting.evaluation.parameter.Mapped>
     </entry>
   </dataSetDefinitions>
-</org.openmrs.module.reporting.report.definition.ReportDefinition>','2024-11-07 15:07:18',2,'2024-11-07 15:08:27',2,0,NULL,NULL,NULL,'915c428c-071f-4779-8c27-eb9d1a839b82');
-INSERT INTO serialized_object (serialized_object_id,name,description,`type`,subtype,serialization_class,serialized_data,date_created,creator,date_changed,changed_by,retired,date_retired,retired_by,retire_reason,`uuid`) VALUES
+</org.openmrs.module.reporting.report.definition.ReportDefinition>','2024-11-07 15:07:18',2,'2024-11-07 15:08:27',2,0,NULL,NULL,NULL,'915c428c-071f-4779-8c27-eb9d1a839b82'),
 	 (45,'Number of encounters under 5 years old','','org.openmrs.module.reporting.report.definition.ReportDefinition','org.openmrs.module.reporting.report.definition.ReportDefinition','org.openmrs.module.reporting.serializer.ReportingSerializer','<org.openmrs.module.reporting.report.definition.ReportDefinition id="1" uuid="bbf1dd49-1ad5-4102-a778-5da9bf2823d1" retired="false">
   <name>Number of encounters under 5 years old</name>
   <description></description>

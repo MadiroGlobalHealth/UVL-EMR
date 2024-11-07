@@ -118,8 +118,7 @@ INSERT INTO openmrs.reporting_report_request (`id`,`uuid`,`base_cohort_uuid`,`ba
     <string>preferred language</string>
     <string>fr</string>
   </entry>
-</linked-hash-map>','org.openmrs.module.reporting.web.renderers.DefaultWebRenderer',NULL,2,'2024-11-07 16:21:56','NORMAL','SCHEDULED',NULL,NULL,NULL,NULL,'0 0 12 1 * ?',0,NULL);
-INSERT INTO openmrs.reporting_report_request (id,`uuid`,base_cohort_uuid,base_cohort_parameters,report_definition_uuid,report_definition_parameters,renderer_type,renderer_argument,requested_by,request_datetime,priority,status,evaluation_start_datetime,evaluation_complete_datetime,render_complete_datetime,description,schedule,process_automatically,minimum_days_to_preserve) VALUES
+</linked-hash-map>','org.openmrs.module.reporting.web.renderers.DefaultWebRenderer',NULL,2,'2024-11-07 16:21:56','NORMAL','SCHEDULED',NULL,NULL,NULL,NULL,'0 0 12 1 * ?',0,NULL),
 	 (20,'2f65587c-068d-4263-bd25-5075152c8188',NULL,NULL,'13b59ac6-0b70-4ee5-bc4c-30dd99ae087f','<linked-hash-map id="1">
   <entry>
     <string>startDate</string>
