@@ -112,8 +112,8 @@ This project is made possible thanks to [OpenMRS](https://openmrs.org/), [OzoneH
 
 <div>
 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/OpenMRS_logo_2008.svg/1280px-OpenMRS_logo_2008.svg.png" height=60px>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<img src="https://www.ozone-his.com/wp-content/uploads/2021/11/Ozone-Logo.png" height=60px>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<img src="https://pbs.twimg.com/profile_images/1699787210458038272/dvtN516-_400x400.png" height=60px>
+<img src="https://avatars.githubusercontent.com/u/84385569?s=200&v=4" height=60px>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="https://avatars.githubusercontent.com/u/3497578?s=280&v=4" height=60px>
 </div>
 
 ## Resources 
