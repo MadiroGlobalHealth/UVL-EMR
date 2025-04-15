@@ -1,0 +1,2 @@
+Uuid,Role name,Description,Inherited roles,Privileges,_order:1000
+79e05171-afcb-47a3-84ec-3f7df078628f,Clinician,A doctor having direct contact with patients rather than being involved with theoretical or laboratory studies,Application: Records Allergies; Application: Uses Patient Summary,Add Allergies; Add Patient,
