@@ -143,7 +143,7 @@
               <target>
                 <echo message="Adding UVL Mugamba frontend config"/>
                 <replaceregexp file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/.env"
-                               match="(SPA_CONFIG_URLS=.+)" replace="\1,/openmrs/spa/ozone/uvl-mugamba-frontend-config.json,/openmrs/spa/ozone/ozone-frontend-config-sso.json" />
+                               match="(SPA_CONFIG_URLS=.+)" replace="\1,/openmrs/spa/configs/uvl-mugamba-frontend-config.json" />
               </target>
             </configuration>
           </execution>

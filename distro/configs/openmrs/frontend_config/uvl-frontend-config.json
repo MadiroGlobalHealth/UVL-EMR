@@ -1,26 +1,24 @@
 {
   "@openmrs/esm-patient-chart-app": {
     "logo": {
-      "src": "ozone/header-logo.png"
+      "src": "configs/header-logo.png"
     },
     "Display conditions": {
-      "roles": [
-        "Organizational: Nurse"
-      ]
+      "roles": ["Organizational: Nurse"]
     }
   },
   "@openmrs/esm-login-app": {
     "logo": {
-      "src": "ozone/logo.png"
+      "src": "configs/logo.png"
     },
     "footer": {
       "additionalLogos": [
         {
-          "src": "ozone/ozone.png",
+          "src": "configs/ozone.png",
           "alt": ""
         },
         {
-          "src": "ozone/madiro.png",
+          "src": "configs/madiro.png",
           "alt": ""
         }
       ]
@@ -28,13 +26,11 @@
   },
   "@openmrs/esm-primary-navigation-app": {
     "logo": {
-      "src": "ozone/header-logo.png"
+      "src": "configs/header-logo.png"
     },
     "extensionSlots": {
       "patient-chart-dashboard-slot": {
-        "remove": [
-          "offline-tools-patient-chart-actions-dashboard-link"
-        ]
+        "remove": ["offline-tools-patient-chart-actions-dashboard-link"]
       }
     }
   },
@@ -44,8 +40,6 @@
     "Brand color #3": "#1c361c"
   },
   "@openmrs/esm-patient-registration-app": {
-    "defaultPatientIdentifierTypes": [
-      "05a29f94-c0ed-11e2-94be-8c13b969e334"
-    ]
+    "defaultPatientIdentifierTypes": ["05a29f94-c0ed-11e2-94be-8c13b969e334"]
   }
-    }
+}
