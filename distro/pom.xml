@@ -6,7 +6,7 @@
   <parent>
     <groupId>com.ozonehis</groupId>
     <artifactId>maven-parent</artifactId>
-    <version>1.0.0-alpha.11</version>
+    <version>1.0.0-alpha.13</version>
     <relativePath />
   </parent>
 
