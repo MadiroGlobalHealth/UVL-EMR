@@ -31,9 +31,15 @@ jobs:
         with:
           servers: |
             [{
-              "id": "uvl-emr-github-lime-emr",
+              "id": "madiro-global-health-github-uvl-emr",
               "username": "${{ secrets.MAVEN_GITHUB_ACTIONS_DEPLOY_USERNAME }}",
               "password": "${{ secrets.MAVEN_GITHUB_ACTIONS_DEPLOY_TOKEN }}"
+            }]
+          repositories: |
+            [{
+              "id": "openmrs-repo",
+              "name": "OpenMRS Repository",
+              "url": "https://mavenrepo.openmrs.org/public"
             }]
   
       - name: Build and Test
