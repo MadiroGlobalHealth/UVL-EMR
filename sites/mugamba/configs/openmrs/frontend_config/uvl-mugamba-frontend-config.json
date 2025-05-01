@@ -227,41 +227,11 @@
         }
       },
       {
-        "id": "emailAddress",
-        "type": "person attribute",
-        "uuid": "14d4f066-15f5-102d-96e4-000c29c2a5d7",
-        "label": "Email Address",
-        "validation": {
-          "required": false,
-          "matches": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
-        }
-      },
-      {
-        "id": "familyName2",
-        "type": "person attribute",
-        "uuid": "ec705ed9-2274-483c-bc92-1f120232161f",
-        "label": "Family Name 2",
-        "placeholder": "placeholder",
-        "validation": {
-          "required": false
-        }
-      },
-      {
         "id": "maritalStatus",
         "type": "person attribute",
         "uuid": "3884dc76-c271-4bcb-8df8-81c6fb897f53",
         "label": "Marital status",
         "answerConceptSetUuid": "544ef960-3b65-4add-8795-96b2b084faa3"
-      },
-      {
-        "id": "nationality",
-        "type": "person attribute",
-        "uuid": "24d1fa23-9778-4a8e-9f7b-93f694fc25e2",
-        "label": "Nationality",
-        "validation": {
-          "required": false
-        },
-        "answerConceptSetUuid": "3dc96ee4-daea-4460-b141-6b31f7b7ae93"
       },
       {
         "id": "occupation",
@@ -272,16 +242,6 @@
           "required": false
         },
         "answerConceptSetUuid": "e35ca42c-031e-4dc2-83fe-a926b3de4d12"
-      },
-      {
-        "id": "numberOfChildren",
-        "type": "person attribute",
-        "uuid": "e363161a-9d5c-4331-8463-238938f018ed",
-        "label": "Number of Children",
-        "validation": {
-          "required": false,
-          "matches": "^(0|[1-9][0-9]?|100)$"
-        }
       }
     ],
     "sectionDefinitions": [
@@ -289,7 +249,6 @@
         "id": "demographics",
         "fields": [
           "name",
-          "familyName2",
           "gender",
           "dob",
           "id"
@@ -300,7 +259,6 @@
         "name": "Additional Information",
         "fields": [
           "maritalStatus",
-          "numberOfChildren",
           "occupation"
         ]
       },
@@ -309,9 +267,7 @@
         "name": "Contact Details",
         "fields": [
           "address",
-          "telephoneNumber",
-          "emailAddress",
-          "nationality"
+          "telephoneNumber"
         ]
       }
     ],
