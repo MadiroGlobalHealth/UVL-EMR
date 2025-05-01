@@ -31,12 +31,19 @@
       <sizeMapping>40</sizeMapping>
       <requiredInHierarchy>true</requiredInHierarchy>
     </addressComponent>
+        <addressComponent>
+      <field>ADDRESS_2</field>
+      <nameMapping>Address Detail</nameMapping>
+      <sizeMapping>1024</sizeMapping>
+      <requiredInHierarchy>false</requiredInHierarchy>
+    </addressComponent>
   </addressComponents>
   <lineByLineFormat>
+	  <string>address2</string>
     <string>address1</string>
-	<string>cityVillage</string>
+	  <string>cityVillage</string>
     <string>countyDistrict</string>
-	<string>stateProvince</string>
+	  <string>stateProvince</string>
     <string>country</string>
   </lineByLineFormat>
   <addressHierarchyFile>
