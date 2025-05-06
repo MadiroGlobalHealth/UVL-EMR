@@ -19,7 +19,7 @@
       <sizeMapping>40</sizeMapping>
       <requiredInHierarchy>true</requiredInHierarchy>
     </addressComponent>
-	<addressComponent>
+    <addressComponent>
       <field>CITY_VILLAGE</field>
       <nameMapping>Zone</nameMapping>
       <sizeMapping>40</sizeMapping>
@@ -31,7 +31,7 @@
       <sizeMapping>40</sizeMapping>
       <requiredInHierarchy>true</requiredInHierarchy>
     </addressComponent>
-        <addressComponent>
+    <addressComponent>
       <field>ADDRESS_2</field>
       <nameMapping>Address Detail</nameMapping>
       <sizeMapping>1024</sizeMapping>
@@ -39,11 +39,11 @@
     </addressComponent>
   </addressComponents>
   <lineByLineFormat>
-	  <string>address2</string>
+    <string>address2</string>
     <string>address1</string>
-	  <string>cityVillage</string>
+    <string>cityVillage</string>
     <string>countyDistrict</string>
-	  <string>stateProvince</string>
+    <string>stateProvince</string>
     <string>country</string>
   </lineByLineFormat>
   <addressHierarchyFile>
