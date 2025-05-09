@@ -7,6 +7,24 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd
         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
+    <!-- Add admin as provider -->
+    <changeSet id="add_admin_provider-202407101630" author="pirupius">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT CASE WHEN COUNT(*) > 0 THEN 0 ELSE 1 END FROM provider WHERE person_id = 1;
+            </sqlCheck>
+        </preConditions>
+        <insert tableName="provider">
+            <column name="provider_id" value="1" />
+            <column name="person_id" value="1" />
+            <column name="name" value="Super User" />
+            <column name="identifier" value="admin" />
+            <column name="uuid" value="361ebccc-0992-46c5-a99f-ac523bed386e" />
+            <column name="creator" value="1" />
+            <column name="date_created" value="2024-07-11 11:30:00" />
+        </insert>
+    </changeSet>
+
     <!-- persons -->
     <changeSet id="add_mosul_person_for_user-202406191255" author="Joshua">
         <comment>
@@ -425,4 +443,5 @@
 		<sqlFile path="sql/reporting_report_design.sql" relativeToChangelogFile="true" stripComments="true" />
         <sql>SET foreign_key_checks = 1;</sql>
     </changeSet>
+    
 </databaseChangeLog>
