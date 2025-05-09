@@ -29,7 +29,7 @@
     "@openmrs/esm-patient-chart-app": "next",
     "@openmrs/esm-form-engine-app": "next",
     "@openmrs/esm-patient-vitals-app": "next",
-    "@openmrs/esm-patient-labs-app": "next",
+    "@openmrs/esm-patient-tests-app": "next",
     "@openmrs/esm-laboratory-app": "next",
     "@openmrs/esm-patient-allergies-app": "next",
     "@openmrs/esm-patient-immunizations-app": "next",
