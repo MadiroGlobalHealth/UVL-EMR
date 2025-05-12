@@ -161,6 +161,9 @@
                 <echo level="info" message="Adding Mugamba project Name to ozone" />
                 <replaceregexp file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/scripts/utils.sh"
                   match="export PROJECT_NAME=.*" replace='export PROJECT_NAME="${project.artifactId}"' />
+
+                <replace file="${project.build.directory}/${project.artifactId}-${project.version}/distro/ozone-info.json" token="ozone-uvl-distro" value="ozone-uvl-mugamba" />
+                
               </target>
             </configuration>
           </execution>
