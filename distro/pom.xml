@@ -130,7 +130,7 @@
                     <!-- Temporarily remove Ozone -->
                     <exclude>distro/binaries/openmrs/modules/referencedemodata*.omod</exclude>
                     <!-- Remove Ozone frontend config -->
-                    <exclude>distro/configs/openmrs/frontend_config/ozone*.*</exclude>
+                    <!-- <exclude>distro/configs/openmrs/frontend_config/ozone*.*</exclude> -->
                   </excludes>
                 </resource>
               </resources>
@@ -167,7 +167,7 @@
         <artifactId>maven-antrun-plugin</artifactId>
         <version>3.1.0</version>
         <executions>
-          <execution>
+          <!-- <execution>
             <id>Add UVL-OCG Frontend Configuration to ozone</id>
             <phase>process-resources</phase>
             <goals>
@@ -180,7 +180,7 @@
                               match="ozone-frontend-config.json" replace="uvl-frontend-config.json" />
               </target>
             </configuration>
-          </execution>
+          </execution> -->
           <execution>
             <id>Add UVL EMR docker image Configuration to ozone</id>
             <phase>process-resources</phase>
