@@ -110,7 +110,6 @@
                     <exclude>distro/configs/**/encounterroles/*.*</exclude>
                     <exclude>distro/configs/**/encountertypes/*.*</exclude>
                     <exclude>distro/configs/**/fhirconceptsources/*.*</exclude>
-                    <exclude>distro/configs/**/globalproperties/*.*</exclude>
                     <exclude>distro/configs/**/idgen/*.*</exclude>
                     <exclude>distro/configs/**/locationtags/*.*</exclude>
                     <exclude>distro/configs/**/metadatasets/*.*</exclude>
