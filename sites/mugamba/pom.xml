@@ -182,5 +182,4 @@
       <url>https://maven.pkg.github.com/MadiroGlobalHealth/UVL-EMR</url>
     </snapshotRepository>
   </distributionManagement>
-
 </project>
