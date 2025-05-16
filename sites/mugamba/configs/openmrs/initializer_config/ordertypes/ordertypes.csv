@@ -1,5 +1,5 @@
 Uuid,Void/Retire,Name,Description,Java class name,Concept Classes,Parent
-5338a5b1-2cbc-4081-9a9b-9e479e2acaad,,Radiology Order,An order for radiology,org.openmrs.Order,Radiology Item;51200d71-5fdb-4ece-bc3d-c792068c6455,
+5338a5b1-2cbc-4081-9a9b-9e479e2acaad,,Radiology Order,An order for radiology,org.openmrs.Order,,
 16bb6bcf-2e81-4ba5-8583-ff4913201a72,,Drug Order,An order for a medication to be given to the patient,org.openmrs.DrugOrder,,
 f8ae333e-9d1a-423e-a6a8-c3a0687ebcf2,,Lab Order,An order for laboratory tests,org.openmrs.TestOrder,,
 52a447d3-a64a-11e3-9aeb-50e549534c5e,TRUE,Test Order,Order type for test orders,org.openmrs.TestOrder,,

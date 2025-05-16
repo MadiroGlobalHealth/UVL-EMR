@@ -13,7 +13,6 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>8</maven.compiler.source>
     <maven.compiler.target>8</maven.compiler.target>
-    <oauth2loginVersion>1.6.0-SNAPSHOT</oauth2loginVersion>
   </properties>
 
   <dependencies>
@@ -23,14 +22,6 @@
       <version>1.0.0-SNAPSHOT</version>
       <type>zip</type>
     </dependency>
-
-     <dependency>
-      <groupId>org.openmrs.module</groupId>
-      <artifactId>oauth2login-omod</artifactId>
-      <version>${oauth2loginVersion}</version>
-      <type>jar</type>
-    </dependency>
-    
   </dependencies>
 
   <build>
@@ -133,7 +124,7 @@
         <artifactId>maven-antrun-plugin</artifactId>
         <version>3.1.0</version>
         <executions>
-          <execution>
+          <!-- <execution>
             <id>Add UVL Mugamba Frontend Configuration</id>
             <phase>process-resources</phase>
             <goals>
@@ -144,9 +135,12 @@
                 <echo message="Adding UVL Mugamba frontend config"/>
                 <replaceregexp file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/.env"
                                match="(SPA_CONFIG_URLS=.+)" replace="\1,/openmrs/spa/configs/uvl-mugamba-frontend-config.json" />
+
+                <replace file="${project.build.directory}/${project.artifactId}-${project.version}/distro/ozone-info.json"
+                  token="ozone-uvl-distro" value="ozone-uvl-mugamba" />
               </target>
             </configuration>
-          </execution>
+          </execution> -->
           <execution>
             <id>Add UVL project name configuration</id>
             <phase>process-resources</phase>
@@ -158,6 +152,9 @@
                 <echo level="info" message="Adding Mugamba project Name to ozone" />
                 <replaceregexp file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/scripts/utils.sh"
                   match="export PROJECT_NAME=.*" replace='export PROJECT_NAME="${project.artifactId}"' />
+
+                <replace file="${project.build.directory}/${project.artifactId}-${project.version}/distro/ozone-info.json" token="ozone-uvl-distro" value="ozone-uvl-mugamba" />
+                
               </target>
             </configuration>
           </execution>
