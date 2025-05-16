@@ -130,31 +130,6 @@
               </resources>
             </configuration>
           </execution>
-          <execution>
-            <id>Copy frontend configs</id>
-            <phase>process-resources</phase>
-            <goals>
-              <goal>copy-resources</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>${project.build.directory}/${project.artifactId}-${project.version}/distro/configs/openmrs/frontend_config</outputDirectory>
-              <overwrite>true</overwrite>
-              <resources>
-                <resource>
-                  <directory>${project.build.directory}/ozone-uvl-distro-1.0.0-SNAPSHOT/distro/configs/openmrs/frontend_config</directory>
-                  <includes>
-                    <include>uvl-frontend-config.json</include>
-                  </includes>
-                </resource>
-                <resource>
-                  <directory>${project.basedir}/configs/openmrs/frontend_config</directory>
-                  <includes>
-                    <include>uvl-burundi-frontend-config.json</include>
-                  </includes>
-                </resource>
-              </resources>
-            </configuration>
-          </execution>
         </executions>
       </plugin>
 
