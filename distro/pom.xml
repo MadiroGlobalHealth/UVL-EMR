@@ -35,6 +35,55 @@
       </activation>
       <build>
         <plugins>
+
+          <plugin>
+            <artifactId>maven-resources-plugin</artifactId>
+            <executions>
+              <execution>
+                <!-- Copy UVL Disto docker compose .txt file -->
+                <id>Copy UVL Disto docker compose .txt file</id>
+                <phase>prepare-package</phase>
+                <goals>
+                  <goal>copy-resources</goal>
+                </goals>
+                <configuration>
+                  <outputDirectory>${project.build.directory}/${project.artifactId}-${project.version}/run/docker/scripts</outputDirectory>
+                  <overwrite>true</overwrite>
+                  <resources>
+                    <resource>
+                      <directory>../scripts</directory>
+                      <includes>
+                        <include>docker*</include>
+                      </includes>
+                    </resource>
+                  </resources>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <version>3.1.0</version>
+            <executions>
+              <execution>
+                <id>Add UVL Mugamba Frontend Configuration</id>
+                <phase>process-resources</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <echo message="Adding UVL Mugamba frontend config"/>
+                    <replaceregexp file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/.env"
+                                  match="(SPA_CONFIG_URLS=.+)" replace="\1,/openmrs/spa/configs/uvl-frontend-config.json" />
+                  </target>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+
           <!-- hooking the OpenMRS config validation to the integration-test phase -->
           <plugin>
             <groupId>org.openmrs.maven.plugins</groupId>
@@ -57,34 +106,4 @@
       </build>
     </profile>
   </profiles>
-
-  <build>
-    <plugins>
-      <plugin>
-        <artifactId>maven-resources-plugin</artifactId>
-        <executions>
-          <execution>
-            <!-- Copy UVL Disto docker compose .txt file -->
-            <id>Copy UVL Disto docker compose .txt file</id>
-            <phase>prepare-package</phase>
-            <goals>
-              <goal>copy-resources</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>${project.build.directory}/${project.artifactId}-${project.version}/run/docker/scripts</outputDirectory>
-              <overwrite>true</overwrite>
-              <resources>
-                <resource>
-                  <directory>../scripts</directory>
-                  <includes>
-                    <include>docker*</include>
-                  </includes>
-                </resource>
-              </resources>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
 </project>
