@@ -176,7 +176,31 @@
           </execution>
         </executions>
       </plugin>
-
     </plugins>
   </build>
+
+  <repositories>
+    <repository>
+      <id>mks-nexus-public</id>
+      <url>https://nexus.mekomsolutions.net/repository/maven-public/</url>
+    </repository>
+    <repository>
+      <id>madiro-global-health-github-uvl-emr</id>
+      <url>https://maven.pkg.github.com/MadiroGlobalHealth/UVL-EMR/</url>
+    </repository>
+  </repositories>
+
+  <distributionManagement>
+    <repository>
+      <name>UVL repo for releases</name>
+      <id>madiro-global-health-github-uvl-emr</id>
+      <url>https://maven.pkg.github.com/MadiroGlobalHealth/UVL-EMR</url>
+    </repository>
+    <snapshotRepository>
+      <name>UVL repo for snapshots</name>
+      <id>madiro-global-health-github-uvl-emr</id>
+      <url>https://maven.pkg.github.com/MadiroGlobalHealth/UVL-EMR</url>
+    </snapshotRepository>
+  </distributionManagement>
+  
 </project>
