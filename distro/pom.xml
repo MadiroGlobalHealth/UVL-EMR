@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
@@ -13,7 +12,6 @@
   <groupId>com.ozoneuvl</groupId>
   <artifactId>ozone-uvl-distro</artifactId>
   <version>1.0.0-SNAPSHOT</version>
-  <packaging>pom</packaging>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -52,34 +50,35 @@
     <tag>HEAD</tag>
   </scm>
 
-  <build>
-    <plugins>
-      <!-- packaging the distro as a installable/deployable file -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-assembly-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>Package distro artifacts</id>
-            <phase>package</phase>
-            <goals>
-              <goal>single</goal>
-            </goals>
-            <configuration>
-              <appendAssemblyId>false</appendAssemblyId>
-              <descriptors>
-                <descriptor>assembly.xml</descriptor>
-              </descriptors>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
 
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-resources-plugin</artifactId>
-        <executions>
-          <execution>
+      <build>
+        <plugins>
+
+          <!-- packaging the distro as a installable/deployable file -->	
+          <plugin>	
+            <groupId>org.apache.maven.plugins</groupId>	
+            <artifactId>maven-assembly-plugin</artifactId>	
+            <executions>	
+              <execution>	
+                <id>Package distro artifacts</id>	
+                <phase>package</phase>	
+                <goals>	
+                  <goal>single</goal>	
+                </goals>	
+                <configuration>	
+                  <appendAssemblyId>false</appendAssemblyId>	
+                  <descriptors>	
+                    <descriptor>assembly.xml</descriptor>	
+                  </descriptors>	
+                </configuration>	
+              </execution>	
+            </executions>	
+          </plugin>
+
+          <plugin>
+            <artifactId>maven-resources-plugin</artifactId>
+            <executions>
+            <execution>
             <!-- Override the Ozone files exclusion execution so to inherit all O3 Ref App files -->
             <id>Exclude unneeded Ozone files</id>
             <phase>process-resources</phase>
@@ -128,8 +127,6 @@
                     <exclude>distro/configs/**/paymentmodes/*.*</exclude>
                     <!-- Temporarily remove Ozone -->
                     <exclude>distro/binaries/openmrs/modules/referencedemodata*.omod</exclude>
-                    <!-- Remove Ozone frontend config -->
-                    <!-- <exclude>distro/configs/openmrs/frontend_config/ozone*.*</exclude> -->
                   </excludes>
                 </resource>
               </resources>
@@ -144,16 +141,13 @@
               <goal>copy-resources</goal>
             </goals>
             <configuration>
-              <outputDirectory>
-                ${project.build.directory}/${project.artifactId}-${project.version}/run/docker/scripts</outputDirectory>
+              <outputDirectory>${project.build.directory}/${project.artifactId}-${project.version}/run/docker/scripts</outputDirectory>
               <overwrite>true</overwrite>
               <resources>
                 <resource>
                   <directory>${project.basedir}/../scripts</directory>
                   <includes>
-                    <include>
-                      docker-compose-files.txt
-                    </include>
+                    <include>docker-*</include>
                   </includes>
                 </resource>
               </resources>
@@ -166,20 +160,20 @@
         <artifactId>maven-antrun-plugin</artifactId>
         <version>3.1.0</version>
         <executions>
-          <!-- <execution>
-            <id>Add UVL-OCG Frontend Configuration to ozone</id>
+          <execution>
+            <id>Add UVL Mugamba Frontend Configuration</id>
             <phase>process-resources</phase>
             <goals>
               <goal>run</goal>
             </goals>
             <configuration>
               <target>
-                <echo level="info" message="Adding uvl frontend config"/>
+                <echo message="Adding UVL Mugamba frontend config"/>
                 <replaceregexp file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/.env"
-                              match="ozone-frontend-config.json" replace="uvl-frontend-config.json" />
+                              match="(SPA_CONFIG_URLS=.+)" replace="\1,/openmrs/spa/configs/uvl-frontend-config.json" />
               </target>
             </configuration>
-          </execution> -->
+          </execution>
           <execution>
             <id>Add UVL EMR docker image Configuration to ozone</id>
             <phase>process-resources</phase>
@@ -232,43 +226,26 @@
           </execution>
         </executions>
       </plugin>
+
+      <!-- hooking the OpenMRS config validation to the integration-test phase -->
+      <plugin>
+        <groupId>org.openmrs.maven.plugins</groupId>
+        <artifactId>openmrs-packager-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>Validate OpenMRS configuration</id>
+            <phase>integration-test</phase>
+            <goals>
+              <goal>validate-configurations</goal>
+            </goals>
+            <configuration>
+              <sourceDir>${project.build.directory}/${project.artifactId}-${project.version}/distro/configs/openmrs/initializer_config</sourceDir>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
-
-  <profiles>
-    <profile>
-      <id>validator</id>
-      <activation>
-        <jdk>1.8</jdk>
-        <property>
-          <name>env.CI</name>
-          <value>true</value>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <!-- hooking the OpenMRS config validation to the integration-test phase -->
-          <plugin>
-            <groupId>org.openmrs.maven.plugins</groupId>
-            <artifactId>openmrs-packager-maven-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>Validate OpenMRS configuration</id>
-                <phase>integration-test</phase>
-                <goals>
-                  <goal>validate-configurations</goal>
-                </goals>
-                <configuration>
-                  <sourceDir>
-                    ${project.build.directory}/${project.artifactId}-${project.version}/distro/configs/openmrs/initializer_config</sourceDir>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
 
   <repositories>
     <repository>
