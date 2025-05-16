@@ -11,6 +11,7 @@
   <groupId>com.ozoneuvl</groupId>
   <artifactId>ozone-uvl-mugamba</artifactId>
   <version>1.0.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -19,119 +20,167 @@
   </properties>
 
   <dependencies>
-    <!-- TODO: Add any implementation-specific dependencies -->
      <dependency>
       <artifactId>ozone-uvl-burundi</artifactId>
       <groupId>com.ozoneuvl</groupId>
       <version>1.0.0-SNAPSHOT</version>
       <type>zip</type>
-      <scope>runtime</scope>
     </dependency>
   </dependencies>
 
-  <profiles>
-    <profile>
-      <id>validator</id>
-      <activation>
-        <jdk>1.8</jdk>
-        <property>
-          <name>env.CI</name>
-          <value>true</value>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <!-- hooking the OpenMRS config validation to the integration-test phase -->
-          <plugin>
-            <groupId>org.openmrs.maven.plugins</groupId>
-            <artifactId>openmrs-packager-maven-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>Validate OpenMRS configuration</id>
-                <phase>integration-test</phase>
-                <goals>
-                  <goal>validate-configurations</goal>
-                </goals>
-                <configuration>
-                  <sourceDir>${project.build.directory}/${project.artifactId}-${project.version}/distro/configs/openmrs/initializer_config</sourceDir>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-
-          <plugin>
-            <artifactId>maven-resources-plugin</artifactId>
-            <executions>
-              <execution>
-                <!-- Copy UVL Disto docker compose .txt file -->
-                <id>Copy UVL Disto docker compose .txt file</id>
-                <phase>prepare-package</phase>
-                <goals>
-                  <goal>copy-resources</goal>
-                </goals>
-                <configuration>
-                  <outputDirectory>${project.build.directory}/${project.artifactId}-${project.version}/run/docker/scripts</outputDirectory>
-                  <overwrite>true</overwrite>
-                  <resources>
-                    <resource>
-                      <directory>../../scripts</directory>
-                      <includes>
-                        <include>docker*</include>
-                      </includes>
-                    </resource>
-                  </resources>
-                </configuration>
-              </execution>
-              <execution>
-                <id>Merge configs with burundi</id>
-                <phase>process-resources</phase>
-                <goals>
-                  <goal>copy-resources</goal>
-                </goals>
-                <configuration>
-                  <outputDirectory>${project.build.directory}/${project.artifactId}-${project.version}/distro/configs</outputDirectory>
-                  <overwrite>true</overwrite>
-                  <resources>
-                    <resource>
-                      <directory>${project.basedir}/configs</directory>
-                    </resource>
-                  </resources>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-antrun-plugin</artifactId>
-            <version>3.1.0</version>
-            <executions>
-              <execution>
-                <id>Add UVL Mugamba Frontend Configuration</id>
-                <phase>process-resources</phase>
-                <goals>
-                  <goal>run</goal>
-                </goals>
-                <configuration>
-                  <target>
-                    <echo message="Adding UVL Mugamba frontend config"/>
-                    <replaceregexp file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/.env"
-                                  match="(SPA_CONFIG_URLS=.+)" replace="\1,/openmrs/spa/configs/uvl-frontend-config.json,/openmrs/spa/configs/uvl-mugamba-frontend-config.json" />
-                  </target>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
-
   <build>
     <plugins>
-      
+      <!-- Unpack Ozone UVL zip -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>3.6.1</version>
+        <executions>
+          <execution>
+            <id>Unpack Ozone UVL</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>unpack-dependencies</goal>
+            </goals>
+            <configuration>
+              <excludeTransitive>true</excludeTransitive>
+              <outputDirectory>${project.build.directory}/ozone-uvl-burundi</outputDirectory>
+              <includeArtifactIds>ozone-uvl-burundi</includeArtifactIds>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <!-- hooking the OpenMRS config validation to the integration-test phase -->
+      <plugin>
+        <groupId>org.openmrs.maven.plugins</groupId>
+        <artifactId>openmrs-packager-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>Validate OpenMRS configuration</id>
+            <phase>integration-test</phase>
+            <goals>
+              <goal>validate-configurations</goal>
+            </goals>
+            <configuration>
+              <sourceDir>${project.build.directory}/${project.artifactId}-${project.version}/distro/configs/openmrs/initializer_config</sourceDir>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
 
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>3.3.1</version>
+        <executions>
+          <execution>
+            <!-- Copy Ozone UVL files -->
+            <id>Copy Ozone UVL files</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>
+                ${project.build.directory}/${project.artifactId}-${project.version}/distro</outputDirectory>
+              <overwrite>true</overwrite>
+              <resources>
+                <resource>
+                  <directory>${project.build.directory}/ozone-uvl-burundi/distro</directory>
+                  <excludes>
+                    <exclude>configs/**/locations/*.*</exclude>
+                    <exclude>configs/**/personattributetypes/*.*</exclude>
+                    <exclude>configs/**/idgen/*.*</exclude>
+                  </excludes>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+          <execution>
+            <!-- Copy UVL Disto docker compose .txt file -->
+            <id>Copy UVL Disto docker compose .txt file</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/${project.artifactId}-${project.version}/run/docker/scripts</outputDirectory>
+              <overwrite>true</overwrite>
+              <resources>
+                <resource>
+                  <directory>../../scripts</directory>
+                  <includes>
+                    <include>docker*</include>
+                  </includes>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+          <execution>
+            <id>Merge configs with burundi</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/${project.artifactId}-${project.version}/distro/configs</outputDirectory>
+              <overwrite>true</overwrite>
+              <resources>
+                <resource>
+                  <directory>${project.basedir}/configs</directory>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>3.1.0</version>
+        <executions>
+          <execution>
+            <id>Add UVL Mugamba Frontend Configuration</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
+                <echo message="Adding UVL Mugamba frontend config"/>
+                <replaceregexp file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/.env"
+                              match="(SPA_CONFIG_URLS=.+)" replace="\1,/openmrs/spa/configs/uvl-frontend-config.json,/openmrs/spa/configs/uvl-mugamba-frontend-config.json" />
+              </target>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
+
+<repositories>
+    <repository>
+      <id>mks-nexus-public</id>
+      <url>https://nexus.mekomsolutions.net/repository/maven-public/</url>
+    </repository>
+    <repository>
+      <id>madiro-global-health-github-uvl-emr</id>
+      <url>https://maven.pkg.github.com/MadiroGlobalHealth/UVL-EMR/</url>
+    </repository>
+  </repositories>
+
+  <distributionManagement>
+    <repository>
+      <name>UVL repo for releases</name>
+      <id>madiro-global-health-github-uvl-emr</id>
+      <url>https://maven.pkg.github.com/MadiroGlobalHealth/UVL-EMR</url>
+    </repository>
+    <snapshotRepository>
+      <name>UVL repo for snapshots</name>
+      <id>madiro-global-health-github-uvl-emr</id>
+      <url>https://maven.pkg.github.com/MadiroGlobalHealth/UVL-EMR</url>
+    </snapshotRepository>
+  </distributionManagement>
+
 </project>

@@ -6,7 +6,7 @@
     <groupId>com.ozonehis</groupId>
     <artifactId>maven-parent</artifactId>
     <version>1.0.0-alpha.13</version>
-    <relativePath/>
+    <relativePath />
   </parent>
 
   <groupId>com.ozoneuvl</groupId>
@@ -17,93 +17,237 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>8</maven.compiler.source>
     <maven.compiler.target>8</maven.compiler.target>
+    <PatientIdentifierGeneratorVersion>0.1.0</PatientIdentifierGeneratorVersion>
+    <UVLReferenceapplicationDockerVersion>3.2.0-rc.3</UVLReferenceapplicationDockerVersion>
+    <!-- Stock Management and Billing -->
+    <stockmanagement.version>2.0.2-SNAPSHOT</stockmanagement.version>
+    <billing.version>1.2.0-SNAPSHOT</billing.version>
+    <initializer.version>2.8.0</initializer.version>
   </properties>
 
   <dependencies>
-    <!-- TODO: Add any implementation-specific dependencies -->
+    <dependency>
+      <groupId>org.openmrs.module</groupId>
+      <artifactId>stockmanagement-omod</artifactId>
+      <version>${stockmanagement.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.openmrs.module</groupId>
+      <artifactId>billing-omod</artifactId>
+      <version>${billing.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.openmrs.module</groupId>
+      <artifactId>initializer-omod</artifactId>
+      <version>${initializer.version}</version>
+    </dependency>
   </dependencies>
 
-  <profiles>
-    <profile>
-      <id>validator</id>
-      <activation>
-        <jdk>1.8</jdk>
-        <property>
-          <name>env.CI</name>
-          <value>true</value>
-        </property>
-      </activation>
+  <scm>
+    <connection>scm:git:git@github.com:Madiro-org/uvl-emr.git</connection>
+    <developerConnection>${project.scm.connection}</developerConnection>
+    <url>https://github.com/Madiro-org/uvl-emr</url>
+    <tag>HEAD</tag>
+  </scm>
+
+
       <build>
         <plugins>
 
           <plugin>
             <artifactId>maven-resources-plugin</artifactId>
             <executions>
-              <execution>
-                <!-- Copy UVL Disto docker compose .txt file -->
-                <id>Copy UVL Disto docker compose .txt file</id>
-                <phase>prepare-package</phase>
-                <goals>
-                  <goal>copy-resources</goal>
-                </goals>
-                <configuration>
-                  <outputDirectory>${project.build.directory}/${project.artifactId}-${project.version}/run/docker/scripts</outputDirectory>
-                  <overwrite>true</overwrite>
-                  <resources>
-                    <resource>
-                      <directory>../scripts</directory>
-                      <includes>
-                        <include>docker*</include>
-                      </includes>
-                    </resource>
-                  </resources>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
+            <execution>
+            <!-- Override the Ozone files exclusion execution so to inherit all O3 Ref App files -->
+            <id>Exclude unneeded Ozone files</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>
+                ${project.build.directory}/${project.artifactId}-${project.version}</outputDirectory>
+              <overwrite>true</overwrite>
+              <resources>
+                <resource>
+                  <directory>${project.build.directory}/ozone</directory>
+                  <excludes>
+                    <exclude>distro/configs/**/addresshierarchy/*.*</exclude>
+                    <exclude>distro/configs/**/ampathforms/*.*</exclude>
+                    <exclude>distro/configs/**/ampathformstranslations/*.*</exclude>
+                    <exclude>distro/configs/**/appointmentservicedefinitions/*.*</exclude>
+                    <exclude>distro/configs/**/appointmentservicetypes/*.*</exclude>
+                    <exclude>distro/configs/**/appointmentspecialities/*.*</exclude>
+                    <exclude>distro/configs/**/attributetypes/*.*</exclude>
+                    <exclude>distro/configs/**/autogenerationoptions/*.*</exclude>
+                    <exclude>distro/configs/**/cohorttypes/*.*</exclude>
+                    <exclude>distro/configs/**/conceptclasses/*.*</exclude>
+                    <exclude>distro/configs/**/concepts/*.*</exclude>
+                    <exclude>distro/configs/**/conceptsources/*.*</exclude>
+                    <exclude>distro/configs/**/drugs/*.*</exclude>
+                    <exclude>distro/configs/**/encounterroles/*.*</exclude>
+                    <exclude>distro/configs/**/encountertypes/*.*</exclude>
+                    <exclude>distro/configs/**/fhirconceptsources/*.*</exclude>
+                    <exclude>distro/configs/**/idgen/*.*</exclude>
+                    <exclude>distro/configs/**/locationtags/*.*</exclude>
+                    <exclude>distro/configs/**/metadatasets/*.*</exclude>
+                    <exclude>distro/configs/**/metadatasharing/*.*</exclude>
+                    <exclude>distro/configs/**/metadatatermmappings/*.*</exclude>
+                    <exclude>distro/configs/**/ocl/*.*</exclude>
+                    <exclude>distro/configs/**/orderfrequencies/*.*</exclude>
+                    <exclude>distro/configs/**/patientidentifiertypes/*.*</exclude>
+                    <exclude>distro/configs/**/privileges/*.*</exclude>
+                    <exclude>distro/configs/**/programs/*.*</exclude>
+                    <exclude>distro/configs/**/programworkflows/*.*</exclude>
+                    <exclude>distro/configs/**/programworkflowstates/*.*</exclude>
+                    <exclude>distro/configs/**/relationshiptypes/*.*</exclude>
+                    <exclude>distro/configs/**/visittypes/*.*</exclude>
+                    <exclude>distro/configs/**/cashpoints/*.*</exclude>
+                    <exclude>distro/configs/**/paymentmodes/*.*</exclude>
+                    <!-- Temporarily remove Ozone -->
+                    <exclude>distro/binaries/openmrs/modules/referencedemodata*.omod</exclude>
+                  </excludes>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
 
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-antrun-plugin</artifactId>
-            <version>3.1.0</version>
-            <executions>
-              <execution>
-                <id>Add UVL Mugamba Frontend Configuration</id>
-                <phase>process-resources</phase>
-                <goals>
-                  <goal>run</goal>
-                </goals>
-                <configuration>
-                  <target>
-                    <echo message="Adding UVL Mugamba frontend config"/>
-                    <replaceregexp file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/.env"
-                                  match="(SPA_CONFIG_URLS=.+)" replace="\1,/openmrs/spa/configs/uvl-frontend-config.json" />
-                  </target>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
+          <execution>
+            <!-- Copy UVL Disto docker compose .txt file -->
+            <id>Copy UVL Disto docker compose .txt file</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/${project.artifactId}-${project.version}/run/docker/scripts</outputDirectory>
+              <overwrite>true</overwrite>
+              <resources>
+                <resource>
+                  <directory>${project.basedir}/../scripts</directory>
+                  <includes>
+                    <include>docker-*</include>
+                  </includes>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>3.1.0</version>
+        <executions>
+          <execution>
+            <id>Add UVL Mugamba Frontend Configuration</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
+                <echo message="Adding UVL Mugamba frontend config"/>
+                <replaceregexp file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/.env"
+                              match="(SPA_CONFIG_URLS=.+)" replace="\1,/openmrs/spa/configs/uvl-frontend-config.json" />
+              </target>
+            </configuration>
+          </execution>
+          <execution>
+            <id>Add UVL EMR docker image Configuration to ozone</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
+                <echo level="info" message="Adding uvl docker image version"/>
+                <replaceregexp file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/.env"
+                              match="O3_DOCKER_IMAGE_TAG=.*" replace="O3_DOCKER_IMAGE_TAG=${UVLReferenceapplicationDockerVersion}" />
+                <replace file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/docker-compose-openmrs.yml"
+                              token="3.0.0-beta.21" value="${O3_DOCKER_IMAGE_TAG:-nightly}" />
+              </target>
+            </configuration>
+          </execution>
+          <execution>
+            <id>Add UVL addons to ozone</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
+                <echo level="info" message="Adding UVL core version"/>
+                <replaceregexp file="${project.build.directory}/openmrs/frontend_assembly/build-openmrs-frontend.groovy"
+                              match="openmrsVersion =.*" replace='openmrsVersion = slurper.parse(Paths.get("${project.build.directory}", "openmrs_frontend", "spa-assemble-config.json").toFile())["coreVersion"] ?: "next"'/>
 
-          <!-- hooking the OpenMRS config validation to the integration-test phase -->
-          <plugin>
-            <groupId>org.openmrs.maven.plugins</groupId>
-            <artifactId>openmrs-packager-maven-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>Validate OpenMRS configuration</id>
-                <phase>integration-test</phase>
-                <goals>
-                  <goal>validate-configurations</goal>
-                </goals>
-                <configuration>
-                  <sourceDir>${project.build.directory}/${project.artifactId}-${project.version}/distro/configs/openmrs/initializer_config</sourceDir>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
+                <echo level="info" message="Adding UVL project Name to ozone" />
+                <replace
+                  dir="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/scripts"
+                  token='-p ozone'>
+                  <include name="**/*.sh"/>
+                  <replacevalue>
+                    -p $PROJECT_NAME
+                  </replacevalue>
+                </replace>
+                <replace
+                  file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/scripts/utils.sh"
+                  token='export BOLD=`tput bold`'>
+                  <replacevalue>
+                    export BOLD=`tput bold`&#10;export PROJECT_NAME="${project.artifactId}"
+                  </replacevalue>
+                </replace>
 
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
+                <echo level="info" message="Setting executable permissions for the Ozone start.sh script" />
+                <chmod file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/scripts/*.sh" perm="700"/>
+              </target>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- hooking the OpenMRS config validation to the integration-test phase -->
+      <plugin>
+        <groupId>org.openmrs.maven.plugins</groupId>
+        <artifactId>openmrs-packager-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>Validate OpenMRS configuration</id>
+            <phase>integration-test</phase>
+            <goals>
+              <goal>validate-configurations</goal>
+            </goals>
+            <configuration>
+              <sourceDir>${project.build.directory}/${project.artifactId}-${project.version}/distro/configs/openmrs/initializer_config</sourceDir>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+  <repositories>
+    <repository>
+      <id>mks-nexus-public</id>
+      <url>https://nexus.mekomsolutions.net/repository/maven-public/</url>
+    </repository>
+    <repository>
+      <id>madiro-global-health-github-uvl-emr</id>
+      <url>https://maven.pkg.github.com/MadiroGlobalHealth/UVL-EMR/</url>
+    </repository>
+  </repositories>
+
+  <distributionManagement>
+    <repository>
+      <name>UVL repo for releases</name>
+      <id>madiro-global-health-github-uvl-emr</id>
+      <url>https://maven.pkg.github.com/MadiroGlobalHealth/UVL-EMR</url>
+    </repository>
+    <snapshotRepository>
+      <name>UVL repo for snapshots</name>
+      <id>madiro-global-health-github-uvl-emr</id>
+      <url>https://maven.pkg.github.com/MadiroGlobalHealth/UVL-EMR</url>
+    </snapshotRepository>
+  </distributionManagement>
+
 </project>
