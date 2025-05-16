@@ -81,7 +81,7 @@
               <overwrite>true</overwrite>
               <resources>
                 <resource>
-                  <directory>${project.basedir}/../scripts</directory>
+                  <directory>../../scripts</directory>
                   <includes>
                     <include>docker*</include>
                   </includes>
