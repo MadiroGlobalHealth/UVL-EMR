@@ -83,7 +83,7 @@
             <configuration>
               <outputDirectory>
                 ${project.build.directory}/${project.artifactId}-${project.version}/distro</outputDirectory>
-              <overwrite>true</overwrite>
+              <overwrite>false</overwrite>
               <resources>
                 <resource>
                   <directory>${project.build.directory}/ozone-uvl-burundi/distro</directory>
