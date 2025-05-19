@@ -153,6 +153,25 @@
               </resources>
             </configuration>
           </execution>
+          <execution>
+            <id>Copy proxy configuration</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/${project.artifactId}-${project.version}/run/docker/proxy</outputDirectory>
+              <overwrite>true</overwrite>
+              <resources>
+                <resource>
+                  <directory>../scripts</directory>
+                  <includes>
+                    <include>default.conf.template</include>
+                  </includes>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
       <plugin>
