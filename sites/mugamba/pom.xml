@@ -88,6 +88,9 @@
                 <resource>
                   <directory>${project.build.directory}/ozone-uvl-burundi/distro</directory>
                   <excludes>
+                    <exclude>configs/**/appointmentservicedefinitions/*.*</exclude>
+                    <exclude>configs/**/appointmentservicetypes/*.*</exclude>
+                    <exclude>configs/**/appointmentspecialities/*.*</exclude>
                     <exclude>configs/**/locations/*.*</exclude>
                     <exclude>configs/**/personattributetypes/*.*</exclude>
                     <exclude>configs/**/idgen/*.*</exclude>
