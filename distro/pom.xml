@@ -94,38 +94,9 @@
                 <resource>
                   <directory>${project.build.directory}/ozone</directory>
                   <excludes>
-                    <exclude>distro/configs/**/addresshierarchy/*.*</exclude>
-                    <exclude>distro/configs/**/ampathforms/*.*</exclude>
-                    <exclude>distro/configs/**/ampathformstranslations/*.*</exclude>
-                    <exclude>distro/configs/**/appointmentservicedefinitions/*.*</exclude>
-                    <exclude>distro/configs/**/appointmentservicetypes/*.*</exclude>
-                    <exclude>distro/configs/**/appointmentspecialities/*.*</exclude>
-                    <exclude>distro/configs/**/attributetypes/*.*</exclude>
                     <exclude>distro/configs/**/autogenerationoptions/*.*</exclude>
-                    <exclude>distro/configs/**/cohorttypes/*.*</exclude>
-                    <exclude>distro/configs/**/conceptclasses/*.*</exclude>
-                    <exclude>distro/configs/**/concepts/*.*</exclude>
-                    <exclude>distro/configs/**/conceptsources/*.*</exclude>
-                    <exclude>distro/configs/**/drugs/*.*</exclude>
-                    <exclude>distro/configs/**/encounterroles/*.*</exclude>
-                    <exclude>distro/configs/**/encountertypes/*.*</exclude>
-                    <exclude>distro/configs/**/fhirconceptsources/*.*</exclude>
                     <exclude>distro/configs/**/idgen/*.*</exclude>
-                    <exclude>distro/configs/**/locationtags/*.*</exclude>
-                    <exclude>distro/configs/**/metadatasets/*.*</exclude>
-                    <exclude>distro/configs/**/metadatasharing/*.*</exclude>
-                    <exclude>distro/configs/**/metadatatermmappings/*.*</exclude>
-                    <exclude>distro/configs/**/ocl/*.*</exclude>
-                    <exclude>distro/configs/**/orderfrequencies/*.*</exclude>
                     <exclude>distro/configs/**/patientidentifiertypes/*.*</exclude>
-                    <exclude>distro/configs/**/privileges/*.*</exclude>
-                    <exclude>distro/configs/**/programs/*.*</exclude>
-                    <exclude>distro/configs/**/programworkflows/*.*</exclude>
-                    <exclude>distro/configs/**/programworkflowstates/*.*</exclude>
-                    <exclude>distro/configs/**/relationshiptypes/*.*</exclude>
-                    <exclude>distro/configs/**/visittypes/*.*</exclude>
-                    <exclude>distro/configs/**/cashpoints/*.*</exclude>
-                    <exclude>distro/configs/**/paymentmodes/*.*</exclude>
                     <!-- Temporarily remove Ozone -->
                     <exclude>distro/binaries/openmrs/modules/referencedemodata*.omod</exclude>
                     <!-- Remove Ozone frontend config -->
@@ -166,20 +137,20 @@
         <artifactId>maven-antrun-plugin</artifactId>
         <version>3.1.0</version>
         <executions>
-          <!-- <execution>
-            <id>Add UVL-OCG Frontend Configuration to ozone</id>
-            <phase>process-resources</phase>
-            <goals>
-              <goal>run</goal>
-            </goals>
-            <configuration>
-              <target>
-                <echo level="info" message="Adding uvl frontend config"/>
-                <replaceregexp file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/.env"
-                              match="ozone-frontend-config.json" replace="uvl-frontend-config.json" />
-              </target>
-            </configuration>
-          </execution> -->
+          <execution>
+              <id>Add UVL Distro Frontend Configuration</id>
+              <phase>process-resources</phase>
+              <goals>
+                <goal>run</goal>
+              </goals>
+              <configuration>
+                <target>
+                  <echo message="Adding UVL Mugamba frontend config"/>
+                  <replaceregexp file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/.env"
+                                match="(SPA_CONFIG_URLS=.+)" replace="\1,/openmrs/spa/configs/uvl-frontend-config.json" />
+                </target>
+              </configuration>
+            </execution>
           <execution>
             <id>Add UVL EMR docker image Configuration to ozone</id>
             <phase>process-resources</phase>
