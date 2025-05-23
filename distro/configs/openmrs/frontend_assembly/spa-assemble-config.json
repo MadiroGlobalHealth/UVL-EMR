@@ -1,7 +1,6 @@
 {
   "coreVersion": "next",
   "frontendModules": {
-    "@ugandaemr/esm-data-visualizer-app": "next",
     "@openmrs/esm-cohort-builder-app": "next",
     "@openmrs/esm-home-app": "next",
     "@openmrs/esm-system-admin-app": "next",
