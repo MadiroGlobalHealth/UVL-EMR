@@ -5,9 +5,7 @@
         "configure": {
           "active-visits-widget": {
             "Display conditions": {
-              "privileges": [
-                "Configure Visits"
-              ]
+              "privileges": ["Configure Visits"]
             }
           }
         }
@@ -16,109 +14,79 @@
   },
   "@openmrs/esm-patient-chart-app": {
     "Display conditions": {
-      "privileges": [
-        "Patient Dashboard - View Patient Summary"
-      ]
+      "privileges": ["Patient Dashboard - View Patient Summary"]
     },
     "extensionSlots": {
       "patient-chart-dashboard-slot": {
         "configure": {
           "charts-summary-dashboard": {
             "Display conditions": {
-              "privileges": [
-                "Patient Dashboard - View Patient Summary"
-              ]
+              "privileges": ["Patient Dashboard - View Patient Summary"]
             }
           },
           "medications-summary-dashboard": {
             "Display conditions": {
-              "privileges": [
-                "Manage Patient Medication"
-              ]
+              "privileges": ["Manage Patient Medication"]
             }
           },
           "encounters-summary-dashboard": {
             "Display conditions": {
-              "privileges": [
-                "Configure Visits"
-              ]
+              "privileges": ["Configure Visits"]
             }
           },
           "allergies-summary-dashboard": {
             "Display conditions": {
-              "privileges": [
-                "Patient Overview - View Allergies"
-              ]
+              "privileges": ["Patient Overview - View Allergies"]
             }
           },
           "laboratory-patient-chart-link": {
             "Display conditions": {
-              "privileges": [
-                "Manage Patient Investigation"
-              ]
+              "privileges": ["Manage Patient Investigation"]
             }
           },
           "results-summary-dashboard": {
             "Display conditions": {
-              "privileges": [
-                "Patient Dashboard - View Encounters Section"
-              ]
+              "privileges": ["Patient Dashboard - View Encounters Section"]
             }
           },
           "programs-summary-dashboard": {
             "Display conditions": {
-              "privileges": [
-                "Patient Overview - View Programs"
-              ]
+              "privileges": ["Patient Overview - View Programs"]
             }
           },
           "test-results-summary-dashboard": {
             "Display conditions": {
-              "privileges": [
-                "View Concepts"
-              ]
+              "privileges": ["View Concepts"]
             }
           },
           "immunization-summary-dashboard": {
             "Display conditions": {
-              "privileges": [
-                "Manage Immunization Summary"
-              ]
+              "privileges": ["Manage Immunization Summary"]
             }
           },
           "patient-appointments-summary-dashboard": {
             "Display conditions": {
-              "privileges": [
-                "Manage Appointments"
-              ]
+              "privileges": ["Manage Appointments"]
             }
           },
           "visit-header-right-slot": {
             "Display conditions": {
-              "privileges": [
-                "Configure Visits"
-              ]
+              "privileges": ["Configure Visits"]
             }
           },
           "patient-orders-summary-dashboard": {
             "Display conditions": {
-              "privileges": [
-                "Manage Patient Orders"
-              ]
+              "privileges": ["Manage Patient Orders"]
             }
           },
           "conditions-summary-dashboard": {
             "Display conditions": {
-              "privileges": [
-                "Patient Dashboard - View Conditions"
-              ]
+              "privileges": ["Patient Dashboard - View Conditions"]
             }
           },
           "attachments-results-summary-dashboard": {
             "Display conditions": {
-              "privileges": [
-                "Manage Patient Orders"
-              ]
+              "privileges": ["Manage Patient Orders"]
             }
           }
         }
@@ -127,9 +95,7 @@
         "configure": {
           "laboratory-orders-summary": {
             "Display conditions": {
-              "privileges": [
-                "Manage Patient Lab Orders"
-              ]
+              "privileges": ["Manage Patient Lab Orders"]
             }
           }
         }
@@ -138,9 +104,7 @@
         "configure": {
           "immunization-details-widget": {
             "Display conditions": {
-              "privileges": [
-                "Manage Patient Immunization Orders"
-              ]
+              "privileges": ["Manage Patient Immunization Orders"]
             }
           }
         }
@@ -149,30 +113,22 @@
         "configure": {
           "order-basket-action-menu": {
             "Display conditions": {
-              "privileges": [
-                "Manage Order Basket"
-              ]
+              "privileges": ["Manage Order Basket"]
             }
           },
           "visit-note-nav-button": {
             "Display conditions": {
-              "privileges": [
-                "Manage Visit Note"
-              ]
+              "privileges": ["Manage Visit Note"]
             }
           },
           "clinical-form-action-menu": {
             "Display conditions": {
-              "privileges": [
-                "Manage Clinical Forms"
-              ]
+              "privileges": ["Manage Clinical Forms"]
             }
           },
           "patient-orders-summary-dashboard": {
             "Display conditions": {
-              "privileges": [
-                "Manage Patient Orders"
-              ]
+              "privileges": ["Manage Patient Orders"]
             }
           }
         }
@@ -189,6 +145,10 @@
   "@openmrs/esm-primary-navigation-app": {
     "externalRefLinks": [
       {
+        "title": "Pharmacy, Billing & Inventory",
+        "redirect": "${ODOO_PUBLIC_URL}"
+      },
+      {
         "title": "Mugamba Lab - Mini-LIMS",
         "redirect": "#"
       }
@@ -196,16 +156,12 @@
   },
   "@openmrs/esm-patient-attachments-app": {
     "Display conditions": {
-      "privileges": [
-        "Add Attachments"
-      ]
+      "privileges": ["Add Attachments"]
     }
   },
   "@openmrs/esm-patient-orders-app": {
     "Display conditions": {
-      "privileges": [
-        "Manage Patient Orders"
-      ]
+      "privileges": ["Manage Patient Orders"]
     }
   },
   "@openmrs/esm-patient-registration-app": {
@@ -247,28 +203,17 @@
     "sectionDefinitions": [
       {
         "id": "demographics",
-        "fields": [
-          "name",
-          "gender",
-          "dob",
-          "id"
-        ]
+        "fields": ["name", "gender", "dob", "id"]
       },
       {
         "id": "additionalInformation",
         "name": "Additional Information",
-        "fields": [
-          "maritalStatus",
-          "occupation"
-        ]
+        "fields": ["maritalStatus", "occupation"]
       },
       {
         "id": "contact",
         "name": "Contact Details",
-        "fields": [
-          "address",
-          "telephoneNumber"
-        ]
+        "fields": ["address", "telephoneNumber"]
       }
     ],
     "fieldConfigurations": {
@@ -299,5 +244,28 @@
       "billableService": "49f1cfdf-498a-4984-8acb-eebf402c28eb"
     },
     "defaultCurrency": "BIF"
+  },
+  "@openmrs/esm-patient-tests-app": {
+    "orders": {
+      "labOrderTypeUuid": "f8ae333e-9d1a-423e-a6a8-c3a0687ebcf2",
+      "labOrderableConcepts": ["95ba6e51-f09b-429a-ab75-6cc6fe4ab968"]
+    },
+    "additionalTestOrderTypes": [
+      {
+        "orderTypeUuid": "67a92e56-0f88-11ea-8d71-362b9e155667",
+        "orderableConceptSets": ["46c8be89-db86-4476-9609-58d184f452c3"],
+        "icon": "omrs-pict-procedure-order"
+      }
+    ],
+    "resultsViewerConcepts": [
+      {
+        "conceptUuid": "95ba6e51-f09b-429a-ab75-6cc6fe4ab968",
+        "defaultOpen": false
+      },
+      {
+        "conceptUuid": "46c8be89-db86-4476-9609-58d184f452c3",
+        "defaultOpen": false
+      }
+    ]
   }
 }

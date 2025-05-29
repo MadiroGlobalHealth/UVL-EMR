@@ -66,9 +66,28 @@
                 <resource>
                   <directory>${project.build.directory}/ozone-uvl-burundi</directory>
                   <excludes>
+                    <exclude>distro/configs/**/ampathforms/*.*</exclude>
+                    <exclude>distro/configs/**/ampathformstranslations/*.*</exclude>
+                    <exclude>distro/configs/**/appointmentservicedefinitions/*.*</exclude>
+                    <exclude>distro/configs/**/appointmentservicetypes/*.*</exclude>
+                    <exclude>distro/configs/**/appointmentspecialities/*.*</exclude>
+                    <exclude>distro/configs/**/billableservices/*.*</exclude>
+                    <exclude>distro/configs/**/cashpoints/*.*</exclude>
+                    <exclude>distro/configs/**/attributetypes/*.*</exclude>
+                    <exclude>distro/configs/**/concepts/drugs_concepts.csv</exclude>
+                    <exclude>distro/configs/**/concepts/covid-core_demo.csv</exclude>
+                    <exclude>distro/configs/**/concepts/diagnosis_core-demo.csv</exclude>
+                    <exclude>distro/configs/**/concepts/drugs_concepts-core_demo.csv</exclude>
+                    <exclude>distro/configs/**/concepts/tests_core-demo.csv</exclude>
+                    <exclude>distro/configs/**/drugs/*.*</exclude>
+                    <exclude>distro/configs/**/ocl/openmrs_BasicDrugs_v2_autoexpand-*.zip</exclude>
+                    <exclude>distro/configs/**/ocl/openmrs_BasicLabTests_*.zip</exclude>
+                    <exclude>distro/configs/**/ocl/openmrs_CCD_v9_autoexpand-*.zip</exclude>
+                    <exclude>distro/configs/**/ocl/openmrs_procedures_v5_autoexpand-*.zip</exclude>
+                    <exclude>distro/configs/**/ocl/openmrs_SOAPTemplate_v1_autoexpand-*.zip</exclude>
+                    <exclude>distro/configs/**/ocl/openmrs_SOAP_vSOAP_Note_autoexpand-*.zip</exclude>
                     <exclude>distro/configs/**/locations/*.*</exclude>
-                    <exclude>distro/configs/**/personattributetypes/*.*</exclude>
-                    <exclude>distro/configs/**/idgen/*.*</exclude>
+                    <exclude>distro/configs/**/visittypes/*.*</exclude>
                   </excludes>
                 </resource>
               </resources>
@@ -124,7 +143,7 @@
         <artifactId>maven-antrun-plugin</artifactId>
         <version>3.1.0</version>
         <executions>
-          <!-- <execution>
+          <execution>
             <id>Add UVL Mugamba Frontend Configuration</id>
             <phase>process-resources</phase>
             <goals>
@@ -135,12 +154,11 @@
                 <echo message="Adding UVL Mugamba frontend config"/>
                 <replaceregexp file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/.env"
                                match="(SPA_CONFIG_URLS=.+)" replace="\1,/openmrs/spa/configs/uvl-mugamba-frontend-config.json" />
-
-                <replace file="${project.build.directory}/${project.artifactId}-${project.version}/distro/ozone-info.json"
-                  token="ozone-uvl-distro" value="ozone-uvl-mugamba" />
+                <replaceregexp file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/concatenated.env"
+                               match="(SPA_CONFIG_URLS=.+)" replace="\1,/openmrs/spa/configs/uvl-mugamba-frontend-config.json" />
               </target>
             </configuration>
-          </execution> -->
+          </execution>
           <execution>
             <id>Add UVL project name configuration</id>
             <phase>process-resources</phase>
