@@ -20,7 +20,7 @@
       </#if>
     </div>
     <div class="login-center">
-      <img src="${url.resourcesPath}/img/ozone-logo.png" class="center-logo" />
+      <img src="${url.resourcesPath}/img/uvl-emr-logo.jpeg" class="center-logo" />
     </div>
     <#if realm.password && social.providers??>class="${properties.kcFormSocialAccountContentClass!}
       ${properties.kcFormSocialAccountClass!}"
@@ -115,17 +115,6 @@
       </form>
     </#if>
   </div>
-  <div class="need-help">
-    <div class="need-help-item">
-      <a href="http://ozone-his.com/" class="support-link">${msg("website")}</a>
-    </div>
-    <div class="need-help-item">
-      <a href="https://talk.openmrs.org/c/software/ozone-his" class="support-link">${msg("forum")}</a>
-    </div>
-    <div class="need-help-item">
-      <a href="https://openmrs.slack.com/archives/C02PYQD5D0A" class="support-link">${msg("slack")}</a>
-    </div>
-  </div>
 
   <div class="footer">
     <p class="powered-by-text">${msg("poweredBy")}</p>
@@ -143,10 +132,10 @@
         </svg>
       </div>
       <div class="powered-by-logo">
-        <img src="${url.resourcesPath}/img/senaite-small.png" width="100%" />
+        <img src="${url.resourcesPath}/img/ozone-logo.png" width="100%" />
       </div>
-      <div class="powered-by-logo" style="margin-top: -0.2rem">
-        <img src="${url.resourcesPath}/img/superset-logo-small.png" width="100%" />
+      <div class="powered-by-logo">
+        <img src="${url.resourcesPath}/img/madiro.png" width="100%" />
       </div>
     </div>
   </div>
