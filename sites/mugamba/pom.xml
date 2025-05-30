@@ -88,6 +88,10 @@
                     <exclude>distro/configs/**/ocl/openmrs_SOAP_vSOAP_Note_autoexpand-*.zip</exclude>
                     <exclude>distro/configs/**/locations/*.*</exclude>
                     <exclude>distro/configs/**/visittypes/*.*</exclude>
+                    <exclude>distro/configs/**/odoo/**/product_variant/*.*</exclude>
+                    <exclude>distro/configs/**/odoo/**/units_of_measure/*.*</exclude>
+                    <exclude>distro/configs/**/odoo/**/pricelist/discounted.csv</exclude>
+                    <exclude>distro/configs/**/odoo/**/pricelist/insured.csv</exclude>
                   </excludes>
                 </resource>
               </resources>
