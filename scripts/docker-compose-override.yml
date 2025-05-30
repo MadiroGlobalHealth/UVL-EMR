@@ -2,7 +2,7 @@ services:
   openmrs:
     healthcheck:
       retries: 100
-      test: ["CMD", "curl", "-f", "http://localhost:8080/openmrs/login.htm"]
+      test: ["CMD", "curl", "-f", "http://localhost:8080/openmrs"]
       interval: 10s
       timeout: 5s
       start_period: 30s
