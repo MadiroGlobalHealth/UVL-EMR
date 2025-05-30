@@ -1,0 +1,2 @@
+id,name,discount_policy,sequence,currency_id/id
+init.insurance_60_percentage,"Insurance 60%",Discount included in the price,4,base.BIF
