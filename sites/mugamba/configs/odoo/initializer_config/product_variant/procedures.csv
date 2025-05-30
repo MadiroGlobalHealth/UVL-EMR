@@ -1,147 +1,147 @@
 id,name,categ_id/id,type,purchase_ok,sale_ok,invoice_policy
-init.5a609990-2381-4d3c-b5ac-34d8f86fcb9d,Generalist consultation with MFP,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.ed284c29-531f-4666-837c-01345e3dbb5b,Generalist consultation,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.bf6bb5b0-3cad-4452-8031-f4c2fce6ee1a,Birth certificate,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.2ac65c1c-3403-46c1-8a5f-2278de6044e4,Plaster casting,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.aa7444e6-3919-4326-8f4a-cdbd63066d69,Circumcision with local anesthesia,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.5544c640-f0ae-4091-8666-ccf428a8efe6,Circumcision with general anesthesia,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.c37de897-ade8-4f6c-88fe-057a96d25d11,Circumcision,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.d27b8ef7-0f5e-40ed-b3ca-7ec54071fc01,Plaster splint,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.9e5cb1b5-99f4-488e-a541-7c5f16823620,Abscess incision,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.02bb1e9b-e572-4534-aba7-b1989c6ed0ac,Infusion placement,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.2bf1e34a-b886-4297-b25c-40e5ae4427d4,Venous access placement,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.a189076c-faf8-43d3-b841-952aa772e36e,Local care,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.c5dc62a4-9562-476a-a2a5-3d203592cdc1,Complex suture,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.40ab1a07-7d1c-4167-aa36-c597ecc7f54e,Simple suture,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.7a78f127-d5c5-4d85-a7a2-20c1697e1340,IR injection,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.8308f4c3-65d1-4f23-9b38-1646ef5489b6,IV injection,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.7167ee9a-a168-485c-adfb-5f0134eb0115,ECG,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.8481dc52-6dc7-48c8-92f8-c718fb54408e,Dentistry consultation,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.c4903723-af44-48c7-b856-c5a17712d906,Ophthalmologist consultation,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.93ca3315-2fc9-4956-9bd0-5c95231a0402,URG499 - Other emergency act,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.326f700a-49bf-4a66-969a-cd1ff43d6eca,URG399 - Other minor emergency surgery,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.3cd4bfba-2832-4c92-8798-33ce3bfe8f1a,URG302 - Abscess incision + drain,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.c99ec41d-30d3-40e3-bbaa-2237bc656404,URG301 - Simple suture,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.eeeefca3-d6de-4377-8485-5223580dc241,URG299 - Other intermediate emergency surgery,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.f234ad49-35bf-4700-88f1-6f59015eeb4a,URG199 - Other major emergency surgery,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.65925fe0-4c83-4daf-807c-5675ebbd226f,ORT499 - Other orthopedic-trauma act,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.aeac28bb-3250-49b4-bab3-9dfc08d52e2c,ORT399 - Other minor orthopedic-trauma surgery,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.c2835090-5719-44aa-a9a1-11097b55a593,ORT305 - Abscess incision + drain,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.7a30a90d-b17b-4484-b4f7-a6666bb23bf6,ORT304 - Simple suture,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.90de9979-983b-4b37-9632-4f002bb32c7e,ORT303 - Treatment of severe burns,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.15b2d3dd-c50c-460f-b6f1-c0893c823ff8,ORT302 - Reduction + cast without general anesthesia,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.bde5ca4c-d4e7-4a9a-bdaf-a32a79ceb97e,ORT299 - Other intermediate orthopedic-trauma surgery,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.c8d2387a-7c97-4a30-a2cd-a809925c157f,ORT207 - Complex suture,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.5bfe50e8-93b1-4e40-a995-1e906a91316d,ORT206 - External fixator,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.5e574fa6-0c12-4d63-906d-8dc29ef65951,ORT205 - Traction pin for orthopedic traction,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.44ab95bd-6db9-4d5b-a23c-3262431485c9,ORT204 - Dislocation reduction under general anesthesia,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.d25215ec-8aea-4200-a04a-8cadc9f63a99,ORT203 - Reduction under general anesthesia,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.fa3d27dc-e607-4006-85ba-fa7ee393d246,ORT202 - Pneumothorax drainage,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.8bf8cc08-c6c4-43a3-87e2-49914da51a04,ORT199 - Other major orthopedic-trauma surgery,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.fbcf2670-51d8-4481-8e25-a940a59a56f6,ORT106 - Osteomyelitis debridement,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.07cd0fa0-3473-4d2a-ba46-34fe35a36509,ORT105 - Amputation,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.d76af82a-cfc8-43ed-80eb-fdd73eff20cb,ORT104 - Arm + Plate-screw,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.e93e0585-a8b5-4e5e-abe7-b9c602e986fd,ORT103 - Leg + Plate-screw,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.5c1cac37-7bed-4ccb-a192-7a0e95665bc6,ORT102 - Femur + intramedullary nail / plate-screw,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.568c5926-9285-4d2e-ad63-8456e857eb46,ORT101 - Hip prosthesis,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.9383ba4f-8d7d-4347-bbf1-64ab1e084062,ORL499 - Other ENT act,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.212d1ccf-77ee-473b-b28e-c1784ad684d8,ORL401 - Foreign body extraction,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.6328d440-75b5-4829-918c-247c30fdf86f,ORL399 - Other minor ENT surgery,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.3b7e8d39-9a5c-42b7-b3f8-9dbbfbeee107,ORL299 - Other intermediate ENT surgery,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.4c23e605-7512-4b41-9c5a-0dc78536e1ec,ORL199 - Other major ENT surgery,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.57e45090-7a22-4b7d-97c2-b1acb4f2ffa7,ORL101 - Tonsillectomy,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.083f3021-1005-465a-a7db-1e6be3023cd2,OPH499 - Other ophthalmic act,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.5f6aa67f-21e5-43a8-8461-c797875a0fe0,OPH402 - Chalazion excision,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.1ed38c34-c2dd-460e-b995-acb4926ace8d,OPH401 - Foreign body extraction,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.f5c39ccf-5765-4ebc-b8ca-85a256b9c00c,OPH399 - Other minor ophthalmic surgery,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.52fcf19c-a526-4b63-9997-11aad60d7116,OPH299 - Other intermediate ophthalmic surgery,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.04360eb0-0001-478e-bbb3-f0518b75afce,OPH199 - Other major ophthalmic surgery,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.b4099c3e-df3a-4836-813c-dc7e092c4bc6,OPH103 - Enucleation,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.c8337406-61c2-4676-a1e7-979361c244f6,OPH102 - Glaucoma (iridectomy),product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.a68545a2-052a-454f-83a1-278619938641,OPH101 - Cataract,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.0b91efd5-946e-44ad-9151-37b0349a1029,MED399 - Other minor medical surgery,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.2879eddb-1aba-487c-890b-0de52a34dbc1,MED302 - Ascitic puncture,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.aab419e1-c879-488d-998b-4f9039b3d28b,MED301 - Pleural puncture,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.7ca7ba7b-ea2e-47cd-a8eb-c3d30661b877,KIN499 - Other physiotherapy act,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.82de45b6-01c5-47a7-848a-696d5c9e96a4,KIN402 - Outpatient physiotherapy interventions,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.22dd716a-465d-4fba-99cb-0cb2eab626c4,KIN401 - Physiotherapy interventions for hospitalized patients,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.e2c1251b-a0ae-454a-9bcf-d443365f75ca,GO499 - Other gynecological-obstetric act,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.2e5da8a9-d0e1-4e5f-afef-b9bb9a8e49d0,GO405 - Implant removal,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.1b53ecb1-1b29-4a59-afcd-86fb1e48b388,GO404 - Implant insertion,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.5eac66fe-98f4-4cdf-af94-dfe7f4d1b120,GO403 - IUD removal,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.8af7281b-0e25-4ffa-ae06-02389f3b6352,GO402 - IUD insertion,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.4330ef37-555b-4765-b5bc-da33122c18f5,GO401 - Delivery,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.f827ee97-bd4b-4870-9b84-56a12793aafb,GO399 - Other minor gynecological-obstetric surgery,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.cadf1572-16c6-45e0-a3b3-557d0f85e595,GO304 - Simple suture,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.2fba7ad2-edc1-466d-87ed-656d2758b578,GO303 - Abscess incision + drain,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.95a06703-15e4-493c-bc65-9d7ff4448a4d,GO302 - Episiotomy,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.f51b1e23-90bf-4756-85fc-c8e3c58a2361,GO301 - Wound debridement,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.ffd9af48-3671-4e40-bc86-e3542442ea53,GO299 - Other intermediate gynecological-obstetric surgery,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.f7d6e80e-678d-4f9b-99e3-abd608177adb,GO206 - Complex suture,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.b9e3cda9-480e-473d-a277-d8211be07376,GO205 - Craniotomy,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.4dfd259f-eb01-4934-be4d-48e270a01584,GO204 - Tubal ligation,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.dce48176-4309-4a02-a5f3-fddad3fc5646,GO203 - Pelvic peritonitis drainage,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.22a502a3-22d6-46d2-9a54-f3cb508bbf4c,GO202 - Uterine curettage,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.84616255-0a57-4ce6-a870-d5bbab3c3997,GO201 - Uterine revision,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.26f6b50a-60d6-4ec4-84a8-8549b24eb495,GO199 - Other major gynecological-obstetric surgery,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.c455c235-b07d-49dd-a334-4c82d955f05e,GO109 - Breast tumor,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.ad33b801-c6ef-4ae7-8e3e-59a6473069db,GO108 - Myomectomy,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.5f3d47e0-5774-416b-857d-fb89f5ecce31,GO107 - Ovarian cyst,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.880cac40-3cb0-42ea-9f9e-5b0b8908e462,GO106 - Hysterectomy,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.51ea1a06-2d19-4282-87d3-13218ee4d4d4,GO105 - Vesicovaginal fistula,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.fb8c10d2-960b-450d-aa2b-71c1012031eb,GO104 - Ectopic pregnancy,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.6060ba72-90a2-4ed1-9232-d0bc97c607e2,GO103 - Cesarean section + Tubal ligation,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.455d4174-42ba-4819-89b5-f574e54baa42,GO102 - Cesarean section + Hysterectomy,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.86a76e88-fde2-4bc8-9da1-80064bf35fbb,GO101 - Cesarean section,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.c7f348ae-f2c5-4af4-b26e-590cc8a9f987,END499 - Other endoscopic act,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.f02b10b9-5b30-405a-a40a-a551dd22a99e,END403 - Colonoscopy,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.2f9d74fd-9c74-4102-b03b-07abe135b658,END402 - Rectoscopy,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.69503b4c-742f-40a0-aa6d-b15fb8402d2f,END401 - Gastroduodenoscopy,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.60fc0dc0-2de0-4911-9b63-4c6c5e37587a,END399 - Other minor endoscopic surgery,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.da436fd3-6794-45eb-b8fb-d2c1c803f04a,END299 - Other intermediate endoscopic surgery,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.2f2d44a8-9359-423e-8394-c35d3e5f41a2,END199 - Other major endoscopic surgery,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.4d71a1e8-0a57-4b7d-9bc8-71be380797be,DIG399 - Other minor digestive/general surgery,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.cc4ca76c-b3f1-4b87-b223-e8e98e745619,DIG302 - Abscess incision + drain,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.a59f93b3-95d9-4aed-923a-63cbe1714e9e,DIG301 - Cyst / Benign tumor removal,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.368ca701-8031-4b10-a3c8-c3c73d43db75,DIG299 - Other intermediate digestive/general surgery,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.b23f9ee8-894e-4032-b8b6-9c102fe7cc15,DIG205 - Phimosis,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.99c9b504-396a-4974-8cad-7434bd894096,DIG204 - Hemorrhoids,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.5db870eb-81ef-4e2f-a943-dc1d839c8c40,DIG203 - Anal fistula,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.3ffc51fb-4339-40dc-9e6e-37e8ba268956,DIG202 - Vasectomy,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.4d3fc960-0546-4106-889e-3a0f5f05ff45,DIG201 - Circumcision,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.873c0a28-e2ad-4263-821b-501d7fe37f0b,DIG199 - Other major digestive/general surgery,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.67e656c1-5445-4041-9479-cdb90acc08e2,DIG109 - Rupture of rate,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.25d4f04d-cf46-4977-8ba8-fc36563285d5,DIG108 - Peritonitis,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.3c82bf49-1a9d-44e6-a298-77051bfb90fa,DIG107 - Occlusion + intestinal resection,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.0a677c5e-41b9-4904-bc8a-2577a2e38beb,DIG106 - Occlusion,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.516b8b79-478c-4681-bdd0-c96bd4be72f6,DIG105 - Hydrocele,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.f49c29fc-91fc-4f36-ad44-419719a11010,DIG104 - Hernia + intestinal resection,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.798d5c55-266a-46e9-b94e-b420f314e3f8,DIG103 - Bilateral hernia,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.1f79013c-4364-4ae7-90c7-80e187b44b64,DIG102 - Simple hernia,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.41f8ce27-2ca4-4ae9-b4f9-5c94ac58a208,DIG101 - Appendix,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.f9f565cf-8f44-4d3f-a206-7a550bfb5933,DEN499 - Other dental act,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.ff81118c-6505-4fb1-95c4-cd1bea13fce4,DEN403 - Dental prosthesis,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.12d778e5-c1b5-400c-80bf-d34b0f673c77,DEN402 - Temporary dental filling with ZOE,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.5ad1dfa8-5ed8-4fc0-872b-cfb63995d189,DEN402 - Permanent dental filling with amalgam,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.90f3f7b7-74e4-4c37-9d39-43640e8da4e1,DEN402 - Dental filling with glass ionomer,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.fd1f01e5-f5ef-4a3d-b0e8-f4557c871b6c,DEN402 - Dental filling with composite,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.a1b41110-dfe2-4161-8484-7de04f366c77,DEN402 - Crown restoration with composite,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.cb30ecf9-ebca-48b3-b3b5-827d7cffcaa4,DEN401 - Simple permanent tooth extraction,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.cff29cc9-405d-4081-9db3-3d36f4a4fc25,DEN401 - Simple molar tooth extraction,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.24ec82a3-01c3-4a67-8cda-82792cbdcfdc,DEN401 - Milk tooth extraction,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.37faba91-176f-48dd-8c5a-bf9233ca228c,DEN399 - Other minor dentistry surgery,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.1b13bbe8-e596-4c4c-b52e-488a5edf9496,DEN302 - Cyst removal,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.866e2e47-6bd1-42e9-a1b7-4c767bf062ac,DEN301 - Abscess incision + drain,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.09d46058-0f13-492a-a582-ff595452005c,DEN299 - Other intermediate dentistry surgery,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.9b1b3022-1cb7-4c05-8de8-ee60a270a07d,DEN199 - Other major dentistry surgery,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.837a36f5-ce8e-47d0-a2c8-c8b0ac5607de,DEN101 - Wisdom teeth extraction,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.2f24b402-6e6f-483b-8011-85a751c0660f,ANE499 - Other anesthesiological act,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.7178002f-9c31-4d7c-8ab2-4e84307ddd2c,ANE406 - Local anesthesia without anesthetist,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.4568fa03-36c8-40ea-9783-e826eefd7701,ANE405 - Regional anesthesia without anesthetist,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.cd0f8463-54ea-47a1-85fa-a4bc1ea600b0,ANE404 - General anesthesia without anesthetist,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.29ca668f-2918-4dd4-9169-e1f857abaa9d,ANE403 - Local anesthesia with anesthetist,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.3a98249e-13a4-4353-b025-a819b2162ca9,ANE402 - Regional anesthesia with anesthetist,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.a83ebbe5-d018-4d5f-9618-0077e5c19fc0,ANE401 - General anesthesia with anesthetist,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.e0ca788b-5591-42ce-b335-d3215cffcebc,ANE399 - Other minor anesthesiological surgery,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.56d8366c-8079-4fae-8ae3-d53ae2f86fa3,ANE299 - Other intermediate anesthesiological surgery,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-init.ed687992-d6c4-4a19-8f95-d41c1447c661,ANE199 - Other major anesthesiological surgery,product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.5a609990-2381-4d3c-b5ac-34d8f86fcb9d","Generalist consultation with MFP",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.ed284c29-531f-4666-837c-01345e3dbb5b","Generalist consultation",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.bf6bb5b0-3cad-4452-8031-f4c2fce6ee1a","Birth certificate",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.2ac65c1c-3403-46c1-8a5f-2278de6044e4","Plaster casting",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.aa7444e6-3919-4326-8f4a-cdbd63066d69","Circumcision with local anesthesia",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.5544c640-f0ae-4091-8666-ccf428a8efe6","Circumcision with general anesthesia",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.c37de897-ade8-4f6c-88fe-057a96d25d11","Circumcision",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.d27b8ef7-0f5e-40ed-b3ca-7ec54071fc01","Plaster splint",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.9e5cb1b5-99f4-488e-a541-7c5f16823620","Abscess incision",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.02bb1e9b-e572-4534-aba7-b1989c6ed0ac","Infusion placement",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.2bf1e34a-b886-4297-b25c-40e5ae4427d4","Venous access placement",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.a189076c-faf8-43d3-b841-952aa772e36e","Local care",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.c5dc62a4-9562-476a-a2a5-3d203592cdc1","Complex suture",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.40ab1a07-7d1c-4167-aa36-c597ecc7f54e","Simple suture",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.7a78f127-d5c5-4d85-a7a2-20c1697e1340","IR injection",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.8308f4c3-65d1-4f23-9b38-1646ef5489b6","IV injection",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.7167ee9a-a168-485c-adfb-5f0134eb0115","ECG",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.8481dc52-6dc7-48c8-92f8-c718fb54408e","Dentistry consultation",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.c4903723-af44-48c7-b856-c5a17712d906","Ophthalmologist consultation",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.93ca3315-2fc9-4956-9bd0-5c95231a0402","URG499 - Other emergency act",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.326f700a-49bf-4a66-969a-cd1ff43d6eca","URG399 - Other minor emergency surgery",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.3cd4bfba-2832-4c92-8798-33ce3bfe8f1a","URG302 - Abscess incision + drain",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.c99ec41d-30d3-40e3-bbaa-2237bc656404","URG301 - Simple suture",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.eeeefca3-d6de-4377-8485-5223580dc241","URG299 - Other intermediate emergency surgery",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.f234ad49-35bf-4700-88f1-6f59015eeb4a","URG199 - Other major emergency surgery",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.65925fe0-4c83-4daf-807c-5675ebbd226f","ORT499 - Other orthopedic-trauma act",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.aeac28bb-3250-49b4-bab3-9dfc08d52e2c","ORT399 - Other minor orthopedic-trauma surgery",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.c2835090-5719-44aa-a9a1-11097b55a593","ORT305 - Abscess incision + drain",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.7a30a90d-b17b-4484-b4f7-a6666bb23bf6","ORT304 - Simple suture",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.90de9979-983b-4b37-9632-4f002bb32c7e","ORT303 - Treatment of severe burns",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.15b2d3dd-c50c-460f-b6f1-c0893c823ff8","ORT302 - Reduction + cast without general anesthesia",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.bde5ca4c-d4e7-4a9a-bdaf-a32a79ceb97e","ORT299 - Other intermediate orthopedic-trauma surgery",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.c8d2387a-7c97-4a30-a2cd-a809925c157f","ORT207 - Complex suture",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.5bfe50e8-93b1-4e40-a995-1e906a91316d","ORT206 - External fixator",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.5e574fa6-0c12-4d63-906d-8dc29ef65951","ORT205 - Traction pin for orthopedic traction",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.44ab95bd-6db9-4d5b-a23c-3262431485c9","ORT204 - Dislocation reduction under general anesthesia",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.d25215ec-8aea-4200-a04a-8cadc9f63a99","ORT203 - Reduction under general anesthesia",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.fa3d27dc-e607-4006-85ba-fa7ee393d246","ORT202 - Pneumothorax drainage",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.8bf8cc08-c6c4-43a3-87e2-49914da51a04","ORT199 - Other major orthopedic-trauma surgery",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.fbcf2670-51d8-4481-8e25-a940a59a56f6","ORT106 - Osteomyelitis debridement",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.07cd0fa0-3473-4d2a-ba46-34fe35a36509","ORT105 - Amputation",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.d76af82a-cfc8-43ed-80eb-fdd73eff20cb","ORT104 - Arm + Plate-screw",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.e93e0585-a8b5-4e5e-abe7-b9c602e986fd","ORT103 - Leg + Plate-screw",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.5c1cac37-7bed-4ccb-a192-7a0e95665bc6","ORT102 - Femur + intramedullary nail / plate-screw",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.568c5926-9285-4d2e-ad63-8456e857eb46","ORT101 - Hip prosthesis",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.9383ba4f-8d7d-4347-bbf1-64ab1e084062","ORL499 - Other ENT act",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.212d1ccf-77ee-473b-b28e-c1784ad684d8","ORL401 - Foreign body extraction",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.6328d440-75b5-4829-918c-247c30fdf86f","ORL399 - Other minor ENT surgery",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.3b7e8d39-9a5c-42b7-b3f8-9dbbfbeee107","ORL299 - Other intermediate ENT surgery",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.4c23e605-7512-4b41-9c5a-0dc78536e1ec","ORL199 - Other major ENT surgery",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.57e45090-7a22-4b7d-97c2-b1acb4f2ffa7","ORL101 - Tonsillectomy",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.083f3021-1005-465a-a7db-1e6be3023cd2","OPH499 - Other ophthalmic act",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.5f6aa67f-21e5-43a8-8461-c797875a0fe0","OPH402 - Chalazion excision",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.1ed38c34-c2dd-460e-b995-acb4926ace8d","OPH401 - Foreign body extraction",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.f5c39ccf-5765-4ebc-b8ca-85a256b9c00c","OPH399 - Other minor ophthalmic surgery",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.52fcf19c-a526-4b63-9997-11aad60d7116","OPH299 - Other intermediate ophthalmic surgery",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.04360eb0-0001-478e-bbb3-f0518b75afce","OPH199 - Other major ophthalmic surgery",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.b4099c3e-df3a-4836-813c-dc7e092c4bc6","OPH103 - Enucleation",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.c8337406-61c2-4676-a1e7-979361c244f6","OPH102 - Glaucoma (iridectomy)",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.a68545a2-052a-454f-83a1-278619938641","OPH101 - Cataract",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.0b91efd5-946e-44ad-9151-37b0349a1029","MED399 - Other minor medical surgery",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.2879eddb-1aba-487c-890b-0de52a34dbc1","MED302 - Ascitic puncture",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.aab419e1-c879-488d-998b-4f9039b3d28b","MED301 - Pleural puncture",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.7ca7ba7b-ea2e-47cd-a8eb-c3d30661b877","KIN499 - Other physiotherapy act",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.82de45b6-01c5-47a7-848a-696d5c9e96a4","KIN402 - Outpatient physiotherapy interventions",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.22dd716a-465d-4fba-99cb-0cb2eab626c4","KIN401 - Physiotherapy interventions for hospitalized patients",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.e2c1251b-a0ae-454a-9bcf-d443365f75ca","GO499 - Other gynecological-obstetric act",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.2e5da8a9-d0e1-4e5f-afef-b9bb9a8e49d0","GO405 - Implant removal",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.1b53ecb1-1b29-4a59-afcd-86fb1e48b388","GO404 - Implant insertion",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.5eac66fe-98f4-4cdf-af94-dfe7f4d1b120","GO403 - IUD removal",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.8af7281b-0e25-4ffa-ae06-02389f3b6352","GO402 - IUD insertion",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.4330ef37-555b-4765-b5bc-da33122c18f5","GO401 - Delivery",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.f827ee97-bd4b-4870-9b84-56a12793aafb","GO399 - Other minor gynecological-obstetric surgery",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.cadf1572-16c6-45e0-a3b3-557d0f85e595","GO304 - Simple suture",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.2fba7ad2-edc1-466d-87ed-656d2758b578","GO303 - Abscess incision + drain",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.95a06703-15e4-493c-bc65-9d7ff4448a4d","GO302 - Episiotomy",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.f51b1e23-90bf-4756-85fc-c8e3c58a2361","GO301 - Wound debridement",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.ffd9af48-3671-4e40-bc86-e3542442ea53","GO299 - Other intermediate gynecological-obstetric surgery",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.f7d6e80e-678d-4f9b-99e3-abd608177adb","GO206 - Complex suture",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.b9e3cda9-480e-473d-a277-d8211be07376","GO205 - Craniotomy",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.4dfd259f-eb01-4934-be4d-48e270a01584","GO204 - Tubal ligation",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.dce48176-4309-4a02-a5f3-fddad3fc5646","GO203 - Pelvic peritonitis drainage",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.22a502a3-22d6-46d2-9a54-f3cb508bbf4c","GO202 - Uterine curettage",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.84616255-0a57-4ce6-a870-d5bbab3c3997","GO201 - Uterine revision",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.26f6b50a-60d6-4ec4-84a8-8549b24eb495","GO199 - Other major gynecological-obstetric surgery",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.c455c235-b07d-49dd-a334-4c82d955f05e","GO109 - Breast tumor",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.ad33b801-c6ef-4ae7-8e3e-59a6473069db","GO108 - Myomectomy",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.5f3d47e0-5774-416b-857d-fb89f5ecce31","GO107 - Ovarian cyst",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.880cac40-3cb0-42ea-9f9e-5b0b8908e462","GO106 - Hysterectomy",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.51ea1a06-2d19-4282-87d3-13218ee4d4d4","GO105 - Vesicovaginal fistula",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.fb8c10d2-960b-450d-aa2b-71c1012031eb","GO104 - Ectopic pregnancy",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.6060ba72-90a2-4ed1-9232-d0bc97c607e2","GO103 - Cesarean section + Tubal ligation",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.455d4174-42ba-4819-89b5-f574e54baa42","GO102 - Cesarean section + Hysterectomy",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.86a76e88-fde2-4bc8-9da1-80064bf35fbb","GO101 - Cesarean section",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.c7f348ae-f2c5-4af4-b26e-590cc8a9f987","END499 - Other endoscopic act",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.f02b10b9-5b30-405a-a40a-a551dd22a99e","END403 - Colonoscopy",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.2f9d74fd-9c74-4102-b03b-07abe135b658","END402 - Rectoscopy",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.69503b4c-742f-40a0-aa6d-b15fb8402d2f","END401 - Gastroduodenoscopy",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.60fc0dc0-2de0-4911-9b63-4c6c5e37587a","END399 - Other minor endoscopic surgery",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.da436fd3-6794-45eb-b8fb-d2c1c803f04a","END299 - Other intermediate endoscopic surgery",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.2f2d44a8-9359-423e-8394-c35d3e5f41a2","END199 - Other major endoscopic surgery",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.4d71a1e8-0a57-4b7d-9bc8-71be380797be","DIG399 - Other minor digestive/general surgery",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.cc4ca76c-b3f1-4b87-b223-e8e98e745619","DIG302 - Abscess incision + drain",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.a59f93b3-95d9-4aed-923a-63cbe1714e9e","DIG301 - Cyst / Benign tumor removal",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.368ca701-8031-4b10-a3c8-c3c73d43db75","DIG299 - Other intermediate digestive/general surgery",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.b23f9ee8-894e-4032-b8b6-9c102fe7cc15","DIG205 - Phimosis",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.99c9b504-396a-4974-8cad-7434bd894096","DIG204 - Hemorrhoids",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.5db870eb-81ef-4e2f-a943-dc1d839c8c40","DIG203 - Anal fistula",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.3ffc51fb-4339-40dc-9e6e-37e8ba268956","DIG202 - Vasectomy",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.4d3fc960-0546-4106-889e-3a0f5f05ff45","DIG201 - Circumcision",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.873c0a28-e2ad-4263-821b-501d7fe37f0b","DIG199 - Other major digestive/general surgery",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.67e656c1-5445-4041-9479-cdb90acc08e2","DIG109 - Rupture of rate",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.25d4f04d-cf46-4977-8ba8-fc36563285d5","DIG108 - Peritonitis",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.3c82bf49-1a9d-44e6-a298-77051bfb90fa","DIG107 - Occlusion + intestinal resection",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.0a677c5e-41b9-4904-bc8a-2577a2e38beb","DIG106 - Occlusion",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.516b8b79-478c-4681-bdd0-c96bd4be72f6","DIG105 - Hydrocele",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.f49c29fc-91fc-4f36-ad44-419719a11010","DIG104 - Hernia + intestinal resection",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.798d5c55-266a-46e9-b94e-b420f314e3f8","DIG103 - Bilateral hernia",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.1f79013c-4364-4ae7-90c7-80e187b44b64","DIG102 - Simple hernia",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.41f8ce27-2ca4-4ae9-b4f9-5c94ac58a208","DIG101 - Appendix",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.f9f565cf-8f44-4d3f-a206-7a550bfb5933","DEN499 - Other dental act",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.ff81118c-6505-4fb1-95c4-cd1bea13fce4","DEN403 - Dental prosthesis",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.12d778e5-c1b5-400c-80bf-d34b0f673c77","DEN402 - Temporary dental filling with ZOE",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.5ad1dfa8-5ed8-4fc0-872b-cfb63995d189","DEN402 - Permanent dental filling with amalgam",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.90f3f7b7-74e4-4c37-9d39-43640e8da4e1","DEN402 - Dental filling with glass ionomer",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.fd1f01e5-f5ef-4a3d-b0e8-f4557c871b6c","DEN402 - Dental filling with composite",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.a1b41110-dfe2-4161-8484-7de04f366c77","DEN402 - Crown restoration with composite",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.cb30ecf9-ebca-48b3-b3b5-827d7cffcaa4","DEN401 - Simple permanent tooth extraction",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.cff29cc9-405d-4081-9db3-3d36f4a4fc25","DEN401 - Simple molar tooth extraction",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.24ec82a3-01c3-4a67-8cda-82792cbdcfdc","DEN401 - Milk tooth extraction",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.37faba91-176f-48dd-8c5a-bf9233ca228c","DEN399 - Other minor dentistry surgery",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.1b13bbe8-e596-4c4c-b52e-488a5edf9496","DEN302 - Cyst removal",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.866e2e47-6bd1-42e9-a1b7-4c767bf062ac","DEN301 - Abscess incision + drain",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.09d46058-0f13-492a-a582-ff595452005c","DEN299 - Other intermediate dentistry surgery",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.9b1b3022-1cb7-4c05-8de8-ee60a270a07d","DEN199 - Other major dentistry surgery",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.837a36f5-ce8e-47d0-a2c8-c8b0ac5607de","DEN101 - Wisdom teeth extraction",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.2f24b402-6e6f-483b-8011-85a751c0660f","ANE499 - Other anesthesiological act",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.7178002f-9c31-4d7c-8ab2-4e84307ddd2c","ANE406 - Local anesthesia without anesthetist",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.4568fa03-36c8-40ea-9783-e826eefd7701","ANE405 - Regional anesthesia without anesthetist",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.cd0f8463-54ea-47a1-85fa-a4bc1ea600b0","ANE404 - General anesthesia without anesthetist",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.29ca668f-2918-4dd4-9169-e1f857abaa9d","ANE403 - Local anesthesia with anesthetist",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.3a98249e-13a4-4353-b025-a819b2162ca9","ANE402 - Regional anesthesia with anesthetist",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.a83ebbe5-d018-4d5f-9618-0077e5c19fc0","ANE401 - General anesthesia with anesthetist",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.e0ca788b-5591-42ce-b335-d3215cffcebc","ANE399 - Other minor anesthesiological surgery",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.56d8366c-8079-4fae-8ae3-d53ae2f86fa3","ANE299 - Other intermediate anesthesiological surgery",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.ed687992-d6c4-4a19-8f95-d41c1447c661","ANE199 - Other major anesthesiological surgery",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
