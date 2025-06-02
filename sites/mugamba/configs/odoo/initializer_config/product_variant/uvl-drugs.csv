@@ -1,4 +1,5 @@
 id,name,categ_id/id,type,uom_id/id,uom_po_id/id,purchase_ok,sale_ok,tracking,use_expiration_date,invoice_policy
-init.8e64d9a4-f814-43c9-a8e7-9ffce54f219b,AC Fenac 100mg Tablet (10 Tablets),product.categ_products_drug_orders,product,init.uom_tablet,init.uom_packet_of_10,TRUE,TRUE,By Lots,TRUE,Ordered quantities
-init.1b236044-7df7-488c-958d-b83b642a24e7,Acefen 100mg Tablet (10 Tablets),product.categ_products_drug_orders,product,init.uom_tablet,init.uom_packet_of_10,TRUE,TRUE,By Lots,TRUE,Ordered quantities
-init.fc8c6bc1-4dc3-406b-92bb-d0d1f34c18eb,Adhesive Tape,product.categ_products_drug_orders,product,init.uom_unit,init.uom_unit,TRUE,TRUE,By Lots,TRUE,Ordered quantities
+init.8444d76a-ed91-4131-b484-e7d5e22badf6,AC Fenac 100mg Tablet,product.categ_products_drug_orders,product,init.1513AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA,init.1513AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA,TRUE,FALSE,By Lots,TRUE,Ordered quantities
+init.8e64d9a4-f814-43c9-a8e7-9ffce54f219b,AC Fenac 100mg Tablet (10 Tablets),product.categ_products_drug_orders,product,init.uom_packet_of_10,init.uom_packet_of_10,TRUE,TRUE,By Lots,TRUE,Ordered quantities
+init.1b236044-7df7-488c-958d-b83b642a24e7,Acefen 100mg Tablet (10 Tablets),product.categ_products_drug_orders,product,init.1513AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA,init.uom_packet_of_10,TRUE,TRUE,By Lots,TRUE,Ordered quantities
+init.fc8c6bc1-4dc3-406b-92bb-d0d1f34c18eb,Adhesive Tape,product.categ_products_drug_orders,product,init.162381AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA,init.162381AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA,TRUE,TRUE,By Lots,TRUE,Ordered quantities
