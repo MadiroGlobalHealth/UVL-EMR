@@ -1,0 +1,3 @@
+id,bom_line_ids/id,bom_line_ids/product_id/id,bom_line_ids/product_qty,bom_line_ids/product_uom_id/id,product_tmpl_id/id,product_uom_id/id,product_qty
+init.a06e3108-f4ab-49d0-9957-3fdb57c01735,init.197bcb76-ccd6-4b65-97ad-2aff49370c3b,init.8444d76a-ed91-4131-b484-e7d5e22badf6,10,init.1513AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA,init.8e64d9a4-f814-43c9-a8e7-9ffce54f219b_product_template,init.uom_packet_of_10,1
+init.8d647b52-3ee6-4609-b46e-b526dae4262f
