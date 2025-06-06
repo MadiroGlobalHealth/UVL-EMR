@@ -1,0 +1,154 @@
+dashboard_title: Children seen under 5 years old
+description: null
+css: ''
+slug: null
+certified_by: ''
+certification_details: ''
+published: true
+uuid: 2d08660d-d627-4dd8-be33-bbb123a32d70
+position:
+  CHART-X8Cl4JM5td:
+    children: []
+    id: CHART-X8Cl4JM5td
+    meta:
+      chartId: 4
+      height: 50
+      sliceName: Total number of children seen under 5 years old
+      uuid: a17b471d-d0e4-40d6-a19a-734f329c7b4b
+      width: 5
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-u8pNcA_YLm
+    type: CHART
+  CHART-Y-V_eF5MOJ:
+    children: []
+    id: CHART-Y-V_eF5MOJ
+    meta:
+      chartId: 6
+      height: 50
+      sliceName: Gender distribution of children under 5 years old
+      uuid: 7ae34a95-c450-4107-bb95-0a1323655d64
+      width: 7
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-u8pNcA_YLm
+    type: CHART
+  CHART-f6eDJwmNhE:
+    children: []
+    id: CHART-f6eDJwmNhE
+    meta:
+      chartId: 5
+      height: 111
+      sliceName: List of children seen under 5 years old
+      uuid: 1aba6034-43f6-48f5-be46-ba3aa584096a
+      width: 12
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-_8C18nD91k
+    type: CHART
+  DASHBOARD_VERSION_KEY: v2
+  GRID_ID:
+    children:
+    - ROW-u8pNcA_YLm
+    - ROW-_8C18nD91k
+    id: GRID_ID
+    parents:
+    - ROOT_ID
+    type: GRID
+  HEADER_ID:
+    id: HEADER_ID
+    meta:
+      text: Children seen under 5 years old
+    type: HEADER
+  ROOT_ID:
+    children:
+    - GRID_ID
+    id: ROOT_ID
+    type: ROOT
+  ROW-_8C18nD91k:
+    children:
+    - CHART-f6eDJwmNhE
+    id: ROW-_8C18nD91k
+    meta:
+      background: BACKGROUND_TRANSPARENT
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    type: ROW
+  ROW-u8pNcA_YLm:
+    children:
+    - CHART-X8Cl4JM5td
+    - CHART-Y-V_eF5MOJ
+    id: ROW-u8pNcA_YLm
+    meta:
+      background: BACKGROUND_TRANSPARENT
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    type: ROW
+metadata:
+  chart_configuration:
+    '5':
+      id: 5
+      crossFilters:
+        scope: global
+        chartsInScope:
+        - 4
+        - 6
+    '6':
+      id: 6
+      crossFilters:
+        scope: global
+        chartsInScope:
+        - 4
+        - 5
+  global_chart_configuration:
+    scope:
+      rootPath:
+      - ROOT_ID
+      excluded: []
+    chartsInScope:
+    - 4
+    - 5
+    - 6
+  color_scheme: ''
+  refresh_frequency: 0
+  shared_label_colors:
+    F: '#1FA8C9'
+    M: '#5AC189'
+    O: '#666666'
+  color_scheme_domain: []
+  expanded_slices: {}
+  label_colors: {}
+  timed_refresh_immune_slices: []
+  cross_filters_enabled: true
+  default_filters: '{}'
+  native_filter_configuration:
+  - id: NATIVE_FILTER-xG9JJtga_
+    controlValues:
+      enableEmptyFilter: false
+    name: Reporting period
+    filterType: filter_time
+    targets:
+    - {}
+    defaultDataMask:
+      extraFormData:
+        time_range: Last month
+      filterState:
+        value: Last month
+    cascadeParentIds: []
+    scope:
+      rootPath:
+      - ROOT_ID
+      excluded: []
+    type: NATIVE_FILTER
+    description: ''
+    chartsInScope:
+    - 4
+    - 5
+    - 6
+    tabsInScope: []
+version: 1.0.0

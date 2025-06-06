@@ -1,0 +1,191 @@
+table_name: Children seen with 0 to 59 months
+main_dttm_col: birthdate
+description: null
+default_endpoint: null
+offset: 0
+cache_timeout: null
+schema: public
+sql: "WITH MostRecentObservations AS (\n  SELECT \n    patient_uuid,\n    MAX(CASE\
+  \ WHEN question_uuid = '5089AAAAAAAAAAAAAAAAAAAAAAAAAAAA' THEN answer_numeric END)\
+  \ AS weight,\n    MAX(CASE WHEN question_uuid = '5090AAAAAAAAAAAAAAAAAAAAAAAAAAAA'\
+  \ THEN answer_numeric END) AS height,\n    MAX(CASE WHEN question_uuid = '09313648-8ba0-4480-a3a3-efe2d3b8a769'\
+  \ THEN answer_numeric END) AS head_circumference\n  FROM observations\n  WHERE question_uuid\
+  \ IN ('5089AAAAAAAAAAAAAAAAAAAAAAAAAAAA', '5090AAAAAAAAAAAAAAAAAAAAAAAAAAAA', '09313648-8ba0-4480-a3a3-efe2d3b8a769')\n\
+  \  GROUP BY patient_uuid\n)\nSELECT \n  SUBSTRING(pt.identifiers FROM 'Num\xE9ro\
+  \ Dossier: ([^,]*)') AS openmrs_id, \n  CONCAT_WS(' ', pt.given_name, pt.middle_name,\
+  \ pt.family_name) AS patient_name, \n  pt.gender, \n  EXTRACT(MONTH FROM AGE(v.date_started,\
+  \ pt.birthdate)) AS age_in_months, \n  pt.birthdate,\n  mo.weight,\n  mo.height,\n\
+  \  mo.head_circumference,\n  v.date_started AS current_visit_date,\n  v.type AS\
+  \ current_visit_type,\n  FIRST_VALUE(v.type) OVER (\n    PARTITION BY EXTRACT(YEAR\
+  \ FROM v.date_started), pt.patient_uuid \n    ORDER BY v.date_started\n  ) AS first_visit_of_year_type,\n\
+  \  MIN(v.date_started) OVER (\n    PARTITION BY EXTRACT(YEAR FROM v.date_started),\
+  \ pt.patient_uuid\n  ) AS first_visit_of_year_date\nFROM \n  visits v \n  JOIN patients\
+  \ pt ON pt.patient_uuid = v.patient_uuid\n  LEFT JOIN MostRecentObservations mo\
+  \ ON pt.patient_uuid = mo.patient_uuid\nWHERE \n  v.visit_voided IS FALSE\n  AND\
+  \ EXTRACT(MONTH FROM AGE(v.date_started, pt.birthdate)) BETWEEN 0 AND 59\nORDER\
+  \ BY v.date_started;\n"
+params: null
+template_params: null
+filter_select_enabled: true
+fetch_values_predicate: null
+extra: null
+normalize_columns: false
+always_filter_main_dttm: false
+uuid: b0e8406b-57c6-4b14-a259-8ff3be2c8cf1
+metrics:
+- metric_name: count
+  verbose_name: row count
+  metric_type: count
+  expression: COUNT(*)
+  description: null
+  d3format: null
+  currency: null
+  extra: {}
+  warning_text: null
+columns:
+- column_name: first_visit_of_year_date
+  verbose_name: First Visit of the Year Date
+  is_dttm: true
+  is_active: true
+  type: DATETIME
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: first_visit_of_year_type
+  verbose_name: First Visit of the Year Type
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: current_visit_date
+  verbose_name: Current Visit Date
+  is_dttm: true
+  is_active: true
+  type: DATETIME
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: current_visit_type
+  verbose_name: Current Visit Type
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: age_in_months
+  verbose_name: Age (months)
+  is_dttm: false
+  is_active: true
+  type: FLOAT
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: head_circumference
+  verbose_name: Head Circumference
+  is_dttm: false
+  is_active: true
+  type: FLOAT
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: openmrs_id
+  verbose_name: Patient ID
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: height
+  verbose_name: Height
+  is_dttm: false
+  is_active: true
+  type: FLOAT
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: weight
+  verbose_name: Weight
+  is_dttm: false
+  is_active: true
+  type: FLOAT
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: gender
+  verbose_name: Gender
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: patient_name
+  verbose_name: Name
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: birthdate
+  verbose_name: null
+  is_dttm: true
+  is_active: true
+  type: DATE
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+version: 1.0.0
+database_uuid: 4e5f4045-a62d-4964-b719-58229a60e7fe
