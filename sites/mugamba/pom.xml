@@ -185,6 +185,22 @@
               </target>
             </configuration>
           </execution>
+          <execution>
+            <id>Enable Superset client</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
+                <echo level="info" message="Enabling Superset client" />
+                <replaceregexp file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/.env"
+                  match="SUPERSET_CLIENT_ENABLED=.*" replace="SUPERSET_CLIENT_ENABLED=true" />
+                <replaceregexp file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/concatenated.env"
+                  match="SUPERSET_CLIENT_ENABLED=.*" replace="SUPERSET_CLIENT_ENABLED=true" />
+              </target>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
     </plugins>
