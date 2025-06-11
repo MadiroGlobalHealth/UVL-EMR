@@ -133,7 +133,8 @@
           }
         }
       }
-    }
+    },
+    "visitAttributeTypes": []
   },
   "@openmrs/esm-home-app": {
     "extensionSlots": {
