@@ -175,29 +175,12 @@
       {
         "id": "telephoneNumber",
         "type": "person attribute",
-        "uuid": "bc851ec1-9fb7-49da-acd7-1a61168002fe",
+        "uuid": "14d4f066-15f5-102d-96e4-000c29c2a5d7",
         "label": "Telephone Number",
         "validation": {
           "required": false,
           "matches": "^\\+?(\\d{1,3})?[-.\\s]?(\\(?\\d{1,4}?\\)?)?[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,9}$"
         }
-      },
-      {
-        "id": "maritalStatus",
-        "type": "person attribute",
-        "uuid": "3884dc76-c271-4bcb-8df8-81c6fb897f53",
-        "label": "Marital status",
-        "answerConceptSetUuid": "544ef960-3b65-4add-8795-96b2b084faa3"
-      },
-      {
-        "id": "occupation",
-        "type": "person attribute",
-        "uuid": "dd1f7f0f-ccea-4228-9aa8-a8c3b0ea4c3e",
-        "label": "Occupation",
-        "validation": {
-          "required": false
-        },
-        "answerConceptSetUuid": "e35ca42c-031e-4dc2-83fe-a926b3de4d12"
       }
     ],
     "sectionDefinitions": [
