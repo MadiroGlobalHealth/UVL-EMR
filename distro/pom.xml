@@ -21,6 +21,7 @@
     <maven.compiler.target>8</maven.compiler.target>
     <PatientIdentifierGeneratorVersion>0.1.0</PatientIdentifierGeneratorVersion>
     <UVLReferenceapplicationDockerVersion>3.2.0-rc.3</UVLReferenceapplicationDockerVersion>
+    <reporting.version>1.27.0</reporting.version>
     <!-- Stock Management and Billing -->
     <stockmanagement.version>2.0.2-SNAPSHOT</stockmanagement.version>
     <billing.version>1.2.0-SNAPSHOT</billing.version>
@@ -42,6 +43,11 @@
       <groupId>org.openmrs.module</groupId>
       <artifactId>initializer-omod</artifactId>
       <version>${initializer.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.openmrs.module</groupId>
+      <artifactId>reporting-omod</artifactId>
+      <version>${reporting.version}</version>
     </dependency>
   </dependencies>
 
@@ -101,6 +107,10 @@
                     <exclude>distro/binaries/openmrs/modules/referencedemodata*.omod</exclude>
                     <!-- Remove Ozone frontend config -->
                     <!-- <exclude>distro/configs/openmrs/frontend_config/ozone*.*</exclude> -->
+                    <!-- Remove reporting module 2.6 -->
+                    <exclude>distro/binaries/openmrs/modules/reporting-1.27.0.omod</exclude>
+                    <!-- Remove overides -->
+                    <exclude>distro/configs/**/overrides/*.*</exclude>
                   </excludes>
                 </resource>
               </resources>
@@ -257,6 +267,24 @@
                 <configuration>
                   <sourceDir>
                     ${project.build.directory}/${project.artifactId}-${project.version}/distro/configs/openmrs/initializer_config</sourceDir>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.codehaus.gmavenplus</groupId>
+            <artifactId>gmavenplus-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>apply-overrides</id>
+                <goals>
+                  <goal>execute</goal>
+                </goals>
+                <phase>process-resources</phase>
+                <configuration>
+                  <scripts>
+                    <script>file://${project.basedir}/../scripts/apply-overrides.groovy</script>
+                  </scripts>
                 </configuration>
               </execution>
             </executions>
