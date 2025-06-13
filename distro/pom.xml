@@ -21,6 +21,7 @@
     <maven.compiler.target>8</maven.compiler.target>
     <PatientIdentifierGeneratorVersion>0.1.0</PatientIdentifierGeneratorVersion>
     <UVLReferenceapplicationDockerVersion>3.2.0-rc.3</UVLReferenceapplicationDockerVersion>
+    <reporting.version>1.27.0</reporting.version>
     <!-- Stock Management and Billing -->
     <stockmanagement.version>2.0.2-SNAPSHOT</stockmanagement.version>
     <billing.version>1.2.0-SNAPSHOT</billing.version>
@@ -42,6 +43,11 @@
       <groupId>org.openmrs.module</groupId>
       <artifactId>initializer-omod</artifactId>
       <version>${initializer.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.openmrs.module</groupId>
+      <artifactId>reporting-omod</artifactId>
+      <version>${reporting.version}</version>
     </dependency>
   </dependencies>
 
@@ -80,6 +86,28 @@
         <artifactId>maven-resources-plugin</artifactId>
         <executions>
           <execution>
+            <!-- Override with local config files-->
+            <id>Copy local resources</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>
+                ${project.build.directory}/${project.artifactId}-${project.version}/distro/configs</outputDirectory>
+              <overwrite>true</overwrite>
+              <resources>
+                <resource>
+                  <directory>${project.basedir}/configs</directory>
+                  <excludes>
+                    <!-- Remove overides -->
+                    <exclude>openmrs/overrides/**/*.*</exclude>
+                  </excludes>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+          <execution>
             <!-- Override the Ozone files exclusion execution so to inherit all O3 Ref App files -->
             <id>Exclude unneeded Ozone files</id>
             <phase>process-resources</phase>
@@ -101,6 +129,8 @@
                     <exclude>distro/binaries/openmrs/modules/referencedemodata*.omod</exclude>
                     <!-- Remove Ozone frontend config -->
                     <!-- <exclude>distro/configs/openmrs/frontend_config/ozone*.*</exclude> -->
+                    <!-- Remove reporting module 2.6 -->
+                    <exclude>distro/binaries/openmrs/modules/reporting-1.26.0.omod</exclude>
                   </excludes>
                 </resource>
               </resources>
@@ -224,6 +254,24 @@
                 <echo level="info" message="Setting executable permissions for the Ozone start.sh script" />
                 <chmod file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/scripts/*.sh" perm="700"/>
               </target>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.gmavenplus</groupId>
+        <artifactId>gmavenplus-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>apply-overrides</id>
+            <goals>
+              <goal>execute</goal>
+            </goals>
+            <phase>process-resources</phase>
+            <configuration>
+              <scripts>
+                <script>file://${project.basedir}/../scripts/apply-overrides.groovy</script>
+              </scripts>
             </configuration>
           </execution>
         </executions>
