@@ -166,12 +166,7 @@
     }
   },
   "@openmrs/esm-patient-registration-app": {
-    "sections": [
-      "demographics",
-      "contact",
-      "additionalInformation",
-      "relationships"
-    ],
+    "sections": ["demographics", "contact", "relationships"],
     "fieldDefinitions": [
       {
         "id": "telephoneNumber",
@@ -188,11 +183,6 @@
       {
         "id": "demographics",
         "fields": ["name", "gender", "dob", "id"]
-      },
-      {
-        "id": "additionalInformation",
-        "name": "Additional Information",
-        "fields": ["maritalStatus", "occupation"]
       },
       {
         "id": "contact",
