@@ -1,7 +1,6 @@
 {
     "report.patientIdSticker.fields.identifier": "true",
-    "report.patientIdSticker.fields.firstname": "true",
-    "report.patientIdSticker.fields.lastname": "true",
+    "report.patientIdSticker.fields.name": "true",
     "report.patientIdSticker.fields.dob": "true",
     "report.patientIdSticker.fields.age": "true",
     "report.patientIdSticker.fields.gender": "true",

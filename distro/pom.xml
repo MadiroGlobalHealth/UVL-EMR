@@ -86,6 +86,28 @@
         <artifactId>maven-resources-plugin</artifactId>
         <executions>
           <execution>
+            <!-- Override with local config files-->
+            <id>Copy local resources</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>
+                ${project.build.directory}/${project.artifactId}-${project.version}/distro/configs</outputDirectory>
+              <overwrite>true</overwrite>
+              <resources>
+                <resource>
+                  <directory>${project.basedir}/configs</directory>
+                  <excludes>
+                    <!-- Remove overides -->
+                    <exclude>openmrs/overrides/**/*.*</exclude>
+                  </excludes>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+          <execution>
             <!-- Override the Ozone files exclusion execution so to inherit all O3 Ref App files -->
             <id>Exclude unneeded Ozone files</id>
             <phase>process-resources</phase>
@@ -108,9 +130,7 @@
                     <!-- Remove Ozone frontend config -->
                     <!-- <exclude>distro/configs/openmrs/frontend_config/ozone*.*</exclude> -->
                     <!-- Remove reporting module 2.6 -->
-                    <exclude>distro/binaries/openmrs/modules/reporting-1.27.0.omod</exclude>
-                    <!-- Remove overides -->
-                    <exclude>distro/configs/overrides/**/*.*</exclude>
+                    <exclude>distro/binaries/openmrs/modules/reporting-1.26.0.omod</exclude>
                   </excludes>
                 </resource>
               </resources>
