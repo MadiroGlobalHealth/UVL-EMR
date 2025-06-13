@@ -110,7 +110,7 @@
                     <!-- Remove reporting module 2.6 -->
                     <exclude>distro/binaries/openmrs/modules/reporting-1.27.0.omod</exclude>
                     <!-- Remove overides -->
-                    <exclude>distro/configs/**/overrides/*.*</exclude>
+                    <exclude>distro/configs/overrides/**/*.*</exclude>
                   </excludes>
                 </resource>
               </resources>
@@ -238,6 +238,24 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.codehaus.gmavenplus</groupId>
+        <artifactId>gmavenplus-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>apply-overrides</id>
+            <goals>
+              <goal>execute</goal>
+            </goals>
+            <phase>process-resources</phase>
+            <configuration>
+              <scripts>
+                <script>file://${project.basedir}/../scripts/apply-overrides.groovy</script>
+              </scripts>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
 
@@ -267,24 +285,6 @@
                 <configuration>
                   <sourceDir>
                     ${project.build.directory}/${project.artifactId}-${project.version}/distro/configs/openmrs/initializer_config</sourceDir>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.codehaus.gmavenplus</groupId>
-            <artifactId>gmavenplus-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>apply-overrides</id>
-                <goals>
-                  <goal>execute</goal>
-                </goals>
-                <phase>process-resources</phase>
-                <configuration>
-                  <scripts>
-                    <script>file://${project.basedir}/../scripts/apply-overrides.groovy</script>
-                  </scripts>
                 </configuration>
               </execution>
             </executions>

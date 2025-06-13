@@ -1,15 +1,18 @@
 {
     "report.patientIdSticker.fields.identifier": "true",
-    "report.patientIdSticker.fields.name": "true",
+    "report.patientIdSticker.fields.firstname": "true",
+    "report.patientIdSticker.fields.lastname": "true",
     "report.patientIdSticker.fields.dob": "true",
     "report.patientIdSticker.fields.age": "true",
     "report.patientIdSticker.fields.gender": "true",
-    "report.patientIdSticker.fields.label.font.size": "6",
-    "report.patientIdSticker.fields.label.value.font.size": "8",
-    "report.patientIdSticker.fields.label.gap": "3mm",    
+    "report.patientIdSticker.fields.fulladdress": "true",
+    "report.patientIdSticker.stylesheet": "msfStickerFopStylesheet.xsl",
+    "report.patientIdSticker.logourl": "https://raw.githubusercontent.com/MadiroGlobalHealth/UVL-EMR/main/distro/configs/openmrs/frontend_config/logo.png",
     "report.patientIdSticker.pages": "3",
+    "report.patientIdSticker.header": "true",
     "report.patientIdSticker.size.height": "50mm",
     "report.patientIdSticker.size.width": "70mm",
-    "report.patientIdSticker.layout": "MSF",
-    "report.patientIdSticker.header": "false"
+    "report.patientIdSticker.fields.label.font.size": "6",
+    "report.patientIdSticker.fields.label.value.font.size": "8",
+    "report.patientIdSticker.fields.label.gap": "3mm"
 }
