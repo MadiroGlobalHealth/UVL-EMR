@@ -6,3 +6,6 @@ services:
       interval: 10s
       timeout: 5s
       start_period: 30s
+  keycloak:
+    environment:
+      KC_HOSTNAME_ADMIN_URL: ${SERVER_SCHEME}://${KEYCLOAK_HOSTNAME}
