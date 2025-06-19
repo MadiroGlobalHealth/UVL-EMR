@@ -166,7 +166,7 @@
     }
   },
   "@openmrs/esm-patient-registration-app": {
-    "sections": ["demographics", "contact", "relationships"],
+    "sections": ["demographics", "contact", "additionalInformation", "relationships"],
     "fieldDefinitions": [
       {
         "id": "telephoneNumber",
@@ -177,6 +177,26 @@
           "required": false,
           "matches": "^\\+?(\\d{1,3})?[-.\\s]?(\\(?\\d{1,4}?\\)?)?[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,9}$"
         }
+      },
+      {
+        "id": "maritalStatus",
+        "type": "person attribute",
+        "uuid": "c65ebb91-0de1-4622-9af4-bf9e19ea569b",
+        "label": "Marital status",
+        "validation": {
+          "required": false
+        },
+        "answerConceptSetUuid": "1732bde0-dcf0-4aea-9ea4-470f08b7675c"
+      },
+      {
+        "id": "occupation",
+        "type": "person attribute",
+        "uuid": "96a9f1a6-7bd4-4147-a5b3-98b1f6137340",
+        "label": "Occupation",
+        "validation": {
+          "required": false
+        },
+        "answerConceptSetUuid": "b1effaa8-afeb-41f5-9226-0bdcc52a6ea9"
       }
     ],
     "sectionDefinitions": [
@@ -188,6 +208,11 @@
         "id": "contact",
         "name": "Contact Details",
         "fields": ["address", "telephoneNumber"]
+      },
+      {
+        "id": "additionalInformation",
+        "name": "Additional Information",
+        "fields": ["maritalStatus", "occupation"]
       }
     ],
     "fieldConfigurations": {
