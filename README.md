@@ -104,7 +104,7 @@ To enable SSO for the entire UVL EMR system (EMR + Odoo for billing), follow the
 cd sites/mugamba/target/ozone-uvl-mugamba-1.0.0-SNAPSHOT/run/docker/scripts
 ./start-demo-with-sso.sh
 # Restart OpenMRS containers after running the above command to resolve a known issue
-docker restart ozone-uvl-distro-frontend-1 ozone-uvl-distro-openmrs-1
+docker restart ozone-uvl-mugamba-frontend-1 ozone-uvl-mugamba-openmrs-1
 ```
 
 For SSO, use the following credentials:
@@ -192,7 +192,7 @@ For any questions, please contact [Michael Bontyes](https://github.com/michaelbo
 
 ## Sign up for the challenge
 
-Enrollment are **open until September 1st, 2024**:  
+Enrollment are **open until September 1st, 2024**:
 [https://forms.gle/R1gTWSYYw1WWAErm7](https://forms.gle/R1gTWSYYw1WWAErm7)
 
 ### Sprint Check-in
