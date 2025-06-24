@@ -185,6 +185,29 @@
             </configuration>
           </execution>
 
+          <execution>
+            <!-- Copy UVL Disto docker compose .txt file -->
+            <id>Copy UVL Disto docker images file</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>
+                ${project.build.directory}/bundled-docker-build-tmp</outputDirectory>
+              <overwrite>true</overwrite>
+              <resources>
+                <resource>
+                  <directory>${project.basedir}/../scripts</directory>
+                  <includes>
+                    <include>
+                      docker-images-build.txt
+                    </include>
+                  </includes>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
       <plugin>
