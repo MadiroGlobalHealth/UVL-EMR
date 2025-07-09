@@ -8,7 +8,7 @@
   "report.patientIdSticker.stylesheet": "msfStickerFopStylesheet.xsl",
   "report.patientIdSticker.logourl": "https://raw.githubusercontent.com/MadiroGlobalHealth/UVL-EMR/main/distro/configs/openmrs/frontend_config/logo.png",
   "report.patientIdSticker.pages": "3",
-  "report.patientIdSticker.header": "true",
+  "report.patientIdSticker.header": "false",
   "report.patientIdSticker.size.height": "29mm",
   "report.patientIdSticker.size.width": "90mm",
   "report.patientIdSticker.fields.label.font.size": "6",
