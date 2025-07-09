@@ -3,3 +3,4 @@ Uuid,Role name,Description,Inherited roles,Privileges,_order:1000
 82a54bb7-0404-4c8c-95d5-c87c76ff5be8,Lab Technician,Lab Technician,,Lab Feature,
 0dd299d4-6563-4f90-81d5-45624686a273,Pharmacist,Pharmacist,,Dispensing Features;Pharmacy,
 530c0a04-53ac-4627-adcf-0e08865e57dc,Cashier,Cashier,,Billing Feature,
+94478d6a-382e-48d9-8e06-835843ff511d,Print Patient Label Sticker,The person responsible for printing patient label stickers,Application: Uses Patient Summary,App: Can View Patient Identifier Sticker Report,
