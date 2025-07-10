@@ -1,0 +1,27 @@
+{
+  "uuid": "ffa53310-25cd-4288-aac6-409001446783",
+  "form": "UVL Inpatient Consultation Form",
+  "description": "Fr Translations for 'UVL Inpatient Consultation Form'",
+  "language": "fr",
+  "translations": {
+    "Additional Tests": "Tests supplémentaires",
+    "Capture Vitals": "Capture des vitales",
+    "Complaints": "Douleurs",
+    "Complete Physical Examination": "Examen physique complet",
+    "Consultation": "Consultation",
+    "Current Treatment": "Traitement actuel",
+    "Current Treatment / Medications": "Traitement actuel / Médicaments",
+    "Decision": "Décision",
+    "Lab Test": "Test de laboratoire",
+    "New Prescription": "Nouvelle prescription",
+    "New Test Order": "Nouvelle commande de test",
+    "Other Tests (specify)": "Autres tests (spécifier)",
+    "Provider:": "Fournisseur:",
+    "Provisional / Differential Diagnosis": "Diagnostic provisoire / différentiel",
+    "Provisional or Differential Diagnosis": "Diagnostic provisoire ou différentiel",
+    "Summary": "Résumé",
+    "Treatment / Medications": "Traitement / Médicaments",
+    "Ultrasound": "Ultrason",
+    "X-ray": "Rayons X"
+  }
+}
