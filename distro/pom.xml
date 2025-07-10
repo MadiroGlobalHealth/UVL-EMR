@@ -20,12 +20,12 @@
     <maven.compiler.source>8</maven.compiler.source>
     <maven.compiler.target>8</maven.compiler.target>
     <PatientIdentifierGeneratorVersion>0.1.0</PatientIdentifierGeneratorVersion>
-    <OpenmrsPlatformVersion>2.7.4</OpenmrsPlatformVersion>
-    <FrontendVersion>3.4.0</FrontendVersion>
+    <UVLReferenceapplicationDockerVersion>3.2.0-rc.3</UVLReferenceapplicationDockerVersion>
     <reporting.version>1.27.0</reporting.version>
     <!-- Stock Management and Billing -->
     <stockmanagement.version>2.0.2-SNAPSHOT</stockmanagement.version>
     <billing.version>1.2.0-SNAPSHOT</billing.version>
+    <initializer.version>2.8.0</initializer.version>
   </properties>
 
   <dependencies>
@@ -38,6 +38,11 @@
       <groupId>org.openmrs.module</groupId>
       <artifactId>billing-omod</artifactId>
       <version>${billing.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.openmrs.module</groupId>
+      <artifactId>initializer-omod</artifactId>
+      <version>${initializer.version}</version>
     </dependency>
     <dependency>
       <groupId>org.openmrs.module</groupId>
@@ -210,10 +215,10 @@
             <configuration>
               <target>
                 <echo level="info" message="Adding uvl docker image version"/>
-                <replaceregexp file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/docker-compose-openmrs.yml"
-                              match="openmrs/openmrs-core:.*" replace="openmrs/openmrs-core:${OpenmrsPlatformVersion}" />
-                <replaceregexp file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/docker-compose-openmrs.yml"
-                              match="openmrs/openmrs-reference-application-3-frontend:.*" replace="openmrs/openmrs-reference-application-3-frontend:${FrontendVersion}" />
+                <replaceregexp file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/.env"
+                              match="O3_DOCKER_IMAGE_TAG=.*" replace="O3_DOCKER_IMAGE_TAG=${UVLReferenceapplicationDockerVersion}" />
+                <replace file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/docker-compose-openmrs.yml"
+                              token="3.0.0-beta.21" value="${O3_DOCKER_IMAGE_TAG:-nightly}" />
               </target>
             </configuration>
           </execution>
