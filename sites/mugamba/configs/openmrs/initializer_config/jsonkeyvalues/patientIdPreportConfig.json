@@ -4,7 +4,6 @@
   "report.patientIdSticker.fields.dob": "true",
   "report.patientIdSticker.fields.age": "true",
   "report.patientIdSticker.fields.gender": "true",
-  "report.patientIdSticker.fields.fulladdress": "true",
   "report.patientIdSticker.stylesheet": "msfStickerFopStylesheet.xsl",
   "report.patientIdSticker.logourl": "https://raw.githubusercontent.com/MadiroGlobalHealth/UVL-EMR/main/distro/configs/openmrs/frontend_config/logo.png",
   "report.patientIdSticker.pages": "3",
