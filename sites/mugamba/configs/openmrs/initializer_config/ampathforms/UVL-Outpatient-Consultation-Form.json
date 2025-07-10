@@ -1,0 +1,290 @@
+{
+  "uuid": "4a0c2ced-6181-4a72-9fa2-e910e71ba483",
+  "name": "UVL Outpatient Consultation Form",
+  "description": "UVL Outpatient Consultation Form",
+  "version": "1",
+  "published": true,
+  "retired": false,
+  "encounter": "Outpatient Consultation",
+  "processor": "EncounterFormProcessor",
+  "referencedForms": [],
+  "encounterType": "0ff55309-1897-476b-a647-c7c180b102c8",
+  "pages": [
+    {
+      "label": "Consultation",
+      "sections": [
+        {
+          "label": "Type of Consultation",
+          "questions": [
+            {
+              "label": "Consultation Type",
+              "type": "obs",
+              "id": "consultType",
+              "questionOptions": {
+                "rendering": "checkbox",
+                "concept": "49cc3fd2-08fe-46cb-ab62-86b847584ff2",
+                "answers": [
+                  {
+                    "concept": "60eb5971-6c2b-44ae-bcb8-b08bded3a393",
+                    "label": "Not referred"
+                  },
+                  {
+                    "concept": "f793e2ee-4e34-4d9a-8c83-a165bc74d869",
+                    "label": "Referred by Health Center"
+                  },
+                  {
+                    "concept": "fbe78ab5-3591-4d1e-bb53-7e94857d98b3",
+                    "label": "Referred by other hospital"
+                  },
+                  {
+                    "concept": "d1039f09-7423-4b14-adbe-8f10c1f7101e",
+                    "label": "High-risk pregnancy detected during ANC"
+                  },
+                  {
+                    "concept": "9fcb0e5c-860c-42ce-b8f4-4f354d52b61e",
+                    "label": "Internal transfer"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "label": "Consultation Details",
+          "questions": [
+            {
+              "label": "Reason for Consultation",
+              "type": "obs",
+              "id": "reasonConsultation",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "c8523ef7-c18e-46fe-a760-c243fd3a3bd2"
+              }
+            },
+            {
+              "label": "History of Present Illness",
+              "type": "obs",
+              "id": "presentIllness",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "bbd42472-9025-4771-875b-8ae6eda3733a"
+              }
+            },
+            {
+              "label": "Lifestyle and Eating Habits",
+              "type": "obs",
+              "id": "lifestyleHabits",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "0bb5ba74-dbdd-4fce-8463-9664721f8680"
+              }
+            },
+            {
+              "label": "General Condition (Consciousness, Posture)",
+              "type": "obs",
+              "id": "generalCondition",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "26b6bd3f-5367-4a73-aa1d-9c3063522b2b"
+              }
+            },
+            {
+              "id": "captureVitals",
+              "label": "Capture Vitals",
+              "required": false,
+              "questionOptions": {
+                "rendering": "workspace-launcher",
+                "buttonLabel": "Capture Vitals",
+                "workspaceName": "patient-vitals-biometrics-form-workspace"
+              }
+            }
+          ]
+        },
+        {
+          "label": "Medical History",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Family History",
+              "type": "obs",
+              "id": "familyHistory",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "d42ce204-2ec8-46fa-9c47-5b202e68717a"
+              }
+            },
+            {
+              "label": "Medical History",
+              "type": "obs",
+              "id": "medicalHistory",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "30344fed-b645-410f-8d57-ea50d46971cf"
+              }
+            },
+            {
+              "label": "Surgical History",
+              "type": "obs",
+              "id": "surgicalHistory",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "f8c3c8ff-e4f3-41bd-9507-c1f6aedb4a95"
+              }
+            },
+            {
+              "label": "Gynecological/Obstetric History",
+              "type": "obs",
+              "id": "obgynHistory",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "937e4e80-2314-48de-9f49-c4dd86be7547"
+              }
+            }
+          ]
+        },
+        {
+          "label": "Complete Physical Examination",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Complete Physical Examination",
+              "type": "obs",
+              "id": "physicalExam",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "f3401215-8c2f-4cf4-acab-9d524fbbf6c6"
+              }
+            },
+            {
+              "label": "Summary",
+              "type": "obs",
+              "id": "summary",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "0b481e35-48fc-4ea1-9f1f-410b0bc96fb8"
+              }
+            }
+          ]
+        },
+        {
+          "label": "Provisional or Differential Diagnosis",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "id": "provisionalDifferentialDiagnosis",
+              "label": "Provisional / Differential Diagnosis",
+              "type": "diagnosis",
+              "required": false,
+              "questionOptions": {
+                "rendering": "repeating",
+                "dataSource": "diagnoses",
+                "isSearchable": "true",
+                "diagnosis": {
+                  "isConfirmed": false,
+                  "rank": 1,
+                  "conceptClasses": ["8d4918b0-c2cc-11de-8d13-0010c6dffd0f"]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "label": "Additional Tests",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "id": "newOrder",
+              "label": "New Test Order",
+              "required": false,
+              "questionOptions": {
+                "rendering": "workspace-launcher",
+                "buttonLabel": "Order Tests",
+                "workspaceName": "order-basket"
+              }
+            },
+            {
+              "label": "Lab Test",
+              "type": "obs",
+              "id": "labTest",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "f448385e-5c73-4b7e-b40c-7c859cf1cd24"
+              }
+            },
+            {
+              "label": "X-ray",
+              "type": "obs",
+              "id": "xrayTest",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "39a60662-bcc1-4b26-9764-6013af93bbdb"
+              }
+            },
+            {
+              "label": "Ultrasound",
+              "type": "obs",
+              "id": "ultrasoundTest",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "9d107c46-458f-4f39-b31a-e19d5a9e12ab"
+              }
+            },
+            {
+              "label": "Other Tests (specify)",
+              "type": "obs",
+              "id": "otherTests",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "5eedb588-cf20-4b73-a2d4-37cb5ecaf3dd"
+              }
+            }
+          ]
+        },
+        {
+          "label": "Confirmed Diagnosis ",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "id": "confirmedDiagnosis",
+              "label": "Confirmed Diagnosis",
+              "required": false,
+              "questionOptions": {
+                "rendering": "workspace-launcher",
+                "buttonLabel": "Add confirmed diagnosis",
+                "workspaceName": "conditions-form-workspace"
+              }
+            },
+            {
+              "id": "newPrescription",
+              "label": "New Prescription",
+              "required": false,
+              "questionOptions": {
+                "rendering": "workspace-launcher",
+                "buttonLabel": "Order Prescription",
+                "workspaceName": "order-basket"
+              }
+            },
+            {
+              "label": "Treatment / Medications",
+              "type": "obs",
+              "id": "treatmentPlan",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "29ff306b-5a2a-48c1-affa-8fa4620a8fda"
+              }
+            },
+            {
+              "label": "Provider:",
+              "type": "encounterProvider",
+              "required": "false",
+              "questionOptions": {
+                "rendering": "ui-select-extended"
+              },
+              "id": "encProvider "
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

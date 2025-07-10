@@ -1,0 +1,3 @@
+Uuid,Void/Retire,Name,Description,View privilege,Edit privilege,_order:1000,
+43f383ec-90fd-4273-be45-9c1906dda9aa,,Inpatient Consultation,Encounter for capturing inpatient consultation form observations,,,,
+0ff55309-1897-476b-a647-c7c180b102c8,,Outpatient Consultation,Encounter for capturing outpatient consultation form observations,,,,
