@@ -247,17 +247,11 @@
             {
               "id": "confirmedDiagnosis",
               "label": "Confirmed Diagnosis",
-              "type": "diagnosis",
               "required": false,
               "questionOptions": {
-                "rendering": "repeating",
-                "dataSource": "diagnoses",
-                "isSearchable": "true",
-                "diagnosis": {
-                  "isConfirmed": true,
-                  "rank": 1,
-                  "conceptClasses": ["8d4918b0-c2cc-11de-8d13-0010c6dffd0f"]
-                }
+                "rendering": "workspace-launcher",
+                "buttonLabel": "Add confirmed diagnosis",
+                "workspaceName": "conditions-form-workspace"
               }
             },
             {
