@@ -160,6 +160,11 @@
                                match="(SPA_CONFIG_URLS=.+)" replace="\1,/openmrs/spa/configs/uvl-mugamba-frontend-config.json" />
                 <replaceregexp file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/concatenated.env"
                                match="(SPA_CONFIG_URLS=.+)" replace="\1,/openmrs/spa/configs/uvl-mugamba-frontend-config.json" />
+                <replaceregexp file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/.env"
+                               match="(SPA_DEFAULT_LOCALE=.+)" replace="SPA_DEFAULT_LOCALE=fr" />
+                <replaceregexp file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/concatenated.env"
+                               match="(SPA_DEFAULT_LOCALE=.+)" replace="SPA_DEFAULT_LOCALE=fr" />
+
               </target>
             </configuration>
           </execution>

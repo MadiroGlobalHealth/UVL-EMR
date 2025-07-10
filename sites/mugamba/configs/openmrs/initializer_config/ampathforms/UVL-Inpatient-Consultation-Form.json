@@ -1,0 +1,191 @@
+{
+  "uuid": "de7a5155-5630-4042-9432-2eb4db2d5da4",
+  "name": "UVL Inpatient Consultation Form",
+  "description": "UVL Inpatient Consultaion Form",
+  "version": "1",
+  "published": true,
+  "retired": false,
+  "encounter": "Inpatient Consultation",
+  "processor": "EncounterFormProcessor",
+  "referencedForms": [],
+  "encounterType": "43f383ec-90fd-4273-be45-9c1906dda9aa",
+  "pages": [
+    {
+      "label": "Consultation",
+      "sections": [
+        {
+          "label": "Complaints",
+          "questions": [
+            {
+              "label": "Complaints",
+              "type": "obs",
+              "id": "complaints",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "c8523ef7-c18e-46fe-a760-c243fd3a3bd2"
+              }
+            },
+            {
+              "id": "captureVitals",
+              "label": "Capture Vitals",
+              "required": false,
+              "questionOptions": {
+                "rendering": "workspace-launcher",
+                "buttonLabel": "Capture Vitals",
+                "workspaceName": "patient-vitals-biometrics-form-workspace"
+              }
+            }
+          ],
+          "isExpanded": "true"
+        },
+        {
+          "label": "Complete Physical Examination",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Complete Physical Examination",
+              "type": "obs",
+              "id": "physicalExam",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "f3401215-8c2f-4cf4-acab-9d524fbbf6c6"
+              }
+            },
+            {
+              "label": "Summary",
+              "type": "obs",
+              "id": "summary",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "0b481e35-48fc-4ea1-9f1f-410b0bc96fb8"
+              }
+            }
+          ]
+        },
+        {
+          "label": "Provisional or Differential Diagnosis",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "id": "provisionalDifferentialDiagnosis",
+              "label": "Provisional / Differential Diagnosis",
+              "type": "diagnosis",
+              "required": false,
+              "questionOptions": {
+                "rendering": "repeating",
+                "dataSource": "diagnoses",
+                "isSearchable": "true",
+                "diagnosis": {
+                  "isConfirmed": false,
+                  "rank": 1,
+                  "conceptClasses": ["8d4918b0-c2cc-11de-8d13-0010c6dffd0f"]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "label": "Additional Tests",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "id": "newOrder",
+              "label": "New Test Order",
+              "required": false,
+              "questionOptions": {
+                "rendering": "workspace-launcher",
+                "buttonLabel": "Order Tests",
+                "workspaceName": "order-basket"
+              }
+            },
+            {
+              "label": "Lab Test",
+              "type": "obs",
+              "id": "labTest",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "f448385e-5c73-4b7e-b40c-7c859cf1cd24"
+              }
+            },
+            {
+              "label": "X-ray",
+              "type": "obs",
+              "id": "xrayTest",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "39a60662-bcc1-4b26-9764-6013af93bbdb"
+              }
+            },
+            {
+              "label": "Ultrasound",
+              "type": "obs",
+              "id": "ultrasoundTest",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "9d107c46-458f-4f39-b31a-e19d5a9e12ab"
+              }
+            },
+            {
+              "label": "Other Tests (specify)",
+              "type": "obs",
+              "id": "otherTests",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "5eedb588-cf20-4b73-a2d4-37cb5ecaf3dd"
+              }
+            }
+          ]
+        },
+        {
+          "label": "Current Treatment",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Current Treatment / Medications",
+              "type": "obs",
+              "id": "currentTreatmentPlan",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "1deb77a2-9fa1-4e0f-a0a0-6f4f751f728f"
+              }
+            }
+          ]
+        },
+        {
+          "label": "Decision",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "id": "newPrescription",
+              "label": "New Prescription",
+              "required": false,
+              "questionOptions": {
+                "rendering": "workspace-launcher",
+                "buttonLabel": "Order Prescription",
+                "workspaceName": "order-basket"
+              }
+            },
+            {
+              "label": "Treatment / Medications",
+              "type": "obs",
+              "id": "treatmentPlan",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "29ff306b-5a2a-48c1-affa-8fa4620a8fda"
+              }
+            },
+            {
+              "label": "Provider:",
+              "type": "encounterProvider",
+              "required": "false",
+              "questionOptions": {
+                "rendering": "ui-select-extended"
+              },
+              "id": "encProvider "
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
