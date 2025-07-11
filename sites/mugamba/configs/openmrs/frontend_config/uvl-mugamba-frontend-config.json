@@ -150,6 +150,10 @@
         "redirect": "${ODOO_PUBLIC_URL}"
       },
       {
+        "title": "Reporting & Analytics",
+        "redirect": "${SUPERSET_PUBLIC_URL}"
+      },
+      {
         "title": "Mugamba Lab - Mini-LIMS",
         "redirect": "#"
       }
