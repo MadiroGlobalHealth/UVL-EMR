@@ -1978,7 +1978,7 @@
           ]
         },
         {
-          "label": "Confirmed Diagnosis ",
+          "label": "Confirmed Diagnosis",
           "questions": [
             {
               "label": "Confirmed Diagnosis",
@@ -2017,7 +2017,7 @@
             {
               "label": "Provider:",
               "type": "encounterProvider",
-              "id": "encProvider ",
+              "id": "encProvider",
               "questionOptions": {
                 "rendering": "ui-select-extended"
               }
