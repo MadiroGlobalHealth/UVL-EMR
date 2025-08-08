@@ -14,8 +14,186 @@
       "label": "Consultation",
       "sections": [
         {
-          "label": "Type of Consultation",
+          "label": "Visit Information",
           "questions": [
+            {
+              "label": "Origin",
+              "type": "obs",
+              "id": "origin",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "c110605a-e601-40bc-ae07-e1f261d317fa",
+                "answers": [
+                  {
+                    "concept": "7282deba-8db9-4b83-b0a9-799b7a91f9da",
+                    "label": "Home"
+                  },
+                  {
+                    "concept": "f793e2ee-4e34-4d9a-8c83-a165bc74d869",
+                    "label": "Referred by Health Center"
+                  },
+                  {
+                    "concept": "fbe78ab5-3591-4d1e-bb53-7e94857d98b3",
+                    "label": "Referred by other hospital"
+                  },
+                  {
+                    "concept": "497a7e30-5757-4a0a-85da-4d14520969bf",
+                    "label": "Intra-Hospital Referral (Consultation/Other Department)"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Attending physician",
+              "type": "obs",
+              "id": "attendingPhysician",
+              "questionOptions": {
+                "rendering": "text",
+                "concept": "caa77817-7440-4cef-8d94-555733f23a5a"
+              }
+            },
+            {
+              "label": "Patient Location",
+              "type": "obs",
+              "id": "patientLocation",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "73f6005b-1eec-4070-9b75-1b8143e942e7",
+                "answers": [
+                  {
+                    "concept": "3b1137d7-6b9f-41e7-a610-90890d2df687"
+                  },
+                  {
+                    "concept": "c3aa3034-81fb-44ee-8d37-bb28c0d929ed"
+                  },
+                  {
+                    "concept": "7db71393-0f63-47e3-bbe0-f0bfc873ea24"
+                  },
+                  {
+                    "concept": "3eb2ba5e-b08a-4d1e-87f1-de2bb359aea1"
+                  },
+                  {
+                    "concept": "31b3a059-fe2a-4092-9b80-5fea8a8c6fae"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Outcome",
+              "type": "obs",
+              "id": "outcome",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "b501a1ac-f2ea-4e79-ace4-658c1af45bd2",
+                "answers": [
+                  {
+                    "concept": "9ff60055-20a8-4d4d-9cc1-f04548965365",
+                    "label": "Outpatient"
+                  },
+                  {
+                    "concept": "ac0a6887-a5b5-4280-ae12-4f038163ce3d",
+                    "label": "Counter-Referral"
+                  },
+                  {
+                    "concept": "6844c0b2-a503-4a12-9991-cf56062cfb50",
+                    "label": "Intra-Hospital Transfer"
+                  },
+                  {
+                    "concept": "96cbc3ff-8ff8-4b3c-b341-815563df3641",
+                    "label": "Transfer to Higher-Level Facility"
+                  },
+                  {
+                    "concept": "9e045d87-62c6-4bc4-b72e-d856ff234f97",
+                    "label": "Transfer to Lower-Level Facility"
+                  },
+                  {
+                    "concept": "5f60e9b0-50e1-473c-b155-68a2a670559e",
+                    "label": "death"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Destination Department",
+              "type": "obs",
+              "id": "destinationDepartment",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "9921be5f-7422-4f6d-835e-ea95a62a45e6",
+                "answers": [
+                  {
+                    "concept": "73b7e837-109a-4c01-8fcb-d605b8724f70",
+                    "label": "Pediatrics"
+                  },
+                  {
+                    "concept": "37112a4c-e8e9-4df5-8259-d610e9d36566",
+                    "label": "Internal Medicine"
+                  },
+                  {
+                    "concept": "219b6489-0992-47bb-a780-b97c85d10d33",
+                    "label": "Neonatology"
+                  },
+                  {
+                    "concept": "ba39e9aa-4f48-45fe-a9da-c2a7795dc063",
+                    "label": "Surgery"
+                  },
+                  {
+                    "concept": "1d66f34f-3dda-496b-881b-e38ba2cab2cc",
+                    "label": "Gynecology-Obstetrics"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Case Type",
+              "type": "obs",
+              "id": "caseType",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "23ceec98-f1c5-42ce-8b11-60b5be1c2acf",
+                "answers": [
+                  {
+                    "concept": "484cc39e-282e-4abe-81af-368a9e2bf50b",
+                    "label": "New Case"
+                  },
+                  {
+                    "concept": "ba804ac7-473b-48cf-b844-c8d3e1f54eee",
+                    "label": "Follow-Up Case"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Disease Category",
+              "type": "obs",
+              "id": "diseaseCategory",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "4da71f38-c92b-4525-a7fa-5c559df0bc3e",
+                "answers": [
+                  {
+                    "concept": "9cd9b2fe-fc7f-410f-80e9-3d8c91d538e5",
+                    "label": "Natural Illness"
+                  },
+                  {
+                    "concept": "f2297e8b-255d-432a-9817-a889bfaf4da8",
+                    "label": "Occupational Disease"
+                  },
+                  {
+                    "concept": "731f5328-dd5c-40c3-9b83-e181fcde5b2a",
+                    "label": "Work Accident"
+                  },
+                  {
+                    "concept": "569e08a9-99ba-4658-861e-3694e7ab9341",
+                    "label": "Traffic Accident"
+                  },
+                  {
+                    "concept": "e94cdea7-10bf-4526-8cca-7b2f0947312f",
+                    "label": "Other Accident"
+                  }
+                ]
+              }
+            },
             {
               "label": "Consultation Type",
               "type": "obs",
@@ -50,8 +228,156 @@
           ]
         },
         {
+          "label": "Patient Condition",
+          "questions": [
+            {
+              "label": "Patient Status on Arrival",
+              "type": "obs",
+              "id": "patientStatusOnArrival",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "72e22610-8888-48b6-b182-d235000a7600",
+                "answers": [
+                  {
+                    "concept": "6a0ccf90-fb31-4aad-8ff4-1374917cc6ad",
+                    "label": "Ambulatory"
+                  },
+                  {
+                    "concept": "c800042f-427a-42bf-9f0c-8a647e325d5f",
+                    "label": "Bedridden"
+                  },
+                  {
+                    "concept": "5f60e9b0-50e1-473c-b155-68a2a670559e",
+                    "label": "Deceased"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Woman's Status",
+              "type": "obs",
+              "id": "womanStatus",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "c61917f2-08dd-475b-ba03-af03cbb7ae06",
+                "answers": [
+                  {
+                    "concept": "da446701-d7dd-4d93-89f6-8fe338d48f62",
+                    "label": "Pregnant"
+                  },
+                  {
+                    "concept": "da640d8a-8703-4bd7-aceb-2e91a6c1d806",
+                    "label": "Postpartum"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Pregnant Women",
+              "type": "obs",
+              "id": "pregnantWomen",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "1ec6ce6a-607a-4b6a-af5d-e14911fe98c5",
+                "answers": [
+                  {
+                    "concept": "9af5a631-2c4a-48c0-89cd-e1081c857804",
+                    "label": "No"
+                  },
+                  {
+                    "concept": "f9022461-c5fd-4fcb-a12f-075471cb5e8c",
+                    "label": "<=3 months"
+                  },
+                  {
+                    "concept": "ae846c0d-ab46-4a87-9c5d-f48285f26d6e",
+                    "label": ">3 Months"
+                  }
+                ]
+              },
+              "hide": {
+                "hideWhenExpression": "womanStatus !== 'da446701-d7dd-4d93-89f6-8fe338d48f62'"
+              }
+            },
+            {
+              "label": "Gestational age (in weeks)",
+              "type": "obs",
+              "id": "gestationalAge",
+              "questionOptions": {
+                "rendering": "numeric",
+                "concept": "ab6aac99-e061-4bd9-a51a-50981989ef35",
+                "min": 0,
+                "disallowDecimals": true
+              },
+              "hide": {
+                "hideWhenExpression": "womanStatus !== 'da446701-d7dd-4d93-89f6-8fe338d48f62'"
+              }
+            },
+            {
+              "label": "HIV+ Status",
+              "type": "obs",
+              "id": "hivStatus",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "d9a94f49-412b-41fe-ac47-437dbc66ffda",
+                "answers": [
+                  {
+                    "concept": "4372cb1c-0e61-4ba0-b440-8db9215498b8",
+                    "label": "Positive"
+                  },
+                  {
+                    "concept": "8604e9b5-b655-47bb-9592-ce33e44d4313",
+                    "label": "Negative"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
           "label": "Consultation Details",
           "questions": [
+            {
+              "label": "Consultation Conducted By",
+              "type": "obs",
+              "id": "consultationConductedBy",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "12ab2425-f04a-466f-adbd-8aa8b1eb99c0",
+                "answers": [
+                  {
+                    "concept": "331be736-309d-4e28-939f-efbd317ba431",
+                    "label": "Doctor"
+                  },
+                  {
+                    "concept": "31c7d379-1191-4823-a970-fdf665792362",
+                    "label": "Nurse"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Precancerous Lesions",
+              "type": "obs",
+              "id": "precancerousLesions",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "99e6c785-4aeb-4ca4-8de4-5fe90f78f790",
+                "answers": [
+                  {
+                    "concept": "6574cccd-9896-46ba-808b-c9626f75237f",
+                    "label": "Screened"
+                  },
+                  {
+                    "concept": "4372cb1c-0e61-4ba0-b440-8db9215498b8",
+                    "label": "Positive"
+                  },
+                  {
+                    "concept": "2c10adc6-9bdf-4ff8-a36e-6166ea66e2c8",
+                    "label": "Treated"
+                  }
+                ]
+              }
+            },
             {
               "label": "Reason for Consultation",
               "type": "obs",
@@ -101,9 +427,227 @@
           ]
         },
         {
+          "label": "Lifestyle & Habits",
+          "questions": [
+            {
+              "label": "Alcohol Consumption",
+              "type": "obs",
+              "id": "alcoholConsumption",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "86b0bf2e-4445-4f3f-aae9-dde28a9b0822",
+                "answers": [
+                  {
+                    "concept": "5ec32099-ca46-428e-adef-2dc146fd0368",
+                    "label": "Yes"
+                  },
+                  {
+                    "concept": "9af5a631-2c4a-48c0-89cd-e1081c857804",
+                    "label": "No"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Tobacco Use",
+              "type": "obs",
+              "id": "tobaccoUse",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "cdc82ddc-1413-4ec1-b891-b0155f8cc7fa",
+                "answers": [
+                  {
+                    "concept": "5ec32099-ca46-428e-adef-2dc146fd0368",
+                    "label": "Yes"
+                  },
+                  {
+                    "concept": "9af5a631-2c4a-48c0-89cd-e1081c857804",
+                    "label": "No"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
           "label": "Medical History",
           "isExpanded": "true",
           "questions": [
+            {
+              "label": "Nosocomial Infections",
+              "type": "obs",
+              "id": "nosocomialInfections",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "42983f28-8cf3-40f1-bb7e-5058ea4e4b7e",
+                "answers": [
+                  {
+                    "concept": "f8a121b0-b276-44ba-90c2-2982c92c9221",
+                    "label": "Post-Procedure (In-Facility)"
+                  },
+                  {
+                    "concept": "80e1f197-1aeb-412a-9f19-90ba564ab0ae",
+                    "label": "Post-Procedure (External)"
+                  },
+                  {
+                    "concept": "4b3707c1-7748-497a-ae92-aeeed086a0bf",
+                    "label": "Post-Operative (In-Facility)"
+                  },
+                  {
+                    "concept": "b5687d7c-2973-4d4b-bf75-d6c9c90ec942",
+                    "label": "Post-Operative (External)"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Malaria Diagnosis",
+              "type": "obs",
+              "id": "malariaDiagnosis",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "a2bfe9b7-c373-4805-96c9-16e1039eac04",
+                "answers": [
+                  {
+                    "concept": "11cd65c5-0175-47fa-af4e-c7f125faeb58",
+                    "label": "Without Test"
+                  },
+                  {
+                    "concept": "9692ddcf-09ef-45d4-ae1a-da644e387ae0",
+                    "label": "Rapid Test (Positive)"
+                  },
+                  {
+                    "concept": "7906e56e-4729-4a54-970c-3e199f407992",
+                    "label": "Severe Confirmed"
+                  },
+                  {
+                    "concept": "6cb1ed22-bdd2-4a18-985c-3bb56400a911",
+                    "label": "With Severe Anemia"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Treatment",
+              "type": "obs",
+              "id": "treatment",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "29778367-63f7-47f7-a02a-d17c9643578a",
+                "answers": [
+                  {
+                    "concept": "bf4b4034-5331-461e-b839-fc71add06420",
+                    "label": "Artemether-Lumefantrine (6/12/18/24 tablets)"
+                  },
+                  {
+                    "concept": "eb44b2cc-48e7-4bbf-9f05-bb5462e8408f",
+                    "label": "Dihydroartemisinin-Piperaquine"
+                  },
+                  {
+                    "concept": "c14d15fa-838d-4af6-a802-9d53fc782669",
+                    "label": "Quinine Tablets + Clindamycin"
+                  },
+                  {
+                    "concept": "834c9ecb-be7a-4b8f-962c-9a5a52d3908d",
+                    "label": "Quinine Tablets"
+                  },
+                  {
+                    "concept": "da7e3699-9a19-4f9f-bbe5-5ab3d33a861d",
+                    "label": "Artesunate Injection"
+                  },
+                  {
+                    "concept": "19c3ae10-f224-468c-9d42-26fcc16cc190",
+                    "label": "Quinine Injection"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Diarrhea",
+              "type": "obs",
+              "id": "diarrhea",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "5841a760-ac78-4c75-8d31-9df9af3891ec",
+                "answers": [
+                  {
+                    "concept": "9af5a631-2c4a-48c0-89cd-e1081c857804",
+                    "label": "No"
+                  },
+                  {
+                    "concept": "3ad826e0-e1c3-4eae-b910-9698e65e9553",
+                    "label": "Without Dehydration"
+                  },
+                  {
+                    "concept": "b88b4fa9-3216-4531-b9fe-502713468fbe",
+                    "label": "With Dehydration"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Diarrhea treated?",
+              "type": "obs",
+              "id": "treated",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "2c10adc6-9bdf-4ff8-a36e-6166ea66e2c8",
+                "answers": [
+                  {
+                    "concept": "5ec32099-ca46-428e-adef-2dc146fd0368",
+                    "label": "Yes"
+                  },
+                  {
+                    "concept": "9af5a631-2c4a-48c0-89cd-e1081c857804",
+                    "label": "No"
+                  }
+                ]
+              },
+              "hide": {
+                "hideWhenExpression": "diarrhea !== '3ad826e0-e1c3-4eae-b910-9698e65e9553' && diarrhea !== 'b88b4fa9-3216-4531-b9fe-502713468fbe'"
+              }
+            },
+            {
+              "label": "Pneumonia",
+              "type": "obs",
+              "id": "pneumonia",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "186dfb2f-be92-41ca-bd3d-3997462c53f4",
+                "answers": [
+                  {
+                    "concept": "9af5a631-2c4a-48c0-89cd-e1081c857804",
+                    "label": "No"
+                  },
+                  {
+                    "concept": "5ec32099-ca46-428e-adef-2dc146fd0368",
+                    "label": "Yes"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Treated with Antibiotics?",
+              "type": "obs",
+              "id": "treatedWithAntibiotics",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "fdde8fc7-b854-49ab-8b01-08ba156a779e",
+                "answers": [
+                  {
+                    "concept": "5ec32099-ca46-428e-adef-2dc146fd0368",
+                    "label": "Yes"
+                  },
+                  {
+                    "concept": "9af5a631-2c4a-48c0-89cd-e1081c857804",
+                    "label": "No"
+                  }
+                ]
+              },
+              "hide": {
+                "hideWhenExpression": "pneumonia !== '5ec32099-ca46-428e-adef-2dc146fd0368'"
+              }
+            },
             {
               "label": "Family History",
               "type": "obs",
@@ -1378,19 +1922,17 @@
                   { "concept": "6d2da46b-d2fd-4e49-94ba-9508f158c6db" },
                   { "concept": "9649bbf2-9018-4692-9d1b-24805c6dd05e" }
                 ]
-              },
-              "inlineMultiCheckbox": false
+              }
             }
           ]
         },
         {
           "label": "Additional Tests",
-          "isExpanded": "true",
           "questions": [
             {
-              "id": "newOrder",
               "label": "New Test Order",
-              "required": false,
+              "type": null,
+              "id": "newOrder",
               "questionOptions": {
                 "rendering": "workspace-launcher",
                 "buttonLabel": "Order Tests",
@@ -1437,13 +1979,11 @@
         },
         {
           "label": "Confirmed Diagnosis ",
-          "isExpanded": "true",
           "questions": [
             {
-              "id": "confirmedDiagnosis",
               "label": "Confirmed Diagnosis",
               "type": "diagnosis",
-              "required": false,
+              "id": "confirmedDiagnosis",
               "questionOptions": {
                 "rendering": "repeating",
                 "dataSource": "diagnoses",
@@ -1456,9 +1996,9 @@
               }
             },
             {
-              "id": "newPrescription",
               "label": "New Prescription",
-              "required": false,
+              "type": null,
+              "id": "newPrescription",
               "questionOptions": {
                 "rendering": "workspace-launcher",
                 "buttonLabel": "Order Prescription",
@@ -1477,11 +2017,10 @@
             {
               "label": "Provider:",
               "type": "encounterProvider",
-              "required": "false",
+              "id": "encProvider ",
               "questionOptions": {
                 "rendering": "ui-select-extended"
-              },
-              "id": "encProvider "
+              }
             }
           ]
         }
