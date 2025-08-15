@@ -26,19 +26,30 @@
     <stockmanagement.version>2.0.2-SNAPSHOT</stockmanagement.version>
     <billing.version>1.2.0-SNAPSHOT</billing.version>
     <initializer.version>2.8.0</initializer.version>
+    <analyticsQueriesVersion>1.0.0-SNAPSHOT</analyticsQueriesVersion>
+    <analyticsQueriesArtifactId>analytics-queries</analyticsQueriesArtifactId>
+    <analyticsQueriesGroupId>com.ozoneuvl</analyticsQueriesGroupId>
+    <supersetConfigsArtifactId>ozone-uvl-superset-configs</supersetConfigsArtifactId>
+    <supersetConfigsGroupId>com.ozoneuvl</supersetConfigsGroupId>
   </properties>
+
+  <modules>
+    <module>configs/superset</module>
+  </modules>
 
   <dependencies>
     <dependency>
-      <groupId>org.openmrs.module</groupId>
-      <artifactId>stockmanagement-omod</artifactId>
-      <version>${stockmanagement.version}</version>
+      <groupId>com.ozoneuvl</groupId>
+      <artifactId>ozone-uvl-superset-configs</artifactId>
+      <version>${project.version}</version>
+      <type>zip</type>
     </dependency>
     <dependency>
-      <groupId>org.openmrs.module</groupId>
-      <artifactId>billing-omod</artifactId>
-      <version>${billing.version}</version>
-    </dependency>
+      <groupId>com.ozoneuvl</groupId>
+      <artifactId>analytics-queries</artifactId>
+      <version>${analyticsQueriesVersion}</version>
+      <type>zip</type>
+    </dependency>    
     <dependency>
       <groupId>org.openmrs.module</groupId>
       <artifactId>initializer-omod</artifactId>
