@@ -49,7 +49,7 @@ id,name,categ_id/id,type,purchase_ok,sale_ok,invoice_policy
 "init.5ec56bcc-2020-41aa-a2e7-b6c0ae3b9724","Test de compatibilite",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
 "init.f869f9c9-e5ec-4ebe-ba84-c6190b6bc286","BP02 - Blood smear",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
 "init.3fca61c5-2649-4bae-a302-4cf216f5a2cc","Temps de Prothrombine",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
-"init.7dae4f2c-6d7b-497b-812e-5a74165fa3fe","Protéine C-réactive",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
+"init.ec1066bd-5bc9-4fd5-bdf3-d5ae9bc49809","Protéine C-réactive",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
 "init.40fb7885-dad6-4604-8caa-c70e699b9113","Toxoplasmose IgG",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
 "init.7e9b6ad7-c1cb-46a8-8e8e-17f09fee1318","Toxoplasmose IgM",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
 "init.c0e83d65-0ae1-4c1c-af36-12b4504406f0","Test rapide pour HIV",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
