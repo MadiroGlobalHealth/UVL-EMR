@@ -86,6 +86,23 @@
         <artifactId>maven-resources-plugin</artifactId>
         <executions>
           <execution>
+            <id>Copy local eip-odoo-openmrs resources</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>
+                ${project.build.directory}/${project.artifactId}-${project.version}/distro/binaries/eip-odoo-openmrs</outputDirectory>
+              <overwrite>true</overwrite>
+              <resources>
+                <resource>
+                  <directory>${project.basedir}/binaries/eip-odoo-openmrs</directory>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+          <execution>
             <!-- Override with local config files-->
             <id>Copy local resources</id>
             <phase>process-resources</phase>
@@ -127,6 +144,7 @@
                     <exclude>distro/configs/**/patientidentifiertypes/*.*</exclude>
                     <!-- Temporarily remove Ozone -->
                     <exclude>distro/binaries/openmrs/modules/referencedemodata*.omod</exclude>
+                    <exclude>distro/binaries/eip-odoo-openmrs/eip-odoo-openmrs-2.1.0.jar</exclude>
                     <!-- Remove Ozone frontend config -->
                     <!-- <exclude>distro/configs/openmrs/frontend_config/ozone*.*</exclude> -->
                     <!-- Remove reporting module 2.6 -->
