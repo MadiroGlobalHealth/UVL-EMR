@@ -16,16 +16,17 @@
   <packaging>pom</packaging>
 
   <properties>
+    <openmrs.version>2.7.4</openmrs.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>8</maven.compiler.source>
     <maven.compiler.target>8</maven.compiler.target>
     <PatientIdentifierGeneratorVersion>0.1.0</PatientIdentifierGeneratorVersion>
     <UVLReferenceapplicationDockerVersion>3.2.0-rc.3</UVLReferenceapplicationDockerVersion>
     <reporting.version>1.27.0</reporting.version>
+    <initializer.version>2.9.0</initializer.version>
     <!-- Stock Management and Billing -->
     <stockmanagement.version>2.0.2-SNAPSHOT</stockmanagement.version>
     <billing.version>1.2.0-SNAPSHOT</billing.version>
-    <initializer.version>2.8.0</initializer.version>
   </properties>
 
   <dependencies>
