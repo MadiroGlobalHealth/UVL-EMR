@@ -263,7 +263,7 @@
   },
   "@openmrs/esm-patient-tests-app": {
     "orders": {
-      "labOrderTypeUuid": "f8ae333e-9d1a-423e-a6a8-c3a0687ebcf2",
+      "labOrderTypeUuid": "52a447d3-a64a-11e3-9aeb-50e549534c5e",
       "labOrderableConcepts": ["95ba6e51-f09b-429a-ab75-6cc6fe4ab968"]
     },
     "additionalTestOrderTypes": [
