@@ -6,7 +6,7 @@ id,name,categ_id/id,type,purchase_ok,sale_ok,invoice_policy
 "init.8c72c21f-e119-4f71-9d9c-41dd5d04bf5d","BI05 - Glucose sanguin",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
 "init.d180f2db-d7e8-4cab-8e35-d18c506e98da","BI06 - Hémoglobine glyquée",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
 "init.6d792222-d3e8-4b1e-a1b3-7af9bd7b0f2a","BI07 - Hémoglobine",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
-"init.5f26cd03-001b-443c-8bf6-b902a5ad5266","BI08 - Ionogram",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
+"init.c16b734f-8ddc-44b9-a0c5-f00c9b198d43","BI08 - Ionogramme",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
 "init.a4aa073e-300a-4d99-b1c0-3f84081b86b4","BI09 - LCR (albumine, glucose)",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
 "init.09ca9876-74a1-4083-ad93-4346c7437f8a","BI10 - Phosphatase alcaline",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
 "init.c447ae6b-5e77-47f0-bc44-3d156da9ac0e","BI11 - Protéines totales",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
@@ -39,6 +39,9 @@ id,name,categ_id/id,type,purchase_ok,sale_ok,invoice_policy
 "init.0a3434d6-49f2-41a7-9ba6-b66d6cdd4b82","C-Reactive Protein (coded)",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
 "init.344c76f2-8918-4f3a-b768-5e89d6623ed1","Globules blancs",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
 "init.82bec060-4b9b-480c-8baa-e560a3e87b38","Globules rouges",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
+"init.d7b12168-92cf-4ffe-931f-930d486a2b95","Hématocrite",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
+"init.11d83912-5efa-42ca-8e4b-508923f3345a","Hémoglobine",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
+"init.4379be20-b624-4ff5-aaf0-4f47942905b8","Hémoglobine corpusculaires moyenne",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
 "init.7685f960-5994-42be-bbf7-7f56f8c8a07f","HS01 - Numération formule sanguine complète (CBC)",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
 "init.f1baad6d-6727-4964-bb06-610a020e55dd","HS02 - Test Emmel",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
 "init.f7ed9997-9a3e-44c1-82f2-db7eca3efe4e","HS03 - Hemostasis test",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
@@ -63,16 +66,15 @@ id,name,categ_id/id,type,purchase_ok,sale_ok,invoice_policy
 "init.bbab6fa6-69bc-45f4-8a43-677883bee6be","HS23 - Temps de thromboplastine partielle activée (aPTT)",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
 "init.27a280c7-5754-49a6-99a9-915608ee8f58","HS24 - Vitesse de sédimentation des érythrocytes (VS)",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
 "init.84bb1faa-fd59-47a8-84e6-e3949ac14bb0","HS25 - Hepatitis A antigen",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
-"init.d7b12168-92cf-4ffe-931f-930d486a2b95","Hématocrite",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
-"init.11d83912-5efa-42ca-8e4b-508923f3345a","Hémoglobine",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
-"init.4379be20-b624-4ff5-aaf0-4f47942905b8","Hémoglobine corpusculaires moyenne",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
 "init.0573d9de-e500-4263-9e26-f0982e8a8c2d","Largeur de distribution des gloubules rouges",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
 "init.0816a323-8f88-4500-be2e-f332910e217e","Lymphocytes (%)",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
-"init.ae984a45-2850-47d7-9765-eb9436c0e8b0","Moyenne hémoglobine cellulaire concentration",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
 "init.7fd3f616-0989-478e-8b1d-7ea3a15ce441","Mélangés en pourcentage (monocytes, des éosinophiles et des basophiles), les cellules sanguines",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
+"init.ae984a45-2850-47d7-9765-eb9436c0e8b0","Moyenne hémoglobine cellulaire concentration",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
 "init.ce5676c9-d011-4e01-ad49-e8f38d3d30d5","Neutrophiles (%)",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
 "init.5c5d139d-b9bc-4167-a454-639c30e8a8d3","Plaquettes",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
 "init.7dae4f2c-6d7b-497b-812e-5a74165fa3fe","Protéine C-réactive (numérique)",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
+"init.9ecac6e4-7faa-45cc-a535-3b1871971008","TPHA (codé)",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
 "init.8e73aa0c-9145-45b1-b7df-0b414e9d00e7","TPHA (numeric)",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
+"init.e1cd0af1-5966-4c92-8c34-b4fd0e6e162b","VDRL (codé)",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
 "init.41a29eb6-8636-4fc6-aed7-1e9cfbade875","VDRL (numeric)",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
 "init.32187902-f678-45b0-ac31-513f67f34671","Volume globulaire moyen",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
