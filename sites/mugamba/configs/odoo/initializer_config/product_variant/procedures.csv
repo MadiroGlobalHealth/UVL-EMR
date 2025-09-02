@@ -1,4 +1,13 @@
 id,name,categ_id/id,type,purchase_ok,sale_ok,invoice_policy
+"init.0a5ba175-fb7e-4d66-aa6a-ba058f3468c1","RX07 - CT scan",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.1a5e3d73-f897-47ed-840b-d4537b7cc586","RX06 - Barium enema",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.81e0643c-a871-475e-8bd5-93945da8877d","RX05 - Salpingo-urethrogram",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.b25dcc00-800f-48ac-b31a-f1e9cc53d787","RX04 - Intravenous urography",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.701257a2-885e-4249-8319-d9597d2970af","RX03 - Bone X-ray",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.82e7d36c-078d-40c6-9854-92b376099307","RX02 - Abdominal X-ray (plain)",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.e3dea2c8-62c6-4487-bdaa-1d009642f7ad","RX01 - Chest X-ray",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.521361cf-ce7d-49a6-9721-8ebad1b76702","EC02 - Gastrointestinal ultrasound",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.8155e2e0-5b62-42bc-b47c-0702aaafe3df","EC01 - Abdominal ultrasound",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
 "init.5a609990-2381-4d3c-b5ac-34d8f86fcb9d","Generalist consultation with MFP",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
 "init.ed284c29-531f-4666-837c-01345e3dbb5b","Generalist consultation",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
 "init.bf6bb5b0-3cad-4452-8031-f4c2fce6ee1a","Birth certificate",product.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
