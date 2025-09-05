@@ -283,5 +283,38 @@
         "defaultOpen": false
       }
     ]
+  },
+  "@openmrs/esm-patient-vitals-app": {
+    "concepts": {
+      "systolicBloodPressureUuid": "6d0b8551-feb8-4d57-892a-d75398181b3f",
+      "diastolicBloodPressureUuid": "c46fcfdd-a785-4416-80bc-2d9e2edf5a45",
+      "pulseUuid": "bc54cb7c-bb45-45aa-84d6-2346748b7c93",
+      "temperatureUuid": "748f8d43-617a-40ba-9474-20522e73fb8a",
+      "oxygenSaturationUuid": "46091095-b138-465e-9a7d-17a243932812",
+      "heightUuid": "b32af377-04c0-4f00-a571-d01170a16d9d",
+      "weightUuid": "5302aa6f-7528-4aeb-a3e8-0dc16a39b6ce",
+      "respiratoryRateUuid": "b39db318-d563-4114-bec0-31ad3d254b24",
+      "generalPatientNoteUuid": "9dc2962b-bdd0-4261-b69d-55769e078be0",
+      "midUpperArmCircumferenceUuid": "6d4a1b5a-d41d-4779-b441-70ba440b64de",
+      "vitalSignsConceptSetUuid": "7f0b11e7-7446-4cfe-9011-83ba4b694e25"
+    }
+  },
+  "@openmrs/esm-patient-medications-app": {
+    "daysDurationUnit": {
+      "uuid": "7923cbfd-79c9-4155-8897-cbf629f4c1bc",
+      "display": "Days"
+    }
+  },
+  "@openmrs/esm-patient-allergies-app": {
+    "concepts": {
+      "drugAllergenUuid": "9774d182-65ac-4f26-b226-0ab71d8c46fc",
+      "environmentalAllergenUuid": "d8cef473-da9e-46c3-84cd-a059fc1495e4",
+      "foodAllergenUuid": "ac77ea6a-4350-494f-a8a2-8f19b8172516",
+      "mildReactionUuid": "0e3ff96b-a99d-486c-97bb-9f23cef47111",
+      "moderateReactionUuid": "d5c85a4b-ba3b-4a52-860f-be2e0d5ce2cb",
+      "severeReactionUuid": "d4b91979-3b79-4419-8ceb-58f9ea735d21",
+      "allergyReactionUuid": "c50cb01c-32a6-4e4a-aea5-d2fc86fea46d",
+      "otherConceptUuid": "b5c4b807-d3de-40cd-aae9-178df9b40535"
+    }
   }
 }
