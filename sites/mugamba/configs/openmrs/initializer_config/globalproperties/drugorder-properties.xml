@@ -1,0 +1,19 @@
+<config>
+    <globalProperties>
+        <globalProperty>
+            <property>order.drugDosingUnitsConceptUuid</property>
+            <value>7026a506-6fec-4b6b-86c1-ef691bb52261</value>
+        </globalProperty>
+        <globalProperty>
+            <property>order.drugRoutesConceptUuid</property>
+            <value>2c7c66c5-8cc5-47fb-abf0-32007fc99993</value>
+        </globalProperty>
+        <globalProperty>
+            <property>order.drugDispensingUnitsConceptUuid</property>
+            <value>2d8e60c8-d256-4764-b18d-cf1dfcb7ced9</value>
+        </globalProperty><globalProperty>
+            <property>order.durationUnitsConceptUuid</property>
+            <value>abbd99ba-34df-45b3-aa35-fff14f643b59</value>
+        </globalProperty>
+    </globalProperties>
+</config>
