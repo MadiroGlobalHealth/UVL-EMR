@@ -281,7 +281,7 @@
                 "concept": "1ec6ce6a-607a-4b6a-af5d-e14911fe98c5",
                 "answers": [
                   {
-                    "concept": "9af5a631-2c4a-48c0-89cd-e1081c857804",
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725",
                     "label": "No"
                   },
                   {
@@ -321,11 +321,11 @@
                 "concept": "d9a94f49-412b-41fe-ac47-437dbc66ffda",
                 "answers": [
                   {
-                    "concept": "4372cb1c-0e61-4ba0-b440-8db9215498b8",
+                    "concept": "5ebcf822-0398-43ef-8d70-117e363541da",
                     "label": "Positive"
                   },
                   {
-                    "concept": "8604e9b5-b655-47bb-9592-ce33e44d4313",
+                    "concept": "5c8d6240-9cc2-4bc1-b783-30eb887f950c",
                     "label": "Negative"
                   }
                 ]
@@ -368,7 +368,7 @@
                     "label": "Screened"
                   },
                   {
-                    "concept": "4372cb1c-0e61-4ba0-b440-8db9215498b8",
+                    "concept": "5ebcf822-0398-43ef-8d70-117e363541da",
                     "label": "Positive"
                   },
                   {
@@ -438,11 +438,11 @@
                 "concept": "86b0bf2e-4445-4f3f-aae9-dde28a9b0822",
                 "answers": [
                   {
-                    "concept": "5ec32099-ca46-428e-adef-2dc146fd0368",
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e",
                     "label": "Yes"
                   },
                   {
-                    "concept": "9af5a631-2c4a-48c0-89cd-e1081c857804",
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725",
                     "label": "No"
                   }
                 ]
@@ -457,11 +457,11 @@
                 "concept": "cdc82ddc-1413-4ec1-b891-b0155f8cc7fa",
                 "answers": [
                   {
-                    "concept": "5ec32099-ca46-428e-adef-2dc146fd0368",
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e",
                     "label": "Yes"
                   },
                   {
-                    "concept": "9af5a631-2c4a-48c0-89cd-e1081c857804",
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725",
                     "label": "No"
                   }
                 ]
@@ -571,7 +571,7 @@
                 "concept": "5841a760-ac78-4c75-8d31-9df9af3891ec",
                 "answers": [
                   {
-                    "concept": "9af5a631-2c4a-48c0-89cd-e1081c857804",
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725",
                     "label": "No"
                   },
                   {
@@ -594,11 +594,11 @@
                 "concept": "2c10adc6-9bdf-4ff8-a36e-6166ea66e2c8",
                 "answers": [
                   {
-                    "concept": "5ec32099-ca46-428e-adef-2dc146fd0368",
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e",
                     "label": "Yes"
                   },
                   {
-                    "concept": "9af5a631-2c4a-48c0-89cd-e1081c857804",
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725",
                     "label": "No"
                   }
                 ]
@@ -616,11 +616,11 @@
                 "concept": "186dfb2f-be92-41ca-bd3d-3997462c53f4",
                 "answers": [
                   {
-                    "concept": "9af5a631-2c4a-48c0-89cd-e1081c857804",
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725",
                     "label": "No"
                   },
                   {
-                    "concept": "5ec32099-ca46-428e-adef-2dc146fd0368",
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e",
                     "label": "Yes"
                   }
                 ]
@@ -635,17 +635,17 @@
                 "concept": "fdde8fc7-b854-49ab-8b01-08ba156a779e",
                 "answers": [
                   {
-                    "concept": "5ec32099-ca46-428e-adef-2dc146fd0368",
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e",
                     "label": "Yes"
                   },
                   {
-                    "concept": "9af5a631-2c4a-48c0-89cd-e1081c857804",
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725",
                     "label": "No"
                   }
                 ]
               },
               "hide": {
-                "hideWhenExpression": "pneumonia !== '5ec32099-ca46-428e-adef-2dc146fd0368'"
+                "hideWhenExpression": "pneumonia !== '2f20b5d3-ce71-4b89-a3b4-388f416fc62e'"
               }
             },
             {

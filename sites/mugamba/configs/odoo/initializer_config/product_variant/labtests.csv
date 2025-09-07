@@ -1,7 +1,7 @@
 id,name,categ_id/id,type,purchase_ok,sale_ok,invoice_policy
 "init.b4f7264d-6c23-4fac-9d85-f8610049fc85","BI01 - Acide urique",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
 "init.4e7c3002-3506-4fbf-a400-e3445b06422e","BI02 - Bilirubine (conjuguée + totale)",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
-"init.ec1066bd-5bc9-4fd5-bdf3-d5ae9bc49809","BI03 - C-Reactive Protein",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
+"init.ec1066bd-5bc9-4fd5-bdf3-d5ae9bc49809","BI03 - Protéine C-réactive",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
 "init.ab64674a-2005-4193-a01d-5d7a21eff91d","BI04 - Gamma GT",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
 "init.8c72c21f-e119-4f71-9d9c-41dd5d04bf5d","BI05 - Glucose sanguin",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
 "init.d180f2db-d7e8-4cab-8e35-d18c506e98da","BI06 - Hémoglobine glyquée",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
@@ -14,14 +14,14 @@ id,name,categ_id/id,type,purchase_ok,sale_ok,invoice_policy
 "init.3fa54ce0-3c3d-43a9-80d1-2ad43e3a3a00","BI12 - GPT (ALT)",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
 "init.2ce344ef-b701-4218-809c-826642e490e4","BI13 - Urée",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
 "init.f1057206-bbe6-4193-bc34-3ed8a691f2ca","BI14 - Créatinine",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
-"init.e3dadcf4-2687-4f4f-8fa6-edef24e759cc","BI15 - Blood albumin",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
+"init.e3dadcf4-2687-4f4f-8fa6-edef24e759cc","BI15 - Albumine sanguine",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
 "init.472c9b98-599a-4dcf-8a7a-1c5087fe7253","BI16 - Albumine sérique",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
-"init.7bce8a61-b850-4488-9217-089b71f5c5b6","BI17 - Amylasemia",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
-"init.b95a9df1-4189-41d9-8e9a-9aeaaa7067d4","BI18 - Amylasuria",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
+"init.7bce8a61-b850-4488-9217-089b71f5c5b6","BI17 - Amylasémie",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
+"init.b95a9df1-4189-41d9-8e9a-9aeaaa7067d4","BI18 - Amylasurie",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
 "init.9c07ed0b-4497-48d6-8575-3d4d6a5a3139","BI19 - Acide lactique",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
-"init.f5329b60-9d03-429e-afaa-9dabc99ba148","BI20 - Glycated albumin",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
+"init.f5329b60-9d03-429e-afaa-9dabc99ba148","BI20 - Albumine glyquée",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
 "init.9e7fb7c3-e93b-4c36-bc27-331dd2343e0c","BI21 - Analyse du liquide amniotique",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
-"init.0f2d8bab-e1b9-41ec-93d0-bc262fd19c98","BI22 - Peritoneal fluid analysis",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
+"init.0f2d8bab-e1b9-41ec-93d0-bc262fd19c98","BI22 - Analyse du liquide péritonéal",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
 "init.235ac1e3-d040-46d0-95de-130bd0b72181","BI23 - HDL",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
 "init.8f7f6f05-1cf2-42c9-a1e4-a864b1b6c4f9","BI24 - LDL",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
 "init.65589ff5-f7a5-43f8-b3ba-b2f077eb95e6","BI25 - Cholestérol total",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
@@ -34,17 +34,11 @@ id,name,categ_id/id,type,purchase_ok,sale_ok,invoice_policy
 "init.51c99ece-ffdc-457f-a337-d6444443a1c1","BP05 - Examen du LCR",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
 "init.6a310ab5-5178-4e5e-9112-3d60ecc6a60f","BP06 - Examen des selles",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
 "init.ac930dc2-3328-4225-98af-f387787b04e9","BP07 - Examen d’urine",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
-"init.1bf21839-890e-4958-a311-27f221b29774","BP08 - Examination of other secretions",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
+"init.1bf21839-890e-4958-a311-27f221b29774","BP08 - Examen d'autres sécrétions",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
 "init.2c6ea64a-eac8-4f91-9722-e96e1d1a74f4","BP09 - Culture d'urine",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
-"init.0a3434d6-49f2-41a7-9ba6-b66d6cdd4b82","C-Reactive Protein (coded)",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
-"init.344c76f2-8918-4f3a-b768-5e89d6623ed1","Globules blancs",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
-"init.82bec060-4b9b-480c-8baa-e560a3e87b38","Globules rouges",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
-"init.d7b12168-92cf-4ffe-931f-930d486a2b95","Hématocrite",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
-"init.11d83912-5efa-42ca-8e4b-508923f3345a","Hémoglobine",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
-"init.4379be20-b624-4ff5-aaf0-4f47942905b8","Hémoglobine corpusculaires moyenne",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
 "init.7685f960-5994-42be-bbf7-7f56f8c8a07f","HS01 - Numération formule sanguine complète (CBC)",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
 "init.f1baad6d-6727-4964-bb06-610a020e55dd","HS02 - Test Emmel",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
-"init.f7ed9997-9a3e-44c1-82f2-db7eca3efe4e","HS03 - Hemostasis test",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
+"init.f7ed9997-9a3e-44c1-82f2-db7eca3efe4e","HS03 - Test d’hémostase",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
 "init.31ae6684-f2b3-4634-9e86-f4bfd88001a2","HS04 - Test rapide du paludisme",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
 "init.c0e83d65-0ae1-4c1c-af36-12b4504406f0","HS05 - Test VIH rapide",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
 "init.2abdaf7a-777a-4585-9fd4-7ce8c4dc0d67","HS07 - Test de grossesse",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
@@ -54,9 +48,9 @@ id,name,categ_id/id,type,purchase_ok,sale_ok,invoice_policy
 "init.fe4a677c-e291-4b92-a664-01aff55dc547","HS11 - Numération des CD4",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
 "init.a9e52d34-3dc7-46c6-84a5-0db65faefaf6","HS12 - Groupe sanguin",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
 "init.5ec56bcc-2020-41aa-a2e7-b6c0ae3b9724","HS13 - Test de compatibilité sanguine",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
-"init.76afb8a8-536f-4656-b1a3-759fc19c3d16","HS14 - DNA analysis",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
-"init.badb54e3-0963-4a4a-8de0-0ddb85f11e9f","HS15 - ASLO test",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
-"init.9bfb6ce4-9a1a-44de-9f1c-14e3f34dfe9b","HS16 - Serotoxo test",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
+"init.76afb8a8-536f-4656-b1a3-759fc19c3d16","HS14 - Analyse de l'ADN",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
+"init.badb54e3-0963-4a4a-8de0-0ddb85f11e9f","HS15 - Test ASLO",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
+"init.9bfb6ce4-9a1a-44de-9f1c-14e3f34dfe9b","HS16 - Test de Séroroxo",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
 "init.44d809cb-b920-4ced-b056-fe5a5d1e5bf6","HS17 - Antigène de surface de l'hépatite B",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
 "init.1136480a-fc32-4656-b709-aeb7864410cc","HS18 - Anticorps contre l'hépatite C",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
 "init.40fb7885-dad6-4604-8caa-c70e699b9113","HS19 - IgG",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
@@ -65,16 +59,4 @@ id,name,categ_id/id,type,purchase_ok,sale_ok,invoice_policy
 "init.3fca61c5-2649-4bae-a302-4cf216f5a2cc","HS22 - Temps de prothrombine",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
 "init.bbab6fa6-69bc-45f4-8a43-677883bee6be","HS23 - Temps de thromboplastine partielle activée (aPTT)",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
 "init.27a280c7-5754-49a6-99a9-915608ee8f58","HS24 - Vitesse de sédimentation des érythrocytes (VS)",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
-"init.84bb1faa-fd59-47a8-84e6-e3949ac14bb0","HS25 - Hepatitis A antigen",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
-"init.0573d9de-e500-4263-9e26-f0982e8a8c2d","Largeur de distribution des gloubules rouges",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
-"init.0816a323-8f88-4500-be2e-f332910e217e","Lymphocytes (%)",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
-"init.7fd3f616-0989-478e-8b1d-7ea3a15ce441","Mélangés en pourcentage (monocytes, des éosinophiles et des basophiles), les cellules sanguines",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
-"init.ae984a45-2850-47d7-9765-eb9436c0e8b0","Moyenne hémoglobine cellulaire concentration",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
-"init.ce5676c9-d011-4e01-ad49-e8f38d3d30d5","Neutrophiles (%)",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
-"init.5c5d139d-b9bc-4167-a454-639c30e8a8d3","Plaquettes",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
-"init.7dae4f2c-6d7b-497b-812e-5a74165fa3fe","Protéine C-réactive (numérique)",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
-"init.9ecac6e4-7faa-45cc-a535-3b1871971008","TPHA (codé)",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
-"init.8e73aa0c-9145-45b1-b7df-0b414e9d00e7","TPHA (numeric)",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
-"init.e1cd0af1-5966-4c92-8c34-b4fd0e6e162b","VDRL (codé)",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
-"init.41a29eb6-8636-4fc6-aed7-1e9cfbade875","VDRL (numeric)",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
-"init.32187902-f678-45b0-ac31-513f67f34671","Volume globulaire moyen",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
+"init.84bb1faa-fd59-47a8-84e6-e3949ac14bb0","HS25 - Antigène de l'hépatite A",product.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
