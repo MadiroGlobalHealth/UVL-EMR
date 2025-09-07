@@ -316,5 +316,10 @@
       "allergyReactionUuid": "c50cb01c-32a6-4e4a-aea5-d2fc86fea46d",
       "otherConceptUuid": "b5c4b807-d3de-40cd-aae9-178df9b40535"
     }
+  },
+  "@openmrs/esm-patient-immunizations-app": {
+    "immunizationsConfig": {
+      "immunizationConceptSet": "5d2ca206-2b83-4965-aa55-b6e27a37c590"
+    }
   }
 }
