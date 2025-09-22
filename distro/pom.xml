@@ -29,7 +29,7 @@
 
     <!--RefApp 3.4.0 modules -->
     <openmrs.version>2.7.4</openmrs.version>
-    <fhir2.version>2.5.0</fhir2.version>
+    <fhir2.version>2.7.0</fhir2.version>
     <webservices.rest.version>2.49.0</webservices.rest.version>
     <addresshierarchy.version>2.21.0</addresshierarchy.version>
     <idgen.version>4.14.0</idgen.version>
