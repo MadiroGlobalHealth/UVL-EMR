@@ -83,7 +83,7 @@
   },
   "@openmrs/esm-patient-orders-app": {
     "Display conditions": {
-      "privileges": ["Manage Patient Orders"]
+      "privileges": ["Get Orders"]
     }
   },
   "@openmrs/esm-patient-registration-app": {
@@ -187,7 +187,7 @@
   },
   "@openmrs/esm-patient-tests-app": {
     "Display conditions": {
-      "privileges": ["Manage Patient Orders"]
+      "privileges": ["Get Orders"]
     },
     "orders": {
       "labOrderTypeUuid": "52a447d3-a64a-11e3-9aeb-50e549534c5e",
@@ -289,6 +289,11 @@
   "@openmrs/esm-appointments-app": {
     "Display conditions": {
       "privileges": ["Manage Appointments"]
+    }
+  },
+  "@openmrs/esm-patient-lists-app": {
+    "Display conditions": {
+      "privileges": ["Get Patient Cohorts"]
     }
   }
 }
