@@ -1,17 +1,4 @@
 {
-  "@openmrs/esm-patient-home-app": {
-    "extensionSlots": {
-      "homepage-widgets-slot": {
-        "configure": {
-          "active-visits-widget": {
-            "Display conditions": {
-              "privileges": ["Configure Visits"]
-            }
-          }
-        }
-      }
-    }
-  },
   "@openmrs/esm-patient-chart-app": {
     "Display conditions": {
       "privileges": ["Patient Dashboard - View Patient Summary"]
@@ -57,13 +44,6 @@
     },
     "visitAttributeTypes": []
   },
-  "@openmrs/esm-home-app": {
-    "extensionSlots": {
-      "home-dashboard-slot": {
-        "add": []
-      }
-    }
-  },
   "@openmrs/esm-primary-navigation-app": {
     "externalRefLinks": [
       {
@@ -74,7 +54,23 @@
         "title": "Mugamba Lab - Mini-LIMS",
         "redirect": "#"
       }
-    ]
+    ],
+    "extensionSlots": {
+      "home-dashboard-slot": {
+        "configure": {
+          "home-widget-db-link": {
+            "Display conditions": {
+              "privileges": ["Get Visits"]
+            }
+          }
+        }
+      }
+    }
+  },
+  "@openmrs/esm-active-visits-app": {
+    "Display conditions": {
+      "privileges": ["Get Visits"]
+    }
   },
   "@openmrs/esm-patient-attachments-app": {
     "Display conditions": {
@@ -292,6 +288,21 @@
     }
   },
   "@openmrs/esm-patient-lists-app": {
+    "Display conditions": {
+      "privileges": ["Get Patient Cohorts"]
+    }
+  },
+  "@openmrs/esm-service-queues-app": {
+    "Display conditions": {
+      "privileges": ["Get Queues"]
+    }
+  },
+  "@penmrs/esm-laboratory-app": {
+    "Display conditions": {
+      "privileges": ["Manage Laboratory"]
+    }
+  },
+  "@openmrs/esm-patient-list-management-app": {
     "Display conditions": {
       "privileges": ["Get Patient Cohorts"]
     }
