@@ -87,6 +87,7 @@
                     <exclude>distro/configs/**/visittypes/*.*</exclude>
                     <exclude>distro/configs/**/globalproperties/drugorder-properties-core_data.xml</exclude>
                     <exclude>distro/configs/**/globalproperties/i18n-core_demo.xml</exclude>
+                    <exclude>distro/configs/**/roles/roles_core-demo.csv</exclude>
                     <exclude>distro/configs/**/odoo/**/product_variant/*.*</exclude>
                     <exclude>distro/configs/**/odoo/**/units_of_measure/*.*</exclude>
                     <exclude>distro/configs/**/odoo/**/pricelist/discounted.csv</exclude>
