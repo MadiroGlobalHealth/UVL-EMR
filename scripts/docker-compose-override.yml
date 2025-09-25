@@ -1,5 +1,6 @@
 services:
   openmrs:
+    image: openmrs/openmrs-core:2.7.5
     healthcheck:
       retries: 100
       test: ["CMD", "curl", "-f", "http://localhost:8080/openmrs"]
@@ -8,5 +9,6 @@ services:
       start_period: 30s
 
   keycloak:
+    image: docker.io/mekomsolutions/keycloak:22.0.5
     environment:
       KC_HOSTNAME_ADMIN_URL: ${SERVER_SCHEME}://${KEYCLOAK_HOSTNAME}
