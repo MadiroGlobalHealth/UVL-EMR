@@ -27,7 +27,7 @@
     <billing.version>1.2.0-SNAPSHOT</billing.version>
     <initializer.version>2.9.0</initializer.version>
 
-    <!--RefApp 3.4.0 modules -->
+    <!--RefApp 3.5.0 modules -->
     <fhir2.version>2.7.0</fhir2.version>
     <webservices.rest.version>2.50.0</webservices.rest.version>
     <addresshierarchy.version>2.21.0</addresshierarchy.version>
