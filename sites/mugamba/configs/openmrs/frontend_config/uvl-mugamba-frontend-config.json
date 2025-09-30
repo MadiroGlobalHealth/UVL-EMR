@@ -251,7 +251,7 @@
   },
   "@openmrs/esm-patient-immunizations-app": {
     "Display conditions": {
-      "privileges": ["Manage Patient Immunization Orders"]
+      "privileges": ["Manage Immunization Summary"]
     },
     "immunizationsConfig": {
       "immunizationConceptSet": "5d2ca206-2b83-4965-aa55-b6e27a37c590"
@@ -279,7 +279,7 @@
   },
   "@openmrs/esm-patient-notes-app": {
     "Display conditions": {
-      "privileges": ["Manage Visit Note"]
+      "privileges": ["Get Notes"]
     }
   },
   "@openmrs/esm-appointments-app": {

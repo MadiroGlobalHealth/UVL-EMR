@@ -84,11 +84,93 @@
     "client": {
       "openmrs": [
         {
-          "id": "f2482304-f430-42d9-942d-78ea57bcd205",
+          "id": "a0cbe485-ceb7-43c8-af3d-dd5a43985474",
           "name": "System Developer",
+          "description": "System Developer",
           "composite": false,
           "clientRole": true,
-          "containerId": "d8da28c8-7bb9-4df4-a1ae-b5711d2a7536",
+          "containerId": "714e1fe8-a430-44c7-9e27-37e96966892b",
+          "attributes": {}
+        },
+        {
+          "id": "af719902-1321-45ba-b4aa-06907ceba685",
+          "name": "Register patients",
+          "description": "Register patients",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "f4fa97f9-2040-4ae6-8f96-573b43fab87a",
+          "attributes": {}
+        },
+        {
+          "id": "fc459be9-5874-4f33-a130-aea158472026",
+          "name": "Print Patient Label Sticker",
+          "description": "Print Patient Label Sticker",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "106f839e-29b4-4632-9991-159106ddf053",
+          "attributes": {}
+        },
+        {
+          "id": "b43d00fb-7f5b-472a-a08b-b018ae591f83",
+          "name": "Help Nurse",
+          "description": "Help Nurse",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "5ab890c2-c5da-4c90-ad47-7e38a9aea5d4",
+          "attributes": {}
+        },
+        {
+          "id": "38edc2a4-39dc-4d8f-9cb6-14f680233a14",
+          "name": "Inpatient Consultant",
+          "description": "Inpatient Consultant",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "ef3cf29f-fb17-4d19-a7b4-855e02c3e684",
+          "attributes": {}
+        },
+        {
+          "id": "87c8fca7-5d96-4eee-bfc2-78e88cf11580",
+          "name": "Outpatient Consultant",
+          "description": "Outpatient Consultant",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "454b3944-927f-45de-aef8-a91596e2143d",
+          "attributes": {}
+        },
+        {
+          "id": "2c3c00c0-e6cc-4cf7-ae09-aa3f3280d1fa",
+          "name": "Nurse",
+          "description": "Nurse",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "40b4efef-2a2a-4aab-96a7-044683d80673",
+          "attributes": {}
+        },
+        {
+          "id": "b5eccf74-8cdc-4179-ac5e-d69afbe1deb6",
+          "name": "Doctor",
+          "description": "Doctor",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "c133f469-1d00-438f-a3e2-2a781105f997",
+          "attributes": {}
+        },
+        {
+          "id": "e3e7b07a-c5bf-4639-99b5-bfef6f7f7b69",
+          "name": "Laboratory Technician",
+          "description": "Laboratory Technician",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "4477ceb2-0ed9-4679-96f0-e578d65a20c3",
+          "attributes": {}
+        },
+        {
+          "id": "e2506efa-7e33-4451-9074-c609f20e86b2",
+          "name": "Anonymous",
+          "description": "Anonymous",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "1e76eb17-c63e-4359-bb24-bfd73fe2dfe1",
           "attributes": {}
         }
       ],
