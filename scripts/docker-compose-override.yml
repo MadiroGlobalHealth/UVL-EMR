@@ -21,3 +21,6 @@ services:
   keycloak:
     environment:
       KC_HOSTNAME_ADMIN_URL: ${SERVER_SCHEME}://${KEYCLOAK_HOSTNAME}
+
+  mysql:
+    image: mariadb:10.11.13
