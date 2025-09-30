@@ -2,11 +2,21 @@ services:
   openmrs:
     image: openmrs/openmrs-core:2.7.6
     healthcheck:
-      retries: 100
-      test: ["CMD", "curl", "-f", "http://localhost:8080/openmrs"]
-      interval: 10s
-      timeout: 5s
-      start_period: 30s
+      test:
+        [
+          "CMD",
+          "curl",
+          "-fsS",
+          "--connect-timeout",
+          "5",
+          "--max-time",
+          "10",
+          "http://localhost:8080/openmrs/health/started",
+        ]
+      interval: 15s
+      timeout: 10s
+      retries: 40
+      start_period: 600s
 
   keycloak:
     environment:
