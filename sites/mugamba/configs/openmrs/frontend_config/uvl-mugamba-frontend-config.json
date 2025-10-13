@@ -319,7 +319,7 @@
       "privileges": ["Get Queues"]
     }
   },
-  "@penmrs/esm-laboratory-app": {
+  "@openmrs/esm-laboratory-app": {
     "Display conditions": {
       "privileges": ["Manage Laboratory"]
     }
@@ -327,6 +327,11 @@
   "@openmrs/esm-patient-list-management-app": {
     "Display conditions": {
       "privileges": ["Get Patient Cohorts"]
+    }
+  },
+  "@openmrs/esm-home-app": {
+    "defaultDashboardPerRole": {
+      "Lab Technician": "laboratory"
     }
   }
 }

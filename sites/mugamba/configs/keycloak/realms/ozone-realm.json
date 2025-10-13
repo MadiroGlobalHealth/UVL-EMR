@@ -157,8 +157,8 @@
         },
         {
           "id": "e3e7b07a-c5bf-4639-99b5-bfef6f7f7b69",
-          "name": "Laboratory Technician",
-          "description": "Laboratory Technician",
+          "name": "Lab Technician",
+          "description": "Lab Technician",
           "composite": false,
           "clientRole": true,
           "containerId": "4477ceb2-0ed9-4679-96f0-e578d65a20c3",
