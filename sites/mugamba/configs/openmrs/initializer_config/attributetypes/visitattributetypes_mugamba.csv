@@ -1,0 +1,6 @@
+Uuid,Void/Retire,Entity name,Name,Name:fr,Description,Min occurs,Max occurs,Datatype classname,Datatype config,Preferred handler classname,Handler config,_order:1000
+4dfdd31b-64e7-485e-aaf0-4cf8862644cc,,Visit,Origin,Origine,,0,1,org.openmrs.customdatatype.datatype.ConceptDatatype,c110605a-e601-40bc-ae07-e1f261d317fa,,,
+e880354f-4a75-48b6-a7e8-d7fc629e06eb,,Visit,Patient location,Lieu de résidence du patient,,0,1,org.openmrs.customdatatype.datatype.ConceptDatatype,73f6005b-1eec-4070-9b75-1b8143e942e7,,,
+536b1547-15fb-4e36-b0a3-9aeba0e877c0,,Visit,Case Type,Type de cas,,0,1,org.openmrs.customdatatype.datatype.ConceptDatatype,23ceec98-f1c5-42ce-8b11-60b5be1c2acf,,,
+56f755aa-8eba-49de-83be-126322cf0abd,,Visit,Consultation type,Type de consultation,,0,1,org.openmrs.customdatatype.datatype.ConceptDatatype,49cc3fd2-08fe-46cb-ab62-86b847584ff2,,,
+3024f003-e5bd-4cc6-aa2a-05e9575f9ea9,,Visit,Disease Category,Catégorie de maladie,,0,1,org.openmrs.customdatatype.datatype.ConceptDatatype,4da71f38-c92b-4525-a7fa-5c559df0bc3e,,,
