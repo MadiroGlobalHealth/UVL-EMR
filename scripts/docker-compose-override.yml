@@ -19,6 +19,7 @@ services:
       start_period: 600s
 
   keycloak:
+    image: docker.io/mekomsolutions/keycloak:22.0.5
     environment:
       KC_HOSTNAME_ADMIN_URL: ${SERVER_SCHEME}://${KEYCLOAK_HOSTNAME}
 
