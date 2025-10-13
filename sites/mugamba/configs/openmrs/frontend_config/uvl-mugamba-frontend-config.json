@@ -42,17 +42,39 @@
         }
       }
     },
-    "visitAttributeTypes": []
+    "visitAttributeTypes": [
+      {
+        "uuid": "4dfdd31b-64e7-485e-aaf0-4cf8862644cc",
+        "required": true
+      },
+
+      {
+        "uuid": "e880354f-4a75-48b6-a7e8-d7fc629e06eb",
+        "required": true
+      },
+
+      {
+        "uuid": "536b1547-15fb-4e36-b0a3-9aeba0e877c0",
+        "required": true
+      },
+
+      {
+        "uuid": "56f755aa-8eba-49de-83be-126322cf0abd",
+        "required": true
+      },
+
+      {
+        "uuid": "3024f003-e5bd-4cc6-aa2a-05e9575f9ea9",
+        "required": true
+      }
+    ],
+    "showServiceQueueFields": true
   },
   "@openmrs/esm-primary-navigation-app": {
     "externalRefLinks": [
       {
         "title": "Pharmacy, Billing & Inventory",
         "redirect": "${ODOO_PUBLIC_URL}"
-      },
-      {
-        "title": "Mugamba Lab - Mini-LIMS",
-        "redirect": "#"
       }
     ],
     "extensionSlots": {
