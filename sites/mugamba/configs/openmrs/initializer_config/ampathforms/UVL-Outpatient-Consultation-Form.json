@@ -17,33 +17,6 @@
           "label": "Visit Information",
           "questions": [
             {
-              "label": "Origin",
-              "type": "obs",
-              "id": "origin",
-              "questionOptions": {
-                "rendering": "radio",
-                "concept": "c110605a-e601-40bc-ae07-e1f261d317fa",
-                "answers": [
-                  {
-                    "concept": "7282deba-8db9-4b83-b0a9-799b7a91f9da",
-                    "label": "Home"
-                  },
-                  {
-                    "concept": "f793e2ee-4e34-4d9a-8c83-a165bc74d869",
-                    "label": "Referred by Health Center"
-                  },
-                  {
-                    "concept": "fbe78ab5-3591-4d1e-bb53-7e94857d98b3",
-                    "label": "Referred by other hospital"
-                  },
-                  {
-                    "concept": "497a7e30-5757-4a0a-85da-4d14520969bf",
-                    "label": "Intra-Hospital Referral (Consultation/Other Department)"
-                  }
-                ]
-              }
-            },
-            {
               "label": "Attending physician",
               "type": "obs",
               "id": "attendingPhysician",
@@ -52,98 +25,7 @@
                 "concept": "caa77817-7440-4cef-8d94-555733f23a5a"
               }
             },
-            {
-              "label": "Patient Location",
-              "type": "obs",
-              "id": "patientLocation",
-              "questionOptions": {
-                "rendering": "radio",
-                "concept": "73f6005b-1eec-4070-9b75-1b8143e942e7",
-                "answers": [
-                  {
-                    "concept": "3b1137d7-6b9f-41e7-a610-90890d2df687"
-                  },
-                  {
-                    "concept": "c3aa3034-81fb-44ee-8d37-bb28c0d929ed"
-                  },
-                  {
-                    "concept": "7db71393-0f63-47e3-bbe0-f0bfc873ea24"
-                  },
-                  {
-                    "concept": "3eb2ba5e-b08a-4d1e-87f1-de2bb359aea1"
-                  },
-                  {
-                    "concept": "31b3a059-fe2a-4092-9b80-5fea8a8c6fae"
-                  }
-                ]
-              }
-            },
-            {
-              "label": "Outcome",
-              "type": "obs",
-              "id": "outcome",
-              "questionOptions": {
-                "rendering": "radio",
-                "concept": "b501a1ac-f2ea-4e79-ace4-658c1af45bd2",
-                "answers": [
-                  {
-                    "concept": "9ff60055-20a8-4d4d-9cc1-f04548965365",
-                    "label": "Outpatient"
-                  },
-                  {
-                    "concept": "ac0a6887-a5b5-4280-ae12-4f038163ce3d",
-                    "label": "Counter-Referral"
-                  },
-                  {
-                    "concept": "6844c0b2-a503-4a12-9991-cf56062cfb50",
-                    "label": "Intra-Hospital Transfer"
-                  },
-                  {
-                    "concept": "96cbc3ff-8ff8-4b3c-b341-815563df3641",
-                    "label": "Transfer to Higher-Level Facility"
-                  },
-                  {
-                    "concept": "9e045d87-62c6-4bc4-b72e-d856ff234f97",
-                    "label": "Transfer to Lower-Level Facility"
-                  },
-                  {
-                    "concept": "5f60e9b0-50e1-473c-b155-68a2a670559e",
-                    "label": "death"
-                  }
-                ]
-              }
-            },
-            {
-              "label": "Destination Department",
-              "type": "obs",
-              "id": "destinationDepartment",
-              "questionOptions": {
-                "rendering": "radio",
-                "concept": "9921be5f-7422-4f6d-835e-ea95a62a45e6",
-                "answers": [
-                  {
-                    "concept": "73b7e837-109a-4c01-8fcb-d605b8724f70",
-                    "label": "Pediatrics"
-                  },
-                  {
-                    "concept": "37112a4c-e8e9-4df5-8259-d610e9d36566",
-                    "label": "Internal Medicine"
-                  },
-                  {
-                    "concept": "219b6489-0992-47bb-a780-b97c85d10d33",
-                    "label": "Neonatology"
-                  },
-                  {
-                    "concept": "ba39e9aa-4f48-45fe-a9da-c2a7795dc063",
-                    "label": "Surgery"
-                  },
-                  {
-                    "concept": "1d66f34f-3dda-496b-881b-e38ba2cab2cc",
-                    "label": "Gynecology-Obstetrics"
-                  }
-                ]
-              }
-            },
+
             {
               "label": "Case Type",
               "type": "obs",
@@ -2020,6 +1902,77 @@
               "id": "encProvider",
               "questionOptions": {
                 "rendering": "ui-select-extended"
+              }
+            }
+          ]
+        },
+        {
+          "label": "Outcome",
+          "questions": [
+            {
+              "label": "Outcome",
+              "type": "obs",
+              "id": "outcome",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "b501a1ac-f2ea-4e79-ace4-658c1af45bd2",
+                "answers": [
+                  {
+                    "concept": "9ff60055-20a8-4d4d-9cc1-f04548965365",
+                    "label": "Outpatient"
+                  },
+                  {
+                    "concept": "ac0a6887-a5b5-4280-ae12-4f038163ce3d",
+                    "label": "Counter-Referral"
+                  },
+                  {
+                    "concept": "6844c0b2-a503-4a12-9991-cf56062cfb50",
+                    "label": "Intra-Hospital Transfer"
+                  },
+                  {
+                    "concept": "96cbc3ff-8ff8-4b3c-b341-815563df3641",
+                    "label": "Transfer to Higher-Level Facility"
+                  },
+                  {
+                    "concept": "9e045d87-62c6-4bc4-b72e-d856ff234f97",
+                    "label": "Transfer to Lower-Level Facility"
+                  },
+                  {
+                    "concept": "5f60e9b0-50e1-473c-b155-68a2a670559e",
+                    "label": "death"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Destination Department",
+              "type": "obs",
+              "id": "destinationDepartment",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "9921be5f-7422-4f6d-835e-ea95a62a45e6",
+                "answers": [
+                  {
+                    "concept": "73b7e837-109a-4c01-8fcb-d605b8724f70",
+                    "label": "Pediatrics"
+                  },
+                  {
+                    "concept": "37112a4c-e8e9-4df5-8259-d610e9d36566",
+                    "label": "Internal Medicine"
+                  },
+                  {
+                    "concept": "219b6489-0992-47bb-a780-b97c85d10d33",
+                    "label": "Neonatology"
+                  },
+                  {
+                    "concept": "ba39e9aa-4f48-45fe-a9da-c2a7795dc063",
+                    "label": "Surgery"
+                  },
+                  {
+                    "concept": "1d66f34f-3dda-496b-881b-e38ba2cab2cc",
+                    "label": "Gynecology-Obstetrics"
+                  }
+                ]
               }
             }
           ]
