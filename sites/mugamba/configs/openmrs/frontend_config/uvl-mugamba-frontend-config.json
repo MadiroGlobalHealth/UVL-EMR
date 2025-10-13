@@ -67,8 +67,7 @@
         "uuid": "3024f003-e5bd-4cc6-aa2a-05e9575f9ea9",
         "required": true
       }
-    ],
-    "showServiceQueueFields": true
+    ]
   },
   "@openmrs/esm-primary-navigation-app": {
     "externalRefLinks": [
