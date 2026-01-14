@@ -12,6 +12,17 @@ Additionally, it facilitates efficient tracking of public health trends and reso
 
 <img width="1167" alt="Screenshot 2024-08-06 at 4 44 07 PM" src="https://github.com/user-attachments/assets/6a96fa28-e012-4ee1-812f-d1a8c7f744a6">
 
+## Integration with
+
+<div>
+<td></td><img src="https://raw.githubusercontent.com/ozone-his/.github/refs/heads/main/profile/ozone-logo.png" height=50px>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><img src="https://i0.wp.com/openmrs.org/wp-content/uploads/2025/07/OpenMRS-logo-transparent-1.png?fit=1200%2C304&ssl=1" height=50px>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><img src="https://media.licdn.com/dms/image/v2/D4D0BAQHtStQck5sTjQ/company-logo_200_200/company-logo_200_200/0/1701289891627?e=2147483647&v=beta&t=Qr1UO0S6PpeezIM7RxN6q--nuNN3lBLfrDSaTQqxWGI" height=50px>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><img src="https://odoocdn.com/openerp_website/static/src/img/assets/png/odoo_logo.png" height=50px>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><img src="https://www.sakurasky.com/images/blog/superset-logo-stacked-apache.png" height=50px>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><img src="https://www.e-time.it/wp-content/uploads/2022/03/Keycloak_logo-300x200.webp" height=50px>
+</div>
+
 ## Quick Start using GitPod
 
 You can run the project and contribute to it using GitPod in your browser or VSCode. This will allow you to easily run the project without installing dependencies on your local machine like Java SDK, Docker, etc.
