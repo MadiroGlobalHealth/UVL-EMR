@@ -12,7 +12,8 @@
         "@openmrs/esm-primary-navigation-app",
         "@openmrs/esm-styleguide",
         "@openmrs/esm-patient-registration-app"
-      ]
+      ],
+      "initializerDir": "distro/configs/openmrs/initializer_config"
     },
     {
       "name": "burundi",
@@ -48,7 +49,8 @@
         "@openmrs/esm-laboratory-app",
         "@openmrs/esm-patient-list-management-app",
         "@openmrs/esm-home-app"
-      ]
+      ],
+      "initializerDir": "sites/mugamba/configs/openmrs/initializer_config"
     }
   ],
   "modules": [
@@ -78,6 +80,6 @@
     "@openmrs/esm-patient-list-management-app",
     "@openmrs/esm-home-app"
   ],
-  "lastScanned": "2026-03-05T22:32:29.806Z",
+  "lastScanned": "2026-03-05T22:35:02.008Z",
   "galileoVersion": "0.1.0"
 }
