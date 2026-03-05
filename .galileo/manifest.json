@@ -1,0 +1,83 @@
+{
+  "repoType": "ozone-maven",
+  "distros": [
+    {
+      "name": "distro",
+      "configPaths": [
+        "distro/configs/openmrs/frontend_config/uvl-frontend-config.json"
+      ],
+      "modules": [
+        "@openmrs/esm-patient-chart-app",
+        "@openmrs/esm-login-app",
+        "@openmrs/esm-primary-navigation-app",
+        "@openmrs/esm-styleguide",
+        "@openmrs/esm-patient-registration-app"
+      ]
+    },
+    {
+      "name": "countries/burundi",
+      "configPaths": [],
+      "modules": []
+    },
+    {
+      "name": "sites/mugamba",
+      "configPaths": [
+        "sites/mugamba/configs/openmrs/frontend_config/uvl-mugamba-frontend-config.json"
+      ],
+      "modules": [
+        "@openmrs/esm-patient-chart-app",
+        "@openmrs/esm-primary-navigation-app",
+        "@openmrs/esm-active-visits-app",
+        "@openmrs/esm-patient-attachments-app",
+        "@openmrs/esm-patient-orders-app",
+        "@openmrs/esm-patient-registration-app",
+        "@openmrs/esm-billing-app",
+        "@openmrs/esm-patient-tests-app",
+        "@openmrs/esm-patient-vitals-app",
+        "@openmrs/esm-patient-medications-app",
+        "@openmrs/esm-patient-allergies-app",
+        "@openmrs/esm-patient-immunizations-app",
+        "@openmrs/esm-patient-search-app",
+        "@openmrs/esm-patient-programs-app",
+        "@openmrs/esm-patient-conditions-app",
+        "@openmrs/esm-patient-forms-app",
+        "@openmrs/esm-patient-notes-app",
+        "@openmrs/esm-appointments-app",
+        "@openmrs/esm-patient-lists-app",
+        "@openmrs/esm-service-queues-app",
+        "@openmrs/esm-laboratory-app",
+        "@openmrs/esm-patient-list-management-app",
+        "@openmrs/esm-home-app"
+      ]
+    }
+  ],
+  "modules": [
+    "@openmrs/esm-patient-chart-app",
+    "@openmrs/esm-login-app",
+    "@openmrs/esm-primary-navigation-app",
+    "@openmrs/esm-styleguide",
+    "@openmrs/esm-patient-registration-app",
+    "@openmrs/esm-active-visits-app",
+    "@openmrs/esm-patient-attachments-app",
+    "@openmrs/esm-patient-orders-app",
+    "@openmrs/esm-billing-app",
+    "@openmrs/esm-patient-tests-app",
+    "@openmrs/esm-patient-vitals-app",
+    "@openmrs/esm-patient-medications-app",
+    "@openmrs/esm-patient-allergies-app",
+    "@openmrs/esm-patient-immunizations-app",
+    "@openmrs/esm-patient-search-app",
+    "@openmrs/esm-patient-programs-app",
+    "@openmrs/esm-patient-conditions-app",
+    "@openmrs/esm-patient-forms-app",
+    "@openmrs/esm-patient-notes-app",
+    "@openmrs/esm-appointments-app",
+    "@openmrs/esm-patient-lists-app",
+    "@openmrs/esm-service-queues-app",
+    "@openmrs/esm-laboratory-app",
+    "@openmrs/esm-patient-list-management-app",
+    "@openmrs/esm-home-app"
+  ],
+  "lastScanned": "2026-03-05T04:51:47.329Z",
+  "galileoVersion": "0.1.0"
+}
