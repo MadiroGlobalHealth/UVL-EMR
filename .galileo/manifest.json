@@ -15,12 +15,12 @@
       ]
     },
     {
-      "name": "countries/burundi",
+      "name": "burundi",
       "configPaths": [],
       "modules": []
     },
     {
-      "name": "sites/mugamba",
+      "name": "mugamba",
       "configPaths": [
         "sites/mugamba/configs/openmrs/frontend_config/uvl-mugamba-frontend-config.json"
       ],
@@ -78,6 +78,6 @@
     "@openmrs/esm-patient-list-management-app",
     "@openmrs/esm-home-app"
   ],
-  "lastScanned": "2026-03-05T04:51:47.329Z",
+  "lastScanned": "2026-03-05T21:47:09.965Z",
   "galileoVersion": "0.1.0"
 }
