@@ -13,13 +13,21 @@
         "@openmrs/esm-styleguide",
         "@openmrs/esm-patient-registration-app"
       ],
-      "initializerDir": "distro/configs/openmrs/initializer_config"
+      "initializerDir": "distro/configs/openmrs/initializer_config",
+      "initializerSubdirs": [
+        "autogenerationoptions",
+        "idgen",
+        "patientidentifiertypes"
+      ]
     },
     {
       "name": "burundi",
       "configPaths": [],
       "modules": [],
-      "initializerDir": "countries/burundi/configs/openmrs/initializer_config"
+      "initializerDir": "countries/burundi/configs/openmrs/initializer_config",
+      "initializerSubdirs": [
+        "addresshierarchy"
+      ]
     },
     {
       "name": "mugamba",
@@ -51,7 +59,32 @@
         "@openmrs/esm-patient-list-management-app",
         "@openmrs/esm-home-app"
       ],
-      "initializerDir": "sites/mugamba/configs/openmrs/initializer_config"
+      "initializerDir": "sites/mugamba/configs/openmrs/initializer_config",
+      "initializerSubdirs": [
+        "ampathforms",
+        "ampathformstranslations",
+        "appointmentservicedefinitions",
+        "appointmentservicetypes",
+        "appointmentspecialities",
+        "attributetypes",
+        "billableservices",
+        "cashpoints",
+        "conceptclasses",
+        "drugs",
+        "encountertypes",
+        "globalproperties",
+        "jsonkeyvalues",
+        "liquibase",
+        "locations",
+        "ocl",
+        "ordertypes",
+        "paymentmodes",
+        "personattributetypes",
+        "privileges",
+        "queues",
+        "roles",
+        "visittypes"
+      ]
     }
   ],
   "modules": [
@@ -81,6 +114,6 @@
     "@openmrs/esm-patient-list-management-app",
     "@openmrs/esm-home-app"
   ],
-  "lastScanned": "2026-03-08T13:13:58.088Z",
+  "lastScanned": "2026-03-08T13:45:07.255Z",
   "galileoVersion": "0.1.0"
 }
