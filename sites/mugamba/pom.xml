@@ -13,6 +13,8 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>8</maven.compiler.source>
     <maven.compiler.target>8</maven.compiler.target>
+    <msf.environment>dev</msf.environment>
+    <bundled.docker.tag>${msf.environment}</bundled.docker.tag>
   </properties>
 
   <dependencies>
@@ -230,6 +232,13 @@
   
   <profiles>
     <profile>
+			<id>production</id>
+			<properties>
+				<msf.environment>latest</msf.environment>
+				<bundled.docker.tag>latest</bundled.docker.tag>
+			</properties>
+		</profile>
+    <profile>
       <id>bundled-docker</id>
       <properties>
         <ozone.bundled.docker.build.directory>${project.build.directory}/bundled-docker-tmp</ozone.bundled.docker.build.directory>
@@ -242,7 +251,7 @@
         <!-- Docker push registry-->
         <docker.push.registry>docker.io</docker.push.registry>
         <!-- Docker push registry username-->
-        <docker.push.registry.username>msfocg</docker.push.registry.username>
+        <docker.push.registry.username>jnsereko</docker.push.registry.username>
       </properties>
       <build>
         <plugins>
@@ -264,7 +273,7 @@
                   <overwrite>true</overwrite>
                   <resources>
                     <resource>
-                      <directory>${project.build.directory}/ozone-msf-distro</directory>
+                      <directory>${project.build.directory}/ozone-uvl-burundi</directory>
                       <includes>
                         <include>bundled-docker/**</include>
                       </includes>

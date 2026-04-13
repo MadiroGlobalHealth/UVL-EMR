@@ -28,6 +28,7 @@
     <initializer.version>2.9.0</initializer.version>
 
     <!--RefApp 3.5.0 modules -->
+    <openmrs.version>2.7.7</openmrs.version>
     <fhir2.version>2.7.0</fhir2.version>
     <webservices.rest.version>2.50.0</webservices.rest.version>
     <addresshierarchy.version>2.21.0</addresshierarchy.version>
@@ -56,6 +57,8 @@
     <oauth2loginVersion>1.5.0</oauth2loginVersion>
     <fhirproxyVersion>1.0.0</fhirproxyVersion>
     <patientsummaryVersion>2.2.0</patientsummaryVersion>     
+  	<msf.environment>dev</msf.environment>
+    <bundled.docker.tag>${msf.environment}</bundled.docker.tag>
   </properties>
 
   <dependencies>
@@ -481,6 +484,13 @@
 
   <profiles>
     <profile>
+			<id>production</id>
+			<properties>
+				<msf.environment>latest</msf.environment>
+				<bundled.docker.tag>latest</bundled.docker.tag>
+			</properties>
+		</profile>
+    <profile>
       <id>validator</id>
       <activation>
         <jdk>1.8</jdk>
@@ -517,7 +527,7 @@
       <properties>
         <!-- Docker push registry username-->
         <dockerMavenPlugin>0.46.0</dockerMavenPlugin>
-        <docker.push.registry.username>msfocg</docker.push.registry.username>
+        <docker.push.registry.username>jnsereko</docker.push.registry.username>
       </properties>
       <build>
         <plugins>

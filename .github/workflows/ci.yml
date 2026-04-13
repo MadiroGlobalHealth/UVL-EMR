@@ -2,16 +2,16 @@ name: CI
 
 on:
   push:
-    branches: ['main']
+    branches: ['bundled-docker']
   pull_request:
-    branches: ['main']
+    branches: ['bundled-docker']
   release:
     types: [published]
   workflow_dispatch:
 
 jobs:
   snapshot:
-    if: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/main') }}
+    if: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/bundled-docker') }}
     uses: ./.github/workflows/maven-publish.yml
     with:
       free-disk-space: true
