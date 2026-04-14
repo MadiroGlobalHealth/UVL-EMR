@@ -527,7 +527,7 @@
       <properties>
         <!-- Docker push registry username-->
         <dockerMavenPlugin>0.46.0</dockerMavenPlugin>
-        <docker.push.registry.username>jnsereko</docker.push.registry.username>
+        <docker.push.registry.username>globalmadiro</docker.push.registry.username>
       </properties>
       <build>
         <plugins>
