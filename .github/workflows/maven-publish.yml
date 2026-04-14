@@ -64,7 +64,7 @@ jobs:
         with:
           servers: |
             [{
-              "id": "msf-ocg-github-lime-emr",
+              "id": "madiro-global-health-github-uvl-emr",
               "username": "${{ secrets.NEXUS_USERNAME }}",
               "password": "${{ secrets.NEXUS_PASSWORD }}"
             },
