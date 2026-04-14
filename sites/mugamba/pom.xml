@@ -408,6 +408,51 @@
                     </buildx>
                   </build>
                 </image>
+                <image>
+                  <name>${docker.push.registry.username}/%a-odoo:${bundled.docker.tag}</name>
+                  <build>
+                    <dockerFile>
+                      ${project.build.directory}/bundled-docker-tmp/bundled-docker/odoo/Dockerfile</dockerFile>
+                    <contextDir>
+                      ${project.build.directory}/bundled-docker-tmp/</contextDir>
+                    <buildx>
+                      <platforms>
+                        <platform>linux/amd64</platform>
+                        <platform>linux/arm64</platform>
+                      </platforms>
+                    </buildx>
+                  </build>
+                </image>
+                <image>
+                  <name>${docker.push.registry.username}/%a-eip-odoo-openmrs:${bundled.docker.tag}</name>
+                  <build>
+                    <dockerFile>
+                      ${project.build.directory}/bundled-docker-tmp/bundled-docker/eip-odoo-openmrs/Dockerfile</dockerFile>
+                    <contextDir>
+                      ${project.build.directory}/bundled-docker-tmp/</contextDir>
+                    <buildx>
+                      <platforms>
+                        <platform>linux/amd64</platform>
+                        <platform>linux/arm64</platform>
+                      </platforms>
+                    </buildx>
+                  </build>
+                </image>
+                <image>
+                  <name>${docker.push.registry.username}/%a-keycloak:${bundled.docker.tag}</name>
+                  <build>
+                    <dockerFile>
+                      ${project.build.directory}/bundled-docker-tmp/bundled-docker/keycloak/Dockerfile</dockerFile>
+                    <contextDir>
+                      ${project.build.directory}/bundled-docker-tmp/</contextDir>
+                    <buildx>
+                      <platforms>
+                        <platform>linux/amd64</platform>
+                        <platform>linux/arm64</platform>
+                      </platforms>
+                    </buildx>
+                  </build>
+                </image>
               </images>
             </configuration>
             <executions>

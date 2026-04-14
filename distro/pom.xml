@@ -524,6 +524,8 @@
     </profile>
     <profile>
       <id>bundled-docker</id>
+      <!-- Docker image builds and pushes are skipped at the distro level.
+           They are handled exclusively by the site-level (mugamba) pom. -->
       <properties>
         <!-- Docker push registry username-->
         <dockerMavenPlugin>0.46.0</dockerMavenPlugin>
@@ -620,7 +622,6 @@
             </executions>
           </plugin>
           <plugin>
-            <!-- Disable builidng and pushing distro docker images -->
             <groupId>io.fabric8</groupId>
             <artifactId>docker-maven-plugin</artifactId>
             <version>${dockerMavenPlugin}</version>
@@ -681,6 +682,9 @@
                   <goal>build</goal>
                 </goals>
                 <phase>package</phase>
+                <configuration>
+                  <skip>true</skip>
+                </configuration>
               </execution>
               <execution>
                 <id>Push Bundled Docker images</id>
@@ -688,6 +692,9 @@
                   <goal>push</goal>
                 </goals>
                 <phase>deploy</phase>
+                <configuration>
+                  <skip>true</skip>
+                </configuration>
               </execution>
             </executions>
           </plugin>
