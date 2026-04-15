@@ -92,5 +92,8 @@ jobs:
           sudo rm -rf /usr/local/graalvm
           df -h
 
+      - name: Pre-install missing frontend peer dependency
+        run: npm install --prefix $HOME @react-aria/utils
+
       - name: Publish maven artifacts
         run: 'mvn --batch-mode --no-transfer-progress clean deploy ${{ inputs.maven-args }}'
