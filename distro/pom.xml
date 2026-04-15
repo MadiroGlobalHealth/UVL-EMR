@@ -576,14 +576,28 @@
                     <replaceregexp file="${project.build.directory}/bundled-docker-tmp/bundled-docker/keycloak/Dockerfile"
                                   match="FROM docker.io/bitnami.*" replace="FROM docker.io/mekomsolutions/keycloak:22.0.5" />
 
-					<echo level="info" message="Adding msf OpenMRS docker image version"/>
-					<replaceregexp file="${project.build.directory}/bundled-docker-tmp/bundled-docker/openmrs/Dockerfile"
-                                  match="FROM openmrs/openmrs-core.*" replace="FROM openmrs/openmrs-core:${openmrs.version}" />
+                    <echo level="info" message="Adding msf OpenMRS docker image version"/>
+                    <replaceregexp file="${project.build.directory}/bundled-docker-tmp/bundled-docker/openmrs/Dockerfile"
+                                            match="FROM openmrs/openmrs-core.*" replace="FROM openmrs/openmrs-core:${openmrs.version}" />
 
-					<echo level="info" message="Adding msf MYSQL docker image version"/>
-					<replaceregexp file="${project.build.directory}/bundled-docker-tmp/bundled-docker/mysql/Dockerfile"
-                                  match="FROM mariadb.*" replace="FROM mariadb:10.11.13" />
-
+                    <echo level="info" message="Adding msf MYSQL docker image version"/>
+                    <replaceregexp file="${project.build.directory}/bundled-docker-tmp/bundled-docker/mysql/Dockerfile"
+                                            match="FROM mariadb.*" replace="FROM mariadb:10.11.13" />
+                  </target>
+                </configuration>
+              </execution>
+              <execution>
+                <id>Override bundled docker proxy config</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <echo level="info" message="Overriding bundled docker proxy config with UVL distro version"/>
+                    <copy overwrite="true"
+                          file="${project.basedir}/../scripts/proxy/default.conf.template"
+                          tofile="${project.build.directory}/bundled-docker-tmp/bundled-docker/proxy/default.conf.template"/>
                   </target>
                 </configuration>
               </execution>

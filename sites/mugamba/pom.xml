@@ -414,7 +414,7 @@
                     <dockerFile>
                       ${project.build.directory}/bundled-docker-tmp/bundled-docker/odoo/Dockerfile</dockerFile>
                     <contextDir>
-                      ${project.build.directory}/bundled-docker-tmp/</contextDir>
+                      ${project.build.directory}/bundled-docker-tmp/distro</contextDir>
                     <buildx>
                       <platforms>
                         <platform>linux/amd64</platform>
@@ -429,7 +429,7 @@
                     <dockerFile>
                       ${project.build.directory}/bundled-docker-tmp/bundled-docker/eip-odoo-openmrs/Dockerfile</dockerFile>
                     <contextDir>
-                      ${project.build.directory}/bundled-docker-tmp/</contextDir>
+                      ${project.build.directory}/bundled-docker-tmp/distro</contextDir>
                     <buildx>
                       <platforms>
                         <platform>linux/amd64</platform>
@@ -444,7 +444,7 @@
                     <dockerFile>
                       ${project.build.directory}/bundled-docker-tmp/bundled-docker/keycloak/Dockerfile</dockerFile>
                     <contextDir>
-                      ${project.build.directory}/bundled-docker-tmp/</contextDir>
+                      ${project.build.directory}/bundled-docker-tmp/distro</contextDir>
                     <buildx>
                       <platforms>
                         <platform>linux/amd64</platform>
