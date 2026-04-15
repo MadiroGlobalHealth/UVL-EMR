@@ -310,6 +310,7 @@
           <plugin>
             <groupId>org.codehaus.gmavenplus</groupId>
             <artifactId>gmavenplus-plugin</artifactId>
+            <version>3.0.2</version>
             <executions>
               <execution>
                 <id>Generate Docker Compose Bundled yaml</id>
