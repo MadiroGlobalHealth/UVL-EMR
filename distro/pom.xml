@@ -437,6 +437,10 @@
                 <replaceregexp file="${project.build.directory}/openmrs/frontend_assembly/build-openmrs-frontend.groovy"
                               match="openmrsVersion =.*" replace='openmrsVersion = slurper.parse(Paths.get("${project.build.directory}", "openmrs_frontend", "spa-assemble-config.json").toFile())["coreVersion"] ?: "next"'/>
 
+                <echo level="info" message="Removing --legacy-peer-deps from openmrs build command to allow peer dependency installation"/>
+                <replaceregexp file="${project.build.directory}/openmrs/frontend_assembly/build-openmrs-frontend.groovy"
+                              match="npx --legacy-peer-deps (openmrs@.*build)" replace="npx \1"/>
+
                 <echo level="info" message="Adding UVL project Name to ozone" />
                 <replace
                   dir="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/scripts"
