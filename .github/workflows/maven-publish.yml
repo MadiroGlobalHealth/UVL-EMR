@@ -4,22 +4,22 @@ on:
   workflow_call:
     inputs:
       java-version:
-        description: 'Java version to use for publishing'
+        description: "Java version to use for publishing"
         required: false
         type: string
-        default: '17'
+        default: "17"
       java-distribution:
-        description: 'Java distribution to use for publishing'
+        description: "Java distribution to use for publishing"
         required: false
         type: string
-        default: 'temurin'
+        default: "temurin"
       maven-args:
-        description: 'Additional arguments to pass to maven'
+        description: "Additional arguments to pass to maven"
         required: false
         type: string
-        default: '-DskipTests=true'
+        default: "-DskipTests=true"
       free-disk-space:
-        description: 'Whether to free disk space before running the build'
+        description: "Whether to free disk space before running the build"
         required: false
         type: boolean
         default: false
@@ -57,7 +57,7 @@ jobs:
         with:
           java-version: ${{ inputs.java-version }}
           distribution: ${{ inputs.java-distribution }}
-          cache: 'maven'
+          cache: "maven"
 
       - name: Set settings.xml
         uses: s4u/maven-settings-action@v3.0.0
@@ -92,5 +92,10 @@ jobs:
           sudo rm -rf /usr/local/graalvm
           df -h
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
       - name: Publish maven artifacts
-        run: 'mvn --batch-mode --no-transfer-progress clean deploy ${{ inputs.maven-args }}'
+        run: "mvn --batch-mode --no-transfer-progress clean deploy ${{ inputs.maven-args }}"
