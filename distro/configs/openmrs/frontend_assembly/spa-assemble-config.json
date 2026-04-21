@@ -2,7 +2,7 @@
   "coreVersion": "9.0.3-pre.4230",
   "frontendModules": {
     "@openmrs/esm-cohort-builder-app": "4.0.6-pre.1211",
-    "@openmrs/esm-home-app": "9.2.0",
+    "@openmrs/esm-home-app": "10.0.3-pre.8017",
     "@openmrs/esm-system-admin-app": "4.3.1-pre.445",
     "@openmrs/esm-devtools-app": "9.0.3-pre.4092",
     "@openmrs/esm-patient-flags-app": "12.1.1-pre.10414",
