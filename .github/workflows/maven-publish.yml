@@ -93,7 +93,7 @@ jobs:
           df -h
 
       - name: Pre-install missing frontend peer dependency
-        run: npm install --prefix $HOME @react-aria/utils@3.28.2
+        run: npm install --prefix $HOME @react-aria/utils@3.24.0
         
       - name: Publish maven artifacts
         run: "mvn --batch-mode --no-transfer-progress clean deploy ${{ inputs.maven-args }}"
