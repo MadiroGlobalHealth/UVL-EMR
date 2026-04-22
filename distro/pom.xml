@@ -6,7 +6,7 @@
   <parent>
     <groupId>com.ozonehis</groupId>
     <artifactId>maven-parent</artifactId>
-    <version>1.0.0-alpha.13</version>
+    <version>1.0.0-alpha.15</version>
     <relativePath />
   </parent>
 
@@ -28,6 +28,7 @@
     <initializer.version>2.9.0</initializer.version>
 
     <!--RefApp 3.5.0 modules -->
+    <openmrs.version>2.7.7</openmrs.version>
     <fhir2.version>2.7.0</fhir2.version>
     <webservices.rest.version>2.50.0</webservices.rest.version>
     <addresshierarchy.version>2.21.0</addresshierarchy.version>
@@ -56,6 +57,8 @@
     <oauth2loginVersion>1.5.0</oauth2loginVersion>
     <fhirproxyVersion>1.0.0</fhirproxyVersion>
     <patientsummaryVersion>2.2.0</patientsummaryVersion>     
+  	<msf.environment>dev</msf.environment>
+    <bundled.docker.tag>${msf.environment}</bundled.docker.tag>
   </properties>
 
   <dependencies>
@@ -309,9 +312,9 @@
                 <resource>
                   <directory>${project.build.directory}/ozone</directory>
                   <excludes>
-                    <exclude>distro/configs/**/autogenerationoptions/*.*</exclude>
-                    <exclude>distro/configs/**/idgen/*.*</exclude>
-                    <exclude>distro/configs/**/patientidentifiertypes/*.*</exclude>
+                    <exclude>distro/configs/**/autogenerationoptions/**/*.*</exclude>
+                    <exclude>distro/configs/**/idgen/**/*.*</exclude>
+                    <exclude>distro/configs/**/patientidentifiertypes/**/*.*</exclude>
                     <!-- Temporarily remove Ozone -->
                     <exclude>distro/binaries/openmrs/modules/referencedemodata*.omod</exclude>
                     <exclude>distro/binaries/eip-odoo-openmrs/eip-odoo-openmrs-2.1.0.jar</exclude>
@@ -461,6 +464,7 @@
       <plugin>
         <groupId>org.codehaus.gmavenplus</groupId>
         <artifactId>gmavenplus-plugin</artifactId>
+        <version>3.0.2</version>
         <executions>
           <execution>
             <id>apply-overrides</id>
@@ -480,6 +484,13 @@
   </build>
 
   <profiles>
+    <profile>
+			<id>production</id>
+			<properties>
+				<msf.environment>latest</msf.environment>
+				<bundled.docker.tag>latest</bundled.docker.tag>
+			</properties>
+		</profile>
     <profile>
       <id>validator</id>
       <activation>
@@ -505,6 +516,199 @@
                 <configuration>
                   <sourceDir>
                     ${project.build.directory}/${project.artifactId}-${project.version}/distro/configs/openmrs/initializer_config</sourceDir>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>bundled-docker</id>
+      <!-- Docker image builds and pushes are skipped at the distro level.
+           They are handled exclusively by the site-level (mugamba) pom. -->
+      <properties>
+        <!-- Docker push registry username-->
+        <dockerMavenPlugin>0.46.0</dockerMavenPlugin>
+        <docker.push.registry.username>globalmadiro</docker.push.registry.username>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-resources-plugin</artifactId>
+            <version>3.3.0</version>
+            <executions>
+              <execution>
+                <!-- Copy Ozone bundled docker build groovy script -->
+                <id>Copy Ozone bundled docker build groovy script</id>
+                <phase>prepare-package</phase>
+                <goals>
+                  <goal>copy-resources</goal>
+                </goals>
+                <configuration>
+                  <outputDirectory>
+                    ${project.build.directory}/${project.artifactId}-${project.version}/bundled-docker/scripts
+                  </outputDirectory>
+                  <overwrite>true</overwrite>
+                  <resources>
+                    <resource>
+                      <directory>${project.build.directory}/openmrs/bundled-docker</directory>
+                    </resource>
+                  </resources>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <version>3.1.0</version>
+            <executions>
+              <execution>
+                <id>Use mekomsolutions docker image for keycloak</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <echo level="info" message="Adding msf keycloak docker image version"/>
+                    <replaceregexp file="${project.build.directory}/bundled-docker-tmp/bundled-docker/keycloak/Dockerfile"
+                                  match="FROM docker.io/bitnami.*" replace="FROM docker.io/mekomsolutions/keycloak:22.0.5" />
+
+                    <echo level="info" message="Adding msf OpenMRS docker image version"/>
+                    <replaceregexp file="${project.build.directory}/bundled-docker-tmp/bundled-docker/openmrs/Dockerfile"
+                                            match="FROM openmrs/openmrs-core.*" replace="FROM openmrs/openmrs-core:${openmrs.version}" />
+
+                    <echo level="info" message="Adding msf MYSQL docker image version"/>
+                    <replaceregexp file="${project.build.directory}/bundled-docker-tmp/bundled-docker/mysql/Dockerfile"
+                                            match="FROM mariadb.*" replace="FROM mariadb:10.11.13" />
+                  </target>
+                </configuration>
+              </execution>
+              <execution>
+                <id>Override bundled docker proxy config</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <echo level="info" message="Overriding bundled docker proxy config with UVL distro version"/>
+                    <copy overwrite="true"
+                          file="${project.basedir}/../scripts/proxy/default.conf.template"
+                          tofile="${project.build.directory}/bundled-docker-tmp/bundled-docker/proxy/default.conf.template"/>
+                  </target>
+                </configuration>
+              </execution>
+              <execution>
+                <id>Copy MSF Distro content to bundled docker before images build</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <delete includeemptydirs="true">
+                      <fileset dir="${project.build.directory}/bundled-docker-tmp/distro" includes="**/*"/>
+                    </delete>
+                    <copy todir="${project.build.directory}/bundled-docker-tmp/distro">
+                      <fileset dir="${project.build.directory}/${project.artifactId}-${project.version}/distro" includes="**/*" />
+                    </copy>
+                  </target>
+                </configuration>
+              </execution>
+              <execution>
+                <id>Copy Bundled Docker Scripts to Distro</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <mkdir dir="${project.build.directory}/${project.artifactId}-${project.version}/bundled-docker"/>
+                    <copy todir="${project.build.directory}/${project.artifactId}-${project.version}/bundled-docker">
+                        <fileset dir="${project.build.directory}/bundled-docker-tmp/bundled-docker" includes="**/*" />
+                    </copy>
+                  </target>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>io.fabric8</groupId>
+            <artifactId>docker-maven-plugin</artifactId>
+            <version>${dockerMavenPlugin}</version>
+            <configuration>
+              <pushRegistry>${docker.push.registry}</pushRegistry>
+              <images>
+                <image>
+                  <name>${docker.push.registry.username}/%a-openmrs-backend:${bundled.docker.tag}</name>
+                  <build>
+                    <dockerFile>
+                      ${project.build.directory}/bundled-docker-tmp/bundled-docker/openmrs/Dockerfile</dockerFile>
+                    <contextDir>
+                      ${project.build.directory}/bundled-docker-tmp/</contextDir>
+                  </build>
+                </image>
+                <image>
+                  <name>${docker.push.registry.username}/%a-openmrs-frontend:${bundled.docker.tag}</name>
+                  <build>
+                    <dockerFile>
+                      ${project.build.directory}/bundled-docker-tmp/bundled-docker/frontend/Dockerfile</dockerFile>
+                    <contextDir>
+                      ${project.build.directory}/bundled-docker-tmp/</contextDir>
+                  </build>
+                </image>
+                <image>
+                  <name>${docker.push.registry.username}/%a-proxy:${bundled.docker.tag}</name>
+                  <build>
+                    <dockerFile>
+                      ${project.build.directory}/bundled-docker-tmp/bundled-docker/proxy/Dockerfile</dockerFile>
+                    <contextDir>
+                      ${project.build.directory}/bundled-docker-tmp/</contextDir>
+                  </build>
+                </image>
+                <image>
+                  <name>${docker.push.registry.username}/%a-postgresql:${bundled.docker.tag}</name>
+                  <build>
+                    <dockerFile>
+                      ${project.build.directory}/bundled-docker-tmp/bundled-docker/postgresql/Dockerfile</dockerFile>
+                    <contextDir>
+                      ${project.build.directory}/bundled-docker-tmp/distro</contextDir>
+                  </build>
+                </image>
+                <image>
+                  <name>${docker.push.registry.username}/%a-mysql:${bundled.docker.tag}</name>
+                  <build>
+                    <dockerFile>
+                      ${project.build.directory}/bundled-docker-tmp/bundled-docker/mysql/Dockerfile</dockerFile>
+                    <contextDir>
+                      ${project.build.directory}/bundled-docker-tmp/distro</contextDir>
+                  </build>
+                </image>
+              </images>
+            </configuration>
+            <executions>
+              <execution>
+                <id>Build Bundled Docker images</id>
+                <goals>
+                  <goal>build</goal>
+                </goals>
+                <phase>package</phase>
+                <configuration>
+                  <skip>true</skip>
+                </configuration>
+              </execution>
+              <execution>
+                <id>Push Bundled Docker images</id>
+                <goals>
+                  <goal>push</goal>
+                </goals>
+                <phase>deploy</phase>
+                <configuration>
+                  <skip>true</skip>
                 </configuration>
               </execution>
             </executions>
