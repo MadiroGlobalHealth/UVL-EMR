@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: ['bundled-docker']
+    branches: ['main']
   pull_request:
-    branches: ['bundled-docker']
+    branches: ['main']
   release:
     types: [published]
   workflow_dispatch:
