@@ -3,19 +3,17 @@ name: CI
 on:
   push:
     branches: ['main']
-  pull_request:
-    branches: ['main']
   release:
     types: [published]
   workflow_dispatch:
 
 jobs:
   snapshot:
-    if: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/bundled-docker') }}
+    if: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/main') }}
     uses: ./.github/workflows/maven-publish.yml
     with:
       free-disk-space: true
-      maven-args: '-Pazure -Pbundled-docker'
+      maven-args: '-Pbundled-docker'
     secrets:
       NEXUS_USERNAME: ${{ secrets.MAVEN_GITHUB_ACTIONS_DEPLOY_USERNAME }}
       NEXUS_PASSWORD: ${{ secrets.MAVEN_GITHUB_ACTIONS_DEPLOY_TOKEN }}
@@ -27,7 +25,7 @@ jobs:
     uses: ./.github/workflows/maven-publish.yml
     with:
       free-disk-space: true
-      maven-args: '-Pazure -Pbundled-docker -Pproduction'
+      maven-args: '-Pbundled-docker -Pproduction'
     secrets:
       NEXUS_USERNAME: ${{ secrets.MAVEN_GITHUB_ACTIONS_DEPLOY_USERNAME }}
       NEXUS_PASSWORD: ${{ secrets.MAVEN_GITHUB_ACTIONS_DEPLOY_TOKEN }}
