@@ -42,6 +42,9 @@ jobs:
               "url": "https://mavenrepo.openmrs.org/public"
             }]
   
+      - name: Pre-install missing frontend peer dependency
+        run: npm install --prefix $HOME @react-aria/utils@3.24.0
+
       - name: Build and Test
         run: mvn --batch-mode --update-snapshots --activate-profiles validator clean package
 
