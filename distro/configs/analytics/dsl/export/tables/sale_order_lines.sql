@@ -1,0 +1,22 @@
+CREATE TABLE sale_order_lines (
+    `sale_order_line_id` BIGINT,
+    `sale_order_name` VARCHAR,
+    `sequence` INTEGER,
+    `product_id` INTEGER,
+    `product_name` VARCHAR,
+    `product_code` VARCHAR,
+    `product_external_id` VARCHAR,
+    `quantity` NUMERIC,
+    `unit_price` NUMERIC,
+    `subtotal` NUMERIC,
+    `total` NUMERIC,
+    `line_creation_date` TIMESTAMP,
+    `line_last_modified_date` TIMESTAMP,
+    `customer_name` VARCHAR,
+    `customer_uuid` VARCHAR,
+    `customer_email` VARCHAR,
+    `customer_phone` VARCHAR,
+    `invoicing_status` VARCHAR,
+    `pricelist` VARCHAR,
+    `order_state`VARCHAR
+)
