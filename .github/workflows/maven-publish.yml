@@ -35,8 +35,6 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
-    env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     steps:
       - name: Free Disk Space (Ubuntu)
         if: ${{ inputs.free-disk-space }}
@@ -49,18 +47,18 @@ jobs:
           large-packages: true
           docker-images: true
           swap-storage: true
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Set up JDK ${{ inputs.java-version }}
         id: setup-java
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           java-version: ${{ inputs.java-version }}
           distribution: ${{ inputs.java-distribution }}
           cache: "maven"
 
       - name: Set settings.xml
-        uses: s4u/maven-settings-action@v3.0.0
+        uses: s4u/maven-settings-action@v4.0.0
         with:
           servers: |
             [{

@@ -11,17 +11,17 @@ jobs:
           java: [ '8' ]
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Set up JDK ${{ matrix.java }}
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: 'temurin'
           java-version: ${{ matrix.java }}
           cache: 'maven'
 
       - name: Set settings.xml
-        uses: s4u/maven-settings-action@v3.0.0
+        uses: s4u/maven-settings-action@v4.0.0
         with:
           servers: |
             [{
@@ -41,7 +41,7 @@ jobs:
       directories: ${{ steps.check_dir.outputs.directories }}
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
       with:
        fetch-depth: 0
     - name: Trigger build job based on directory
@@ -73,7 +73,7 @@ jobs:
       contents: read
       packages: write
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - name: Publish UVL distro artifacts to GitHub
       uses: ./.github/actions/upload-maven-artifacts
       with:
@@ -91,7 +91,7 @@ jobs:
       contents: read
       packages: write
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - name: Publish UVL Mugamba to artifacts GitHub
       uses: ./.github/actions/upload-maven-artifacts
       with:
@@ -110,7 +110,7 @@ jobs:
       contents: read
       packages: write
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - name: Publish UVL Burundi artifacts to GitHub
       uses: ./.github/actions/upload-maven-artifacts
       with:
