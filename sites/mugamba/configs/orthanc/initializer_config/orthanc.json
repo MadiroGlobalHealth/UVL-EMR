@@ -1,0 +1,26 @@
+{
+  "Name": "Orthanc inside Docker",
+  "StorageDirectory": "/var/lib/orthanc/db",
+  "IndexDirectory": "/var/lib/orthanc/db",
+  "StorageCompression": false,
+  "MaximumStorageSize": 0,
+  "MaximumPatientCount": 0,
+  "Plugins": [
+    "/usr/share/orthanc/plugins",
+    "/usr/local/share/orthanc/plugins"
+  ],
+  "HttpPort": 8042,
+  "RemoteAccessAllowed": true,
+  "AuthenticationEnabled": true,
+  "RegisteredUsers": {
+    "orthanc": "orthanc"
+  },
+  "DicomAet": "ORTHANC",
+  "DicomPort": 4242,
+  "DicomAlwaysAllowStore": true,
+  "DicomAlwaysAllowEcho": true,
+  "StoneWebViewer": {},
+  "OverwriteInstances": true,
+  "SaveJobs": true,
+  "ConcurrentJobs": 2
+}
