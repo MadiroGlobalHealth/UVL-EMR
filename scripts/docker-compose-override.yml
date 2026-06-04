@@ -25,3 +25,9 @@ services:
 
   mysql:
     image: mariadb:10.11.13
+
+  frontend:
+    volumes:
+      - "${OPENMRS_FRONTEND_BINARY_PATH}:/usr/share/nginx/html"
+      - "${OPENMRS_FRONTEND_CONFIG_PATH}:/usr/share/nginx/html/configs"
+      - "${ORTHANC_ATTACHMENTS_PATCH_PATH}:/usr/share/nginx/html/openmrs-esm-patient-attachments-app-11.3.0"
