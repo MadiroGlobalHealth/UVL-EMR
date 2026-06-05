@@ -203,6 +203,9 @@
                   match="export PROJECT_NAME=.*" replace='export PROJECT_NAME="${project.artifactId}"' />
 
                 <replace file="${project.build.directory}/${project.artifactId}-${project.version}/distro/ozone-info.json" token="ozone-uvl-distro" value="ozone-uvl-mugamba" />
+<concat destfile="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/scripts/utils.sh" append="true">
+    export ORTHANC_ATTACHMENTS_PATCH_PATH=${project.basedir}/../../openmrs-esm-patient-chart/packages/esm-patient-attachments-app/dist
+</concat>
                 
               </target>
             </configuration>
