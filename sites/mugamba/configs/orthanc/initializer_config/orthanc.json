@@ -11,10 +11,7 @@
   ],
   "HttpPort": 8042,
   "RemoteAccessAllowed": true,
-  "AuthenticationEnabled": true,
-  "RegisteredUsers": {
-    "orthanc": "orthanc"
-  },
+  "AuthenticationEnabled": false,
   "DicomAet": "ORTHANC",
   "DicomPort": 4242,
   "DicomAlwaysAllowStore": true,
@@ -22,5 +19,29 @@
   "StoneWebViewer": {},
   "OverwriteInstances": true,
   "SaveJobs": true,
-  "ConcurrentJobs": 2
+  "ConcurrentJobs": 2,
+  "Authorization": {
+    "WebServiceRootUrl": "http://orthanc-auth-service:8000/",
+    "WebServiceUsername": "orthanc",
+    "WebServicePassword": "orthanc",
+    "CheckedLevel": "studies",
+    "TokenHttpHeaders": ["token"],
+    "TokenGetArguments": ["token"],
+    "StandardConfigurations": [
+      "orthanc-explorer-2",
+      "stone-webviewer"
+    ],
+    "UncheckedFolders": [
+      "/auth/"
+    ]
+  },
+  "OrthancExplorer2": {
+    "IsDefaultOrthancUI": true,
+    "Keycloak": {
+      "Enable": true,
+      "Url": "http://localhost:8084/",
+      "Realm": "ozone",
+      "ClientId": "orthanc"
+    }
+  }
 }

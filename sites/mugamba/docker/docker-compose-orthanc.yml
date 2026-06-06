@@ -11,7 +11,7 @@ services:
     restart: always
     environment:
       - ORTHANC__REMOTE_ACCESS_ALLOWED=true
-      - ORTHANC__AUTHENTICATION_ENABLED=true
+      - ORTHANC__AUTHENTICATION_ENABLED=false
       - STONE_WEB_VIEWER_PLUGIN_ENABLED=true
       - DICOM_WEB_PLUGIN_ENABLED=true
     volumes:
