@@ -42,6 +42,11 @@
       "Url": "http://localhost:8084/",
       "Realm": "ozone",
       "ClientId": "orthanc"
+    },
+    "Options": {
+      "EnableShares": true,
+      "ShareType": "stone-viewer-publication",
+      "InstantLinksValidity": 3600
     }
   }
 }

@@ -206,6 +206,10 @@
 <replaceregexp file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/scripts/utils.sh"
                   match="(export ORTHANC_CONFIG_PATH=.*)"
                   replace="\1&#10;    export ORTHANC_ATTACHMENTS_PATCH_PATH=${project.basedir}/../../openmrs-esm-patient-chart/packages/esm-patient-attachments-app/dist" />
+
+<echo file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/concatenated.env"
+  message="${line.separator}ORTHANC_ATTACHMENTS_PATCH_PATH=${project.basedir}/../../openmrs-esm-patient-chart/packages/esm-patient-attachments-app/dist"
+  append="true" />
                 
               </target>
             </configuration>
