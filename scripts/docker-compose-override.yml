@@ -61,7 +61,7 @@ services:
       KEYCLOAK_ADMIN_URI: "http://keycloak:8080/admin/realms/ozone/"
       PUBLIC_ORTHANC_ROOT: "http://localhost:8889/"
       PUBLIC_LANDING_ROOT: "http://localhost:8889/ui/app/token-landing.html"
-      SECRET_KEY: "<your key>"
+      SECRET_KEY: "${ORTHANC_AUTH_SERVICE_SECRET_KEY}"
       USERS: '{"orthanc":"orthanc"}'
 
   orthanc:

@@ -54,6 +54,7 @@ services:
       - EIP_FHIR_PASSWORD=${OPENMRS_PASSWORD}
       - ORTHANC_PUBLIC_URL=${SERVER_SCHEME}://${ORTHANC_HOSTNAME}
       - OAUTH_ENABLED=false
+      - ORTHANC_OAUTH_ENABLED=true
     image: mekomsolutions/eip-client:2.2.0
     networks:
       ozone:
