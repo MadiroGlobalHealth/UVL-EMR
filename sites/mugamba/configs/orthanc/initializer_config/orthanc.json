@@ -1,10 +1,23 @@
 {
   "Name": "Orthanc inside Docker",
   "StorageDirectory": "/var/lib/orthanc/db",
-  "IndexDirectory": "/var/lib/orthanc/db",
   "StorageCompression": false,
   "MaximumStorageSize": 0,
   "MaximumPatientCount": 0,
+
+  "PostgreSQL": {
+    "EnableIndex": true,
+    "EnableStorage": false,
+    "Host": "postgres-orthanc",
+    "Port": 5432,
+    "Database": "orthanc",
+    "Username": "orthanc",
+    "Password": "orthanc",
+    "Lock": false,
+    "IndexConnectionsCount": 50,
+    "TransactionMode": "ReadCommitted"
+  },
+
   "Plugins": [
     "/usr/share/orthanc/plugins",
     "/usr/local/share/orthanc/plugins"
@@ -34,6 +47,9 @@
     "UncheckedFolders": [
       "/auth/"
     ]
+  },
+  "DicomModalities": {
+    "XmaruPro": ["XMARU", "192.168.1.XX", 104]
   },
   "OrthancExplorer2": {
     "IsDefaultOrthancUI": true,

@@ -232,6 +232,13 @@
                 <echo message="Updating EIP FHIR Resources to include Procedure"/>
                 <replaceregexp file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/docker-compose-odoo.yml"
                                match="(EIP_FHIR_RESOURCES=.+)" replace="\1,Procedure" />
+                               
+                <echo file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/concatenated.env"
+                  message="${line.separator}ORTHANC_DB_PASSWORD=orthanc"
+                  append="true" />
+                <echo file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/.env"
+                  message="${line.separator}ORTHANC_DB_PASSWORD=orthanc"
+                  append="true" />
 
               </target>
             </configuration>

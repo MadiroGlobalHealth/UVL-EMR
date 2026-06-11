@@ -20,9 +20,31 @@ services:
       web:
       ozone:
         aliases:
-         - orthanc
+          - orthanc
     ports:
-    - "8889:8042"
+      - "8889:8042"
+    depends_on:
+      postgres-orthanc:
+        condition: service_healthy
+
+  postgres-orthanc:
+    image: postgres:16
+    restart: always
+    environment:
+      POSTGRES_DB: orthanc
+      POSTGRES_USER: orthanc
+      POSTGRES_PASSWORD: ${ORTHANC_DB_PASSWORD}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U orthanc"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - orthanc-postgres-db:/var/lib/postgresql/data
+    networks:
+      ozone:
+        aliases:
+          - postgres-orthanc
 
   eip-openmrs-orthanc:
     depends_on:
@@ -77,6 +99,11 @@ secrets:
   orthanc.json:
     file: ${ORTHANC_CONFIG_PATH}/orthanc.json
 
+networks:
+  ozone:
+    external: true
+
 volumes:
   orthanc-db:
+  orthanc-postgres-db:
   eip-home-orthanc: ~
