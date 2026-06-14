@@ -14,6 +14,7 @@ services:
       - ORTHANC__AUTHENTICATION_ENABLED=false
       - STONE_WEB_VIEWER_PLUGIN_ENABLED=true
       - DICOM_WEB_PLUGIN_ENABLED=true
+      - POSTGRESQL_PLUGIN_ENABLED=true
     volumes:
       - orthanc-db:/var/lib/orthanc/db
     networks:
@@ -77,6 +78,9 @@ services:
       - ORTHANC_PUBLIC_URL=${SERVER_SCHEME}://${ORTHANC_HOSTNAME}
       - OAUTH_ENABLED=false
       - ORTHANC_OAUTH_ENABLED=true
+      - OAUTH_ACCESS_TOKEN_URL=http://keycloak:8080/realms/ozone/protocol/openid-connect/token
+      - OAUTH_CLIENT_ID=orthanc-service
+      - OAUTH_CLIENT_SECRET=${ORTHANC_CLIENT_SECRET}
     image: mekomsolutions/eip-client:2.2.0
     networks:
       ozone:
@@ -98,10 +102,6 @@ services:
 secrets:
   orthanc.json:
     file: ${ORTHANC_CONFIG_PATH}/orthanc.json
-
-networks:
-  ozone:
-    external: true
 
 volumes:
   orthanc-db:

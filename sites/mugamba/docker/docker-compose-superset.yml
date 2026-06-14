@@ -1,0 +1,23 @@
+services:
+  superset:
+    build:
+      context: ./superset
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      SUPERSET_SECRET_KEY: ${SUPERSET_SECRET_KEY:-supersetSecretKey}
+      DATABASE_URL: postgresql://${SUPERSET_DB_USER:-superset}:${SUPERSET_DB_PASSWORD:-superset}@postgresql:5432/${SUPERSET_DB:-superset}
+      SUPERSET_LOAD_EXAMPLES: "no"
+    volumes:
+      - superset-home:/app/superset_home
+    ports:
+      - "8088:8088"
+    networks:
+      ozone:
+    depends_on:
+      postgresql:
+        condition: service_healthy
+    command: ["/bin/bash", "-c", "superset db upgrade && superset fab create-admin --username admin --firstname Admin --lastname Admin --email admin@superset.com --password ${SUPERSET_ADMIN_PASSWORD:-admin} && superset init && gunicorn --bind 0.0.0.0:8088 --workers 2 'superset.app:create_app()'"]
+
+volumes:
+  superset-home:

@@ -217,6 +217,7 @@
 <echo file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/.env"
   message="${line.separator}ORTHANC_AUTH_SERVICE_SECRET_KEY=d3eeda9227acde56a2917f80d960073e0d5a9d28be6b3bfe1ccbef8204f6fd46"
   append="true" />
+
                 
               </target>
             </configuration>
@@ -232,12 +233,37 @@
                 <echo message="Updating EIP FHIR Resources to include Procedure"/>
                 <replaceregexp file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/docker-compose-odoo.yml"
                                match="(EIP_FHIR_RESOURCES=.+)" replace="\1,Procedure" />
-                               
+
                 <echo file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/concatenated.env"
                   message="${line.separator}ORTHANC_DB_PASSWORD=orthanc"
                   append="true" />
                 <echo file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/.env"
                   message="${line.separator}ORTHANC_DB_PASSWORD=orthanc"
+                  append="true" />
+                
+                <echo file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/concatenated.env"
+                  message="${line.separator}SUPERSET_DB_USER=superset"
+                  append="true" />
+                <echo file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/.env"
+                  message="${line.separator}SUPERSET_DB_USER=superset"
+                  append="true" />
+                <echo file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/concatenated.env"
+                  message="${line.separator}SUPERSET_DB_PASSWORD=superset"
+                  append="true" />
+                <echo file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/.env"
+                  message="${line.separator}SUPERSET_DB_PASSWORD=superset"
+                  append="true" />
+                <echo file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/concatenated.env"
+                  message="${line.separator}SUPERSET_SECRET_KEY=supersetSecretKey"
+                  append="true" />
+                <echo file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/.env"
+                  message="${line.separator}SUPERSET_SECRET_KEY=supersetSecretKey"
+                  append="true" />
+                <echo file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/concatenated.env"
+                  message="${line.separator}SUPERSET_ADMIN_PASSWORD=admin"
+                  append="true" />
+                <echo file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/.env"
+                  message="${line.separator}SUPERSET_ADMIN_PASSWORD=admin"
                   append="true" />
 
               </target>

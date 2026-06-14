@@ -74,6 +74,10 @@
       {
         "title": "Pharmacy, Billing & Inventory",
         "redirect": "${ODOO_PUBLIC_URL}"
+      },
+      {
+        "title": "Analytics",
+        "redirect": "http://localhost:8088"
       }
     ],
     "extensionSlots": {

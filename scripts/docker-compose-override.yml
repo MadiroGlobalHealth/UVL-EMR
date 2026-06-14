@@ -67,6 +67,30 @@ services:
   orthanc:
     environment:
       - ORTHANC__AUTHENTICATION_ENABLED=false
+    depends_on:
+      postgres-orthanc:
+        condition: service_healthy
+
+  postgres-orthanc:
+    image: postgres:16
+    restart: always
+    environment:
+      POSTGRES_DB: orthanc
+      POSTGRES_USER: orthanc
+      POSTGRES_PASSWORD: ${ORTHANC_DB_PASSWORD}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U orthanc"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - orthanc-postgres-db:/var/lib/postgresql/data
+    networks:
+      ozone:
+        aliases:
+          - postgres-orthanc
+    
+
 
   mysql:
     image: mariadb:10.11.13
@@ -76,3 +100,7 @@ services:
       - "${OPENMRS_FRONTEND_BINARY_PATH}:/usr/share/nginx/html"
       - "${OPENMRS_FRONTEND_CONFIG_PATH}:/usr/share/nginx/html/configs"
       - "${ORTHANC_ATTACHMENTS_PATCH_PATH}:/usr/share/nginx/html/openmrs-esm-patient-attachments-app-11.3.0"
+
+volumes:
+  orthanc-postgres-db:
+
