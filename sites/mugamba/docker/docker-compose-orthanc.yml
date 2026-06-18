@@ -83,6 +83,7 @@ services:
       - OAUTH_ACCESS_TOKEN_URL=http://keycloak:8080/realms/ozone/protocol/openid-connect/token
       - OAUTH_CLIENT_ID=orthanc-service
       - OAUTH_CLIENT_SECRET=${ORTHANC_CLIENT_SECRET}
+      - EIP_ATTACHMENT_CONCEPT=7cac8397-53cd-4f00-a6fe-028e8d743f8e
     image: mekomsolutions/eip-client:2.2.0
     networks:
       ozone:
