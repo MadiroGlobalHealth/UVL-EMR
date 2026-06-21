@@ -90,7 +90,30 @@ services:
         aliases:
           - postgres-orthanc
     
+  eip-openmrs-orthanc-init:
+      image: eclipse-temurin:17-jre
+      entrypoint: ["sh", "-c", "cp /source/eip-openmrs-orthanc-1.0.0-SNAPSHOT.jar /app/ && echo 'JAR copied successfully'"]
+      volumes:
+        - "${EIP_OPENMRS_ORTHANC_ROUTES_PATH}:/source"
+        - eip-openmrs-orthanc-app:/app
+      networks:
+        ozone:
 
+  eip-openmrs-orthanc:
+    image: eclipse-temurin:17-jre
+    entrypoint: ["java", "-jar", "/app/eip-openmrs-orthanc-1.0.0-SNAPSHOT.jar"]
+    command: []
+    volumes:
+      - eip-openmrs-orthanc-app:/app
+      - eip-home-orthanc:/eip-home
+    depends_on:
+      eip-openmrs-orthanc-init:
+        condition: service_completed_successfully
+    environment:
+      - ORTHANC_OAUTH_ENABLED=true
+      - OAUTH_ACCESS_TOKEN_URL=http://keycloak:8080/realms/ozone/protocol/openid-connect/token
+      - OAUTH_CLIENT_ID=orthanc-service
+      - OAUTH_CLIENT_SECRET=${ORTHANC_CLIENT_SECRET}
 
   mysql:
     image: mariadb:10.11.13
@@ -103,4 +126,5 @@ services:
 
 volumes:
   orthanc-postgres-db:
+  eip-openmrs-orthanc-app:
 
