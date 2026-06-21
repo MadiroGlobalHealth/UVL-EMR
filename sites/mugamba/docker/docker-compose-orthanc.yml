@@ -3,7 +3,7 @@ services:
     command: /run/secrets/
     secrets:
       - orthanc.json
-    image: orthancteam/orthanc:latest
+    image: orthancteam/orthanc:latest-full
     labels:
       - "traefik.enable=true"
       - "traefik.http.services.orthanc.loadbalancer.server.port=8042"
@@ -13,10 +13,12 @@ services:
       - ORTHANC__REMOTE_ACCESS_ALLOWED=true
       - ORTHANC__AUTHENTICATION_ENABLED=false
       - STONE_WEB_VIEWER_PLUGIN_ENABLED=true
+      - OHIF_PLUGIN_ENABLED=true
       - DICOM_WEB_PLUGIN_ENABLED=true
       - POSTGRESQL_PLUGIN_ENABLED=true
     volumes:
       - orthanc-db:/var/lib/orthanc/db
+      - "${ORTHANC_CONFIG_PATH}/ohif:/usr/share/orthanc/ohif"
     networks:
       web:
       ozone:

@@ -4,7 +4,6 @@
   "StorageCompression": false,
   "MaximumStorageSize": 0,
   "MaximumPatientCount": 0,
-
   "PostgreSQL": {
     "EnableIndex": true,
     "EnableStorage": false,
@@ -17,7 +16,6 @@
     "IndexConnectionsCount": 50,
     "TransactionMode": "ReadCommitted"
   },
-
   "Plugins": [
     "/usr/share/orthanc/plugins",
     "/usr/local/share/orthanc/plugins"
@@ -38,18 +36,32 @@
     "WebServiceUsername": "orthanc",
     "WebServicePassword": "orthanc",
     "CheckedLevel": "studies",
-    "TokenHttpHeaders": ["token"],
-    "TokenGetArguments": ["token"],
+    "TokenHttpHeaders": [
+      "token"
+    ],
+    "TokenGetArguments": [
+      "token"
+    ],
     "StandardConfigurations": [
       "orthanc-explorer-2",
-      "stone-webviewer"
+      "stone-webviewer",
+      "ohif"
     ],
     "UncheckedFolders": [
-      "/auth/"
+      "/auth/",
+      "/ohif/",
+      "/ui/"
+    ],
+    "UncheckedResources": [
+      "/dicom-web"
     ]
   },
   "DicomModalities": {
-    "XmaruPro": ["XMARU", "192.168.1.XX", 104]
+    "XmaruPro": [
+      "XMARU",
+      "192.168.1.XX",
+      104
+    ]
   },
   "OrthancExplorer2": {
     "IsDefaultOrthancUI": true,
@@ -62,7 +74,13 @@
     "Options": {
       "EnableShares": true,
       "ShareType": "stone-viewer-publication",
-      "InstantLinksValidity": 3600
+      "InstantLinksValidity": 3600,
+      "OhifViewer3PublicRoot": "http://localhost:8889/ohif/"
     }
+  },
+  "Ohif": {
+    "DataSource": "dicom-web",
+    "RouterBasename": "/ohif",
+    "UserConfiguration": "/usr/share/orthanc/ohif/app-config.js"
   }
 }
