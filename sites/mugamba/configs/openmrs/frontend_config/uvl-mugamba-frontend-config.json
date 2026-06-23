@@ -80,10 +80,6 @@
         "redirect": "${SENAITE_PUBLIC_URL}"
       },
       {
-        "title": "PACS",
-        "redirect": "${ORTHANC_PUBLIC_URL}"
-      },
-      {
         "title": "Reporting & Analytics",
         "redirect": "${SUPERSET_PUBLIC_URL}"
       },
