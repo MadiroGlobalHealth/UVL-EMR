@@ -38,14 +38,15 @@
     "@openmrs/esm-implementer-tools-app": "9.0.3-pre.4622",
     "@openmrs/esm-form-builder-app": "3.4.2-pre.3427",
     "@openmrs/esm-service-queues-app": "10.0.3-pre.8491",
-    "@openmrs/esm-user-onboarding-app": "4.0.0"
+    "@openmrs/esm-user-onboarding-app": "4.0.0",
+    "@openmrs/esm-ward-app": "10.0.3-pre.8491",
+    "@openmrs/esm-bed-management-app": "10.0.3-pre.8491"
   },
   "__comment": "Excluding modules some default modules to ensure we are using the specified versions.",
   "frontendModuleExcludes": [
     "@openmrs/esm-help-menu-app",
     "@openmrs/esm-billing-app",
     "@openmrs/esm-stock-management-app",
-    "@openmrs/esm-ward-app",
     "@openmrs/esm-patient-labs-app"
   ]
 }

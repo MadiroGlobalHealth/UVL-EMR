@@ -1,0 +1,16 @@
+{
+  "uuid": "c5107388-c151-4aeb-b5c6-cd329e6f4781",
+  "form": "Ward Admission",
+  "description": "Fr Translations for 'Ward Admission'",
+  "language": "fr",
+  "translations": {
+    "Ward Admission": "Admission en service",
+    "Ward Request": "Demande d'hospitalisation",
+    "Ward Details": "Détails du service",
+    "Inpatient disposition": "Orientation en hospitalisation",
+    "Disposition": "Décision",
+    "Admit to ward": "Admettre au service",
+    "Admission location": "Lieu d'admission",
+    "Create an admission request to an inpatient ward": "Créer une demande d'admission dans un service d'hospitalisation"
+  }
+}
