@@ -14,6 +14,7 @@
     "@openmrs/esm-patient-list-management-app": "10.0.3-pre.8491",
     "@openmrs/esm-login-app": "9.0.3-pre.4622",
     "@openmrs/esm-patient-banner-app": "12.1.1-pre.10945",
+    "@openmrs/esm-patient-label-printing-app": "12.1.1-pre.10945",
     "@openmrs/esm-patient-registration-app": "10.0.3-pre.8491",
     "@openmrs/esm-dispensing-app": "1.10.1-pre.1681",
     "@openmrs/esm-patient-orders-app": "12.1.1-pre.10945",

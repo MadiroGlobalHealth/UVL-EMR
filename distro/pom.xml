@@ -52,6 +52,7 @@
     <emrapi.version>2.3.0</emrapi.version>
     <event.version>3.0.0</event.version>
     <bedmanagement.version>6.2.0-20250806.164740-6</bedmanagement.version>
+    <patientdocuments.version>1.0.0-SNAPSHOT</patientdocuments.version>
 
     <!-- Ozone alpha 13 modules -->
     <oauth2loginVersion>1.5.0</oauth2loginVersion>
@@ -202,6 +203,12 @@
       <version>${bedmanagement.version}</version>
       <scope>provided</scope>
     </dependency>
+    <dependency>
+			<groupId>org.openmrs.module</groupId>
+			<artifactId>patientdocuments-omod</artifactId>
+			<version>${patientdocuments.version}</version>
+			<scope>provided</scope>
+		</dependency>
 
     <!-- Ozone alpha 13 modules -->
     <dependency>
@@ -448,7 +455,9 @@
         <artifactId>gmavenplus-plugin</artifactId>
         <version>3.0.2</version>
         <executions>
-          <execution>
+          <!-- Loaded custom patient documents module and ESM patient banner app for stickers functionality. -->
+					<!-- Kept for manual override capability if needed. -->
+          <!-- <execution>
             <id>apply-overrides</id>
             <goals>
               <goal>execute</goal>
@@ -459,7 +468,7 @@
                 <script>file://${project.basedir}/../scripts/apply-overrides.groovy</script>
               </scripts>
             </configuration>
-          </execution>
+          </execution> -->
         </executions>
       </plugin>
     </plugins>
