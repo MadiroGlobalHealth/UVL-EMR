@@ -30,7 +30,7 @@
     <!--RefApp 3.5.0 modules -->
     <openmrs.version>2.7.7</openmrs.version>
     <fhir2.version>2.7.0</fhir2.version>
-    <webservices.rest.version>2.50.0</webservices.rest.version>
+    <webservices.rest.version>3.2.0</webservices.rest.version>
     <addresshierarchy.version>2.21.0</addresshierarchy.version>
     <idgen.version>4.14.0</idgen.version>
     <legacyui.version>1.23.0</legacyui.version>
