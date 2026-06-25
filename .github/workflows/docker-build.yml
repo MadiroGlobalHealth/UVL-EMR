@@ -1,0 +1,455 @@
+name: Build and Push Docker Images
+
+on:
+  push:
+    branches: [ main ]
+    tags: [ 'v*' ]
+  workflow_dispatch:
+    inputs:
+      image:
+        description: 'Specific image to build (optional)'
+        required: false
+        default: 'all'
+      tag:
+        description: 'Docker tag to use'
+        required: false
+        default: 'latest'
+      force_rebuild:
+        description: 'Force rebuild all images (ignores docker-build.txt)'
+        required: false
+        type: boolean
+        default: false
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_PREFIX: ${{ github.repository_owner }}/ozone-uvl-mugamba
+
+jobs:
+  # Maven build job to generate bundled-docker-build-tmp
+  maven-build:
+    permissions: 
+      contents: read
+      packages: write
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: [ '8' ]
+    outputs:
+      build-artifacts: ${{ steps.build.outputs.build-artifacts }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Get full history for version detection
+      
+      - name: Set up JDK ${{ matrix.java }}
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: ${{ matrix.java }}
+          cache: 'maven'
+
+      - name: Set settings.xml
+        uses: s4u/maven-settings-action@v3.0.0
+        with:
+          servers: |
+            [{
+              "id": "msf-ocg-github-lime-emr",
+              "username": "${{ secrets.MAVEN_GITHUB_ACTIONS_DEPLOY_USERNAME }}",
+              "password": "${{ secrets.MAVEN_GITHUB_ACTIONS_DEPLOY_TOKEN }}"
+            }]
+      
+      - name: Build and Test
+        id: build
+        run: |
+          # Fail fast if mvnw doesn't exist or isn't executable
+          if [ ! -x "./scripts/mvnw" ]; then
+            echo "::error::Maven wrapper not found or not executable"
+            exit 1
+          fi
+
+          # Get Mugamba version and artifact ID
+          echo "Fetching Mugamba project info..."
+          cd site/mugamba
+          VERSION=$(./../../scripts/mvnw help:evaluate -Dexpression=project.version -q -DforceStdout)
+          ARTIFACTID=$(./../../scripts/mvnw help:evaluate -Dexpression=project.artifactId -q -DforceStdout)
+          cd ../..
+          
+          echo "Mugamba Artifact: $ARTIFACTID, Version: $VERSION"
+          
+          # Run build with better error handling
+          if ! ./scripts/mvnw --batch-mode --update-snapshots --activate-profiles validator -Pbundled-docker -Pazure clean package; then
+            echo "::error::Maven build failed"
+            echo "build-artifacts=failed" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+          
+          # Verify and copy Mugamba distro
+          MUGAMBA_DISTRO="site/mugamba/target/$ARTIFACTID-$VERSION/distro"
+          TARGET_DIR="distro/target/bundled-docker-build-tmp/distro"
+          
+          if [ ! -d "$MUGAMBA_DISTRO" ]; then
+            echo "::error::Mugamba distro directory not found at $MUGAMBA_DISTRO"
+            echo "build-artifacts=failed" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+          
+          echo "Copying Mugamba distro to $TARGET_DIR"
+          mkdir -p "$TARGET_DIR"
+          cp -R "$MUGAMBA_DISTRO"/* "$TARGET_DIR"/
+          
+          # Verify final build output
+          if [ ! -d "distro/target/bundled-docker-build-tmp" ]; then
+            echo "::error::Maven build output directory not found"
+            echo "build-artifacts=failed" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+
+          echo "Maven build successful - bundled-docker-build-tmp generated"
+          echo "build-artifacts=success" >> $GITHUB_OUTPUT
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "artifactid=$ARTIFACTID" >> $GITHUB_OUTPUT
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: bundled-docker-build-tmp
+          path: distro/target/bundled-docker-build-tmp
+          retention-days: 1
+        if: ${{ steps.build.outputs.build-artifacts == 'success' }}
+
+  # Setup job to read docker-build.txt and determine which images to build
+  setup:
+    runs-on: ubuntu-latest
+    needs: maven-build
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      build_list: ${{ steps.set-matrix.outputs.build_list }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: bundled-docker-build-tmp
+          path: .
+        if: ${{ needs.maven-build.outputs.build-artifacts == 'success' }}
+
+      - name: Verify build artifacts
+        run: |
+          if [ ! -d "bundled-docker-build-tmp" ]; then
+            echo "::error::Build artifacts not found"
+            exit 1
+          fi
+          
+          if [ ! -d "bundled-docker-build-tmp/bundled-docker" ]; then
+            echo "::error::bundled-docker directory not found in artifacts"
+            exit 1
+          fi
+          
+          echo "Build artifacts verified successfully"
+
+      - name: Read docker-build.txt
+        id: read-config
+        run: |
+          # Initialize outputs
+          echo "force_rebuild=${{ github.event.inputs.force_rebuild == 'true' }}" >> $GITHUB_OUTPUT
+          
+          # Handle force rebuild case
+          if [ "${{ github.event.inputs.force_rebuild }}" = "true" ]; then
+            echo "Using force rebuild mode - will build all available images"
+            echo "build_dirs<<EOF" >> $GITHUB_OUTPUT
+            echo "" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          
+          # Handle docker-build.txt file
+          if [ -f "docker-build.txt" ]; then
+            echo "docker-build.txt found"
+            # Read the file with better error handling
+            if ! BUILD_DIRS=$(grep -v '^#' docker-build.txt | grep -v '^[[:space:]]*$' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//'); then
+              echo "::warning::Failed to parse docker-build.txt, using default image list"
+              BUILD_DIRS=""
+            fi
+            
+            echo "build_dirs<<EOF" >> $GITHUB_OUTPUT
+            echo "$BUILD_DIRS" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          else
+            echo "docker-build.txt not found, using default image list"
+            echo "build_dirs<<EOF" >> $GITHUB_OUTPUT
+            echo "mysql" >> $GITHUB_OUTPUT
+            echo "postgresql" >> $GITHUB_OUTPUT
+            echo "odoo" >> $GITHUB_OUTPUT
+            echo "eip-odoo-openmrs" >> $GITHUB_OUTPUT
+            echo "openmrs" >> $GITHUB_OUTPUT
+            echo "frontend" >> $GITHUB_OUTPUT
+            echo "senaite" >> $GITHUB_OUTPUT
+            echo "eip-openmrs-senaite" >> $GITHUB_OUTPUT
+            echo "proxy" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Set matrix strategy
+        id: set-matrix
+        run: |
+          # Initialize variables safely
+          BUILD_DIRS="${{ steps.read-config.outputs.build_dirs }}"
+          FORCE_REBUILD="${{ steps.read-config.outputs.force_rebuild }}"
+          
+          # Image name mapping (directory -> image name)
+          declare -A IMAGE_MAPPING=(
+            ["mysql"]="mysql"
+            ["postgresql"]="postgresql"
+            ["odoo"]="odoo"
+            ["eip-odoo-openmrs"]="eip-odoo-openmrs"
+            ["openmrs"]="openmrs-backend"
+            ["frontend"]="openmrs-frontend"
+            ["senaite"]="senaite"
+            ["eip-openmrs-senaite"]="eip-openmrs-senaite"
+            ["proxy"]="proxy"
+          )
+          
+          # Check if specific image is requested
+          SPECIFIC_IMAGE="${{ github.event.inputs.image }}"
+          if [ "$SPECIFIC_IMAGE" != "all" ] && [ -n "$SPECIFIC_IMAGE" ]; then
+            echo "Building specific image: $SPECIFIC_IMAGE"
+            
+            # Find the directory for this image
+            FOUND_DIR=""
+            for dir in "${!IMAGE_MAPPING[@]}"; do
+              if [ "${IMAGE_MAPPING[$dir]}" = "$SPECIFIC_IMAGE" ]; then
+                FOUND_DIR="$dir"
+                break
+              fi
+            done
+            
+            if [ -n "$FOUND_DIR" ]; then
+              if [ ! -d "bundled-docker-build-tmp/bundled-docker/$FOUND_DIR" ]; then
+                echo "::error::Directory for image '$SPECIFIC_IMAGE' not found in artifacts"
+                echo "matrix={\"include\":[]}" >> $GITHUB_OUTPUT
+                echo "build_list=" >> $GITHUB_OUTPUT
+                exit 1
+              fi
+              
+              echo "Found directory: $FOUND_DIR for image: $SPECIFIC_IMAGE"
+              echo "matrix={\"include\":[{\"context\":\"bundled-docker-build-tmp/bundled-docker/$FOUND_DIR\",\"image\":\"$SPECIFIC_IMAGE\",\"dockerfile\":\"Dockerfile\"}]}" >> $GITHUB_OUTPUT
+              echo "build_list=$SPECIFIC_IMAGE" >> $GITHUB_OUTPUT
+            else
+              echo "::error::Image '$SPECIFIC_IMAGE' not found in mapping"
+              echo "matrix={\"include\":[]}" >> $GITHUB_OUTPUT
+              echo "build_list=" >> $GITHUB_OUTPUT
+              exit 1
+            fi
+          else
+            # Build based on docker-build.txt or all images
+            MATRIX_ENTRIES=()
+            BUILD_LIST=()
+            
+            if [ "$FORCE_REBUILD" = "true" ]; then
+              # Build all available images
+              echo "Force rebuild mode - building all available images"
+              for dir in "${!IMAGE_MAPPING[@]}"; do
+                if [ -d "bundled-docker-build-tmp/bundled-docker/$dir" ]; then
+                  MATRIX_ENTRIES+=("{\"context\":\"bundled-docker-build-tmp/bundled-docker/$dir\",\"image\":\"${IMAGE_MAPPING[$dir]}\",\"dockerfile\":\"Dockerfile\"}")
+                  BUILD_LIST+=("${IMAGE_MAPPING[$dir]}")
+                else
+                  echo "::warning::Directory 'bundled-docker-build-tmp/bundled-docker/$dir' not found, skipping"
+                fi
+              done
+            else
+              # Build only images listed in docker-build.txt
+              echo "Building images from docker-build.txt"
+              while IFS= read -r dir; do
+                if [ -n "$dir" ]; then
+                  if [ ! -d "bundled-docker-build-tmp/bundled-docker/$dir" ]; then
+                    echo "::error::Directory 'bundled-docker-build-tmp/bundled-docker/$dir' not found"
+                    exit 1
+                  fi
+                  
+                  if [ -z "${IMAGE_MAPPING[$dir]}" ]; then
+                    echo "::error::Directory '$dir' not found in image mapping"
+                    exit 1
+                  fi
+                  
+                  MATRIX_ENTRIES+=("{\"context\":\"bundled-docker-build-tmp/bundled-docker/$dir\",\"image\":\"${IMAGE_MAPPING[$dir]}\",\"dockerfile\":\"Dockerfile\"}")
+                  BUILD_LIST+=("${IMAGE_MAPPING[$dir]}")
+                fi
+              done <<< "$BUILD_DIRS"
+            fi
+            
+            # Join arrays with commas
+            MATRIX_STR=$(IFS=, ; echo "${MATRIX_ENTRIES[*]}")
+            BUILD_STR=$(IFS=, ; echo "${BUILD_LIST[*]}")
+            
+            echo "matrix={\"include\":[$MATRIX_STR]}" >> $GITHUB_OUTPUT
+            echo "build_list=$BUILD_STR" >> $GITHUB_OUTPUT
+          fi
+          
+          echo "Matrix configuration:"
+          echo "${{ steps.set-matrix.outputs.matrix }}"
+          echo "Build list: ${{ steps.set-matrix.outputs.build_list }}"
+
+  # Build and push Docker images using matrix strategy
+  build:
+    runs-on: ubuntu-latest
+    needs: [maven-build, setup]
+    strategy:
+      matrix: ${{ fromJson(needs.setup.outputs.matrix) }}
+      fail-fast: false
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: bundled-docker-build-tmp
+          path: .
+        if: ${{ needs.maven-build.outputs.build-artifacts == 'success' }}
+
+      - name: Verify Docker context exists
+        run: |
+          if [ ! -d "${{ matrix.context }}" ]; then
+            echo "::error::Docker context directory '${{ matrix.context }}' not found"
+            exit 1
+          fi
+          
+          if [ ! -f "${{ matrix.context }}/${{ matrix.dockerfile }}" ]; then
+            echo "::error::Dockerfile not found in context directory"
+            exit 1
+          fi
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}-${{ matrix.image }}
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: ${{ matrix.context }}
+          file: ${{ matrix.context }}/${{ matrix.dockerfile }}
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          platforms: linux/amd64,linux/arm64
+
+      - name: Output image info
+        run: |
+          echo "Built and pushed: ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}-${{ matrix.image }}"
+          echo "Tags: ${{ steps.meta.outputs.tags }}"
+
+  # Summary job to report build status
+  summary:
+    runs-on: ubuntu-latest
+    needs: [maven-build, setup, build]
+    if: always()
+    steps:
+      - name: Build Summary
+        run: |
+          echo "## Docker Build Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Show Maven build status
+          if [ "${{ needs.maven-build.result }}" = "success" ]; then
+            echo "**Maven Build**: ✅ Success" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "**Maven Build**: ❌ Failed" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Show configuration source
+          if [ "${{ github.event.inputs.force_rebuild }}" = "true" ]; then
+            echo "**Configuration**: Force rebuild mode (all available images)" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ github.event.inputs.image }}" != "all" ] && [ "${{ github.event.inputs.image }}" != "" ]; then
+            echo "**Configuration**: Manual build - ${{ github.event.inputs.image }}" >> $GITHUB_STEP_SUMMARY
+          else
+            if [ -f "docker-build.txt" ]; then
+              echo "**Configuration**: docker-build.txt" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "**Configuration**: Default image list (docker-build.txt not found)" >> $GITHUB_STEP_SUMMARY
+            fi
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Image | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|------|--------|" >> $GITHUB_STEP_SUMMARY
+          
+          # Get the build list from setup job
+          BUILD_LIST="${{ needs.setup.outputs.build_list }}"
+          
+          if [ -n "$BUILD_LIST" ]; then
+            # Parse build list and check each job
+            IFS=',' read -ra IMAGES <<< "$BUILD_LIST"
+            for image in "${IMAGES[@]}"; do
+              if [ -n "$image" ]; then
+                # Find the corresponding build job
+                JOB_STATUS="skipped"
+                for job in ${{ toJson(needs.build) }}; do
+                  if [ "$job.matrix.image" = "$image" ]; then
+                    JOB_STATUS="$job.result"
+                    break
+                  fi
+                done
+                
+                case "$JOB_STATUS" in
+                  "success")
+                    echo "| $image | ✅ Success |" >> $GITHUB_STEP_SUMMARY
+                    ;;
+                  "skipped")
+                    echo "| $image | ⚠️ Skipped |" >> $GITHUB_STEP_SUMMARY
+                    ;;
+                  *)
+                    echo "| $image | ❌ Failed |" >> $GITHUB_STEP_SUMMARY
+                    ;;
+                esac
+              fi
+            done
+          else
+            echo "| No images configured | ⚠️ No builds |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Registry:** ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Triggered by:** ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Branch:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "**Manual trigger:** ${{ github.event.inputs.image }}" >> $GITHUB_STEP_SUMMARY
+            if [ "${{ github.event.inputs.force_rebuild }}" = "true" ]; then
+              echo "**Force rebuild:** Enabled" >> $GITHUB_STEP_SUMMARY
+            fi
+          fi
+          
+          # Show docker-build.txt content if it exists
+          if [ -f "docker-build.txt" ]; then
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "### Current docker-build.txt Configuration" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            cat docker-build.txt >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+          fi
