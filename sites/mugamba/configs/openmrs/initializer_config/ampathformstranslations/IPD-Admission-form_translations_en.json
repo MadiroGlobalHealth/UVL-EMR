@@ -1,0 +1,16 @@
+{
+  "uuid": "7f3e5b1d-aa10-4d4b-9e2c-1d8f6c4a3b7e",
+  "form": "Ward Admission",
+  "description": "Translations for 'Ward Admission'",
+  "language": "en",
+  "translations": {
+    "Ward Admission": "Ward Admission",
+    "Ward Request": "Ward Request",
+    "Ward Details": "Ward Details",
+    "Inpatient disposition": "Inpatient disposition",
+    "Disposition": "Disposition",
+    "Admit to ward": "Admit to ward",
+    "Admission location": "Admission location",
+    "Create an admission request to an inpatient ward": "Create an admission request to an inpatient ward"
+  }
+}
