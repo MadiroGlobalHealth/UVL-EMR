@@ -1,6 +1,6 @@
 services:
   openmrs:
-    image: openmrs/openmrs-core:2.7.6
+    image: openmrs/openmrs-core:2.7.7-amazoncorretto-17
     healthcheck:
       test:
         [
