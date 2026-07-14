@@ -1,0 +1,52 @@
+slice_name: Lab results - details
+description: null
+certified_by: null
+certification_details: null
+viz_type: table
+params:
+  datasource: 101__table
+  viz_type: table
+  slice_id: 28
+  query_mode: raw
+  groupby: []
+  time_grain_sqla: P1D
+  temporal_columns_lookup:
+    obs_date_time: true
+  all_columns:
+  - obs_date_time
+  - identifiers
+  - patient_name
+  - gender
+  - age_at_result
+  - test_name
+  - result
+  - location
+  percent_metrics: []
+  adhoc_filters:
+  - clause: WHERE
+    comparator: No filter
+    datasourceWarning: false
+    expressionType: SIMPLE
+    filterOptionName: filter_lab_results_time_28
+    isExtra: false
+    isNew: false
+    operator: TEMPORAL_RANGE
+    operatorId: TEMPORAL_RANGE
+    sqlExpression: null
+    subject: obs_date_time
+  order_by_cols:
+  - '["obs_date_time", false]'
+  row_limit: 1000
+  server_page_length: 10
+  order_desc: true
+  table_timestamp_format: smart_date
+  show_cell_bars: false
+  color_pn: true
+  extra_form_data: {}
+  dashboards: []
+  annotation_layers: []
+query_context: null
+cache_timeout: null
+uuid: bcc28a46-8675-4f23-9d9b-f572f33985b5
+version: 1.0.0
+dataset_uuid: ad97c2a1-f272-4b2a-8309-97370fb42036

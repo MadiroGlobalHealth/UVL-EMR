@@ -1,0 +1,49 @@
+slice_name: Top ordered lab tests
+description: null
+certified_by: null
+certification_details: null
+viz_type: pie
+params:
+  datasource: 100__table
+  viz_type: pie
+  slice_id: 23
+  groupby:
+  - test_name
+  metric: count
+  adhoc_filters:
+  - clause: WHERE
+    comparator: No filter
+    datasourceWarning: false
+    expressionType: SIMPLE
+    filterOptionName: filter_lab_orders_time_23
+    isExtra: false
+    isNew: false
+    operator: TEMPORAL_RANGE
+    operatorId: TEMPORAL_RANGE
+    sqlExpression: null
+    subject: date_activated
+  row_limit: 25
+  sort_by_metric: true
+  color_scheme: supersetColors
+  show_labels_threshold: 5
+  show_legend: true
+  legendType: scroll
+  legendOrientation: top
+  legendMargin: null
+  label_type: key_value
+  number_format: SMART_NUMBER
+  date_format: smart_date
+  show_labels: true
+  labels_outside: true
+  label_line: true
+  show_total: true
+  outerRadius: 75
+  donut: false
+  innerRadius: 30
+  extra_form_data: {}
+  dashboards: []
+query_context: null
+cache_timeout: null
+uuid: 87ff6837-fdc0-429f-b16b-576fb67ca865
+version: 1.0.0
+dataset_uuid: 704ef6ec-bc69-4ac0-8e6f-e5da5d31c129

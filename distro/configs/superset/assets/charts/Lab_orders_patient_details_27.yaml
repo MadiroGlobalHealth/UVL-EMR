@@ -1,0 +1,54 @@
+slice_name: Lab orders - patient details
+description: null
+certified_by: null
+certification_details: null
+viz_type: table
+params:
+  datasource: 100__table
+  viz_type: table
+  slice_id: 27
+  query_mode: raw
+  groupby: []
+  time_grain_sqla: P1D
+  temporal_columns_lookup:
+    date_activated: true
+  all_columns:
+  - date_activated
+  - identifiers
+  - patient_name
+  - gender
+  - age_at_order
+  - origin_province
+  - origin_district
+  - origin_city
+  - test_name
+  - order_number
+  percent_metrics: []
+  adhoc_filters:
+  - clause: WHERE
+    comparator: No filter
+    datasourceWarning: false
+    expressionType: SIMPLE
+    filterOptionName: filter_lab_orders_time_27
+    isExtra: false
+    isNew: false
+    operator: TEMPORAL_RANGE
+    operatorId: TEMPORAL_RANGE
+    sqlExpression: null
+    subject: date_activated
+  order_by_cols:
+  - '["date_activated", false]'
+  row_limit: 1000
+  server_page_length: 10
+  order_desc: true
+  table_timestamp_format: smart_date
+  show_cell_bars: false
+  color_pn: true
+  extra_form_data: {}
+  dashboards: []
+  annotation_layers: []
+query_context: null
+cache_timeout: null
+uuid: 5652afe9-3902-4d65-8a98-6b1556aae40d
+version: 1.0.0
+dataset_uuid: 704ef6ec-bc69-4ac0-8e6f-e5da5d31c129
