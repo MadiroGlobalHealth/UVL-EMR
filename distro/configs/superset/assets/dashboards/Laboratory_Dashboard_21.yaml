@@ -11,7 +11,7 @@ position:
     children: []
     id: CHART-lab-kpi-orders
     meta:
-      chartId: 21
+      chartId: 31
       height: 25
       sliceName: Total lab tests ordered
       uuid: 78856005-b9bc-4132-9cca-346f5f3083b5
@@ -25,7 +25,7 @@ position:
     children: []
     id: CHART-lab-kpi-results
     meta:
-      chartId: 22
+      chartId: 32
       height: 25
       sliceName: Total lab results recorded
       uuid: 98cb78f0-8392-4170-9ee4-b4ebae2de0d3
@@ -39,7 +39,7 @@ position:
     children: []
     id: CHART-lab-top-tests
     meta:
-      chartId: 23
+      chartId: 33
       height: 50
       sliceName: Top ordered lab tests
       uuid: 87ff6837-fdc0-429f-b16b-576fb67ca865
@@ -53,7 +53,7 @@ position:
     children: []
     id: CHART-lab-daily
     meta:
-      chartId: 24
+      chartId: 34
       height: 50
       sliceName: Daily lab workload (tests ordered)
       uuid: a271c2c1-c559-46bd-8da4-5366a26dcbb0
@@ -67,7 +67,7 @@ position:
     children: []
     id: CHART-lab-weekly
     meta:
-      chartId: 25
+      chartId: 35
       height: 50
       sliceName: Weekly lab workload (tests ordered)
       uuid: 9cd20a2e-f7b3-4cfa-b6fd-1d0f1f35299b
@@ -81,7 +81,7 @@ position:
     children: []
     id: CHART-lab-monthly
     meta:
-      chartId: 26
+      chartId: 36
       height: 50
       sliceName: Monthly lab workload (tests ordered)
       uuid: 53fb576f-b64b-441c-851e-4769793acc0e
@@ -95,7 +95,7 @@ position:
     children: []
     id: CHART-lab-orders-table
     meta:
-      chartId: 27
+      chartId: 37
       height: 60
       sliceName: Lab orders - patient details
       uuid: 5652afe9-3902-4d65-8a98-6b1556aae40d
@@ -109,7 +109,7 @@ position:
     children: []
     id: CHART-lab-results-table
     meta:
-      chartId: 28
+      chartId: 38
       height: 60
       sliceName: Lab results - details
       uuid: bcc28a46-8675-4f23-9d9b-f572f33985b5
@@ -202,14 +202,14 @@ metadata:
       - ROOT_ID
       excluded: []
     chartsInScope:
-    - 21
-    - 22
-    - 23
-    - 24
-    - 25
-    - 26
-    - 27
-    - 28
+    - 31
+    - 32
+    - 33
+    - 34
+    - 35
+    - 36
+    - 37
+    - 38
   color_scheme: ''
   refresh_frequency: 0
   expanded_slices: {}
@@ -237,14 +237,14 @@ metadata:
     description: 'Fixed periods: pick a custom start/end date. Relative periods:
       last day/week/month/quarter/year or previous calendar week/month/year.'
     chartsInScope:
-    - 21
-    - 22
-    - 23
-    - 24
-    - 25
-    - 26
-    - 27
-    - 28
+    - 31
+    - 32
+    - 33
+    - 34
+    - 35
+    - 36
+    - 37
+    - 38
     tabsInScope: []
   - id: NATIVE_FILTER-labTestName
     controlValues:
@@ -271,14 +271,14 @@ metadata:
     type: NATIVE_FILTER
     description: Filter every chart by one or more lab tests.
     chartsInScope:
-    - 21
-    - 22
-    - 23
-    - 24
-    - 25
-    - 26
-    - 27
-    - 28
+    - 31
+    - 32
+    - 33
+    - 34
+    - 35
+    - 36
+    - 37
+    - 38
     tabsInScope: []
   default_filters: '{}'
   shared_label_colors: {}

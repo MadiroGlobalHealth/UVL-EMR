@@ -6,7 +6,7 @@ viz_type: big_number_total
 params:
   datasource: 101__table
   viz_type: big_number_total
-  slice_id: 22
+  slice_id: 32
   metric: count
   adhoc_filters:
   - clause: WHERE

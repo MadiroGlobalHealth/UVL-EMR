@@ -6,7 +6,7 @@ viz_type: table
 params:
   datasource: 100__table
   viz_type: table
-  slice_id: 27
+  slice_id: 37
   query_mode: raw
   groupby: []
   time_grain_sqla: P1D

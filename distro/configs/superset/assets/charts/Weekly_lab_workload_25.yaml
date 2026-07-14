@@ -6,7 +6,7 @@ viz_type: echarts_timeseries_bar
 params:
   datasource: 100__table
   viz_type: echarts_timeseries_bar
-  slice_id: 25
+  slice_id: 35
   x_axis: date_activated
   time_grain_sqla: P1W
   x_axis_sort_asc: true
