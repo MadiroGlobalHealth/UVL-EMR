@@ -531,39 +531,12 @@
               }
             },
             {
-              "label": "Family History",
+              "label": "Antecedents",
               "type": "obs",
-              "id": "familyHistory",
-              "questionOptions": {
-                "rendering": "textarea",
-                "concept": "d42ce204-2ec8-46fa-9c47-5b202e68717a"
-              }
-            },
-            {
-              "label": "Medical History",
-              "type": "obs",
-              "id": "medicalHistory",
+              "id": "antecedents",
               "questionOptions": {
                 "rendering": "textarea",
                 "concept": "30344fed-b645-410f-8d57-ea50d46971cf"
-              }
-            },
-            {
-              "label": "Surgical History",
-              "type": "obs",
-              "id": "surgicalHistory",
-              "questionOptions": {
-                "rendering": "textarea",
-                "concept": "f8c3c8ff-e4f3-41bd-9507-c1f6aedb4a95"
-              }
-            },
-            {
-              "label": "Gynecological/Obstetric History",
-              "type": "obs",
-              "id": "obgynHistory",
-              "questionOptions": {
-                "rendering": "textarea",
-                "concept": "937e4e80-2314-48de-9f49-c4dd86be7547"
               }
             }
           ]
@@ -1973,6 +1946,9 @@
                     "label": "Gynecology-Obstetrics"
                   }
                 ]
+              },
+              "hide": {
+                "hideWhenExpression": "outcome !== '6844c0b2-a503-4a12-9991-cf56062cfb50'"
               }
             }
           ]
