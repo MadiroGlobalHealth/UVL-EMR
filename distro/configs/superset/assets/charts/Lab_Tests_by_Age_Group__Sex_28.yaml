@@ -1,0 +1,28 @@
+slice_name: "Lab \u2013 Tests by Age Group & Sex"
+description: null
+certified_by: null
+certification_details: null
+viz_type: echarts_timeseries_bar
+params:
+  datasource: 17__table
+  viz_type: echarts_timeseries_bar
+  x_axis: age_group
+  metrics:
+  - aggregate: COUNT
+    column:
+      column_name: order_id
+    expressionType: SIMPLE
+    label: Tests
+  groupby:
+  - gender
+  adhoc_filters: []
+  stack: Stack
+  row_limit: 1000
+  x_axis_sort_series: name
+  x_axis_sort_asc: true
+  color_scheme: supersetColors
+query_context: null
+cache_timeout: null
+uuid: c68364df-475f-4d60-ab41-b3ab7f46cbd2
+version: 1.0.0
+dataset_uuid: f236a2c7-44aa-4588-aa8d-717a6a899312

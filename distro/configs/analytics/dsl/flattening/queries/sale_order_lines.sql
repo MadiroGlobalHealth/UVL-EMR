@@ -18,7 +18,8 @@ SELECT
     rp.phone AS customer_phone,
     so.invoice_status AS invoicing_status,
     ppt.name AS pricelist,
-    so.`state` AS order_state
+    so.`state` AS order_state,
+    rpu.name AS salesperson
 FROM
     sale_order_line sol
 INNER JOIN
@@ -33,3 +34,7 @@ LEFT JOIN
     product_pricelist ppt ON so.pricelist_id = ppt.id
 LEFT JOIN
     ir_model_data irp ON (irp.model = 'product.product' AND irp.res_id = pp.id)
+LEFT JOIN
+    res_users ru ON so.user_id = ru.id
+LEFT JOIN
+    res_partner rpu ON ru.partner_id = rpu.id

@@ -1,0 +1,21 @@
+slice_name: "Lab \u2013 Distinct Patients Tested"
+description: null
+certified_by: null
+certification_details: null
+viz_type: big_number_total
+params:
+  datasource: 17__table
+  viz_type: big_number_total
+  metric:
+    aggregate: COUNT_DISTINCT
+    column:
+      column_name: patient_uuid
+    expressionType: SIMPLE
+    label: Patients tested
+  adhoc_filters: []
+  y_axis_format: SMART_NUMBER
+query_context: null
+cache_timeout: null
+uuid: dd274c54-d0d6-46cf-9ec9-3c68be9bb376
+version: 1.0.0
+dataset_uuid: f236a2c7-44aa-4588-aa8d-717a6a899312

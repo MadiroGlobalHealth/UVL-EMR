@@ -1,0 +1,89 @@
+table_name: Patient Age Groups Per Month
+main_dttm_col: month
+description: null
+default_endpoint: null
+offset: 0
+cache_timeout: null
+schema: public
+sql: "WITH visit_base AS (\n    SELECT \n        v.visit_id,\n        CAST(v.date_started\
+  \ AS DATE) AS visit_date,\n        v.location AS location,\n        p.identifiers\
+  \ AS patient_id,\n        COALESCE(p.birthdate, v.patient_birthdate) AS dob,\n \
+  \       COALESCE(CAST(v.patient_age_at_visit AS INT), NULL) AS age,\n        COALESCE(p.gender,\
+  \ v.patient_gender) AS gender,\n        v.visit_uuid,\n        v.patient_uuid\n\
+  \    FROM visits v\n    LEFT JOIN patients p ON v.patient_uuid = p.patient_uuid\n\
+  \    WHERE COALESCE(v.visit_voided, false) = false\n)\n\nSELECT\n    vb.patient_id\
+  \ AS \"Patient ID\",\n    vb.visit_date AS \"Visit Date\",\n    vb.age AS \"Age\"\
+  ,\n    CASE\n        WHEN vb.age < 5 THEN '<5'\n        WHEN vb.age BETWEEN 5 AND\
+  \ 14 THEN '5-14'\n        WHEN vb.age BETWEEN 15 AND 24 THEN '15-24'\n        WHEN\
+  \ vb.age BETWEEN 25 AND 49 THEN '25-49'\n        WHEN vb.age >= 50 THEN '50+'\n\
+  \        ELSE 'Unknown'\n    END AS \"Age Group\"\nFROM visit_base vb\nWHERE vb.age\
+  \ IS NOT NULL\nORDER BY vb.visit_date DESC, vb.patient_id;\n"
+params: null
+template_params: null
+filter_select_enabled: true
+fetch_values_predicate: null
+extra: null
+normalize_columns: false
+always_filter_main_dttm: false
+uuid: 7998b8c6-ebbf-4513-b4bf-c1480aad6de2
+metrics:
+- metric_name: count
+  verbose_name: COUNT(*)
+  metric_type: count
+  expression: COUNT(*)
+  description: null
+  d3format: null
+  currency: null
+  extra: null
+  warning_text: null
+columns:
+- column_name: Visit Date
+  verbose_name: null
+  is_dttm: true
+  is_active: true
+  type: DATE
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: Age Group
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: Patient ID
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: Age
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: INTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+version: 1.0.0
+database_uuid: 4e5f4045-a62d-4964-b719-58229a60e7fe
