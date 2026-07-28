@@ -259,33 +259,30 @@ metadata:
     - 21
     - 22
   native_filter_configuration:
-  - id: NATIVE_FILTER-uvlReportDateRange
-    controlValues:
-      enableEmptyFilter: false
-    name: Date Range
+  - id: NATIVE_FILTER-uvl_time_range
+    name: Date / Period
     filterType: filter_time
+    type: NATIVE_FILTER
     targets:
     - {}
     defaultDataMask:
       extraFormData: {}
-      filterState: {}
-      ownState: {}
+      filterState:
+        value: No filter
     cascadeParentIds: []
     scope:
       rootPath:
       - ROOT_ID
       excluded: []
-    type: NATIVE_FILTER
-    description: 'Fixed periods: pick a custom start/end date. Relative periods:
-      last day/week/month/quarter/year or previous calendar week/month/year.'
+    controlValues: {}
     chartsInScope:
+    - 22
+    - 19
     - 15
     - 16
     - 17
     - 18
-    - 19
     - 21
-    - 22
     tabsInScope: []
   shared_label_colors:
     F: '#1FA8C9'

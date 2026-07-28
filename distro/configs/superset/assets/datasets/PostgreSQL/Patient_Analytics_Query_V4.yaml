@@ -6,21 +6,17 @@ offset: 0
 cache_timeout: null
 schema: public
 sql: "-- ============================================================================\n\
-  -- UVL-EMR Superset Visits Dashboard \u2014 FINAL for issue #205\n-- https://github.com/MadiroGlobalHealth/UVL-EMR/issues/205\n\
-  --\n-- New columns:\n--   \"Burundi CNI\"                 <- identifier type 'Burundi\
-  \ CNI' (parsed from identifiers)\n--   \"Birth Certificate\"           <- obs on\
-  \ concept 'Birth certificate' (free-text, registration)\n--   \"Province\"     \
-  \               <- address hierarchy level 2 (state_province)\n--   \"Commune\"\
-  \                     <- address hierarchy level 3 (county_district)\n--   \"Zone\"\
-  \                        <- address hierarchy level 4 (city_village)\n--   \"Colline\"\
-  \                     <- address hierarchy level 5 (address1)\n--   \"Chief Complaints\"\
-  \            <- obs on concept 'Chief complaint (text)'\n--   \"Confirmed Diagnosis\
-  \ List/Count\" <- encounter_diagnoses.certainty = CONFIRMED\n--   \"Supplemental\
-  \ Insurance\"      <- placeholder '-': no source field exists in\n--           \
-  \                         OpenMRS or Odoo yet (only coverage-tier\n--          \
-  \                          pricelists Insurance 50%..100% are configured)\n--\n\
-  -- Address columns verified against the Ozone flattened `patients` dataset\n-- (address_state_province,\
-  \ address_county_district, address_city, address_1).\n-- ============================================================================\n\
+  -- UVL-EMR Superset Visits Dashboard \u2014 V5 (performance rewrite of V4)\n-- https://github.com/MadiroGlobalHealth/UVL-EMR/issues/205\n\
+  --\n-- Behaviour is identical to \"Patient Analytics Query V4\". The ONLY change\
+  \ is\n-- the three cost CTEs (lab_test_cost_data / procedure_cost_data /\n-- drug_cost_data).\
+  \ V4 ran a CORRELATED sub-query per (visit x sale_order_line)\n-- row (11,487 executions,\
+  \ each seq-scanning `encounters`) -> ~17s each, ~50s\n-- total -> Superset 60s timeout.\
+  \ V5 pre-computes the per-visit product set once\n-- and joins directly, so the\
+  \ whole query runs in well under a second.\n--\n-- Recommended companion indexes\
+  \ (idempotent):\n--   CREATE INDEX IF NOT EXISTS idx_encounters_visit_uuid ON encounters(visit_uuid);\n\
+  --   CREATE INDEX IF NOT EXISTS idx_sol_customer_uuid     ON sale_order_lines(customer_uuid);\n\
+  --   CREATE INDEX IF NOT EXISTS idx_sol_product_ext_id    ON sale_order_lines(product_external_id);\n\
+  -- ============================================================================\n\
   \nWITH visit_base AS (\n    SELECT\n        v.visit_id,\n        CAST(v.date_started\
   \ AS DATE)                    AS visit_date,\n        v.location               \
   \                       AS location,\n        p.identifiers                    \
@@ -97,71 +93,78 @@ sql: "-- =======================================================================
   \ false) = false\n    LEFT JOIN orders o\n        ON o.encounter_uuid = e.encounter_uuid\n\
   \        AND COALESCE(o.voided, false) = false\n        AND (\n            o.order_type_name\
   \ ILIKE '%drug%'\n            OR o.drug_name IS NOT NULL\n        )\n        AND\
-  \ o.order_action NOT ILIKE '%DISCONTINUE%'\n    GROUP BY vb.visit_id\n),\n\nlab_test_cost_data\
+  \ o.order_action NOT ILIKE '%DISCONTINUE%'\n    GROUP BY vb.visit_id\n),\n\n-- ---------------------------------------------------------------------------\n\
+  -- Per-visit product sets (computed ONCE) \u2014 replaces V4's correlated sub-queries\n\
+  -- ---------------------------------------------------------------------------\n\
+  visit_test_products AS (\n    SELECT DISTINCT e.visit_uuid, o.concept_uuid AS product_uuid\n\
+  \    FROM orders o\n    JOIN encounters e ON e.encounter_uuid = o.encounter_uuid\n\
+  \    WHERE COALESCE(o.voided, false) = false\n      AND o.order_type_name ILIKE\
+  \ '%test%'\n      AND o.order_action NOT ILIKE '%DISCONTINUE%'\n      AND o.concept_uuid\
+  \ IS NOT NULL\n),\n\nvisit_procedure_products AS (\n    SELECT DISTINCT e.visit_uuid,\
+  \ o.concept_uuid AS product_uuid\n    FROM orders o\n    JOIN encounters e ON e.encounter_uuid\
+  \ = o.encounter_uuid\n    WHERE COALESCE(o.voided, false) = false\n      AND o.order_type_name\
+  \ ILIKE '%procedure%'\n      AND o.order_action NOT ILIKE '%DISCONTINUE%'\n    \
+  \  AND o.concept_uuid IS NOT NULL\n),\n\nvisit_drug_products AS (\n    SELECT DISTINCT\
+  \ e.visit_uuid, COALESCE(o.drug_uuid, o.concept_uuid) AS product_uuid\n    FROM\
+  \ orders o\n    JOIN encounters e ON e.encounter_uuid = o.encounter_uuid\n    WHERE\
+  \ COALESCE(o.voided, false) = false\n      AND (o.order_type_name ILIKE '%drug%'\
+  \ OR o.drug_name IS NOT NULL)\n      AND o.order_action NOT ILIKE '%DISCONTINUE%'\n\
+  \      AND COALESCE(o.drug_uuid, o.concept_uuid) IS NOT NULL\n),\n\nlab_test_cost_data\
   \ AS (\n    SELECT\n        vb.visit_id,\n        COALESCE(SUM(sol.subtotal), 0)\
-  \ AS lab_test_cost\n    FROM visit_base vb\n    LEFT JOIN sale_order_lines sol\n\
-  \        ON sol.customer_uuid = vb.patient_uuid\n        AND sol.order_state NOT\
-  \ ILIKE '%cancel%'\n    WHERE sol.product_external_id IN (\n        SELECT DISTINCT\
-  \ o.concept_uuid\n        FROM orders o\n        JOIN encounters e\n           \
-  \ ON e.encounter_uuid = o.encounter_uuid\n        WHERE e.visit_uuid = vb.visit_uuid\n\
-  \          AND COALESCE(o.voided, false) = false\n          AND o.order_type_name\
-  \ ILIKE '%test%'\n          AND o.order_action NOT ILIKE '%DISCONTINUE%'\n    )\n\
-  \    GROUP BY vb.visit_id\n),\n\nprocedure_cost_data AS (\n    SELECT\n        vb.visit_id,\n\
+  \ AS lab_test_cost\n    FROM visit_base vb\n    JOIN visit_test_products vtp\n \
+  \       ON vtp.visit_uuid = vb.visit_uuid\n    JOIN sale_order_lines sol\n     \
+  \   ON sol.customer_uuid       = vb.patient_uuid\n        AND sol.product_external_id\
+  \ = vtp.product_uuid\n        AND sol.order_state NOT ILIKE '%cancel%'\n    GROUP\
+  \ BY vb.visit_id\n),\n\nprocedure_cost_data AS (\n    SELECT\n        vb.visit_id,\n\
   \        COALESCE(SUM(sol.subtotal), 0) AS procedure_cost\n    FROM visit_base vb\n\
-  \    LEFT JOIN sale_order_lines sol\n        ON sol.customer_uuid = vb.patient_uuid\n\
-  \        AND sol.order_state NOT ILIKE '%cancel%'\n    WHERE sol.product_external_id\
-  \ IN (\n        SELECT DISTINCT o.concept_uuid\n        FROM orders o\n        JOIN\
-  \ encounters e\n            ON e.encounter_uuid = o.encounter_uuid\n        WHERE\
-  \ e.visit_uuid = vb.visit_uuid\n          AND COALESCE(o.voided, false) = false\n\
-  \          AND o.order_type_name ILIKE '%procedure%'\n          AND o.order_action\
-  \ NOT ILIKE '%DISCONTINUE%'\n    )\n    GROUP BY vb.visit_id\n),\n\ndrug_cost_data\
-  \ AS (\n    SELECT\n        vb.visit_id,\n        COALESCE(SUM(sol.subtotal), 0)\
-  \ AS drug_cost\n    FROM visit_base vb\n    LEFT JOIN sale_order_lines sol\n   \
-  \     ON sol.customer_uuid = vb.patient_uuid\n        AND sol.order_state NOT ILIKE\
-  \ '%cancel%'\n    WHERE sol.product_external_id IN (\n        SELECT DISTINCT COALESCE(o.drug_uuid,\
-  \ o.concept_uuid)\n        FROM orders o\n        JOIN encounters e\n          \
-  \  ON e.encounter_uuid = o.encounter_uuid\n        WHERE e.visit_uuid = vb.visit_uuid\n\
-  \          AND COALESCE(o.voided, false) = false\n          AND (o.order_type_name\
-  \ ILIKE '%drug%' OR o.drug_name IS NOT NULL)\n          AND o.order_action NOT ILIKE\
-  \ '%DISCONTINUE%'\n    )\n    GROUP BY vb.visit_id\n),\n\ninvoice_data AS (\n  \
-  \  SELECT\n        vb.visit_id,\n        COALESCE(SUM(sol.subtotal), 0) AS invoice_sum\n\
-  \    FROM visit_base vb\n    LEFT JOIN sale_order_lines sol\n        ON sol.customer_uuid\
-  \ = vb.patient_uuid\n        AND sol.order_state NOT ILIKE '%cancel%'\n    GROUP\
-  \ BY vb.visit_id\n),\n\n-- \"Insurance\": Odoo pricelist is the only insurance signal\
-  \ in prod\n-- (coverage tiers Insurance 50%..100%, not insurer names).\ninsurance_data\
-  \ AS (\n    SELECT DISTINCT ON (vb.visit_id)\n        vb.visit_id,\n        COALESCE(sol.pricelist,\
-  \ '-') AS insurance\n    FROM visit_base vb\n    LEFT JOIN sale_order_lines sol\n\
+  \    JOIN visit_procedure_products vpp\n        ON vpp.visit_uuid = vb.visit_uuid\n\
+  \    JOIN sale_order_lines sol\n        ON sol.customer_uuid       = vb.patient_uuid\n\
+  \        AND sol.product_external_id = vpp.product_uuid\n        AND sol.order_state\
+  \ NOT ILIKE '%cancel%'\n    GROUP BY vb.visit_id\n),\n\ndrug_cost_data AS (\n  \
+  \  SELECT\n        vb.visit_id,\n        COALESCE(SUM(sol.subtotal), 0) AS drug_cost\n\
+  \    FROM visit_base vb\n    JOIN visit_drug_products vdp\n        ON vdp.visit_uuid\
+  \ = vb.visit_uuid\n    JOIN sale_order_lines sol\n        ON sol.customer_uuid \
+  \      = vb.patient_uuid\n        AND sol.product_external_id = vdp.product_uuid\n\
+  \        AND sol.order_state NOT ILIKE '%cancel%'\n    GROUP BY vb.visit_id\n),\n\
+  \ninvoice_data AS (\n    SELECT\n        vb.visit_id,\n        COALESCE(SUM(sol.subtotal),\
+  \ 0) AS invoice_sum\n    FROM visit_base vb\n    LEFT JOIN sale_order_lines sol\n\
   \        ON sol.customer_uuid = vb.patient_uuid\n        AND sol.order_state NOT\
-  \ ILIKE '%cancel%'\n    ORDER BY vb.visit_id, sol.line_creation_date DESC\n)\n\n\
-  SELECT\n    vb.visit_id                                 AS \"ID de visite\",\n \
-  \   vb.visit_date                               AS \"Date de visite\",\n    vb.location\
-  \                                 AS \"Lieu\",\n    CASE\n        WHEN vb.patient_id\
-  \ LIKE '%UVL ID:%' THEN\n            TRIM(SPLIT_PART(\n                SUBSTRING(vb.patient_id\
+  \ ILIKE '%cancel%'\n    GROUP BY vb.visit_id\n),\n\n-- \"Insurance\": Odoo pricelist\
+  \ is the only insurance signal in prod\n-- (coverage tiers Insurance 50%..100%,\
+  \ not insurer names).\ninsurance_data AS (\n    SELECT DISTINCT ON (vb.visit_id)\n\
+  \        vb.visit_id,\n        COALESCE(sol.pricelist, '-') AS insurance\n    FROM\
+  \ visit_base vb\n    LEFT JOIN sale_order_lines sol\n        ON sol.customer_uuid\
+  \ = vb.patient_uuid\n        AND sol.order_state NOT ILIKE '%cancel%'\n    ORDER\
+  \ BY vb.visit_id, sol.line_creation_date DESC\n)\n\nSELECT\n    vb.visit_id    \
+  \                             AS \"ID de visite\",\n    vb.visit_date          \
+  \                     AS \"Date de visite\",\n    vb.location                  \
+  \               AS \"Lieu\",\n    REGEXP_REPLACE(\n      CASE\n          WHEN vb.patient_id\
+  \ LIKE '%UVL ID:%' THEN\n              TRIM(SPLIT_PART(\n                  SUBSTRING(vb.patient_id\
   \ FROM POSITION('UVL ID: ' IN vb.patient_id) + LENGTH('UVL ID: ')),\n          \
-  \      ',', 1))\n        ELSE vb.patient_id\n    END                           \
-  \              AS \"ID du patient\",\n    CASE\n        WHEN vb.patient_id LIKE\
-  \ '%Burundi CNI:%' THEN\n            TRIM(SPLIT_PART(\n                SUBSTRING(vb.patient_id\
-  \ FROM POSITION('Burundi CNI: ' IN vb.patient_id) + LENGTH('Burundi CNI: ')),\n\
-  \                ',', 1))\n        ELSE '-'\n    END                           \
-  \              AS \"CNI Burundi\",\n    COALESCE(bcd.birth_certificate, '-')   \
-  \     AS \"Acte de naissance\",\n    vb.dob                                    \
-  \  AS \"Date de naissance\",\n    vb.age                                      AS\
-  \ \"\xC2ge\",\n    vb.gender                                   AS \"Sexe\",\n  \
-  \  COALESCE(vb.province, '-')                  AS \"Province\",\n    COALESCE(vb.commune,\
-  \ '-')                   AS \"Commune\",\n    COALESCE(vb.zone, '-')           \
-  \           AS \"Zone\",\n    COALESCE(vb.colline, '-')                   AS \"\
-  Colline\",\n    COALESCE(ps.pregnancy, '-')                 AS \"Grossesse\",\n\
-  \    COALESCE(ccd.chief_complaints, '-')         AS \"Motifs de consultation\",\n\
-  \    COALESCE(ed.encounter_list, '')             AS \"Liste des rencontres\",\n\
-  \    COALESCE(ed.encounter_count, 0)             AS \"Nombre de rencontres\",\n\
-  \    COALESCE(dd.diagnosis_list, '')             AS \"Liste des diagnostics\",\n\
-  \    COALESCE(dd.diagnosis_count, 0)             AS \"Nombre de diagnostics\",\n\
-  \    COALESCE(dd.confirmed_diagnosis_list, '')   AS \"Liste des diagnostics confirm\xE9\
-  s\",\n    COALESCE(dd.confirmed_diagnosis_count, 0)   AS \"Nombre de diagnostics\
-  \ confirm\xE9s\",\n    COALESCE(ltd.lab_tests_list, '')            AS \"Liste des\
-  \ examens de laboratoire\",\n    COALESCE(ltd.lab_test_count, 0)             AS\
-  \ \"Nombre d'examens de laboratoire\",\n    COALESCE(lcd.lab_test_cost, 0)     \
-  \         AS \"Co\xFBt des examens de laboratoire\",\n    COALESCE(pd.procedure_list,\
+  \        ',', 1))\n          ELSE vb.patient_id\n      END,\n      '([A-Za-z])([0-9])',\
+  \ \n      '\\1-\\2'\n    )                                           AS \"ID du\
+  \ patient\",\n    CASE\n        WHEN vb.patient_id LIKE '%Burundi CNI:%' THEN\n\
+  \            TRIM(SPLIT_PART(\n                SUBSTRING(vb.patient_id FROM POSITION('Burundi\
+  \ CNI: ' IN vb.patient_id) + LENGTH('Burundi CNI: ')),\n                ',', 1))\n\
+  \        ELSE '-'\n    END                                         AS \"CNI Burundi\"\
+  ,\n    COALESCE(bcd.birth_certificate, '-')        AS \"Acte de naissance\",\n \
+  \   vb.dob                                      AS \"Date de naissance\",\n    vb.age\
+  \                                      AS \"\xC2ge\",\n    vb.gender           \
+  \                        AS \"Sexe\",\n    COALESCE(vb.province, '-')          \
+  \        AS \"Province\",\n    COALESCE(vb.commune, '-')                   AS \"\
+  Commune\",\n    COALESCE(vb.zone, '-')                      AS \"Zone\",\n    COALESCE(vb.colline,\
+  \ '-')                   AS \"Colline\",\n    COALESCE(ps.pregnancy, '-')      \
+  \           AS \"Grossesse\",\n    COALESCE(ccd.chief_complaints, '-')         AS\
+  \ \"Motifs de consultation\",\n    COALESCE(ed.encounter_list, '')             AS\
+  \ \"Liste des rencontres\",\n    COALESCE(ed.encounter_count, 0)             AS\
+  \ \"Nombre de rencontres\",\n    COALESCE(dd.diagnosis_list, '')             AS\
+  \ \"Liste des diagnostics\",\n    COALESCE(dd.diagnosis_count, 0)             AS\
+  \ \"Nombre de diagnostics\",\n    COALESCE(dd.confirmed_diagnosis_list, '')   AS\
+  \ \"Liste des diagnostics confirm\xE9s\",\n    COALESCE(dd.confirmed_diagnosis_count,\
+  \ 0)   AS \"Nombre de diagnostics confirm\xE9s\",\n    COALESCE(ltd.lab_tests_list,\
+  \ '')            AS \"Liste des examens de laboratoire\",\n    COALESCE(ltd.lab_test_count,\
+  \ 0)             AS \"Nombre d'examens de laboratoire\",\n    COALESCE(lcd.lab_test_cost,\
+  \ 0)              AS \"Co\xFBt des examens de laboratoire\",\n    COALESCE(pd.procedure_list,\
   \ '')             AS \"Liste des proc\xE9dures\",\n    COALESCE(pd.procedure_count,\
   \ 0)             AS \"Nombre de proc\xE9dures\",\n    COALESCE(pcd.procedure_cost,\
   \ 0)             AS \"Co\xFBt des proc\xE9dures\",\n    COALESCE(drd.drugs_list,\
@@ -181,7 +184,7 @@ sql: "-- =======================================================================
   LEFT JOIN procedure_cost_data    pcd ON pcd.visit_id = vb.visit_id\nLEFT JOIN drug_cost_data\
   \         dcd ON dcd.visit_id = vb.visit_id\nLEFT JOIN invoice_data           id\
   \  ON id.visit_id  = vb.visit_id\nLEFT JOIN insurance_data         ins ON ins.visit_id\
-  \ = vb.visit_id\nORDER BY vb.visit_date DESC, vb.visit_id;"
+  \ = vb.visit_id\nORDER BY vb.visit_date DESC, vb.visit_id;\n"
 params: null
 template_params: null
 filter_select_enabled: true
