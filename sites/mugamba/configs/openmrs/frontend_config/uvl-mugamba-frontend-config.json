@@ -156,6 +156,16 @@
           "required": false
         },
         "answerConceptSetUuid": "b1effaa8-afeb-41f5-9226-0bdcc52a6ea9"
+      },
+      {
+        "id": "insuranceCoverageTier",
+        "type": "person attribute",
+        "uuid": "9816ffad-781b-423f-a21d-1ab06afb4dcc",
+        "label": "Insurance Coverage Tier",
+        "validation": {
+          "required": false
+        },
+        "answerConceptSetUuid": "e8ebb02b-5b87-4997-801c-a606ee471204"
       }
     ],
     "sectionDefinitions": [
@@ -171,7 +181,7 @@
       {
         "id": "additionalInformation",
         "name": "Additional Information",
-        "fields": ["maritalStatus", "occupation"]
+        "fields": ["maritalStatus", "occupation", "insuranceCoverageTier"]
       }
     ],
     "fieldConfigurations": {
@@ -199,11 +209,13 @@
     "Translation overrides": {
       "en": {
         "Additional Information": "Additional Information",
+        "Insurance Coverage Tier": "Insurance Coverage Tier",
         "Occupation": "Occupation",
         "Marital Status": "Marital Status"
       },
       "fr": {
         "Additional Information": "Informations supplémentaires",
+        "Insurance Coverage Tier": "Niveau de couverture d'assurance",
         "Occupation": "Profession",
         "Marital Status": "Statut matrimonial"
       }

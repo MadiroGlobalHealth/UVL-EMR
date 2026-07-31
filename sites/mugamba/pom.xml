@@ -214,6 +214,9 @@
 							<target>
 								<mkdir
 									dir="${project.build.directory}/${project.artifactId}-${project.version}/distro/configs/openmrs/initializer_config" />
+								<delete
+									file="${project.build.directory}/${project.artifactId}-${project.version}/distro/configs/openmrs/initializer_config/liquibase/${project.artifactId}/uvl-liquibase.xml"
+									quiet="true" />
 								<copy
 									todir="${project.build.directory}/${project.artifactId}-${project.version}/distro/configs/openmrs/initializer_config">
 									<fileset
