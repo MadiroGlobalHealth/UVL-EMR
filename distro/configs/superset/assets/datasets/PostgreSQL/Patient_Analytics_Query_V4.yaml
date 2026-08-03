@@ -1,0 +1,604 @@
+table_name: Patient Analytics Query V4
+main_dttm_col: Visit Date
+description: null
+default_endpoint: null
+offset: 0
+cache_timeout: null
+schema: public
+sql: "-- ============================================================================\n\
+  -- UVL-EMR Superset Visits Dashboard \u2014 V5 (performance rewrite of V4)\n-- https://github.com/MadiroGlobalHealth/UVL-EMR/issues/205\n\
+  --\n-- Behaviour is identical to \"Patient Analytics Query V4\". The ONLY change\
+  \ is\n-- the three cost CTEs (lab_test_cost_data / procedure_cost_data /\n-- drug_cost_data).\
+  \ V4 ran a CORRELATED sub-query per (visit x sale_order_line)\n-- row (11,487 executions,\
+  \ each seq-scanning `encounters`) -> ~17s each, ~50s\n-- total -> Superset 60s timeout.\
+  \ V5 pre-computes the per-visit product set once\n-- and joins directly, so the\
+  \ whole query runs in well under a second.\n--\n-- Recommended companion indexes\
+  \ (idempotent):\n--   CREATE INDEX IF NOT EXISTS idx_encounters_visit_uuid ON encounters(visit_uuid);\n\
+  --   CREATE INDEX IF NOT EXISTS idx_sol_customer_uuid     ON sale_order_lines(customer_uuid);\n\
+  --   CREATE INDEX IF NOT EXISTS idx_sol_product_ext_id    ON sale_order_lines(product_external_id);\n\
+  -- ============================================================================\n\
+  \nWITH visit_base AS (\n    SELECT\n        v.visit_id,\n        CAST(v.date_started\
+  \ AS DATE)                    AS visit_date,\n        v.location               \
+  \                       AS location,\n        p.identifiers                    \
+  \               AS patient_id,\n        COALESCE(p.birthdate, v.patient_birthdate)\
+  \      AS dob,\n        COALESCE(CAST(v.patient_age_at_visit AS INT), NULL) AS age,\n\
+  \        COALESCE(p.gender, v.patient_gender)            AS gender,\n        p.address_state_province\
+  \                        AS province,   -- hierarchy level 2\n        p.address_county_district\
+  \                       AS commune,    -- hierarchy level 3\n        p.address_city\
+  \                                  AS zone,       -- hierarchy level 4 (city_village)\n\
+  \        p.address_1                                     AS colline,    -- hierarchy\
+  \ level 5 (address1)\n        v.visit_uuid,\n        v.patient_uuid\n    FROM visits\
+  \ v\n    LEFT JOIN patients p\n        ON v.patient_uuid = p.patient_uuid\n    WHERE\
+  \ COALESCE(v.visit_voided, false) = false\n),\n\npregnancy_status AS (\n    SELECT\n\
+  \        vb.visit_id,\n        CASE WHEN COUNT(o.obs_id) > 0 THEN 'Yes' ELSE '-'\
+  \ END AS pregnancy\n    FROM visit_base vb\n    LEFT JOIN observations o\n     \
+  \   ON o.visit_uuid = vb.visit_uuid\n        AND COALESCE(o.obs_voided, false) =\
+  \ false\n        AND (\n            o.question_label   ILIKE '%pregnan%'\n     \
+  \       OR o.question_mapping ILIKE '%pregnan%'\n            OR o.answer_text  \
+  \    ILIKE '%pregnan%'\n        )\n    GROUP BY vb.visit_id\n),\n\n-- Chief complaint(s)\
+  \ captured during the visit (concept 'Chief complaint (text)').\nchief_complaint_data\
+  \ AS (\n    SELECT\n        vb.visit_id,\n        STRING_AGG(DISTINCT COALESCE(o.answer_text,\
+  \ o.answer_coded), '; ') AS chief_complaints\n    FROM visit_base vb\n    JOIN observations\
+  \ o\n        ON o.visit_uuid = vb.visit_uuid\n        AND COALESCE(o.obs_voided,\
+  \ false) = false\n        AND o.question_label ILIKE '%chief complaint%'\n    GROUP\
+  \ BY vb.visit_id\n),\n\n-- Birth certificate info (children) \u2014 free-text obs\
+  \ on concept 'Birth certificate',\n-- captured at registration (patient-scoped,\
+  \ so it shows on every visit row).\nbirth_certificate_data AS (\n    SELECT\n  \
+  \      vb.visit_id,\n        STRING_AGG(DISTINCT COALESCE(o.answer_text, o.answer_coded),\
+  \ '; ') AS birth_certificate\n    FROM visit_base vb\n    JOIN observations o\n\
+  \        ON o.patient_uuid = vb.patient_uuid\n        AND COALESCE(o.obs_voided,\
+  \ false) = false\n        AND o.question_label ILIKE 'birth certificate%'\n    GROUP\
+  \ BY vb.visit_id\n),\n\nencounter_data AS (\n    SELECT\n        vb.visit_id,\n\
+  \        STRING_AGG(DISTINCT e.encounter_type, ', ') AS encounter_list,\n      \
+  \  COUNT(DISTINCT e.encounter_id)              AS encounter_count\n    FROM visit_base\
+  \ vb\n    LEFT JOIN encounters e\n        ON e.visit_uuid = vb.visit_uuid\n    \
+  \    AND COALESCE(e.encounter_voided, false) = false\n    GROUP BY vb.visit_id\n\
+  ),\n\ndiagnosis_data AS (\n    SELECT\n        vb.visit_id,\n        STRING_AGG(DISTINCT\
+  \ COALESCE(c.name, ed.diagnosis_non_coded), '; ') AS diagnosis_list,\n        COUNT(DISTINCT\
+  \ ed.diagnosis_id)                                     AS diagnosis_count,\n   \
+  \     STRING_AGG(DISTINCT CASE\n            WHEN UPPER(ed.certainty) = 'CONFIRMED'\n\
+  \            THEN COALESCE(c.name, ed.diagnosis_non_coded)\n        END, '; ') \
+  \                                                         AS confirmed_diagnosis_list,\n\
+  \        COUNT(DISTINCT CASE\n            WHEN UPPER(ed.certainty) = 'CONFIRMED'\
+  \ THEN ed.diagnosis_id\n        END)                                           \
+  \                     AS confirmed_diagnosis_count\n    FROM visit_base vb\n   \
+  \ LEFT JOIN encounters e\n        ON e.visit_uuid = vb.visit_uuid\n        AND COALESCE(e.encounter_voided,\
+  \ false) = false\n    LEFT JOIN encounter_diagnoses ed\n        ON ed.encounter_id\
+  \ = e.encounter_id\n        AND COALESCE(ed.voided, false) = false\n    LEFT JOIN\
+  \ concepts c\n        ON c.concept_id = ed.diagnosis_coded\n        AND COALESCE(c.retired,\
+  \ false) = false\n        AND c.locale = 'en'\n    GROUP BY vb.visit_id\n),\n\n\
+  lab_test_data AS (\n    SELECT\n        vb.visit_id,\n        STRING_AGG(DISTINCT\
+  \ COALESCE(c.name, o.order_name), '; ') AS lab_tests_list,\n        COUNT(DISTINCT\
+  \ o.order_id)                                AS lab_test_count\n    FROM visit_base\
+  \ vb\n    LEFT JOIN encounters e\n        ON e.visit_uuid = vb.visit_uuid\n    \
+  \    AND COALESCE(e.encounter_voided, false) = false\n    LEFT JOIN orders o\n \
+  \       ON o.encounter_uuid = e.encounter_uuid\n        AND COALESCE(o.voided, false)\
+  \ = false\n        AND o.order_type_name ILIKE '%test%'\n        AND o.order_action\
+  \ NOT ILIKE '%DISCONTINUE%'\n    LEFT JOIN concepts c\n        ON c.uuid = o.concept_uuid\n\
+  \        AND COALESCE(c.retired, false) = false\n        AND c.locale = 'en'\n \
+  \   GROUP BY vb.visit_id\n),\n\nprocedure_data AS (\n    SELECT\n        vb.visit_id,\n\
+  \        STRING_AGG(DISTINCT COALESCE(c.name, o.order_name), ', ') AS procedure_list,\n\
+  \        COUNT(DISTINCT o.order_id)                                AS procedure_count\n\
+  \    FROM visit_base vb\n    LEFT JOIN encounters e\n        ON e.visit_uuid = vb.visit_uuid\n\
+  \        AND COALESCE(e.encounter_voided, false) = false\n    LEFT JOIN orders o\n\
+  \        ON o.encounter_uuid = e.encounter_uuid\n        AND COALESCE(o.voided,\
+  \ false) = false\n        AND o.order_type_name ILIKE '%procedure%'\n        AND\
+  \ o.order_action NOT ILIKE '%DISCONTINUE%'\n    LEFT JOIN concepts c\n        ON\
+  \ c.uuid = o.concept_uuid\n        AND COALESCE(c.retired, false) = false\n    \
+  \    AND c.locale = 'en'\n    GROUP BY vb.visit_id\n),\n\ndrug_data AS (\n    SELECT\n\
+  \        vb.visit_id,\n        STRING_AGG(DISTINCT COALESCE(o.drug_name, o.order_name),\
+  \ '; ') AS drugs_list,\n        COUNT(DISTINCT o.order_id)                     \
+  \                AS drug_count\n    FROM visit_base vb\n    LEFT JOIN encounters\
+  \ e\n        ON e.visit_uuid = vb.visit_uuid\n        AND COALESCE(e.encounter_voided,\
+  \ false) = false\n    LEFT JOIN orders o\n        ON o.encounter_uuid = e.encounter_uuid\n\
+  \        AND COALESCE(o.voided, false) = false\n        AND (\n            o.order_type_name\
+  \ ILIKE '%drug%'\n            OR o.drug_name IS NOT NULL\n        )\n        AND\
+  \ o.order_action NOT ILIKE '%DISCONTINUE%'\n    GROUP BY vb.visit_id\n),\n\n-- ---------------------------------------------------------------------------\n\
+  -- Per-visit product sets (computed ONCE) \u2014 replaces V4's correlated sub-queries\n\
+  -- ---------------------------------------------------------------------------\n\
+  visit_test_products AS (\n    SELECT DISTINCT e.visit_uuid, o.concept_uuid AS product_uuid\n\
+  \    FROM orders o\n    JOIN encounters e ON e.encounter_uuid = o.encounter_uuid\n\
+  \    WHERE COALESCE(o.voided, false) = false\n      AND o.order_type_name ILIKE\
+  \ '%test%'\n      AND o.order_action NOT ILIKE '%DISCONTINUE%'\n      AND o.concept_uuid\
+  \ IS NOT NULL\n),\n\nvisit_procedure_products AS (\n    SELECT DISTINCT e.visit_uuid,\
+  \ o.concept_uuid AS product_uuid\n    FROM orders o\n    JOIN encounters e ON e.encounter_uuid\
+  \ = o.encounter_uuid\n    WHERE COALESCE(o.voided, false) = false\n      AND o.order_type_name\
+  \ ILIKE '%procedure%'\n      AND o.order_action NOT ILIKE '%DISCONTINUE%'\n    \
+  \  AND o.concept_uuid IS NOT NULL\n),\n\nvisit_drug_products AS (\n    SELECT DISTINCT\
+  \ e.visit_uuid, COALESCE(o.drug_uuid, o.concept_uuid) AS product_uuid\n    FROM\
+  \ orders o\n    JOIN encounters e ON e.encounter_uuid = o.encounter_uuid\n    WHERE\
+  \ COALESCE(o.voided, false) = false\n      AND (o.order_type_name ILIKE '%drug%'\
+  \ OR o.drug_name IS NOT NULL)\n      AND o.order_action NOT ILIKE '%DISCONTINUE%'\n\
+  \      AND COALESCE(o.drug_uuid, o.concept_uuid) IS NOT NULL\n),\n\nlab_test_cost_data\
+  \ AS (\n    SELECT\n        vb.visit_id,\n        COALESCE(SUM(sol.subtotal), 0)\
+  \ AS lab_test_cost\n    FROM visit_base vb\n    JOIN visit_test_products vtp\n \
+  \       ON vtp.visit_uuid = vb.visit_uuid\n    JOIN sale_order_lines sol\n     \
+  \   ON sol.customer_uuid       = vb.patient_uuid\n        AND sol.product_external_id\
+  \ = vtp.product_uuid\n        AND sol.order_state NOT ILIKE '%cancel%'\n    GROUP\
+  \ BY vb.visit_id\n),\n\nprocedure_cost_data AS (\n    SELECT\n        vb.visit_id,\n\
+  \        COALESCE(SUM(sol.subtotal), 0) AS procedure_cost\n    FROM visit_base vb\n\
+  \    JOIN visit_procedure_products vpp\n        ON vpp.visit_uuid = vb.visit_uuid\n\
+  \    JOIN sale_order_lines sol\n        ON sol.customer_uuid       = vb.patient_uuid\n\
+  \        AND sol.product_external_id = vpp.product_uuid\n        AND sol.order_state\
+  \ NOT ILIKE '%cancel%'\n    GROUP BY vb.visit_id\n),\n\ndrug_cost_data AS (\n  \
+  \  SELECT\n        vb.visit_id,\n        COALESCE(SUM(sol.subtotal), 0) AS drug_cost\n\
+  \    FROM visit_base vb\n    JOIN visit_drug_products vdp\n        ON vdp.visit_uuid\
+  \ = vb.visit_uuid\n    JOIN sale_order_lines sol\n        ON sol.customer_uuid \
+  \      = vb.patient_uuid\n        AND sol.product_external_id = vdp.product_uuid\n\
+  \        AND sol.order_state NOT ILIKE '%cancel%'\n    GROUP BY vb.visit_id\n),\n\
+  \ninvoice_data AS (\n    SELECT\n        vb.visit_id,\n        COALESCE(SUM(sol.subtotal),\
+  \ 0) AS invoice_sum\n    FROM visit_base vb\n    LEFT JOIN sale_order_lines sol\n\
+  \        ON sol.customer_uuid = vb.patient_uuid\n        AND sol.order_state NOT\
+  \ ILIKE '%cancel%'\n    GROUP BY vb.visit_id\n),\n\n-- \"Insurance\": Odoo pricelist\
+  \ is the only insurance signal in prod\n-- (coverage tiers Insurance 50%..100%,\
+  \ not insurer names).\ninsurance_data AS (\n    SELECT DISTINCT ON (vb.visit_id)\n\
+  \        vb.visit_id,\n        COALESCE(sol.pricelist, '-') AS insurance\n    FROM\
+  \ visit_base vb\n    LEFT JOIN sale_order_lines sol\n        ON sol.customer_uuid\
+  \ = vb.patient_uuid\n        AND sol.order_state NOT ILIKE '%cancel%'\n    ORDER\
+  \ BY vb.visit_id, sol.line_creation_date DESC\n)\n\nSELECT\n    vb.visit_id    \
+  \                             AS \"ID de visite\",\n    vb.visit_date          \
+  \                     AS \"Date de visite\",\n    vb.location                  \
+  \               AS \"Lieu\",\n    REGEXP_REPLACE(\n      CASE\n          WHEN vb.patient_id\
+  \ LIKE '%UVL ID:%' THEN\n              TRIM(SPLIT_PART(\n                  SUBSTRING(vb.patient_id\
+  \ FROM POSITION('UVL ID: ' IN vb.patient_id) + LENGTH('UVL ID: ')),\n          \
+  \        ',', 1))\n          ELSE vb.patient_id\n      END,\n      '([A-Za-z])([0-9])',\
+  \ \n      '\\1-\\2'\n    )                                           AS \"ID du\
+  \ patient\",\n    CASE\n        WHEN vb.patient_id LIKE '%Burundi CNI:%' THEN\n\
+  \            TRIM(SPLIT_PART(\n                SUBSTRING(vb.patient_id FROM POSITION('Burundi\
+  \ CNI: ' IN vb.patient_id) + LENGTH('Burundi CNI: ')),\n                ',', 1))\n\
+  \        ELSE '-'\n    END                                         AS \"CNI Burundi\"\
+  ,\n    COALESCE(bcd.birth_certificate, '-')        AS \"Acte de naissance\",\n \
+  \   vb.dob                                      AS \"Date de naissance\",\n    vb.age\
+  \                                      AS \"\xC2ge\",\n    vb.gender           \
+  \                        AS \"Sexe\",\n    COALESCE(vb.province, '-')          \
+  \        AS \"Province\",\n    COALESCE(vb.commune, '-')                   AS \"\
+  Commune\",\n    COALESCE(vb.zone, '-')                      AS \"Zone\",\n    COALESCE(vb.colline,\
+  \ '-')                   AS \"Colline\",\n    COALESCE(ps.pregnancy, '-')      \
+  \           AS \"Grossesse\",\n    COALESCE(ccd.chief_complaints, '-')         AS\
+  \ \"Motifs de consultation\",\n    COALESCE(ed.encounter_list, '')             AS\
+  \ \"Liste des rencontres\",\n    COALESCE(ed.encounter_count, 0)             AS\
+  \ \"Nombre de rencontres\",\n    COALESCE(dd.diagnosis_list, '')             AS\
+  \ \"Liste des diagnostics\",\n    COALESCE(dd.diagnosis_count, 0)             AS\
+  \ \"Nombre de diagnostics\",\n    COALESCE(dd.confirmed_diagnosis_list, '')   AS\
+  \ \"Liste des diagnostics confirm\xE9s\",\n    COALESCE(dd.confirmed_diagnosis_count,\
+  \ 0)   AS \"Nombre de diagnostics confirm\xE9s\",\n    COALESCE(ltd.lab_tests_list,\
+  \ '')            AS \"Liste des examens de laboratoire\",\n    COALESCE(ltd.lab_test_count,\
+  \ 0)             AS \"Nombre d'examens de laboratoire\",\n    COALESCE(lcd.lab_test_cost,\
+  \ 0)              AS \"Co\xFBt des examens de laboratoire\",\n    COALESCE(pd.procedure_list,\
+  \ '')             AS \"Liste des proc\xE9dures\",\n    COALESCE(pd.procedure_count,\
+  \ 0)             AS \"Nombre de proc\xE9dures\",\n    COALESCE(pcd.procedure_cost,\
+  \ 0)             AS \"Co\xFBt des proc\xE9dures\",\n    COALESCE(drd.drugs_list,\
+  \ '')                AS \"Liste des m\xE9dicaments\",\n    COALESCE(drd.drug_count,\
+  \ 0)                 AS \"Nombre de m\xE9dicaments\",\n    COALESCE(dcd.drug_cost,\
+  \ 0)                  AS \"Co\xFBt des m\xE9dicaments\",\n    COALESCE(id.invoice_sum,\
+  \ 0)                 AS \"Montant de la facture\",\n    COALESCE(ins.insurance,\
+  \ '-')                AS \"Assurance\",\n    '-'                               \
+  \          AS \"Assurance compl\xE9mentaire\"\nFROM visit_base vb\nLEFT JOIN pregnancy_status\
+  \       ps  ON ps.visit_id  = vb.visit_id\nLEFT JOIN chief_complaint_data   ccd\
+  \ ON ccd.visit_id = vb.visit_id\nLEFT JOIN birth_certificate_data bcd ON bcd.visit_id\
+  \ = vb.visit_id\nLEFT JOIN encounter_data         ed  ON ed.visit_id  = vb.visit_id\n\
+  LEFT JOIN diagnosis_data         dd  ON dd.visit_id  = vb.visit_id\nLEFT JOIN lab_test_data\
+  \          ltd ON ltd.visit_id = vb.visit_id\nLEFT JOIN procedure_data         pd\
+  \  ON pd.visit_id  = vb.visit_id\nLEFT JOIN drug_data              drd ON drd.visit_id\
+  \ = vb.visit_id\nLEFT JOIN lab_test_cost_data     lcd ON lcd.visit_id = vb.visit_id\n\
+  LEFT JOIN procedure_cost_data    pcd ON pcd.visit_id = vb.visit_id\nLEFT JOIN drug_cost_data\
+  \         dcd ON dcd.visit_id = vb.visit_id\nLEFT JOIN invoice_data           id\
+  \  ON id.visit_id  = vb.visit_id\nLEFT JOIN insurance_data         ins ON ins.visit_id\
+  \ = vb.visit_id\nORDER BY vb.visit_date DESC, vb.visit_id;\n"
+params: null
+template_params: null
+filter_select_enabled: true
+fetch_values_predicate: null
+extra: null
+normalize_columns: false
+always_filter_main_dttm: false
+uuid: 82eb0545-483b-4e7d-b4de-a38eac66ea25
+metrics:
+- metric_name: count
+  verbose_name: COUNT(*)
+  metric_type: count
+  expression: COUNT(*)
+  description: null
+  d3format: null
+  currency: null
+  extra: null
+  warning_text: null
+columns:
+- column_name: "Co\xFBt des examens de laboratoire"
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: DECIMAL
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: Liste des examens de laboratoire
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: Nombre d'examens de laboratoire
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: Montant de la facture
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: DECIMAL
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: "Nombre de diagnostics confirm\xE9s"
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: "Liste des diagnostics confirm\xE9s"
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: "Co\xFBt des m\xE9dicaments"
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: DECIMAL
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: "Co\xFBt des proc\xE9dures"
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: DECIMAL
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: Date de naissance
+  verbose_name: null
+  is_dttm: true
+  is_active: true
+  type: DATE
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: Date de visite
+  verbose_name: null
+  is_dttm: true
+  is_active: true
+  type: DATE
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: Acte de naissance
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: ID de visite
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: ID du patient
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: "Nombre de m\xE9dicaments"
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: Nombre de diagnostics
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: "Nombre de proc\xE9dures"
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: Nombre de rencontres
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: "Liste des m\xE9dicaments"
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: Liste des diagnostics
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: "Liste des proc\xE9dures"
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: Liste des rencontres
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: Motifs de consultation
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: "Assurance compl\xE9mentaire"
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: CNI Burundi
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: Assurance
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: Colline
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: Commune
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: "\xC2ge"
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: INTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: Grossesse
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: Lieu
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: Province
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: Sexe
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: Zone
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+version: 1.0.0
+database_uuid: 44c13a30-0c14-402c-b81f-1c93972f5fbc

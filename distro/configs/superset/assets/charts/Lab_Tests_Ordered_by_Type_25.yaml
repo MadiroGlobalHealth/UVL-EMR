@@ -1,0 +1,28 @@
+slice_name: "Lab \u2013 Tests Ordered by Type"
+description: null
+certified_by: null
+certification_details: null
+viz_type: echarts_timeseries_bar
+params:
+  datasource: 17__table
+  viz_type: echarts_timeseries_bar
+  x_axis: test_name
+  metrics:
+  - aggregate: COUNT
+    column:
+      column_name: order_id
+    expressionType: SIMPLE
+    label: Count
+  groupby: []
+  adhoc_filters: []
+  order_desc: true
+  row_limit: 25
+  orientation: horizontal
+  x_axis_sort_asc: false
+  x_axis_sort_series: name
+  color_scheme: supersetColors
+query_context: '{"datasource":{"id":17,"type":"table"},"force":false,"queries":[{"filters":[],"extras":{"having":"","where":""},"applied_time_extras":{},"columns":[{"columnType":"BASE_AXIS","sqlExpression":"test_name","label":"test_name","expressionType":"SQL"}],"metrics":[{"aggregate":"COUNT","column":{"column_name":"order_id"},"expressionType":"SIMPLE","label":"Count"}],"orderby":[[{"aggregate":"COUNT","column":{"column_name":"order_id"},"expressionType":"SIMPLE","label":"Count"},false]],"annotation_layers":[],"row_limit":25,"series_columns":[],"series_limit":0,"order_desc":true,"url_params":{},"custom_params":{},"custom_form_data":{},"time_offsets":[],"post_processing":[{"operation":"pivot","options":{"index":["test_name"],"columns":[],"aggregates":{"Count":{"operator":"mean"}},"drop_missing_columns":true}},{"operation":"flatten"}]}],"form_data":{"adhoc_filters":[],"color_scheme":"supersetColors","datasource":"17__table","groupby":[],"metrics":[{"aggregate":"COUNT","column":{"column_name":"order_id"},"expressionType":"SIMPLE","label":"Count"}],"order_desc":true,"orientation":"horizontal","row_limit":25,"slice_id":25,"viz_type":"echarts_timeseries_bar","x_axis":"test_name","x_axis_sort_asc":false,"x_axis_sort_series":"name","force":false,"result_format":"json","result_type":"full"},"result_format":"json","result_type":"full"}'
+cache_timeout: null
+uuid: 16850317-5dbb-4f64-ad89-142e4dbbf798
+version: 1.0.0
+dataset_uuid: f236a2c7-44aa-4588-aa8d-717a6a899312
