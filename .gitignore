@@ -391,3 +391,8 @@ makefile
 
 # End of https://www.toptal.com/developers/gitignore/api/node
 openmrs-esm-patient-chart/
+target/
+*/target/
+**/target/
+*.jar
+*.jar

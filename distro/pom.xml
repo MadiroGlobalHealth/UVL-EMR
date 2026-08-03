@@ -273,6 +273,42 @@
             </configuration>
           </execution>
           <execution>
+            <id>Copy EIP v2 jar from source repo</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.basedir}/binaries/eip-openmrs-orthanc</outputDirectory>
+              <overwrite>true</overwrite>
+              <resources>
+                <resource>
+                  <directory>/Users/v.ameil/Developer/eip-openmrs-orthanc-v2/target</directory>
+                  <includes>
+                    <include>eip-openmrs-orthanc-1.0.0-SNAPSHOT.jar</include>
+                  </includes>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+          <execution>
+            <id>Copy local eip-openmrs-orthanc resources</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>
+                ${project.build.directory}/${project.artifactId}-${project.version}/distro/binaries/eip-openmrs-orthanc</outputDirectory>
+              <overwrite>true</overwrite>
+              <resources>
+                <resource>
+                  <directory>${project.basedir}/binaries/eip-openmrs-orthanc</directory>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+          <execution>
             <!-- Override with local config files-->
             <id>Copy local resources</id>
             <phase>process-resources</phase>
@@ -309,6 +345,7 @@
                 <resource>
                   <directory>${project.build.directory}/ozone</directory>
                   <excludes>
+                    <exclude>distro/binaries/eip-openmrs-orthanc/eip-openmrs-orthanc-0.1.0.jar</exclude>
                     <exclude>distro/configs/**/autogenerationoptions/*.*</exclude>
                     <exclude>distro/configs/**/idgen/*.*</exclude>
                     <exclude>distro/configs/**/patientidentifiertypes/*.*</exclude>

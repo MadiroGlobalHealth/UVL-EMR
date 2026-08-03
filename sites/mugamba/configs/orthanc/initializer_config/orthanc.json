@@ -1,10 +1,21 @@
 {
   "Name": "Orthanc inside Docker",
   "StorageDirectory": "/var/lib/orthanc/db",
-  "IndexDirectory": "/var/lib/orthanc/db",
   "StorageCompression": false,
   "MaximumStorageSize": 0,
   "MaximumPatientCount": 0,
+  "PostgreSQL": {
+    "EnableIndex": true,
+    "EnableStorage": false,
+    "Host": "postgres-orthanc",
+    "Port": 5432,
+    "Database": "orthanc",
+    "Username": "orthanc",
+    "Password": "orthanc",
+    "Lock": false,
+    "IndexConnectionsCount": 50,
+    "TransactionMode": "ReadCommitted"
+  },
   "Plugins": [
     "/usr/share/orthanc/plugins",
     "/usr/local/share/orthanc/plugins"
@@ -25,14 +36,33 @@
     "WebServiceUsername": "orthanc",
     "WebServicePassword": "orthanc",
     "CheckedLevel": "studies",
-    "TokenHttpHeaders": ["token"],
-    "TokenGetArguments": ["token"],
+    "TokenHttpHeaders": [
+      "token"
+    ],
+    "TokenGetArguments": [
+      "token"
+    ],
     "StandardConfigurations": [
       "orthanc-explorer-2",
-      "stone-webviewer"
+      "stone-webviewer",
+      "ohif"
     ],
     "UncheckedFolders": [
-      "/auth/"
+      "/auth/",
+      "/ohif/",
+      "/ui/"
+    ]
+  },
+  "DicomModalities": {
+    "XmaruPro": [
+      "XMARU",
+      "192.168.1.XX",
+      104
+    ],
+    "FINDSCU": [
+      "FINDSCU",
+      "192.168.65.1",
+      1
     ]
   },
   "OrthancExplorer2": {
@@ -46,7 +76,28 @@
     "Options": {
       "EnableShares": true,
       "ShareType": "stone-viewer-publication",
-      "InstantLinksValidity": 3600
+      "InstantLinksValidity": 3600,
+      "OhifViewer3PublicRoot": "http://localhost:8889/ohif/"
     }
+  },
+  "Ohif": {
+    "DataSource": "dicom-web",
+    "RouterBasename": "/ohif",
+    "UserConfiguration": "/usr/share/orthanc/ohif/app-config.js"
+  },
+  "HttpAllowOrigin": "*",
+  "HttpAllowCredentials": false,
+  "HttpAllowMethods": "GET, POST, PUT, DELETE, OPTIONS",
+  "HttpAllowHeaders": "Authorization, Content-Type, Accept, token",
+  "ImagingWorklistURL": "http://openmrs:8080/openmrs/ws/rest/v1/worklist/requests",
+  "ImagingUpdateRequestStatus": "http://openmrs:8080/openmrs/ws/rest/v1/worklist/updaterequeststatus",
+  "ImagingWorklistUsername": "admin",
+  "ImagingWorklistPassword": "Admin123",
+  "PythonScript": "/etc/orthanc/orthancWorklist.py",
+  "DicomAlwaysAllowFind": true,
+  "UnknownSopClassAccepted": true,
+  "Worklists": {
+    "Enable": true,
+    "Database": "/var/lib/orthanc/worklists"
   }
 }
