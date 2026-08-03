@@ -15,6 +15,7 @@
     <maven.compiler.target>8</maven.compiler.target>
     <msf.environment>dev</msf.environment>
     <bundled.docker.tag>${msf.environment}</bundled.docker.tag>
+    <uvlOdooAddons.version>1.0.0-SNAPSHOT</uvlOdooAddons.version>
   </properties>
 
   <dependencies>
@@ -22,6 +23,13 @@
       <artifactId>ozone-uvl-burundi</artifactId>
       <groupId>com.ozoneuvl</groupId>
       <version>1.0.0-SNAPSHOT</version>
+      <type>zip</type>
+    </dependency>
+    <!-- Custom Odoo addons: https://github.com/MadiroGlobalHealth/UVL-Odoo-Addons -->
+    <dependency>
+      <artifactId>uvl-odoo-addons</artifactId>
+      <groupId>com.ozoneuvl</groupId>
+      <version>${uvlOdooAddons.version}</version>
       <type>zip</type>
     </dependency>
   </dependencies>
@@ -44,6 +52,33 @@
               <excludeTransitive>true</excludeTransitive>
               <outputDirectory>${project.build.directory}/ozone-uvl-burundi</outputDirectory>
               <includeArtifactIds>ozone-uvl-burundi</includeArtifactIds>
+            </configuration>
+          </execution>
+          <execution>
+            <!--
+              Custom Odoo addons. The zip holds addon directories at its root, so
+              it unpacks straight into the distro's Odoo addons directory.
+
+              bundled-docker/odoo/Dockerfile does `ADD binaries/odoo/addons
+              /mnt/extra-addons`, so everything here is baked into the odoo image
+              that CI pushes to Docker Hub — alongside the addons inherited from
+              Ozone (odoo_initializer, auth_oidc, sso_user_roles,
+              auth_oauth_autologin).
+
+              Bound to prepare-package, not generate-resources: the distro
+              directory this writes into is assembled by the resources plugin
+              during process-resources, and the assembly runs at package.
+            -->
+            <id>Unpack UVL Odoo addons</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>unpack-dependencies</goal>
+            </goals>
+            <configuration>
+              <excludeTransitive>true</excludeTransitive>
+              <includeArtifactIds>uvl-odoo-addons</includeArtifactIds>
+              <outputDirectory>
+                ${project.build.directory}/${project.artifactId}-${project.version}/distro/binaries/odoo/addons</outputDirectory>
             </configuration>
           </execution>
         </executions>
