@@ -17,17 +17,17 @@ jobs:
           java: [ '8' ]
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       
       - name: Set up JDK ${{ matrix.java }}
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: 'temurin'
           java-version: ${{ matrix.java }}
           cache: 'maven'
 
       - name: Set settings.xml
-        uses: s4u/maven-settings-action@v3.0.0
+        uses: s4u/maven-settings-action@v4.0.0
         with:
           servers: |
             [{
@@ -42,6 +42,9 @@ jobs:
               "url": "https://mavenrepo.openmrs.org/public"
             }]
   
+      - name: Pre-install missing frontend peer dependency
+        run: npm install --prefix $HOME @react-aria/utils@3.24.0
+
       - name: Build and Test
         run: mvn --batch-mode --update-snapshots --activate-profiles validator clean package
 

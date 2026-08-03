@@ -1,0 +1,301 @@
+dashboard_title: UVL Report V1
+description: null
+css: "/* Green header */\n.table thead th {\n    background-color: #2d5c3e !important;\n\
+  \    color: white !important;\n}\n\n"
+slug: null
+certified_by: ''
+certification_details: ''
+published: true
+uuid: c5b13234-cd4f-407f-b53a-feb8cbea8982
+position:
+  CHART-7X9BXEUN:
+    children: []
+    id: CHART-7X9BXEUN
+    meta:
+      chartId: 19
+      height: 50
+      sliceName: Pregancy chart per month
+      uuid: 3a27cb51-92e1-42d1-ba00-1933932e4825
+      width: 4
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-FGqIv7NyCM
+    type: CHART
+  CHART-CG_xTlSLLc:
+    children: []
+    id: CHART-CG_xTlSLLc
+    meta:
+      chartId: 21
+      height: 50
+      sliceName: Started Visits
+      uuid: 0696013b-0f05-4bb5-8a66-2bbcee24d3a4
+      width: 8
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-dGAk7LW6-e
+    type: CHART
+  CHART-CY3UE7IC:
+    children: []
+    id: CHART-CY3UE7IC
+    meta:
+      chartId: 16
+      height: 50
+      sliceName: Patient Age Groups Per Month
+      uuid: e35778ce-c366-47b6-bb3f-707f718a36d4
+      width: 4
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-FGqIv7NyCM
+    type: CHART
+  CHART-EVlnK_ZTbv:
+    children: []
+    id: CHART-EVlnK_ZTbv
+    meta:
+      chartId: 18
+      height: 50
+      sliceName: Patients by Gender
+      uuid: ddf93296-e954-4df2-a30b-39e6fd4c9c29
+      width: 8
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-K9frNwrCKn
+    type: CHART
+  CHART-mtXJubQIhi:
+    children: []
+    id: CHART-mtXJubQIhi
+    meta:
+      chartId: 22
+      height: 114
+      sliceName: Patient Analytics Query Chart V5
+      uuid: 5b123b21-5f12-4e32-9709-dc0943db97e3
+      width: 12
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-XcvUVqNZsQ
+    type: CHART
+  CHART-rhvvaTIVBi:
+    children: []
+    id: CHART-rhvvaTIVBi
+    meta:
+      chartId: 17
+      height: 50
+      sliceName: Today's appointments
+      uuid: 64d2767d-70f6-4966-8fc5-c0d9987c0b46
+      width: 4
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-K9frNwrCKn
+    type: CHART
+  CHART-rvDL2Q5-Ia:
+    children: []
+    id: CHART-rvDL2Q5-Ia
+    meta:
+      chartId: 15
+      height: 50
+      sliceName: Male/Female Patients
+      uuid: 0cb807ba-b595-43e8-95b5-2b83c89705cb
+      width: 4
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-dGAk7LW6-e
+    type: CHART
+  DASHBOARD_VERSION_KEY: v2
+  GRID_ID:
+    children:
+    - ROW-dGAk7LW6-e
+    - ROW-K9frNwrCKn
+    - ROW-FGqIv7NyCM
+    - ROW-XcvUVqNZsQ
+    id: GRID_ID
+    parents:
+    - ROOT_ID
+    type: GRID
+  HEADER_ID:
+    id: HEADER_ID
+    meta:
+      text: UVL Report V1
+    type: HEADER
+  ROOT_ID:
+    children:
+    - GRID_ID
+    id: ROOT_ID
+    type: ROOT
+  ROW-FGqIv7NyCM:
+    children:
+    - CHART-mtXJubQIhi
+    id: ROW-FGqIv7NyCM
+    meta:
+      '0': ROOT_ID
+      background: BACKGROUND_TRANSPARENT
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    type: ROW
+  ROW-K9frNwrCKn:
+    children:
+    - CHART-rhvvaTIVBi
+    - CHART-EVlnK_ZTbv
+    id: ROW-K9frNwrCKn
+    meta:
+      background: BACKGROUND_TRANSPARENT
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    type: ROW
+  ROW-XcvUVqNZsQ:
+    children:
+    - CHART-CY3UE7IC
+    - CHART-7X9BXEUN
+    id: ROW-XcvUVqNZsQ
+    meta:
+      background: BACKGROUND_TRANSPARENT
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    type: ROW
+  ROW-dGAk7LW6-e:
+    children:
+    - CHART-rvDL2Q5-Ia
+    - CHART-CG_xTlSLLc
+    id: ROW-dGAk7LW6-e
+    meta:
+      background: BACKGROUND_TRANSPARENT
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    type: ROW
+metadata:
+  timed_refresh_immune_slices: []
+  expanded_slices: {}
+  refresh_frequency: 0
+  color_scheme: ''
+  label_colors: {}
+  cross_filters_enabled: true
+  chart_configuration:
+    '15':
+      id: 15
+      crossFilters:
+        scope: global
+        chartsInScope:
+        - 16
+        - 17
+        - 18
+        - 19
+        - 21
+        - 22
+    '16':
+      id: 16
+      crossFilters:
+        scope: global
+        chartsInScope:
+        - 15
+        - 17
+        - 18
+        - 19
+        - 21
+        - 22
+    '18':
+      id: 18
+      crossFilters:
+        scope: global
+        chartsInScope:
+        - 15
+        - 16
+        - 17
+        - 19
+        - 21
+        - 22
+    '19':
+      id: 19
+      crossFilters:
+        scope: global
+        chartsInScope:
+        - 15
+        - 16
+        - 17
+        - 18
+        - 21
+        - 22
+    '21':
+      id: 21
+      crossFilters:
+        scope: global
+        chartsInScope:
+        - 15
+        - 16
+        - 17
+        - 18
+        - 19
+        - 22
+    '22':
+      id: 22
+      crossFilters:
+        scope: global
+        chartsInScope:
+        - 15
+        - 16
+        - 17
+        - 18
+        - 19
+        - 21
+  global_chart_configuration:
+    scope:
+      rootPath:
+      - ROOT_ID
+      excluded: []
+    chartsInScope:
+    - 15
+    - 16
+    - 17
+    - 18
+    - 19
+    - 21
+    - 22
+  native_filter_configuration:
+  - id: NATIVE_FILTER-uvl_time_range
+    name: Date / Period
+    filterType: filter_time
+    type: NATIVE_FILTER
+    targets:
+    - {}
+    defaultDataMask:
+      extraFormData: {}
+      filterState:
+        value: No filter
+    cascadeParentIds: []
+    scope:
+      rootPath:
+      - ROOT_ID
+      excluded: []
+    controlValues: {}
+    chartsInScope:
+    - 22
+    - 19
+    - 15
+    - 16
+    - 17
+    - 18
+    - 21
+    tabsInScope: []
+  shared_label_colors:
+    F: '#1FA8C9'
+    M: '#5AC189'
+    O: '#666666'
+    count: '#454E7C'
+    '>3 Months': '#FF7F44'
+    3 months: '#FCC700'
+    <5: '#E04355'
+    50+: '#3CCCCB'
+    5-14: '#8FD3E4'
+    25-49: '#ACE1C4'
+    15-24: '#B2B2B2'
+  color_scheme_domain: []
+  default_filters: '{}'
+version: 1.0.0

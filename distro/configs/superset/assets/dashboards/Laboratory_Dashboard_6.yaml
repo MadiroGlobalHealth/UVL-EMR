@@ -1,0 +1,274 @@
+dashboard_title: Laboratory Dashboard
+description: null
+css: ''
+slug: null
+certified_by: null
+certification_details: null
+published: true
+uuid: 83522db6-5f5c-481b-8e13-196c6fbedbf5
+position:
+  CHART-sToFmjhn3c:
+    children: []
+    id: CHART-sToFmjhn3c
+    meta:
+      chartId: 30
+      height: 89
+      sliceName: "Lab \u2013 Test Orders Detail"
+      uuid: 6575e021-141e-4ef1-865f-04bd59034c43
+      width: 12
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-8EnIV03FhS
+    type: CHART
+  CH_BYTEST:
+    children: []
+    id: CH_BYTEST
+    meta:
+      chartId: 25
+      height: 60
+      sliceName: "Lab \u2013 Tests Ordered by Type"
+      uuid: 16850317-5dbb-4f64-ad89-142e4dbbf798
+      width: 6
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW_3
+    type: CHART
+  CH_DEMO:
+    children: []
+    id: CH_DEMO
+    meta:
+      chartId: 28
+      height: 60
+      sliceName: "Lab \u2013 Tests by Age Group & Sex"
+      uuid: c68364df-475f-4d60-ab41-b3ab7f46cbd2
+      width: 6
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW_3
+    type: CHART
+  CH_PATIENTS:
+    children: []
+    id: CH_PATIENTS
+    meta:
+      chartId: 24
+      height: 20
+      sliceName: "Lab \u2013 Distinct Patients Tested"
+      uuid: dd274c54-d0d6-46cf-9ec9-3c68be9bb376
+      width: 6
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW_KPI
+    type: CHART
+  CH_TOTAL:
+    children: []
+    id: CH_TOTAL
+    meta:
+      chartId: 23
+      height: 20
+      sliceName: "Lab \u2013 Total Tests Ordered"
+      uuid: 96bad92e-e1ac-4124-b668-55b07ab9f79a
+      width: 6
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW_KPI
+    type: CHART
+  CH_WORKLOAD:
+    children: []
+    id: CH_WORKLOAD
+    meta:
+      chartId: 26
+      height: 50
+      sliceName: "Lab \u2013 Workload Volume Over Time"
+      uuid: 768c9b2a-8da5-4b88-ad3e-776b2f03c8e6
+      width: 12
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW_2
+    type: CHART
+  DASHBOARD_VERSION_KEY: v2
+  GRID_ID:
+    children:
+    - HEADER_1
+    - ROW_KPI
+    - ROW_2
+    - ROW_3
+    - ROW-8EnIV03FhS
+    id: GRID_ID
+    parents:
+    - ROOT_ID
+    type: GRID
+  HEADER_1:
+    id: HEADER_1
+    meta:
+      text: Laboratory Dashboard
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    type: HEADER
+  HEADER_ID:
+    id: HEADER_ID
+    meta:
+      text: Laboratory Dashboard
+    type: HEADER
+  ROOT_ID:
+    children:
+    - GRID_ID
+    id: ROOT_ID
+    type: ROOT
+  ROW-8EnIV03FhS:
+    children:
+    - CHART-sToFmjhn3c
+    id: ROW-8EnIV03FhS
+    meta:
+      background: BACKGROUND_TRANSPARENT
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    type: ROW
+  ROW_2:
+    children:
+    - CH_WORKLOAD
+    id: ROW_2
+    meta:
+      background: BACKGROUND_TRANSPARENT
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    type: ROW
+  ROW_3:
+    children:
+    - CH_BYTEST
+    - CH_DEMO
+    id: ROW_3
+    meta:
+      background: BACKGROUND_TRANSPARENT
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    type: ROW
+  ROW_KPI:
+    children:
+    - CH_TOTAL
+    - CH_PATIENTS
+    id: ROW_KPI
+    meta:
+      background: BACKGROUND_TRANSPARENT
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    type: ROW
+metadata:
+  color_scheme: supersetColors
+  cross_filters_enabled: true
+  native_filter_configuration:
+  - id: NATIVE_FILTER-lab_time_range
+    name: Date / Period
+    filterType: filter_time
+    type: NATIVE_FILTER
+    targets:
+    - {}
+    defaultDataMask:
+      extraFormData: {}
+      filterState:
+        value: No filter
+    cascadeParentIds: []
+    scope:
+      rootPath:
+      - ROOT_ID
+      excluded: []
+    controlValues: {}
+    chartsInScope:
+    - 23
+    - 24
+    - 25
+    - 26
+    - 27
+    - 28
+    tabsInScope: []
+  chart_configuration:
+    '25':
+      id: 25
+      crossFilters:
+        scope: global
+        chartsInScope:
+        - 23
+        - 24
+        - 26
+        - 28
+        - 30
+    '26':
+      id: 26
+      crossFilters:
+        scope: global
+        chartsInScope:
+        - 23
+        - 24
+        - 25
+        - 28
+        - 30
+    '28':
+      id: 28
+      crossFilters:
+        scope: global
+        chartsInScope:
+        - 23
+        - 24
+        - 25
+        - 26
+        - 30
+    '30':
+      id: 30
+      crossFilters:
+        scope: global
+        chartsInScope:
+        - 23
+        - 24
+        - 25
+        - 26
+        - 28
+  global_chart_configuration:
+    scope:
+      rootPath:
+      - ROOT_ID
+      excluded: []
+    chartsInScope:
+    - 23
+    - 24
+    - 25
+    - 26
+    - 28
+    - 30
+  timed_refresh_immune_slices: []
+  expanded_slices: {}
+  refresh_frequency: 0
+  label_colors: {}
+  default_filters: '{}'
+  shared_label_colors: {}
+  color_scheme_domain:
+  - '#1FA8C9'
+  - '#454E7C'
+  - '#5AC189'
+  - '#FF7F44'
+  - '#666666'
+  - '#E04355'
+  - '#FCC700'
+  - '#A868B7'
+  - '#3CCCCB'
+  - '#A38F79'
+  - '#8FD3E4'
+  - '#A1A6BD'
+  - '#ACE1C4'
+  - '#FEC0A1'
+  - '#B2B2B2'
+  - '#EFA1AA'
+  - '#FDE380'
+  - '#D3B3DA'
+  - '#9EE5E5'
+  - '#D1C6BC'
+version: 1.0.0

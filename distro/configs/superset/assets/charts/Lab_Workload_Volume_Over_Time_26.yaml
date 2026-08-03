@@ -1,0 +1,27 @@
+slice_name: "Lab \u2013 Workload Volume Over Time"
+description: null
+certified_by: null
+certification_details: null
+viz_type: echarts_timeseries_line
+params:
+  datasource: 17__table
+  viz_type: echarts_timeseries_line
+  x_axis: encounter_datetime
+  time_grain_sqla: P1W
+  metrics:
+  - aggregate: COUNT
+    column:
+      column_name: order_id
+    expressionType: SIMPLE
+    label: Tests
+  groupby: []
+  adhoc_filters: []
+  row_limit: 10000
+  comparison_type: values
+  x_axis_time_format: smart_date
+  color_scheme: supersetColors
+query_context: null
+cache_timeout: null
+uuid: 768c9b2a-8da5-4b88-ad3e-776b2f03c8e6
+version: 1.0.0
+dataset_uuid: f236a2c7-44aa-4588-aa8d-717a6a899312

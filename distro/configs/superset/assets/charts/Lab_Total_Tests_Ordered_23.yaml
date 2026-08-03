@@ -1,0 +1,26 @@
+slice_name: "Lab \u2013 Total Tests Ordered"
+description: null
+certified_by: null
+certification_details: null
+viz_type: big_number_total
+params:
+  datasource: 17__table
+  viz_type: big_number_total
+  metric:
+    aggregate: COUNT
+    column:
+      column_name: order_id
+    expressionType: SIMPLE
+    label: Tests ordered
+  adhoc_filters: []
+  header_font_size: 0.4
+  subheader_font_size: 0.15
+  y_axis_format: SMART_NUMBER
+  time_format: smart_date
+query_context: '{"datasource":{"id":17,"type":"table"},"force":false,"queries":[{"filters":[],"extras":{"having":"","where":""},"applied_time_extras":{},"columns":[],"metrics":[{"aggregate":"COUNT","column":{"column_name":"order_id"},"expressionType":"SIMPLE","label":"Tests
+  ordered"}],"annotation_layers":[],"series_limit":0,"order_desc":true,"url_params":{},"custom_params":{},"custom_form_data":{}}],"form_data":{"adhoc_filters":[],"datasource":"17__table","header_font_size":0.4,"metric":{"aggregate":"COUNT","column":{"column_name":"order_id"},"expressionType":"SIMPLE","label":"Tests
+  ordered"},"slice_id":23,"subheader_font_size":0.15,"time_format":"smart_date","viz_type":"big_number_total","y_axis_format":"SMART_NUMBER","force":false,"result_format":"json","result_type":"full"},"result_format":"json","result_type":"full"}'
+cache_timeout: null
+uuid: 96bad92e-e1ac-4124-b668-55b07ab9f79a
+version: 1.0.0
+dataset_uuid: f236a2c7-44aa-4588-aa8d-717a6a899312

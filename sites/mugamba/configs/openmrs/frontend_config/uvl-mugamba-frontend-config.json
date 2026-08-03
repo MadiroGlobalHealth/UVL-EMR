@@ -234,45 +234,59 @@
             }
         }
     },
-    "@openmrs/esm-billing-app": {
-        "serviceTypes": {
-            "billableService": "49f1cfdf-498a-4984-8acb-eebf402c28eb"
-        },
-        "defaultCurrency": "BIF"
-    },
-    "@openmrs/esm-patient-tests-app": {
-        "Display conditions": {
-            "privileges": [
-                "Get Orders"
-            ]
-        },
-        "orders": {
-            "labOrderTypeUuid": "52a447d3-a64a-11e3-9aeb-50e549534c5e",
-            "labOrderableConcepts": [
-                "95ba6e51-f09b-429a-ab75-6cc6fe4ab968"
-            ]
-        },
-        "additionalTestOrderTypes": [
-            {
-                "orderTypeUuid": "67a92e56-0f88-11ea-8d71-362b9e155667",
-                "orderableConceptSets": [
-                    "46c8be89-db86-4476-9609-58d184f452c3"
-                ],
-                "icon": "omrs-pict-procedure-order"
-            }
-        ],
-        "resultsViewerConcepts": [
-            {
-                "conceptUuid": "dfda0680-1b0c-4ce8-85af-42ecd08cc970",
-                "defaultOpen": false
-            },
-            {
-                "conceptUuid": "46c8be89-db86-4476-9609-58d184f452c3",
-                "defaultOpen": false
-            },
-            {
-                "conceptUuid": "9dc2962b-bdd0-4261-b69d-55769e078be0",
-                "defaultOpen": true
+    "visitAttributeTypes": [
+      {
+        "uuid": "4dfdd31b-64e7-485e-aaf0-4cf8862644cc",
+        "required": true
+      },
+
+      {
+        "uuid": "e880354f-4a75-48b6-a7e8-d7fc629e06eb",
+        "required": true
+      },
+
+      {
+        "uuid": "536b1547-15fb-4e36-b0a3-9aeba0e877c0",
+        "required": true
+      },
+
+      {
+        "uuid": "56f755aa-8eba-49de-83be-126322cf0abd",
+        "required": true
+      },
+
+      {
+        "uuid": "3024f003-e5bd-4cc6-aa2a-05e9575f9ea9",
+        "required": true
+      }
+    ],
+    "restrictByVisitLocationTag": true
+  },
+  "@openmrs/esm-primary-navigation-app": {
+    "externalRefLinks": [
+      {
+        "title": "Pharmacy, Billing & Inventory",
+        "redirect": "${ODOO_PUBLIC_URL}"
+      },
+      {
+        "title": "Laboratory",
+        "redirect": "${SENAITE_PUBLIC_URL}"
+      },
+      {
+        "title": "Reporting & Analytics",
+        "redirect": "${SUPERSET_PUBLIC_URL}"
+      },
+      {
+        "title": "Account Management",
+        "redirect": "${KEYCLOAK_URL}/realms/ozone/account/#/"
+      }
+    ],
+    "extensionSlots": {
+      "home-dashboard-slot": {
+        "configure": {
+          "home-widget-db-link": {
+            "Display conditions": {
+              "privileges": ["Get Visits"]
             }
         ]
     },
