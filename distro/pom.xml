@@ -318,7 +318,41 @@
           </execution>
 
           <execution>
-            <!-- Copy UVL Disto docker compose .txt file -->
+            <!--
+              Site-authored database bootstrap scripts, layered onto the data/ tree
+              inherited from Ozone. Currently just the Orthanc index database, which
+              lives on the shared postgresql instance (orthanc.json points its
+              PostgreSQL Host at "postgresql").
+
+              data/postgresql/create_db.sh walks /docker-entrypoint-initdb.d/db/* on
+              first init, so a new directory here is picked up with no other change
+              for the local stack; the bundled image needs an extra ADD, applied by
+              the bundled-docker profile below.
+            -->
+            <id>Copy UVL Distro data files</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>
+                ${project.build.directory}/${project.artifactId}-${project.version}/distro/data</outputDirectory>
+              <overwrite>true</overwrite>
+              <resources>
+                <resource>
+                  <directory>${project.basedir}/data</directory>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+
+          <execution>
+            <!--
+              The compose-file manifest is read by run/docker/scripts/utils.sh with a
+              bare relative path (`cat docker-compose-files.txt`), so it must sit
+              alongside the scripts, NOT in run/docker with the compose files it lists.
+              That is why it is copied separately and excluded from the copy below.
+            -->
             <id>Copy UVL Disto docker compose .txt file</id>
             <phase>prepare-package</phase>
             <goals>
@@ -330,7 +364,7 @@
               <overwrite>true</overwrite>
               <resources>
                 <resource>
-                  <directory>${project.basedir}/../scripts</directory>
+                  <directory>${project.basedir}/../scripts/docker</directory>
                   <includes>
                     <include>
                       docker-compose-files.txt
@@ -342,8 +376,8 @@
           </execution>
 
           <execution>
-            <!-- Copy UVL Disto docker compose .txt file -->
-            <id>Copy UVL Disto docker override file</id>
+            <!-- scripts/docker -> run/docker : compose files and their overrides -->
+            <id>Copy UVL Distro docker files</id>
             <phase>prepare-package</phase>
             <goals>
               <goal>copy-resources</goal>
@@ -354,17 +388,38 @@
               <overwrite>true</overwrite>
               <resources>
                 <resource>
-                  <directory>${project.basedir}/../scripts</directory>
-                  <includes>
-                    <include>
-                      docker-compose-override.yml
-                    </include>
-                  </includes>
+                  <directory>${project.basedir}/../scripts/docker</directory>
+                  <excludes>
+                    <!-- Belongs with the scripts — see the execution above. -->
+                    <exclude>docker-compose-files.txt</exclude>
+                  </excludes>
                 </resource>
               </resources>
             </configuration>
           </execution>
 
+          <execution>
+            <!--
+              scripts/src -> run/docker/scripts : shell helpers invoked from the
+              launcher. The antrun step below chmods run/docker/scripts/*.sh to 700,
+              so anything landing here stays executable.
+            -->
+            <id>Copy UVL Distro docker scripts</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>
+                ${project.build.directory}/${project.artifactId}-${project.version}/run/docker/scripts</outputDirectory>
+              <overwrite>true</overwrite>
+              <resources>
+                <resource>
+                  <directory>${project.basedir}/../scripts/src</directory>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
       <plugin>
@@ -445,6 +500,68 @@
 
                 <echo level="info" message="Setting executable permissions for the Ozone start.sh script" />
                 <chmod file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/scripts/*.sh" perm="700"/>
+                <replaceregexp file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/scripts/utils.sh"
+                  match="(export ORTHANC_CONFIG_PATH=.*)"
+                  replace="\1&#10;    export ORTHANC_ATTACHMENTS_PATCH_PATH=${project.basedir}/../../openmrs-esm-patient-chart/packages/esm-patient-attachments-app/dist" />
+                <echo file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/concatenated.env"
+                  message="${line.separator}ORTHANC_ATTACHMENTS_PATCH_PATH=${project.basedir}/../../openmrs-esm-patient-chart/packages/esm-patient-attachments-app/dist"
+                  append="true" />
+                <!--
+                  Orthanc / PACS and Superset runtime values.
+
+                  Inserted by anchoring on keys upstream Ozone already defines
+                  (ORTHANC_HOSTNAME, SUPERSET_CLIENT_SECRET) and re-emitting the
+                  anchor plus the new keys — the same \1-plus-content pattern this
+                  pom uses for SPA_CONFIG_URLS. A plain replace cannot be used
+                  because none of these nine keys exist upstream to match against.
+
+                  Idempotent by construction: the resources copy above restores
+                  .env and concatenated.env from target/ozone on every build, so the
+                  anchor is never already expanded.
+
+                  orthancWorklist.py needs no copy step of its own: the "Copy local
+                  resources" execution above already copies all of configs/ into
+                  distro/configs, including configs/orthanc.
+                -->
+                <echo level="info" message="Adding Orthanc/PACS and Superset runtime values to the env files" />
+                <replaceregexp byline="true"
+                  match="^ORTHANC_HOSTNAME=(.*)$"
+                  replace="ORTHANC_HOSTNAME=\1${line.separator}ORTHANC_PUBLIC_URL=$${SERVER_SCHEME}://$${ORTHANC_HOSTNAME}${line.separator}PACS_PUBLIC_URL=$${SERVER_SCHEME}://$${ORTHANC_HOSTNAME}${line.separator}ORTHANC_CLIENT_SECRET=zfQBuufpLoIQ4H6adktXAVvOin1nrR6R${line.separator}ORTHANC_AUTH_SERVICE_SECRET_KEY=d3eeda9227acde56a2917f80d960073e0d5a9d28be6b3bfe1ccbef8204f6fd46${line.separator}ORTHANC_DB_PASSWORD=orthanc">
+                  <fileset dir="${project.build.directory}/${project.artifactId}-${project.version}/run/docker">
+                    <include name=".env" />
+                    <include name="concatenated.env" />
+                  </fileset>
+                </replaceregexp>
+                <replaceregexp byline="true"
+                  match="^SUPERSET_CLIENT_SECRET=(.*)$"
+                  replace="SUPERSET_CLIENT_SECRET=\1${line.separator}SUPERSET_DB_USER=superset${line.separator}SUPERSET_DB_PASSWORD=superset${line.separator}SUPERSET_SECRET_KEY=supersetSecretKey${line.separator}SUPERSET_ADMIN_PASSWORD=admin${line.separator}ORTHANC_DB_NAME=orthanc${line.separator}ORTHANC_DB_USER=orthanc">
+                  <fileset dir="${project.build.directory}/${project.artifactId}-${project.version}/run/docker">
+                    <include name=".env" />
+                    <include name="concatenated.env" />
+                  </fileset>
+                </replaceregexp>
+
+                <!--
+                  SSO: drop the provider mapping so oauth2login does not try to
+                  resolve an OpenMRS Provider for every SSO user, which fails login
+                  for users who have no provider account.
+
+                  Note there is deliberately NO rewrite of accessTokenUri /
+                  userInfoUri / keysUrl here: upstream Ozone already points those at
+                  ${KEYCLOAK_INTERNAL_HOST_URL} (http://keycloak:8080), so the
+                  container-to-container URLs are correct as shipped. The sed in
+                  build2.sh predates that and is now a no-op.
+
+                  This file is baked into the openmrs image by
+                  bundled-docker/openmrs/Dockerfile, so the edit must happen at build
+                  time — a post-build script would never reach the pushed image.
+                -->
+                <echo level="info" message="Removing the oauth2login provider mapping for SSO" />
+                <replaceregexp
+                  file="${project.build.directory}/${project.artifactId}-${project.version}/distro/configs/openmrs/properties/oauth2.properties"
+                  match="^openmrs\.mapping\.user\.provider=provider$"
+                  replace=""
+                  byline="true" />
               </target>
             </configuration>
           </execution>
@@ -575,6 +692,28 @@
                     <echo level="info" message="Adding msf MYSQL docker image version"/>
                     <replaceregexp file="${project.build.directory}/bundled-docker-tmp/bundled-docker/mysql/Dockerfile"
                                             match="FROM mariadb.*" replace="FROM mariadb:10.11.13" />
+
+                    <!--
+                      Bake the Orthanc index database bootstrap into the postgresql
+                      image. Upstream's Dockerfile ADDs each database directory by
+                      name (odoo, senaite, keycloak), so a new data/postgresql/orthanc
+                      directory is NOT picked up automatically the way the local
+                      stack's bind mount is.
+
+                      Two steps because bundled-docker-tmp is NOT refreshed between
+                      non-clean builds: a bare append accumulates a duplicate ADD on
+                      every `mvn package` without `clean`. Stripping any existing line
+                      first makes this idempotent.
+                    -->
+                    <echo level="info" message="Adding Orthanc database bootstrap to the postgresql image"/>
+                    <replaceregexp file="${project.build.directory}/bundled-docker-tmp/bundled-docker/postgresql/Dockerfile"
+                                            match="[\r\n]+ADD data/postgresql/orthanc[^\r\n]*"
+                                            replace=""
+                                            flags="g" />
+                    <replaceregexp file="${project.build.directory}/bundled-docker-tmp/bundled-docker/postgresql/Dockerfile"
+                                            match="^(ADD data/postgresql/keycloak .*)$"
+                                            replace="\1${line.separator}ADD data/postgresql/orthanc /docker-entrypoint-initdb.d/db/orthanc"
+                                            byline="true" />
                   </target>
                 </configuration>
               </execution>
@@ -590,6 +729,32 @@
                     <copy overwrite="true"
                           file="${project.basedir}/../scripts/proxy/default.conf.template"
                           tofile="${project.build.directory}/bundled-docker-tmp/bundled-docker/proxy/default.conf.template"/>
+                  </target>
+                </configuration>
+              </execution>
+              <execution>
+                <!--
+                  Site-authored Dockerfiles for services upstream
+                  com.ozonehis:bundled-docker does not cover (currently Orthanc).
+
+                  Must run BEFORE "Copy Bundled Docker Scripts to Distro" below,
+                  which snapshots bundled-docker-tmp/bundled-docker into the distro
+                  artifact — that is how the tree reaches countries/burundi and then
+                  sites/mugamba, where the images are actually built and pushed.
+                  Executions of the same plugin in one phase run in declaration
+                  order, so position here is load-bearing.
+                -->
+                <id>Add UVL bundled docker files</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <echo level="info" message="Adding UVL-authored bundled-docker files (orthanc)"/>
+                    <copy todir="${project.build.directory}/bundled-docker-tmp/bundled-docker" overwrite="true">
+                      <fileset dir="${project.basedir}/../scripts/bundled-docker" includes="**/*" />
+                    </copy>
                   </target>
                 </configuration>
               </execution>

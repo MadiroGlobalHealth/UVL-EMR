@@ -443,5 +443,42 @@
 		<sqlFile path="sql/reporting_report_design.sql" relativeToChangelogFile="true" stripComments="true" />
         <sql>SET foreign_key_checks = 1;</sql>
     </changeSet>
-    
+
+    <!-- Retire the duplicate provider record. Previously applied on every boot by
+         scripts/src/post-start.sh; a changeset runs once and is tracked. -->
+    <changeSet id="retire_duplicate_provider-202608041100" author="jnsereko">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT CASE WHEN COUNT(*) > 0 THEN 1 ELSE 0 END FROM provider
+                WHERE uuid = 'f9badd80-ab76-11e2-9e96-0800200c9a66' AND retired = 0;
+            </sqlCheck>
+        </preConditions>
+        <comment>Retire the duplicate provider so it stops appearing in provider pickers</comment>
+        <sql>
+            UPDATE provider
+               SET retired = 1,
+                   retire_reason = 'Duplicate',
+                   retired_by = 1,
+                   date_retired = NOW()
+             WHERE uuid = 'f9badd80-ab76-11e2-9e96-0800200c9a66' AND retired = 0;
+        </sql>
+    </changeSet>
+
+    <!-- Point the imaging module at Orthanc via the orthanc-service Keycloak client.
+         Guarded on the table existing: imaging_OrthancConfiguration comes from the
+         optional imaging module, so without the precondition this changeset would
+         fail the whole changelog on any instance that does not run imaging. -->
+    <changeSet id="set_imaging_orthanc_credentials-202608041100" author="jnsereko">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="imaging_OrthancConfiguration" />
+        </preConditions>
+        <comment>Set the Orthanc username/password used by the imaging module</comment>
+        <sql>
+            UPDATE imaging_OrthancConfiguration
+               SET orthancUsername = 'orthanc-service',
+                   orthancPassword = 'zfQBuufpLoIQ4H6adktXAVvOin1nrR6R'
+             WHERE id = 1;
+        </sql>
+    </changeSet>
+
 </databaseChangeLog>

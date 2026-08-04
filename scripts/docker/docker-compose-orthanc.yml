@@ -18,6 +18,12 @@ services:
       - POSTGRESQL_PLUGIN_ENABLED=true
       - PYTHON_PLUGIN_ENABLED=true
       - WORKLISTS_PLUGIN_ENABLED=true
+      # Consumed by the image's uvl-entrypoint.sh, which resolves these into
+      # /usr/share/orthanc/ohif/app-config.js at container start. env-substitution
+      # cannot: it skips .js files and only sees the host-mounted distro tree.
+      - KEYCLOAK_URL=${SERVER_SCHEME}://${KEYCLOAK_HOSTNAME}
+      - PACS_PUBLIC_URL=${SERVER_SCHEME}://${ORTHANC_HOSTNAME}
+      - OPENMRS_PUBLIC_URL=${SERVER_SCHEME}://${HOST_NAME}
     volumes:
       - orthanc-db:/var/lib/orthanc/db
       - "${ORTHANC_CONFIG_PATH}/ohif:/usr/share/orthanc/ohif"
@@ -31,26 +37,8 @@ services:
       - "8889:8042"
       - "4242:4242"
     depends_on:
-      postgres-orthanc:
+      postgresql:
         condition: service_healthy
-  postgres-orthanc:
-    image: postgres:16
-    restart: always
-    environment:
-      POSTGRES_DB: orthanc
-      POSTGRES_USER: orthanc
-      POSTGRES_PASSWORD: ${ORTHANC_DB_PASSWORD}
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U orthanc"]
-      interval: 5s
-      timeout: 5s
-      retries: 10
-    volumes:
-      - orthanc-postgres-db:/var/lib/postgresql/data
-    networks:
-      ozone:
-        aliases:
-          - postgres-orthanc
   eip-openmrs-orthanc:
     depends_on:
       openmrs:
@@ -113,6 +101,18 @@ services:
     volumes:
       - "${SQL_SCRIPTS_PATH}/mysql/eip-openmrs-orthanc:/docker-entrypoint-initdb.d/db/eip-openmrs-orthanc"
 
+  # Orthanc keeps its index on the shared postgresql instance rather than a dedicated
+  # one (orthanc.json points its PostgreSQL Host at "postgresql"), matching how odoo,
+  # senaite and keycloak are handled. This replaces the postgres-orthanc service that
+  # used to live here with its own volume.
+  postgresql:
+    environment:
+      ORTHANC_DB_NAME: ${ORTHANC_DB_NAME}
+      ORTHANC_DB_USER: ${ORTHANC_DB_USER}
+      ORTHANC_DB_PASSWORD: ${ORTHANC_DB_PASSWORD}
+    volumes:
+      - "${SQL_SCRIPTS_PATH}/postgresql/orthanc:/docker-entrypoint-initdb.d/db/orthanc"
+
   env-substitution:
     environment:
       - PACS_PUBLIC_URL=${PACS_PUBLIC_URL}
@@ -121,5 +121,4 @@ secrets:
     file: ${ORTHANC_CONFIG_PATH}/orthanc.json
 volumes:
   orthanc-db:
-  orthanc-postgres-db:
   eip-home-orthanc:
