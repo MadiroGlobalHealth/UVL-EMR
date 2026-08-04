@@ -336,6 +336,48 @@
 
           <execution>
             <!--
+              Custom OpenMRS modules held in this repo as binaries.
+
+              distro/binaries is NOT part of the inherited-artifact copy — the
+              artifact's modules come from the Ozone zip — so without this execution
+              anything placed there never reached the build output. That is why
+              orthanctoken was previously present in the repo but absent from every
+              artifact and image: the imaging flow's /ws/rest/v1/orthanc/token
+              endpoint was only ever available on an instance where the module had
+              been installed by hand.
+
+              Bound to prepare-package deliberately. The "Upgrade UVL OpenMRS to
+              RefApp 3.4.0" execution deletes *.omod from this directory (keeping
+              only serialization*) during process-resources, so copying earlier would
+              be undone.
+
+              orthanctoken performs authorization — it decides whether the requesting
+              user may view a study — so a committed SNAPSHOT binary is a stopgap, not
+              the destination. Publish it as a versioned artifact and consume it as a
+              Maven dependency like every other module in this pom.
+            -->
+            <id>Copy UVL Distro custom openmrs modules</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>
+                ${project.build.directory}/${project.artifactId}-${project.version}/distro/binaries/openmrs/modules</outputDirectory>
+              <overwrite>true</overwrite>
+              <resources>
+                <resource>
+                  <directory>${project.basedir}/binaries/openmrs/modules</directory>
+                  <includes>
+                    <include>*.omod</include>
+                  </includes>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+
+          <execution>
+            <!--
               Site-authored database bootstrap scripts, layered onto the data/ tree
               inherited from Ozone. Currently just the Orthanc index database, which
               lives on the shared postgresql instance (orthanc.json points its
