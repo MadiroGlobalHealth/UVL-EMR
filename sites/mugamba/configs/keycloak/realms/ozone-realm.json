@@ -704,6 +704,21 @@
       },
       "notBefore": 0,
       "groups": []
+    },
+    {
+      "username": "service-account-orthanc-service",
+      "enabled": true,
+      "totp": false,
+      "emailVerified": false,
+      "serviceAccountClientId": "orthanc-service",
+      "disableableCredentialTypes": [],
+      "requiredActions": [],
+      "realmRoles": [
+        "default-roles-ozone",
+        "admin"
+      ],
+      "notBefore": 0,
+      "groups": []
     }
   ],
   "scopeMappings": [

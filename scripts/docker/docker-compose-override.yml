@@ -60,12 +60,23 @@ services:
       ENABLE_KEYCLOAK: "true"
       PERMISSIONS_FILE_PATH: "/orthanc-auth-service/permissions.json"
       KEYCLOAK_URI: "http://keycloak:8080/realms/ozone/"
-      KEYCLOAK_CLIENT_ID: "orthanc"
+      KEYCLOAK_CLIENT_ID: "orthanc-service"
       KEYCLOAK_ADMIN_URI: "http://keycloak:8080/admin/realms/ozone/"
-      PUBLIC_ORTHANC_ROOT: "http://localhost:8889/"
-      PUBLIC_LANDING_ROOT: "http://localhost:8889/ui/app/token-landing.html"
-      PUBLIC_OHIF_ROOT: "http://localhost:8889/ohif/"
-      KEYCLOAK_CLIENT_SECRET: "8usmrm7OKkQlWiANNHbgFUsWEclVxRJT"
+      # Browser-facing URLs, so they must be the public Orthanc host, not the
+      # container name. Built from SERVER_SCHEME + ORTHANC_HOSTNAME the way the rest
+      # of the stack does it — utils.sh sets ORTHANC_HOSTNAME per environment
+      # (localhost:8889 locally, pacs-<ip>.traefik.me for a remote demo), so a
+      # hardcoded localhost only ever worked on the developer's own machine.
+      PUBLIC_ORTHANC_ROOT: "${SERVER_SCHEME}://${ORTHANC_HOSTNAME}/"
+      PUBLIC_LANDING_ROOT: "${SERVER_SCHEME}://${ORTHANC_HOSTNAME}/ui/app/token-landing.html"
+      PUBLIC_OHIF_ROOT: "${SERVER_SCHEME}://${ORTHANC_HOSTNAME}/ohif/"
+      # Confidential client with serviceAccountsEnabled, since this service also
+      # calls KEYCLOAK_ADMIN_URI. Was "8usmrm7OKkQlWiANNHbgFUsWEclVxRJT", which
+      # matched no client in ozone-realm.json at all, paired with clientId
+      # "orthanc" — a PUBLIC client that by definition has no secret, so that pair
+      # could never authenticate. The browser-facing "orthanc" public client stays
+      # in use by OrthancExplorer2/OHIF via orthanc.json.
+      KEYCLOAK_CLIENT_SECRET: "${ORTHANC_CLIENT_SECRET}"
       SECRET_KEY: "${ORTHANC_AUTH_SERVICE_SECRET_KEY}"
       USERS: '{"orthanc":"orthanc"}'
 

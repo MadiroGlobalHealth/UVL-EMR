@@ -157,27 +157,6 @@
               </resources>
             </configuration>
           </execution>
-          <execution>
-            <!-- Copy local docker compose files -->
-            <id>Copy local docker compose files</id>
-            <phase>process-resources</phase>
-            <goals>
-              <goal>copy-resources</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>
-                ${project.build.directory}/${project.artifactId}-${project.version}/run/docker</outputDirectory>
-              <overwrite>true</overwrite>
-              <resources>
-                <resource>
-                  <directory>${project.basedir}/docker</directory>
-                  <excludes>
-                    <exclude>.gitkeep</exclude>
-                  </excludes>
-                </resource>
-              </resources>
-            </configuration>
-          </execution>
         </executions>
       </plugin>
 
@@ -241,36 +220,6 @@
                   match="export PROJECT_NAME=.*" replace='export PROJECT_NAME="${project.artifactId}"' />
 
                 <replace file="${project.build.directory}/${project.artifactId}-${project.version}/distro/ozone-info.json" token="ozone-uvl-distro" value="ozone-uvl-mugamba" />
-<replaceregexp file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/scripts/utils.sh"
-                  match="(export ORTHANC_CONFIG_PATH=.*)"
-                  replace="\1&#10;    export ORTHANC_ATTACHMENTS_PATCH_PATH=${project.basedir}/../../openmrs-esm-patient-chart/packages/esm-patient-attachments-app/dist" />
-
-<echo file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/concatenated.env"
-  message="${line.separator}ORTHANC_ATTACHMENTS_PATCH_PATH=${project.basedir}/../../openmrs-esm-patient-chart/packages/esm-patient-attachments-app/dist"
-  append="true" />
-
-<echo file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/concatenated.env"
-  message="${line.separator}ORTHANC_AUTH_SERVICE_SECRET_KEY=d3eeda9227acde56a2917f80d960073e0d5a9d28be6b3bfe1ccbef8204f6fd46"
-  append="true" />
-<echo file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/.env"
-  message="${line.separator}ORTHANC_AUTH_SERVICE_SECRET_KEY=d3eeda9227acde56a2917f80d960073e0d5a9d28be6b3bfe1ccbef8204f6fd46"
-  append="true" />
-
-<echo file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/concatenated.env"
-  message="${line.separator}ORTHANC_CLIENT_SECRET=zfQBuufpLoIQ4H6adktXAVvOin1nrR6R"
-  append="true" />
-<echo file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/.env"
-  message="${line.separator}ORTHANC_CLIENT_SECRET=zfQBuufpLoIQ4H6adktXAVvOin1nrR6R"
-  append="true" />
-
-
-
-
-<copy file="${project.basedir}/configs/orthanc/initializer_config/orthancWorklist.py"
-      tofile="${project.build.directory}/${project.artifactId}-${project.version}/distro/configs/orthanc/initializer_config/orthancWorklist.py"
-      overwrite="true" />
-             
-            
               </target>
             </configuration>
           </execution>
@@ -285,39 +234,6 @@
                 <echo message="Updating EIP FHIR Resources to include Procedure"/>
                 <replaceregexp file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/docker-compose-odoo.yml"
                                match="(EIP_FHIR_RESOURCES=.+)" replace="\1,Procedure" />
-
-                <echo file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/concatenated.env"
-                  message="${line.separator}ORTHANC_DB_PASSWORD=orthanc"
-                  append="true" />
-                <echo file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/.env"
-                  message="${line.separator}ORTHANC_DB_PASSWORD=orthanc"
-                  append="true" />
-                
-                <echo file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/concatenated.env"
-                  message="${line.separator}SUPERSET_DB_USER=superset"
-                  append="true" />
-                <echo file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/.env"
-                  message="${line.separator}SUPERSET_DB_USER=superset"
-                  append="true" />
-                <echo file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/concatenated.env"
-                  message="${line.separator}SUPERSET_DB_PASSWORD=superset"
-                  append="true" />
-                <echo file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/.env"
-                  message="${line.separator}SUPERSET_DB_PASSWORD=superset"
-                  append="true" />
-                <echo file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/concatenated.env"
-                  message="${line.separator}SUPERSET_SECRET_KEY=supersetSecretKey"
-                  append="true" />
-                <echo file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/.env"
-                  message="${line.separator}SUPERSET_SECRET_KEY=supersetSecretKey"
-                  append="true" />
-                <echo file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/concatenated.env"
-                  message="${line.separator}SUPERSET_ADMIN_PASSWORD=admin"
-                  append="true" />
-                <echo file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/.env"
-                  message="${line.separator}SUPERSET_ADMIN_PASSWORD=admin"
-                  append="true" />
-
               </target>
             </configuration>
           </execution>
@@ -395,6 +311,12 @@
                         <include>bundled-docker/**</include>
                       </includes>
                     </resource>
+                    <!--
+                      The Orthanc Dockerfile is NOT added here: it lives in
+                      scripts/bundled-docker/orthanc and is folded into the
+                      bundled-docker tree by the distro pom, so it arrives with the
+                      inherited bundled-docker/** above.
+                    -->
                   </resources>
                 </configuration>
               </execution>
@@ -552,6 +474,50 @@
                       <platforms>
                         <platform>linux/amd64</platform>
                         <platform>linux/arm64</platform>
+                      </platforms>
+                    </buildx>
+                  </build>
+                </image>
+                <image>
+                  <!--
+                    Orthanc (PACS) with distro/configs/orthanc baked in. Without this
+                    image the Orthanc configuration only ever exists on a host that
+                    unpacked the distro zip, so a deployment that just pulls images
+                    would start Orthanc with no UVL config at all.
+                  -->
+                  <name>${docker.push.registry.username}/%a-orthanc:${bundled.docker.tag}</name>
+                  <build>
+                    <dockerFile>
+                      ${project.build.directory}/bundled-docker-tmp/bundled-docker/orthanc/Dockerfile</dockerFile>
+                    <!-- bundled-docker-tmp, not .../distro: the Dockerfile needs both
+                         distro/configs/orthanc and bundled-docker/orthanc in scope,
+                         same as the openmrs/frontend/proxy images. -->
+                    <contextDir>
+                      ${project.build.directory}/bundled-docker-tmp</contextDir>
+                    <buildx>
+                      <platforms>
+                        <platform>linux/amd64</platform>
+                        <platform>linux/arm64</platform>
+                      </platforms>
+                    </buildx>
+                  </build>
+                </image>
+                <image>
+                  <!--
+                    Orthanc auth service with permissions.json baked in. Single-arch
+                    on purpose: orthancteam/orthanc-auth-service is published for
+                    linux/amd64 only (every tag), so requesting arm64 here would fail
+                    the build. The compose keeps platform: linux/amd64 for it.
+                  -->
+                  <name>${docker.push.registry.username}/%a-orthanc-auth-service:${bundled.docker.tag}</name>
+                  <build>
+                    <dockerFile>
+                      ${project.build.directory}/bundled-docker-tmp/bundled-docker/orthanc-auth-service/Dockerfile</dockerFile>
+                    <contextDir>
+                      ${project.build.directory}/bundled-docker-tmp</contextDir>
+                    <buildx>
+                      <platforms>
+                        <platform>linux/amd64</platform>
                       </platforms>
                     </buildx>
                   </build>
