@@ -1,6 +1,6 @@
 services:
   openmrs:
-    image: openmrs/openmrs-core:2.7.6
+    image: openmrs/openmrs-core:2.7.7-amazoncorretto-17
     environment:
       ORTHANCTOKEN_KEYCLOAK_CLIENTSECRET: ${ORTHANC_CLIENT_SECRET}
     healthcheck:
@@ -71,11 +71,11 @@ services:
       PUBLIC_LANDING_ROOT: "${SERVER_SCHEME}://${ORTHANC_HOSTNAME}/ui/app/token-landing.html"
       PUBLIC_OHIF_ROOT: "${SERVER_SCHEME}://${ORTHANC_HOSTNAME}/ohif/"
       # Confidential client with serviceAccountsEnabled, since this service also
-      # calls KEYCLOAK_ADMIN_URI. Was "8usmrm7OKkQlWiANNHbgFUsWEclVxRJT", which
-      # matched no client in ozone-realm.json at all, paired with clientId
-      # "orthanc" — a PUBLIC client that by definition has no secret, so that pair
-      # could never authenticate. The browser-facing "orthanc" public client stays
-      # in use by OrthancExplorer2/OHIF via orthanc.json.
+      # calls KEYCLOAK_ADMIN_URI. The previous value here matched no client in
+      # ozone-realm.json at all, and was paired with clientId "orthanc" — a PUBLIC
+      # client that by definition has no secret, so that pair could never
+      # authenticate. The browser-facing "orthanc" public client stays in use by
+      # OrthancExplorer2/OHIF via orthanc.json.
       KEYCLOAK_CLIENT_SECRET: "${ORTHANC_CLIENT_SECRET}"
       SECRET_KEY: "${ORTHANC_AUTH_SERVICE_SECRET_KEY}"
       USERS: '{"orthanc":"orthanc"}'
@@ -138,7 +138,12 @@ services:
     volumes:
       - "${OPENMRS_FRONTEND_BINARY_PATH}:/usr/share/nginx/html"
       - "${OPENMRS_FRONTEND_CONFIG_PATH}:/usr/share/nginx/html/configs"
-      - "${ORTHANC_ATTACHMENTS_PATCH_PATH}:/usr/share/nginx/html/openmrs-esm-patient-attachments-app-11.3.0"
+      # The patched attachments ESM used to be bind-mounted here from
+      # ${ORTHANC_ATTACHMENTS_PATCH_PATH}, which distro/pom.xml set to a sibling
+      # checkout of openmrs-esm-patient-chart. That path exists on no other machine,
+      # and since the mount target is a directory Docker silently creates an empty
+      # one — serving an EMPTY attachments app instead of failing. To reinstate it,
+      # publish the ESM and pin its version in spa-assemble-config.json.
 
   ohif:
     image: ohif/app:latest

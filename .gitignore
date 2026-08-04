@@ -394,5 +394,3 @@ openmrs-esm-patient-chart/
 target/
 */target/
 **/target/
-*.jar
-*.jar
