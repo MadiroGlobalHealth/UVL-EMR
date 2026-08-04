@@ -87,6 +87,10 @@
       {
         "title": "Account Management",
         "redirect": "${KEYCLOAK_URL}/realms/ozone/account/#/"
+      },
+      {
+        "title": "Orthanc PACS",
+        "redirect": "${PACS_PUBLIC_URL}"
       }
     ],
     "extensionSlots": {

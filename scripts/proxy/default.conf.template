@@ -93,6 +93,37 @@ server {
     proxy_pass http://backend;
   }
 
+  # CORS-enabled passthrough to Orthanc, used by the OHIF viewer and the imaging
+  # ESM so browser calls to the PACS are not blocked by same-origin policy.
+  #
+  # Previously injected into the running proxy container by post-start.sh with sed,
+  # which meant it was lost on every container recreate or image pull, and silently
+  # no-opped if the anchor line it patched ever changed. Declared here instead so it
+  # is baked into the proxy image.
+  #
+  # `set $orthanc` + proxy_pass through a variable defers name resolution to request
+  # time, matching how $odoo/$senaite/$keycloak are handled below — Orthanc is
+  # optional (--enable-orthanc), and a literal proxy_pass would stop nginx from
+  # starting whenever the container is absent.
+  location /orthanc-cors/ {
+    if ($request_method = OPTIONS) {
+      add_header Access-Control-Allow-Origin "*" always;
+      add_header Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS" always;
+      add_header Access-Control-Allow-Headers "Authorization, Content-Type, Accept, token" always;
+      add_header Content-Length 0;
+      return 204;
+    }
+
+    add_header Access-Control-Allow-Origin "*" always;
+    add_header Access-Control-Allow-Headers "Authorization, Content-Type, Accept, token" always;
+
+    set $orthanc orthanc:8042;
+    proxy_pass http://$orthanc/;
+    proxy_set_header Host $host;
+    proxy_set_header token $http_token;
+    proxy_set_header Authorization $http_authorization;
+  }
+
   location = / {
     return 301 /openmrs/spa/;
   }

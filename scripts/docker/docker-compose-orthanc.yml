@@ -1,0 +1,124 @@
+services:
+  orthanc:
+    command: /run/secrets/
+    secrets:
+      - orthanc.json
+    image: orthancteam/orthanc:latest-full
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.services.orthanc.loadbalancer.server.port=8042"
+      - "traefik.http.routers.orthanc.rule=Host(`${ORTHANC_HOSTNAME}`)"
+    restart: always
+    environment:
+      - ORTHANC__REMOTE_ACCESS_ALLOWED=true
+      - ORTHANC__AUTHENTICATION_ENABLED=false
+      - STONE_WEB_VIEWER_PLUGIN_ENABLED=true
+      - OHIF_PLUGIN_ENABLED=true
+      - DICOM_WEB_PLUGIN_ENABLED=true
+      - POSTGRESQL_PLUGIN_ENABLED=true
+      - PYTHON_PLUGIN_ENABLED=true
+      - WORKLISTS_PLUGIN_ENABLED=true
+      # Consumed by the image's uvl-entrypoint.sh, which resolves these into
+      # /usr/share/orthanc/ohif/app-config.js at container start. env-substitution
+      # cannot: it skips .js files and only sees the host-mounted distro tree.
+      - KEYCLOAK_URL=${SERVER_SCHEME}://${KEYCLOAK_HOSTNAME}
+      - PACS_PUBLIC_URL=${SERVER_SCHEME}://${ORTHANC_HOSTNAME}
+      - OPENMRS_PUBLIC_URL=${SERVER_SCHEME}://${HOST_NAME}
+    volumes:
+      - orthanc-db:/var/lib/orthanc/db
+      - "${ORTHANC_CONFIG_PATH}/ohif:/usr/share/orthanc/ohif"
+      - "${ORTHANC_CONFIG_PATH}/orthancWorklist.py:/etc/orthanc/orthancWorklist.py"
+    networks:
+      web:
+      ozone:
+        aliases:
+          - orthanc
+    ports:
+      - "8889:8042"
+      - "4242:4242"
+    depends_on:
+      postgresql:
+        condition: service_healthy
+  eip-openmrs-orthanc:
+    depends_on:
+      openmrs:
+        condition: service_healthy
+      mysql:
+        condition: service_started
+      orthanc:
+        condition: service_started
+    environment:
+      - EIP_DB_NAME_ORTHANC=${EIP_DB_NAME_ORTHANC}
+      - EIP_DB_USER_ORTHANC=${EIP_DB_USER_ORTHANC}
+      - EIP_DB_PASSWORD_ORTHANC=${EIP_DB_PASSWORD_ORTHANC}
+      - OPENMRS_URL=http://openmrs:8080/openmrs
+      - ORTHANC_URL=http://orthanc:8042
+      - EIP_PROFILE=prod
+      - MYSQL_ADMIN_USER=root
+      - MYSQL_ADMIN_USER_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - OAUTH_ACCESS_TOKEN_URI=http://keycloak:8080/realms/ozone/protocol/openid-connect/token
+      - OPENMRS_DB_HOST=${OPENMRS_DB_HOST}
+      - OPENMRS_DB_PORT=${OPENMRS_DB_PORT}
+      - OPENMRS_DB_NAME=${OPENMRS_DB_NAME}
+      - OPENMRS_DB_USER=${OPENMRS_DB_USER}
+      - OPENMRS_DB_PASSWORD=${OPENMRS_DB_PASSWORD}
+      - OPENMRS_USER=${OPENMRS_USER}
+      - OPENMRS_PASSWORD=${OPENMRS_PASSWORD}
+      - EIP_FHIR_RESOURCES=Patient
+      - EIP_FHIR_SERVER_URL=http://openmrs:8080/openmrs/ws/fhir2/R4
+      - EIP_FHIR_USERNAME=${OPENMRS_USER}
+      - EIP_FHIR_PASSWORD=${OPENMRS_PASSWORD}
+      - ORTHANC_PUBLIC_URL=${SERVER_SCHEME}://${ORTHANC_HOSTNAME}
+      - OAUTH_ENABLED=false
+      - ORTHANC_OAUTH_ENABLED=true
+      - OAUTH_ACCESS_TOKEN_URL=http://keycloak:8080/realms/ozone/protocol/openid-connect/token
+      - OAUTH_CLIENT_ID=orthanc-service
+      - OAUTH_CLIENT_SECRET=${ORTHANC_CLIENT_SECRET}
+      - EIP_PROCEDURE_ORDER_TYPE_UUID=67a92e56-0f88-11ea-8d71-362b9e155667
+      - EIP_TEST_ORDER_TYPE_UUID=52a447d3-a64a-11e3-9aeb-50e549534c5e
+      - EIP_IMAGING_ORDER_TYPE_UUID=8d2aff07-55e6-4a4a-8878-72b9eb36a3b8
+      - EIP_DRUG_ORDER_TYPE_UUID=131168f4-15f5-102d-96e4-000c29c2a5d7
+      - EIP_SUPPLYREQUEST_ORDER_TYPE_UUID=
+      - ODOO_URL=http://odoo:8069
+      - ODOO_DATABASE=${ODOO_DATABASE}
+      - ODOO_USER=${ODOO_USER}
+      - ODOO_PASSWORD=${ODOO_PASSWORD}
+
+    image: mekomsolutions/eip-client:2.2.0
+    networks:
+      ozone:
+        aliases:
+          - eip-openmrs-orthanc
+    restart: unless-stopped
+    volumes:
+      - "${EIP_OPENMRS_ORTHANC_ROUTES_PATH}:/eip-client/routes"
+      - eip-home-orthanc:/eip-home
+  mysql:
+    environment:
+      EIP_DB_NAME_ORTHANC: ${EIP_DB_NAME_ORTHANC}
+      EIP_DB_USER_ORTHANC: ${EIP_DB_USER_ORTHANC}
+      EIP_DB_PASSWORD_ORTHANC: ${EIP_DB_PASSWORD_ORTHANC}
+    volumes:
+      - "${SQL_SCRIPTS_PATH}/mysql/eip-openmrs-orthanc:/docker-entrypoint-initdb.d/db/eip-openmrs-orthanc"
+
+  # Orthanc keeps its index on the shared postgresql instance rather than a dedicated
+  # one (orthanc.json points its PostgreSQL Host at "postgresql"), matching how odoo,
+  # senaite and keycloak are handled. This replaces the postgres-orthanc service that
+  # used to live here with its own volume.
+  postgresql:
+    environment:
+      ORTHANC_DB_NAME: ${ORTHANC_DB_NAME}
+      ORTHANC_DB_USER: ${ORTHANC_DB_USER}
+      ORTHANC_DB_PASSWORD: ${ORTHANC_DB_PASSWORD}
+    volumes:
+      - "${SQL_SCRIPTS_PATH}/postgresql/orthanc:/docker-entrypoint-initdb.d/db/orthanc"
+
+  env-substitution:
+    environment:
+      - PACS_PUBLIC_URL=${PACS_PUBLIC_URL}
+secrets:
+  orthanc.json:
+    file: ${ORTHANC_CONFIG_PATH}/orthanc.json
+volumes:
+  orthanc-db:
+  eip-home-orthanc:

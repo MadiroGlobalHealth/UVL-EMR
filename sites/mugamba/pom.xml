@@ -220,7 +220,6 @@
                   match="export PROJECT_NAME=.*" replace='export PROJECT_NAME="${project.artifactId}"' />
 
                 <replace file="${project.build.directory}/${project.artifactId}-${project.version}/distro/ozone-info.json" token="ozone-uvl-distro" value="ozone-uvl-mugamba" />
-                
               </target>
             </configuration>
           </execution>
@@ -235,7 +234,6 @@
                 <echo message="Updating EIP FHIR Resources to include Procedure"/>
                 <replaceregexp file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/docker-compose-odoo.yml"
                                match="(EIP_FHIR_RESOURCES=.+)" replace="\1,Procedure" />
-
               </target>
             </configuration>
           </execution>
@@ -313,6 +311,12 @@
                         <include>bundled-docker/**</include>
                       </includes>
                     </resource>
+                    <!--
+                      The Orthanc Dockerfile is NOT added here: it lives in
+                      scripts/bundled-docker/orthanc and is folded into the
+                      bundled-docker tree by the distro pom, so it arrives with the
+                      inherited bundled-docker/** above.
+                    -->
                   </resources>
                 </configuration>
               </execution>
@@ -470,6 +474,50 @@
                       <platforms>
                         <platform>linux/amd64</platform>
                         <platform>linux/arm64</platform>
+                      </platforms>
+                    </buildx>
+                  </build>
+                </image>
+                <image>
+                  <!--
+                    Orthanc (PACS) with distro/configs/orthanc baked in. Without this
+                    image the Orthanc configuration only ever exists on a host that
+                    unpacked the distro zip, so a deployment that just pulls images
+                    would start Orthanc with no UVL config at all.
+                  -->
+                  <name>${docker.push.registry.username}/%a-orthanc:${bundled.docker.tag}</name>
+                  <build>
+                    <dockerFile>
+                      ${project.build.directory}/bundled-docker-tmp/bundled-docker/orthanc/Dockerfile</dockerFile>
+                    <!-- bundled-docker-tmp, not .../distro: the Dockerfile needs both
+                         distro/configs/orthanc and bundled-docker/orthanc in scope,
+                         same as the openmrs/frontend/proxy images. -->
+                    <contextDir>
+                      ${project.build.directory}/bundled-docker-tmp</contextDir>
+                    <buildx>
+                      <platforms>
+                        <platform>linux/amd64</platform>
+                        <platform>linux/arm64</platform>
+                      </platforms>
+                    </buildx>
+                  </build>
+                </image>
+                <image>
+                  <!--
+                    Orthanc auth service with permissions.json baked in. Single-arch
+                    on purpose: orthancteam/orthanc-auth-service is published for
+                    linux/amd64 only (every tag), so requesting arm64 here would fail
+                    the build. The compose keeps platform: linux/amd64 for it.
+                  -->
+                  <name>${docker.push.registry.username}/%a-orthanc-auth-service:${bundled.docker.tag}</name>
+                  <build>
+                    <dockerFile>
+                      ${project.build.directory}/bundled-docker-tmp/bundled-docker/orthanc-auth-service/Dockerfile</dockerFile>
+                    <contextDir>
+                      ${project.build.directory}/bundled-docker-tmp</contextDir>
+                    <buildx>
+                      <platforms>
+                        <platform>linux/amd64</platform>
                       </platforms>
                     </buildx>
                   </build>
