@@ -13,6 +13,27 @@
 # bundled-docker/ in the same build.
 FROM mekomsolutions/orthanc:1.0-0.1.0
 
+# The Python plugin, absent from the base image. Without it "PythonScript" in
+# orthanc.json is inert: orthancWorklist.py never runs, so nothing populates
+# /var/lib/orthanc/worklists and a modality's C-FIND returns no entries.
+#
+# Debian's build targets Python 3.11, already present here; orthancteam's targets 3.13
+# and would drag in that runtime. Reports version 4.0 and loads fine into Orthanc 1.12.6.
+#
+# --force-confold: orthanc-python depends on Debian's `orthanc`, which ships its own
+# /etc/orthanc/orthanc.json; dpkg prompts on the clash and fails on EOF.
+# The find: that dependency also drops OLDER duplicates (worklists 1.10.1,
+# serve-folders) into /usr/share/orthanc/plugins, which orthanc.json scans too, and two
+# versions of one plugin abort Orthanc at startup. -mindepth 1, not -type f: symlinks.
+#
+# ~26MB. Debian's /usr/sbin/Orthanc is never run; the entrypoint execs
+# /usr/local/sbin/Orthanc.
+RUN DEBIAN_FRONTEND=noninteractive apt-get update \
+ && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+      -o Dpkg::Options::=--force-confold orthanc-python \
+ && find /usr/share/orthanc/plugins -mindepth 1 ! -name 'libOrthancPython.so' -delete \
+ && rm -rf /var/lib/apt/lists/*
+
 # Orthanc's configuration directory. The compose passes `command: /etc/orthanc/`
 # so these are read instead of the host-mounted secret this image used to rely on.
 ADD distro/configs/orthanc/initializer_config/orthanc.json /etc/orthanc/orthanc.json

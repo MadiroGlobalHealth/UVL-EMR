@@ -523,6 +523,27 @@
                   </build>
                 </image>
                 <image>
+                  <!--
+                    EIP OpenMRS<->Orthanc bridge with the routes jar baked in. Without it
+                    the bridge starts with only its default `oauth2` route, so imaging
+                    orders never reach Orthanc. The jar lives in the inherited Ozone
+                    artifact and was otherwise reachable only via a host bind-mount.
+                  -->
+                  <name>${docker.push.registry.username}/%a-eip-openmrs-orthanc:${bundled.docker.tag}</name>
+                  <build>
+                    <dockerFile>
+                      ${project.build.directory}/bundled-docker-tmp/bundled-docker/eip-openmrs-orthanc/Dockerfile</dockerFile>
+                    <contextDir>
+                      ${project.build.directory}/bundled-docker-tmp</contextDir>
+                    <buildx>
+                      <platforms>
+                        <platform>linux/amd64</platform>
+                        <platform>linux/arm64</platform>
+                      </platforms>
+                    </buildx>
+                  </build>
+                </image>
+                <image>
                   <name>${docker.push.registry.username}/%a-keycloak:${bundled.docker.tag}</name>
                   <build>
                     <dockerFile>
