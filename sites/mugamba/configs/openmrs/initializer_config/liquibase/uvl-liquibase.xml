@@ -464,21 +464,27 @@
         </sql>
     </changeSet>
 
-    <!-- Point the imaging module at Orthanc via the orthanc-service Keycloak client.
-         Guarded on the table existing: imaging_OrthancConfiguration comes from the
-         optional imaging module, so without the precondition this changeset would
-         fail the whole changelog on any instance that does not run imaging. -->
-    <changeSet id="set_imaging_orthanc_credentials-202608041100" author="jnsereko">
-        <preConditions onFail="MARK_RAN">
-            <tableExists tableName="imaging_OrthancConfiguration" />
-        </preConditions>
-        <comment>Set the Orthanc username/password used by the imaging module</comment>
-        <sql>
-            UPDATE imaging_OrthancConfiguration
-               SET orthancUsername = 'orthanc-service',
-                   orthancPassword = 'zfQBuufpLoIQ4H6adktXAVvOin1nrR6R'
-             WHERE id = 1;
-        </sql>
-    </changeSet>
+    <!-- The Orthanc credentials for the imaging module are deliberately NOT set here.
+
+         A changeset used to UPDATE imaging_OrthancConfiguration with the
+         orthanc-service username and its client secret. Two reasons it is gone:
+
+           * The secret cannot live in this file. The repository is public and git
+             history is permanent, so committing it here leaks it regardless of any
+             later edit. Unlike the values in run/docker/.env, a Liquibase changeset
+             has no build-time substitution hook — env-substitution does rewrite .xml
+             in the distro tree, but it does not run in a pull-only deployment, which
+             would then apply the literal placeholder as the password.
+
+           * It could never have run anyway. imaging_OrthancConfiguration belongs to
+             the imaging module, which this distro does not ship: its .omod was dead
+             weight (never copied into the artifact) and imaging-omod:1.1.6 resolves
+             from none of the configured repositories. The tableExists precondition
+             therefore always failed, making the changeset dead code holding a live
+             secret.
+
+         When the imaging module is genuinely deployed, configure its Orthanc
+         credentials through the module itself, with the secret supplied from the
+         environment rather than committed. -->
 
 </databaseChangeLog>

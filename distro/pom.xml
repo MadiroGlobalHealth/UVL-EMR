@@ -60,6 +60,23 @@
     <patientsummaryVersion>2.2.0</patientsummaryVersion>     
   	<msf.environment>dev</msf.environment>
     <bundled.docker.tag>${msf.environment}</bundled.docker.tag>
+
+    <!--
+      Orthanc secrets written into run/docker/.env and concatenated.env at build
+      time. The defaults are deliberately NOT usable: this repository is public, and
+      anything committed here stays in git history for good.
+
+      Supply the real values on the build, e.g.
+
+        mvn package -Porthanc \
+          -Dorthanc.client.secret="$ORTHANC_CLIENT_SECRET" \
+          -Dorthanc.auth.service.secret.key="$ORTHANC_AUTH_SERVICE_SECRET_KEY"
+
+      orthanc.client.secret must match the "orthanc-service" client secret in the
+      site's ozone-realm.json.
+    -->
+    <orthanc.client.secret>CHANGEME</orthanc.client.secret>
+    <orthanc.auth.service.secret.key>CHANGEME</orthanc.auth.service.secret.key>
   </properties>
 
   <dependencies>
@@ -538,7 +555,7 @@
                 <echo level="info" message="Adding Orthanc/PACS and Superset runtime values to the env files" />
                 <replaceregexp byline="true"
                   match="^ORTHANC_HOSTNAME=(.*)$"
-                  replace="ORTHANC_HOSTNAME=\1${line.separator}ORTHANC_PUBLIC_URL=$${SERVER_SCHEME}://$${ORTHANC_HOSTNAME}${line.separator}PACS_PUBLIC_URL=$${SERVER_SCHEME}://$${ORTHANC_HOSTNAME}${line.separator}ORTHANC_CLIENT_SECRET=zfQBuufpLoIQ4H6adktXAVvOin1nrR6R${line.separator}ORTHANC_AUTH_SERVICE_SECRET_KEY=d3eeda9227acde56a2917f80d960073e0d5a9d28be6b3bfe1ccbef8204f6fd46${line.separator}ORTHANC_DB_PASSWORD=orthanc">
+                  replace="ORTHANC_HOSTNAME=\1${line.separator}ORTHANC_PUBLIC_URL=$${SERVER_SCHEME}://$${ORTHANC_HOSTNAME}${line.separator}PACS_PUBLIC_URL=$${SERVER_SCHEME}://$${ORTHANC_HOSTNAME}${line.separator}ORTHANC_CLIENT_SECRET=${orthanc.client.secret}${line.separator}ORTHANC_AUTH_SERVICE_SECRET_KEY=${orthanc.auth.service.secret.key}${line.separator}ORTHANC_DB_PASSWORD=orthanc">
                   <fileset dir="${project.build.directory}/${project.artifactId}-${project.version}/run/docker">
                     <include name=".env" />
                     <include name="concatenated.env" />
