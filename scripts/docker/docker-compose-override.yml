@@ -106,9 +106,17 @@ services:
         aliases:
           - postgres-orthanc
     
+  # Copies the routes jar from the distro tree into a shared volume. Version-agnostic:
+  # this named eip-openmrs-orthanc-1.0.0-SNAPSHOT.jar while the Ozone artifact ships
+  # 0.2.0, so the `cp` failed, this exited non-zero, and eip-openmrs-orthanc never
+  # started because of its service_completed_successfully dependency below — silently
+  # losing the whole OpenMRS<->Orthanc sync.
+  #
+  # Pull-only deployments use the %a-eip-openmrs-orthanc site image instead, which bakes
+  # the jar in; EIP_OPENMRS_ORTHANC_ROUTES_PATH is a host path they cannot provide.
   eip-openmrs-orthanc-init:
       image: mekomsolutions/eip-client:2.2.0
-      entrypoint: ["sh", "-c", "cp /source/eip-openmrs-orthanc-1.0.0-SNAPSHOT.jar /app/ && echo 'JAR copied successfully'"]
+      entrypoint: ["sh", "-c", "set -e; n=$$(ls /source/eip-openmrs-orthanc-*.jar 2>/dev/null | wc -l); if [ \"$$n\" -ne 1 ]; then echo \"expected exactly one routes jar in /source, found $$n\" >&2; ls -la /source >&2; exit 1; fi; cp /source/eip-openmrs-orthanc-*.jar /app/app.jar && echo \"routes jar copied\""]
       volumes:
         - "${EIP_OPENMRS_ORTHANC_ROUTES_PATH}:/source"
         - eip-openmrs-orthanc-app:/app
@@ -117,7 +125,9 @@ services:
 
   eip-openmrs-orthanc:
     image: mekomsolutions/eip-client:2.2.0
-    entrypoint: ["java", "-jar", "/app/eip-openmrs-orthanc-1.0.0-SNAPSHOT.jar"]
+    # Fixed name written by the init container above, so this no longer has to track
+    # the artifact's version.
+    entrypoint: ["java", "-jar", "/app/app.jar"]
     command: []
     volumes:
       - eip-openmrs-orthanc-app:/app
