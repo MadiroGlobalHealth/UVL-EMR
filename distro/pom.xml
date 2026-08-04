@@ -500,12 +500,24 @@
 
                 <echo level="info" message="Setting executable permissions for the Ozone start.sh script" />
                 <chmod file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/scripts/*.sh" perm="700"/>
-                <replaceregexp file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/scripts/utils.sh"
-                  match="(export ORTHANC_CONFIG_PATH=.*)"
-                  replace="\1&#10;    export ORTHANC_ATTACHMENTS_PATCH_PATH=${project.basedir}/../../openmrs-esm-patient-chart/packages/esm-patient-attachments-app/dist" />
-                <echo file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/concatenated.env"
-                  message="${line.separator}ORTHANC_ATTACHMENTS_PATCH_PATH=${project.basedir}/../../openmrs-esm-patient-chart/packages/esm-patient-attachments-app/dist"
-                  append="true" />
+                <!--
+                  ORTHANC_ATTACHMENTS_PATCH_PATH is deliberately NOT set here.
+
+                  It used to be exported as
+                  ${project.basedir}/../../openmrs-esm-patient-chart/packages/esm-patient-attachments-app/dist
+                  — a sibling checkout that exists on no other machine and on no CI
+                  runner. Because the consuming bind mount takes a directory, Docker
+                  silently CREATES an empty one when the path is missing, so the
+                  frontend would serve an empty attachments app rather than failing
+                  loudly. The bind mount in scripts/docker/docker-compose-override.yml
+                  was removed alongside this.
+
+                  To reinstate the patched attachments app, publish the ESM and pin
+                  its version in
+                  distro/configs/openmrs/frontend_assembly/spa-assemble-config.json,
+                  so the frontend assembly carries it like every other ESM.
+                -->
+
                 <!--
                   Orthanc / PACS and Superset runtime values.
 
