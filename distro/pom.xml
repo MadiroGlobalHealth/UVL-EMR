@@ -27,6 +27,21 @@
     <billing.version>1.2.0-SNAPSHOT</billing.version>
     <initializer.version>2.9.0</initializer.version>
 
+    <!--
+      The Orthanc EIP bridge. This is the UVL fork (Virlein/eip-openmrs-orthanc), NOT
+      com.ozonehis:eip-openmrs-orthanc, and the difference is load-bearing: upstream's
+      OrthancConfig can only send HTTP Basic, which Orthanc's authorization plugin
+      rejects with 403 on every call — measured at 19,778 consecutive failures on UAT,
+      i.e. the bridge had never once succeeded. The fork adds OrthancTokenProvider
+      (Keycloak client_credentials, gated on ORTHANC_OAUTH_ENABLED), plus the
+      RadiologyOrderWorklistProcessor / OrthancWorklistHandler pair that creates Orthanc
+      worklist entries from OpenMRS radiology orders, an Odoo payment gate, SR ->
+      Observation mapping against the ordered procedure's concept, and orphaned-study
+      cleanup. Upstream has none of that; 1.0.0-SNAPSHOT there is byte-identical to
+      0.2.0, so bumping the upstream version is not an alternative.
+    -->
+    <eip.openmrs.orthanc.version>1.0.0-uvl.1</eip.openmrs.orthanc.version>
+
     <!--RefApp 3.5.0 modules -->
     <openmrs.version>2.7.7</openmrs.version>
     <fhir2.version>2.8.0</fhir2.version>
@@ -328,6 +343,16 @@
                     <!-- <exclude>distro/configs/openmrs/frontend_config/ozone*.*</exclude> -->
                     <!-- Remove reporting module 2.6 -->
                     <exclude>distro/binaries/openmrs/modules/reporting-1.26.0.omod</exclude>
+                    <!--
+                      Drop the upstream Orthanc EIP bridge. The UVL fork is copied into the
+                      same directory by the 'Copy the UVL Orthanc EIP bridge' execution
+                      below, and eip-client loads EVERY jar in /eip-client/routes onto its
+                      classpath — so leaving this one in place would put two copies of
+                      com.ozonehis.eip.openmrs.orthanc.* there and make it undefined which
+                      OrthancConfig wins. See eip.openmrs.orthanc.version for why the fork
+                      is required rather than this jar.
+                    -->
+                    <exclude>distro/binaries/eip-openmrs-orthanc/eip-openmrs-orthanc-0.2.0.jar</exclude>
                   </excludes>
                 </resource>
               </resources>
@@ -370,6 +395,47 @@
                   <directory>${project.basedir}/binaries/openmrs/modules</directory>
                   <includes>
                     <include>*.omod</include>
+                  </includes>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+
+          <execution>
+            <!--
+              The Orthanc EIP bridge, held in this repo as a binary for the same reason as
+              the modules above: it is the UVL fork and there is nowhere to resolve it from
+              yet. See eip.openmrs.orthanc.version for what the fork adds and why upstream
+              cannot be used instead.
+
+              This replaces the mechanism that used to deliver the jar — build.sh copied it
+              out of /Users/v.ameil/Developer/eip-openmrs-orthanc-v2/target, so the bridge
+              could only be assembled on its author's laptop, and dropping those scripts
+              silently dropped the bridge with them.
+
+              prepare-package, matching the execution above: the inherited-Ozone copy runs
+              at process-resources, so anything written before it is overwritten.
+
+              Deliberately a committed binary rather than a Maven dependency. The intended
+              destination is upstream — once these changes are merged into
+              ozone-his/eip-openmrs-orthanc, this execution and the jar both go away and
+              the bridge comes from the Ozone distro like every other inherited artifact.
+              Until then a published artifact would only be a second thing to maintain.
+            -->
+            <id>Copy the UVL Orthanc EIP bridge</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>
+                ${project.build.directory}/${project.artifactId}-${project.version}/distro/binaries/eip-openmrs-orthanc</outputDirectory>
+              <overwrite>true</overwrite>
+              <resources>
+                <resource>
+                  <directory>${project.basedir}/binaries/eip-openmrs-orthanc</directory>
+                  <includes>
+                    <include>eip-openmrs-orthanc-${eip.openmrs.orthanc.version}.jar</include>
                   </includes>
                 </resource>
               </resources>
