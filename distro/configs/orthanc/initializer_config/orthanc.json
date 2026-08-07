@@ -82,7 +82,7 @@
   },
   "Ohif": {
     "DataSource": "dicom-web",
-    "RouterBasename": "/ohif",
+    "RouterBasename": "${OHIF_ROUTER_BASENAME}",
     "UserConfiguration": "/usr/share/orthanc/ohif/app-config.js"
   },
   "HttpAllowOrigin": "*",
