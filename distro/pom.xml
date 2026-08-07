@@ -1020,6 +1020,19 @@
       <id>madiro-global-health-github-uvl-emr</id>
       <url>https://maven.pkg.github.com/MadiroGlobalHealth/UVL-EMR/</url>
     </repository>
+    <!--
+      Required, not optional: mks-nexus-public stopped serving org.openmrs.* core and
+      parent artifacts (its OpenMRS proxy 404s since OpenMRS moved to JFrog). Modules
+      like initializer-omod and commonreports-omod still resolve from Mekom, but their
+      descriptors can't be read without maven-parent-openmrs-module, which only lives
+      here. Inheriting this from the aggregator pom does not work — repositories come
+      down the parent chain, and our parent is com.ozonehis:maven-parent.
+    -->
+    <repository>
+      <id>openmrs-repo</id>
+      <name>OpenMRS Nexus Repository</name>
+      <url>https://mavenrepo.openmrs.org/public</url>
+    </repository>
   </repositories>
 
   <distributionManagement>
