@@ -576,8 +576,8 @@ WHERE cbli.date_created &gt;= :startDate &#xd;
     AND (DATEDIFF(cbli.date_created , p.birthdate) / 365.2425) &lt; 5&#xd;
 GROUP BY cbli.payment_status</sqlQuery>
 </org.openmrs.module.reporting.dataset.definition.SqlDataSetDefinition>','2024-11-05 12:06:33',2,'2024-11-05 21:09:47',2,0,NULL,NULL,NULL,'b3c65762-1f2c-4c51-a2b8-041c42a20b50'),
-	 (32,'Amount unique patients unde 5 years old','','org.openmrs.module.reporting.report.definition.ReportDefinition','org.openmrs.module.reporting.report.definition.ReportDefinition','org.openmrs.module.reporting.serializer.ReportingSerializer','<org.openmrs.module.reporting.report.definition.ReportDefinition id="1" uuid="e51e02ab-1d26-4788-868e-d0f4cca2430e" retired="false">
-  <name>Amount unique patients unde 5 years old</name>
+	 (32,'Amount unique patients under 5 years old','','org.openmrs.module.reporting.report.definition.ReportDefinition','org.openmrs.module.reporting.report.definition.ReportDefinition','org.openmrs.module.reporting.serializer.ReportingSerializer','<org.openmrs.module.reporting.report.definition.ReportDefinition id="1" uuid="e51e02ab-1d26-4788-868e-d0f4cca2430e" retired="false">
+  <name>Amount unique patients under 5 years old</name>
   <description></description>
   <creator id="2" uuid="de6f3485-9c4b-4542-80a8-b30a301c6ad8"/>
   <dateCreated id="3">2024-11-05 21:14:24 UTC</dateCreated>
@@ -933,8 +933,8 @@ WHERE e.encounter_datetime &gt;= :startDate &#xd;
     AND (DATEDIFF(e.encounter_datetime , p.birthdate) / 365.2425) &lt; 5&#xd;
 GROUP BY e.encounter_type</sqlQuery>
 </org.openmrs.module.reporting.dataset.definition.SqlDataSetDefinition>','2024-11-07 13:36:16',2,'2024-11-07 13:37:19',2,0,NULL,NULL,NULL,'2294ff61-a11c-48e0-ae55-1be5d03cdb17'),
-	 (42,'List of diagnose','','org.openmrs.module.reporting.dataset.definition.DataSetDefinition','org.openmrs.module.reporting.dataset.definition.SqlDataSetDefinition','org.openmrs.module.reporting.serializer.ReportingSerializer','<org.openmrs.module.reporting.dataset.definition.SqlDataSetDefinition id="1" uuid="688d240b-d589-42ca-96cf-09f752d10393" retired="false">
-  <name>List of diagnose</name>
+	 (42,'List of conditions','','org.openmrs.module.reporting.dataset.definition.DataSetDefinition','org.openmrs.module.reporting.dataset.definition.SqlDataSetDefinition','org.openmrs.module.reporting.serializer.ReportingSerializer','<org.openmrs.module.reporting.dataset.definition.SqlDataSetDefinition id="1" uuid="688d240b-d589-42ca-96cf-09f752d10393" retired="false">
+  <name>List of conditions</name>
   <description></description>
   <creator id="2" uuid="82f18b44-6814-11e8-923f-e9a88dcb533f"/>
   <dateCreated id="3">2024-11-07 13:44:08 UTC</dateCreated>
@@ -972,8 +972,8 @@ WHERE c.date_created &gt;= :startDate &#xd;
     ))&#xd;
 GROUP BY c.condition_coded </sqlQuery>
 </org.openmrs.module.reporting.dataset.definition.SqlDataSetDefinition>','2024-11-07 13:44:08',2,'2024-11-07 15:42:08',2,0,NULL,NULL,NULL,'688d240b-d589-42ca-96cf-09f752d10393'),
-	 (43,'List of diagnose under 5yo','','org.openmrs.module.reporting.dataset.definition.DataSetDefinition','org.openmrs.module.reporting.dataset.definition.SqlDataSetDefinition','org.openmrs.module.reporting.serializer.ReportingSerializer','<org.openmrs.module.reporting.dataset.definition.SqlDataSetDefinition id="1" uuid="d2ed8fd2-5ba6-4586-9096-aded46459bd2" retired="false">
-  <name>List of diagnose under 5yo</name>
+	 (43,'List of conditions under 5yo','','org.openmrs.module.reporting.dataset.definition.DataSetDefinition','org.openmrs.module.reporting.dataset.definition.SqlDataSetDefinition','org.openmrs.module.reporting.serializer.ReportingSerializer','<org.openmrs.module.reporting.dataset.definition.SqlDataSetDefinition id="1" uuid="d2ed8fd2-5ba6-4586-9096-aded46459bd2" retired="false">
+  <name>List of conditions under 5yo</name>
   <description></description>
   <creator id="2" uuid="82f18b44-6814-11e8-923f-e9a88dcb533f"/>
   <dateCreated id="3">2024-11-07 14:02:07 UTC</dateCreated>
@@ -1095,8 +1095,8 @@ GROUP BY c.condition_coded </sqlQuery>
     </entry>
   </dataSetDefinitions>
 </org.openmrs.module.reporting.report.definition.ReportDefinition>','2024-11-07 15:09:21',2,'2024-11-07 15:10:14',2,0,NULL,NULL,NULL,'bbf1dd49-1ad5-4102-a778-5da9bf2823d1'),
-	 (46,'List of diagnose','','org.openmrs.module.reporting.report.definition.ReportDefinition','org.openmrs.module.reporting.report.definition.ReportDefinition','org.openmrs.module.reporting.serializer.ReportingSerializer','<org.openmrs.module.reporting.report.definition.ReportDefinition id="1" uuid="51b76b52-a8f9-448c-8d7f-1951557e2d50" retired="false">
-  <name>List of diagnose</name>
+	 (46,'List of conditions','','org.openmrs.module.reporting.report.definition.ReportDefinition','org.openmrs.module.reporting.report.definition.ReportDefinition','org.openmrs.module.reporting.serializer.ReportingSerializer','<org.openmrs.module.reporting.report.definition.ReportDefinition id="1" uuid="688d240b-d589-42ca-96cf-09f752d10393" retired="false">
+  <name>List of conditions</name>
   <description></description>
   <creator id="2" uuid="de6f3485-9c4b-4542-80a8-b30a301c6ad8"/>
   <dateCreated id="3">2024-11-07 15:11:00 UTC</dateCreated>
@@ -1125,9 +1125,9 @@ GROUP BY c.condition_coded </sqlQuery>
   <id>46</id>
   <dataSetDefinitions class="linked-hash-map" id="9">
     <entry>
-      <string>List-of-lab-tests</string>
+      <string>List-of-diagnoses</string>
       <org.openmrs.module.reporting.evaluation.parameter.Mapped id="10">
-        <parameterizable class="org.openmrs.module.reporting.dataset.definition.SqlDataSetDefinition" id="11" uuid="2650fe2d-df08-4738-b63b-0c732f116ab6"/>
+        <parameterizable class="org.openmrs.module.reporting.dataset.definition.SqlDataSetDefinition" id="11" uuid="688d240b-d589-42ca-96cf-09f752d10393"/>
         <parameterMappings id="12">
           <entry>
             <string>endDate</string>
@@ -1146,8 +1146,8 @@ GROUP BY c.condition_coded </sqlQuery>
     </entry>
   </dataSetDefinitions>
 </org.openmrs.module.reporting.report.definition.ReportDefinition>','2024-11-07 15:11:00',2,'2024-11-07 15:54:54',2,0,NULL,NULL,NULL,'51b76b52-a8f9-448c-8d7f-1951557e2d50'),
-	 (47,'List of diagnoses under 5 years old','','org.openmrs.module.reporting.report.definition.ReportDefinition','org.openmrs.module.reporting.report.definition.ReportDefinition','org.openmrs.module.reporting.serializer.ReportingSerializer','<org.openmrs.module.reporting.report.definition.ReportDefinition id="1" uuid="a44d59d0-2569-40dd-8bc1-4a5663c03bb8" retired="false">
-  <name>List of diagnoses under 5 years old</name>
+	 (47,'List of conditions under 5 years old','','org.openmrs.module.reporting.report.definition.ReportDefinition','org.openmrs.module.reporting.report.definition.ReportDefinition','org.openmrs.module.reporting.serializer.ReportingSerializer','<org.openmrs.module.reporting.report.definition.ReportDefinition id="1" uuid="a44d59d0-2569-40dd-8bc1-4a5663c03bb8" retired="false">
+  <name>List of conditions under 5 years old</name>
   <description></description>
   <creator id="2" uuid="de6f3485-9c4b-4542-80a8-b30a301c6ad8"/>
   <dateCreated id="3">2024-11-07 15:57:00 UTC</dateCreated>
@@ -1176,7 +1176,7 @@ GROUP BY c.condition_coded </sqlQuery>
   <id>47</id>
   <dataSetDefinitions class="linked-hash-map" id="9">
     <entry>
-      <string>List-of-diagnose-under-5yo</string>
+      <string>List-of-diagnoses-under-5yo</string>
       <org.openmrs.module.reporting.evaluation.parameter.Mapped id="10">
         <parameterizable class="org.openmrs.module.reporting.dataset.definition.SqlDataSetDefinition" id="11" uuid="d2ed8fd2-5ba6-4586-9096-aded46459bd2"/>
         <parameterMappings id="12">
@@ -1247,4 +1247,178 @@ GROUP BY c.condition_coded </sqlQuery>
       </org.openmrs.module.reporting.evaluation.parameter.Mapped>
     </entry>
   </dataSetDefinitions>
-</org.openmrs.module.reporting.report.definition.ReportDefinition>','2024-11-07 16:03:51',2,'2024-11-07 16:04:57',2,0,NULL,NULL,NULL,'6c3272f3-7d6b-4a09-90ca-0b47b48cb700');
+</org.openmrs.module.reporting.report.definition.ReportDefinition>','2024-11-07 16:03:51',2,'2024-11-07 16:04:57',2,0,NULL,NULL,NULL,'6c3272f3-7d6b-4a09-90ca-0b47b48cb700'),
+	 (49,'List of diagnoses','','org.openmrs.module.reporting.dataset.definition.DataSetDefinition','org.openmrs.module.reporting.dataset.definition.SqlDataSetDefinition','org.openmrs.module.reporting.serializer.ReportingSerializer','<org.openmrs.module.reporting.dataset.definition.SqlDataSetDefinition id="1" uuid="f8a7b9c0-d1e2-4f3a-8b4c-5d6e7f8a9b0c" retired="false">
+  <name>List of diagnoses</name>
+  <description></description>
+  <creator id="2" uuid="de6f3485-9c4b-4542-80a8-b30a301c6ad8"/>
+  <dateCreated id="3">2024-11-07 16:10:00 UTC</dateCreated>
+  <parameters id="4">
+    <org.openmrs.module.reporting.evaluation.parameter.Parameter id="5">
+      <name>startDate</name>
+      <label>startDate</label>
+      <type>java.util.Date</type>
+      <required>true</required>
+    </org.openmrs.module.reporting.evaluation.parameter.Parameter>
+    <org.openmrs.module.reporting.evaluation.parameter.Parameter id="6">
+      <name>endDate</name>
+      <label>endDate</label>
+      <type>java.util.Date</type>
+      <required>true</required>
+    </org.openmrs.module.reporting.evaluation.parameter.Parameter>
+    <org.openmrs.module.reporting.evaluation.parameter.Parameter id="7">
+      <name>language</name>
+      <label>language</label>
+      <type>java.lang.String</type>
+      <required>true</required>
+    </org.openmrs.module.reporting.evaluation.parameter.Parameter>
+  </parameters>
+  <id>49</id>
+  <sqlQuery>SELECT cn.name, COUNT(DISTINCT ed.patient_id) as num_patients
+FROM encounter_diagnosis ed
+LEFT JOIN concept_name cn ON cn.concept_id = ed.diagnosis_coded
+WHERE ed.date_created &gt;= :startDate
+    AND ed.date_created &lt;= :endDate
+    AND (cn.locale = :language OR NOT EXISTS (
+        SELECT 1 FROM concept_name cn2
+        WHERE cn2.concept_id = cn.concept_id AND cn2.locale = :language
+    ))
+GROUP BY ed.diagnosis_coded</sqlQuery>
+</org.openmrs.module.reporting.dataset.definition.SqlDataSetDefinition>','2024-11-07 16:10:00',2,NULL,2,0,NULL,NULL,NULL,'f8a7b9c0-d1e2-4f3a-8b4c-5d6e7f8a9b0c'),
+	 (50,'List of diagnoses','','org.openmrs.module.reporting.report.definition.ReportDefinition','org.openmrs.module.reporting.report.definition.ReportDefinition','org.openmrs.module.reporting.serializer.ReportingSerializer','<org.openmrs.module.reporting.report.definition.ReportDefinition id="1" uuid="a1b2c3d4-e5f6-4a5b-8c7d-9e0f1a2b3c4d" retired="false">
+  <name>List of diagnoses</name>
+  <description></description>
+  <creator id="2" uuid="de6f3485-9c4b-4542-80a8-b30a301c6ad8"/>
+  <dateCreated id="3">2024-11-07 16:11:00 UTC</dateCreated>
+  <parameters id="4">
+    <org.openmrs.module.reporting.evaluation.parameter.Parameter id="5">
+      <name>startDate</name>
+      <label>Start Date</label>
+      <type>java.util.Date</type>
+      <required>true</required>
+    </org.openmrs.module.reporting.evaluation.parameter.Parameter>
+    <org.openmrs.module.reporting.evaluation.parameter.Parameter id="6">
+      <name>endDate</name>
+      <label>End Date</label>
+      <type>java.util.Date</type>
+      <required>true</required>
+    </org.openmrs.module.reporting.evaluation.parameter.Parameter>
+    <org.openmrs.module.reporting.evaluation.parameter.Parameter id="7">
+      <name>preferred language</name>
+      <label>language</label>
+      <type>java.lang.String</type>
+      <required>true</required>
+    </org.openmrs.module.reporting.evaluation.parameter.Parameter>
+  </parameters>
+  <id>50</id>
+  <dataSetDefinitions class="linked-hash-map" id="8">
+    <entry>
+      <string>List-of-diagnoses</string>
+      <org.openmrs.module.reporting.evaluation.parameter.Mapped id="9">
+        <parameterizable class="org.openmrs.module.reporting.dataset.definition.SqlDataSetDefinition" id="10" uuid="f8a7b9c0-d1e2-4f3a-8b4c-5d6e7f8a9b0c"/>
+        <parameterMappings id="11">
+          <entry>
+            <string>endDate</string>
+            <string>${endDate}</string>
+          </entry>
+          <entry>
+            <string>language</string>
+            <string>${preferred language}</string>
+          </entry>
+          <entry>
+            <string>startDate</string>
+            <string>${startDate}</string>
+          </entry>
+        </parameterMappings>
+      </org.openmrs.module.reporting.evaluation.parameter.Mapped>
+    </entry>
+  </dataSetDefinitions>
+</org.openmrs.module.reporting.report.definition.ReportDefinition>','2024-11-07 16:11:00',2,NULL,2,0,NULL,NULL,NULL,'a1b2c3d4-e5f6-4a5b-8c7d-9e0f1a2b3c4d'),
+	 (51,'List of diagnoses under 5 years old','','org.openmrs.module.reporting.dataset.definition.DataSetDefinition','org.openmrs.module.reporting.dataset.definition.SqlDataSetDefinition','org.openmrs.module.reporting.serializer.ReportingSerializer','<org.openmrs.module.reporting.dataset.definition.SqlDataSetDefinition id="1" uuid="b2c3d4e5-f6a7-4b8c-9d0e-1f2a3b4c5d6e" retired="false">
+  <name>List of diagnoses under 5 years old</name>
+  <description></description>
+  <creator id="2" uuid="de6f3485-9c4b-4542-80a8-b30a301c6ad8"/>
+  <dateCreated id="3">2024-11-07 16:15:00 UTC</dateCreated>
+  <parameters id="4">
+    <org.openmrs.module.reporting.evaluation.parameter.Parameter id="5">
+      <name>startDate</name>
+      <label>startDate</label>
+      <type>java.util.Date</type>
+      <required>true</required>
+    </org.openmrs.module.reporting.evaluation.parameter.Parameter>
+    <org.openmrs.module.reporting.evaluation.parameter.Parameter id="6">
+      <name>endDate</name>
+      <label>endDate</label>
+      <type>java.util.Date</type>
+      <required>true</required>
+    </org.openmrs.module.reporting.evaluation.parameter.Parameter>
+    <org.openmrs.module.reporting.evaluation.parameter.Parameter id="7">
+      <name>language</name>
+      <label>language</label>
+      <type>java.lang.String</type>
+      <required>true</required>
+    </org.openmrs.module.reporting.evaluation.parameter.Parameter>
+  </parameters>
+  <id>51</id>
+  <sqlQuery>SELECT cn.name, COUNT(DISTINCT ed.patient_id) as num_patients
+FROM encounter_diagnosis ed
+LEFT JOIN concept_name cn ON cn.concept_id = ed.diagnosis_coded
+LEFT JOIN person p ON p.person_id = ed.patient_id
+WHERE ed.date_created &gt;= :startDate
+    AND ed.date_created &lt;= :endDate
+    AND (DATEDIFF(ed.date_created, p.birthdate) / 365.2425) &lt; 5
+    AND (cn.locale = :language OR NOT EXISTS (
+        SELECT 1 FROM concept_name cn2
+        WHERE cn2.concept_id = cn.concept_id AND cn2.locale = :language
+    ))
+GROUP BY ed.diagnosis_coded</sqlQuery>
+</org.openmrs.module.reporting.dataset.definition.SqlDataSetDefinition>','2024-11-07 16:15:00',2,NULL,2,0,NULL,NULL,NULL,'b2c3d4e5-f6a7-4b8c-9d0e-1f2a3b4c5d6e'),
+	 (52,'List of diagnoses under 5 years old','','org.openmrs.module.reporting.report.definition.ReportDefinition','org.openmrs.module.reporting.report.definition.ReportDefinition','org.openmrs.module.reporting.serializer.ReportingSerializer','<org.openmrs.module.reporting.report.definition.ReportDefinition id="1" uuid="c3d4e5f6-a7b8-4c9d-0e1f-2a3b4c5d6e7f" retired="false">
+  <name>List of diagnoses under 5 years old</name>
+  <description></description>
+  <creator id="2" uuid="de6f3485-9c4b-4542-80a8-b30a301c6ad8"/>
+  <dateCreated id="3">2024-11-07 16:16:00 UTC</dateCreated>
+  <parameters id="4">
+    <org.openmrs.module.reporting.evaluation.parameter.Parameter id="5">
+      <name>startDate</name>
+      <label>Start Date</label>
+      <type>java.util.Date</type>
+      <required>true</required>
+    </org.openmrs.module.reporting.evaluation.parameter.Parameter>
+    <org.openmrs.module.reporting.evaluation.parameter.Parameter id="6">
+      <name>endDate</name>
+      <label>End Date</label>
+      <type>java.util.Date</type>
+      <required>true</required>
+    </org.openmrs.module.reporting.evaluation.parameter.Parameter>
+    <org.openmrs.module.reporting.evaluation.parameter.Parameter id="7">
+      <name>preferred language</name>
+      <label>language</label>
+      <type>java.lang.String</type>
+      <required>true</required>
+    </org.openmrs.module.reporting.evaluation.parameter.Parameter>
+  </parameters>
+  <id>52</id>
+  <dataSetDefinitions class="linked-hash-map" id="8">
+    <entry>
+      <string>List-of-diagnoses-under-5-yo</string>
+      <org.openmrs.module.reporting.evaluation.parameter.Mapped id="9">
+        <parameterizable class="org.openmrs.module.reporting.dataset.definition.SqlDataSetDefinition" id="10" uuid="b2c3d4e5-f6a7-4b8c-9d0e-1f2a3b4c5d6e"/>
+        <parameterMappings id="11">
+          <entry>
+            <string>endDate</string>
+            <string>${endDate}</string>
+          </entry>
+          <entry>
+            <string>language</string>
+            <string>${preferred language}</string>
+          </entry>
+          <entry>
+            <string>startDate</string>
+            <string>${startDate}</string>
+          </entry>
+        </parameterMappings>
+      </org.openmrs.module.reporting.evaluation.parameter.Mapped>
+    </entry>
+  </dataSetDefinitions>
+</org.openmrs.module.reporting.report.definition.ReportDefinition>','2024-11-07 16:16:00',2,NULL,2,0,NULL,NULL,NULL,'c3d4e5f6-a7b8-4c9d-0e1f-2a3b4c5d6e7f');
