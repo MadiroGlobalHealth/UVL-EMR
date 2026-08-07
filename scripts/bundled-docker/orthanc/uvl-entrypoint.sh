@@ -54,9 +54,11 @@ resolve() {
     return 0
   fi
   echo "orthanc-entrypoint: resolving placeholders in $_target"
-  subst "$_target" KEYCLOAK_URL       "$KEYCLOAK_URL"
-  subst "$_target" PACS_PUBLIC_URL    "$PACS_PUBLIC_URL"
-  subst "$_target" OPENMRS_PUBLIC_URL "$OPENMRS_PUBLIC_URL"
+  subst "$_target" KEYCLOAK_URL         "$KEYCLOAK_URL"
+  subst "$_target" PACS_PUBLIC_URL      "$PACS_PUBLIC_URL"
+  subst "$_target" OPENMRS_PUBLIC_URL   "$OPENMRS_PUBLIC_URL"
+  # Computed above from PACS_PUBLIC_URL rather than passed in by compose.
+  subst "$_target" OHIF_ROUTER_BASENAME "$OHIF_ROUTER_BASENAME"
 
   _remaining="$(grep -oE '\$\{[A-Z_]+\}' "$_target" 2>/dev/null | sort -u | tr '\n' ' ' || true)"
   if [ -n "$_remaining" ]; then
@@ -66,6 +68,36 @@ resolve() {
          "$_remaining" >&2
   fi
 }
+
+# OHIF's RouterBasename is the base path the VIEWER'S OWN CLIENT-SIDE ROUTER uses when it
+# navigates, so it has to be the path the browser sees — not the path Orthanc serves on.
+# Those differ whenever Orthanc is reached through a subpath: Traefik strips /pacs, so
+# Orthanc serves /ohif/... while the browser must be sent to /pacs/ohif/...
+#
+# It was hardcoded "/ohif". app-config.js was already /pacs-aware (resolve() below fills
+# its roots from PACS_PUBLIC_URL), so the viewer loaded at /pacs/ohif/ and then its router
+# pushed /ohif/viewer — a path Traefik does not route to Orthanc at all. Result: the study
+# opened from OrthancExplorer2 and returned 404, with a valid token, which reads as a
+# broken OHIF deployment rather than a base-path bug. Reported from UAT testing as
+# "OHIF viewer link returns 404".
+#
+# Derived rather than hardcoded so it survives the DNS change that is already planned:
+#   PACS_PUBLIC_URL=https://host/pacs   -> /pacs/ohif   (today, temporary subpath)
+#   PACS_PUBLIC_URL=https://pacs.host   -> /ohif        (once the PACS A record exists)
+if [ -n "$PACS_PUBLIC_URL" ]; then
+  # Drop scheme://host, keep any path, drop a trailing slash. A bare host yields "".
+  _pacs_path="$(printf '%s' "$PACS_PUBLIC_URL" \
+    | sed -E 's#^[a-zA-Z][a-zA-Z0-9+.-]*://[^/]+##; s#/+$##')"
+  OHIF_ROUTER_BASENAME="${_pacs_path}/ohif"
+  echo "orthanc-entrypoint: OHIF RouterBasename = $OHIF_ROUTER_BASENAME" \
+       "(from PACS_PUBLIC_URL=$PACS_PUBLIC_URL)"
+else
+  # subst() leaves the placeholder and warns when a value is empty, which for this key
+  # would break the viewer outright, so fall back to the path-less default.
+  OHIF_ROUTER_BASENAME="/ohif"
+  echo "orthanc-entrypoint: WARNING PACS_PUBLIC_URL unset; OHIF RouterBasename" \
+       "defaulting to /ohif" >&2
+fi
 
 resolve "$ORTHANC_CONFIG"
 resolve "$OHIF_CONFIG"
