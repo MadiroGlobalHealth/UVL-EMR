@@ -488,6 +488,11 @@
          environment rather than committed. -->
 
     <changeSet id="add_orthanc_service_account_user-202608070100" author="Joshua">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                select count(*) from users where username = 'service-account-orthanc-service'
+            </sqlCheck>
+        </preConditions>
         <comment>
             OpenMRS user for the Keycloak service account the Orthanc EIP bridge presents.
 
@@ -506,11 +511,6 @@
             above, so this cannot collide with rows added since. preConditions make it a
             no-op where the user already exists.
         </comment>
-        <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0">
-                select count(*) from users where username = 'service-account-orthanc-service'
-            </sqlCheck>
-        </preConditions>
         <insert tableName="person">
             <column name="gender" value="F"/>
             <column name="creator" value="1"/>
