@@ -419,7 +419,76 @@
             DELETE FROM person_attribute WHERE value = 'test';
         </sql>
     </changeSet>
+    <changeSet id="ensure_mugamba_insurance_payment_modes-20260730" author="codex">
+        <comment>
+            Ensure the canonical Mugamba insurance payment modes exist before item prices are attached.
+            The paymentmodes Initializer domain can run after Liquibase during first bootstrap, so this
+            changeset must not depend on that later loader when creating cashier_item_price rows.
+        </comment>
+        <sql>
+            INSERT INTO cashier_payment_mode (name, creator, date_created, uuid)
+            SELECT 'Insured Cost', 1, NOW(), '94bd1d63-fe27-48a0-9a1b-d536c0ab3944'
+            WHERE NOT EXISTS (
+                SELECT 1 FROM cashier_payment_mode WHERE uuid = '94bd1d63-fe27-48a0-9a1b-d536c0ab3944'
+            );
+
+            INSERT INTO cashier_payment_mode (name, creator, date_created, uuid)
+            SELECT 'Non-Insured Cost', 1, NOW(), 'fcf90cf7-7852-4bd5-a8b5-32f2ba8806ec'
+            WHERE NOT EXISTS (
+                SELECT 1 FROM cashier_payment_mode WHERE uuid = 'fcf90cf7-7852-4bd5-a8b5-32f2ba8806ec'
+            );
+        </sql>
+    </changeSet>
+
+    <changeSet id="uvl_002_touch_person_on_insurance_tier_attribute_change-20260731" author="codex">
+        <comment>
+            Propagate Insurance Coverage Tier person_attribute changes into the parent person row so
+            OpenMRS EIP emits a normal patient sync event when the source-of-truth attribute changes.
+        </comment>
+        <sql>DROP TRIGGER IF EXISTS trg_uvl002_person_attribute_ai;</sql>
+        <sql>DROP TRIGGER IF EXISTS trg_uvl002_person_attribute_au;</sql>
+        <sql>DROP TRIGGER IF EXISTS trg_uvl002_person_attribute_ad;</sql>
+        <sql splitStatements="false">
+            CREATE TRIGGER trg_uvl002_person_attribute_ai
+            AFTER INSERT ON person_attribute
+            FOR EACH ROW
+            UPDATE person p
+            JOIN person_attribute_type pat ON pat.person_attribute_type_id = NEW.person_attribute_type_id
+            SET p.date_changed = COALESCE(NEW.date_changed, NEW.date_created, NOW()),
+                p.changed_by = COALESCE(NEW.changed_by, NEW.creator, p.changed_by)
+            WHERE p.person_id = NEW.person_id
+              AND pat.uuid = '9816ffad-781b-423f-a21d-1ab06afb4dcc';
+        </sql>
+        <sql splitStatements="false">
+            CREATE TRIGGER trg_uvl002_person_attribute_au
+            AFTER UPDATE ON person_attribute
+            FOR EACH ROW
+            UPDATE person p
+            JOIN person_attribute_type pat ON pat.person_attribute_type_id IN (OLD.person_attribute_type_id, NEW.person_attribute_type_id)
+            SET p.date_changed = COALESCE(NEW.date_changed, NOW()),
+                p.changed_by = COALESCE(NEW.changed_by, NEW.creator, p.changed_by)
+            WHERE p.person_id = NEW.person_id
+              AND pat.uuid = '9816ffad-781b-423f-a21d-1ab06afb4dcc';
+        </sql>
+        <sql splitStatements="false">
+            CREATE TRIGGER trg_uvl002_person_attribute_ad
+            AFTER DELETE ON person_attribute
+            FOR EACH ROW
+            UPDATE person p
+            JOIN person_attribute_type pat ON pat.person_attribute_type_id = OLD.person_attribute_type_id
+            SET p.date_changed = COALESCE(OLD.date_changed, NOW()),
+                p.changed_by = COALESCE(OLD.changed_by, OLD.creator, p.changed_by)
+            WHERE p.person_id = OLD.person_id
+              AND pat.uuid = '9816ffad-781b-423f-a21d-1ab06afb4dcc';
+        </sql>
+    </changeSet>
+
     <changeSet id="add_item_prices" author="wodpachua">
+        <preConditions>
+            <sqlCheck expectedResult="2">
+                SELECT COUNT(*) FROM cashier_payment_mode WHERE uuid IN ('94bd1d63-fe27-48a0-9a1b-d536c0ab3944', 'fcf90cf7-7852-4bd5-a8b5-32f2ba8806ec');
+            </sqlCheck>
+        </preConditions>
         <sql>SET foreign_key_checks = 0;</sql>
 		<sqlFile path="sql/item_prices.sql" relativeToChangelogFile="true" stripComments="true" />
         <sql>SET foreign_key_checks = 1;</sql>
