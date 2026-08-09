@@ -1,2 +1,0 @@
-"id","name","discount_policy",sequence,currency_id/id,"item_ids/applied_on","item_ids/base","item_ids/compute_price","item_ids/min_quantity","item_ids/percent_price"
-"init.insurance_100_percentage","Insurance 100%","Discount included in the price",3,base.BIF,"All Products","Sales Price","Discount","1","100"
