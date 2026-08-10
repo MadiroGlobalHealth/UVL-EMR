@@ -13,18 +13,19 @@ window.config = {
     thumbnail: 75,
     prefetch: 25,
   },
-  oidc: [
-    {
-      authority: "${KEYCLOAK_URL}/realms/ozone",
-      client_id: "orthanc",
-      redirect_uri: "${PACS_PUBLIC_URL}/ohif/callback",
-      response_type: "code",
-      scope: "openid profile email roles",
-      post_logout_redirect_uri: "${PACS_PUBLIC_URL}/ohif/",
-      automaticSilentRenew: true,
-      revokeAccessTokenOnSignout: true,
-    }
-  ],
+  // NO oidc block. It looks like the obvious way to put Keycloak in front of the
+  // viewer, but Orthanc's OHIF plugin cannot complete the flow: it serves exactly
+  // four paths — /ohif/, index.html, app-config.js and a hardcoded "viewer" — and
+  // treats everything else under /ohif/(.*) as a static asset lookup. The OIDC
+  // redirect_uri therefore lands on /ohif/callback, which no file backs, and Orthanc
+  // answers 404 "Accessing an inexistent item". Reproduced on UAT: login succeeded at
+  // Keycloak and the callback then dead-ended, so the viewer could never start.
+  //
+  // Authentication here is the same token-in-the-URL scheme Stone uses, issued by
+  // orthanc-auth-service and carried as ?token=<jwt>, which is what
+  // "TokenGetArguments": ["token"] in orthanc.json accepts. That is also why
+  // "/ohif/" sits in the Authorization block's UncheckedFolders: the viewer's HTML
+  // is public and the token guards the data underneath it.
   dataSources: [
     {
       namespace: "@ohif/extension-default.dataSourcesModule.dicomweb",

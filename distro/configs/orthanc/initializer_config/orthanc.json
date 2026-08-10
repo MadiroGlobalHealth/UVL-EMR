@@ -69,7 +69,7 @@
       "Realm": "ozone",
       "ClientId": "orthanc"
     },
-    "Options": {
+    "UiOptions": {
       "EnableShares": true,
       "ShareType": "stone-viewer-publication",
       "InstantLinksValidity": 3600,
