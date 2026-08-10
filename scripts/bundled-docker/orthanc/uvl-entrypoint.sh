@@ -26,8 +26,8 @@
 # record yet. When that record is added the deployment changes the variable and this
 # config follows automatically, with no edit to the distro or a rebuilt image.
 #
-# sed, not envsubst: gettext is not installed in mekomsolutions/orthanc, and blanket
-# envsubst would also eat any legitimate $-syntax in the JS.
+# sed, not envsubst: blanket envsubst would eat any legitimate $-syntax in the JS, and
+# would blank ${OHIF_ROUTER_BASENAME}, which is computed below rather than passed in.
 set -e
 
 OHIF_CONFIG="${OHIF_CONFIG:-/usr/share/orthanc/ohif/app-config.js}"
@@ -81,6 +81,16 @@ resolve() {
 # broken OHIF deployment rather than a base-path bug. Reported from UAT testing as
 # "OHIF viewer link returns 404".
 #
+# That fix was correct but INERT until 2026-08-10, and the 404s continued, because
+# orthanc.json spelled the section "Ohif" while the plugin reads "OHIF" — Orthanc's
+# configuration keys are case-sensitive and an unknown section is silently ignored, so
+# RouterBasename, DataSource and UserConfiguration were all discarded together. Confirmed
+# by extracting the strings from libOrthancOHIF.so: it contains exactly one section token,
+# "OHIF", alongside the message 'Configuration option "OHIF.DataSource" must be either',
+# and no "Ohif" anywhere. The served /ohif/app-config.js proved it from the other side —
+# it carried the plugin's own default, window.config.routerBasename = '/ohif/', rather
+# than the value computed here.
+#
 # Derived rather than hardcoded so it survives the DNS change that is already planned:
 #   PACS_PUBLIC_URL=https://host/pacs   -> /pacs/ohif   (today, temporary subpath)
 #   PACS_PUBLIC_URL=https://pacs.host   -> /ohif        (once the PACS A record exists)
@@ -102,6 +112,17 @@ fi
 resolve "$ORTHANC_CONFIG"
 resolve "$OHIF_CONFIG"
 
-# Preserve the base image's entrypoint. The compose passes the config directory as
-# the command (e.g. /etc/orthanc/), which arrives here as "$@".
-exec /usr/local/sbin/Orthanc "$@"
+# Hand off to the base image's own entrypoint, which arrives here with the image's
+# default CMD (/tmp/orthanc.json) as "$@". That script reads every /etc/orthanc/*.json
+# — including the file resolve() has just rewritten — merges the environment and the
+# docker secrets over it, installs the .so of each enabled plugin, writes the result to
+# /tmp/orthanc.json and execs Orthanc on it.
+#
+# It must run AFTER resolve(): its own env-var substitution would blank
+# ${OHIF_ROUTER_BASENAME}, which is computed in this script and is not an environment
+# variable, and an empty RouterBasename breaks every OHIF navigation.
+#
+# Not /usr/local/sbin/Orthanc as before: that was Mekom's layout and does not exist in
+# orthancteam's image (the binary is /usr/local/bin/Orthanc), and calling it directly
+# would skip the plugin installation above, leaving Orthanc with no plugins at all.
+exec /docker-entrypoint.sh "$@"

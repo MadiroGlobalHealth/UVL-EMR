@@ -185,8 +185,14 @@ WORKLIST_MARKER_TAG = 'ScheduledProcedureStepSequence'
 
 
 def _worklistDir():
+    # "Directory" is the key of the current worklists plugin; "Database" was the legacy
+    # ModalityWorklists one's name for the same folder. Both are read so this script does
+    # not depend on which plugin the image happens to ship — reading only "Database"
+    # against the current plugin would silently fall through to the default below, which
+    # is right today only because the config happens to use that same path.
     try:
-        return getConfigItem('Worklists')['Database']
+        worklists = getConfigItem('Worklists')
+        return worklists.get('Directory') or worklists['Database']
     except Exception:
         return '/var/lib/orthanc/worklists'
 

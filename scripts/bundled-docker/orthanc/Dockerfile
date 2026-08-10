@@ -1,50 +1,52 @@
-# UVL Orthanc (PACS) — Mekom's Orthanc image with the distro's Orthanc config baked in.
+# UVL Orthanc (PACS) — the vendor Orthanc image with the distro's Orthanc config baked in.
 #
 # Upstream com.ozonehis:bundled-docker ships no Dockerfile for Orthanc, so this one
 # is authored here and copied into bundled-docker-tmp by the distro pom.
 #
-# Derived from mekomsolutions/orthanc rather than orthancteam/orthanc on purpose:
-# the LIME deployment drives it with ORTHANC_AUTHENTICATION=keycloak,
-# KEYCLOAK_REALM and KEYCLOAK_CLIENT_ID, which are Mekom additions. Rebasing on the
-# vendor image would silently drop the Keycloak integration.
-#
 # Build context is bundled-docker-tmp/ (not .../distro), matching the openmrs,
 # frontend and proxy images — that is what lets it reach both distro/ and
 # bundled-docker/ in the same build.
-FROM mekomsolutions/orthanc:1.0-0.1.0
+#
+# orthancteam/orthanc, NOT mekomsolutions/orthanc. Two reasons:
+#
+#   1. Mekom's image has not published a tag since Feb 2025, and its plugin set is
+#      frozen there: OrthancExplorer2 1.7.0, authorization 0.9.x, and the LEGACY
+#      ModalityWorklists plugin. OE2 only grows a Worklists menu at 1.10.1, backed by
+#      the rewritten worklists plugin and authorization >= 0.10.3 (which is where the
+#      "worklists" permission the site permissions.json already asks for comes from).
+#      On 1.7.0 that menu does not exist at any permission level — measured: the whole
+#      OE2 bundle contains no "worklist" string and its only routes are /,
+#      /filtered-studies, /settings, /settings-labels, /settings-permissions. This is
+#      the single reason the Worklist section never appeared on UAT.
+#
+#   2. The comment this replaces said Mekom was required for ORTHANC_AUTHENTICATION /
+#      KEYCLOAK_REALM / KEYCLOAK_CLIENT_ID. Those variables are inert here — this
+#      image's entrypoint never reads them, and authentication is delegated to
+#      orthanc-auth-service through orthanc.json's "Authorization" block. The compose
+#      files stopped passing them some time ago.
+#
+# Verified against 26.7.0 before switching, by booting it on the UAT docker network
+# with the live orthanc.json and the live orthanc-auth-service: OE2 1.14.1,
+# authorization (with the get/post/put/delete ^/worklists patterns), orthanc-worklists
+# 0.9.2, ohif 1.8, stone-webviewer, dicom-web 1.23 and python 7.1 all register; the
+# existing Keycloak block is accepted unchanged; a service token minted from the real
+# Keycloak returns 200 on /studies (the EIP bridge's call); and a .wl file written by
+# orthancWorklist.py on 2026-08-09 was listed verbatim by GET /worklists — the tags the
+# Worklists page renders. So the bridge, the payment gate and the C-FIND leg are
+# untouched by this: the new plugin still reads the same folder of .wl files.
+FROM orthancteam/orthanc:26.7.0
 
-# The Python plugin, absent from the base image. Without it "PythonScript" in
-# orthanc.json is inert: orthancWorklist.py never runs, so nothing populates
-# /var/lib/orthanc/worklists and a modality's C-FIND returns no entries.
-#
-# Debian's build targets Python 3.11, already present here; orthancteam's targets 3.13
-# and would drag in that runtime. Reports version 4.0 and loads fine into Orthanc 1.12.6.
-#
-# --force-confold: orthanc-python depends on Debian's `orthanc`, which ships its own
-# /etc/orthanc/orthanc.json; dpkg prompts on the clash and fails on EOF.
-#
-# Then two cleanups, because that dependency litters directories Orthanc scans. Both
-# were found the hard way, by deploying without them:
-#   plugins — it drops OLDER duplicates (worklists 1.10.1, serve-folders) into
-#     /usr/share/orthanc/plugins, and loading two versions of one plugin aborts Orthanc
-#     at startup. -mindepth 1, not -type f: they are symlinks.
-#   config — it drops worklists.json, python.json, serve-folders.json and
-#     credentials.json into /etc/orthanc. The compose passes that DIRECTORY as the
-#     config, Orthanc reads every *.json in it, and a section defined twice is fatal:
-#     "The configuration section Worklists is defined in 2 different configuration
-#     files". Removed before the ADD below puts ours in place.
-#
-# ~26MB. Debian's /usr/sbin/Orthanc is never run; the entrypoint execs
-# /usr/local/sbin/Orthanc.
-RUN DEBIAN_FRONTEND=noninteractive apt-get update \
- && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-      -o Dpkg::Options::=--force-confold orthanc-python \
- && find /usr/share/orthanc/plugins -mindepth 1 ! -name 'libOrthancPython.so' -delete \
- && rm -f /etc/orthanc/*.json /etc/orthanc/*.dpkg-dist /etc/orthanc/sample.py \
- && rm -rf /var/lib/apt/lists/*
+# NOTE: no apt-get install of Debian's orthanc-python here any more. That existed only
+# because Mekom's image shipped no Python plugin, and it dragged in Debian's `orthanc`
+# package, which littered /usr/share/orthanc/plugins with older duplicate plugins and
+# /etc/orthanc with competing config sections — both of which crash-looped Orthanc and
+# had to be cleaned up in the same layer. orthancteam ships libOrthancPython.so itself
+# (plugin version 7.1), and enables it automatically because "PythonScript" is set in
+# the config below, so the whole workaround and its cleanups are gone.
 
-# Orthanc's configuration directory. The compose passes `command: /etc/orthanc/`
-# so these are read instead of the host-mounted secret this image used to rely on.
+# Orthanc's configuration directory. The vendor entrypoint merges every
+# /etc/orthanc/*.json into the config it generates, so this file is picked up with no
+# `command:` override in the compose file.
 ADD distro/configs/orthanc/initializer_config/orthanc.json /etc/orthanc/orthanc.json
 
 # Worklist plugin script. Path must match "PythonScript" in orthanc.json, which is
@@ -56,16 +58,25 @@ ADD distro/configs/orthanc/initializer_config/ohif /usr/share/orthanc/ohif
 
 # The worklists plugin needs this directory to exist and be writable before it will
 # accept C-FIND entries; it is absent from the base image. post-start.sh used to
-# mkdir/chmod it inside the running container on every start.
-# Safe to bake: /var/lib/orthanc/worklists is NOT a volume mount (only
-# /var/lib/orthanc/db is), so the image's own filesystem is what Orthanc sees.
+# mkdir/chmod it inside the running container on every start. Baking it also seeds the
+# permissions of the `orthanc-worklists` named volume the compose file mounts here.
 RUN mkdir -p /var/lib/orthanc/worklists && chmod 777 /var/lib/orthanc/worklists
 
 # Resolve the OHIF config's deployment-specific URLs at container start, then exec
-# the base image's own entrypoint (/usr/local/sbin/Orthanc). env-substitution cannot
+# the base image's own entrypoint (/docker-entrypoint.sh). env-substitution cannot
 # do this: it only rewrites the host-mounted distro tree and skips .js files.
 # Expects KEYCLOAK_URL, PACS_PUBLIC_URL and OPENMRS_PUBLIC_URL in the environment —
 # the compose files supply them.
 COPY bundled-docker/orthanc/uvl-entrypoint.sh /usr/local/bin/uvl-entrypoint.sh
 RUN chmod +x /usr/local/bin/uvl-entrypoint.sh
 ENTRYPOINT ["/usr/local/bin/uvl-entrypoint.sh"]
+
+# Restated deliberately. Declaring ENTRYPOINT resets any CMD inherited from the base
+# image, so without this the base entrypoint is reached with no arguments and exits
+# immediately: "FATAL ERROR: docker-entrypoint.sh expects a single parameter: the path
+# to the configuration file(s)". Measured — the container never starts.
+#
+# /tmp/orthanc.json is the base image's own default and is the file it GENERATES, by
+# merging /etc/orthanc/*.json, the environment and the docker secrets. It is not our
+# config; ours is the input at /etc/orthanc/orthanc.json.
+CMD ["/tmp/orthanc.json"]

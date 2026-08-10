@@ -16,10 +16,6 @@
     "IndexConnectionsCount": 50,
     "TransactionMode": "ReadCommitted"
   },
-  "Plugins": [
-    "/usr/share/orthanc/plugins",
-    "/usr/local/share/orthanc/plugins"
-  ],
   "HttpPort": 8042,
   "RemoteAccessAllowed": true,
   "AuthenticationEnabled": false,
@@ -80,7 +76,7 @@
       "OhifViewer3PublicRoot": "${PACS_PUBLIC_URL}/ohif/"
     }
   },
-  "Ohif": {
+  "OHIF": {
     "DataSource": "dicom-web",
     "RouterBasename": "${OHIF_ROUTER_BASENAME}",
     "UserConfiguration": "/usr/share/orthanc/ohif/app-config.js"
@@ -98,6 +94,6 @@
   "UnknownSopClassAccepted": true,
   "Worklists": {
     "Enable": true,
-    "Database": "/var/lib/orthanc/worklists"
+    "Directory": "/var/lib/orthanc/worklists"
   }
 }
