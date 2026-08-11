@@ -419,7 +419,7 @@
             DELETE FROM person_attribute WHERE value = 'test';
         </sql>
     </changeSet>
-    <changeSet id="ensure_mugamba_insurance_payment_modes-20260730" author="codex">
+    <changeSet id="ensure_mugamba_insurance_payment_modes-20260730" author="isaac-maya">
         <comment>
             Ensure the canonical Mugamba insurance payment modes exist before item prices are attached.
             The paymentmodes Initializer domain can run after Liquibase during first bootstrap, so this
@@ -440,7 +440,7 @@
         </sql>
     </changeSet>
 
-    <changeSet id="uvl_002_touch_person_on_insurance_tier_attribute_change-20260731" author="codex">
+    <changeSet id="uvl_002_touch_person_on_insurance_tier_attribute_change-20260731" author="isaac-maya">
         <comment>
             Propagate Insurance Coverage Tier person_attribute changes into the parent person row so
             OpenMRS EIP emits a normal patient sync event when the source-of-truth attribute changes.
