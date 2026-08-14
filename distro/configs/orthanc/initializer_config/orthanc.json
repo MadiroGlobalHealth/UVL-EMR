@@ -47,6 +47,18 @@
       "/auth/",
       "/ohif/",
       "/ui/"
+    ],
+    "ExtraPermissions": [
+      [
+        "get",
+        "^/fhir(/.*)?$",
+        "all|view"
+      ],
+      [
+        "post",
+        "^/fhir(/.*)?$",
+        "all|view"
+      ]
     ]
   },
   "DicomModalities": {
@@ -95,5 +107,14 @@
   "Worklists": {
     "Enable": true,
     "Directory": "/var/lib/orthanc/worklists"
+  },
+  "Java": {
+    "Enable": true,
+    "Classpath": "/usr/share/orthanc/java/OrthancFHIR.jar:/usr/share/orthanc/java/OrthancJavaSDK.jar",
+    "InitializationClass": "Main"
+  },
+  "FHIR": {
+    "BaseUrl": "${PACS_PUBLIC_URL}/fhir",
+    "DicomWeb": "../dicom-web"
   }
 }

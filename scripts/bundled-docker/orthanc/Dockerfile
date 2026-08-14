@@ -34,7 +34,11 @@
 # orthancWorklist.py on 2026-08-09 was listed verbatim by GET /worklists — the tags the
 # Worklists page renders. So the bridge, the payment gate and the C-FIND leg are
 # untouched by this: the new plugin still reads the same folder of .wl files.
-FROM orthancteam/orthanc:26.7.0
+# -full, not the plain tag: only the -full variant ships libOrthancJava.so and a JVM, and the
+# Orthanc FHIR server is a Java plugin. Without it, JAVA_PLUGIN_ENABLED is inert and the FHIR
+# endpoints never exist. Verified: `ls plugins-available | grep java` is empty on 26.7.0 and
+# returns libOrthancJava.so on 26.7.0-full.
+FROM orthancteam/orthanc:26.7.0-full
 
 # NOTE: no apt-get install of Debian's orthanc-python here any more. That existed only
 # because Mekom's image shipped no Python plugin, and it dragged in Debian's `orthanc`
@@ -55,6 +59,19 @@ ADD distro/configs/orthanc/initializer_config/orthancWorklist.py /etc/orthanc/or
 
 # OHIF viewer assets served by the OHIF plugin.
 ADD distro/configs/orthanc/initializer_config/ohif /usr/share/orthanc/ohif
+
+# Orthanc FHIR server — a Java plugin, run by libOrthancJava.so from the -full base above.
+# Exposes Orthanc's content at /fhir as FHIR Patient, ImagingStudy and Endpoint resources, which
+# is what lets OpenMRS address imaging as FHIR rather than through DICOM-specific REST.
+#
+# Upstream binary, downloaded from
+# https://orthanc.uclouvain.be/downloads/cross-platform/orthanc-java/2.0/OrthancFHIR.jar
+# and vendored here so the image builds without network access to that host. It bundles HAPI FHIR
+# and its dependencies, hence ~40MB.
+#
+# Only Patient, ImagingStudy and Endpoint are implemented upstream — there is no Task or
+# ServiceRequest provider, so those cannot be mapped through this route however it is configured.
+ADD distro/configs/orthanc/initializer_config/java /usr/share/orthanc/java
 
 # The worklists plugin needs this directory to exist and be writable before it will
 # accept C-FIND entries; it is absent from the base image. post-start.sh used to
