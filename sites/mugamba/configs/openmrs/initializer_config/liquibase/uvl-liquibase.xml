@@ -443,5 +443,111 @@
 		<sqlFile path="sql/reporting_report_design.sql" relativeToChangelogFile="true" stripComments="true" />
         <sql>SET foreign_key_checks = 1;</sql>
     </changeSet>
-    
+
+    <!-- Retire the duplicate provider record. Previously applied on every boot by
+         scripts/src/post-start.sh; a changeset runs once and is tracked. -->
+    <changeSet id="retire_duplicate_provider-202608041100" author="jnsereko">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT CASE WHEN COUNT(*) > 0 THEN 1 ELSE 0 END FROM provider
+                WHERE uuid = 'f9badd80-ab76-11e2-9e96-0800200c9a66' AND retired = 0;
+            </sqlCheck>
+        </preConditions>
+        <comment>Retire the duplicate provider so it stops appearing in provider pickers</comment>
+        <sql>
+            UPDATE provider
+               SET retired = 1,
+                   retire_reason = 'Duplicate',
+                   retired_by = 1,
+                   date_retired = NOW()
+             WHERE uuid = 'f9badd80-ab76-11e2-9e96-0800200c9a66' AND retired = 0;
+        </sql>
+    </changeSet>
+
+    <!-- The Orthanc credentials for the imaging module are deliberately NOT set here.
+
+         A changeset used to UPDATE imaging_OrthancConfiguration with the
+         orthanc-service username and its client secret. Two reasons it is gone:
+
+           * The secret cannot live in this file. The repository is public and git
+             history is permanent, so committing it here leaks it regardless of any
+             later edit. Unlike the values in run/docker/.env, a Liquibase changeset
+             has no build-time substitution hook — env-substitution does rewrite .xml
+             in the distro tree, but it does not run in a pull-only deployment, which
+             would then apply the literal placeholder as the password.
+
+           * It could never have run anyway. imaging_OrthancConfiguration belongs to
+             the imaging module, which this distro does not ship: its .omod was dead
+             weight (never copied into the artifact) and imaging-omod:1.1.6 resolves
+             from none of the configured repositories. The tableExists precondition
+             therefore always failed, making the changeset dead code holding a live
+             secret.
+
+         When the imaging module is genuinely deployed, configure its Orthanc
+         credentials through the module itself, with the secret supplied from the
+         environment rather than committed. -->
+
+    <changeSet id="add_orthanc_service_account_user-202608070100" author="Joshua">
+        <comment>
+            OpenMRS user for the Keycloak service account the Orthanc EIP bridge presents.
+
+            oauth2login maps a token onto an OpenMRS user by preferred_username
+            (openmrs.mapping.user.username), so a bearer token whose service account has no
+            matching OpenMRS user is rejected exactly as basic auth is — 302 to
+            /openmrs/oauth2login. That is why the bridge's POST /ws/rest/v1/obs never
+            succeeded and no DICOM study ever became an attachment, while the equivalent
+            call from the Odoo bridge did: service-account-eip already had a user here and
+            service-account-orthanc-service did not.
+
+            Mirrors the roles service-account-eip holds. No usable password is set: the
+            hash and salt are random, so the account can only ever authenticate by token.
+
+            Ids are resolved by subquery rather than hardcoded, unlike the older changesets
+            above, so this cannot collide with rows added since. preConditions make it a
+            no-op where the user already exists.
+        </comment>
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                select count(*) from users where username = 'service-account-orthanc-service'
+            </sqlCheck>
+        </preConditions>
+        <insert tableName="person">
+            <column name="gender" value="F"/>
+            <column name="creator" value="1"/>
+            <column name="date_created" value="2026-08-07 01:00:00"/>
+            <column name="uuid" value="3633164f-d6c2-45a3-95b5-8f72ec90cdea"/>
+        </insert>
+        <insert tableName="person_name">
+            <column name="preferred" value="1"/>
+            <column name="person_id"
+                    valueComputed="(select person_id from person where uuid = '3633164f-d6c2-45a3-95b5-8f72ec90cdea')"/>
+            <column name="given_name" value="Orthanc"/>
+            <column name="family_name" value="Service"/>
+            <column name="creator" value="1"/>
+            <column name="date_created" value="2026-08-07 01:00:00"/>
+            <column name="uuid" value="7c1d9d0e-3a4f-4c2b-9a1e-2b6f8d0c4e11"/>
+        </insert>
+        <insert tableName="users">
+            <column name="system_id" value="service-account-orthanc-service"/>
+            <column name="username" value="service-account-orthanc-service"/>
+            <column name="password" value="dff96e25672693211cd216e8b06721f036b40718d29c87c58da6c76cc2cb912f028cfb1116291110e78739db54dfb6944912de1da819faa62ea787f7d33d6594"/>
+            <column name="salt" value="f2dbad2f5b6223241f13115b9a3ee28328046923852481bd2c63bb702e8e210bb1016cccedf43d55a3c4e09278ba56676d6f15644569fa1fd43cc5b8f5be5f62"/>
+            <column name="person_id"
+                    valueComputed="(select person_id from person where uuid = '3633164f-d6c2-45a3-95b5-8f72ec90cdea')"/>
+            <column name="uuid" value="2a41ede6-f825-4c61-84dc-4f2022ee4b41"/>
+            <column name="creator" value="1"/>
+            <column name="date_created" value="2026-08-07 01:00:00"/>
+        </insert>
+        <insert tableName="user_role">
+            <column name="user_id"
+                    valueComputed="(select user_id from users where username = 'service-account-orthanc-service')"/>
+            <column name="role" value="Provider"/>
+        </insert>
+        <insert tableName="user_role">
+            <column name="user_id"
+                    valueComputed="(select user_id from users where username = 'service-account-orthanc-service')"/>
+            <column name="role" value="System Developer"/>
+        </insert>
+    </changeSet>
+
 </databaseChangeLog>

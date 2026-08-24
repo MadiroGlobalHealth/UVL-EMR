@@ -1,0 +1,94 @@
+slice_name: "Lab \u2013 Test Orders Detail"
+description: null
+certified_by: null
+certification_details: null
+viz_type: table
+params:
+  datasource: 18__table
+  viz_type: table
+  slice_id: 30
+  query_mode: raw
+  groupby: []
+  time_grain_sqla: P1D
+  temporal_columns_lookup:
+    Date de consultation: true
+    Date de naissance: true
+  metrics: []
+  all_columns:
+  - Date de consultation
+  - ID du patient
+  - Sexe
+  - "\xC2ge (ann\xE9es)"
+  - Nom de famille
+  - Prenom
+  - Femme enceinte
+  - Nom du test
+  - Cadre de soins
+  - Ville
+  - Date de naissance
+  - "Tranche d'\xE2ge"
+  - Resultat du test
+  - ID du prescripteur
+  - ID de commande
+  - Service demandeur
+  percent_metrics: []
+  adhoc_filters:
+  - clause: WHERE
+    comparator: No filter
+    expressionType: SIMPLE
+    operator: TEMPORAL_RANGE
+    subject: Date de consultation
+  order_by_cols: []
+  server_pagination: true
+  row_limit: 1000
+  server_page_length: 0
+  order_desc: true
+  table_timestamp_format: smart_date
+  include_search: true
+  show_cell_bars: false
+  color_pn: true
+  column_config:
+    "\xC2ge (ann\xE9es)":
+      horizontalAlign: left
+  conditional_formatting: []
+  extra_form_data: {}
+  dashboards:
+  - 6
+query_context: "{\"datasource\":{\"id\":18,\"type\":\"table\"},\"force\":false,\"\
+  queries\":[{\"filters\":[{\"col\":\"Date de consultation\",\"op\":\"TEMPORAL_RANGE\"\
+  ,\"val\":\"No filter\"}],\"extras\":{\"time_grain_sqla\":\"P1D\",\"having\":\"\"\
+  ,\"where\":\"\"},\"applied_time_extras\":{},\"columns\":[\"Date de consultation\"\
+  ,\"ID du patient\",\"Sexe\",\"\xC2ge (ann\xE9es)\",\"Nom de famille\",\"Prenom\"\
+  ,\"Femme enceinte\",\"Nom du test\",\"Cadre de soins\",\"Ville\",\"Date de naissance\"\
+  ,\"Tranche d'\xE2ge\",\"Resultat du test\",\"ID du prescripteur\",\"ID de commande\"\
+  ,\"Service demandeur\"],\"orderby\":[],\"annotation_layers\":[],\"row_limit\":0,\"\
+  row_offset\":0,\"series_limit\":0,\"order_desc\":true,\"url_params\":{},\"custom_params\"\
+  :{},\"custom_form_data\":{},\"post_processing\":[]},{\"filters\":[{\"col\":\"Date\
+  \ de consultation\",\"op\":\"TEMPORAL_RANGE\",\"val\":\"No filter\"}],\"extras\"\
+  :{\"time_grain_sqla\":\"P1D\",\"having\":\"\",\"where\":\"\"},\"applied_time_extras\"\
+  :{},\"columns\":[\"Date de consultation\",\"ID du patient\",\"Sexe\",\"\xC2ge (ann\xE9\
+  es)\",\"Nom de famille\",\"Prenom\",\"Femme enceinte\",\"Nom du test\",\"Cadre de\
+  \ soins\",\"Ville\",\"Date de naissance\",\"Tranche d'\xE2ge\",\"Resultat du test\"\
+  ,\"ID du prescripteur\",\"ID de commande\",\"Service demandeur\"],\"orderby\":[],\"\
+  annotation_layers\":[],\"row_limit\":0,\"row_offset\":0,\"series_limit\":0,\"order_desc\"\
+  :true,\"url_params\":{},\"custom_params\":{},\"custom_form_data\":{},\"post_processing\"\
+  :[],\"is_rowcount\":true}],\"form_data\":{\"datasource\":\"18__table\",\"viz_type\"\
+  :\"table\",\"slice_id\":30,\"query_mode\":\"raw\",\"groupby\":[],\"time_grain_sqla\"\
+  :\"P1D\",\"temporal_columns_lookup\":{\"Date de consultation\":true,\"Date de naissance\"\
+  :true},\"metrics\":[],\"all_columns\":[\"Date de consultation\",\"ID du patient\"\
+  ,\"Sexe\",\"\xC2ge (ann\xE9es)\",\"Nom de famille\",\"Prenom\",\"Femme enceinte\"\
+  ,\"Nom du test\",\"Cadre de soins\",\"Ville\",\"Date de naissance\",\"Tranche d'\xE2\
+  ge\",\"Resultat du test\",\"ID du prescripteur\",\"ID de commande\",\"Service demandeur\"\
+  ],\"percent_metrics\":[],\"adhoc_filters\":[{\"clause\":\"WHERE\",\"comparator\"\
+  :\"No filter\",\"expressionType\":\"SIMPLE\",\"operator\":\"TEMPORAL_RANGE\",\"\
+  subject\":\"Date de consultation\"}],\"order_by_cols\":[],\"server_pagination\"\
+  :true,\"row_limit\":1000,\"server_page_length\":0,\"order_desc\":true,\"table_timestamp_format\"\
+  :\"smart_date\",\"include_search\":true,\"show_cell_bars\":false,\"color_pn\":true,\"\
+  column_config\":{\"\xC2ge (ann\xE9es)\":{\"horizontalAlign\":\"left\"}},\"conditional_formatting\"\
+  :[],\"extra_form_data\":{},\"dashboards\":[6],\"force\":false,\"result_format\"\
+  :\"json\",\"result_type\":\"full\",\"include_time\":false},\"result_format\":\"\
+  json\",\"result_type\":\"full\"}"
+cache_timeout: null
+uuid: 6575e021-141e-4ef1-865f-04bd59034c43
+version: 1.0.0
+dataset_uuid: e58aaa11-c459-49ff-8f25-bf6fd029afe2

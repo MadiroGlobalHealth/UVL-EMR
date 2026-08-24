@@ -1,0 +1,23 @@
+<!--
+  UVL overrides for the oauth2login module.
+
+  Initializer loads globalproperties directories in name order, so this must sort
+  after 02_ozone-distro to win: that one sets redirectUriAfterLogin to
+  /spa/login/location, and UVL wants /spa/home.
+
+  oauth2login.started must be true before the first login, otherwise the module
+  serves its setup page instead of redirecting to Keycloak. Setting it here means
+  a fresh instance comes up SSO-ready with no manual step.
+-->
+<config>
+    <globalProperties>
+        <globalProperty>
+            <property>oauth2login.redirectUriAfterLogin</property>
+            <value>/spa/home</value>
+        </globalProperty>
+        <globalProperty>
+            <property>oauth2login.started</property>
+            <value>true</value>
+        </globalProperty>
+    </globalProperties>
+</config>

@@ -6,7 +6,7 @@
   <parent>
     <groupId>com.ozonehis</groupId>
     <artifactId>maven-parent</artifactId>
-    <version>1.0.0-alpha.13</version>
+    <version>1.0.0-alpha.15</version>
     <relativePath />
   </parent>
 
@@ -27,9 +27,25 @@
     <billing.version>1.2.0-SNAPSHOT</billing.version>
     <initializer.version>2.9.0</initializer.version>
 
+    <!--
+      The Orthanc EIP bridge. This is the UVL fork (Virlein/eip-openmrs-orthanc), NOT
+      com.ozonehis:eip-openmrs-orthanc, and the difference is load-bearing: upstream's
+      OrthancConfig can only send HTTP Basic, which Orthanc's authorization plugin
+      rejects with 403 on every call — measured at 19,778 consecutive failures on UAT,
+      i.e. the bridge had never once succeeded. The fork adds OrthancTokenProvider
+      (Keycloak client_credentials, gated on ORTHANC_OAUTH_ENABLED), plus the
+      RadiologyOrderWorklistProcessor / OrthancWorklistHandler pair that creates Orthanc
+      worklist entries from OpenMRS radiology orders, an Odoo payment gate, SR ->
+      Observation mapping against the ordered procedure's concept, and orphaned-study
+      cleanup. Upstream has none of that; 1.0.0-SNAPSHOT there is byte-identical to
+      0.2.0, so bumping the upstream version is not an alternative.
+    -->
+    <eip.openmrs.orthanc.version>1.0.0-uvl.1</eip.openmrs.orthanc.version>
+
     <!--RefApp 3.5.0 modules -->
-    <fhir2.version>2.7.0</fhir2.version>
-    <webservices.rest.version>2.50.0</webservices.rest.version>
+    <openmrs.version>2.7.7</openmrs.version>
+    <fhir2.version>2.8.0</fhir2.version>
+    <webservices.rest.version>3.2.0</webservices.rest.version>
     <addresshierarchy.version>2.21.0</addresshierarchy.version>
     <idgen.version>4.14.0</idgen.version>
     <legacyui.version>1.23.0</legacyui.version>
@@ -51,11 +67,31 @@
     <emrapi.version>2.3.0</emrapi.version>
     <event.version>3.0.0</event.version>
     <bedmanagement.version>6.2.0-20250806.164740-6</bedmanagement.version>
+    <patientdocuments.version>1.0.0-SNAPSHOT</patientdocuments.version>
 
     <!-- Ozone alpha 13 modules -->
     <oauth2loginVersion>1.5.0</oauth2loginVersion>
     <fhirproxyVersion>1.0.0</fhirproxyVersion>
     <patientsummaryVersion>2.2.0</patientsummaryVersion>     
+  	<msf.environment>dev</msf.environment>
+    <bundled.docker.tag>${msf.environment}</bundled.docker.tag>
+
+    <!--
+      Orthanc secrets written into run/docker/.env and concatenated.env at build
+      time. The defaults are deliberately NOT usable: this repository is public, and
+      anything committed here stays in git history for good.
+
+      Supply the real values on the build, e.g.
+
+        mvn package -Porthanc \
+          -Dorthanc.client.secret="$ORTHANC_CLIENT_SECRET" \
+          -Dorthanc.auth.service.secret.key="$ORTHANC_AUTH_SERVICE_SECRET_KEY"
+
+      orthanc.client.secret must match the "orthanc-service" client secret in the
+      site's ozone-realm.json.
+    -->
+    <orthanc.client.secret>CHANGEME</orthanc.client.secret>
+    <orthanc.auth.service.secret.key>CHANGEME</orthanc.auth.service.secret.key>
   </properties>
 
   <dependencies>
@@ -199,6 +235,12 @@
       <version>${bedmanagement.version}</version>
       <scope>provided</scope>
     </dependency>
+    <dependency>
+			<groupId>org.openmrs.module</groupId>
+			<artifactId>patientdocuments-omod</artifactId>
+			<version>${patientdocuments.version}</version>
+			<scope>provided</scope>
+		</dependency>
 
     <!-- Ozone alpha 13 modules -->
     <dependency>
@@ -256,23 +298,6 @@
         <artifactId>maven-resources-plugin</artifactId>
         <executions>
           <execution>
-            <id>Copy local eip-odoo-openmrs resources</id>
-            <phase>process-resources</phase>
-            <goals>
-              <goal>copy-resources</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>
-                ${project.build.directory}/${project.artifactId}-${project.version}/distro/binaries/eip-odoo-openmrs</outputDirectory>
-              <overwrite>true</overwrite>
-              <resources>
-                <resource>
-                  <directory>${project.basedir}/binaries/eip-odoo-openmrs</directory>
-                </resource>
-              </resources>
-            </configuration>
-          </execution>
-          <execution>
             <!-- Override with local config files-->
             <id>Copy local resources</id>
             <phase>process-resources</phase>
@@ -309,16 +334,25 @@
                 <resource>
                   <directory>${project.build.directory}/ozone</directory>
                   <excludes>
-                    <exclude>distro/configs/**/autogenerationoptions/*.*</exclude>
-                    <exclude>distro/configs/**/idgen/*.*</exclude>
-                    <exclude>distro/configs/**/patientidentifiertypes/*.*</exclude>
+                    <exclude>distro/configs/**/autogenerationoptions/**/*.*</exclude>
+                    <exclude>distro/configs/**/idgen/**/*.*</exclude>
+                    <exclude>distro/configs/**/patientidentifiertypes/**/*.*</exclude>
                     <!-- Temporarily remove Ozone -->
                     <exclude>distro/binaries/openmrs/modules/referencedemodata*.omod</exclude>
-                    <exclude>distro/binaries/eip-odoo-openmrs/eip-odoo-openmrs-2.1.0.jar</exclude>
                     <!-- Remove Ozone frontend config -->
                     <!-- <exclude>distro/configs/openmrs/frontend_config/ozone*.*</exclude> -->
                     <!-- Remove reporting module 2.6 -->
                     <exclude>distro/binaries/openmrs/modules/reporting-1.26.0.omod</exclude>
+                    <!--
+                      Drop the upstream Orthanc EIP bridge. The UVL fork is copied into the
+                      same directory by the 'Copy the UVL Orthanc EIP bridge' execution
+                      below, and eip-client loads EVERY jar in /eip-client/routes onto its
+                      classpath — so leaving this one in place would put two copies of
+                      com.ozonehis.eip.openmrs.orthanc.* there and make it undefined which
+                      OrthancConfig wins. See eip.openmrs.orthanc.version for why the fork
+                      is required rather than this jar.
+                    -->
+                    <exclude>distro/binaries/eip-openmrs-orthanc/eip-openmrs-orthanc-0.2.0.jar</exclude>
                   </excludes>
                 </resource>
               </resources>
@@ -326,7 +360,124 @@
           </execution>
 
           <execution>
-            <!-- Copy UVL Disto docker compose .txt file -->
+            <!--
+              Custom OpenMRS modules held in this repo as binaries.
+
+              distro/binaries is NOT part of the inherited-artifact copy — the
+              artifact's modules come from the Ozone zip — so without this execution
+              anything placed there never reached the build output. That is why
+              orthanctoken was previously present in the repo but absent from every
+              artifact and image: the imaging flow's /ws/rest/v1/orthanc/token
+              endpoint was only ever available on an instance where the module had
+              been installed by hand.
+
+              Bound to prepare-package deliberately. The "Upgrade UVL OpenMRS to
+              RefApp 3.4.0" execution deletes *.omod from this directory (keeping
+              only serialization*) during process-resources, so copying earlier would
+              be undone.
+
+              orthanctoken performs authorization — it decides whether the requesting
+              user may view a study — so a committed SNAPSHOT binary is a stopgap, not
+              the destination. Publish it as a versioned artifact and consume it as a
+              Maven dependency like every other module in this pom.
+            -->
+            <id>Copy UVL Distro custom openmrs modules</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>
+                ${project.build.directory}/${project.artifactId}-${project.version}/distro/binaries/openmrs/modules</outputDirectory>
+              <overwrite>true</overwrite>
+              <resources>
+                <resource>
+                  <directory>${project.basedir}/binaries/openmrs/modules</directory>
+                  <includes>
+                    <include>*.omod</include>
+                  </includes>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+
+          <execution>
+            <!--
+              The Orthanc EIP bridge, held in this repo as a binary for the same reason as
+              the modules above: it is the UVL fork and there is nowhere to resolve it from
+              yet. See eip.openmrs.orthanc.version for what the fork adds and why upstream
+              cannot be used instead.
+
+              This replaces the mechanism that used to deliver the jar — build.sh copied it
+              out of /Users/v.ameil/Developer/eip-openmrs-orthanc-v2/target, so the bridge
+              could only be assembled on its author's laptop, and dropping those scripts
+              silently dropped the bridge with them.
+
+              prepare-package, matching the execution above: the inherited-Ozone copy runs
+              at process-resources, so anything written before it is overwritten.
+
+              Deliberately a committed binary rather than a Maven dependency. The intended
+              destination is upstream — once these changes are merged into
+              ozone-his/eip-openmrs-orthanc, this execution and the jar both go away and
+              the bridge comes from the Ozone distro like every other inherited artifact.
+              Until then a published artifact would only be a second thing to maintain.
+            -->
+            <id>Copy the UVL Orthanc EIP bridge</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>
+                ${project.build.directory}/${project.artifactId}-${project.version}/distro/binaries/eip-openmrs-orthanc</outputDirectory>
+              <overwrite>true</overwrite>
+              <resources>
+                <resource>
+                  <directory>${project.basedir}/binaries/eip-openmrs-orthanc</directory>
+                  <includes>
+                    <include>eip-openmrs-orthanc-${eip.openmrs.orthanc.version}.jar</include>
+                  </includes>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+
+          <execution>
+            <!--
+              Site-authored database bootstrap scripts, layered onto the data/ tree
+              inherited from Ozone. Currently just the Orthanc index database, which
+              lives on the shared postgresql instance (orthanc.json points its
+              PostgreSQL Host at "postgresql").
+
+              data/postgresql/create_db.sh walks /docker-entrypoint-initdb.d/db/* on
+              first init, so a new directory here is picked up with no other change
+              for the local stack; the bundled image needs an extra ADD, applied by
+              the bundled-docker profile below.
+            -->
+            <id>Copy UVL Distro data files</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>
+                ${project.build.directory}/${project.artifactId}-${project.version}/distro/data</outputDirectory>
+              <overwrite>true</overwrite>
+              <resources>
+                <resource>
+                  <directory>${project.basedir}/data</directory>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+
+          <execution>
+            <!--
+              The compose-file manifest is read by run/docker/scripts/utils.sh with a
+              bare relative path (`cat docker-compose-files.txt`), so it must sit
+              alongside the scripts, NOT in run/docker with the compose files it lists.
+              That is why it is copied separately and excluded from the copy below.
+            -->
             <id>Copy UVL Disto docker compose .txt file</id>
             <phase>prepare-package</phase>
             <goals>
@@ -338,7 +489,7 @@
               <overwrite>true</overwrite>
               <resources>
                 <resource>
-                  <directory>${project.basedir}/../scripts</directory>
+                  <directory>${project.basedir}/../scripts/docker</directory>
                   <includes>
                     <include>
                       docker-compose-files.txt
@@ -350,8 +501,8 @@
           </execution>
 
           <execution>
-            <!-- Copy UVL Disto docker compose .txt file -->
-            <id>Copy UVL Disto docker override file</id>
+            <!-- scripts/docker -> run/docker : compose files and their overrides -->
+            <id>Copy UVL Distro docker files</id>
             <phase>prepare-package</phase>
             <goals>
               <goal>copy-resources</goal>
@@ -362,17 +513,38 @@
               <overwrite>true</overwrite>
               <resources>
                 <resource>
-                  <directory>${project.basedir}/../scripts</directory>
-                  <includes>
-                    <include>
-                      docker-compose-override.yml
-                    </include>
-                  </includes>
+                  <directory>${project.basedir}/../scripts/docker</directory>
+                  <excludes>
+                    <!-- Belongs with the scripts — see the execution above. -->
+                    <exclude>docker-compose-files.txt</exclude>
+                  </excludes>
                 </resource>
               </resources>
             </configuration>
           </execution>
 
+          <execution>
+            <!--
+              scripts/src -> run/docker/scripts : shell helpers invoked from the
+              launcher. The antrun step below chmods run/docker/scripts/*.sh to 700,
+              so anything landing here stays executable.
+            -->
+            <id>Copy UVL Distro docker scripts</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>
+                ${project.build.directory}/${project.artifactId}-${project.version}/run/docker/scripts</outputDirectory>
+              <overwrite>true</overwrite>
+              <resources>
+                <resource>
+                  <directory>${project.basedir}/../scripts/src</directory>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
       <plugin>
@@ -453,6 +625,80 @@
 
                 <echo level="info" message="Setting executable permissions for the Ozone start.sh script" />
                 <chmod file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/scripts/*.sh" perm="700"/>
+                <!--
+                  ORTHANC_ATTACHMENTS_PATCH_PATH is deliberately NOT set here.
+
+                  It used to be exported as
+                  ${project.basedir}/../../openmrs-esm-patient-chart/packages/esm-patient-attachments-app/dist
+                  — a sibling checkout that exists on no other machine and on no CI
+                  runner. Because the consuming bind mount takes a directory, Docker
+                  silently CREATES an empty one when the path is missing, so the
+                  frontend would serve an empty attachments app rather than failing
+                  loudly. The bind mount in scripts/docker/docker-compose-override.yml
+                  was removed alongside this.
+
+                  To reinstate the patched attachments app, publish the ESM and pin
+                  its version in
+                  distro/configs/openmrs/frontend_assembly/spa-assemble-config.json,
+                  so the frontend assembly carries it like every other ESM.
+                -->
+
+                <!--
+                  Orthanc / PACS and Superset runtime values.
+
+                  Inserted by anchoring on keys upstream Ozone already defines
+                  (ORTHANC_HOSTNAME, SUPERSET_CLIENT_SECRET) and re-emitting the
+                  anchor plus the new keys — the same \1-plus-content pattern this
+                  pom uses for SPA_CONFIG_URLS. A plain replace cannot be used
+                  because none of these nine keys exist upstream to match against.
+
+                  Idempotent by construction: the resources copy above restores
+                  .env and concatenated.env from target/ozone on every build, so the
+                  anchor is never already expanded.
+
+                  orthancWorklist.py needs no copy step of its own: the "Copy local
+                  resources" execution above already copies all of configs/ into
+                  distro/configs, including configs/orthanc.
+                -->
+                <echo level="info" message="Adding Orthanc/PACS and Superset runtime values to the env files" />
+                <replaceregexp byline="true"
+                  match="^ORTHANC_HOSTNAME=(.*)$"
+                  replace="ORTHANC_HOSTNAME=\1${line.separator}ORTHANC_PUBLIC_URL=$${SERVER_SCHEME}://$${ORTHANC_HOSTNAME}${line.separator}PACS_PUBLIC_URL=$${SERVER_SCHEME}://$${ORTHANC_HOSTNAME}${line.separator}ORTHANC_CLIENT_SECRET=${orthanc.client.secret}${line.separator}ORTHANC_AUTH_SERVICE_SECRET_KEY=${orthanc.auth.service.secret.key}${line.separator}ORTHANC_DB_PASSWORD=orthanc">
+                  <fileset dir="${project.build.directory}/${project.artifactId}-${project.version}/run/docker">
+                    <include name=".env" />
+                    <include name="concatenated.env" />
+                  </fileset>
+                </replaceregexp>
+                <replaceregexp byline="true"
+                  match="^SUPERSET_CLIENT_SECRET=(.*)$"
+                  replace="SUPERSET_CLIENT_SECRET=\1${line.separator}SUPERSET_DB_USER=superset${line.separator}SUPERSET_DB_PASSWORD=superset${line.separator}SUPERSET_SECRET_KEY=supersetSecretKey${line.separator}SUPERSET_ADMIN_PASSWORD=admin${line.separator}ORTHANC_DB_NAME=orthanc${line.separator}ORTHANC_DB_USER=orthanc">
+                  <fileset dir="${project.build.directory}/${project.artifactId}-${project.version}/run/docker">
+                    <include name=".env" />
+                    <include name="concatenated.env" />
+                  </fileset>
+                </replaceregexp>
+
+                <!--
+                  SSO: drop the provider mapping so oauth2login does not try to
+                  resolve an OpenMRS Provider for every SSO user, which fails login
+                  for users who have no provider account.
+
+                  Note there is deliberately NO rewrite of accessTokenUri /
+                  userInfoUri / keysUrl here: upstream Ozone already points those at
+                  ${KEYCLOAK_INTERNAL_HOST_URL} (http://keycloak:8080), so the
+                  container-to-container URLs are correct as shipped. The sed in
+                  build2.sh predates that and is now a no-op.
+
+                  This file is baked into the openmrs image by
+                  bundled-docker/openmrs/Dockerfile, so the edit must happen at build
+                  time — a post-build script would never reach the pushed image.
+                -->
+                <echo level="info" message="Removing the oauth2login provider mapping for SSO" />
+                <replaceregexp
+                  file="${project.build.directory}/${project.artifactId}-${project.version}/distro/configs/openmrs/properties/oauth2.properties"
+                  match="^openmrs\.mapping\.user\.provider=provider$"
+                  replace=""
+                  byline="true" />
               </target>
             </configuration>
           </execution>
@@ -461,8 +707,11 @@
       <plugin>
         <groupId>org.codehaus.gmavenplus</groupId>
         <artifactId>gmavenplus-plugin</artifactId>
+        <version>3.0.2</version>
         <executions>
-          <execution>
+          <!-- Loaded custom patient documents module and ESM patient banner app for stickers functionality. -->
+					<!-- Kept for manual override capability if needed. -->
+          <!-- <execution>
             <id>apply-overrides</id>
             <goals>
               <goal>execute</goal>
@@ -473,13 +722,20 @@
                 <script>file://${project.basedir}/../scripts/apply-overrides.groovy</script>
               </scripts>
             </configuration>
-          </execution>
+          </execution> -->
         </executions>
       </plugin>
     </plugins>
   </build>
 
   <profiles>
+    <profile>
+			<id>production</id>
+			<properties>
+				<msf.environment>latest</msf.environment>
+				<bundled.docker.tag>latest</bundled.docker.tag>
+			</properties>
+		</profile>
     <profile>
       <id>validator</id>
       <activation>
@@ -512,6 +768,247 @@
         </plugins>
       </build>
     </profile>
+    <profile>
+      <id>bundled-docker</id>
+      <!-- Docker image builds and pushes are skipped at the distro level.
+           They are handled exclusively by the site-level (mugamba) pom. -->
+      <properties>
+        <!-- Docker push registry username-->
+        <dockerMavenPlugin>0.46.0</dockerMavenPlugin>
+        <docker.push.registry.username>globalmadiro</docker.push.registry.username>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-resources-plugin</artifactId>
+            <version>3.3.0</version>
+            <executions>
+              <execution>
+                <!-- Copy Ozone bundled docker build groovy script -->
+                <id>Copy Ozone bundled docker build groovy script</id>
+                <phase>prepare-package</phase>
+                <goals>
+                  <goal>copy-resources</goal>
+                </goals>
+                <configuration>
+                  <outputDirectory>
+                    ${project.build.directory}/${project.artifactId}-${project.version}/bundled-docker/scripts
+                  </outputDirectory>
+                  <overwrite>true</overwrite>
+                  <resources>
+                    <resource>
+                      <directory>${project.build.directory}/openmrs/bundled-docker</directory>
+                    </resource>
+                  </resources>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <version>3.1.0</version>
+            <executions>
+              <execution>
+                <id>Use mekomsolutions docker image for keycloak</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <echo level="info" message="Adding msf keycloak docker image version"/>
+                    <replaceregexp file="${project.build.directory}/bundled-docker-tmp/bundled-docker/keycloak/Dockerfile"
+                                  match="FROM docker.io/bitnami.*" replace="FROM docker.io/mekomsolutions/keycloak:22.0.5" />
+
+                    <echo level="info" message="Adding msf OpenMRS docker image version"/>
+                    <replaceregexp file="${project.build.directory}/bundled-docker-tmp/bundled-docker/openmrs/Dockerfile"
+                                            match="FROM openmrs/openmrs-core.*" replace="FROM openmrs/openmrs-core:${openmrs.version}" />
+
+                    <echo level="info" message="Adding msf MYSQL docker image version"/>
+                    <replaceregexp file="${project.build.directory}/bundled-docker-tmp/bundled-docker/mysql/Dockerfile"
+                                            match="FROM mariadb.*" replace="FROM mariadb:10.11.13" />
+
+                    <!--
+                      Bake the Orthanc index database bootstrap into the postgresql
+                      image. Upstream's Dockerfile ADDs each database directory by
+                      name (odoo, senaite, keycloak), so a new data/postgresql/orthanc
+                      directory is NOT picked up automatically the way the local
+                      stack's bind mount is.
+
+                      Two steps because bundled-docker-tmp is NOT refreshed between
+                      non-clean builds: a bare append accumulates a duplicate ADD on
+                      every `mvn package` without `clean`. Stripping any existing line
+                      first makes this idempotent.
+                    -->
+                    <echo level="info" message="Adding Orthanc database bootstrap to the postgresql image"/>
+                    <replaceregexp file="${project.build.directory}/bundled-docker-tmp/bundled-docker/postgresql/Dockerfile"
+                                            match="[\r\n]+ADD data/postgresql/orthanc[^\r\n]*"
+                                            replace=""
+                                            flags="g" />
+                    <replaceregexp file="${project.build.directory}/bundled-docker-tmp/bundled-docker/postgresql/Dockerfile"
+                                            match="^(ADD data/postgresql/keycloak .*)$"
+                                            replace="\1${line.separator}ADD data/postgresql/orthanc /docker-entrypoint-initdb.d/db/orthanc"
+                                            byline="true" />
+                  </target>
+                </configuration>
+              </execution>
+              <execution>
+                <id>Override bundled docker proxy config</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <echo level="info" message="Overriding bundled docker proxy config with UVL distro version"/>
+                    <copy overwrite="true"
+                          file="${project.basedir}/../scripts/proxy/default.conf.template"
+                          tofile="${project.build.directory}/bundled-docker-tmp/bundled-docker/proxy/default.conf.template"/>
+                  </target>
+                </configuration>
+              </execution>
+              <execution>
+                <!--
+                  Site-authored Dockerfiles for services upstream
+                  com.ozonehis:bundled-docker does not cover (currently Orthanc).
+
+                  Must run BEFORE "Copy Bundled Docker Scripts to Distro" below,
+                  which snapshots bundled-docker-tmp/bundled-docker into the distro
+                  artifact — that is how the tree reaches countries/burundi and then
+                  sites/mugamba, where the images are actually built and pushed.
+                  Executions of the same plugin in one phase run in declaration
+                  order, so position here is load-bearing.
+                -->
+                <id>Add UVL bundled docker files</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <echo level="info" message="Adding UVL-authored bundled-docker files (orthanc)"/>
+                    <copy todir="${project.build.directory}/bundled-docker-tmp/bundled-docker" overwrite="true">
+                      <fileset dir="${project.basedir}/../scripts/bundled-docker" includes="**/*" />
+                    </copy>
+                  </target>
+                </configuration>
+              </execution>
+              <execution>
+                <id>Copy MSF Distro content to bundled docker before images build</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <delete includeemptydirs="true">
+                      <fileset dir="${project.build.directory}/bundled-docker-tmp/distro" includes="**/*"/>
+                    </delete>
+                    <copy todir="${project.build.directory}/bundled-docker-tmp/distro">
+                      <fileset dir="${project.build.directory}/${project.artifactId}-${project.version}/distro" includes="**/*" />
+                    </copy>
+                  </target>
+                </configuration>
+              </execution>
+              <execution>
+                <id>Copy Bundled Docker Scripts to Distro</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <mkdir dir="${project.build.directory}/${project.artifactId}-${project.version}/bundled-docker"/>
+                    <copy todir="${project.build.directory}/${project.artifactId}-${project.version}/bundled-docker">
+                        <fileset dir="${project.build.directory}/bundled-docker-tmp/bundled-docker" includes="**/*" />
+                    </copy>
+                  </target>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>io.fabric8</groupId>
+            <artifactId>docker-maven-plugin</artifactId>
+            <version>${dockerMavenPlugin}</version>
+            <configuration>
+              <pushRegistry>${docker.push.registry}</pushRegistry>
+              <images>
+                <image>
+                  <name>${docker.push.registry.username}/%a-openmrs-backend:${bundled.docker.tag}</name>
+                  <build>
+                    <dockerFile>
+                      ${project.build.directory}/bundled-docker-tmp/bundled-docker/openmrs/Dockerfile</dockerFile>
+                    <contextDir>
+                      ${project.build.directory}/bundled-docker-tmp/</contextDir>
+                  </build>
+                </image>
+                <image>
+                  <name>${docker.push.registry.username}/%a-openmrs-frontend:${bundled.docker.tag}</name>
+                  <build>
+                    <dockerFile>
+                      ${project.build.directory}/bundled-docker-tmp/bundled-docker/frontend/Dockerfile</dockerFile>
+                    <contextDir>
+                      ${project.build.directory}/bundled-docker-tmp/</contextDir>
+                  </build>
+                </image>
+                <image>
+                  <name>${docker.push.registry.username}/%a-proxy:${bundled.docker.tag}</name>
+                  <build>
+                    <dockerFile>
+                      ${project.build.directory}/bundled-docker-tmp/bundled-docker/proxy/Dockerfile</dockerFile>
+                    <contextDir>
+                      ${project.build.directory}/bundled-docker-tmp/</contextDir>
+                  </build>
+                </image>
+                <image>
+                  <name>${docker.push.registry.username}/%a-postgresql:${bundled.docker.tag}</name>
+                  <build>
+                    <dockerFile>
+                      ${project.build.directory}/bundled-docker-tmp/bundled-docker/postgresql/Dockerfile</dockerFile>
+                    <contextDir>
+                      ${project.build.directory}/bundled-docker-tmp/distro</contextDir>
+                  </build>
+                </image>
+                <image>
+                  <name>${docker.push.registry.username}/%a-mysql:${bundled.docker.tag}</name>
+                  <build>
+                    <dockerFile>
+                      ${project.build.directory}/bundled-docker-tmp/bundled-docker/mysql/Dockerfile</dockerFile>
+                    <contextDir>
+                      ${project.build.directory}/bundled-docker-tmp/distro</contextDir>
+                  </build>
+                </image>
+              </images>
+            </configuration>
+            <executions>
+              <execution>
+                <id>Build Bundled Docker images</id>
+                <goals>
+                  <goal>build</goal>
+                </goals>
+                <phase>package</phase>
+                <configuration>
+                  <skip>true</skip>
+                </configuration>
+              </execution>
+              <execution>
+                <id>Push Bundled Docker images</id>
+                <goals>
+                  <goal>push</goal>
+                </goals>
+                <phase>deploy</phase>
+                <configuration>
+                  <skip>true</skip>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
   </profiles>
 
   <repositories>
@@ -522,6 +1019,19 @@
     <repository>
       <id>madiro-global-health-github-uvl-emr</id>
       <url>https://maven.pkg.github.com/MadiroGlobalHealth/UVL-EMR/</url>
+    </repository>
+    <!--
+      Required, not optional: mks-nexus-public stopped serving org.openmrs.* core and
+      parent artifacts (its OpenMRS proxy 404s since OpenMRS moved to JFrog). Modules
+      like initializer-omod and commonreports-omod still resolve from Mekom, but their
+      descriptors can't be read without maven-parent-openmrs-module, which only lives
+      here. Inheriting this from the aggregator pom does not work — repositories come
+      down the parent chain, and our parent is com.ozonehis:maven-parent.
+    -->
+    <repository>
+      <id>openmrs-repo</id>
+      <name>OpenMRS Nexus Repository</name>
+      <url>https://mavenrepo.openmrs.org/public</url>
     </repository>
   </repositories>
 

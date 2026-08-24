@@ -67,13 +67,30 @@
         "uuid": "3024f003-e5bd-4cc6-aa2a-05e9575f9ea9",
         "required": true
       }
-    ]
+    ],
+    "restrictByVisitLocationTag": true
   },
   "@openmrs/esm-primary-navigation-app": {
     "externalRefLinks": [
       {
         "title": "Pharmacy, Billing & Inventory",
         "redirect": "${ODOO_PUBLIC_URL}"
+      },
+      {
+        "title": "Laboratory",
+        "redirect": "${SENAITE_PUBLIC_URL}"
+      },
+      {
+        "title": "Reporting & Analytics",
+        "redirect": "${SUPERSET_PUBLIC_URL}"
+      },
+      {
+        "title": "Account Management",
+        "redirect": "${KEYCLOAK_URL}/realms/ozone/account/#/"
+      },
+      {
+        "title": "Orthanc PACS",
+        "redirect": "${PACS_PUBLIC_URL}"
       }
     ],
     "extensionSlots": {

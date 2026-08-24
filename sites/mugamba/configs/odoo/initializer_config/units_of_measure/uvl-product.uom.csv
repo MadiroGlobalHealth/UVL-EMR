@@ -65,3 +65,4 @@ init.uom_packet_of_30,uom.product_uom_categ_unit,0.033333,0.01,Bigger than the r
 init.uom_packet_of_40,uom.product_uom_categ_unit,0.025,0.01,Bigger than the reference Unit of Measure,Packet of 40
 init.uom_packet_of_120,uom.product_uom_categ_unit,0.08333,0.01,Bigger than the reference Unit of Measure,Packet of 120
 init.uom_1mg_ml,uom.product_uom_categ_unit,1.0,0.01,Bigger than the reference Unit of Measure,1mg/ml
+init.04144d11-cfed-4930-8ffc-f1b8be92440b,uom.product_uom_categ_unit,1.0,0.01,Bigger than the reference Unit of Measure,Bottle

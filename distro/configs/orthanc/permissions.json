@@ -1,0 +1,16 @@
+{
+  "roles": {
+    "admin": {
+      "authorized-labels": ["*"],
+      "permissions": ["all"]
+    },
+    "radiologist": {
+      "authorized-labels": ["*"],
+      "permissions": ["view", "download", "modify", "worklists", "q-r-remote-modalities"]
+    },
+    "xray_technician": {
+      "authorized-labels": ["*"],
+      "permissions": ["upload", "worklists", "q-r-remote-modalities", "view"]
+    }
+  }
+}
