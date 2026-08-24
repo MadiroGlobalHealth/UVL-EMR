@@ -11,3 +11,4 @@ D6701EED-F0A8-4AE7-84B1-E7ECCA5BAABA,,Hospitalisation (IPD),,,Login Location;Vis
 EF741FF1-EAAB-4DED-BC4B-EBEFE08BA7A6,,Salle de césarienne,,Hospitalisation (IPD),Login Location;Appointment Location;Queue Location;Admission Location;Transfer Location,TRUE,,,,,,,,,,,,
 3D1AD726-219C-4F9F-87C2-5BF709D04E41,,Salle néonatale,,Hospitalisation (IPD),Login Location;Admission Location;Transfer Location,TRUE,,,,,,,,,,,,
 C458A0DB-A405-4DBC-96D2-F95B46EBDA43,,Salle d’imagerie (X-Ray),,,Login Location;Visit Location,TRUE,,,,,,,,,,,,
+450be362-59a7-4ccd-964d-ebd930a8b30f,,Locations test,,,Login Location,TRUE,,,,,,,,,,,,
