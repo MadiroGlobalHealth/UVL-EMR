@@ -1,6 +1,24 @@
 services:
   orthanc:
-    command: /run/secrets/
+    # Read the entrypoint-MERGED config, not the raw secret.
+    #
+    # /docker-entrypoint.sh scans /run/secrets, merges it with the settings it derives
+    # from the *_PLUGIN_ENABLED env vars above, and writes the result to
+    # /tmp/orthanc.json. "Plugins" exists ONLY in that merged file - the secret has no
+    # such key. Pointing Orthanc at /run/secrets/ therefore skipped the merge and left
+    # Plugins unset, so Orthanc loaded ZERO plugins: /plugins returned just
+    # ["explorer.js"] and /system reported DatabaseBackendPlugin: null (SQLite, not the
+    # postgres index), even though all the .so files were present and every
+    # *_PLUGIN_ENABLED flag was true.
+    #
+    # The visible symptom was the radiology chain dying at its last step: with no
+    # worklists or python plugin, orthancWorklist.py never ran, so POST /worklists/create
+    # did not exist and the EIP bridge failed with 404 "Unknown resource".
+    #
+    # This is what UAT already does (cmd=["/tmp/orthanc.json"]); the local path had
+    # diverged. Verify with `curl /plugins` against the running container - the config
+    # FILE will happily claim Plugins is set while Orthanc has loaded none of them.
+    command: /tmp/orthanc.json
     secrets:
       - orthanc.json
     image: orthancteam/orthanc:latest-full
@@ -18,6 +36,13 @@ services:
       - POSTGRESQL_PLUGIN_ENABLED=true
       - PYTHON_PLUGIN_ENABLED=true
       - WORKLISTS_PLUGIN_ENABLED=true
+      # Orthanc loads EVERY .so in the Plugins directory, and this image ships
+      # libOrthancJava.so there whether or not JAVA_PLUGIN_ENABLED is set. Its dlopen
+      # needs libjvm.so, which the image has but never puts on the loader path (no
+      # ld.so.conf.d entry). One failed dlopen aborts Orthanc entirely - "Uncaught
+      # exception, stopping now (code 25)" - so without this the whole PACS is down,
+      # not merely missing FHIR. default-java is a symlink, so this stays arch-neutral.
+      - LD_LIBRARY_PATH=/usr/lib/jvm/default-java/lib/server
       # Consumed by the image's uvl-entrypoint.sh, which resolves these into
       # /usr/share/orthanc/ohif/app-config.js at container start. env-substitution
       # cannot: it skips .js files and only sees the host-mounted distro tree.
@@ -26,8 +51,12 @@ services:
       - OPENMRS_PUBLIC_URL=${SERVER_SCHEME}://${HOST_NAME}
     volumes:
       - orthanc-db:/var/lib/orthanc/db
+      # Scheduled worklist entries must survive a redeploy, as on UAT.
+      - orthanc-worklists:/var/lib/orthanc/worklists
       - "${ORTHANC_CONFIG_PATH}/ohif:/usr/share/orthanc/ohif"
       - "${ORTHANC_CONFIG_PATH}/orthancWorklist.py:/etc/orthanc/orthancWorklist.py"
+      # Java.Classpath in orthanc.json points here; the vendor image has no such dir.
+      - "${ORTHANC_CONFIG_PATH}/java:/usr/share/orthanc/java"
     networks:
       web:
       ozone:
@@ -84,7 +113,11 @@ services:
       - ODOO_USER=${ODOO_USER}
       - ODOO_PASSWORD=${ODOO_PASSWORD}
 
-    image: mekomsolutions/eip-client:2.2.0
+    # Same pinned runtime as the bundled stack and UAT - see
+    # scripts/bundled-docker/eip-openmrs-orthanc/Dockerfile for why the digest and not just the
+    # tag. Keep all three in step: a local stack on a different framework version than UAT
+    # reproduces the wrong bugs, and 2.2.0 was two versions behind.
+    image: mekomsolutions/eip-client:2.4.0-SNAPSHOT@sha256:fef2ffee0bdc97b46bcf93b5bbffe091b906ea6db50db9145e61cf273d555d93
     networks:
       ozone:
         aliases:
@@ -121,4 +154,5 @@ secrets:
     file: ${ORTHANC_CONFIG_PATH}/orthanc.json
 volumes:
   orthanc-db:
+  orthanc-worklists:
   eip-home-orthanc:
