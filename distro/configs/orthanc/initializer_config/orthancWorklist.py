@@ -1,5 +1,6 @@
 import orthanc
 import json
+import os
 import urllib.request
 import urllib.error
 import base64
@@ -36,32 +37,59 @@ def make_request(url, method='GET', data=None, username=None, password=None):
         orthanc.LogError('Failed to get worklist: ' + str(e))
 
 def delete_worklist_by_accession(accession_number):
-    """Delete Orthanc worklist entry matching the accession number."""
+    """Remove the scheduled worklist entry for an accession once its study has arrived.
+
+    Goes through the worklists plugin's own REST API. An earlier version of this file
+    deleted the .wl file directly, on the belief (recorded in the note further down) that
+    GET /worklists did not exist. It does: measured against the running instance,
+    GET /worklists -> 200, GET /worklists/<bogus> -> 404 and POST /worklists/create -> 400
+    with a precise validation message. The original 404 was measured while the worklists
+    plugin was not being loaded at all, because "Plugins" was absent from the effective
+    configuration - so the premise was wrong, not the API.
+
+    Deleting the file is actively wrong now that entries are created through the plugin
+    (see convertInstanceToWorklist): the plugin owns that folder and its Housekeeper
+    prunes anything it does not know about, so file-level edits and its store drift apart.
+    """
+    if not accession_number:
+        orthanc.LogWarning('Worklist cleanup skipped: study has no AccessionNumber')
+        return False
     try:
-        response = orthanc.RestApiGet('/worklists')
-        worklist_ids = json.loads(response)
-        for wl_id in worklist_ids:
-            try:
-                wl_data = json.loads(orthanc.RestApiGet('/worklists/' + wl_id))
-                tags = wl_data.get('Tags', {})
-                if tags.get('AccessionNumber') == accession_number:
-                    orthanc.RestApiDelete('/worklists/' + wl_id)
-                    orthanc.LogWarning('Deleted worklist entry {} for accession {}'.format(
-                        wl_id, accession_number))
-                    return True
-            except Exception as e:
-                orthanc.LogWarning('Error checking worklist {}: {}'.format(wl_id, str(e)))
+        # AfterPlugins: orthanc.RestApiGet reaches only Orthanc CORE routes, so a route
+        # registered by another plugin - which /worklists is - comes back as
+        # (17, 'Unknown resource') even while an external GET /worklists returns 200. That
+        # asymmetry is almost certainly what the note below records as "GET /worklists
+        # returns a genuine 404": measured from Python, it looks absent.
+        entries = json.loads(orthanc.RestApiGetAfterPlugins('/worklists'))
     except Exception as e:
-        orthanc.LogWarning('Error deleting worklist: {}'.format(str(e)))
+        orthanc.LogError('Could not list worklists: %s' % str(e))
+        return False
+
+    for entry in entries:
+        entryId = entry.get('ID')
+        if entry.get('Tags', {}).get('AccessionNumber') != accession_number:
+            continue
+        try:
+            orthanc.RestApiDeleteAfterPlugins('/worklists/' + entryId)
+            orthanc.LogWarning('Worklist entry removed: %s (accession %s, study arrived)' % (
+                entryId, accession_number))
+            return True
+        except Exception as e:
+            orthanc.LogError('Could not remove worklist entry %s: %s' % (entryId, str(e)))
+            return False
+
+    orthanc.LogWarning('No worklist entry matched accession %s' % accession_number)
     return False
 
 
 def OnChange(changeType, level, resource):
     if changeType != orthanc.ChangeType.STABLE_STUDY:
         return
+    acquiredAccession = None
     try:
         studyJson = json.loads(orthanc.RestApiGet('/studies/' + resource))
         studyTags = studyJson.get('MainDicomTags', {})
+        acquiredAccession = studyTags.get('AccessionNumber')
         studyInfo = {
             'accessionNumber': studyTags.get('AccessionNumber'),
             'studyInstanceUID': studyTags.get('StudyInstanceUID'),
@@ -130,6 +158,16 @@ def OnChange(changeType, level, resource):
 
     except Exception as e:
         orthanc.LogError('Failed to process stable study: ' + str(e))
+
+    # The order has been acquired, so its worklist entry must stop being offered to the
+    # modality. Deliberately outside the try above: the status report to OpenMRS and this
+    # cleanup are independent, and a failure to report must not leave a stale entry
+    # queued forever (nor the reverse).
+    try:
+        if acquiredAccession:
+            delete_worklist_by_accession(acquiredAccession)
+    except Exception as e:
+        orthanc.LogError('Worklist cleanup failed after stable study: ' + str(e))
 
 def getConfigItem(configItemName):
     config = orthanc.GetConfiguration()
@@ -204,7 +242,22 @@ def _safeName(value, fallback):
 
 
 def convertInstanceToWorklist(instanceId):
-    """Move a worklist item posted via /tools/create-dicom into the worklists folder."""
+    """Hand a worklist item posted via /tools/create-dicom to the worklists plugin.
+
+    The bridge cannot POST /worklists/create itself for the reason in the note above, so it
+    posts the same {"Tags": {...}} body to /tools/create-dicom, which lands the item in
+    Orthanc as an ordinary instance. This callback recognises it, re-submits it through the
+    plugin's own API, and deletes the instance so it does not show up as a study.
+
+    It used to write the DICOM straight into the worklists folder instead. That looked like
+    it worked - the modality could C-FIND the entry - but the folder belongs to the
+    worklists plugin, and its Housekeeper thread prunes entries that are not in its store.
+    Every Orthanc restart therefore silently wiped every entry written that way, while the
+    bridge's eip_processed_radiology_order rows survived and stopped it from ever
+    recreating them. Measured on UAT: 25 rows, 6 surviving entries, 3 studies. Creating
+    through the plugin also makes the entries visible to GET /worklists, which is what the
+    bridge's own duplicate check reads - that check could never match before.
+    """
     try:
         tags = json.loads(orthanc.RestApiGet('/instances/%s/tags?simplify' % instanceId))
     except Exception as e:
@@ -215,33 +268,21 @@ def convertInstanceToWorklist(instanceId):
         return False  # an ordinary image, leave it alone
 
     accession = tags.get('AccessionNumber')
-    # Named after the accession so re-sending an order overwrites its entry instead of
-    # leaving the modality two to choose between.
-    name = _safeName(accession, instanceId)
-    directory = _worklistDir()
-    path = os.path.join(directory, name + '.wl')
-
     try:
-        dicom = orthanc.RestApiGet('/instances/%s/file' % instanceId)
-        os.makedirs(directory, exist_ok=True)
-        # Write-then-rename: the worklists plugin scans this folder continuously and a
-        # half-written file would be read as a corrupt entry.
-        tmp = path + '.part'
-        with open(tmp, 'wb') as handle:
-            handle.write(dicom)
-        os.replace(tmp, path)
-        orthanc.LogWarning('Worklist entry written: %s (accession %s, patient %s)' % (
-            path, accession or '<none>', tags.get('PatientID')))
+        created = json.loads(orthanc.RestApiPostAfterPlugins('/worklists/create',
+                                                             json.dumps({'Tags': tags})))
+        orthanc.LogWarning('Worklist entry created: %s (accession %s, patient %s)' % (
+            created.get('ID'), accession or '<none>', tags.get('PatientID')))
     except Exception as e:
-        orthanc.LogError('Could not write worklist entry for %s: %s' % (instanceId, str(e)))
+        # Leave the instance in place so the item is not lost silently; the next poll can
+        # retry it.
+        orthanc.LogError('Could not create worklist entry for %s: %s' % (instanceId, str(e)))
         return False
 
-    # Delete only after the file is safely in place, so a failure above leaves the
-    # instance in Orthanc to retry rather than losing the order silently.
     try:
         orthanc.RestApiDelete('/instances/%s' % instanceId)
     except Exception as e:
-        orthanc.LogWarning('Worklist entry written but instance %s could not be deleted: %s'
+        orthanc.LogWarning('Worklist entry created but instance %s could not be deleted: %s'
                            % (instanceId, str(e)))
     return True
 
