@@ -115,8 +115,10 @@ services:
   # Pull-only deployments use the %a-eip-openmrs-orthanc site image instead, which bakes
   # the jar in; EIP_OPENMRS_ORTHANC_ROUTES_PATH is a host path they cannot provide.
   eip-openmrs-orthanc-init:
-      image: mekomsolutions/eip-client:2.2.0
-      entrypoint: ["sh", "-c", "set -e; n=$$(ls /source/eip-openmrs-orthanc-*.jar 2>/dev/null | wc -l); if [ \"$$n\" -ne 1 ]; then echo \"expected exactly one routes jar in /source, found $$n\" >&2; ls -la /source >&2; exit 1; fi; cp /source/eip-openmrs-orthanc-*.jar /app/app.jar && echo \"routes jar copied\""]
+      # Pinned to match the bundled stack and UAT - see
+      # scripts/bundled-docker/eip-openmrs-orthanc/Dockerfile for why the digest, not the tag.
+      image: mekomsolutions/eip-client:2.4.0-SNAPSHOT@sha256:fef2ffee0bdc97b46bcf93b5bbffe091b906ea6db50db9145e61cf273d555d93
+      entrypoint: ["sh", "-c", "set -e; n=$$(ls /source/eip-openmrs-orthanc-*.jar 2>/dev/null | wc -l); if [ \"$$n\" -ne 1 ]; then echo \"expected exactly one routes jar in /source, found $$n\" >&2; ls -la /source >&2; exit 1; fi; rm -f /app/*.jar; cp /source/eip-openmrs-orthanc-*.jar /app/routes.jar && echo \"routes jar staged for -Dloader.path\""]
       volumes:
         - "${EIP_OPENMRS_ORTHANC_ROUTES_PATH}:/source"
         - eip-openmrs-orthanc-app:/app
@@ -124,13 +126,24 @@ services:
         ozone:
 
   eip-openmrs-orthanc:
-    image: mekomsolutions/eip-client:2.2.0
-    # Fixed name written by the init container above, so this no longer has to track
-    # the artifact's version.
-    entrypoint: ["java", "-jar", "/app/app.jar"]
-    command: []
+    image: mekomsolutions/eip-client:2.4.0-SNAPSHOT@sha256:fef2ffee0bdc97b46bcf93b5bbffe091b906ea6db50db9145e61cf273d555d93
+    # No entrypoint override: the image's own ./start.sh runs
+    # `java -cp eip-client.jar -Dloader.path=routes/`, which is how the bundled stack and UAT
+    # start it too, so local reproduces them.
+    #
+    # This used to be `java -jar /app/app.jar`, and that cannot work with the artifact the
+    # distro ships. Maven produces two jars: the shaded one (the routes bundle, ~63MB, no
+    # Spring classes at all) and the Spring Boot repackaged one (~254MB, dependencies under
+    # BOOT-INF/lib). Only the second is self-contained enough for `java -jar`; the first is
+    # meant to be ADDED to eip-client.jar's classpath, which is what supplies Spring Boot.
+    # Running the shaded jar directly dies immediately with
+    # NoClassDefFoundError: org/springframework/boot/SpringApplication, which is what this
+    # container was crash-looping on. Its Main-Class is set, so it looks runnable and is not.
+    #
+    # Loading via -Dloader.path also means the jar's filename does not matter - every jar in
+    # routes/ is picked up - so the version-agnostic copy above still does its job.
     volumes:
-      - eip-openmrs-orthanc-app:/app
+      - eip-openmrs-orthanc-app:/eip-client/routes
       - eip-home-orthanc:/eip-home
     depends_on:
       eip-openmrs-orthanc-init:
@@ -140,6 +153,20 @@ services:
       - OAUTH_ACCESS_TOKEN_URL=http://keycloak:8080/realms/ozone/protocol/openid-connect/token
       - OAUTH_CLIENT_ID=orthanc-service
       - OAUTH_CLIENT_SECRET=${ORTHANC_CLIENT_SECRET}
+
+  # The Odoo bridge's runtime, reasserted here.
+  #
+  # Its service is declared in the inherited Ozone distro's docker-compose-odoo.yml, which pins
+  # eip-client 2.3.0 and is not a file this repo owns - so the only place to correct it is an
+  # override. Without this the two bridges run different framework versions against the same
+  # OpenMRS: measured locally, eip-odoo-openmrs on 2.3.0 and eip-openmrs-orthanc on
+  # 2.4.0-SNAPSHOT. The FHIR routers they both depend on live in the runtime, so that is two
+  # different sets of routing behaviour in one stack, and a bug reproduced in one bridge may not
+  # reproduce in the other.
+  #
+  # Keep in step with the pins above and with LIME-EMR-Tooling's docker-compose-orthanc.yml.
+  eip-odoo-openmrs:
+    image: mekomsolutions/eip-client:2.4.0-SNAPSHOT@sha256:fef2ffee0bdc97b46bcf93b5bbffe091b906ea6db50db9145e61cf273d555d93
 
   mysql:
     image: mariadb:10.11.13

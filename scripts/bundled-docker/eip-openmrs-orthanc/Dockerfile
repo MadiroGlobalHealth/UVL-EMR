@@ -22,8 +22,23 @@
 # orthanc-auth-service, openmrs, frontend and proxy images. The bundle ships inside the
 # inherited Ozone artifact; it is not committed to this repo.
 #
-# 2.3.0 matches eip-odoo-openmrs and the version the bundled stack already ran.
-FROM mekomsolutions/eip-client:2.3.0
+# 2.4.0-SNAPSHOT, pinned by digest.
+#
+# The routes jars are built against upstream main so they rebase and merge cleanly, and main's
+# ${eip.client.version} is 2.4.0-SNAPSHOT. The runtime and the jar are a matched pair - the jar
+# is loaded onto this image's classpath and the FHIR routers it depends on live here, not in the
+# jar - so a jar built on main belongs on this runtime and not on the 2.3.0 release.
+#
+# The digest is what makes depending on a SNAPSHOT sane: the tag is rebuilt on every upstream
+# commit, so without it a rebuild silently changes the runtime. `fhir-servicerequest-router`
+# filters on order_type BEFORE its first log statement and drops anything it does not recognise
+# in total silence - no log, no error. That cost ten days to find once; it should not be able to
+# come back because a base image moved on its own. Digest captured 2026-08-19T06:38Z.
+#
+# Moving forward means doing both together: rebuild the jars, take the snapshot digest current
+# at that moment, and re-run order -> quotation -> paid -> Task -> worklist end to end. Keep this
+# in step with the same pin in LIME-EMR-Tooling's docker-compose-orthanc.yml.
+FROM mekomsolutions/eip-client:2.4.0-SNAPSHOT@sha256:fef2ffee0bdc97b46bcf93b5bbffe091b906ea6db50db9145e61cf273d555d93
 
 # Whole directory, not a named jar: the version comes from the Ozone artifact. The
 # compose files hardcoded eip-openmrs-orthanc-1.0.0-SNAPSHOT.jar while the artifact
