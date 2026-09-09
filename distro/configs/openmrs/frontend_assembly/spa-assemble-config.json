@@ -40,7 +40,8 @@
     "@openmrs/esm-service-queues-app": "10.0.3-pre.8491",
     "@openmrs/esm-user-onboarding-app": "4.0.0",
     "@openmrs/esm-ward-app": "10.0.3-pre.8491",
-    "@openmrs/esm-bed-management-app": "10.0.3-pre.8491"
+    "@openmrs/esm-bed-management-app": "10.0.3-pre.8491",
+    "@openmrs/esm-reports-app": "4.4.0"
   },
   "__comment": "Excluding modules some default modules to ensure we are using the specified versions.",
   "frontendModuleExcludes": [
