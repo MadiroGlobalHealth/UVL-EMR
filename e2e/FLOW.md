@@ -35,6 +35,32 @@ roles at all**.
 Both would have passed a suite that logged in as an administrator and filled only the required
 fields. That is what shapes the rules below.
 
+## How this runs
+
+Two halves, deliberately different in kind.
+
+**The pre-flight checks are a script.** `e2e/preflight.py` runs on the Docker host straight after a
+deploy to UAT. Read-only, no browser, a few seconds. It is deterministic and it gates: non-zero exit
+means the journeys do not run and the build does not go further.
+
+**The journeys are driven by Claude**, against the real UI, signed in as a real clinical user. They
+are written below as instructions a person or an agent can follow and check, not as selectors — the
+point is to exercise what a nurse actually does, and to notice anything wrong on the way past, which
+is precisely what a scripted browser suite pinned to selectors does not do. Claude reports which
+steps passed, what it saw, and anything unexpected.
+
+That split is intentional. The mechanical invariants — does every concept resolve, does every role
+hold its privileges — are cheap, exact, and belong in code. The judgement — did the chart look right,
+did the bill show the correct amount, was the error message comprehensible — is the part worth a
+reader.
+
+```
+deploy to UAT
+   └─ e2e/preflight.py          gate: exit non-zero stops everything
+        └─ journeys A-F         driven by Claude in the browser
+             └─ report          what passed, what changed, what looked wrong
+```
+
 ## Design rules
 
 1. **Log in as each real role.** Never as `System Developer` or `admin`. Every failure above was
@@ -100,20 +126,57 @@ Ward Admission references concepts as `CIEL:168619` / `169402` / `169403` / `169
 must resolve those through `concept_reference_term`, not `concept.uuid`, or it will report false
 positives.
 
-## Pre-flight checks
+## Pre-flight checks — `e2e/preflight.py`
 
-Static, no browser, run before the journeys and before a deploy is allowed to proceed.
+Static, no browser, run on the Docker host after a deploy and before the journeys.
 
 | id | check | catches |
 |---|---|---|
-| P1 | every question and answer concept in every form resolves, and is not retired | incident 1 |
+| P1 | every question and answer concept in every deployed form resolves, and is not retired | incident 1 |
 | P2 | each question's `rendering` matches its concept datatype — `radio`/`select`/`multiCheckbox` need `Coded`, `textarea`/`text` need `Text`, `numeric` needs `Numeric`, `group` needs a concept set | the same error signature as incident 1, without the concept being absent |
-| P3 | each clinical role holds the privileges its journey needs, resolved **through `role_role` inheritance** | incident 2 |
-| P4 | the Keycloak `openmrs` client still has every expected role, and every test user still maps to one | incident 2 |
+| P3 | each clinical role holds the privileges its journey needs, resolved **through `role_role` inheritance and the implicit `Authenticated` role** | incident 2 |
+| P4 | the Keycloak `openmrs` client still has every expected role, and every enabled human user maps to one | incident 2 |
 | P5 | every concept reference in the frontend config resolves | a misconfigured vitals or allergies panel |
 
 P4 is the one that matters most and is easiest to forget: nothing in OpenMRS notices that a Keycloak
 role has disappeared. The users simply arrive with no privileges.
+
+```
+./e2e/preflight.py                        # project ozone-msf-mugamba
+./e2e/preflight.py --only P1,P4
+./e2e/preflight.py --strict               # known gaps fail too
+```
+
+Exit `0` all good, `1` a check failed, `2` could not run.
+
+Two subtleties worth knowing before editing it, because both produced false results on the first run:
+
+- OpenMRS grants **`Authenticated`** to every signed-in user on top of their own roles. A closure
+  over `role_role` alone reports `Get Concept Datatypes` and `Get Locations` as missing when in fact
+  every user holds them.
+- Ward Admission references its concepts as **`CIEL:169402`-style mappings, not UUIDs**. Resolution
+  has to go through `concept_reference_term`, or every one of them reads as absent.
+
+Gaps in `KNOWN_GAPS` are reported loudly but do not fail the build, so that the suite is green on a
+healthy system and fixing a gap is what removes the line. Delete the entry when you fix it.
+
+### First run, 2026-09-13
+
+Against **production**: all five pass, exit 0 — which is the calibration that matters. A gate that
+fails on a healthy system gets ignored.
+
+Against **UAT**: exit 1, and it reproduced both of the day's incidents unprompted.
+
+```
+FAIL P1  UVL Outpatient Consultation Form: question 'Antecedents'
+         -> e55584c3-... DOES NOT EXIST
+FAIL P3  Nurse is missing 'Get Concept Attribute Types'
+```
+
+Both are real. UAT has drifted from production: the `Antecedents` concept was created on production
+on 09-13 but not on UAT, and UAT's `Nurse` role does not inherit `Get Concept Attribute Types` the
+way production's does. **UAT currently does not predict production** — worth fixing before the
+journeys are trusted there.
 
 ## Journeys
 
@@ -123,7 +186,12 @@ M5 theatre. Steps are numbered so journeys B–F can reference A rather than rep
 > The step tables below are **not yet filled in**. Didier was asked on 2026-09-13 to describe each
 > step as: who (role + username), where (screen and button), what is typed (each field marked
 > `[always]`/`[often]`/`[rare]`), how you know it worked, and what commonly goes wrong. Fill these
-> from his answer before implementing.
+> from his answer before running the journeys.
+
+Each row is an instruction Claude follows in the browser and then checks. Write the assertion as
+something observable, not as a selector — "the consultation appears in the patient history with
+today's date", not `[data-testid=...]`. If a step cannot be checked by looking, it belongs in the
+pre-flight script instead.
 
 ### A. Outpatient consultation, paying patient — arrival to departure
 
@@ -200,10 +268,16 @@ Derived from real incidents. These must never go green for the wrong reason.
 
 ## Environments
 
-- **UAT** `uvl-emr-uat.madiro.org` — full suite, including anything that writes to billing.
-- **Production** `uvl-emr.madiro.org` — pre-flight checks P1–P5 only, plus read-only smoke. Nothing
-  that creates a real bill, a real insurance claim or a real prescription. Article 6 of the FBP
-  contract pays on monthly-verified volume, so synthetic encounters on production are not harmless.
+- **UAT** `uvl-emr-uat.madiro.org` — where this runs. Pre-flight after every deploy, then the full
+  set of journeys, including anything that writes to billing.
+- **Production** `uvl-emr.madiro.org` — pre-flight checks P1–P5 only, as a post-deploy smoke test.
+  No journeys. Nothing that creates a real bill, a real insurance claim or a real prescription:
+  Article 6 of the FBP contract pays on monthly-verified volume, so synthetic encounters on
+  production are not harmless.
+
+The two environments have already drifted — see the first-run results above. Until UAT matches
+production, a green run on UAT is weaker evidence than it looks, and the production pre-flight is
+what actually protects the ward.
 
 Pending Didier's confirmation: whether a permanent, obviously-fake test patient may exist on
 production at all, or only in UAT.
