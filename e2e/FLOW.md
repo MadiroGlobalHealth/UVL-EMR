@@ -43,11 +43,11 @@ Two halves, deliberately different in kind.
 deploy to UAT. Read-only, no browser, a few seconds. It is deterministic and it gates: non-zero exit
 means the journeys do not run and the build does not go further.
 
-**The journeys are driven by Claude**, against the real UI, signed in as a real clinical user. They
-are written below as instructions a person or an agent can follow and check, not as selectors — the
-point is to exercise what a nurse actually does, and to notice anything wrong on the way past, which
-is precisely what a scripted browser suite pinned to selectors does not do. Claude reports which
-steps passed, what it saw, and anything unexpected.
+**The journeys are driven by Claude in Cowork**, against the real UI, signed in as a real clinical
+user. `e2e/cowork-task.md` is the task: save it in Cowork, give it a `DOMAIN`, run it after a
+deploy. The steps are written as instructions to follow and check, not as selectors — the point is
+to exercise what a nurse actually does and to notice anything wrong on the way past, which is
+precisely what a suite pinned to selectors does not do. It ends with a single `VERDICT PASS|FAIL`.
 
 That split is intentional. The mechanical invariants — does every concept resolve, does every role
 hold its privileges — are cheap, exact, and belong in code. The judgement — did the chart look right,
@@ -56,10 +56,19 @@ reader.
 
 ```
 deploy to UAT
-   └─ e2e/preflight.py          gate: exit non-zero stops everything
-        └─ journeys A-F         driven by Claude in the browser
-             └─ report          what passed, what changed, what looked wrong
+   └─ ./e2e/preflight.py --domain <domain>    gate: non-zero stops everything
+        └─ Cowork task, journeys A-F          Claude in the browser, as a nurse
+             └─ VERDICT PASS | FAIL           plus anything that looked wrong
 ```
+
+Production gets Step 0 only — the pre-flight, as a post-deploy smoke test. No journeys.
+
+### Reaching a site by domain
+
+The checks read the databases through `docker exec`, so a domain has to be resolved to the host
+carrying its stack. That mapping lives in `e2e/sites.json`, which is **untracked on purpose** —
+copy `sites.example.json` and fill it in, or pass `--ssh` and `--project` and keep no file at all.
+Host addresses and login names do not belong in this repository.
 
 ## Design rules
 
@@ -142,12 +151,16 @@ P4 is the one that matters most and is easiest to forget: nothing in OpenMRS not
 role has disappeared. The users simply arrive with no privileges.
 
 ```
-./e2e/preflight.py                        # project ozone-msf-mugamba
+./e2e/preflight.py --domain uvl-emr-uat.madiro.org     # resolved via e2e/sites.json
+./e2e/preflight.py --domain ... --json                 # machine-readable verdict
+./e2e/preflight.py --ssh ubuntu@host --ssh-port 2222   # explicit, no sites.json
 ./e2e/preflight.py --only P1,P4
-./e2e/preflight.py --strict               # known gaps fail too
+./e2e/preflight.py --strict                            # known gaps fail too
 ```
 
-Exit `0` all good, `1` a check failed, `2` could not run.
+Exit `0` all good, `1` a check failed, `2` could not run. `--json` emits
+`{domain, verdict, failed_checks, known_gaps, checks[]}` so a task can read the verdict without
+parsing the report.
 
 Two subtleties worth knowing before editing it, because both produced false results on the first run:
 

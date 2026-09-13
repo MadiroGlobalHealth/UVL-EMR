@@ -17,15 +17,24 @@ on 2026-09-13 -- see e2e/FLOW.md.
 
 Exit status: 0 all good (known gaps tolerated), 1 a check failed, 2 could not run.
 
-    ./preflight.py                          # defaults to project ozone-msf-mugamba
-    ./preflight.py --project ozone-msf-x    # another stack on the same host
-    ./preflight.py --strict                 # known gaps fail too
+    ./preflight.py --domain uvl-emr-uat.madiro.org    # resolved via e2e/sites.json
+    ./preflight.py                                    # local docker, default project
+    ./preflight.py --ssh ubuntu@host --ssh-port 2222  # explicit, no sites.json
+    ./preflight.py --domain ... --json                # machine-readable verdict
+    ./preflight.py --strict                           # known gaps fail too
     ./preflight.py --only P1,P4
+
+A site is reached by running `docker` on the host that carries its stack, so a
+domain has to be resolved to an ssh target. That mapping lives in e2e/sites.json,
+which is deliberately untracked -- copy sites.example.json and fill it in. Pass
+--ssh/--project instead if you would rather not keep a file.
 """
 
 import argparse
 import base64
 import json
+import os
+import shlex
 import subprocess
 import sys
 from collections import defaultdict
@@ -95,11 +104,39 @@ class CheckError(Exception):
 # plumbing
 # --------------------------------------------------------------------------
 
+# Set from --ssh/--domain. When populated every docker command is run on that
+# host instead of locally, which is what lets a single --domain drive the run
+# from a laptop, from CI, or from a Cowork task.
+SSH = {"target": None, "port": None}
+
+
 def run(cmd, stdin=None):
+    if SSH["target"]:
+        remote = ["ssh", "-o", "BatchMode=yes", "-o", "ConnectTimeout=15"]
+        if SSH["port"]:
+            remote += ["-p", str(SSH["port"])]
+        cmd = remote + [SSH["target"], "--", shlex.join(cmd)]
     p = subprocess.run(cmd, input=stdin, capture_output=True, text=True)
     if p.returncode != 0:
-        raise CheckError(f"{' '.join(cmd[:4])}... exited {p.returncode}: {p.stderr.strip()[:300]}")
+        where = f" on {SSH['target']}" if SSH["target"] else ""
+        raise CheckError(f"{' '.join(cmd[:4])}...{where} exited {p.returncode}: "
+                         f"{p.stderr.strip()[:300]}")
     return p.stdout
+
+
+def load_site(domain):
+    """Resolve a domain to {ssh, ssh_port, project} via e2e/sites.json."""
+    path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "sites.json")
+    if not os.path.exists(path):
+        raise CheckError(
+            f"--domain {domain} needs {path}, which does not exist. "
+            f"Copy sites.example.json to sites.json and fill it in, "
+            f"or pass --ssh and --project explicitly.")
+    with open(path) as fh:
+        sites = json.load(fh)
+    if domain not in sites:
+        raise CheckError(f"{domain!r} is not in {path}. Known: {', '.join(sorted(sites)) or 'none'}")
+    return sites[domain]
 
 
 def mysql(project, sql):
@@ -370,16 +407,34 @@ CHECKS = [
 def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--project", default="ozone-msf-mugamba",
+    ap.add_argument("--domain",
+                    help="site domain, e.g. uvl-emr-uat.madiro.org; resolved via e2e/sites.json")
+    ap.add_argument("--ssh", help="user@host to run docker through (overrides sites.json)")
+    ap.add_argument("--ssh-port", help="ssh port, if not 22")
+    ap.add_argument("--project", default=None,
                     help="docker compose project name (default: ozone-msf-mugamba)")
+    ap.add_argument("--json", action="store_true",
+                    help="print a machine-readable verdict instead of the report")
     ap.add_argument("--only", help="comma-separated check ids, e.g. P1,P4")
     ap.add_argument("--strict", action="store_true",
                     help="treat known gaps as failures")
     ap.add_argument("--no-colour", action="store_true")
     args = ap.parse_args()
 
-    if args.no_colour or not sys.stdout.isatty():
+    if args.no_colour or args.json or not sys.stdout.isatty():
         globals().update(GREEN="", RED="", YELLOW="", DIM="", RESET="")
+
+    site = {}
+    if args.domain and not args.ssh:
+        try:
+            site = load_site(args.domain)
+        except CheckError as e:
+            print(f"{RED}cannot run:{RESET} {e}", file=sys.stderr)
+            return 2
+    SSH["target"] = args.ssh or site.get("ssh")
+    SSH["port"] = args.ssh_port or site.get("ssh_port")
+    project = args.project or site.get("project") or "ozone-msf-mugamba"
+    target = args.domain or SSH["target"] or "local docker"
 
     wanted = {c.strip().upper() for c in args.only.split(",")} if args.only else None
     selected = [c for c in CHECKS if wanted is None or c[0] in wanted]
@@ -387,28 +442,43 @@ def main():
         print(f"no checks matched --only {args.only}", file=sys.stderr)
         return 2
 
-    print(f"pre-flight checks against project {args.project}\n")
+    if not args.json:
+        print(f"pre-flight checks against {target} "
+              f"{DIM}(project {project}){RESET}\n")
 
     ctx = {}
     try:
         needs_data = any(cid in {"P1", "P2", "P5"} for cid, _, _ in selected)
-        ctx["concepts"] = concept_index(args.project)
+        ctx["concepts"] = concept_index(project)
         if needs_data:
-            ctx["forms"] = deployed_forms(args.project)
+            ctx["forms"] = deployed_forms(project)
     except CheckError as e:
+        if args.json:
+            print(json.dumps({"domain": args.domain, "verdict": "ERROR",
+                              "error": str(e), "checks": []}, indent=2))
+            return 2
         print(f"{RED}cannot run:{RESET} {e}", file=sys.stderr)
         return 2
 
-    failed, gap_total = 0, 0
+    failed, gap_total, report = 0, 0, []
     for cid, title, fn in selected:
         try:
-            result = fn(args.project, ctx)
+            result = fn(project, ctx)
         except CheckError as e:
-            print(f"{RED}ERROR{RESET} {cid}  {title}\n        {e}")
+            report.append({"id": cid, "title": title, "status": "ERROR",
+                           "problems": [str(e)], "known_gaps": []})
+            if not args.json:
+                print(f"{RED}ERROR{RESET} {cid}  {title}\n        {e}")
             failed += 1
             continue
         problems, note, gaps = (result + ([],))[:3] if len(result) == 2 else result
 
+        report.append({"id": cid, "title": title,
+                       "status": "FAIL" if problems else "pass",
+                       "detail": note, "problems": problems, "known_gaps": gaps})
+        gap_total += len(gaps)
+        if args.json:
+            continue
         if problems:
             failed += 1
             print(f"{RED}FAIL {RESET} {cid}  {title}  {DIM}({note}){RESET}")
@@ -417,10 +487,18 @@ def main():
         else:
             print(f"{GREEN}pass {RESET} {cid}  {title}  {DIM}({note}){RESET}")
         for g in gaps:
-            gap_total += 1
             note_txt = ctx.get("known_gap_notes", {}).get(g)
             print(f"        {YELLOW}known{RESET} {g}" + (f" {DIM}-- {note_txt}{RESET}" if note_txt else ""))
 
+    if args.json:
+        failed = sum(1 for r in report if r["status"] != "pass")
+        verdict = "FAIL" if failed or (gap_total and args.strict) else "PASS"
+        print(json.dumps({"domain": args.domain, "project": project,
+                          "verdict": verdict, "failed_checks": failed,
+                          "known_gaps": gap_total, "checks": report}, indent=2))
+        return 0 if verdict == "PASS" else 1
+
+    failed = sum(1 for r in report if r["status"] != "pass")
     print()
     if failed:
         print(f"{RED}{failed} check(s) failed{RESET} -- do not run the journeys, and do not "
