@@ -76,6 +76,10 @@ EXPECTED_KC_ROLES = {
     "Anonymous", "Doctor", "Help Nurse", "Inpatient Consultant", "Lab Technician",
     "Nurse", "Outpatient Consultant", "Print Patient Label Sticker",
     "Register patients", "System Developer",
+    # Added for #244. A role here that is missing from the `openmrs` client is
+    # exactly the 13 September failure: the user signs in carrying no OpenMRS
+    # roles at all, and OpenMRS never notices.
+    "Pharmacist", "X-Ray Technician", "Inpatient Nurse", "Midwife", "Theatre Nurse",
 }
 
 # O3 form-engine rendering -> acceptable concept datatypes.
@@ -337,9 +341,15 @@ def p4_keycloak_roles(project, ctx):
                 f"-- users holding it will sign in with NO OpenMRS roles"
                 for r in sorted(EXPECTED_KC_ROLES - present)]
 
+    # Scope to the realm that actually owns the `openmrs` client. Without this the
+    # master realm's admin account is reported as "has no 'openmrs' client role",
+    # which is true and meaningless -- it produced a false positive on UAT.
     unmapped = psql(project, "keycloak", """
         SELECT u.username FROM keycloak.user_entity u
-         WHERE u.enabled = true AND NOT EXISTS (
+         WHERE u.enabled = true
+           AND u.realm_id = (SELECT c.realm_id FROM keycloak.client c
+                              WHERE c.client_id = 'openmrs')
+           AND NOT EXISTS (
            SELECT 1 FROM keycloak.user_role_mapping m
              JOIN keycloak.keycloak_role r ON r.id = m.role_id
              JOIN keycloak.client c ON c.id = r.client
