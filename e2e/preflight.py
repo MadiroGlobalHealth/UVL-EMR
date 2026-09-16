@@ -405,12 +405,53 @@ def p5_frontend_config_concepts(project, ctx):
     return problems, f"{checked} concept references in {len(paths)} config files"
 
 
+def p6_config_volume_matches_image(project, ctx):
+    """Config and modules in the openmrs-data volume that the image does not carry.
+
+    The OpenMRS entrypoint means to wipe configuration/ modules/ owa/ frontend/ and
+    refill them from the image on every boot. It refills them. It does NOT wipe them,
+    because the glob is inside the quotes:
+
+        rm -fR "${OMRS_CONFIG_DIR:?}/*"      <- deletes a file literally named '*'
+
+    So files are only ever overwritten, and anything DELETED or RENAMED in the repo
+    stays in the volume for ever, still being loaded, with no source in the repo.
+
+    Found on Mugamba UAT 2026-09-16: seven files survived a distro layout change,
+    including an old OCL collection (UVL_labtests_v1.zip) sitting beside the current
+    one (v2.5). Both would be imported.
+    """
+    image = run(["docker", "inspect", f"{project}-openmrs-1",
+                 "--format", "{{.Config.Image}}"]).strip()
+
+    def listing(cmd):
+        try:
+            return {line for line in run(cmd).split("\n") if line.strip()}
+        except CheckError:
+            return set()
+
+    problems, counted = [], 0
+    for vol_dir, img_dir in (("configuration", "openmrs_config"),
+                             ("modules", "openmrs_modules")):
+        in_volume = listing(["docker", "exec", f"{project}-openmrs-1", "sh", "-c",
+                             f"cd /openmrs/data/{vol_dir} 2>/dev/null && find . -type f | sort"])
+        in_image = listing(["docker", "run", "--rm", "--entrypoint", "sh", image, "-c",
+                            f"cd /openmrs/distribution/{img_dir} 2>/dev/null && find . -type f | sort"])
+        counted += len(in_volume)
+        for orphan in sorted(in_volume - in_image):
+            problems.append(f"{vol_dir}{orphan.lstrip('.')} is in the volume but not in "
+                            f"the image -- stale, still loaded, no source in the repo")
+
+    return problems, f"{counted} files checked against {image.split('/')[-1]}", []
+
+
 CHECKS = [
     ("P1", "form concepts resolve", p1_form_concepts_resolve),
     ("P2", "rendering matches concept datatype", p2_rendering_matches_datatype),
     ("P3", "roles hold the privileges their journey needs", p3_role_privileges),
     ("P4", "Keycloak 'openmrs' client roles intact", p4_keycloak_roles),
     ("P5", "frontend config concepts resolve", p5_frontend_config_concepts),
+    ("P6", "config volume matches the image", p6_config_volume_matches_image),
 ]
 
 
