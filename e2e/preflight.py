@@ -44,30 +44,58 @@ from collections import defaultdict
 # inheritance before comparing, so list only what the journey genuinely needs.
 # --------------------------------------------------------------------------
 REQUIRED_PRIVILEGES = {
+    # A1-A2 register the patient and open the visit.
+    "Register patients": [
+        "Add Patients", "Edit Patients", "Add Patient Identifiers", "Add Visits",
+        "Get Patients", "Get Visits", "Get Visit Types", "Get Visit Attribute Types",
+    ],
+    # A1-A3 -- the same steps as Register patients, plus vitals.
+    "Help Nurse": [
+        "Add Visits", "Add Encounters", "Add Observations", "Get Patients",
+        "Get Visits", "Get Concepts", "Get Concept Attribute Types",
+    ],
+    # A3 vitals.
     "Nurse": [
         "Add Encounters", "Add Visits", "Edit Observations", "Get Observations",
         "Get Encounters", "Get Visits", "Get Concepts", "Get Concept Attribute Types",
         "Get Concept Datatypes", "Get Locations",
     ],
+    # A4-A5 consultation and ordering. GenerateBillFromOrderAdvice runs on order
+    # creation and demands the stockmanagement privilege, so ordering fails
+    # without it even though nothing about the order mentions stock.
     "Doctor": [
         "Add Encounters", "Add Visits", "Edit Observations", "Get Observations",
         "Get Encounters", "Get Visits", "Get Concepts", "Get Concept Attribute Types",
-        "Get Diagnoses", "Edit Diagnoses", "Add Orders", "Edit Orders",
+        "Get Diagnoses", "Edit Diagnoses", "Add Orders", "Edit Orders", "Get Forms",
+        "App: stockmanagement.stockItems",
     ],
-    "Lab Technician": ["Get Encounters", "Get Observations", "Get Concepts"],
+    # A6, C2 -- receive the order, enter results.
+    "Lab Technician": [
+        "Get Encounters", "Get Observations", "Get Concepts", "Get Orders",
+        "Edit Orders", "Add Observations", "Edit Observations", "Manage Laboratory",
+    ],
+    # A7, E2-E3 -- see the prescription, dispense it, decrement stock.
+    "Pharmacist": [
+        "Get Patients", "Get Visits", "Get Orders", "Get Encounters", "Get Concepts",
+        "Get Providers", "Get Medication Dispense", "Edit Medication Dispense",
+        "Task: dispensing.create.dispense", "Task: stockmanagement.stockItems.dispense",
+    ],
+    # D3 -- open the requested exam and record the report.
+    "X-Ray Technician": [
+        "Get Patients", "Get Visits", "Get Orders", "Edit Orders", "Get Encounters",
+        "Get Concepts", "Get Providers", "Add Observations", "Edit Observations",
+        "Create Attachments",
+    ],
 }
 
 # Gaps that are real, known, and tracked. Reported loudly but do not fail the
 # build unless --strict. Remove an entry the moment it is fixed, so that fixing
 # it is what turns the check green.
 KNOWN_GAPS = [
-    ("Nurse", "Add Orders",
-     "a nurse cannot create an order; consultation journeys that order will stop here"),
     ("Nurse", "Get Forms",
-     "held only by Doctor and the Privilege Level roles; unverified whether the O3 form "
-     "engine needs it to load a schema, so confirm during journey A before promoting it"),
-    ("Doctor", "App: stockmanagement.stockItems",
-     "held by no clinical role at all; GenerateBillFromOrderAdvice demands it on order creation"),
+     "held only by Doctor and the Privilege Level roles. The test cases mark A3 -- a nurse "
+     "entering vitals on a form -- as Existing, which says a nurse loads a form schema today "
+     "without it, so this is recorded rather than granted. Confirm during journey A."),
 ]
 
 # Keycloak client roles that must exist on the `openmrs` client. A missing one

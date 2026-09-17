@@ -115,13 +115,26 @@ These names must match OpenMRS role names exactly — the mapping is by name.
 through `role_role` inheritance, which is where it picks up `Get Concept Attribute Types`,
 `Get Concepts`, `Add Encounters`, `Add Visits` and `Edit Observations`.
 
-Two gaps are open at the time of writing, and the suite should assert them as **known failures**
-until they are fixed, so that fixing them is what turns the test green:
+`P3` checks every role that appears in a journey — `Register patients`, `Help Nurse`, `Nurse`,
+`Doctor`, `Lab Technician`, `Pharmacist` and `X-Ray Technician` — against the privileges its own
+steps need, resolving inheritance first.
 
-- `Nurse` does not hold `Add Orders` — a nurse cannot create an order.
-- `App: stockmanagement.stockItems` is held only by `Inventory Provider Access` and
-  `Stock Management Base Role` — **not by `Doctor` either**. `GenerateBillFromOrderAdvice` demands it
-  while intercepting order creation, so order-creating consultations fail regardless of who is signed in.
+Two findings from that audit, both now fixed in configuration and waiting on a rebuild:
+
+- **`App: stockmanagement.stockItems` was held by no clinical role at all** — only by
+  `Inventory Provider Access` and `Stock Management Base Role`, not by `Doctor`.
+  `GenerateBillFromOrderAdvice` demands it while intercepting order creation, so **A5 fails for
+  everyone** until `Doctor` holds it. Nothing about the order mentions stock, which is what makes
+  this one hard to find from the error alone.
+- **`Pharmacist` held two privileges**, `Dispensing Features` and `Pharmacy`, and neither lets the
+  holder see a patient, a visit or an order. A7 and E2–E3 cannot run. It now carries the read
+  context plus `Task: stockmanagement.stockItems.dispense`, without which E3 cannot decrement stock.
+
+`Nurse` not holding `Add Orders` was previously tracked as a gap. The test cases settle it: every
+order in journeys A, C, D and E is placed by the `Doctor`, so it is not a gap for these journeys.
+Revisit if Didier confirms nurses order in practice.
+
+One gap stays open and is deliberately **not** granted — see `KNOWN_GAPS` in `preflight.py`.
 
 ### Forms
 
@@ -292,7 +305,7 @@ Derived from real incidents. These must never go green for the wrong reason.
 | R2 | start a visit as a user holding only `Nurse` | visit starts, no `Privileges required` error |
 | R3 | remove the `Nurse` role from the Keycloak `openmrs` client in UAT, sign in, attempt R2 | P4 fails **before** the browser suite runs |
 | R4 | add a form question pointing at a non-existent concept in UAT | P1 fails |
-| R5 | create an order from a consultation as each clinical role | currently fails — see the two open role gaps above |
+| R5 | create an order from a consultation as each clinical role | passes once `Doctor` holds `App: stockmanagement.stockItems`; fails for every role before that |
 
 ## Environments
 
