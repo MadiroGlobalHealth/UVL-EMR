@@ -193,13 +193,25 @@ journeys are trusted there.
 
 ## Journeys
 
-Legend — `LIVE`: staff do this today at Mugamba. `PLANNED`: coming with M3 inpatient, M4 maternity,
-M5 theatre. Steps are numbered so journeys B–F can reference A rather than repeat it.
+Steps are numbered so journeys B–F can reference A rather than repeat it.
 
-> The step tables below are **not yet filled in**. Didier was asked on 2026-09-13 to describe each
-> step as: who (role + username), where (screen and button), what is typed (each field marked
-> `[always]`/`[often]`/`[rare]`), how you know it worked, and what commonly goes wrong. Fill these
-> from his answer before running the journeys.
+Filled in from the test-case document `OpenMRS_Odoo_Test_Cases_AF.docx`, received 2026-09-17. The
+`status` column is that document's own assessment, carried over unchanged:
+
+| status | meaning |
+|---|---|
+| `Existing` | the step works today and the suite should hold it there |
+| `To build` | the behaviour asserted does not exist yet — the test is the specification |
+| `Critical — must test both paths` | a known past defect; both the positive and the negative case must be asserted |
+| `.PLANNED` | not in use at Mugamba yet; comes with M3 inpatient, M4 maternity, M5 theatre |
+
+Roughly half of these steps assert behaviour that has not been built. That is deliberate: written
+this way the table doubles as the acceptance criteria for #184, #189, #219 and the pharmacy and
+imaging work, and a run that goes green means the feature is genuinely finished.
+
+One role in journey B does not exist yet in Keycloak or OpenMRS — the **insurance/mutuelle counter
+clerk**, who verifies eligibility before a visit proceeds. It is not among the five roles added in
+#244, so it needs deciding before B can run.
 
 Each row is an instruction Claude follows in the browser and then checks. Write the assertion as
 something observable, not as a selector — "the consultation appears in the patient history with
@@ -210,14 +222,14 @@ pre-flight script instead.
 
 | # | actor role | screen / form | data entered | assertion | status |
 |---|---|---|---|---|---|
-| A1 | | | | | |
-| A2 | | | | | |
-| A3 | | | | | |
-| A4 | | | | | |
-| A5 | | | | | |
-| A6 | | | | | |
-| A7 | | | | | |
-| A8 | | | | | |
+| A1 | Receptionist / Help Nurse | Register patient | Patient demographics (name, DOB, sex, address, phone) | Patient record is created with a unique patient ID; no visit or payer is attached yet | Existing |
+| A2 | Receptionist / Help Nurse | Add visit | Visit type = Outpatient; Payer = Cash (100%) | Visit is created and attached to the patient; payer attribute = 100% cash payer, so every downstream order is priced at full tariff | Existing |
+| A3 | Nurse | Vitals signs | Weight, height, blood pressure, temperature, pulse | Vitals are saved to the visit and are visible on the doctor's home screen before the consultation starts | Existing |
+| A4 | Doctor | Home screen → Consult vitals → Patient info → Visit info → Clinical form (outpatient form) | History, exam findings, diagnosis | The outpatient encounter form saves correctly and is linked to the visit; vitals, patient info and visit info are all readable from this screen | Existing |
+| A5 | Doctor | Order basket | Prescriptions, lab tests, procedures | Each order line is priced at 100% of tariff (no discount, no coverage split) because the visit payer is Cash | Existing |
+| A6 | Lab technician | Laboratory form | Receives requested tests, enters results | Order status moves to Completed once results are entered; results are visible to the doctor on the same encounter | Existing |
+| A7 | Pharmacist | Pharmacy dispenser | Consults ordered prescriptions, dispenses medicines | Dispensed items are decremented from stock and appear as full-price invoice lines | To build |
+| A8 | Cashier (Odoo) | Odoo — consult commands from OpenMRS / create invoice | Pulls all billable lines (consultation, labs, procedures, medicines) for the visit | Invoice total = 100% of the sum of every line; visit is marked Paid and closed only once the full amount is collected — this is the patient's departure point | To build |
 
 ### B. Outpatient consultation, insured patient (MFP / CAM)
 
@@ -226,15 +238,18 @@ Only the steps that differ from A. Related tickets: #184 insurance per product, 
 
 | replaces | actor role | screen / form | data entered | assertion | status |
 |---|---|---|---|---|---|
-| | | | | | |
+| replaces A2 | Receptionist | Add visit | Payer = MFP or CAM; insurance/member number; plan or beneficiary category | Visit is created with payer = the selected insurance scheme, not Cash; the coverage that applies is shown explicitly on screen, not just computed silently in the background (#219 — explicit insurance coverage) | To build |
+| new — inserted after A2 | Insurance/Mutuelle counter clerk (new role) | Verify insurance eligibility (new screen) | Card/member number, validity date, remaining ceiling | Card is validated before the visit proceeds; an invalid or expired card blocks progression to vitals/consultation rather than silently defaulting to full coverage or 100% cash | To build |
+| replaces A5 | Doctor | Order basket | Prescriptions, lab tests, procedures | Each order line is priced using the coverage rate defined for that specific product/category (consultation, medicine, lab test, procedure), not a single blanket rate for the whole visit (#184 — insurance per product) | To build |
+| replaces A8 | Cashier (Odoo) | Odoo — consult commands from OpenMRS / create invoice | Pulls all billable lines for the visit | Invoice splits each line into patient co-pay and insurer share per the per-product rate; the system distinguishes this invoice from a 100%-payer invoice so a cash patient can never be billed as insured or vice-versa (#189 — 100% payer); the co-pay percentage actually applied is shown on the receipt, not just an aggregate total (#219) | To build |
 
 ### C. Consultation with a lab test
 
 | # | actor role | screen / form | data entered | assertion | status |
 |---|---|---|---|---|---|
-| C1 | | | | | |
-| C2 | | | | | |
-| C3 | | | | | |
+| C1 | Doctor | Order basket → order lab tests | Test type(s), priority/urgency | Order is created with status = Requested and appears in the lab technician's queue | Existing |
+| C2 | Lab technician | Laboratory form | Receives the order, enters results | Result is saved and linked to the originating order/encounter; order status changes to Completed | Existing |
+| C3 | Doctor | Consult results → edit form / edit order | Reviews result, updates diagnosis/prescription if needed | Completed result is visible to the doctor on the same visit; the doctor can finalize the encounter based on it | Existing |
 
 ### D. Consultation with an X-ray or ultrasound
 
@@ -244,17 +259,17 @@ an **unpaid** order is refused, not only that a paid one succeeds.
 
 | # | actor role | screen / form | data entered | assertion | status |
 |---|---|---|---|---|---|
-| D1 | | | | | |
-| D2 | | | | | |
-| D3 | | | | | |
+| D1 | Doctor | Order basket → order imaging (X-ray / ultrasound) | Exam type, body part, priority | Order is created with status = Pending payment; the exam cannot be performed until this order is explicitly marked paid | To build |
+| D2 | Cashier (Odoo) | Odoo — imaging invoice | Creates and collects payment for this specific imaging order | Payment is recorded against this exact patient ID + order/service ID, not just "a paid invoice exists"; the payment-status query filters on both patient and order explicitly | To build |
+| D3 | X-Ray / Imaging technician | Radiology / imaging form | Attempts to open and perform the requested exam | POSITIVE: with a valid payment on this order, the exam opens normally. NEGATIVE (regression for the past defect): if this order is unpaid, the technician is explicitly refused — the system must not fall back to "any paid invoice found" when a search filter it doesn't support is silently ignored. Also assert a paid invoice for one patient/order does NOT authorise imaging for a different patient or a different order of the same patient. | Critical — must test both paths |
 
 ### E. Consultation with medicines dispensed
 
 | # | actor role | screen / form | data entered | assertion | status |
 |---|---|---|---|---|---|
-| E1 | | | | | |
-| E2 | | | | | |
-| E3 | | | | | |
+| E1 | Doctor | Order basket → order prescriptions | Medicine, dosage, quantity, duration | Prescription order is created, linked to the encounter, and carries the visit's payer type | To build |
+| E2 | Pharmacist | Pharmacy dispenser | Consults ordered prescriptions | Pharmacist sees each medicine priced according to the visit's payer (100% cash or the applicable insurance co-pay) | To build |
+| E3 | Pharmacist / Cashier | Pharmacy dispenser → dispense; Odoo invoice line | Dispenses the medicine; invoice line generated or updated | Stock is decremented on dispensing; the invoice line reflects the correct patient/insurer split for that medicine | To build |
 
 ### F. Admission to a ward
 
@@ -263,9 +278,9 @@ this today; if not the whole journey is `PLANNED`.
 
 | # | actor role | screen / form | data entered | assertion | status |
 |---|---|---|---|---|---|
-| F1 | | | | | |
-| F2 | | | | | |
-| F3 | | | | | |
+| F1 | Doctor | Ward Admission | Admission order, ward/bed assignment | Patient status changes to Inpatient; an admission encounter is created and linked to the outpatient visit | .PLANNED |
+| F2 | Ward nurse | UVL Inpatient Consultation Form | Inpatient vitals, care plan, daily notes | Inpatient encounter is recorded and linked to the admission | .PLANNED |
+| F3 | Doctor / Ward nurse | Ward round / discharge form | Discharge summary, discharge date | Patient is discharged; a hospitalisation invoice is triggered in Odoo covering the full stay | .PLANNED |
 
 ## Regression cases
 
@@ -285,8 +300,8 @@ Derived from real incidents. These must never go green for the wrong reason.
   set of journeys, including anything that writes to billing.
 - **Production** `uvl-emr.madiro.org` — pre-flight checks P1–P5 only, as a post-deploy smoke test.
   No journeys. Nothing that creates a real bill, a real insurance claim or a real prescription:
-  Article 6 of the FBP contract pays on monthly-verified volume, so synthetic encounters on
-  production are not harmless.
+  the FBP contract pays on monthly-verified volume, so synthetic encounters on production are not
+  harmless.
 
 The two environments have already drifted — see the first-run results above. Until UAT matches
 production, a green run on UAT is weaker evidence than it looks, and the production pre-flight is
@@ -297,9 +312,13 @@ production at all, or only in UAT.
 
 ## Still needed from Didier
 
-1. The step tables above, journeys A–F.
-2. Which fields staff fill `[always]` / `[often]` / `[rare]` — this decides which failures stop a
+1. ~~The step tables above, journeys A–F.~~ Received 2026-09-17.
+2. Confirmation that journey F (ward admission) is not performed at Mugamba today — the test-case
+   document marks it `.PLANNED` but asks for this to be confirmed.
+3. Whether the insurance/mutuelle counter clerk in journey B is a role that should exist, and who
+   holds it.
+4. Which fields staff fill `[always]` / `[often]` / `[rare]` — this decides which failures stop a
    deploy and which only warn. The suite fills everything regardless.
-3. A username per role for testing.
-4. Whether a permanent test patient on production is acceptable.
-5. Which steps must never run automatically against production.
+5. A username per role for testing.
+6. Whether a permanent test patient on production is acceptable.
+7. Which steps must never run automatically against production.
