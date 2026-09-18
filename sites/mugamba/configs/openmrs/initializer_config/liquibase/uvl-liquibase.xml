@@ -11,11 +11,14 @@
     <changeSet id="add_admin_provider-202407101630" author="pirupius">
         <preConditions onFail="MARK_RAN">
             <sqlCheck expectedResult="1">
-                SELECT CASE WHEN COUNT(*) > 0 THEN 0 ELSE 1 END FROM provider WHERE person_id = 1;
+                SELECT CASE WHEN COUNT(*) > 0 THEN 0 ELSE 1 END
+                FROM provider
+                WHERE person_id = 1
+                   OR identifier = 'admin'
+                   OR uuid = '361ebccc-0992-46c5-a99f-ac523bed386e';
             </sqlCheck>
         </preConditions>
         <insert tableName="provider">
-            <column name="provider_id" value="1" />
             <column name="person_id" value="1" />
             <column name="name" value="Super User" />
             <column name="identifier" value="admin" />
