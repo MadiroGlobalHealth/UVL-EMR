@@ -33,12 +33,14 @@ which is deliberately untracked -- copy sites.example.json and fill it in. Pass
 """
 
 import argparse
+import atexit
 import base64
 import json
 import os
 import re
 import shlex
 import subprocess
+import tempfile
 import sys
 from collections import defaultdict
 
@@ -161,12 +163,29 @@ class CheckError(Exception):
 # Set from --ssh/--domain. When populated every docker command is run on that
 # host instead of locally, which is what lets a single --domain drive the run
 # from a laptop, from CI, or from a Cowork task.
-SSH = {"target": None, "port": None}
+SSH = {"target": None, "port": None, "control": None}
+
+
+def ssh_options():
+    """Reuse one TCP connection for every remote command.
+
+    Without this each check opens its own connection. A full run is dozens of
+    them within a few seconds, which reads as a brute-force attempt: the
+    Mugamba hosts run fail2ban and start dropping the connections mid-run, and
+    checks then fail for reasons that have nothing to do with the deployment.
+    ControlMaster makes the whole run a single login.
+    """
+    opts = ["-o", "BatchMode=yes", "-o", "ConnectTimeout=15"]
+    if SSH["control"]:
+        opts += ["-o", "ControlMaster=auto",
+                 "-o", f"ControlPath={SSH['control']}",
+                 "-o", "ControlPersist=60"]
+    return opts
 
 
 def run(cmd, stdin=None):
     if SSH["target"]:
-        remote = ["ssh", "-o", "BatchMode=yes", "-o", "ConnectTimeout=15"]
+        remote = ["ssh"] + ssh_options()
         if SSH["port"]:
             remote += ["-p", str(SSH["port"])]
         cmd = remote + [SSH["target"], "--", shlex.join(cmd)]
@@ -176,6 +195,17 @@ def run(cmd, stdin=None):
         raise CheckError(f"{' '.join(cmd[:4])}...{where} exited {p.returncode}: "
                          f"{p.stderr.strip()[:300]}")
     return p.stdout
+
+
+def close_ssh():
+    """Drop the shared connection so the socket does not outlive the run."""
+    if not SSH["control"]:
+        return
+    cmd = ["ssh", "-o", f"ControlPath={SSH['control']}"]
+    if SSH["port"]:
+        cmd += ["-p", str(SSH["port"])]
+    subprocess.run(cmd + ["-O", "exit", SSH["target"]],
+                   capture_output=True, text=True)
 
 
 def load_site(domain):
@@ -474,19 +504,30 @@ def p6_config_volume_matches_image(project, ctx):
     image = run(["docker", "inspect", f"{project}-openmrs-1",
                  "--format", "{{.Config.Image}}"]).strip()
 
-    def listing(cmd):
-        try:
-            return {line for line in run(cmd).split("\n") if line.strip()}
-        except CheckError:
-            return set()
+    def listing(cmd, what):
+        """Never swallow a failure into an empty set.
+
+        This used to return set() on any CheckError. A single transient docker
+        or ssh hiccup then made the image look empty and EVERY file in the
+        volume was reported as a stale orphan -- 24 false findings on a deploy
+        that was fine. A check that cannot read its input has not passed and
+        has not failed; it has to say so.
+        """
+        out = {line for line in run(cmd).split("\n") if line.strip()}
+        if not out:
+            raise CheckError(f"{what} came back empty, which cannot be right -- "
+                             f"refusing to report every file as an orphan")
+        return out
 
     problems, counted = [], 0
     for vol_dir, img_dir in (("configuration", "openmrs_config"),
                              ("modules", "openmrs_modules")):
         in_volume = listing(["docker", "exec", f"{project}-openmrs-1", "sh", "-c",
-                             f"cd /openmrs/data/{vol_dir} 2>/dev/null && find . -type f | sort"])
+                             f"cd /openmrs/data/{vol_dir} 2>/dev/null && find . -type f | sort"],
+                            f"the volume listing of {vol_dir}/")
         in_image = listing(["docker", "run", "--rm", "--entrypoint", "sh", image, "-c",
-                            f"cd /openmrs/distribution/{img_dir} 2>/dev/null && find . -type f | sort"])
+                            f"cd /openmrs/distribution/{img_dir} 2>/dev/null && find . -type f | sort"],
+                           f"the image listing of {img_dir}/")
         counted += len(in_volume)
         for orphan in sorted(in_volume - in_image):
             problems.append(f"{vol_dir}{orphan.lstrip('.')} is in the volume but not in "
@@ -584,6 +625,10 @@ def main():
             return 2
     SSH["target"] = args.ssh or site.get("ssh")
     SSH["port"] = args.ssh_port or site.get("ssh_port")
+    if SSH["target"]:
+        SSH["control"] = os.path.join(
+            tempfile.mkdtemp(prefix="preflight-ssh-"), "cm")
+        atexit.register(close_ssh)
     project = args.project or site.get("project") or "ozone-msf-mugamba"
     target = args.domain or SSH["target"] or "local docker"
 
