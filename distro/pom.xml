@@ -758,8 +758,30 @@
                     <echo level="info" message="Verified: openmrs Dockerfile pins openmrs-core:${openmrs.version}"/>
 
                     <echo level="info" message="Adding msf MYSQL docker image version"/>
+                    <!--
+                      Allow modules that ship trigger or stored-function DDL to migrate.
+
+                      log_bin is ON because Debezium reads the binlog, and OpenMRS
+                      connects as the non-SUPER `openmrs` user. Under exactly that
+                      combination MySQL refuses the DDL:
+
+                        (1419) You do not have the SUPER privilege and binary
+                        logging is enabled
+
+                      stockmanagement then aborts mid-migration, billing refuses to
+                      start because its dependency is not running, and OpenMRS still
+                      reports healthy. Cost most of a day on UAT, 2026-09-18.
+
+                      Stripped first, then re-added with the FROM line, because
+                      bundled-docker-tmp is NOT refreshed between non-clean builds and
+                      a bare append accumulates a duplicate RUN on every `mvn package`.
+                    -->
                     <replaceregexp file="${project.build.directory}/bundled-docker-tmp/bundled-docker/mysql/Dockerfile"
-                                            match="FROM mariadb.*" replace="FROM mariadb:10.11.13" />
+                                            byline="true"
+                                            match="^RUN echo .\[mysqld\].*zz-openmrs.cnf.*$" replace="" />
+                    <replaceregexp file="${project.build.directory}/bundled-docker-tmp/bundled-docker/mysql/Dockerfile"
+                                            match="FROM mariadb.*"
+                                            replace="FROM mariadb:10.11.13${line.separator}RUN echo '[mysqld]' &gt; /etc/mysql/conf.d/zz-openmrs.cnf &amp;&amp; echo 'log_bin_trust_function_creators = 1' &gt;&gt; /etc/mysql/conf.d/zz-openmrs.cnf" />
 
                     <!--
                       Bake the Orthanc index database bootstrap into the postgresql
