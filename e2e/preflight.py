@@ -80,6 +80,20 @@ REQUIRED_PRIVILEGES = {
         "Get Providers", "Get Medication Dispense", "Edit Medication Dispense",
         "Task: dispensing.create.dispense", "Task: stockmanagement.stockItems.dispense",
     ],
+    # Eye and dental clinics: consult and order.
+    "Ophtalmologist": [
+        "Add Encounters", "Add Observations", "Get Patients", "Get Visits",
+        "Get Concepts", "Add Orders", "Edit Orders",
+    ],
+    "Dentist": [
+        "Add Encounters", "Add Observations", "Get Patients", "Get Visits",
+        "Get Concepts", "Add Orders", "Edit Orders",
+    ],
+    # Operating room: records the anaesthesia record, does not order.
+    "Anesthesist": [
+        "Add Encounters", "Add Observations", "Get Patients", "Get Visits",
+        "Get Concepts", "Create Attachments",
+    ],
     # D3 -- open the requested exam and record the report.
     "X-Ray Technician": [
         "Get Patients", "Get Visits", "Get Orders", "Edit Orders", "Get Encounters",
@@ -107,7 +121,12 @@ EXPECTED_KC_ROLES = {
     # Added for #244. A role here that is missing from the `openmrs` client is
     # exactly the 13 September failure: the user signs in carrying no OpenMRS
     # roles at all, and OpenMRS never notices.
-    "Pharmacist", "X-Ray Technician", "Inpatient Nurse", "Midwife", "Theatre Nurse",
+    # Names come from the clinic's own staffing list, LIST OF OPENMRS-ODOO USERS.xlsx
+    # (36 users, received 2026-09-18), not from guesswork. Finance and Billing in that
+    # list are Odoo roles and deliberately have no OpenMRS counterpart; Administrator
+    # there means the built-in System Developer.
+    "Pharmacist", "X-Ray Technician", "Midwife",
+    "Ophtalmologist", "Dentist", "Anesthesist",
 }
 
 # O3 form-engine rendering -> acceptable concept datatypes.
