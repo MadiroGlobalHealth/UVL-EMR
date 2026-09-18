@@ -21,8 +21,13 @@
     <maven.compiler.target>8</maven.compiler.target>
     <PatientIdentifierGeneratorVersion>0.1.0</PatientIdentifierGeneratorVersion>
     <UVLReferenceapplicationDockerVersion>3.2.0-rc.3</UVLReferenceapplicationDockerVersion>
-    <!-- Stock Management and Billing -->
-    <stockmanagement.version>3.0.0</stockmanagement.version>
+    <!-- Stock Management and Billing.
+         stockmanagement is deliberately NOT on RefApp 3.7.1's 3.0.0: with 3.0.0
+         actually started, OpenMRS startup spins for ever in the module context
+         refresh and never reaches the search index. Reproduced three times on
+         UAT 2026-09-18. 2.1.2 is the last 2.x release and still satisfies
+         billing 2.3.0, which requires stockmanagement >= 1.4.0. -->
+    <stockmanagement.version>2.1.2</stockmanagement.version>
     <billing.version>2.3.0</billing.version>
     <initializer.version>2.12.0</initializer.version>
 
