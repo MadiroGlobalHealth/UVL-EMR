@@ -14,6 +14,8 @@ on 2026-09-13 -- see e2e/FLOW.md.
     P3  every clinical role holds the privileges its journey needs
     P4  the Keycloak `openmrs` client still has every expected role
     P5  every concept referenced by the frontend config resolves
+    P6  nothing is left in the config volume that the image does not carry
+    P7  every module the image ships is actually started
 
 Exit status: 0 all good (known gaps tolerated), 1 a check failed, 2 could not run.
 
@@ -31,11 +33,14 @@ which is deliberately untracked -- copy sites.example.json and fill it in. Pass
 """
 
 import argparse
+import atexit
 import base64
 import json
 import os
+import re
 import shlex
 import subprocess
+import tempfile
 import sys
 from collections import defaultdict
 
@@ -158,12 +163,29 @@ class CheckError(Exception):
 # Set from --ssh/--domain. When populated every docker command is run on that
 # host instead of locally, which is what lets a single --domain drive the run
 # from a laptop, from CI, or from a Cowork task.
-SSH = {"target": None, "port": None}
+SSH = {"target": None, "port": None, "control": None}
+
+
+def ssh_options():
+    """Reuse one TCP connection for every remote command.
+
+    Without this each check opens its own connection. A full run is dozens of
+    them within a few seconds, which reads as a brute-force attempt: the
+    Mugamba hosts run fail2ban and start dropping the connections mid-run, and
+    checks then fail for reasons that have nothing to do with the deployment.
+    ControlMaster makes the whole run a single login.
+    """
+    opts = ["-o", "BatchMode=yes", "-o", "ConnectTimeout=15"]
+    if SSH["control"]:
+        opts += ["-o", "ControlMaster=auto",
+                 "-o", f"ControlPath={SSH['control']}",
+                 "-o", "ControlPersist=60"]
+    return opts
 
 
 def run(cmd, stdin=None):
     if SSH["target"]:
-        remote = ["ssh", "-o", "BatchMode=yes", "-o", "ConnectTimeout=15"]
+        remote = ["ssh"] + ssh_options()
         if SSH["port"]:
             remote += ["-p", str(SSH["port"])]
         cmd = remote + [SSH["target"], "--", shlex.join(cmd)]
@@ -173,6 +195,17 @@ def run(cmd, stdin=None):
         raise CheckError(f"{' '.join(cmd[:4])}...{where} exited {p.returncode}: "
                          f"{p.stderr.strip()[:300]}")
     return p.stdout
+
+
+def close_ssh():
+    """Drop the shared connection so the socket does not outlive the run."""
+    if not SSH["control"]:
+        return
+    cmd = ["ssh", "-o", f"ControlPath={SSH['control']}"]
+    if SSH["port"]:
+        cmd += ["-p", str(SSH["port"])]
+    subprocess.run(cmd + ["-O", "exit", SSH["target"]],
+                   capture_output=True, text=True)
 
 
 def load_site(domain):
@@ -471,19 +504,30 @@ def p6_config_volume_matches_image(project, ctx):
     image = run(["docker", "inspect", f"{project}-openmrs-1",
                  "--format", "{{.Config.Image}}"]).strip()
 
-    def listing(cmd):
-        try:
-            return {line for line in run(cmd).split("\n") if line.strip()}
-        except CheckError:
-            return set()
+    def listing(cmd, what):
+        """Never swallow a failure into an empty set.
+
+        This used to return set() on any CheckError. A single transient docker
+        or ssh hiccup then made the image look empty and EVERY file in the
+        volume was reported as a stale orphan -- 24 false findings on a deploy
+        that was fine. A check that cannot read its input has not passed and
+        has not failed; it has to say so.
+        """
+        out = {line for line in run(cmd).split("\n") if line.strip()}
+        if not out:
+            raise CheckError(f"{what} came back empty, which cannot be right -- "
+                             f"refusing to report every file as an orphan")
+        return out
 
     problems, counted = [], 0
     for vol_dir, img_dir in (("configuration", "openmrs_config"),
                              ("modules", "openmrs_modules")):
         in_volume = listing(["docker", "exec", f"{project}-openmrs-1", "sh", "-c",
-                             f"cd /openmrs/data/{vol_dir} 2>/dev/null && find . -type f | sort"])
+                             f"cd /openmrs/data/{vol_dir} 2>/dev/null && find . -type f | sort"],
+                            f"the volume listing of {vol_dir}/")
         in_image = listing(["docker", "run", "--rm", "--entrypoint", "sh", image, "-c",
-                            f"cd /openmrs/distribution/{img_dir} 2>/dev/null && find . -type f | sort"])
+                            f"cd /openmrs/distribution/{img_dir} 2>/dev/null && find . -type f | sort"],
+                           f"the image listing of {img_dir}/")
         counted += len(in_volume)
         for orphan in sorted(in_volume - in_image):
             problems.append(f"{vol_dir}{orphan.lstrip('.')} is in the volume but not in "
@@ -492,6 +536,55 @@ def p6_config_volume_matches_image(project, ctx):
     return problems, f"{counted} files checked against {image.split('/')[-1]}", []
 
 
+def p7_modules_started(project, ctx):
+    """Every module the image ships is actually running.
+
+    A module that fails to start does not stop OpenMRS, does not fail the
+    container health check, and does not show up in any other check here. The
+    container reports healthy and the REST API answers while a whole subsystem
+    is simply absent.
+
+    Found on Mugamba UAT 2026-09-18: stockmanagement 3.0.0 aborted on a liquibase
+    checksum mismatch left behind by the 2.0.2-SNAPSHOT it replaced, and billing
+    2.3.0 then refused to start because its dependency was not running. P1-P6 all
+    passed. Billing was gone and nothing said so.
+
+    OpenMRS records the outcome as a `<module id>.started` global property, which
+    is what this reads -- the log line is only printed on the boot that failed.
+    """
+    image = run(["docker", "inspect", f"{project}-openmrs-1",
+                 "--format", "{{.Config.Image}}"]).strip()
+
+    shipped = set()
+    for line in run(["docker", "run", "--rm", "--entrypoint", "sh", image, "-c",
+                     "ls /openmrs/distribution/openmrs_modules"]).split("\n"):
+        line = line.strip()
+        if not line.endswith(".omod"):
+            continue
+        stem = line[:-len(".omod")]
+        # serialization.xstream-omod-0.3.0 -> serialization.xstream-0.3.0
+        stem = re.sub(r"-omod(?=-\d)", "", stem)
+        # strip the trailing version: stockmanagement-3.0.0 -> stockmanagement
+        shipped.add(re.sub(r"-\d[\w.+-]*$", "", stem))
+
+    state = {}
+    for row in mysql(project,
+                     "SELECT property, property_value FROM global_property "
+                     "WHERE property LIKE '%.started';"):
+        if len(row) >= 2:
+            state[row[0][: -len(".started")]] = row[1].strip().lower()
+
+    problems = []
+    for mid in sorted(shipped):
+        if mid not in state:
+            problems.append(f"module '{mid}' is shipped in the image but OpenMRS "
+                            f"has no record of it -- it never loaded")
+        elif state[mid] != "true":
+            problems.append(f"module '{mid}' is installed but NOT started -- "
+                            f"everything it provides is silently missing")
+
+    return problems, f"{len(shipped)} modules shipped by the image", []
+
 CHECKS = [
     ("P1", "form concepts resolve", p1_form_concepts_resolve),
     ("P2", "rendering matches concept datatype", p2_rendering_matches_datatype),
@@ -499,6 +592,7 @@ CHECKS = [
     ("P4", "Keycloak 'openmrs' client roles intact", p4_keycloak_roles),
     ("P5", "frontend config concepts resolve", p5_frontend_config_concepts),
     ("P6", "config volume matches the image", p6_config_volume_matches_image),
+    ("P7", "every module in the image is started", p7_modules_started),
 ]
 
 
@@ -531,6 +625,10 @@ def main():
             return 2
     SSH["target"] = args.ssh or site.get("ssh")
     SSH["port"] = args.ssh_port or site.get("ssh_port")
+    if SSH["target"]:
+        SSH["control"] = os.path.join(
+            tempfile.mkdtemp(prefix="preflight-ssh-"), "cm")
+        atexit.register(close_ssh)
     project = args.project or site.get("project") or "ozone-msf-mugamba"
     target = args.domain or SSH["target"] or "local docker"
 
