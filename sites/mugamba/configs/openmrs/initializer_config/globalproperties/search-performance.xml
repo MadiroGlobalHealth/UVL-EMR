@@ -1,0 +1,17 @@
+<config>
+    <globalProperties>
+        <!--
+          #256. OpenMRS hydrates every Lucene name match up to person.searchMaxResults
+          before the REST `limit` is applied, so search cost scales with the number of
+          matches, not with the number of rows returned. Measured on UAT 2026-09-16 at
+          1000: q=nda 1.91-3.73 s (642 matching names), q=nd 2.75-3.46 s (902 matches),
+          limit=1 cost as much as limit=10.
+
+          O3 asks for limit=10, so 100 is ten times more than the UI ever shows.
+        -->
+        <globalProperty>
+            <property>person.searchMaxResults</property>
+            <value>100</value>
+        </globalProperty>
+    </globalProperties>
+</config>
