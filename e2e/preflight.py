@@ -14,6 +14,8 @@ on 2026-09-13 -- see e2e/FLOW.md.
     P3  every clinical role holds the privileges its journey needs
     P4  the Keycloak `openmrs` client still has every expected role
     P5  every concept referenced by the frontend config resolves
+    P6  nothing is left in the config volume that the image does not carry
+    P7  every module the image ships is actually started
 
 Exit status: 0 all good (known gaps tolerated), 1 a check failed, 2 could not run.
 
@@ -34,6 +36,7 @@ import argparse
 import base64
 import json
 import os
+import re
 import shlex
 import subprocess
 import sys
@@ -492,6 +495,55 @@ def p6_config_volume_matches_image(project, ctx):
     return problems, f"{counted} files checked against {image.split('/')[-1]}", []
 
 
+def p7_modules_started(project, ctx):
+    """Every module the image ships is actually running.
+
+    A module that fails to start does not stop OpenMRS, does not fail the
+    container health check, and does not show up in any other check here. The
+    container reports healthy and the REST API answers while a whole subsystem
+    is simply absent.
+
+    Found on Mugamba UAT 2026-09-18: stockmanagement 3.0.0 aborted on a liquibase
+    checksum mismatch left behind by the 2.0.2-SNAPSHOT it replaced, and billing
+    2.3.0 then refused to start because its dependency was not running. P1-P6 all
+    passed. Billing was gone and nothing said so.
+
+    OpenMRS records the outcome as a `<module id>.started` global property, which
+    is what this reads -- the log line is only printed on the boot that failed.
+    """
+    image = run(["docker", "inspect", f"{project}-openmrs-1",
+                 "--format", "{{.Config.Image}}"]).strip()
+
+    shipped = set()
+    for line in run(["docker", "run", "--rm", "--entrypoint", "sh", image, "-c",
+                     "ls /openmrs/distribution/openmrs_modules"]).split("\n"):
+        line = line.strip()
+        if not line.endswith(".omod"):
+            continue
+        stem = line[:-len(".omod")]
+        # serialization.xstream-omod-0.3.0 -> serialization.xstream-0.3.0
+        stem = re.sub(r"-omod(?=-\d)", "", stem)
+        # strip the trailing version: stockmanagement-3.0.0 -> stockmanagement
+        shipped.add(re.sub(r"-\d[\w.+-]*$", "", stem))
+
+    state = {}
+    for row in mysql(project,
+                     "SELECT property, property_value FROM global_property "
+                     "WHERE property LIKE '%.started';"):
+        if len(row) >= 2:
+            state[row[0][: -len(".started")]] = row[1].strip().lower()
+
+    problems = []
+    for mid in sorted(shipped):
+        if mid not in state:
+            problems.append(f"module '{mid}' is shipped in the image but OpenMRS "
+                            f"has no record of it -- it never loaded")
+        elif state[mid] != "true":
+            problems.append(f"module '{mid}' is installed but NOT started -- "
+                            f"everything it provides is silently missing")
+
+    return problems, f"{len(shipped)} modules shipped by the image", []
+
 CHECKS = [
     ("P1", "form concepts resolve", p1_form_concepts_resolve),
     ("P2", "rendering matches concept datatype", p2_rendering_matches_datatype),
@@ -499,6 +551,7 @@ CHECKS = [
     ("P4", "Keycloak 'openmrs' client roles intact", p4_keycloak_roles),
     ("P5", "frontend config concepts resolve", p5_frontend_config_concepts),
     ("P6", "config volume matches the image", p6_config_volume_matches_image),
+    ("P7", "every module in the image is started", p7_modules_started),
 ]
 
 
