@@ -239,15 +239,6 @@
           "attributes": {}
         },
         {
-          "id": "e3b7f2c4-9d50-4c3b-b164-4f0a8d3c6e59",
-          "name": "Inpatient Nurse",
-          "description": "Inpatient Nurse",
-          "composite": false,
-          "clientRole": true,
-          "containerId": "714e1fe8-a430-44c7-9e27-37e96966892b",
-          "attributes": {}
-        },
-        {
           "id": "f4c803d5-ae61-4d4c-c275-500b9e4d7f6a",
           "name": "Midwife",
           "description": "Midwife",
@@ -257,9 +248,27 @@
           "attributes": {}
         },
         {
-          "id": "a5d914e6-bf72-4e5d-d386-611caf5e807b",
-          "name": "Theatre Nurse",
-          "description": "Theatre Nurse",
+          "id": "b1e7c3d9-2f84-4a56-9e10-7c5d3b8a2f64",
+          "name": "Ophtalmologist",
+          "description": "Ophtalmologist",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "714e1fe8-a430-44c7-9e27-37e96966892b",
+          "attributes": {}
+        },
+        {
+          "id": "c2f8d4ea-3095-4b67-af21-8d6e4c9b3a75",
+          "name": "Dentist",
+          "description": "Dentist",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "714e1fe8-a430-44c7-9e27-37e96966892b",
+          "attributes": {}
+        },
+        {
+          "id": "d3a9e5fb-41a6-4c78-b032-9e7f5dac4b86",
+          "name": "Anesthesist",
+          "description": "Anesthesist",
           "composite": false,
           "clientRole": true,
           "containerId": "714e1fe8-a430-44c7-9e27-37e96966892b",
