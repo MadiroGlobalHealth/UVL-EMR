@@ -117,6 +117,30 @@ Two things that are not obvious and have each cost us time:
   and nothing warns you. Roles have to be applied to a running environment
   separately.
 
+- **Config you delete from the repo does not go away.** The OpenMRS entrypoint
+  means to clear `configuration/` and `modules/` and refill them from the image on
+  every start. It refills them; it does not clear them, because the glob is inside
+  the quotes: `rm -fR "${OMRS_CONFIG_DIR:?}/*"` deletes a file literally named `*`.
+  So a file you remove here keeps loading on every existing environment, with no
+  source in the repo. Fixed on `openmrs-core` master but **not in any 2.8.x
+  release**, so it is live for us. `P6` below detects it; LIME-EMR-Tooling's
+  `openmrs-clear-stale-config.sh` clears it.
+
+## Building images
+
+`./scripts/mvnw clean package -Pbundled-docker` builds for **your** machine's
+architecture. On an Apple Silicon Mac that means `arm64`, and these servers are
+`amd64` — deploying one gives `exec /usr/bin/tini: exec format error` and a crash
+loop. The pom declares both platforms, but fabric8 0.46.0 ignores that block and
+warns `Parameter 'buildx' is unknown`.
+
+Build with `docker buildx build --platform linux/amd64` against the generated
+Dockerfile, or build on an amd64 host. Check before you deploy:
+
+```
+docker manifest inspect --verbose <image> | grep architecture
+```
+
 ## Concepts and forms
 
 Form questions reference concepts by UUID. If a form references a concept that
@@ -133,10 +157,6 @@ privileges, Keycloak roles that vanished, configuration drift:
 ```
 ./e2e/preflight.py --domain <site-domain>
 ```
-
-It currently lives on the `e2e` branch rather than `main` — see
-[#307](https://github.com/MadiroGlobalHealth/UVL-EMR/pull/307), which proposes
-merging it.
 
 Run it, and sign in as a user holding the role your change affects, not as an
 administrator. Every fault this catches is invisible to a privileged session.
