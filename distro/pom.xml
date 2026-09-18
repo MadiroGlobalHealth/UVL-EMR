@@ -718,6 +718,32 @@
                     <replaceregexp file="${project.build.directory}/bundled-docker-tmp/bundled-docker/openmrs/Dockerfile"
                                             match="FROM openmrs/openmrs-core.*" replace="FROM openmrs/openmrs-core:${openmrs.version}" />
 
+                    <!--
+                      Assert the rewrite actually happened.
+
+                      openmrs.version reaches the built image through this one regex and
+                      nothing else. If the inherited Dockerfile's FROM line ever changes
+                      shape - a digest pin, a different registry, a renamed base - the
+                      match silently fails, replaceregexp reports nothing, and the build
+                      succeeds against whatever base the inherited file carried. The
+                      platform would then be whatever that file says, not what this pom
+                      says, and the only way to notice is to unpack the image.
+
+                      This project has lost days to exactly that class of silent
+                      fallback. Fail the build instead.
+                    -->
+                    <loadfile property="openmrs.dockerfile.contents"
+                              srcFile="${project.build.directory}/bundled-docker-tmp/bundled-docker/openmrs/Dockerfile" />
+                    <fail message="The OpenMRS Dockerfile does not pin openmrs-core:${openmrs.version}. The FROM rewrite did not match, so the image would be built on an unintended base. Dockerfile contents:${line.separator}${openmrs.dockerfile.contents}">
+                      <condition>
+                        <not>
+                          <contains string="${openmrs.dockerfile.contents}"
+                                    substring="FROM openmrs/openmrs-core:${openmrs.version}" />
+                        </not>
+                      </condition>
+                    </fail>
+                    <echo level="info" message="Verified: openmrs Dockerfile pins openmrs-core:${openmrs.version}"/>
+
                     <echo level="info" message="Adding msf MYSQL docker image version"/>
                     <replaceregexp file="${project.build.directory}/bundled-docker-tmp/bundled-docker/mysql/Dockerfile"
                                             match="FROM mariadb.*" replace="FROM mariadb:10.11.13" />
