@@ -22,8 +22,8 @@
     <PatientIdentifierGeneratorVersion>0.1.0</PatientIdentifierGeneratorVersion>
     <UVLReferenceapplicationDockerVersion>3.2.0-rc.3</UVLReferenceapplicationDockerVersion>
     <!-- Stock Management and Billing -->
-    <stockmanagement.version>2.0.2-SNAPSHOT</stockmanagement.version>
-    <billing.version>1.2.0-SNAPSHOT</billing.version>
+    <stockmanagement.version>3.0.0</stockmanagement.version>
+    <billing.version>2.3.0</billing.version>
     <initializer.version>2.12.0</initializer.version>
 
     <!-- RefApp 3.7.1 module set. openmrs.version is deliberately 2.8.9, one patch
@@ -43,9 +43,11 @@
     <cohort.version>3.7.3</cohort.version>
     <reporting.version>2.1.0</reporting.version>
     <reportingrest.version>2.0.0</reportingrest.version>
-    <!-- the next three are required for reporting -->
+    <!-- the next four are required for reporting; reporting 2.1.0 will not start
+         against serialization.xstream 0.2.16, which is what the Ozone base ships -->
     <calculation.version>2.0.0</calculation.version>
     <htmlwidgets.version>2.0.1</htmlwidgets.version>
+    <serialization-xstream.version>0.3.0</serialization-xstream.version>
     <ordertemplates.version>2.2.0</ordertemplates.version>
     <patientflags.version>3.0.10</patientflags.version>
     <o3forms.version>2.3.0</o3forms.version>
@@ -99,6 +101,13 @@
       <groupId>org.openmrs.module</groupId>
       <artifactId>reporting-omod</artifactId>
       <version>${reporting.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.openmrs.module</groupId>
+      <artifactId>serialization.xstream-omod</artifactId>
+      <version>${serialization-xstream.version}</version>
+      <!-- only ever published with the .omod extension, never as a jar -->
+      <type>omod</type>
     </dependency>
     <dependency>
       <groupId>org.openmrs.module</groupId>
@@ -466,7 +475,6 @@
                 <delete>
                   <fileset dir="${project.build.directory}/${project.artifactId}-${project.version}/distro/binaries/openmrs/modules">
                       <include name="*.omod" />
-                      <exclude name="serialization*.omod" />
                   </fileset>
                 </delete>
 
