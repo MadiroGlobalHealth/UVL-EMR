@@ -12,3 +12,8 @@ EF741FF1-EAAB-4DED-BC4B-EBEFE08BA7A6,,Salle de césarienne,,Hospitalisation (IPD
 3D1AD726-219C-4F9F-87C2-5BF709D04E41,,Salle néonatale,,Hospitalisation (IPD),Login Location;Admission Location;Transfer Location,TRUE,,,,,,,,,,,,
 C458A0DB-A405-4DBC-96D2-F95B46EBDA43,,Salle d’imagerie (X-Ray),,,Login Location;Visit Location,TRUE,,,,,,,,,,,,
 450be362-59a7-4ccd-964d-ebd930a8b30f,,Locations test,,,Login Location,TRUE,,,,,,,,,,,,
+e1f4ab17-6dc5-4249-cf38-5bae7dbe9c64,,Ophtalmologie (OPH),,,Login Location;Visit Location;Queue Location,TRUE,,,,,,,,,,,,
+f2a5bc28-7ed6-435a-da49-6cbf8ecfad75,,Dentisterie (DEN),,,Login Location;Visit Location;Queue Location,TRUE,,,,,,,,,,,,
+a3b6cd39-8fe7-446b-eb5a-7dcaf9d0be86,,Bloc opératoire (OR),,,Login Location;Visit Location;Queue Location,TRUE,,,,,,,,,,,,
+b4c7de4a-90f8-4570-fc6b-8edba0e1cf97,,Échographie (US),,,Login Location;Visit Location;Queue Location,TRUE,,,,,,,,,,,,
+c5d8ef5b-a109-4681-0d7c-9fecb1f2da08,,Pharmacie - Dispensation (Rx-DISP),,,Login Location;Visit Location;Queue Location,TRUE,,,,,,,,,,,,

@@ -219,6 +219,60 @@
           "clientRole": true,
           "containerId": "1e76eb17-c63e-4359-bb24-bfd73fe2dfe1",
           "attributes": {}
+        },
+        {
+          "id": "c1f5d0a2-7b3e-4a19-9f42-2d8e6b1a4c37",
+          "name": "Pharmacist",
+          "description": "Pharmacist",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "714e1fe8-a430-44c7-9e27-37e96966892b",
+          "attributes": {}
+        },
+        {
+          "id": "d2a6e1b3-8c4f-4b2a-a053-3e9f7c2b5d48",
+          "name": "X-Ray Technician",
+          "description": "X-Ray Technician",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "714e1fe8-a430-44c7-9e27-37e96966892b",
+          "attributes": {}
+        },
+        {
+          "id": "f4c803d5-ae61-4d4c-c275-500b9e4d7f6a",
+          "name": "Midwife",
+          "description": "Midwife",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "714e1fe8-a430-44c7-9e27-37e96966892b",
+          "attributes": {}
+        },
+        {
+          "id": "b1e7c3d9-2f84-4a56-9e10-7c5d3b8a2f64",
+          "name": "Ophtalmologist",
+          "description": "Ophtalmologist",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "714e1fe8-a430-44c7-9e27-37e96966892b",
+          "attributes": {}
+        },
+        {
+          "id": "c2f8d4ea-3095-4b67-af21-8d6e4c9b3a75",
+          "name": "Dentist",
+          "description": "Dentist",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "714e1fe8-a430-44c7-9e27-37e96966892b",
+          "attributes": {}
+        },
+        {
+          "id": "d3a9e5fb-41a6-4c78-b032-9e7f5dac4b86",
+          "name": "Anesthesist",
+          "description": "Anesthesist",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "714e1fe8-a430-44c7-9e27-37e96966892b",
+          "attributes": {}
         }
       ],
       "realm-management": [

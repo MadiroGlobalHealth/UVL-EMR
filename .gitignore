@@ -394,3 +394,8 @@ openmrs-esm-patient-chart/
 target/
 */target/
 **/target/
+
+# Staff rosters carry real names; this repository is public. Template only.
+sites/*/configs/keycloak/users/staff-roster.csv
+sites/*/configs/keycloak/users/*-roster.csv
+!sites/*/configs/keycloak/users/*.example.csv
