@@ -1,0 +1,2 @@
+Uuid,Fully specified name:en,Fully specified name:fr,Short name:en,Data class,Data type,Units,Allow decimals,Display precision,Absolute low,Normal low,Normal high,Absolute high
+2316f309-8802-431d-92a0-fc7cfa4df5c8,Body mass index,Indice de masse corporelle,BMI,Finding,Numeric,kg/m2,true,1,0,18.5,24.9,100
