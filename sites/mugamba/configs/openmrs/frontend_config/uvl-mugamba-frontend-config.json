@@ -1,4 +1,7 @@
 {
+  "@openmrs/esm-app-shell": {
+    "Enabled feature flags": ["enable-embedded-form-view", "rde"]
+  },
   "@openmrs/esm-patient-chart-app": {
     "Display conditions": {
       "privileges": ["Patient Dashboard - View Patient Summary"]
