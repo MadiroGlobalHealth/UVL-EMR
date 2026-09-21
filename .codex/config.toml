@@ -1,5 +1,0 @@
-[mcp_servers.madiro-implementer-ai]
-url = "https://implementer-ai.madiro.org/mcp"
-
-[mcp_servers.madiro-implementer-ai.http_headers]
-Authorization = "Bearer pmk_0b3b18fb70bd11b34db0ad28e0596193"
