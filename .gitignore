@@ -399,3 +399,6 @@ target/
 sites/*/configs/keycloak/users/staff-roster.csv
 sites/*/configs/keycloak/users/*-roster.csv
 !sites/*/configs/keycloak/users/*.example.csv
+
+# Codex/agent local config — never commit, it carries MCP bearer tokens
+.codex/
