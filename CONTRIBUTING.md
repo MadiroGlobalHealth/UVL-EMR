@@ -152,9 +152,14 @@ both sides when you touch either.
 
 There is a pre-flight suite that catches exactly the faults that have taken this
 system down before — missing concepts, datatype mismatches, roles missing
-privileges, Keycloak roles that vanished, configuration drift:
+privileges, Keycloak roles that vanished, configuration drift, and modules that
+quietly failed to start.
+
+It lives in the deploy tooling rather than here, because it reads a *deployed*
+environment over ssh and its site mapping names hosts:
 
 ```
+# in a LIME-EMR-Tooling checkout
 ./e2e/preflight.py --domain <site-domain>
 ```
 
