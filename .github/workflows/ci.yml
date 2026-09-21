@@ -7,6 +7,20 @@ on:
     types: [published]
   workflow_dispatch:
 
+# Two merges close together each trigger a run, and both push the same mutable
+# :dev tag. On 2026-09-21 #325 and #326 merged six seconds apart; #326 (the newer
+# commit) finished at 15:06:32 and #325 at 15:08:25, so the OLDER tree was pushed
+# last and won. The frontend image then shipped a config predating the fix, while
+# CI was green, main was correct, and the image looked current.
+#
+# Serialise instead of cancelling: this workflow publishes Maven artifacts as well
+# as images, and cancelling a run mid-publish can leave artifacts released with no
+# matching image. Queued runs are slower but every run completes, and the last to
+# finish is the newest commit.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   snapshot:
     if: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/main') }}
