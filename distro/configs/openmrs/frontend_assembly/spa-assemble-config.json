@@ -42,7 +42,7 @@
     "@openmrs/esm-ward-app": "11.1.0",
     "@openmrs/esm-bed-management-app": "11.1.0",
     "@openmrs/esm-reports-app": "4.4.0",
-    "@uvl/esm-imaging-gate-app": "1.0.0"
+    "@madiro/esm-imaging-gate-app": "1.0.0"
   },
   "__comment": "Excluding modules some default modules to ensure we are using the specified versions. Every module here is pinned to a release that requires @openmrs/esm-framework 10.x, which is what coreVersion provides -- keep it that way when bumping any single entry.",
   "frontendModuleExcludes": [
