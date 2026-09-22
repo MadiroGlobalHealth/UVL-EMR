@@ -531,7 +531,85 @@
           "attributes": {}
         }
       ],
-      "odoo": [],
+      "odoo": [
+        {
+          "name": "Administration / Access Rights",
+          "composite": false,
+          "clientRole": true
+        },
+        {
+          "name": "Administration / Settings",
+          "composite": false,
+          "clientRole": true
+        },
+        {
+          "name": "Inventory / Administrator",
+          "composite": false,
+          "clientRole": true
+        },
+        {
+          "name": "Inventory / User",
+          "composite": false,
+          "clientRole": true
+        },
+        {
+          "name": "Invoicing / Billing",
+          "composite": false,
+          "clientRole": true,
+          "description": "Raise and collect invoices. This is the CASHIER role -- the one Caisse staff need to close a visit. Without it nobody but an administrator can invoice (#331)."
+        },
+        {
+          "name": "Invoicing / Billing Administrator",
+          "composite": false,
+          "clientRole": true,
+          "description": "Finance manager: everything Invoicing / Billing can do, plus accounting configuration."
+        },
+        {
+          "name": "Manufacturing / Administrator",
+          "composite": false,
+          "clientRole": true
+        },
+        {
+          "name": "Manufacturing / User",
+          "composite": false,
+          "clientRole": true
+        },
+        {
+          "name": "Purchase / Administrator",
+          "composite": false,
+          "clientRole": true
+        },
+        {
+          "name": "Purchase / User",
+          "composite": false,
+          "clientRole": true
+        },
+        {
+          "name": "Sales / Administrator",
+          "composite": false,
+          "clientRole": true
+        },
+        {
+          "name": "Sales / User: All Documents",
+          "composite": false,
+          "clientRole": true
+        },
+        {
+          "name": "Sales / User: Own Documents Only",
+          "composite": false,
+          "clientRole": true
+        },
+        {
+          "name": "User types / Internal User",
+          "composite": false,
+          "clientRole": true
+        },
+        {
+          "name": "User types / Portal",
+          "composite": false,
+          "clientRole": true
+        }
+      ],
       "security-admin-console": [],
       "admin-cli": [],
       "account-console": [],

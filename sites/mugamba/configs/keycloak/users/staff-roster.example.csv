@@ -1,8 +1,8 @@
 # Staff roster template. Copy to staff-roster.csv OUTSIDE this repository and fill in.
 #
-# This repository is PUBLIC. The real roster is 36 named members of clinic staff,
-# so it is data supplied at deploy time, not configuration committed to git.
-# Keep the filled-in copy with the site's secrets, alongside the env file.
+# This repository is PUBLIC. The real roster is named members of clinic staff, so it
+# is data supplied at deploy time, not configuration committed to git. Keep the
+# filled-in copy with the site's secrets, alongside the env file.
 #
 # Applied with LIME-EMR-Tooling's Scripts/Bundled-Docker/scripts/keycloak-apply-users.sh:
 #
@@ -12,14 +12,33 @@
 # Run keycloak-apply-realm.sh first: the roles must exist before anyone is assigned
 # one. A user holding a role OpenMRS does not have signs in with NO roles at all.
 #
-# openmrs_role must be one of the roles in
-# sites/mugamba/configs/openmrs/initializer_config/roles/roles_mugamba.csv,
-# or the OpenMRS built-in System Developer. Leave it empty or `-` for Odoo-only
-# staff, such as Finance and Billing: they stay in the roster but get no OpenMRS
-# access.
+# Same file, same result, on UAT and on production. Nothing in the script is tied
+# to one environment -- point it at a container with --container or PROJECT_NAME.
 #
-username,first_name,last_name,openmrs_role
-jane.doe,Jane,DOE,Doctor
-john.roe,John,ROE,Nurse
-mary.moe,Mary,MOE,Pharmacist
-peter.poe,Peter,POE,-
+# COLUMNS
+#
+#   username,first_name,last_name,openmrs_role,odoo_role
+#
+# openmrs_role must be one of the roles in
+# sites/mugamba/configs/openmrs/initializer_config/roles/roles_mugamba.csv, or the
+# OpenMRS built-in System Developer.
+#
+# odoo_role must be one of the roles declared on the `odoo` client in
+# sites/mugamba/configs/keycloak/realms/ozone-realm.json. The one billing staff
+# need is `Invoicing / Billing`; their manager gets `Invoicing / Billing
+# Administrator`. `User types / Internal User` is added automatically alongside
+# any odoo_role, so it never needs listing here.
+#
+# Either column may be `-`. A row needs at least one of the two.
+#
+# DO NOT leave billing staff with `-` in both columns. They will be created with
+# no access to anything. That was issue #331: the cashier step of the patient
+# journey had never once been performable by a real user, because not one
+# non-administrator in the realm could raise an invoice.
+#
+username,first_name,last_name,openmrs_role,odoo_role
+jane.doe,Jane,DOE,Doctor,-
+john.roe,John,ROE,Nurse,-
+mary.moe,Mary,MOE,Pharmacist,-
+peter.poe,Peter,POE,-,Invoicing / Billing
+paula.poe,Paula,POE,-,Invoicing / Billing Administrator
