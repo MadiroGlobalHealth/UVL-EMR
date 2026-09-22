@@ -1,0 +1,7 @@
+Uuid,Fully specified name:en,Fully specified name:fr,Short name:en,Data class,Data type,Answers
+9a1e0f4c-3d27-4d9e-9f6c-5b8a2e1c7d30,Payer,Payeur,Payer,Question,Coded,c7d4a1e8-5f62-4b03-9e71-2a8c3d5f9b04;1e9c6b52-84af-4d17-b3c8-7f20d6a4e815;3f81d70a-9b4e-42c6-8a15-6d92c0e3f728;5c2b93e6-1a78-4f30-9d84-8e37b1c6a459;7d60a2f1-6c93-4e58-b27a-9f14e8d05b36
+c7d4a1e8-5f62-4b03-9e71-2a8c3d5f9b04,Cash,Espèces,Cash,Misc,N/A,
+1e9c6b52-84af-4d17-b3c8-7f20d6a4e815,Mobile Money,Mobile Money,MoMo,Misc,N/A,
+3f81d70a-9b4e-42c6-8a15-6d92c0e3f728,MFP,MFP (Mutuelle de la Fonction Publique),MFP,Misc,N/A,
+5c2b93e6-1a78-4f30-9d84-8e37b1c6a459,CAM,CAM (Carte d'Assistance Médicale),CAM,Misc,N/A,
+7d60a2f1-6c93-4e58-b27a-9f14e8d05b36,Other insurance,Autre assurance,Other,Misc,N/A,
