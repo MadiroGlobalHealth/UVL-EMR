@@ -354,7 +354,7 @@
       "Lab Technician": "laboratory"
     }
   },
-  "@madiro/esm-imaging-gate-app": {
+  "@jnsereko/esm-imaging-gate-app": {
     "blockWhenPaymentStatusUnknown": false
   },
   "extensionSlots": {
