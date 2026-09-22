@@ -353,5 +353,14 @@
     "defaultDashboardPerRole": {
       "Lab Technician": "laboratory"
     }
+  },
+  "@uvl/esm-imaging-gate-app": {
+    "blockWhenPaymentStatusUnknown": false
+  },
+  "extensionSlots": {
+    "inprogress-tests-actions-slot": {
+      "remove": ["add-lab-request-results-action"],
+      "add": ["uvl-gated-add-results-action"]
+    }
   }
 }
