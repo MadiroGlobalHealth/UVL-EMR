@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    THE NAME OF THIS FILE MATTERS.
+
+    The Initializer's liquibase loader only reads a file called exactly
+    `liquibase.xml`:
+
+        public static final String LIQUIBASE_FILE_NAME = "liquibase";
+        if (file.getName().equalsIgnoreCase(LIQUIBASE_FILE_NAME + "." + getFileExtension()))
+
+    Anything else in this directory is walked past in silence - no warning, no
+    error, nothing in the log. `uvl-liquibase.xml` beside this file has therefore
+    NEVER run: none of its changesets, some dating to 2024, appear in
+    liquibasechangelog on UAT. Do not add changesets there expecting them to
+    apply, and do not simply rename it either - that would fire every one of
+    those untested changesets at once against a live database.
+-->
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+    <!--
+        #319 - patient registration crashes for any user flagged to change their password.
+
+        getOrderedAddressHierarchyLevels.form returns the logged-in User object instead of the
+        address levels when the account carries the user_property `forcePassword`. The payload is
+        89 KB of that User serialised through its creator chain, truncated mid-structure into
+        invalid JSON, and the registration screen throws before rendering.
+
+        Confirmed on UAT by single-variable experiment: exactly three accounts carried the property
+        and exactly those three failed; removing it from one fixed that one while a control that
+        kept it stayed broken. Not related to role, privileges or creator chain. A Doctor with 63
+        privileges failed while another Doctor worked.
+
+        A one-time repair, not a policy: this runs once per database, so an administrator who
+        deliberately sets forcePassword on a new user later is unaffected.
+    -->
+    <changeSet id="remove_force_password_breaking_registration-202609221200" author="Joshua">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT CASE WHEN COUNT(*) &gt; 0 THEN 1 ELSE 0 END
+                FROM user_property WHERE property = 'forcePassword';
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            Clear forcePassword, which makes the address hierarchy endpoint return the User object
+            instead of the address levels and breaks patient registration (#319).
+        </comment>
+        <delete tableName="user_property">
+            <where>property = 'forcePassword'</where>
+        </delete>
+    </changeSet>
+
+</databaseChangeLog>
