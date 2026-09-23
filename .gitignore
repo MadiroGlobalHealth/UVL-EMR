@@ -317,6 +317,8 @@ web_modules/
 
 # Output of 'npm pack'
 *.tgz
+# ...except the ESMs the frontend assembly pins by file: path
+!distro/configs/openmrs/frontend_assembly/esm/*.tgz
 
 # Yarn Integrity file
 .yarn-integrity
