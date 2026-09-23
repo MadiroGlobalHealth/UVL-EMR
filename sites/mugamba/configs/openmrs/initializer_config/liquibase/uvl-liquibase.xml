@@ -550,43 +550,6 @@
         </insert>
     </changeSet>
 
-    <!--
-        #319 - patient registration crashes for any user flagged to change their password.
-
-        getOrderedAddressHierarchyLevels.form returns the logged-in User object instead of the
-        address levels when the account carries the user_property `forcePassword`. The payload is
-        89 KB of the User serialised through its creator chain, truncated mid-structure into
-        invalid JSON, and the registration screen throws before rendering. No patient can be
-        created by that account.
-
-        Confirmed on UAT 2026-09-22 by single-variable experiment: exactly three accounts in the
-        realm carried the property and exactly those three failed; removing it from one fixed that
-        one while a control account that kept it stayed broken. It is NOT related to the user's
-        role, privileges, or creator chain. pacifique.gahungu is a Doctor with 63 privileges and
-        failed, while another Doctor worked.
-
-        The three affected accounts are the oldest staff logins, created in the legacy admin UI
-        where "force password change" is ticked by default. They have all since set real passwords
-        and authenticate normally, so the flag only breaks them.
-
-        This is a one-time repair, not a policy: the changeset runs once per database, so an
-        administrator who deliberately sets forcePassword on a NEW user later is unaffected.
-    -->
-    <changeSet id="remove_force_password_breaking_registration-202609221200" author="Joshua">
-        <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="1">
-                SELECT CASE WHEN COUNT(*) > 0 THEN 1 ELSE 0 END
-                FROM user_property WHERE property = 'forcePassword';
-            </sqlCheck>
-        </preConditions>
-        <comment>
-            Clear forcePassword, which makes the address hierarchy endpoint return the User object
-            instead of the address levels and breaks patient registration (#319).
-        </comment>
-        <delete tableName="user_property">
-            <where>property = 'forcePassword'</where>
-        </delete>
-    </changeSet>
 
 </databaseChangeLog>
 
