@@ -455,6 +455,26 @@
         <version>3.1.0</version>
         <executions>
           <execution>
+            <!--
+              Tests the OpenMRS entrypoint patch (#305) against the real openmrs-core
+              lines it edits, in every build, so it does not wait for an image build
+              to be exercised. The bundled-docker profile below wires the patch into
+              the Dockerfile; see scripts/bundled-docker/openmrs/patch-startup-init.sh.
+            -->
+            <id>Test the OpenMRS startup-init patch</id>
+            <phase>test</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
+                <exec executable="bash" failonerror="true">
+                  <arg value="${project.basedir}/../scripts/test/openmrs-startup-init/test.sh"/>
+                </exec>
+              </target>
+            </configuration>
+          </execution>
+          <execution>
             <id>Add UVL Distro Frontend Configuration</id>
             <phase>process-resources</phase>
             <goals>
@@ -732,6 +752,30 @@
                                             match="FROM openmrs/openmrs-core.*" replace="FROM openmrs/openmrs-core:${openmrs.version}" />
 
                     <!--
+                      Make the entrypoint empty /openmrs/data/configuration before it
+                      refills it from the image (#305). openmrs-core 2.8.x quotes the
+                      glob in `rm -fR "${OMRS_CONFIG_DIR:?}/*"`, so config deleted from
+                      the repo stays in the volume and keeps loading. The script says
+                      why it is patched the way it is, and fails the image build if
+                      the upstream line is no longer there to patch.
+
+                      Right after FROM, so the layer is cached across config changes.
+                      Stripped first, then re-added, because bundled-docker-tmp is NOT
+                      refreshed between non-clean builds (same as the postgresql edit below).
+                      The script reaches bundled-docker/openmrs/ through
+                      "Add UVL bundled docker files".
+                    -->
+                    <echo level="info" message="Patching the OpenMRS entrypoint to mirror the image's configuration"/>
+                    <replaceregexp file="${project.build.directory}/bundled-docker-tmp/bundled-docker/openmrs/Dockerfile"
+                                            match="[\r\n]+[^\r\n]*patch-startup-init\.sh[^\r\n]*"
+                                            replace=""
+                                            flags="g" />
+                    <replaceregexp file="${project.build.directory}/bundled-docker-tmp/bundled-docker/openmrs/Dockerfile"
+                                            byline="true"
+                                            match="^(FROM openmrs/openmrs-core:.*)$"
+                                            replace="\1${line.separator}COPY bundled-docker/openmrs/patch-startup-init.sh /openmrs/uvl/patch-startup-init.sh${line.separator}RUN sh /openmrs/uvl/patch-startup-init.sh /openmrs/startup-init.sh" />
+
+                    <!--
                       Assert the rewrite actually happened.
 
                       openmrs.version reaches the built image through this one regex and
@@ -756,6 +800,19 @@
                       </condition>
                     </fail>
                     <echo level="info" message="Verified: openmrs Dockerfile pins openmrs-core:${openmrs.version}"/>
+                    <!-- Same for the entrypoint patch: without it the build succeeds and deleted config keeps loading (#305). -->
+                    <fail message="The OpenMRS Dockerfile does not run patch-startup-init.sh, so the image would never remove configuration deleted from the repo (#305). Dockerfile contents:${line.separator}${openmrs.dockerfile.contents}">
+                      <condition>
+                        <not>
+                          <contains string="${openmrs.dockerfile.contents}"
+                                    substring="RUN sh /openmrs/uvl/patch-startup-init.sh /openmrs/startup-init.sh" />
+                        </not>
+                      </condition>
+                    </fail>
+                    <available file="${project.basedir}/../scripts/bundled-docker/openmrs/patch-startup-init.sh" property="openmrs.startup.patch.present"/>
+                    <fail unless="openmrs.startup.patch.present"
+                          message="scripts/bundled-docker/openmrs/patch-startup-init.sh is missing; the OpenMRS Dockerfile COPYs it (#305)."/>
+                    <echo level="info" message="Verified: openmrs Dockerfile runs patch-startup-init.sh"/>
 
                     <echo level="info" message="Adding msf MYSQL docker image version"/>
                     <!--
@@ -841,7 +898,7 @@
                 </goals>
                 <configuration>
                   <target>
-                    <echo level="info" message="Adding UVL-authored bundled-docker files (orthanc)"/>
+                    <echo level="info" message="Adding UVL-authored bundled-docker files (orthanc, openmrs entrypoint patch)"/>
                     <copy todir="${project.build.directory}/bundled-docker-tmp/bundled-docker" overwrite="true">
                       <fileset dir="${project.basedir}/../scripts/bundled-docker" includes="**/*" />
                     </copy>
