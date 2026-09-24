@@ -342,11 +342,6 @@
   "@openmrs/esm-laboratory-app": {
     "Display conditions": {
       "privileges": ["Manage Laboratory"]
-    },
-    "extensionSlots": {
-      "inprogress-tests-actions-slot": {
-        "remove": ["add-lab-request-results-action"]
-      }
     }
   },
   "@openmrs/esm-patient-list-management-app": {
@@ -358,8 +353,5 @@
     "defaultDashboardPerRole": {
       "Lab Technician": "laboratory"
     }
-  },
-  "@jnsereko/esm-imaging-gate-app": {
-    "blockWhenPaymentStatusUnknown": false
   }
 }
