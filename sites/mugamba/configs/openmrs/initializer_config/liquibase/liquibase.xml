@@ -10,11 +10,26 @@
         if (file.getName().equalsIgnoreCase(LIQUIBASE_FILE_NAME + "." + getFileExtension()))
 
     Anything else in this directory is walked past in silence - no warning, no
-    error, nothing in the log. `uvl-liquibase.xml` beside this file has therefore
-    NEVER run: none of its changesets, some dating to 2024, appear in
-    liquibasechangelog on UAT. Do not add changesets there expecting them to
-    apply, and do not simply rename it either - that would fire every one of
-    those untested changesets at once against a live database.
+    error, nothing in the log. Other files only run if this one includes them.
+
+    Until September 2026 most of the changesets below lived in `uvl-liquibase.xml`,
+    which nothing read from June 2025 (#154) on. #305 included it, after each of its
+    changesets was checked against UAT and given a precondition that marks it ran
+    where its hard-coded ids are already taken by real data. #233 then moved them
+    here. A changeset added to this file will run on every database that has not
+    recorded it, so it needs the same care.
+
+    CHANGESET IDENTITY. Liquibase knows a changeset by id + author + file path, and
+    the Initializer records the path relative to the OpenMRS data directory. On UAT
+    the changesets that came from uvl-liquibase.xml are recorded as
+        configuration/liquibase/ozone-uvl-mugamba/uvl-liquibase.xml
+    Each of them therefore carries that path as its logicalFilePath. Without it they
+    would look new here and run a second time. Do not remove or change it, and do
+    not give it to new changesets: they take this file's own path.
+
+    Liquibase also refuses to start when the content of a recorded changeset has
+    changed (checksum). Edit a changeset that has run somewhere only with a
+    <validCheckSum> for the checksum that database recorded.
 -->
 <databaseChangeLog
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
@@ -23,13 +38,32 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd
         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
+    <!--
+        Most of the changesets that follow are 2024 inserts with hard-coded primary keys, written
+        for an empty database. On a database with real data those keys belong to real patients,
+        staff users and reports - on UAT, person_id 30-40 are patients and user_id 30-40 are staff.
+        Each such changeset is guarded so that it is marked ran, and changes nothing, when any of
+        its keys is already taken. Only the 2026 changesets are expected to execute on a live
+        database.
+    -->
+
     <!-- Add admin as provider -->
-    <changeSet id="add_admin_provider-202407101630" author="pirupius">
+    <changeSet id="add_admin_provider-202407101630" author="pirupius"
+               logicalFilePath="configuration/liquibase/ozone-uvl-mugamba/uvl-liquibase.xml">
+        <!-- #231 dropped the hard-coded provider_id so that OpenMRS assigns one. That changed this
+             changeset's checksum, and UAT recorded it (MARK_RAN) with the earlier one: the
+             validCheckSum below accepts that recorded checksum so Liquibase does not refuse the
+             changelog. It does not make the changeset run again.
+             Skip where admin is already a provider, where the identifier or uuid is taken, or where
+             provider_id 1 exists (on UAT that is service-account-eip) - the union of the #231 and
+             #305 guards. -->
+        <validCheckSum>9:fef5eacc06f8e3d054e80a9af599c6b7</validCheckSum>
         <preConditions onFail="MARK_RAN">
             <sqlCheck expectedResult="1">
                 SELECT CASE WHEN COUNT(*) > 0 THEN 0 ELSE 1 END
                 FROM provider
                 WHERE person_id = 1
+                   OR provider_id = 1
                    OR identifier = 'admin'
                    OR uuid = '361ebccc-0992-46c5-a99f-ac523bed386e';
             </sqlCheck>
@@ -45,7 +79,20 @@
     </changeSet>
 
     <!-- persons -->
-    <changeSet id="add_mosul_person_for_user-202406191255" author="Joshua">
+    <changeSet id="add_mosul_person_for_user-202406191255" author="Joshua"
+               logicalFilePath="configuration/liquibase/ozone-uvl-mugamba/uvl-liquibase.xml">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM person
+                WHERE person_id BETWEEN 30 AND 40
+                   OR uuid IN ('41cd41d6-88b2-4f90-a27a-c73344df878a', 'bc67a082-ef49-4b2e-a08c-a47766d8ff9d',
+                               '01e0b6d8-f6b7-42dd-a5c9-d23798bf3f5e', 'c8c0e7fa-5904-476c-8985-87c4cfe282f6',
+                               '23accfd8-eff8-4982-959f-e585bf95c69d', 'd383db17-8d52-4f06-8785-c7bc68277671',
+                               '1eca332e-a679-4ef5-97c6-1507081585b7', 'e02d96e7-6834-4d4f-8a3d-f89d5d354f65',
+                               'f26fd8f5-fe75-49d0-84f9-a80ef46fb66e', 'a22c3c01-adf5-48d7-90a0-a06cc776fb9d',
+                               '5a27f32a-45c6-4425-8923-fcf0cda8d07c');
+            </sqlCheck>
+        </preConditions>
         <comment>
             Add Mugamba Persons to database
         </comment>
@@ -121,7 +168,24 @@
     </changeSet>
 
     <!-- Person Names -->
-    <changeSet id="add_mosul_person_names_for_user-202406191255" author="Joshua">
+    <changeSet id="add_mosul_person_names_for_user-202406191255" author="Joshua"
+               logicalFilePath="configuration/liquibase/ozone-uvl-mugamba/uvl-liquibase.xml">
+        <!-- Only onto the persons the changeset above created, and only into free ids. -->
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT CASE WHEN
+                    (SELECT COUNT(*) FROM person
+                      WHERE person_id BETWEEN 30 AND 40
+                        AND uuid IN ('41cd41d6-88b2-4f90-a27a-c73344df878a', 'bc67a082-ef49-4b2e-a08c-a47766d8ff9d',
+                                     '01e0b6d8-f6b7-42dd-a5c9-d23798bf3f5e', 'c8c0e7fa-5904-476c-8985-87c4cfe282f6',
+                                     '23accfd8-eff8-4982-959f-e585bf95c69d', 'd383db17-8d52-4f06-8785-c7bc68277671',
+                                     '1eca332e-a679-4ef5-97c6-1507081585b7', 'e02d96e7-6834-4d4f-8a3d-f89d5d354f65',
+                                     'f26fd8f5-fe75-49d0-84f9-a80ef46fb66e', 'a22c3c01-adf5-48d7-90a0-a06cc776fb9d',
+                                     '5a27f32a-45c6-4425-8923-fcf0cda8d07c')) = 11
+                    AND (SELECT COUNT(*) FROM person_name WHERE person_name_id BETWEEN 30 AND 40) = 0
+                THEN 1 ELSE 0 END;
+            </sqlCheck>
+        </preConditions>
         <insert tableName="person_name">
             <column name="person_name_id" valueNumeric="30"/>
             <column name="preferred" valueBoolean="true"/>
@@ -254,7 +318,28 @@
     </changeSet>
 
     <!-- users -->
-    <changeSet id="add_mosul_users-202406191255" author="Joshua">
+    <changeSet id="add_mosul_users-202406191255" author="Joshua"
+               logicalFilePath="configuration/liquibase/ozone-uvl-mugamba/uvl-liquibase.xml">
+        <!-- Only for the persons created above, and only into free ids and usernames. -->
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT CASE WHEN
+                    (SELECT COUNT(*) FROM person
+                      WHERE person_id BETWEEN 30 AND 40
+                        AND uuid IN ('41cd41d6-88b2-4f90-a27a-c73344df878a', 'bc67a082-ef49-4b2e-a08c-a47766d8ff9d',
+                                     '01e0b6d8-f6b7-42dd-a5c9-d23798bf3f5e', 'c8c0e7fa-5904-476c-8985-87c4cfe282f6',
+                                     '23accfd8-eff8-4982-959f-e585bf95c69d', 'd383db17-8d52-4f06-8785-c7bc68277671',
+                                     '1eca332e-a679-4ef5-97c6-1507081585b7', 'e02d96e7-6834-4d4f-8a3d-f89d5d354f65',
+                                     'f26fd8f5-fe75-49d0-84f9-a80ef46fb66e', 'a22c3c01-adf5-48d7-90a0-a06cc776fb9d',
+                                     '5a27f32a-45c6-4425-8923-fcf0cda8d07c')) = 11
+                    AND (SELECT COUNT(*) FROM users
+                          WHERE user_id BETWEEN 30 AND 40
+                             OR username IN ('REG_officer', 'MH_nurse', 'MH_counselor', 'MH_doctor', 'MAT_nurse',
+                                             'RegistrationOfficer', 'Nurse', 'Doctor', 'LabTechnician',
+                                             'Pharmacist', 'Cashier')) = 0
+                THEN 1 ELSE 0 END;
+            </sqlCheck>
+        </preConditions>
         <comment>
             Add Mugamba Users to database
         </comment>
@@ -386,7 +471,17 @@
     </changeSet>
 
     <!-- user_role -->
-    <changeSet id="add_uvl_user_role-202410162055" author="Allan">
+    <changeSet id="add_uvl_user_role-202410162055" author="Allan"
+               logicalFilePath="configuration/liquibase/ozone-uvl-mugamba/uvl-liquibase.xml">
+        <!-- Only when user_id 35-40 are the accounts created above. Where those ids belong to
+             real staff (UAT) this would otherwise grant them roles. -->
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="6">
+                SELECT COUNT(*) FROM users
+                WHERE (user_id, username) IN ((35, 'RegistrationOfficer'), (36, 'Nurse'), (37, 'Doctor'),
+                                              (38, 'LabTechnician'), (39, 'Pharmacist'), (40, 'Cashier'));
+            </sqlCheck>
+        </preConditions>
         <comment>
             Add Mugamba User roles to database
         </comment>
@@ -420,7 +515,8 @@
     </changeSet>
 
     <!-- Person attributes - emergency contact relationship change from string to concept -->
-    <changeSet id="update_person_attribute-202406191265" author="pirupius">
+    <changeSet id="update_person_attribute-202406191265" author="pirupius"
+               logicalFilePath="configuration/liquibase/ozone-uvl-mugamba/uvl-liquibase.xml">
         <preConditions onFail="MARK_RAN">
             <sqlCheck expectedResult="1">
                 SELECT CASE WHEN COUNT(*) > 0 THEN 1 ELSE 0 END FROM person_attribute a
@@ -431,13 +527,20 @@
         <comment>
             Update person attribute value for emergency contact relationship 1 and emergency contact relationship 2 with concept uuid
         </comment>
+        <!-- Scoped to the two emergency contact attribute types: unscoped, the DELETE would
+             remove any person attribute of any type whose value is 'test'. -->
         <sql>
-            UPDATE person_attribute SET value = '972AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' WHERE value = 'sister' OR value = 'brother';
-            UPDATE person_attribute SET value = '5618AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' WHERE value = 'friend';
-            UPDATE person_attribute SET value = '1527AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' WHERE value = 'mother' OR value = 'father';
-            DELETE FROM person_attribute WHERE value = 'test';
+            UPDATE person_attribute SET value = '972AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' WHERE (value = 'sister' OR value = 'brother')
+               AND person_attribute_type_id IN (SELECT person_attribute_type_id FROM person_attribute_type WHERE uuid IN ('057e07a8-2170-4422-b257-26e401e3c151', '486da62c-12a8-463c-ada9-4e8f6488075e'));
+            UPDATE person_attribute SET value = '5618AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' WHERE value = 'friend'
+               AND person_attribute_type_id IN (SELECT person_attribute_type_id FROM person_attribute_type WHERE uuid IN ('057e07a8-2170-4422-b257-26e401e3c151', '486da62c-12a8-463c-ada9-4e8f6488075e'));
+            UPDATE person_attribute SET value = '1527AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' WHERE (value = 'mother' OR value = 'father')
+               AND person_attribute_type_id IN (SELECT person_attribute_type_id FROM person_attribute_type WHERE uuid IN ('057e07a8-2170-4422-b257-26e401e3c151', '486da62c-12a8-463c-ada9-4e8f6488075e'));
+            DELETE FROM person_attribute WHERE value = 'test'
+               AND person_attribute_type_id IN (SELECT person_attribute_type_id FROM person_attribute_type WHERE uuid IN ('057e07a8-2170-4422-b257-26e401e3c151', '486da62c-12a8-463c-ada9-4e8f6488075e'));
         </sql>
     </changeSet>
+
     <changeSet id="ensure_mugamba_insurance_payment_modes-20260730" author="isaac-maya">
         <comment>
             Ensure the canonical Mugamba insurance payment modes exist before item prices are attached.
@@ -460,6 +563,22 @@
     </changeSet>
 
     <changeSet id="uvl_002_touch_person_on_insurance_tier_attribute_change-20260731" author="isaac-maya">
+        <!--
+            Guarded (#189, #305). With binary logging on and log_bin_trust_function_creators off,
+            MariaDB and MySQL refuse CREATE TRIGGER to a user without SUPER, and that error would
+            fail this whole changelog - every changeset after this one, and the Initializer run.
+            onFail CONTINUE skips the changeset WITHOUT recording it and logs the message, so it is
+            tried again on every start and the triggers appear as soon as the variable is set
+            (log_bin_trust_function_creators=1 in the database server config). MARK_RAN would
+            record it and the triggers would never be created. UAT has the variable on.
+        -->
+        <preConditions onFail="CONTINUE" onError="CONTINUE"
+                       onFailMessage="WARN (#189): the Insurance Coverage Tier triggers were NOT created because binary logging is on and log_bin_trust_function_creators is off. A tier change will not re-sync the patient to Odoo until log_bin_trust_function_creators=1 is set on the database server; this changeset is retried on every start."
+                       onErrorMessage="WARN (#189): could not read log_bin / log_bin_trust_function_creators, so the Insurance Coverage Tier triggers were NOT created; this changeset is retried on every start.">
+            <sqlCheck expectedResult="1">
+                SELECT CASE WHEN @@GLOBAL.log_bin = 0 OR @@GLOBAL.log_bin_trust_function_creators = 1 THEN 1 ELSE 0 END
+            </sqlCheck>
+        </preConditions>
         <comment>
             Propagate Insurance Coverage Tier person_attribute changes into the parent person row so
             OpenMRS EIP emits a normal patient sync event when the source-of-truth attribute changes.
@@ -502,6 +621,24 @@
         </sql>
     </changeSet>
 
+    <!--
+        add_item_prices is disabled, not guarded (#305).
+
+        It inserts 364 OpenMRS cashier prices keyed on hard-coded service_id 1-182, as those
+        ids were numbered on a 2024 database. The ids carry no service name, so there is no
+        way to tell whether service_id N on a given database is the service the price was
+        written for; on UAT, cashier_billable_service holds 227 services loaded from
+        billableServices.csv and cashier_item_price is empty. Running it would attach 2024
+        prices to whichever services hold those ids today.
+
+        #233 made sql/item_prices.sql look the payment modes up by uuid, which settles the
+        payment-mode half. The service half is what is still unsafe, and it cannot be fixed
+        in this file: the service a price belongs to is not recorded anywhere in it.
+
+        Prices are a requirement (Didier), and the fee schedule is still outstanding. If OpenMRS
+        cashier prices are wanted, they need to come from that schedule and be keyed on the
+        service uuid - not from this file.
+
     <changeSet id="add_item_prices" author="wodpachua">
         <preConditions>
             <sqlCheck expectedResult="2">
@@ -512,21 +649,74 @@
 		<sqlFile path="sql/item_prices.sql" relativeToChangelogFile="true" stripComments="true" />
         <sql>SET foreign_key_checks = 1;</sql>
 	  </changeSet>
+    -->
 
     <!-- Reports -->
-    <changeSet id="add_serial_object_" author="dancinoman">
+    <!-- Hard-coded serialized_object_id 12-48: skip where any id or uuid is taken
+         (on UAT id 12 is the Conditions Report). -->
+    <changeSet id="add_serial_object_" author="dancinoman"
+               logicalFilePath="configuration/liquibase/ozone-uvl-mugamba/uvl-liquibase.xml">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM serialized_object
+                WHERE serialized_object_id BETWEEN 12 AND 48
+                   OR uuid IN ('7931b1bf-3fba-45f6-b895-60ff2de5515c', 'aa636aa4-fd96-415b-b569-f40cab389473',
+                               '3cb6b3ab-9130-4e09-bef0-5ac4e3158f1a', 'e51e02ab-1d26-4788-868e-d0f4cca2430e',
+                               'a44d59d0-2569-40dd-8bc1-4a5663c03bb8', '6c3272f3-7d6b-4a09-90ca-0b47b48cb700');
+            </sqlCheck>
+        </preConditions>
         <sql>SET foreign_key_checks = 0;</sql>
 		<sqlFile path="sql/serialized_object.sql" relativeToChangelogFile="true" stripComments="true" />
         <sql>SET foreign_key_checks = 1;</sql>
     </changeSet>
 
-    <changeSet id="add_reporting_report_request" author="dancinoman">
+    <!-- Scheduled requests for the report definitions above: only where all 14 of those
+         definitions exist, and into free ids. -->
+    <changeSet id="add_reporting_report_request" author="dancinoman"
+               logicalFilePath="configuration/liquibase/ozone-uvl-mugamba/uvl-liquibase.xml">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT CASE WHEN
+                    (SELECT COUNT(DISTINCT uuid) FROM serialized_object
+                      WHERE uuid IN ('0fc145e4-34c8-475b-960c-ad2876e451ae', '13b59ac6-0b70-4ee5-bc4c-30dd99ae087f',
+                                     '2b5247e7-a8f7-43c9-b0b6-edf26ed91bd8', '3cb6b3ab-9130-4e09-bef0-5ac4e3158f1a',
+                                     '51b76b52-a8f9-448c-8d7f-1951557e2d50', '6c3272f3-7d6b-4a09-90ca-0b47b48cb700',
+                                     '7d761237-45a4-45d3-bfaf-867272c03470', '915c428c-071f-4779-8c27-eb9d1a839b82',
+                                     '91924472-60c3-4d7d-aad1-cc6d40c5a2a6', 'a44d59d0-2569-40dd-8bc1-4a5663c03bb8',
+                                     'aa636aa4-fd96-415b-b569-f40cab389473', 'bbf1dd49-1ad5-4102-a778-5da9bf2823d1',
+                                     'df98f6d0-b2d7-438f-bea5-763f2a1db79d', 'e51e02ab-1d26-4788-868e-d0f4cca2430e')) = 14
+                    AND (SELECT COUNT(*) FROM reporting_report_request
+                          WHERE id IN (4, 10, 11, 12, 13, 14, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26)
+                             OR uuid = '8ae17def-b68e-44da-b063-ae5fcf1f5ccc') = 0
+                THEN 1 ELSE 0 END;
+            </sqlCheck>
+        </preConditions>
         <sql>SET foreign_key_checks = 0;</sql>
 		<sqlFile path="sql/reporting_report_request.sql" relativeToChangelogFile="true" stripComments="true" />
         <sql>SET foreign_key_checks = 1;</sql>
     </changeSet>
 
-    <changeSet id="add_reporting_report_design" author="dancinoman">
+    <!-- CSV designs: only where all 12 report definitions they render exist, and into free
+         ids. 11 of the 12 are not in serialized_object.sql, so this is marked ran on a fresh
+         database too, rather than inserting designs for reports that do not exist. -->
+    <changeSet id="add_reporting_report_design" author="dancinoman"
+               logicalFilePath="configuration/liquibase/ozone-uvl-mugamba/uvl-liquibase.xml">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT CASE WHEN
+                    (SELECT COUNT(DISTINCT uuid) FROM serialized_object
+                      WHERE uuid IN ('094a9c78-9fb1-4eb2-bfc4-bc9fe8b5b4b4', '2ab6f727-1c17-4c3b-b7b6-6447825dc5fb',
+                                     '320d3c2a-93d2-4bba-887b-f9cb04778dde', '3fc926dd-f317-426c-b96d-0e8d504eee5e',
+                                     '69f3dc43-0ca6-423f-8b60-53e38429270d', 'a7461fe7-f943-4d4d-b2d5-66ffefd9ca3c',
+                                     'aa636aa4-fd96-415b-b569-f40cab389473', 'ae2152c1-1a91-4dc9-96d2-dfc38820648e',
+                                     'd888fa26-ae86-4496-95d3-65f747221204', 'e0cf75f3-d0e8-42e8-9c4d-6d66a52d56ca',
+                                     'e193acbb-4f12-43be-97b2-25ed70a3face', 'ee0d4e55-9a0e-4d7c-ba85-e534102141ee')) = 12
+                    AND (SELECT COUNT(*) FROM reporting_report_design
+                          WHERE id IN (23, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56)
+                             OR uuid = '55c44cd3-53da-4560-aa56-d85c37e5cda2') = 0
+                THEN 1 ELSE 0 END;
+            </sqlCheck>
+        </preConditions>
         <sql>SET foreign_key_checks = 0;</sql>
 		<sqlFile path="sql/reporting_report_design.sql" relativeToChangelogFile="true" stripComments="true" />
         <sql>SET foreign_key_checks = 1;</sql>
@@ -534,7 +724,8 @@
 
     <!-- Retire the duplicate provider record. Previously applied on every boot by
          scripts/src/post-start.sh; a changeset runs once and is tracked. -->
-    <changeSet id="retire_duplicate_provider-202608041100" author="jnsereko">
+    <changeSet id="retire_duplicate_provider-202608041100" author="jnsereko"
+               logicalFilePath="configuration/liquibase/ozone-uvl-mugamba/uvl-liquibase.xml">
         <preConditions onFail="MARK_RAN">
             <sqlCheck expectedResult="1">
                 SELECT CASE WHEN COUNT(*) > 0 THEN 1 ELSE 0 END FROM provider
@@ -575,7 +766,10 @@
          credentials through the module itself, with the secret supplied from the
          environment rather than committed. -->
 
-    <changeSet id="add_orthanc_service_account_user-202608070100" author="Joshua">
+    <changeSet id="add_orthanc_service_account_user-202608070100" author="Joshua"
+               logicalFilePath="configuration/liquibase/ozone-uvl-mugamba/uvl-liquibase.xml">
+        <!-- preConditions must come before comment: in the other order the schema rejects the
+             changeset and Liquibase fails the whole changelog, liquibase.xml included (#305). -->
         <preConditions onFail="MARK_RAN">
             <sqlCheck expectedResult="0">
                 select count(*) from users where username = 'service-account-orthanc-service'
