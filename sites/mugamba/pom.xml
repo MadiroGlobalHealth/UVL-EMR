@@ -260,6 +260,43 @@
 					</execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.codehaus.gmavenplus</groupId>
+        <artifactId>gmavenplus-plugin</artifactId>
+        <version>3.0.2</version>
+        <executions>
+          <execution>
+            <!--
+              Fails the build on a Liquibase changelog the Initializer would never run, or
+              one Liquibase would reject at parse time (#305). See the script.
+            -->
+            <id>Check the Initializer Liquibase changelogs</id>
+            <goals>
+              <goal>execute</goal>
+            </goals>
+            <phase>prepare-package</phase>
+            <configuration>
+              <scripts>
+                <script>file://${project.basedir}/../../scripts/check-liquibase-changelogs.groovy</script>
+              </scripts>
+            </configuration>
+          </execution>
+        </executions>
+        <dependencies>
+          <!-- Same Groovy line as the bundled-docker profile's groovy-templates. -->
+          <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-xml</artifactId>
+            <version>3.0.22</version>
+          </dependency>
+          <!-- The Liquibase openmrs-core 2.8.9 runs (distro/pom.xml openmrs.version), so parsing here matches parsing there. -->
+          <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+            <version>4.32.0</version>
+          </dependency>
+        </dependencies>
+      </plugin>
     </plugins>
   </build>
   
