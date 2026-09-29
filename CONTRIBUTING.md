@@ -106,25 +106,24 @@ sites/mugamba/configs/
 └── keycloak/                 realm, clients, roles
 ```
 
-Two things that are not obvious and have each cost us time:
+Three things that are not obvious and have each cost us time:
 
 - **OpenMRS configuration is copied from the image into the running container on
-  every start.** Change a file here, rebuild, redeploy, and it applies. Config
-  you delete from the repo may linger in an existing environment, so check rather
-  than assume.
+  every start.** Change a file here, rebuild, redeploy, and it applies.
 - **The Keycloak realm file is only read when the realm does not yet exist.** On
   any environment that already has it, editing `ozone-realm.json` changes nothing
   and nothing warns you. Roles have to be applied to a running environment
   separately.
 
-- **Config you delete from the repo does not go away.** The OpenMRS entrypoint
-  means to clear `configuration/` and `modules/` and refill them from the image on
-  every start. It refills them; it does not clear them, because the glob is inside
-  the quotes: `rm -fR "${OMRS_CONFIG_DIR:?}/*"` deletes a file literally named `*`.
-  So a file you remove here keeps loading on every existing environment, with no
-  source in the repo. Fixed on `openmrs-core` master but **not in any 2.8.x
-  release**, so it is live for us. `P6` below detects it; LIME-EMR-Tooling's
-  `openmrs-clear-stale-config.sh` clears it.
+- **Config you delete from the repo is removed at the next start, but only since
+  #341.** The OpenMRS 2.8.x entrypoint means to clear `configuration/` and
+  `modules/` before refilling them from the image. It never did, because the glob
+  is inside the quotes: `rm -fR "${OMRS_CONFIG_DIR:?}/*"` deletes a file literally
+  named `*`. We patch that line when the image is built
+  (`scripts/bundled-docker/openmrs/patch-startup-init.sh`, #341). The flip side is
+  that anything added to an environment's volume by hand, rather than through this
+  repo, disappears on the next start. `P6` in the pre-flight suite below checks the
+  volume against the image.
 
 ## Building images
 
