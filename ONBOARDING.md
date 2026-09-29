@@ -59,7 +59,7 @@ free RAM, 8 CPU cores and 25 GB of free disk**.
 ## Step 3: Run UVL-EMR on your machine
 
 Follow **[Quick start on localhost](README.md#quick-start-on-localhost)** in the README: install
-Git, a JDK and Docker Compose, add a GitHub token to `~/.m2/settings.xml`, build with
+Git, a JDK and Docker Compose, add a [GitHub token](https://github.com/settings/tokens) to `~/.m2/settings.xml`, build with
 `./scripts/mvnw clean package`, then start the Mugamba site. If you can't run it locally, the
 README's GitPod button runs it in your browser.
 
