@@ -8,6 +8,17 @@ This repository contains a distribution of **OpenMRS 3** that will support UVL i
 
 Additionally, it facilitates efficient tracking of public health trends and resource allocation, which is essential for addressing the unique healthcare challenges in rural settings. For example, the financial support from the government for child care and maternal care is conditional to digitalization - contributing to the long-term **viability and independence** of the hospital.
 
+## New volunteer? Start here
+
+Read **[ONBOARDING.md](ONBOARDING.md)** first. It takes you in order through:
+1. the [OpenMRS 3 course](https://openmrs.org/courses/intro-to-openmrs-3-2/);
+2. the [Ozone](https://docs.ozone-his.com/users/) introduction and [architecture](https://docs.ozone-his.com/devs/);
+3. running UVL-EMR locally;
+4. how UVL's apps and repositories fit together;
+5. picking up your first issue.
+
+Then see [CONTRIBUTING.md](CONTRIBUTING.md) for how we work, and the [CHANGELOG](CHANGELOG.md) for what has changed recently.
+
 ### Users and teams
 
 <img width="1167" alt="Screenshot 2024-08-06 at 4 44 07 PM" src="https://github.com/user-attachments/assets/6a96fa28-e012-4ee1-812f-d1a8c7f744a6">
@@ -135,9 +146,9 @@ Add the Maven Server config and API key in your Maven settings on your laptop:
 ```bash
   <servers>
     <server>
-      <id>madiroglobalhealth-github-uvl-emr</id>
+      <id>madiro-global-health-github-uvl-emr</id>
       <username>YOUR_GITHUB_USERNAME</username>
-      <password>YOU_GITHUB_PASSWORD</password>
+      <password>YOUR_GITHUB_TOKEN</password>
     </server>
   </servers>
 ```
@@ -157,7 +168,7 @@ Add the Maven Server config and API key in your Maven settings on your laptop:
 
 ## Contributing
 
-Contributions are welcome! If you have any suggestions, improvements, or bug fixes, please feel free to open an issue or submit a pull request.
+Contributions are welcome! If you're new, start with [ONBOARDING.md](ONBOARDING.md). [CONTRIBUTING.md](CONTRIBUTING.md) covers branches, commits, pull requests and where configuration lives. Record user-visible changes in the [CHANGELOG](CHANGELOG.md) in the same pull request.
 
 ## Acknowledgments
 
@@ -203,8 +214,7 @@ For any questions, please contact [Michael Bontyes](https://github.com/michaelbo
 
 ## Sign up for the challenge
 
-Enrollment are **open until September 1st, 2024**:
-[https://forms.gle/R1gTWSYYw1WWAErm7](https://forms.gle/R1gTWSYYw1WWAErm7)
+The 2024 HealthTech Challenge enrolment closed on 1 September 2024. To volunteer now, start with [ONBOARDING.md](ONBOARDING.md) and say hello on an issue.
 
 ### Sprint Check-in
 
