@@ -24,10 +24,20 @@
 # OpenMRS built-in System Developer.
 #
 # odoo_role must be one of the roles declared on the `odoo` client in
-# sites/mugamba/configs/keycloak/realms/ozone-realm.json. The one billing staff
-# need is `Invoicing / Billing`; their manager gets `Invoicing / Billing
-# Administrator`. `User types / Internal User` is added automatically alongside
+# sites/mugamba/configs/keycloak/realms/ozone-realm.json. odoo_role may hold
+# several roles separated by `;` -- rows are split on commas, so a comma cannot
+# be the separator. `User types / Internal User` is added automatically alongside
 # any odoo_role, so it never needs listing here.
+#
+# BILLING STAFF NEED TWO ODOO ROLES, NOT ONE: `Invoicing / Billing;Sales / User:
+# All Documents` (their manager: `Invoicing / Billing Administrator;Sales / User:
+# All Documents`). `Invoicing / Billing` alone is not enough. Odoo replaces a
+# user's groups with the token's roles at every login, and without a Sales group
+# the cashier cannot confirm an order -- confirming reads stock.warehouse.orderpoint
+# -- nor open the Create Invoice wizard. Orders are raised by the integration
+# user, not the cashier, so it must be All Documents, not Own Documents Only.
+# On UAT, 2026-09-28: "Access Denied by ACLs for operation: read ...
+# stock.warehouse.orderpoint" for a cashier holding Invoicing / Billing only.
 #
 # Either column may be `-`. A row needs at least one of the two.
 #
@@ -40,5 +50,5 @@ username,first_name,last_name,openmrs_role,odoo_role
 jane.doe,Jane,DOE,Doctor,-
 john.roe,John,ROE,Nurse,-
 mary.moe,Mary,MOE,Pharmacist,-
-peter.poe,Peter,POE,-,Invoicing / Billing
-paula.poe,Paula,POE,-,Invoicing / Billing Administrator
+peter.poe,Peter,POE,-,Invoicing / Billing;Sales / User: All Documents
+paula.poe,Paula,POE,-,Invoicing / Billing Administrator;Sales / User: All Documents
