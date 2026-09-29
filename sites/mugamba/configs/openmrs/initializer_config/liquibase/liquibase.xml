@@ -864,4 +864,67 @@
         </delete>
     </changeSet>
 
+    <!--
+        #354 (and #208) - lab results reject decimals: BI05 glucose 4.2, MCV 12.1 and
+        Lymphocytes (%) 11.5 fail with Obs.error.precision, in the form and over REST.
+
+        These numeric lab concepts have concept_numeric.allow_decimal = 0 on UAT, unchanged since
+        the 2025 import. The OCL import cannot correct them: the openconceptlab module skips a
+        concept whose version_url equals the one it last imported (Saver.saveConcept, state
+        UP_TO_DATE) without reading its content, and in the uvl-ciel source these concepts still
+        say allow_decimal false. PR #216 hand-edited the zip, which keeps the version_url, and was
+        then replaced by a fresh export that has false again.
+
+        Only lab tests are listed. Vital-sign and other whole-number concepts (pulse, respiratory
+        rate, blood pressure, SpO2, fetal heart rate, Karnofsky, immunization sequence, estimated
+        blood loss) are deliberately left as they are.
+
+        The Initializer runs Liquibase before OCL, so on a new database these concepts do not
+        exist yet when this is first evaluated. onFail CONTINUE leaves it unrecorded and it is
+        tried again on the next start, after OCL has loaded them; MARK_RAN would record it
+        and the fix would never be applied there. The update is idempotent.
+    -->
+    <changeSet id="allow_decimal_on_numeric_lab_tests-202609291200" author="Joshua">
+        <preConditions onFail="CONTINUE"
+                       onFailMessage="WARN (#354): none of the numeric lab concepts exist yet (OCL has not loaded them), so allow_decimal was NOT set; this changeset is retried on every start.">
+            <sqlCheck expectedResult="1">
+                SELECT CASE WHEN COUNT(*) &gt; 0 THEN 1 ELSE 0 END
+                FROM concept_numeric n JOIN concept c ON c.concept_id = n.concept_id
+                WHERE c.uuid IN ('8c72c21f-e119-4f71-9d9c-41dd5d04bf5d', '56277936-ba54-4c4b-84e9-e3bfe06ff2c5',
+                                 '32187902-f678-45b0-ac31-513f67f34671', 'ce5676c9-d011-4e01-ad49-e8f38d3d30d5',
+                                 '0816a323-8f88-4500-be2e-f332910e217e', '7fd3f616-0989-478e-8b1d-7ea3a15ce441',
+                                 '5c5d139d-b9bc-4167-a454-639c30e8a8d3', 'fe4a677c-e291-4b92-a664-01aff55dc547',
+                                 '27a280c7-5754-49a6-99a9-915608ee8f58', '09ca9876-74a1-4083-ad93-4346c7437f8a',
+                                 '20c8e6ef-116d-4a25-8e8d-956c8eb54949', '9c07ed0b-4497-48d6-8575-3d4d6a5a3139',
+                                 '55e44bd4-5281-4d84-b596-1211cc940b4c', 'a8d8a1de-5ca2-4afa-ab0b-84d65914eef7',
+                                 'f569b39d-e2b5-4c4f-a415-aba4d2324154', '235ac1e3-d040-46d0-95de-130bd0b72181',
+                                 '8f7f6f05-1cf2-42c9-a1e4-a864b1b6c4f9', '65589ff5-f7a5-43f8-b3ba-b2f077eb95e6',
+                                 'c25dfd4e-5a06-4b0d-864d-e4cedb88e702', 'c2f9012b-6f91-4b1e-945f-cfddf91c518b',
+                                 '0970a9c7-aa5c-4764-abaf-e46061562552');
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            Allow decimal results on the numeric lab test concepts that reject them (#354, #208).
+        </comment>
+        <sql>
+            UPDATE concept_numeric n
+              JOIN concept c ON c.concept_id = n.concept_id
+               SET n.allow_decimal = 1,
+                   c.changed_by = 1,
+                   c.date_changed = NOW()
+             WHERE n.allow_decimal = 0
+               AND c.uuid IN ('8c72c21f-e119-4f71-9d9c-41dd5d04bf5d', '56277936-ba54-4c4b-84e9-e3bfe06ff2c5',
+                              '32187902-f678-45b0-ac31-513f67f34671', 'ce5676c9-d011-4e01-ad49-e8f38d3d30d5',
+                              '0816a323-8f88-4500-be2e-f332910e217e', '7fd3f616-0989-478e-8b1d-7ea3a15ce441',
+                              '5c5d139d-b9bc-4167-a454-639c30e8a8d3', 'fe4a677c-e291-4b92-a664-01aff55dc547',
+                              '27a280c7-5754-49a6-99a9-915608ee8f58', '09ca9876-74a1-4083-ad93-4346c7437f8a',
+                              '20c8e6ef-116d-4a25-8e8d-956c8eb54949', '9c07ed0b-4497-48d6-8575-3d4d6a5a3139',
+                              '55e44bd4-5281-4d84-b596-1211cc940b4c', 'a8d8a1de-5ca2-4afa-ab0b-84d65914eef7',
+                              'f569b39d-e2b5-4c4f-a415-aba4d2324154', '235ac1e3-d040-46d0-95de-130bd0b72181',
+                              '8f7f6f05-1cf2-42c9-a1e4-a864b1b6c4f9', '65589ff5-f7a5-43f8-b3ba-b2f077eb95e6',
+                              'c25dfd4e-5a06-4b0d-864d-e4cedb88e702', 'c2f9012b-6f91-4b1e-945f-cfddf91c518b',
+                              '0970a9c7-aa5c-4764-abaf-e46061562552');
+        </sql>
+    </changeSet>
+
 </databaseChangeLog>
