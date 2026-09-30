@@ -18,22 +18,28 @@ MSF-OCG/LIME-EMR-Tooling.
 
 ---
 
-## Current status — 2026-09-29
+## Current status — 2026-09-30
 
-- Production last received an EMR update on **2026-09-09**, the Odoo 14 → 17 cut-over (#237).
-- `[Unreleased]` below is a **release candidate**. It is the official `globalmadiro` images from
-  UVL-EMR `main` `a218cae`, deployed from LIME-EMR-Tooling `dev` `a502826de`. It passed the full
-  browser journey on UAT on 2026-09-29, run as the real staff roles, with nothing waived
-  (evidence on #346, #331 and #302). When it reaches production, give the
-  section the deployment date, tag it `Production`, and record the running image digests.
+- Production received an EMR update on **2026-09-30**: the official `globalmadiro` images from
+  UVL-EMR `main` `393f5b5`, deployed from LIME-EMR-Tooling `dev`. They are the same images, by
+  amd64 image-config digest, that passed the full browser journey and the product owner's
+  screenshots on UAT the day before.
+- Nothing is in `[Unreleased]` yet.
 - Plan of record: the UVL-EMR Delivery Dashboard, status 28 Sep 2026 (milestones on GitHub).
 
 ---
 
-## [Unreleased] — `UAT` · release candidate `a218cae`
+## [Unreleased] — `UAT`
 
-Merged to UVL-EMR `main`, UVL-Odoo-Addons `main` and LIME-EMR-Tooling `dev`, and verified on UAT.
-**Not in production.**
+Nothing yet.
+
+---
+
+## [2026-09-30] — `Production`
+
+UVL-EMR `main` `393f5b5`, UVL-Odoo-Addons `main` `76726c4`, LIME-EMR-Tooling `dev`. Verified on
+UAT on 2026-09-29 by the full browser journey, run as the real staff roles, and by repeating
+the product owner's own test screenshots.
 
 ### Staff will notice
 - **Starting a visit shows a Payer field** (Cash, Mobile Money, MFP, CAM, Other insurance). It is
@@ -43,6 +49,12 @@ Merged to UVL-EMR `main`, UVL-Odoo-Addons `main` and LIME-EMR-Tooling `dev`, and
 - **Nurses can save forms again.** Every form that records a provider failed for the Nurse role. (#335)
 - **The imaging-gate screen is gone,** and lab results entry has its button back. Imaging results
   are entered from the patient chart → Orders. (#322, #337)
+- **Lab results accept decimals,** for example glucose 4.2, MCV 12.1 and lymphocytes 11.5. Vital
+  signs such as pulse and blood pressure stay whole numbers. (#354)
+- **The Pharmacist can dispense, pause and close prescriptions.** Before this, dispensing failed
+  with a server error. Stock does not go down yet: no stock is loaded. (#355)
+- **A drug the patient already has active** is marked "Déjà actif - utiliser Modifier" in the
+  search. If the basket still fails, it now says that nothing was saved and what to do. (#356)
 
 ### Added
 - **Down-payment fix for Odoo 17, UVL addon `uvl_sale_down_payment`.** The first down payment used
@@ -93,8 +105,27 @@ Merged to UVL-EMR `main`, UVL-Odoo-Addons `main` and LIME-EMR-Tooling `dev`, and
 - Keycloak no longer wipes and re-imports its realm on every restart. (#272)
 - UVL no longer requests a translations frontend config it doesn't ship; that was a 404 on every
   page. (#343, LIME-EMR-Tooling `c29a0d194`)
+- **Lab results refused decimals,** in the form and on the server. #208's fix had only edited the
+  OCL zip, which the OCL module ignores on an existing database because it updates a concept only
+  when its OCL version changes. A guarded Liquibase changeset now allows decimals on 21 lab tests.
+  (#354, #357)
+- **Dispensing returned a 500.** Three causes: the `completed` dispense status had no mapped
+  concept; the dispensing app's default ValueSets were missing; and the Pharmacist lacked
+  `Get Order Frequencies` and `Edit Orders`. (#355, #358)
+- **The basket error for an already-active drug** said only "Please try launching the workspace
+  again". It now explains what happened and what to do, in French and English. (#356, #359)
 
 ### Deploy notes for production
+
+What the 2026-09-30 deploy actually needed, beyond the steps below:
+- **The billing module failed to start.** Production stored the older checksum
+  (`8:838129…`) for `openhmis.cashier-001-v3.0.0-0334`, and `billing-2.3.0` ships a changed copy.
+  The changeset had already run. Clearing that one stored checksum (`md5sum = NULL`, as it already
+  was on UAT) and restarting OpenMRS fixed it. UAT's data could not have shown this.
+- **The first deploy stopped partway** ("removal of container … is already in progress"),
+  leaving both EIP bridges down. A second run completed.
+- **The billing roster was re-applied,** 6 users reconciled.
+
 1. **Before deploying, run the #346 detector query on production and delete any rows it returns.**
    The addon can't rescue a database that already fails to boot.
 2. Record the running image digests first. The `:dev` tag is overwritten on pull, so rollback
@@ -116,10 +147,30 @@ Merged to UVL-EMR `main`, UVL-Odoo-Addons `main` and LIME-EMR-Tooling `dev`, and
 - **Visits auto-close at 02:00 CAT, not midnight** (the task runs at 23:59:59 UTC). (#350)
 - The X-Ray Technician sees a queue error on their home page; the order basket makes failing price
   and stock lookups. (#351)
-- Dispensing crashes on missing ValueSets. (M3, #283)
+- Dispensing: stock does not decrement, because no stock is loaded, and a fully dispensed
+  prescription can be dispensed again. (#355)
+- A repeat of an active lab test is accepted silently and never billed; a repeat consultation is
+  billed twice. (#360, #356)
 - Imaging tariffs are placeholders (1 BIF) until the fee schedule arrives.
 - 31 staff hold Superset Admin and SENAITE Manager from the old realm file. (#348)
 - The `insurance_coverage` Odoo addon is in the image but not installed, so #184 is still untested.
+
+### Images running in production (amd64 image IDs, 2026-09-30)
+
+| service | image id |
+|---|---|
+| openmrs-backend | `sha256:4a706da4540601008a1f82cb9476dc35da19f325e3adfd35620a6c4b5ec4ff03` |
+| openmrs-frontend | `sha256:3ab2f8cbccee20329f2ced3e3fbf585bbbaaea1e970ddc4ff31b3cb57d89d6b0` |
+| odoo | `sha256:b613a289c9268db3c9b10b980b6d13d69a5d08dbbb6fb98b8ea3cdde125aa8ff` |
+| keycloak | `sha256:d98ce304ec889ba534630aff2df69060142df9c875f5b9f7776339773d355ad9` |
+| mysql | `sha256:6443932843526edcd6b9fec8042e29fbd05ab2c8040eca31ee12a16e0a52b772` |
+| postgresql | `sha256:ccc4e145c6e77fbb57661193d8002f8966fa11dbd5dfa64ebf68ef49c8a29848` |
+| eip-odoo-openmrs | `sha256:4838e5ad73ba50486c2e057759f4ed15fbb771d39d06615900d13c337f42db1b` |
+| eip-openmrs-orthanc (`mekomsolutions/eip-client:2.4.0-SNAPSHOT@sha256:fef2ffee…`) | `sha256:b5b195f7503ecc1b8a8a6fabc0833a778046a5cf3fbc12dded2474c0efb2d9c7` |
+| orthanc | `sha256:ca6a96e975a4bd5c5d50f22347916e818305f57b4fcd33b7c6f210bac1d2f6b6` |
+| orthanc-auth-service | `sha256:65eddbf0a3450653f8f33bf5f35c3e60ad2fafd47cdb73478bb21453526884e7` |
+
+These are the rollback reference for the next deploy.
 
 ---
 
