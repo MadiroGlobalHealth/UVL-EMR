@@ -125,6 +125,20 @@ What the 2026-09-30 deploy actually needed, beyond the steps below:
 - **The first deploy stopped partway** ("removal of container … is already in progress"),
   leaving both EIP bridges down. A second run completed.
 - **The billing roster was re-applied,** 6 users reconciled.
+- **The orthanc bridge had no database account.** `eip-openmrs-orthanc` crash-looped 226 times on
+  `Access denied for user 'openmrs_eip_mgt_orthanc'`, so imaging orders did not reach the
+  worklist. The MySQL image only creates that database and user on a fresh install, and
+  production's database is older than the bridge. They were created from the container's own
+  `EIP_DB_*_ORTHANC` settings.
+- **Six `openmrs` client roles were missing in Keycloak:** Pharmacist, X-Ray Technician, Midwife,
+  Ophtalmologist, Dentist and Anesthesist. The realm file is only read on a first install. They
+  were added with `keycloak-apply-realm.sh`, which can now sign in with the `keycloak-admin-sa`
+  service account (LIME-EMR-Tooling `cd5319ea0`). The pharmacist and X-ray technician accounts were
+  then created from the staff roster.
+- **Ten old module files were left in the OpenMRS volume,** beside their newer versions, including
+  `billing-1.2.0-SNAPSHOT` and `stockmanagement-2.0.2-SNAPSHOT`. They were cleared with
+  `openmrs-clear-stale-config.sh`. #362 stops future deploys leaving them behind.
+- A read-only post-deploy check then passed all 18 checks.
 
 1. **Before deploying, run the #346 detector query on production and delete any rows it returns.**
    The addon can't rescue a database that already fails to boot.
