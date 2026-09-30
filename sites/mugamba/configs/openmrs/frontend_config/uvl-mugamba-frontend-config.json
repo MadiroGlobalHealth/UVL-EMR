@@ -128,10 +128,10 @@
     },
     "Translation overrides": {
       "en": {
-        "tryReopeningTheWorkspaceAgain": "Nothing in this basket was saved. If a drug in the basket is already active for this patient, remove it from the basket, then use Modify or Discontinue on the current prescription."
+        "tryReopeningTheWorkspaceAgain": "Nothing in this basket was saved. The reason is shown below."
       },
       "fr": {
-        "tryReopeningTheWorkspaceAgain": "Rien n'a été enregistré depuis ce panier. Si un médicament du panier est déjà actif pour ce patient, retirez-le du panier, puis utilisez Modifier ou Interrompre sur la prescription en cours."
+        "tryReopeningTheWorkspaceAgain": "Rien n'a été enregistré depuis ce panier. La raison est indiquée ci-dessous."
       }
     }
   },
