@@ -125,14 +125,6 @@
   "@openmrs/esm-patient-orders-app": {
     "Display conditions": {
       "privileges": ["Get Orders"]
-    },
-    "Translation overrides": {
-      "en": {
-        "tryReopeningTheWorkspaceAgain": "Nothing in this basket was saved. The reason is shown below."
-      },
-      "fr": {
-        "tryReopeningTheWorkspaceAgain": "Rien n'a été enregistré depuis ce panier. La raison est indiquée ci-dessous."
-      }
     }
   },
   "@openmrs/esm-patient-registration-app": {
