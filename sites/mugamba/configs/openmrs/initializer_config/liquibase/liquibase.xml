@@ -927,4 +927,96 @@
         </sql>
     </changeSet>
 
+    <!--
+        Arthritest and BP07 Urine examination were changed in OCL (uvl-labtests v2.5, #209), but the
+        OCL import cannot apply a datatype change to a concept that already has results: it logs
+        "The concepts datatype cannot be changed if it is already used/associated to an observation"
+        and skips the concept. These changesets make the change the import could not, on databases
+        that still have the old datatype. On a new database the preconditions fail and OCL creates
+        the concepts with the right datatype.
+    -->
+    <changeSet id="arthritest_coded-20261001" author="Joshua">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT COUNT(*) FROM concept c JOIN concept_datatype d ON d.concept_datatype_id = c.datatype_id
+                WHERE c.uuid = '0970a9c7-aa5c-4764-abaf-e46061562552' AND d.uuid = '8d4a4488-c2cc-11de-8d13-0010c6dffd0f'
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            Arthritest: Numeric to Coded, answers Negative / Positive (#209). Results entered as 0 become
+            Negative and 1 become Positive. Any other number is left untouched for the lab to review.
+        </comment>
+        <sql>
+            UPDATE obs o
+               SET o.value_coded = (SELECT concept_id FROM concept WHERE uuid = '5c8d6240-9cc2-4bc1-b783-30eb887f950c'),
+                   o.value_numeric = NULL
+             WHERE o.concept_id = (SELECT concept_id FROM concept WHERE uuid = '0970a9c7-aa5c-4764-abaf-e46061562552')
+               AND o.value_numeric = 0;
+            UPDATE obs o
+               SET o.value_coded = (SELECT concept_id FROM concept WHERE uuid = '5ebcf822-0398-43ef-8d70-117e363541da'),
+                   o.value_numeric = NULL
+             WHERE o.concept_id = (SELECT concept_id FROM concept WHERE uuid = '0970a9c7-aa5c-4764-abaf-e46061562552')
+               AND o.value_numeric = 1;
+            DELETE FROM concept_numeric
+             WHERE concept_id = (SELECT concept_id FROM concept WHERE uuid = '0970a9c7-aa5c-4764-abaf-e46061562552');
+            UPDATE concept
+               SET datatype_id = (SELECT concept_datatype_id FROM concept_datatype WHERE uuid = '8d4a48b6-c2cc-11de-8d13-0010c6dffd0f'),
+                   changed_by = 1,
+                   date_changed = NOW()
+             WHERE uuid = '0970a9c7-aa5c-4764-abaf-e46061562552';
+        </sql>
+    </changeSet>
+
+    <changeSet id="urine_examination_labset-20261001" author="Joshua">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT COUNT(*) FROM concept c JOIN concept_datatype d ON d.concept_datatype_id = c.datatype_id
+                WHERE c.uuid = 'ac930dc2-3328-4225-98af-f387787b04e9' AND d.uuid = '8d4a4ab4-c2cc-11de-8d13-0010c6dffd0f'
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            BP07 Urine examination: Text test to a LabSet of its components (#209), so the result form
+            shows the structured fields. Earlier free-text results stay in the obs table as history.
+        </comment>
+        <sql>
+            UPDATE concept
+               SET datatype_id = (SELECT concept_datatype_id FROM concept_datatype WHERE uuid = '8d4a4c94-c2cc-11de-8d13-0010c6dffd0f'),
+                   class_id = (SELECT concept_class_id FROM concept_class WHERE uuid = '8d492026-c2cc-11de-8d13-0010c6dffd0f'),
+                   is_set = 1,
+                   changed_by = 1,
+                   date_changed = NOW()
+             WHERE uuid = 'ac930dc2-3328-4225-98af-f387787b04e9';
+        </sql>
+    </changeSet>
+
+    <!--
+        The distro's radiology CSV and #212 both defined Hand, Foot, Knee, Pelvis and Skull X-rays.
+        OpenMRS compares names without case, so the #212 concepts were never created, yet the Odoo
+        products and billable services point at them. The #212 concepts are kept (now in OCL,
+        uvl-procedures 20261001); the unused distro ones are retired so the names can be imported.
+    -->
+    <changeSet id="retire_duplicate_distro_xrays-20261001" author="Joshua">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT CASE WHEN COUNT(*) &gt; 0 THEN 1 ELSE 0 END FROM concept
+                WHERE retired = 0
+                  AND uuid IN ('d0b5d4a0-1003-0000-0000-000000000001', 'd0b5d4a0-1004-0000-0000-000000000001', 'd0b5d4a0-1005-0000-0000-000000000001',
+                     'd0b5d4a0-1007-0000-0000-000000000001', 'd0b5d4a0-1008-0000-0000-000000000001')
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            Retire the distro Hand, Foot, Knee, Pelvis and Skull X-Ray concepts, duplicates of the #212 X-rays.
+        </comment>
+        <sql>
+            UPDATE concept
+               SET retired = 1,
+                   retired_by = 1,
+                   date_retired = NOW(),
+                   retire_reason = 'Duplicate of the #212 X-ray concept that billing uses (OCL uvl-procedures 20261001)'
+             WHERE retired = 0
+               AND uuid IN ('d0b5d4a0-1003-0000-0000-000000000001', 'd0b5d4a0-1004-0000-0000-000000000001', 'd0b5d4a0-1005-0000-0000-000000000001',
+                     'd0b5d4a0-1007-0000-0000-000000000001', 'd0b5d4a0-1008-0000-0000-000000000001');
+        </sql>
+    </changeSet>
+
 </databaseChangeLog>
