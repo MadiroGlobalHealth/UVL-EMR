@@ -1120,4 +1120,31 @@
         </sql>
     </changeSet>
 
+    <!--
+        BP07 Urine examination listed the blood red-cell count (CIEL 679, also a CBC member) as its
+        "Red blood cells" component, so a urine value was shown as a CBC result and flagged against
+        blood ranges. OCL (uvl-labtests 20261001-2) replaces it with the urine-sediment test
+        (CIEL 163683). The import adds the new member but does not remove an old one, so this
+        removes the blood red-cell count from the urine examination set. It stays in the CBC.
+    -->
+    <changeSet id="urine_examination_without_blood_rbc-20261001" author="Joshua">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT COUNT(*) FROM concept_set s
+                  JOIN concept p ON p.concept_id = s.concept_set
+                  JOIN concept m ON m.concept_id = s.concept_id
+                 WHERE p.uuid = 'ac930dc2-3328-4225-98af-f387787b04e9'
+                   AND m.uuid = '82bec060-4b9b-480c-8baa-e560a3e87b38'
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            Remove the blood red-cell count from BP07 Urine examination (#209).
+        </comment>
+        <sql>
+            DELETE FROM concept_set
+             WHERE concept_set = (SELECT concept_id FROM concept WHERE uuid = 'ac930dc2-3328-4225-98af-f387787b04e9')
+               AND concept_id = (SELECT concept_id FROM concept WHERE uuid = '82bec060-4b9b-480c-8baa-e560a3e87b38');
+        </sql>
+    </changeSet>
+
 </databaseChangeLog>
