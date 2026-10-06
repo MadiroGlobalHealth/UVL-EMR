@@ -49,6 +49,11 @@
             "model_name": "insurance.product.coverage",
             "folder": "insurance_coverage",
             "field_rules": {}
+        },
+        {
+            "model_name": "product.product",
+            "folder": "product_price",
+            "field_rules": {}
         }
     ]
 }
