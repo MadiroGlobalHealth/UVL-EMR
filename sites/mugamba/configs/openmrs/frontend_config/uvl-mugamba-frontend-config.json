@@ -380,5 +380,11 @@
     "defaultDashboardPerRole": {
       "Lab Technician": "laboratory"
     }
+  },
+  "@openmrs/esm-dispensing-app": {
+    "dispenseBehavior": {
+      "restrictTotalQuantityDispensed": true,
+      "allowModifyingPrescription": false
+    }
   }
 }
