@@ -385,6 +385,15 @@
     "dispenseBehavior": {
       "restrictTotalQuantityDispensed": true,
       "allowModifyingPrescription": false
+    },
+    "Translation overrides": {
+      "fr": {
+        "duplicatePrescriptionTitle": "Délivrance potentiellement en double détectée",
+        "duplicatePrescriptionMessageNoPrevious": "Aucune délivrance précédente n'a été trouvée.",
+        "duplicateDispenseError": "Erreur lors de la délivrance du médicament",
+        "previousDispenseDetails": "Délivrance précédente le",
+        "withQuantity": "avec la quantité"
+      }
     }
   }
 }
