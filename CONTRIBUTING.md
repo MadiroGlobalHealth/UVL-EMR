@@ -32,6 +32,10 @@ confusing, a question, an idea, or work you would like to pick up. You do not
 need permission, and you do not need to be sure it is a real problem. An issue
 that turns out to be a misunderstanding still tells us the system is confusing.
 
+Pick a template when you open it: **Bug**, **Form request** or **Requirement**.
+Each asks for exactly what we need to act, and none of it is hard to fill in. A
+blank issue is fine for anything else.
+
 A good issue says what you expected, what happened instead, and how to see it
 again. Screenshots help enormously, especially for anything on screen. If it
 touches patient data, describe it rather than pasting it — see Privacy below.
@@ -45,9 +49,32 @@ Comment on the issue to say you are working on it, so two people do not build th
 same thing. If you stall or change your mind, say so on the issue — that is
 completely fine and far better than silence.
 
+### Starter issues: forms
+
+Volunteers are currently working on **clinical forms only**. Every other area
+(billing, roles, bridges, deployment) touches the live hospital in ways that are
+hard to test locally, and stays with the maintainers for now.
+
+Open starter work carries both labels
+[`Forms` and `Help wanted`](https://github.com/MadiroGlobalHealth/UVL-EMR/issues?q=is%3Aopen+label%3AForms+label%3A%22Help+wanted%22).
+Each issue links the hospital's paper form, lists its sections and fields, and
+gives a difficulty:
+
+- **easy**: a short, flat form. Start here. The contact record (#376) is the
+  intended first form.
+- **medium**: several sections, or fields that reuse existing patient or visit
+  attributes.
+- **hard**: a large form, or one that needs a design decision first (for example
+  the partograph, #382, which is plotted over time). Agree the approach on the
+  issue before you build.
+
+One form per person at a time. When your first form is merged, take the next.
+
 ## Branches
 
-Branch off `main` and push to this repository:
+Branch off `main`. If you do not have write access to this repository, fork it,
+push the branch to your fork, and open the pull request from there; that is the
+normal route for a first contribution.
 
 ```
 <type>/<issue-number>-<short-description>
@@ -146,6 +173,68 @@ Form questions reference concepts by UUID. If a form references a concept that
 does not exist, or one whose datatype does not match how the question is
 rendered, the form fails at runtime for every user — not at build time. Check
 both sides when you touch either.
+
+This is not hypothetical. In September 2026 the outpatient consultation form
+failed for every user, but only when its optional `Antecedents` field was filled:
+the field pointed at a concept the server did not have. Left empty, the form
+saved fine, so nobody noticed for four days.
+
+## Building a form
+
+The order matters: the concept mapping comes first, because it is what breaks
+forms.
+
+1. **Claim the issue** (comment on it) and have UVL-EMR running locally (see
+   [ONBOARDING.md](ONBOARDING.md), step 3).
+2. **Map every field to a concept, and post the table on the issue** before you
+   build anything:
+
+   ```
+   field | concept name | CIEL id or existing UVL concept | datatype | answers
+   ```
+
+   - Look for what exists, in this order: a concept UVL already has (your local
+     stack: System Administration → Concept dictionary), then
+     [CIEL](https://app.openconceptlab.org/#/orgs/CIEL/sources/CIEL/), then a new
+     UVL concept.
+   - Reuse what other forms use, such as vitals and diagnoses. A second
+     "temperature" concept splits the data and breaks reports.
+   - Datatype decides the rendering: `radio`, `select` and `multiCheckbox` need
+     a **Coded** concept with those answers; `number` (or `numeric`) needs
+     **Numeric**; `text` and `textarea` need **Text**; `date`/`datetime` need
+     **Date**/**Datetime**.
+   - **Do not create concepts yourself.** A maintainer adds the missing ones to
+     the UVL collection in OCL and into the build. Your table is the input; wait
+     until it is agreed.
+3. **Build the form** as O3 (AMPATH) JSON, with the Form Builder on your local
+   stack (`http://localhost/openmrs/spa/form-builder`) or by hand, using the
+   concept UUIDs from step 2. Copy the shape of an existing form.
+
+   | file | path under `sites/mugamba/configs/openmrs/initializer_config/` |
+   |---|---|
+   | schema | `ampathforms/<Form-Name>.json` |
+   | French labels | `ampathformstranslations/<Form-Name>_translations_fr.json` |
+   | English labels | `ampathformstranslations/<Form-Name>_translations_en.json` |
+
+   **French is the main language** of the hospital. Build one form with both
+   translation files, never two forms.
+4. **Encounter type.** Use an existing one from
+   `encountertypes/mugamba_encountertypes.csv` when it fits. If the form needs
+   its own, add a row with a new UUID and say why in the pull request. If you
+   give it a view or edit privilege, that privilege must exist and the roles that
+   use the form must hold it, or the form is invisible or unsavable for them.
+5. **Test it locally, as a clinical user, not as `admin`.** Fill **every field,
+   including the optional ones**, save, and check the patient chart: one
+   encounter of the right type, one observation per filled field. Switch the
+   language and check both translations.
+6. **Open the pull request** from `feat/<issue-number>-<form-name>`, with
+   `Closes #<issue-number>` in the body, screenshots of the rendered form in
+   French and English (with a test patient, never a real one), and the saved
+   encounter.
+
+A maintainer then deploys it to the test environment, where the product owner
+checks it against the paper form. Expect a round of changes from that review;
+it is part of the work, not a sign something went wrong.
 
 ## Before you promote a change
 
