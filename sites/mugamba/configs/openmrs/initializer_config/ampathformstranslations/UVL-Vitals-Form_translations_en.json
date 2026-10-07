@@ -1,0 +1,23 @@
+{
+  "uuid": "2c949909-1972-4113-b9a4-065324160b28",
+  "form": "UVL Vitals",
+  "description": "En Translations for 'UVL Vitals'",
+  "language": "en",
+  "translations": {
+    "BMI (kg/m²)": "BMI (kg/m²)",
+    "Biometrics": "Biometrics",
+    "Diastolic blood pressure (mmHg)": "Diastolic blood pressure (mmHg)",
+    "Height (cm)": "Height (cm)",
+    "Mid-upper arm circumference (cm)": "Mid-upper arm circumference (cm)",
+    "Notes": "Notes",
+    "Oxygen saturation (%)": "Oxygen saturation (%)",
+    "Pulse (beats/min)": "Pulse (beats/min)",
+    "Respiratory rate (breaths/min)": "Respiratory rate (breaths/min)",
+    "Systolic blood pressure (mmHg)": "Systolic blood pressure (mmHg)",
+    "Temperature (°C)": "Temperature (°C)",
+    "Vital signs": "Vital signs",
+    "Vitals": "Vitals",
+    "Weight (kg)": "Weight (kg)"
+  },
+  "form_name_translation": "Vitals"
+}
