@@ -18,22 +18,127 @@ MSF-OCG/LIME-EMR-Tooling.
 
 ---
 
-## Current status — 2026-09-29
+## Current status — 2026-10-07
 
-- Production last received an EMR update on **2026-09-09**, the Odoo 14 → 17 cut-over (#237).
-- `[Unreleased]` below is a **release candidate**. It is the official `globalmadiro` images from
-  UVL-EMR `main` `a218cae`, deployed from LIME-EMR-Tooling `dev` `a502826de`. It passed the full
-  browser journey on UAT on 2026-09-29, run as the real staff roles, with nothing waived
-  (evidence on #346, #331 and #302). When it reaches production, give the
-  section the deployment date, tag it `Production`, and record the running image digests.
-- Plan of record: the UVL-EMR Delivery Dashboard, status 28 Sep 2026 (milestones on GitHub).
+- Production last received an EMR update on **2026-09-30**: UVL-EMR `main` `393f5b5`, which is
+  release candidate `a218cae` plus #357, #358 and #359 (section `[2026-09-30]` below). The
+  product owner checked it on production the same day.
+- `[Unreleased]` below is UVL-EMR `main` `a76d0a7`. It holds every requirement the product owner
+  sent between 30 Sep and 6 Oct that was still open. It is planned for production on the night of
+  **7 → 8 Oct 2026**. Each change passed the browser journey on UAT on 2026-10-07, run as the real
+  staff roles, on a personal build of the same branches. The official `globalmadiro` images are
+  re-checked on UAT before the production deploy.
+- When it reaches production, give the section the deployment date, tag it `Production`, and
+  record the running image digests.
 
 ---
 
-## [Unreleased] — `UAT` · release candidate `a218cae`
+## [Unreleased] — `UAT` · `main` `a76d0a7`
 
-Merged to UVL-EMR `main`, UVL-Odoo-Addons `main` and LIME-EMR-Tooling `dev`, and verified on UAT.
-**Not in production.**
+Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
+
+### Staff will notice
+- **Registration has a "Chef de ménage (Head of household)" field,** under Additional
+  information. It is free text and optional, and the patient banner shows it next to the
+  telephone. It feeds the PBF report's head-of-household column; the dashboard column itself is
+  separate Superset work. (#239, #389)
+- **A prescription can't be dispensed twice.** Once its full quantity is dispensed it is
+  completed, and Dispense, Pause and Close disappear. The Pharmacist can now change the quantity
+  dispensed, which allows partial dispensing; drug, dose, route and frequency stay locked.
+  (#374, #389)
+- **Starting a visit lists every payer scheme:** three answers are added: Free healthcare /
+  Gratuité (soins gratuits), Private insurance / Assurance privée, and Supplementary insurance /
+  Assurance complémentaire. The five existing answers stay, so past visits are unchanged.
+  (#370, #388)
+- **Stool examination (BP06) and urine culture (BP09) take structured results.**
+  - Stool: consistency, colour, appearance, one graded field per parasite (Ascaris,
+    Ancylostoma, E. histolytica, S. mansoni, Taenia sp., H. nana), E. histolytica form, occult
+    blood, and a comment.
+  - Urine culture: culture result, organism identified (14 options), colony count (UFC/mL, whole
+    number), antibiogram (text), and a comment. (#371, #388)
+- **The consultation forms no longer show "Capture Vitals".** Vitals are recorded in the chart's
+  Vitals box. (#211, #390)
+- **85 products now carry their tariff price** from the UVL tariff sheet of 4 Oct (25 lab
+  tests, 59 procedures, and Cefixime 400mg at 1,400 FBu). Products still at 1.00 go from 442 to
+  357. (#270, #391)
+- **Lab results accept decimals on all 54 numeric lab tests,** and Arthritest records
+  Négatif/Positif. (#354, #208, #209, #366)
+- **The urine examination (BP07) has 7 structured fields,** and its red-cell value no longer
+  appears in the blood count. (#366)
+- **Queues load for the Pharmacist, X-Ray Technician and Lab Technician** without a 403 on the home
+  page. (#351, #365)
+
+### Added
+- Person attribute type "Chef de ménage" (`c108c6bc-5f23-4e4a-ad34-8c788b86f288`). (#389)
+- Odoo `product_price` initializer loader. The product loader treats `lst_price` as `NO_UPDATE`,
+  so it can't change the price of a product that already exists. (#391)
+- OCL releases UVL-Burundi `uvl-registration` 20261007 and `uvl-labtests` 20261007-5. (#388)
+- Concepts that existed only in Initializer CSVs now live in OCL (drugs, supplies, procedures,
+  dispensing ValueSets, payer, insurance tiers, radiology), and each keeps its UUID. (#366)
+
+### Changed
+- Liquibase converts BP06 from Coded to LabSet and BP09 from Text to LabSet. It also removes the set
+  members an earlier OCL release had shared between them, because the OCL import never removes
+  members. Old results are kept. (#388)
+- Dispensing: `restrictTotalQuantityDispensed: true` with `allowModifyingPrescription: false`. The
+  Pharmacist gets `Task: dispensing.create.dispense.allowSubstitutions`. (#389)
+- The basket failure title is O3's stock text again. The #359 override blamed an already-active
+  drug for every failure, which was wrong. The "Déjà actif - utiliser Modifier" tag stays. (#364)
+- The Pharmacist, X-Ray Technician and Lab Technician get `Get Queue Entries`. The Doctor,
+  Ophtalmologist and Dentist get `Get ChargeItemDefinition` and `Get InventoryItem`. (#365)
+
+### Fixed
+- **Odoo: printing a customer invoice from "Send & Print" crashed** (#375). This is a database
+  fix, not a code change: two views and two server actions left behind by the Odoo 17 migration.
+  It was applied on UAT on 2026-10-07. **Production needs the same steps by hand; see the deploy
+  notes.**
+- Payer and dispensing answers were duplicated after the OCL import. Five X-ray procedures were
+  never created because of a name clash. The X-ray billable services had no concept. (#366)
+
+### Deploy notes for production
+1. Record the running image digests and take a database backup first.
+2. Before deploying, check production's Liquibase changelog for module checksums that differ from
+   the images. On 2026-09-30 billing-2.3.0 would not start until one was cleared.
+3. Deploy with `--domain=uvl-emr.madiro.org` and `--image-prefix=globalmadiro/ozone-uvl-mugamba`.
+4. **#375:** back up the Odoo database. Then in Odoo, `reset_arch(mode='hard')` views 1637 and
+   653 and unbind `account.action_move_export_zip` and
+   `account_edi_ubl_cii.action_group_ungroup_lines_by_tax`. Stop `eip-odoo-openmrs` and
+   `fhir-odoo` during the change, then restart Odoo. Check that Send & Print opens.
+5. In Odoo, archive the duplicate **Cefixime Comprimé 400mg, product 535**. Orders land on 609.
+6. Once it's live, check that the three Liquibase changesets of #388 are `EXECUTED`, Payer has 8
+   answers, and BP06 and BP09 show their structured fields.
+
+### Known issues
+- **Stool results recorded before the change** (about 23, July–August) no longer show on the
+  Results page now that BP06 is a set. They are intact in the database and the API. Whether to
+  convert them is a product owner decision.
+- **Prescriptions fully dispensed before this change** still show Dispense. Backfilling them is a
+  separate data decision. The block is in the interface only; the server doesn't refuse an
+  over-dispense. (#374)
+- **357 products are still at 1.00:** 283 have no tariff price (the pharmacy is priced at purchase
+  price plus margin), and 73 matches await the product owner. Some existing prices disagree with
+  the tariff. (#270)
+- Suspected over-billing of syrups per mL (#385). Discontinued lab and imaging orders are still
+  billed (#386, #254). The PACS viewer returns 403 for the X-Ray Technician (#387).
+- **H. pylori and albuminuria** wait for the product owner's choice of test method. (#371)
+- Vitals from the chart box are saved without a visit when the user's location differs from the
+  visit's. This matters more now that the chart box is the only route for vitals. (#347)
+- The order basket's price and stock lookups fail on fhirproxy's unfilled
+  `${EXTERNAL_FHIR_API_URL}`. (#363)
+
+---
+
+## [2026-09-30] — `Production` · `main` `393f5b5` (release candidate `a218cae` + #357, #358, #359)
+
+Merged to UVL-EMR `main`, UVL-Odoo-Addons `main` and LIME-EMR-Tooling `dev`, verified on UAT, and
+checked on production by the product owner on 2026-09-30.
+
+### Also in this deploy
+- **Lab results accept decimals,** for example glucose 4.2. A guarded Liquibase change on 21 lab
+  tests. (#354, #357)
+- **The Pharmacist can dispense, pause and close.** This added the status mappings, the dispensing
+  ValueSets, and the `Get Order Frequencies` and `Edit Orders` privileges. (#355, #358)
+- Re-prescribing an already-active drug: the search tags it and disables Add. (#356, #359)
 
 ### Staff will notice
 - **Starting a visit shows a Payer field** (Cash, Mobile Money, MFP, CAM, Other insurance). It is
