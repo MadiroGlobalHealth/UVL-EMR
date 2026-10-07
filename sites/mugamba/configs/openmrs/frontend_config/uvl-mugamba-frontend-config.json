@@ -109,6 +109,16 @@
             }
           }
         }
+      },
+      "user-panel-bottom-slot": {
+        "remove": ["logout-button"],
+        "add": ["link#oauth2-logout"],
+        "configure": {
+          "link#oauth2-logout": {
+            "title": "Se déconnecter",
+            "target": "/openmrs/oauth2logout"
+          }
+        }
       }
     }
   },
