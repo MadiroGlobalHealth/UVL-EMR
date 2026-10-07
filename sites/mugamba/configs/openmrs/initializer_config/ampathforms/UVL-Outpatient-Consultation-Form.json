@@ -295,16 +295,6 @@
                 "rendering": "textarea",
                 "concept": "26b6bd3f-5367-4a73-aa1d-9c3063522b2b"
               }
-            },
-            {
-              "id": "captureVitals",
-              "label": "Capture Vitals",
-              "required": false,
-              "questionOptions": {
-                "rendering": "workspace-launcher",
-                "buttonLabel": "Capture Vitals",
-                "workspaceName": "patient-vitals-biometrics-form-workspace"
-              }
             }
           ]
         },
