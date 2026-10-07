@@ -1147,4 +1147,78 @@
         </sql>
     </changeSet>
 
+    <!--
+        OCL (uvl-labtests 20261007) makes BP06 Stool examination and BP09 Urine culture LabSets of
+        their components (#371). OpenMRS refuses to change the datatype of an existing concept during
+        the import, so these run first and leave the import to add the set members.
+    -->
+    <changeSet id="stool_examination_labset-20261007" author="Joshua">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT COUNT(*) FROM concept c JOIN concept_datatype d ON d.concept_datatype_id = c.datatype_id
+                WHERE c.uuid = '6a310ab5-5178-4e5e-9112-3d60ecc6a60f' AND d.uuid = '8d4a48b6-c2cc-11de-8d13-0010c6dffd0f'
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            BP06 Stool examination: Coded test (one list of parasites) to a LabSet of its components (#371),
+            so the result form shows the structured fields. Earlier coded results stay in the obs table as history.
+        </comment>
+        <sql>
+            DELETE FROM concept_answer
+             WHERE concept_id = (SELECT concept_id FROM concept WHERE uuid = '6a310ab5-5178-4e5e-9112-3d60ecc6a60f');
+            UPDATE concept
+               SET datatype_id = (SELECT concept_datatype_id FROM concept_datatype WHERE uuid = '8d4a4c94-c2cc-11de-8d13-0010c6dffd0f'),
+                   class_id = (SELECT concept_class_id FROM concept_class WHERE uuid = '8d492026-c2cc-11de-8d13-0010c6dffd0f'),
+                   is_set = 1,
+                   changed_by = 1,
+                   date_changed = NOW()
+             WHERE uuid = '6a310ab5-5178-4e5e-9112-3d60ecc6a60f';
+        </sql>
+    </changeSet>
+
+    <changeSet id="urine_culture_labset-20261007" author="Joshua">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT COUNT(*) FROM concept c JOIN concept_datatype d ON d.concept_datatype_id = c.datatype_id
+                WHERE c.uuid = '2c6ea64a-eac8-4f91-9722-e96e1d1a74f4' AND d.uuid = '8d4a4ab4-c2cc-11de-8d13-0010c6dffd0f'
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            BP09 Urine culture: Text test to a LabSet of its components (#371), so the result form
+            shows the structured fields. Earlier free-text results stay in the obs table as history.
+        </comment>
+        <sql>
+            UPDATE concept
+               SET datatype_id = (SELECT concept_datatype_id FROM concept_datatype WHERE uuid = '8d4a4c94-c2cc-11de-8d13-0010c6dffd0f'),
+                   class_id = (SELECT concept_class_id FROM concept_class WHERE uuid = '8d492026-c2cc-11de-8d13-0010c6dffd0f'),
+                   is_set = 1,
+                   changed_by = 1,
+                   date_changed = NOW()
+             WHERE uuid = '2c6ea64a-eac8-4f91-9722-e96e1d1a74f4';
+        </sql>
+    </changeSet>
+
+    <!--
+        The first structured BP06 and BP09 (uvl-labtests 20261007-4) shared one free-text comment
+        concept, so the Results page showed each test's comment under both, and BP06 reused HS08
+        Schistosomiasis, which showed as a panel of its own. 20261007-5 gives each test its own
+        comment and BP06 its own S. mansoni question. The import adds the new members but does not
+        remove the old ones, so this removes them by the OCL mapping UUID they were imported with.
+    -->
+    <changeSet id="remove_shared_members_from_stool_and_urine_culture-20261007" author="Joshua">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT CASE WHEN COUNT(*) &gt; 0 THEN 1 ELSE 0 END FROM concept_set
+                WHERE uuid IN ('d53e25de-9791-4321-9b5b-f7c56b7f4523', 'c7b359e0-15d7-46ae-bc18-40daa53ec6b1', '84b8b195-ff82-4ebc-9881-58d123507452')
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            Remove the shared comment from BP06 Stool examination and BP09 Urine culture, and HS08 from BP06 (#371).
+        </comment>
+        <sql>
+            DELETE FROM concept_set
+             WHERE uuid IN ('d53e25de-9791-4321-9b5b-f7c56b7f4523', 'c7b359e0-15d7-46ae-bc18-40daa53ec6b1', '84b8b195-ff82-4ebc-9881-58d123507452');
+        </sql>
+    </changeSet>
+
 </databaseChangeLog>
