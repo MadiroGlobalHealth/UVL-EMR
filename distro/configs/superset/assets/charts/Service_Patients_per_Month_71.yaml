@@ -1,0 +1,42 @@
+slice_name: Services – Patients par service et par mois
+description: null
+certified_by: null
+certification_details: null
+viz_type: pivot_table_v2
+params:
+  datasource: 70__table
+  viz_type: pivot_table_v2
+  groupbyRows:
+  - service
+  groupbyColumns:
+  - encounter_datetime
+  metrics:
+  - patients
+  metricsLayout: COLUMNS
+  adhoc_filters:
+  - clause: WHERE
+    subject: encounter_datetime
+    operator: TEMPORAL_RANGE
+    comparator: No filter
+    expressionType: SIMPLE
+  row_limit: 10000
+  order_desc: true
+  aggregateFunction: Sum
+  valueFormat: SMART_NUMBER
+  date_format: '%Y-%m'
+  rowOrder: key_a_to_z
+  colOrder: key_a_to_z
+  rowTotals: false
+  colTotals: false
+  rowSubTotals: false
+  colSubTotals: false
+  transposePivot: false
+  combineMetric: false
+  temporal_columns_lookup:
+    encounter_datetime: true
+  time_grain_sqla: P1M
+query_context: null
+cache_timeout: null
+uuid: 3daf702e-f30b-44a7-e5e2-d17049fac23e
+version: 1.0.0
+dataset_uuid: 1b8d5e0c-d1e9-4285-c3c0-bf5e27d8a01c

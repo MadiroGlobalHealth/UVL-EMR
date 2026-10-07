@@ -1,0 +1,42 @@
+slice_name: "Usage \u2013 Baseline 16\u201322 Sep 2026 by Service"
+description: null
+certified_by: null
+certification_details: null
+viz_type: table
+params:
+  datasource: 40__table
+  viz_type: table
+  query_mode: aggregate
+  groupby:
+  - activity_kind
+  - service
+  metrics:
+  - count
+  all_columns: []
+  percent_metrics: []
+  adhoc_filters:
+  - clause: WHERE
+    subject: activity_datetime
+    operator: TEMPORAL_RANGE
+    comparator: '2026-09-16T00:00:00 : 2026-09-23T00:00:00'
+    expressionType: SIMPLE
+  - clause: WHERE
+    subject: activity_kind
+    operator: IN
+    comparator:
+    - Encounter
+    - Order
+    expressionType: SIMPLE
+  row_limit: 1000
+  server_page_length: 20
+  order_desc: true
+  include_search: false
+  show_cell_bars: false
+  color_pn: false
+  allow_rearrange_columns: false
+  timeseries_limit_metric: count
+query_context: null
+cache_timeout: null
+uuid: 9f9efa74-a772-4852-a5ba-689ce6356af1
+version: 1.0.0
+dataset_uuid: c5df3d0c-fe8d-493c-a726-359d52972e1b
