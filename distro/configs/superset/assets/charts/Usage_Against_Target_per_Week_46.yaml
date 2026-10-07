@@ -1,0 +1,49 @@
+slice_name: "Usage \u2013 Against Target per Week"
+description: null
+certified_by: null
+certification_details: null
+viz_type: table
+params:
+  datasource: 41__table
+  viz_type: table
+  query_mode: raw
+  all_columns:
+  - period_start
+  - metric
+  - actual
+  - target_value
+  - pct_of_target
+  - target_denominator
+  - target_pct
+  - target_note
+  order_by_cols:
+  - '["period_start", false]'
+  - '["metric", true]'
+  adhoc_filters:
+  - clause: WHERE
+    subject: period_start
+    operator: TEMPORAL_RANGE
+    comparator: No filter
+    expressionType: SIMPLE
+  - clause: WHERE
+    subject: period_grain
+    operator: ==
+    comparator: week
+    expressionType: SIMPLE
+  - clause: WHERE
+    subject: service
+    operator: ==
+    comparator: (all)
+    expressionType: SIMPLE
+  row_limit: 1000
+  server_page_length: 20
+  table_timestamp_format: '%Y-%m-%d'
+  include_search: false
+  show_cell_bars: false
+  allow_rearrange_columns: false
+  color_pn: false
+query_context: null
+cache_timeout: null
+uuid: 6ba0ec08-f6eb-45d2-aac5-e57e6b0928c0
+version: 1.0.0
+dataset_uuid: 918583c5-74c6-403f-8530-eab82a220abb

@@ -1,0 +1,215 @@
+table_name: usage_activity
+main_dttm_col: activity_datetime
+description: 'Usage and adoption: one row per encounter, new order, visit and registration (UVL-EMR#285)'
+default_endpoint: null
+offset: 0
+cache_timeout: null
+schema: public
+sql: |-
+  -- Usage and adoption: one row per recorded activity (UVL-EMR#285).
+  -- activity_kind is Encounter, Order, Visit or Registration; service is the
+  -- encounter type, order type or visit type. Voided records are excluded, and
+  -- only NEW orders count (a revision or discontinuation is not a new order).
+  -- user_key identifies the OpenMRS user who saved the record. Registrations carry
+  -- no user_key because the flattened patients table only has the numeric creator,
+  -- so a user is active when they saved an encounter, an order or a visit.
+  -- Times are as stored by OpenMRS (UTC).
+  SELECT 'Encounter' AS activity_kind,
+         e.encounter_datetime AS activity_datetime,
+         COALESCE(e.encounter_type, '(unknown)') AS service,
+         e.location AS location,
+         e.creator_uuid AS user_key,
+         e.patient_uuid AS patient_uuid,
+         e.encounter_uuid AS record_uuid
+  FROM encounters e
+  WHERE COALESCE(e.encounter_voided, false) = false
+  UNION ALL
+  SELECT 'Order',
+         COALESCE(o.date_activated, o.date_created, o.encounter_datetime),
+         COALESCE(o.order_type_name, '(unknown)'),
+         NULL,
+         o.creator_uuid,
+         o.patient_uuid,
+         o.uuid
+  FROM orders o
+  WHERE COALESCE(o.voided, false) = false
+    AND COALESCE(o.order_action, 'NEW') = 'NEW'
+  UNION ALL
+  SELECT 'Visit',
+         v.date_started,
+         COALESCE(v.type, '(unknown)'),
+         v.location,
+         v.creator_uuid,
+         v.patient_uuid,
+         v.visit_uuid
+  FROM visits v
+  WHERE COALESCE(v.visit_voided, false) = false
+  UNION ALL
+  SELECT 'Registration',
+         p.date_created,
+         'Patient registration',
+         NULL,
+         NULL,
+         p.patient_uuid,
+         p.patient_uuid
+  FROM patients p
+  WHERE COALESCE(p.person_voided, false) = false
+params: null
+template_params: null
+filter_select_enabled: true
+fetch_values_predicate: null
+extra: null
+normalize_columns: false
+always_filter_main_dttm: false
+uuid: c5df3d0c-fe8d-493c-a726-359d52972e1b
+metrics:
+- metric_name: count
+  verbose_name: COUNT(*)
+  metric_type: null
+  expression: COUNT(*)
+  description: null
+  d3format: null
+  currency: null
+  extra: null
+  warning_text: null
+- metric_name: active_users
+  verbose_name: Active users
+  metric_type: null
+  expression: COUNT(DISTINCT user_key)
+  description: 'Distinct users who saved an encounter, an order or a visit'
+  d3format: null
+  currency: null
+  extra: null
+  warning_text: null
+- metric_name: patients_registered
+  verbose_name: Patients registered
+  metric_type: null
+  expression: SUM(CASE WHEN activity_kind = 'Registration' THEN 1 ELSE 0 END)
+  description: null
+  d3format: null
+  currency: null
+  extra: null
+  warning_text: null
+- metric_name: patients_seen
+  verbose_name: Patients seen
+  metric_type: null
+  expression: COUNT(DISTINCT CASE WHEN activity_kind IN ('Encounter', 'Visit') THEN patient_uuid END)
+  description: 'Distinct patients with an encounter or a visit'
+  d3format: null
+  currency: null
+  extra: null
+  warning_text: null
+- metric_name: visits
+  verbose_name: Visits
+  metric_type: null
+  expression: SUM(CASE WHEN activity_kind = 'Visit' THEN 1 ELSE 0 END)
+  description: null
+  d3format: null
+  currency: null
+  extra: null
+  warning_text: null
+- metric_name: encounters
+  verbose_name: Encounters
+  metric_type: null
+  expression: SUM(CASE WHEN activity_kind = 'Encounter' THEN 1 ELSE 0 END)
+  description: null
+  d3format: null
+  currency: null
+  extra: null
+  warning_text: null
+- metric_name: orders
+  verbose_name: Orders
+  metric_type: null
+  expression: SUM(CASE WHEN activity_kind = 'Order' THEN 1 ELSE 0 END)
+  description: null
+  d3format: null
+  currency: null
+  extra: null
+  warning_text: null
+columns:
+- column_name: activity_kind
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: activity_datetime
+  verbose_name: null
+  is_dttm: true
+  is_active: true
+  type: DATETIME
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: service
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: location
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: user_key
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: patient_uuid
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: record_uuid
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+version: 1.0.0
+database_uuid: 4e5f4045-a62d-4964-b719-58229a60e7fe

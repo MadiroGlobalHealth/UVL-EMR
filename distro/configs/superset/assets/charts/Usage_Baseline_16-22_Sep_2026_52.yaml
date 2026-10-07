@@ -1,0 +1,37 @@
+slice_name: "Usage \u2013 Baseline 16\u201322 Sep 2026"
+description: null
+certified_by: null
+certification_details: null
+viz_type: table
+params:
+  datasource: 40__table
+  viz_type: table
+  query_mode: aggregate
+  groupby: []
+  metrics:
+  - active_users
+  - patients_registered
+  - patients_seen
+  - visits
+  - encounters
+  - orders
+  all_columns: []
+  percent_metrics: []
+  adhoc_filters:
+  - clause: WHERE
+    subject: activity_datetime
+    operator: TEMPORAL_RANGE
+    comparator: '2026-09-16T00:00:00 : 2026-09-23T00:00:00'
+    expressionType: SIMPLE
+  row_limit: 1000
+  server_page_length: 20
+  order_desc: true
+  include_search: false
+  show_cell_bars: false
+  color_pn: false
+  allow_rearrange_columns: false
+query_context: null
+cache_timeout: null
+uuid: 6ff94c5d-8404-4f23-8ada-4ba1d863886c
+version: 1.0.0
+dataset_uuid: c5df3d0c-fe8d-493c-a726-359d52972e1b
