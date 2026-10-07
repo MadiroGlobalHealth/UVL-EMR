@@ -1221,4 +1221,46 @@
         </sql>
     </changeSet>
 
+    <!--
+        #350 - visits auto-close at 02:00 in Burundi, not at midnight.
+
+        Core's Auto Close Visits Task ships with start_time 2011-11-28 23:59:59 and repeats every
+        86400 s. The server, the openmrs container and MySQL all run on UTC, so it fires at
+        23:59:59 UTC, which is 01:59:59 CAT. A visit started shortly before 02:00 CAT was closed
+        minutes later and the next encounter save failed with
+        Encounter.datetimeShouldBeInVisitDatesRange.
+
+        The scheduler derives each run from start_time + n * repeat_interval, so moving the start
+        to 21:59:59 UTC makes it fire at 23:59:59 CAT every day (Burundi has no daylight saving).
+        Setting the containers' TZ instead would change how every stored timestamp is read.
+
+        The scheduler reads this row once, at startup. Initializer runs this changeset in its
+        activator's started(), which completes before core starts the scheduler, so the restart
+        that deploys it is enough. Do not change the row by hand on a running server: after each
+        run the scheduler writes back the start_time it holds in memory.
+
+        Only the core default (23:59:59) is replaced, so a time set deliberately by an
+        administrator is left alone.
+    -->
+    <changeSet id="auto_close_visits_at_cat_midnight-20261007" author="Joshua">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT CASE WHEN COUNT(*) &gt; 0 THEN 1 ELSE 0 END FROM scheduler_task_config
+                WHERE schedulable_class = 'org.openmrs.scheduler.tasks.AutoCloseVisitsTask'
+                  AND TIME(start_time) = '23:59:59'
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            Run the Auto Close Visits Task at 21:59:59 UTC, which is 23:59:59 CAT, instead of 02:00 CAT (#350).
+        </comment>
+        <sql>
+            UPDATE scheduler_task_config
+               SET start_time = '2011-11-28 21:59:59',
+                   changed_by = 1,
+                   date_changed = NOW()
+             WHERE schedulable_class = 'org.openmrs.scheduler.tasks.AutoCloseVisitsTask'
+               AND TIME(start_time) = '23:59:59';
+        </sql>
+    </changeSet>
+
 </databaseChangeLog>
