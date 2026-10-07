@@ -167,6 +167,15 @@
           "required": false
         },
         "answerConceptSetUuid": "b1effaa8-afeb-41f5-9226-0bdcc52a6ea9"
+      },
+      {
+        "id": "chefDeMenage",
+        "type": "person attribute",
+        "uuid": "c108c6bc-5f23-4e4a-ad34-8c788b86f288",
+        "label": "Chef de ménage (Head of household)",
+        "validation": {
+          "required": false
+        }
       }
     ],
     "sectionDefinitions": [
@@ -182,7 +191,7 @@
       {
         "id": "additionalInformation",
         "name": "Additional Information",
-        "fields": ["maritalStatus", "occupation"]
+        "fields": ["maritalStatus", "occupation", "chefDeMenage"]
       }
     ],
     "fieldConfigurations": {
@@ -219,6 +228,12 @@
         "Marital Status": "Statut matrimonial"
       }
     }
+  },
+  "@openmrs/esm-patient-banner-app": {
+    "contactAttributeTypes": [
+      "14d4f066-15f5-102d-96e4-000c29c2a5d7",
+      "c108c6bc-5f23-4e4a-ad34-8c788b86f288"
+    ]
   },
   "@openmrs/esm-billing-app": {
     "serviceTypes": {
@@ -364,6 +379,12 @@
   "@openmrs/esm-home-app": {
     "defaultDashboardPerRole": {
       "Lab Technician": "laboratory"
+    }
+  },
+  "@openmrs/esm-dispensing-app": {
+    "dispenseBehavior": {
+      "restrictTotalQuantityDispensed": true,
+      "allowModifyingPrescription": false
     }
   }
 }
