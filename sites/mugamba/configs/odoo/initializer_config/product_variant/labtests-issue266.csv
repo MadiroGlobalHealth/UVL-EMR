@@ -1,0 +1,3 @@
+id,name,categ_id/id,type,purchase_ok,sale_ok,invoice_policy
+"init.dee124ea-82ff-460f-ad0e-3ecdf971dbf9","BP01 - Frottis paludéen",init.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
+"init.0970a9c7-aa5c-4764-abaf-e46061562552","Arthritest",init.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities

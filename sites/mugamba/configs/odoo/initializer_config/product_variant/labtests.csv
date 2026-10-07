@@ -27,7 +27,7 @@ id,name,categ_id/id,type,purchase_ok,sale_ok,invoice_policy
 "init.65589ff5-f7a5-43f8-b3ba-b2f077eb95e6","BI25 - Cholestérol total",init.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
 "init.c25dfd4e-5a06-4b0d-864d-e4cedb88e702","BI26 - Triglycérides",init.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
 "init.d5c008d9-fc58-4d12-8b48-b68bf2cb1582","BI27 - Biopsie de moelle osseuse",init.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
-"init.c87ac09c-a7e3-48b0-91a4-0c5d3c9f1a0d","BP01 - Frottis paludéen",init.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
+"init.c87ac09c-a7e3-48b0-91a4-0c5d3c9f1a0d","BP01 - Frottis paludéen (codé)",init.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
 "init.f869f9c9-e5ec-4ebe-ba84-c6190b6bc286","BP02 - Frottis sanguin",init.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
 "init.b21ad083-ee0d-49b3-833a-7f35afeeead3","BP03 - Biopsie cutanée pour la filariose",init.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
 "init.436aa0ad-e8af-4e4d-a97d-d5d27ea0ecb7","BP04 - Bacilles de la tuberculose",init.categ_services_lab_test_orders,service,FALSE,TRUE,Ordered quantities
