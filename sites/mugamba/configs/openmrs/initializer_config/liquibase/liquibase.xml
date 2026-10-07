@@ -1221,4 +1221,38 @@
         </sql>
     </changeSet>
 
+    <!--
+        #344 - the chart's vitals and biometrics searches,
+            GET /ws/fhir2/R4/Observation?subject:Patient=<uuid>&code=<concept uuids>&_sort=-date&_count=100
+
+        fhir2 4.2.0 runs each as a count query and a page query over obs JOIN concept JOIN person,
+        filtering on person.uuid and on (concept.concept_id IN (...) OR concept.uuid IN (...)).
+        Core only indexes obs on person_id and on concept_id separately. For the count, MariaDB
+        10.11 starts from the handful of vitals concepts and reads obs through obs_concept for
+        every patient in the database, filtering by person afterwards: its estimate of rows per
+        concept is the average, and vitals are by far the most frequent concepts. That query
+        therefore grows with the size of the whole obs table, not with the patient's chart.
+
+        (person_id, concept_id, obs_datetime) lets both queries read only the patient's rows for
+        those concepts. Measured on MariaDB 10.11.13 with core's obs indexes and 2,000,000
+        synthetic obs (40% vitals): count 84 ms to 0.2 ms, page 3.7 ms to 0.9 ms.
+
+        Online in InnoDB, so the table stays readable while the index builds at startup.
+    -->
+    <changeSet id="obs_person_concept_datetime_index-20261007" author="Joshua">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <indexExists tableName="obs" indexName="obs_person_concept_datetime" />
+            </not>
+        </preConditions>
+        <comment>
+            Index obs on (person_id, concept_id, obs_datetime) for the patient chart's FHIR Observation searches (#344).
+        </comment>
+        <createIndex tableName="obs" indexName="obs_person_concept_datetime">
+            <column name="person_id" />
+            <column name="concept_id" />
+            <column name="obs_datetime" />
+        </createIndex>
+    </changeSet>
+
 </databaseChangeLog>
