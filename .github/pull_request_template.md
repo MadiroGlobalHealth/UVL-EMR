@@ -12,8 +12,13 @@
 <!-- Required if you are making UI changes. -->
 
 ## Related Issue
-<!-- Paste the link to the Jira ticket here if one exists. -->
-<!-- https://issues.openmrs.org/browse/O3- -->
+<!-- "Closes #<issue-number>" for the GitHub issue this PR resolves. -->
+
+## Forms only
+<!-- Delete this section if the PR does not add or change a form. -->
+- [ ] The concept mapping table is posted on the issue and agreed; every concept the form uses exists.
+- [ ] Screenshots of the rendered form in French and in English (test patient only).
+- [ ] Saved with every field filled, including optional ones, as a non-admin clinical user; the encounter and its observations appear in the patient chart.
 
 ## Other
 <!-- Anything not covered above -->
