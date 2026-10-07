@@ -17,7 +17,7 @@
 #
 # COLUMNS
 #
-#   username,first_name,last_name,openmrs_role,odoo_role
+#   username,first_name,last_name,openmrs_role,odoo_role,pacs_role
 #
 # openmrs_role must be one of the roles in
 # sites/mugamba/configs/openmrs/initializer_config/roles/roles_mugamba.csv, or the
@@ -39,16 +39,27 @@
 # On UAT, 2026-09-28: "Access Denied by ACLs for operation: read ...
 # stock.warehouse.orderpoint" for a cashier holding Invoicing / Billing only.
 #
-# Either column may be `-`. A row needs at least one of the two.
+# pacs_role is the Keycloak REALM role that opens PACS (Orthanc). It must be one
+# of the roles in distro/configs/orthanc/permissions.json: `xray_technician`,
+# `radiologist` or `admin`. Several may be separated by `;`. The column is
+# optional; a roster without it gives nobody PACS access.
+#
+# THE X-RAY TECHNICIAN NEEDS BOTH `X-Ray Technician` (openmrs_role) AND
+# `xray_technician` (pacs_role). orthanc-auth-service reads realm roles only and
+# never the openmrs client role, so with the first alone PACS opens blank: 403 on
+# tools/find, statistics and dicom-web/servers (issue #387, UAT 2026-10-07).
+#
+# Any role column may be `-`. A row needs at least one of them.
 #
 # DO NOT leave billing staff with `-` in both columns. They will be created with
 # no access to anything. That was issue #331: the cashier step of the patient
 # journey had never once been performable by a real user, because not one
 # non-administrator in the realm could raise an invoice.
 #
-username,first_name,last_name,openmrs_role,odoo_role
-jane.doe,Jane,DOE,Doctor,-
-john.roe,John,ROE,Nurse,-
-mary.moe,Mary,MOE,Pharmacist,-
-peter.poe,Peter,POE,-,Invoicing / Billing;Sales / User: All Documents
-paula.poe,Paula,POE,-,Invoicing / Billing Administrator;Sales / User: All Documents
+username,first_name,last_name,openmrs_role,odoo_role,pacs_role
+jane.doe,Jane,DOE,Doctor,-,-
+john.roe,John,ROE,Nurse,-,-
+mary.moe,Mary,MOE,Pharmacist,-,-
+rose.doe,Rose,DOE,X-Ray Technician,-,xray_technician
+peter.poe,Peter,POE,-,Invoicing / Billing;Sales / User: All Documents,-
+paula.poe,Paula,POE,-,Invoicing / Billing Administrator;Sales / User: All Documents,-
