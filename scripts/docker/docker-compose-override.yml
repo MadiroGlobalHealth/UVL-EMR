@@ -167,6 +167,12 @@ services:
   # Keep in step with the pins above and with LIME-EMR-Tooling's docker-compose-orthanc.yml.
   eip-odoo-openmrs:
     image: mekomsolutions/eip-client:2.4.0-SNAPSHOT@sha256:fef2ffee0bdc97b46bcf93b5bbffe091b906ea6db50db9145e61cf273d555d93
+    environment:
+      # Dispensing units that measure an amount taken from a container, not a number of containers:
+      # Milliliter, Gram, Drop, Application, Spray (the OpenMRS concept uuids, which are also the Odoo
+      # unit external ids). A prescription in one of them is billed as one bottle/tube, because
+      # these drugs are priced per container. Unset, "10 mL" bills ten bottles (#385).
+      - ODOO_PER_CONTAINER_UOMS=bf712910-1c7f-4e72-9d50-6eb5453efcfd,c2beca4d-0e35-4989-8e9d-54134982bb37,11ae7979-7bb6-49c7-9715-9adacc1b4005,72262ed3-d3e2-4c94-b4d6-567934107481,2befd840-e135-4fc9-bb9d-acdcce088f19
 
   mysql:
     image: mariadb:10.11.13
