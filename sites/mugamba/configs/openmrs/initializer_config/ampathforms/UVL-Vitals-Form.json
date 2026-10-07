@@ -1,0 +1,164 @@
+{
+  "uuid": "07eb0c26-6884-4d7b-8a1f-8e6e9c6995ac",
+  "name": "UVL Vitals",
+  "description": "UVL Vitals and biometrics, saved through the form engine so the encounter carries its visit, date and provider (#347)",
+  "version": "1",
+  "published": true,
+  "retired": false,
+  "encounter": "Vitals",
+  "encounterType": "67a71486-1a54-468f-ac3e-7091a9a79584",
+  "processor": "EncounterFormProcessor",
+  "referencedForms": [],
+  "pages": [
+    {
+      "label": "Vitals",
+      "sections": [
+        {
+          "label": "Vital signs",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Temperature (°C)",
+              "type": "obs",
+              "id": "temperature",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "748f8d43-617a-40ba-9474-20522e73fb8a",
+                "min": "25",
+                "max": "47"
+              }
+            },
+            {
+              "label": "Systolic blood pressure (mmHg)",
+              "type": "obs",
+              "id": "systolicBloodPressure",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "6d0b8551-feb8-4d57-892a-d75398181b3f",
+                "min": "0",
+                "max": "300",
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "Diastolic blood pressure (mmHg)",
+              "type": "obs",
+              "id": "diastolicBloodPressure",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "c46fcfdd-a785-4416-80bc-2d9e2edf5a45",
+                "min": "0",
+                "max": "200",
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "Pulse (beats/min)",
+              "type": "obs",
+              "id": "pulse",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "bc54cb7c-bb45-45aa-84d6-2346748b7c93",
+                "min": "0",
+                "max": "300",
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "Respiratory rate (breaths/min)",
+              "type": "obs",
+              "id": "respiratoryRate",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "b39db318-d563-4114-bec0-31ad3d254b24",
+                "min": "0",
+                "max": "99",
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "Oxygen saturation (%)",
+              "type": "obs",
+              "id": "oxygenSaturation",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "46091095-b138-465e-9a7d-17a243932812",
+                "min": "0",
+                "max": "100",
+                "disallowDecimals": true
+              }
+            }
+          ]
+        },
+        {
+          "label": "Biometrics",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Weight (kg)",
+              "type": "obs",
+              "id": "weight",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "5302aa6f-7528-4aeb-a3e8-0dc16a39b6ce",
+                "min": "0",
+                "max": "250"
+              }
+            },
+            {
+              "label": "Height (cm)",
+              "type": "obs",
+              "id": "height",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "b32af377-04c0-4f00-a571-d01170a16d9d",
+                "min": "10",
+                "max": "272"
+              }
+            },
+            {
+              "label": "BMI (kg/m²)",
+              "type": "obs",
+              "id": "bodyMassIndex",
+              "readonly": true,
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "2316f309-8802-431d-92a0-fc7cfa4df5c8",
+                "min": "0",
+                "max": "100",
+                "calculate": {
+                  "calculateExpression": "calcBMI(height,weight)"
+                }
+              }
+            },
+            {
+              "label": "Mid-upper arm circumference (cm)",
+              "type": "obs",
+              "id": "midUpperArmCircumference",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "6d4a1b5a-d41d-4779-b441-70ba440b64de"
+              }
+            }
+          ]
+        },
+        {
+          "label": "Notes",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Notes",
+              "type": "obs",
+              "id": "generalPatientNote",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "9dc2962b-bdd0-4261-b69d-55769e078be0",
+                "rows": 3
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
