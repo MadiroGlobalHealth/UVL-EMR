@@ -1221,4 +1221,96 @@
         </sql>
     </changeSet>
 
+    <!--
+        #415 - stool results recorded before #371 do not show on the Results page.
+
+        Until 7 Oct 2026 BP06 Stool examination (6a310ab5-...) was a Coded test: each result was a
+        single obs of BP06 itself, holding one answer such as "Infection by Ascaris lumbricoides".
+        #388 made BP06 a LabSet. The Results page reads a set through its members, so it never
+        reads an obs of the set concept itself, and those results disappeared from the chart.
+        They were never lost: on UAT, 23 such obs (6 Jul - 17 Aug 2026).
+
+        The new per-parasite questions are graded (None / Rarely / Few / Numerous), and the old
+        answers recorded only which parasite, never how many. Mapping them onto a grade would
+        invent data, so each old result becomes what a result entered today looks like - a BP06
+        group obs on the same order, encounter, date and location - holding one member: the
+        "Stool examination comment" (20b58e2e-...), whose text names the old answer.
+
+        Nothing is deleted. The new group obs points at the old obs through previous_version,
+        the standard OpenMRS revision link, and the old obs is voided with a void reason naming
+        #415, as OpenMRS does when a result is edited. Rollback (also below): delete the members
+        and groups whose previous_version is a BP06 obs voided by this change, then unvoid it.
+
+        The precondition fails with CONTINUE, not MARK_RAN, because the Initializer runs this file
+        before the OCL import. On a database that does not have the comment concept yet, the
+        changeset waits for the next start instead of being recorded as ran.
+    -->
+    <changeSet id="migrate_single_answer_stool_results-20261008" author="Joshua">
+        <preConditions onFail="CONTINUE">
+            <sqlCheck expectedResult="1">
+                SELECT CASE WHEN COUNT(*) &gt; 0 THEN 1 ELSE 0 END
+                  FROM obs o
+                  JOIN concept c ON c.concept_id = o.concept_id AND c.uuid = '6a310ab5-5178-4e5e-9112-3d60ecc6a60f'
+                 WHERE o.voided = 0 AND o.obs_group_id IS NULL AND o.value_coded IS NOT NULL
+                   AND EXISTS (SELECT 1 FROM concept WHERE uuid = '20b58e2e-6f70-410f-a866-d5fb1b29d42d')
+                   AND NOT EXISTS (SELECT 1 FROM obs n WHERE n.previous_version = o.obs_id)
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            Show BP06 stool results recorded before #371 on the Results page: a structured BP06 group with the old answer as its comment, old obs voided as its previous version (#415).
+        </comment>
+        <sql>
+            INSERT INTO obs (person_id, concept_id, encounter_id, order_id, obs_datetime, location_id,
+                             status, previous_version, creator, date_created, voided, uuid)
+            SELECT o.person_id, o.concept_id, o.encounter_id, o.order_id, o.obs_datetime, o.location_id,
+                   o.status, o.obs_id, 1, NOW(), 0, UUID()
+              FROM obs o
+              JOIN concept c ON c.concept_id = o.concept_id AND c.uuid = '6a310ab5-5178-4e5e-9112-3d60ecc6a60f'
+             WHERE o.voided = 0 AND o.obs_group_id IS NULL AND o.value_coded IS NOT NULL
+               AND NOT EXISTS (SELECT 1 FROM obs n WHERE n.previous_version = o.obs_id);
+
+            INSERT INTO obs (person_id, concept_id, encounter_id, order_id, obs_datetime, location_id,
+                             obs_group_id, value_text, status, creator, date_created, voided, uuid)
+            SELECT g.person_id, cm.concept_id, g.encounter_id, g.order_id, g.obs_datetime, g.location_id,
+                   g.obs_id,
+                   CONCAT('Résultat antérieur (liste unique) : ',
+                          COALESCE((SELECT cn.name FROM concept_name cn
+                                     WHERE cn.concept_id = old.value_coded AND cn.locale = 'fr' AND cn.voided = 0
+                                     ORDER BY cn.locale_preferred DESC LIMIT 1),
+                                   (SELECT cn.name FROM concept_name cn
+                                     WHERE cn.concept_id = old.value_coded AND cn.voided = 0
+                                     ORDER BY cn.locale_preferred DESC LIMIT 1))),
+                   g.status, 1, NOW(), 0, UUID()
+              FROM obs g
+              JOIN concept c ON c.concept_id = g.concept_id AND c.uuid = '6a310ab5-5178-4e5e-9112-3d60ecc6a60f'
+              JOIN obs old ON old.obs_id = g.previous_version AND old.concept_id = g.concept_id AND old.value_coded IS NOT NULL
+              JOIN concept cm ON cm.uuid = '20b58e2e-6f70-410f-a866-d5fb1b29d42d'
+             WHERE g.voided = 0
+               AND NOT EXISTS (SELECT 1 FROM obs ch WHERE ch.obs_group_id = g.obs_id);
+
+            UPDATE obs old
+              JOIN obs g ON g.previous_version = old.obs_id AND g.concept_id = old.concept_id AND g.voided = 0
+              JOIN concept c ON c.concept_id = old.concept_id AND c.uuid = '6a310ab5-5178-4e5e-9112-3d60ecc6a60f'
+               SET old.voided = 1,
+                   old.voided_by = 1,
+                   old.date_voided = NOW(),
+                   old.void_reason = '#415 migrated to structured BP06 stool examination'
+             WHERE old.voided = 0 AND old.obs_group_id IS NULL AND old.value_coded IS NOT NULL;
+        </sql>
+        <rollback>
+            <sql>
+                DELETE ch FROM obs ch
+                  JOIN obs g ON g.obs_id = ch.obs_group_id
+                  JOIN obs old ON old.obs_id = g.previous_version
+                 WHERE old.void_reason = '#415 migrated to structured BP06 stool examination';
+                DELETE g FROM obs g
+                  JOIN obs old ON old.obs_id = g.previous_version
+                 WHERE old.void_reason = '#415 migrated to structured BP06 stool examination';
+                UPDATE obs
+                   SET voided = 0, voided_by = NULL, date_voided = NULL, void_reason = NULL
+                 WHERE void_reason = '#415 migrated to structured BP06 stool examination';
+            </sql>
+        </rollback>
+    </changeSet>
+
 </databaseChangeLog>
