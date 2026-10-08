@@ -1221,4 +1221,65 @@
         </sql>
     </changeSet>
 
+    <!--
+        #416 - prescriptions fully dispensed before #374 still offer Dispense.
+
+        #374 (#389) set the dispensing app's restrictTotalQuantityDispensed. Since then, after each
+        dispense the app adds up the quantity of every dispense of the request and, once it
+        reaches the quantity ordered (times 1 + refills), PATCHes the MedicationRequest's
+        fulfiller-status extension to "completed", which fhir2 stores as
+        orders.fulfiller_status = 'COMPLETED'. Dispense, Pause and Close then disappear.
+        Dispenses made before that deploy never got the status: on UAT, 6 drug orders.
+
+        This does what the app would have done, for those orders only:
+        - fulfiller_status is still NULL (an order a pharmacist paused or closed keeps its status);
+        - the non-voided dispenses add up to at least quantity x (1 + num_refills), the app's
+          own rule; a partially dispensed order is left alone;
+        - every dispense is in the prescription's quantity unit, which the app also requires.
+
+        fulfiller_comment is empty on all of them, and is set to a marker so the change can be
+        found and undone (rollback below).
+    -->
+    <changeSet id="complete_fully_dispensed_drug_orders-20261008" author="Joshua">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT CASE WHEN COUNT(*) &gt; 0 THEN 1 ELSE 0 END
+                  FROM orders o
+                  JOIN drug_order d ON d.order_id = o.order_id
+                 WHERE o.voided = 0 AND o.order_action &lt;&gt; 'DISCONTINUE'
+                   AND o.fulfiller_status IS NULL AND o.fulfiller_comment IS NULL
+                   AND d.quantity &gt; 0
+                   AND (SELECT COALESCE(SUM(md.quantity), 0) FROM medication_dispense md
+                         WHERE md.drug_order_id = o.order_id AND md.voided = 0) &gt;= d.quantity * (1 + COALESCE(d.num_refills, 0))
+                   AND NOT EXISTS (SELECT 1 FROM medication_dispense md
+                                    WHERE md.drug_order_id = o.order_id AND md.voided = 0 AND md.quantity IS NOT NULL
+                                      AND NOT (md.quantity_units &lt;=&gt; d.quantity_units))
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            Complete the drug orders dispensed in full before #374, as the dispensing app now does after each dispense (#416).
+        </comment>
+        <sql>
+            UPDATE orders o
+              JOIN drug_order d ON d.order_id = o.order_id
+               SET o.fulfiller_status = 'COMPLETED',
+                   o.fulfiller_comment = '#416 backfill: dispensed in full before #374'
+             WHERE o.voided = 0 AND o.order_action &lt;&gt; 'DISCONTINUE'
+               AND o.fulfiller_status IS NULL AND o.fulfiller_comment IS NULL
+               AND d.quantity &gt; 0
+               AND (SELECT COALESCE(SUM(md.quantity), 0) FROM medication_dispense md
+                     WHERE md.drug_order_id = o.order_id AND md.voided = 0) &gt;= d.quantity * (1 + COALESCE(d.num_refills, 0))
+               AND NOT EXISTS (SELECT 1 FROM medication_dispense md
+                                WHERE md.drug_order_id = o.order_id AND md.voided = 0 AND md.quantity IS NOT NULL
+                                  AND NOT (md.quantity_units &lt;=&gt; d.quantity_units));
+        </sql>
+        <rollback>
+            <sql>
+                UPDATE orders
+                   SET fulfiller_status = NULL, fulfiller_comment = NULL
+                 WHERE fulfiller_comment = '#416 backfill: dispensed in full before #374';
+            </sql>
+        </rollback>
+    </changeSet>
+
 </databaseChangeLog>
