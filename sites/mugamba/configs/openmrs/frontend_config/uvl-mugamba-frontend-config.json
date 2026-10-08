@@ -125,6 +125,11 @@
   "@openmrs/esm-patient-orders-app": {
     "Display conditions": {
       "privileges": ["Get Orders"]
+    },
+    "extensionSlots": {
+      "order-item-additional-info-slot": {
+        "remove": ["order-price-details", "order-stock-details"]
+      }
     }
   },
   "@openmrs/esm-patient-registration-app": {
