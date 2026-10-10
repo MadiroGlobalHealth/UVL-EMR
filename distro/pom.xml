@@ -861,6 +861,25 @@
                                             match="^(ADD data/postgresql/keycloak .*)$"
                                             replace="\1${line.separator}ADD data/postgresql/orthanc /docker-entrypoint-initdb.d/db/orthanc"
                                             byline="true" />
+
+                    <!--
+                      The same gap on the mysql side: upstream's Dockerfile ADDs only the
+                      odoo and senaite EIP bootstraps, so the Orthanc bridge's
+                      openmrs_eip_mgt_orthanc user and database were never created on a
+                      fresh volume and eip-openmrs-orthanc crash-looped on "Access denied".
+                      UAT and production only had them because they were created by hand.
+                      Found on the first fresh install, uvl-emr-prod-scw, 2026-10-06.
+                      Idempotent the same way as the postgresql block above.
+                    -->
+                    <echo level="info" message="Adding Orthanc EIP database bootstrap to the mysql image"/>
+                    <replaceregexp file="${project.build.directory}/bundled-docker-tmp/bundled-docker/mysql/Dockerfile"
+                                            match="[\r\n]+ADD data/mysql/eip-openmrs-orthanc[^\r\n]*"
+                                            replace=""
+                                            flags="g" />
+                    <replaceregexp file="${project.build.directory}/bundled-docker-tmp/bundled-docker/mysql/Dockerfile"
+                                            match="^(ADD data/mysql/eip-odoo-openmrs .*)$"
+                                            replace="\1${line.separator}ADD data/mysql/eip-openmrs-orthanc /docker-entrypoint-initdb.d/db/eip-openmrs-orthanc"
+                                            byline="true" />
                   </target>
                 </configuration>
               </execution>
