@@ -114,9 +114,9 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
 5. In Odoo, archive the duplicate **Cefixime Comprimé 400mg, product 535**. Orders land on 609.
 6. Once it's live, check that the three Liquibase changesets of #388 are `EXECUTED`, Payer has 8
    answers, and BP06 and BP09 show their structured fields.
-7. **#424:** set `ORTHANC_WORKLIST_STATION_AET=XMARUM` on the `eip-openmrs-orthanc` container
-   (LIME-EMR-Tooling compose; it defaulted to `XMARU`). Unset, entries are labelled `ORTHANC` and
-   the X-ray unit sees none of them.
+7. **#424:** check the `eip-openmrs-orthanc` container has `ORTHANC_WORKLIST_STATION_AET=XMARUM`
+   and `ORTHANC_WORKLIST_XRAY_MODALITY=DX` (LIME-EMR-Tooling `ede296b27` defaults both). Unset,
+   entries are labelled `ORTHANC` and the X-ray unit sees none of them.
 
 ### Known issues
 - **Stool results recorded before the change** (about 23, July–August) no longer show on the
