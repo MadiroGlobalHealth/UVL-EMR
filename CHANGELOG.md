@@ -113,9 +113,10 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
 6. Once it's live, check that the three Liquibase changesets of #388 are `EXECUTED`, Payer has 8
    answers, and BP06 and BP09 show their structured fields.
 7. **#372, radiology tunnel:** before this release, set up WireGuard on the production host
-   (`wg0` = `10.66.0.1`, UDP 51820 open in Azure's network rules too) so the env generator binds
-   Orthanc's DICOM port to it. Without `wg0`, DICOM binds loopback and the X-ray PC can't reach it,
-   but nothing else is affected.
+   (`wg0` = `10.66.0.11`, UDP 51820 open in Azure's network rules too) so the env generator binds
+   Orthanc's DICOM port to it. The X-ray PC keeps `10.66.0.2` in both tunnels, which is the address
+   `orthanc.json` names, so the file is the same on UAT and production. Without `wg0`, DICOM binds
+   loopback and the X-ray PC can't reach it, but nothing else is affected.
 
 ### Known issues
 - **Stool results recorded before the change** (about 23, July–August) no longer show on the
