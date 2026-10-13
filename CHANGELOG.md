@@ -86,6 +86,11 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   drug for every failure, which was wrong. The "Déjà actif - utiliser Modifier" tag stays. (#364)
 - The Pharmacist, X-Ray Technician and Lab Technician get `Get Queue Entries`. The Doctor,
   Ophtalmologist and Dentist get `Get ChargeItemDefinition` and `Get InventoryItem`. (#365)
+- **Orthanc accepts DICOM only from the X-ray PC.** The PC is registered as `XMARUM` (its real AE
+  title; the old entry said `XMARU` with a placeholder address) at its WireGuard tunnel address
+  `10.66.0.2`. `DicomAlwaysAllowStore` and `DicomAlwaysAllowFind` are off, so storing and worklist
+  queries need that AE title. The `FINDSCU` test entry is gone. The port itself is published only
+  on the tunnel (LIME-EMR-Tooling `ede296b27`). (#372)
 
 ### Fixed
 - **Odoo: printing a customer invoice from "Send & Print" crashed** (#375). This is a database
@@ -117,6 +122,11 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
 7. **#424:** check the `eip-openmrs-orthanc` container has `ORTHANC_WORKLIST_STATION_AET=XMARUM`
    and `ORTHANC_WORKLIST_XRAY_MODALITY=DX` (LIME-EMR-Tooling `ede296b27` defaults both). Unset,
    entries are labelled `ORTHANC` and the X-ray unit sees none of them.
+8. **#372, radiology tunnel:** before this release, set up WireGuard on the production host
+   (`wg0` = `10.66.0.11`, UDP 51820 open in Azure's network rules too) so the env generator binds
+   Orthanc's DICOM port to it. The X-ray PC keeps `10.66.0.2` in both tunnels, which is the address
+   `orthanc.json` names, so the file is the same on UAT and production. Without `wg0`, DICOM binds
+   loopback and the X-ray PC can't reach it, but nothing else is affected.
 
 ### Known issues
 - **Stool results recorded before the change** (about 23, July–August) no longer show on the
