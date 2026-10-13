@@ -94,6 +94,13 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   notes.**
 - Payer and dispensing answers were duplicated after the OCL import. Five X-ray procedures were
   never created because of a name clash. The X-ray billable services had no concept. (#366)
+- **A paid X-ray reached the Orthanc worklist hours late, and the X-ray unit couldn't see it.**
+  The Orthanc bridge read only the first 100 orders of its seven-day window, oldest first, so a new
+  X-ray waited for older orders to age out: two paid on UAT reached the worklist 12 and 16 hours
+  later. It now follows every page. Entries named the station `ORTHANC`; it is now
+  `ORTHANC_WORKLIST_STATION_AET` (default `ORTHANC`), which the unit, `XMARUM`, filters on. X-rays
+  were `XR`; they are now `DX`, as the unit encodes them (`ORTHANC_WORKLIST_XRAY_MODALITY`).
+  Ultrasound and CT are unchanged. Bridge jar from eip-openmrs-orthanc `77ab760`. (#424)
 
 ### Deploy notes for production
 1. Record the running image digests and take a database backup first.
@@ -107,6 +114,9 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
 5. In Odoo, archive the duplicate **Cefixime Comprimé 400mg, product 535**. Orders land on 609.
 6. Once it's live, check that the three Liquibase changesets of #388 are `EXECUTED`, Payer has 8
    answers, and BP06 and BP09 show their structured fields.
+7. **#424:** check the `eip-openmrs-orthanc` container has `ORTHANC_WORKLIST_STATION_AET=XMARUM`
+   and `ORTHANC_WORKLIST_XRAY_MODALITY=DX` (LIME-EMR-Tooling `ede296b27` defaults both). Unset,
+   entries are labelled `ORTHANC` and the X-ray unit sees none of them.
 
 ### Known issues
 - **Stool results recorded before the change** (about 23, July–August) no longer show on the
