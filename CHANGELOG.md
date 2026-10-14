@@ -67,6 +67,8 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   appears in the blood count. (#366)
 - **Queues load for the Pharmacist, X-Ray Technician and Lab Technician** without a 403 on the home
   page. (#351, #365)
+- **Only a radiologist can save a report in the PACS viewer, under their own login.** An X-ray
+  technician can still view images and worklists; their save is refused. (#429)
 
 ### Added
 - Person attribute type "Chef de ménage" (`c108c6bc-5f23-4e4a-ad34-8c788b86f288`). (#389)
@@ -106,6 +108,14 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   `ORTHANC_WORKLIST_STATION_AET` (default `ORTHANC`), which the unit, `XMARUM`, filters on. X-rays
   were `XR`; they are now `DX`, as the unit encodes them (`ORTHANC_WORKLIST_XRAY_MODALITY`).
   Ultrasound and CT are unchanged. Bridge jar from eip-openmrs-orthanc `77ab760`. (#424)
+- **Anyone on the internet could upload into the PACS without signing in.** The
+  orthancteam/orthanc-auth-service image's default anonymous profile grants `upload`, so a request
+  with no token could `POST /instances` or STOW (reads and deletes were always refused). Ours now
+  grants nothing. OHIF's report save had only worked through that hole: it sent the PACS UI's
+  viewer instant link, which carries no user. OHIF's `app-config.js` now sends the signed-in
+  user's own Keycloak token (kept by Orthanc Explorer 2 in localStorage) on every PACS request and
+  refreshes it, so the user's PACS role decides. `upload` moves from `xray_technician` (images
+  arrive over DICOM, which it doesn't cover) to `radiologist`. (#429)
 
 ### Deploy notes for production
 1. Record the running image digests and take a database backup first.
