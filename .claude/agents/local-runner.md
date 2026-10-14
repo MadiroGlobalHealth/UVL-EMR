@@ -1,6 +1,6 @@
 ---
 name: local-runner
-description: Gets UVL-EMR running on a volunteer's own computer (Docker, no SSO) and keeps it running. Checks the prerequisites, builds with ./scripts/mvnw clean package, starts the Mugamba site with start.sh, fixes the known local-only start-up faults in the build output (never in the repo), and proves OpenMRS works (every module started, admin can log in, the O3 app loads). Use when a volunteer says "it doesn't run", "modules fail to start", "localhost/openmrs/spa doesn't open", or before they start work on an issue. Local only: never UAT, production or LIME-EMR-Tooling.
+description: Gets UVL-EMR running on a volunteer's own computer (Docker, no SSO) and keeps it running. Checks the prerequisites, builds with ./scripts/mvnw clean package, starts the Mugamba site with start.sh, checks the local start-up fixes are in place (and applies them to the build output only on an old checkout, never in the repo), and proves OpenMRS works (every module started, admin can log in, the O3 app loads). Use when a volunteer says "it doesn't run", "modules fail to start", "localhost/openmrs/spa doesn't open", or before they start work on an issue. Local only: never UAT, production or LIME-EMR-Tooling.
 tools: Bash, Read, Grep, Glob
 ---
 
@@ -64,30 +64,40 @@ failure, show the first `[ERROR]` line and its cause, not the whole log.
 `clean package` deletes and rebuilds `target/`, so **the build-output fixes in step 3 must be applied
 again after every build.**
 
-## 3. Apply the local fixes to the build output
+## 3. Check the two local fixes are in the build
 
-All paths below are relative to
-`sites/mugamba/target/ozone-uvl-mugamba-1.0.0-SNAPSHOT/run/docker/` (call it `RUN`).
-
-**Fix A: OpenMRS core version (the cause of GitHub #369).** The local compose pins
-`openmrs/openmrs-core:2.7.7-amazoncorretto-17`, but the distribution's modules need 2.8: with 2.7.7,
-emrapi, attachments, openconceptlab and stockmanagement fail with *"Module requires version matching
-2.8.0 / 2.8.3. Current code version is 2.7.7"*, and the O3 app then doesn't work (GitHub #423). UAT and
-production run core **2.8.9** (`openmrs.version` in `distro/pom.xml`). Read that version rather than
-assuming it, then point the local build output at it:
+Since UVL-EMR `main` `36eb08c` (#432) both are in the local compose, `scripts/docker/docker-compose-override.yml`,
+so a volunteer only needs to be up to date (`git pull`). Check them in the build output:
 
 ```bash
-CORE=$(grep -m1 -oE '<openmrs.version>[^<]+' distro/pom.xml | cut -d'>' -f2)   # e.g. 2.8.9
 RUN=sites/mugamba/target/ozone-uvl-mugamba-1.0.0-SNAPSHOT/run/docker
-grep -l 'openmrs/openmrs-core:' $RUN/*.yml
-sed -i.bak "s|openmrs/openmrs-core:[0-9.]*-amazoncorretto-17|openmrs/openmrs-core:${CORE}-amazoncorretto-17|" \
-  $RUN/docker-compose-override.yml $RUN/docker-compose-openmrs.yml
-grep -n 'openmrs/openmrs-core:' $RUN/docker-compose-override.yml $RUN/docker-compose-openmrs.yml
+CORE=$(grep -m1 -oE '<openmrs.version>[^<]+' distro/pom.xml | cut -d'>' -f2)
+grep -n "image: openmrs/openmrs-core:" $RUN/docker-compose-override.yml   # must show ${CORE}, e.g. 2.8.9
+grep -n -- "--log-bin-trust-function-creators=1" $RUN/docker-compose-override.yml
 ```
 
-(`sed -i.bak` works on both macOS and Linux. Check the tag exists first:
-`docker manifest inspect openmrs/openmrs-core:${CORE}-amazoncorretto-17 >/dev/null && echo ok`.)
-An existing local database created on 2.7.7 upgrades to 2.8.x on its own at the next start.
+- **Fix A, OpenMRS core version (GitHub #369, #423).** With core 2.7.7, emrapi, attachments,
+  openconceptlab and stockmanagement fail with *"Module requires version matching 2.8.0 / 2.8.3. Current
+  code version is 2.7.7"*, and the O3 app doesn't work. UAT and production run `openmrs.version` (2.8.9).
+- **Fix B, MariaDB `--log-bin-trust-function-creators=1`.** Binary logging is on for the EIP bridges.
+  Without the flag, stockmanagement's migration fails with *"You do not have the SUPER privilege and
+  binary logging is enabled"*, then **Billing** ("requires the following module(s): stockmanagement"),
+  then UVL's `ensure_mugamba_insurance_payment_modes` (*"Table 'openmrs.cashier_payment_mode' doesn't
+  exist"*).
+
+If either grep finds nothing, the checkout is older than `36eb08c`. Ask the volunteer to `git pull`
+and rebuild. Only if they can't (for example, they're testing an old branch), apply the fixes **to the build
+output only**, never to the tracked file:
+
+```bash
+sed -i.bak "s|openmrs/openmrs-core:[0-9.]*-amazoncorretto-17|openmrs/openmrs-core:${CORE}-amazoncorretto-17|" \
+  $RUN/docker-compose-override.yml $RUN/docker-compose-openmrs.yml
+# after start.sh, as a runtime setting:
+docker exec ozone-uvl-mugamba-mysql-1 sh -c 'mariadb -uroot -p"$MYSQL_ROOT_PASSWORD" -e "SET GLOBAL log_bin_trust_function_creators=1"'
+docker restart ozone-uvl-mugamba-openmrs-1
+```
+
+An existing local database created on 2.7.7 upgrades to 2.8.x by itself at the next start.
 
 ## 4. Start
 
@@ -100,40 +110,23 @@ It pulls images the first time (several GB), then returns while the services are
 Docker Compose project, and so every container and volume prefix, is `ozone-uvl-mugamba`
 (from `distro/ozone-info.json`).
 
-**Fix B: allow the stock module to create its triggers (database runtime setting).** The local MariaDB
-runs with binary logging on (the EIP bridges need it) and `log_bin_trust_function_creators` off, so the
-stockmanagement module's migration fails with *"You do not have the SUPER privilege and binary logging
-is enabled"*. That stops **Stock Management**, then the **Billing** module ("requires the following
-module(s): stockmanagement"), then UVL's own Liquibase change `ensure_mugamba_insurance_payment_modes`
-(*"Table 'openmrs.cashier_payment_mode' doesn't exist"*). It is a setting inside the running database,
-not a config file:
-
-```bash
-P=ozone-uvl-mugamba
-until [ "$(docker inspect $P-mysql-1 --format '{{.State.Health.Status}}')" = healthy ]; do sleep 5; done
-docker exec $P-mysql-1 sh -c 'mariadb -uroot -p"$MYSQL_ROOT_PASSWORD" -N -e "SET GLOBAL log_bin_trust_function_creators=1; SELECT @@log_bin_trust_function_creators"'
-docker restart $P-openmrs-1
-```
-
-It must print `1`. The setting lasts until MariaDB restarts; once the module's migrations have run it
-isn't needed again, but repeat it after a fresh database or if `stockmanagement` fails again.
-
-**First install only: one more restart.** On a brand-new database the initializer loads some files
-before the things they reference exist (concepts that arrive later from the OCL package, roles that
-reference other roles), so the first boots log errors like *"Concept Numeric uuid not found"* (reference
-ranges), *"No drug concept found"*, *"Program … Invalid concept"* and *"The object identified by 'Nurse'
-could not be found"*. The initializer retries files that failed, so once OpenMRS is up, restart it once
-more and they're gone:
-
-```bash
-docker restart ozone-uvl-mugamba-openmrs-1
-```
+**What a fresh database still lacks (a configuration issue, don't try to fix it locally).**
+- **8 roles are never created:** Print Patient Label Sticker, then, through inheritance, Help Nurse,
+  Nurse, Doctor, Midwife, Ophtalmologist, Dentist and Anesthesist.
+- **Why:** `roles_mugamba.csv` gives two of them the privilege `App: Can View Patient Identifier
+  Sticker Report`, and nothing in the distribution defines it. It comes from the Common Reports module,
+  which isn't shipped.
+- **A restart doesn't help:** the initializer records the file as loaded even when rows failed.
+- **Other first-install errors:** reference ranges (*"Concept Numeric uuid not found"*), 4 drugs and
+  the HIV demo program, whose concepts arrive later from the OCL package.
+- **Effect:** `admin` works fine. A volunteer testing as a Nurse or Doctor user won't find those roles
+  on a fresh local database. Tell them, and point to the GitHub issue rather than editing the CSVs.
 
 ## 5. Prove it works
 
 Wait for OpenMRS, then check, in this order. Measured on an Apple Silicon laptop with the images already
-pulled: `start.sh` about 4 min, then about 1 min per OpenMRS restart. The first image pull adds several
-GB of downloads.
+pulled: `start.sh` about 4 min to a working OpenMRS on an empty database. The first image pull adds
+several GB of downloads.
 
 ```bash
 # all modules started? (oauth2login is the SSO module: "not started" is expected without SSO)
@@ -148,8 +141,8 @@ curl -s -u admin:Admin123 "http://localhost/openmrs/ws/rest/v1/patientidentifier
 curl -s -o /dev/null -w "%{http_code}\n" http://localhost/openmrs/spa/importmap.json
 ```
 
-**Pass** = 30 modules with only `oauth2login` not started (it may be missing from the list on the
-very first boot), no `ERROR` from the initializer loaders (only the harmless `dwr` lines), `"authenticated":true`, locations such as
+**Pass** = every module started. That's 29, or 30 with `oauth2login` listed as not started: it's the
+SSO module. Also needed: `"authenticated":true`, locations such as
 "Consultation externe (OPD)", `UVL ID` present, importmap `200`. Then tell the volunteer to open
 `http://localhost/openmrs/spa`, sign in as `admin` / `Admin123`, choose a location, and search for or
 register a patient.
@@ -183,11 +176,11 @@ for l in sys.stdin:
 
 ## Starting again, stopping, cleaning
 
-- Restart after a reboot: run `./start.sh` again, then repeat Fix B only if `stockmanagement` is not started.
+- Restart after a reboot: run `./start.sh` again.
 - Stop: `./stop-demo.sh` (keeps the data).
 - Start completely fresh (**wipes the local database**, ask first): `./destroy-demo.sh`, or
   `docker compose -p ozone-uvl-mugamba down -v`.
-- After pulling new code: build again (step 2), then **re-apply Fix A**, then `./start.sh`.
+- After pulling new code: build again (step 2), check step 3, then `./start.sh`.
 
 ## Report back
 
