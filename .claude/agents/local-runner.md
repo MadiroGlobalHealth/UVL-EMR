@@ -110,17 +110,11 @@ It pulls images the first time (several GB), then returns while the services are
 Docker Compose project, and so every container and volume prefix, is `ozone-uvl-mugamba`
 (from `distro/ozone-info.json`).
 
-**What a fresh database still lacks (a configuration issue, don't try to fix it locally).**
-- **8 roles are never created:** Print Patient Label Sticker, then, through inheritance, Help Nurse,
-  Nurse, Doctor, Midwife, Ophtalmologist, Dentist and Anesthesist.
-- **Why:** `roles_mugamba.csv` gives two of them the privilege `App: Can View Patient Identifier
-  Sticker Report`, and nothing in the distribution defines it. It comes from the Common Reports module,
-  which isn't shipped.
-- **A restart doesn't help:** the initializer records the file as loaded even when rows failed.
-- **Other first-install errors:** reference ranges (*"Concept Numeric uuid not found"*), 4 drugs and
-  the HIV demo program, whose concepts arrive later from the OCL package.
-- **Effect:** `admin` works fine. A volunteer testing as a Nurse or Doctor user won't find those roles
-  on a fresh local database. Tell them, and point to the GitHub issue rather than editing the CSVs.
+**First-install errors that are expected on a fresh database** (configuration data, don't chase them
+locally): reference ranges (*"Concept Numeric uuid not found"*), 4 drugs and the HIV demo program,
+whose concepts come from the OCL package. Since `9a53b25` (#433) all UVL roles (Nurse, Doctor, Help
+Nurse, Midwife and so on) are created on a fresh database. On an older checkout eight of them are missing:
+`git pull` and start from fresh volumes.
 
 ## 5. Prove it works
 
