@@ -67,6 +67,10 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   appears in the blood count. (#366)
 - **Queues load for the Pharmacist, X-Ray Technician and Lab Technician** without a 403 on the home
   page. (#351, #365)
+- **The radiologist's report reaches the X-ray order.** A report saved in the PACS viewer (OHIF)
+  shows under the order's result on one line, with the findings and measurements written on the
+  image (French accents intact), not only the report name, at the time it was saved. The X-ray
+  order is then marked Completed. (#427)
 
 ### Added
 - Person attribute type "Chef de ménage" (`c108c6bc-5f23-4e4a-ad34-8c788b86f288`). (#389)
@@ -106,6 +110,15 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   `ORTHANC_WORKLIST_STATION_AET` (default `ORTHANC`), which the unit, `XMARUM`, filters on. X-rays
   were `XR`; they are now `DX`, as the unit encodes them (`ORTHANC_WORKLIST_XRAY_MODALITY`).
   Ultrasound and CT are unchanged. Bridge jar from eip-openmrs-orthanc `77ab760`. (#424)
+- **A radiology report reached the chart as its title only, at midnight, on no order.** The bridge
+  read only the SR's series description. It now reads the report's content (each annotation's label
+  and measurements), files the result against the order matched by accession and that order's
+  encounter, and sets the order's fulfiller status to `COMPLETED`. A report is also never filed
+  twice: on UAT a 401 on a save that had succeeded left the report unmarked, and the next bridge
+  start filed it again. The text is one line, because O3's Results tab drops line breaks, and is
+  posted as UTF-8 (an em dash had been stored as `?`). It ends with "Reported by: <name>", read
+  from the PACS audit log and Keycloak (needs #430 and deploy note 9). Bridge jar from
+  eip-openmrs-orthanc `530c314` (jnsereko fork). (#427, #429)
 
 ### Deploy notes for production
 1. Record the running image digests and take a database backup first.
