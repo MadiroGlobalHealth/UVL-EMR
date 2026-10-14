@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: New volunteer? Start here
+    url: https://github.com/MadiroGlobalHealth/UVL-EMR/blob/main/ONBOARDING.md
+    about: The onboarding path, then the open Forms + Help wanted issues.
+  - name: General OpenMRS 3 questions
+    url: https://talk.openmrs.org/
+    about: Questions about OpenMRS itself rather than UVL-EMR.
