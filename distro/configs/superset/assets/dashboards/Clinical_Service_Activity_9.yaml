@@ -1,0 +1,185 @@
+dashboard_title: Activité des services cliniques
+description: null
+css: ''
+slug: clinical-service-activity
+certified_by: null
+certification_details: null
+published: true
+uuid: 5fc19240-152d-46c9-a704-f3926b1ce450
+position:
+  DASHBOARD_VERSION_KEY: v2
+  ROOT_ID:
+    children:
+    - GRID_ID
+    id: ROOT_ID
+    type: ROOT
+  GRID_ID:
+    children:
+    - HEADER_1
+    - ROW-svc-notes
+    - ROW-svc-0
+    - ROW-svc-1
+    - ROW-svc-2
+    id: GRID_ID
+    parents:
+    - ROOT_ID
+    type: GRID
+  HEADER_1:
+    id: HEADER_1
+    meta:
+      text: Activité des services cliniques
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    type: HEADER
+  HEADER_ID:
+    id: HEADER_ID
+    meta:
+      text: Activité des services cliniques
+    type: HEADER
+  MARKDOWN-svc-notes:
+    children: []
+    id: MARKDOWN-svc-notes
+    meta:
+      code: "### Activité des services cliniques\n\nUn tableau de bord par service, au fur et à mesure\
+        \ de leur mise en service (UVL-EMR#243) : hospitalisation,\nmaternité, néonatologie, bloc opératoire,\
+        \ banque de sang, planification familiale, nutrition, urgences.\n\n- Une rencontre appartient\
+        \ à un service selon son **lieu**, son **type de rencontre** ou son **formulaire**\n  (table `services`\
+        \ du jeu de données *service_activity*). La première correspondance l'emporte : une rencontre\n\
+        \  en salle de césarienne compte en Maternité, pas en Hospitalisation.\n- Un service *pending*\
+        \ n'a pas encore de formulaires en production : il n'apparaît pas tant qu'aucune rencontre ne\n\
+        \  correspond. À chaque mise en service, vérifier les motifs et passer le statut à *live*.\n-\
+        \ Rencontres et patients excluent les enregistrements annulés. Heures en UTC (heure OpenMRS)."
+      height: 50
+      width: 12
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-svc-notes
+    type: MARKDOWN
+  ROW-svc-notes:
+    children:
+    - MARKDOWN-svc-notes
+    id: ROW-svc-notes
+    meta:
+      background: BACKGROUND_TRANSPARENT
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    type: ROW
+  ROW-svc-0:
+    children:
+    - CHART-svc-70
+    id: ROW-svc-0
+    meta:
+      background: BACKGROUND_TRANSPARENT
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    type: ROW
+  CHART-svc-70:
+    children: []
+    id: CHART-svc-70
+    meta:
+      chartId: 70
+      height: 50
+      sliceName: Services – Rencontres par service et par mois
+      uuid: 2c9e6f1d-e2fa-4396-d4d1-c06f38e9b12d
+      width: 12
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-svc-0
+    type: CHART
+  ROW-svc-1:
+    children:
+    - CHART-svc-71
+    id: ROW-svc-1
+    meta:
+      background: BACKGROUND_TRANSPARENT
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    type: ROW
+  CHART-svc-71:
+    children: []
+    id: CHART-svc-71
+    meta:
+      chartId: 71
+      height: 50
+      sliceName: Services – Patients par service et par mois
+      uuid: 3daf702e-f30b-44a7-e5e2-d17049fac23e
+      width: 12
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-svc-1
+    type: CHART
+  ROW-svc-2:
+    children:
+    - CHART-svc-72
+    id: ROW-svc-2
+    meta:
+      background: BACKGROUND_TRANSPARENT
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    type: ROW
+  CHART-svc-72:
+    children: []
+    id: CHART-svc-72
+    meta:
+      chartId: 72
+      height: 60
+      sliceName: Services – Rencontres par service, type et lieu
+      uuid: 4eb0813f-041c-45b8-f6f3-e2815a0bd34f
+      width: 12
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-svc-2
+    type: CHART
+metadata:
+  color_scheme: supersetColors
+  cross_filters_enabled: false
+  native_filter_configuration:
+  - id: NATIVE_FILTER-svc_time_range
+    name: Date / Période
+    filterType: filter_time
+    type: NATIVE_FILTER
+    targets:
+    - {}
+    defaultDataMask:
+      extraFormData: {}
+      filterState:
+        value: No filter
+    cascadeParentIds: []
+    scope:
+      rootPath:
+      - ROOT_ID
+      excluded: []
+    controlValues: {}
+    chartsInScope:
+    - 70
+    - 71
+    - 72
+    tabsInScope: []
+    description: ''
+  chart_configuration: {}
+  global_chart_configuration:
+    scope:
+      rootPath:
+      - ROOT_ID
+      excluded: []
+    chartsInScope:
+    - 70
+    - 71
+    - 72
+  timed_refresh_immune_slices: []
+  expanded_slices: {}
+  refresh_frequency: 0
+  label_colors: {}
+  default_filters: '{}'
+  shared_label_colors: {}
+  color_scheme_domain: []
+version: 1.0.0
