@@ -67,8 +67,9 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   appears in the blood count. (#366)
 - **Queues load for the Pharmacist, X-Ray Technician and Lab Technician** without a 403 on the home
   page. (#351, #365)
-- **Only a radiologist can save a report in the PACS viewer, under their own login.** An X-ray
-  technician can still view images and worklists; their save is refused. (#429)
+- **Only a radiologist can save a report in the PACS viewer, under their own login, and the chart
+  says who reported** ("Reported by: <name>"). An X-ray technician can still view images and
+  worklists; a save they try is refused with a clear message in French and English. (#429)
 
 ### Added
 - Person attribute type "Chef de ménage" (`c108c6bc-5f23-4e4a-ad34-8c788b86f288`). (#389)
@@ -137,6 +138,11 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
    Orthanc's DICOM port to it. The X-ray PC keeps `10.66.0.2` in both tunnels, which is the address
    `orthanc.json` names, so the file is the same on UAT and production. Without `wg0`, DICOM binds
    loopback and the X-ray PC can't reach it, but nothing else is affected.
+9. **#429, report author:** in Keycloak, give the `service-account-orthanc-service` user the
+   `realm-management` client role **`view-users`** (Users → service-account-orthanc-service → Role
+   mapping). The realm file has it, but `keycloak-apply-realm.sh` skips users that already exist.
+   Without it reports are still filed, just without "Reported by". Audit logs are switched on in
+   `orthanc.json` and need nothing else.
 
 ### Known issues
 - **Stool results recorded before the change** (about 23, July–August) no longer show on the

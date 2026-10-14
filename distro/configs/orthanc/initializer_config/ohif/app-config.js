@@ -67,11 +67,45 @@
     }
   }
 
+  function isStow(url) {
+    try {
+      return /\/dicom-web\/studies(\/[^/?]+)?\/?(\?.*)?$/.test(new URL(url, location.href).href);
+    } catch (e) {
+      return false;
+    }
+  }
+
+  // OHIF only says "request failed" when the PACS refuses a report save, which an
+  // X-ray technician would read as a fault. Say what happened, in French and English.
+  function refusedSave() {
+    var id = "uvl-refused-save";
+    if (document.getElementById(id)) return;
+    var box = document.createElement("div");
+    box.id = id;
+    box.setAttribute("role", "alert");
+    box.style.cssText = "position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:100000;" +
+      "max-width:520px;padding:14px 40px 14px 16px;border-radius:6px;background:#b42318;color:#fff;" +
+      "font:14px/1.4 sans-serif;box-shadow:0 4px 16px rgba(0,0,0,.4)";
+    box.innerHTML = "<strong>Rapport non enregistré.</strong> Seul un radiologue peut enregistrer un rapport. " +
+      "Si vous êtes radiologue, reconnectez-vous ou contactez l'administrateur.<br>" +
+      "<em>Report not saved: only a radiologist can save reports.</em>";
+    var close = document.createElement("button");
+    close.textContent = "×";
+    close.setAttribute("aria-label", "Fermer");
+    close.style.cssText = "position:absolute;top:6px;right:10px;background:none;border:0;color:#fff;" +
+      "font-size:20px;cursor:pointer";
+    close.onclick = function () { box.remove(); };
+    box.appendChild(close);
+    // Stays until closed: a technician who looks away must still see why nothing was saved.
+    document.body.appendChild(box);
+  }
+
   var open = XMLHttpRequest.prototype.open;
   var setHeader = XMLHttpRequest.prototype.setRequestHeader;
   var send = XMLHttpRequest.prototype.send;
   XMLHttpRequest.prototype.open = function (method, url) {
     this.__uvlPacs = isPacs(url);
+    this.__uvlStow = this.__uvlPacs && String(method).toUpperCase() === "POST" && isStow(url);
     this.__uvlAuthSet = false;
     return open.apply(this, arguments);
   };
@@ -88,6 +122,11 @@
       var token = userToken();
       if (token) setHeader.call(this, "Authorization", "Bearer " + token);
     }
+    if (this.__uvlStow) {
+      this.addEventListener("load", function () {
+        if (this.status === 401 || this.status === 403) refusedSave();
+      });
+    }
     return send.apply(this, arguments);
   };
 
@@ -101,7 +140,13 @@
       headers.set("Authorization", "Bearer " + token);
       init.headers = headers;
     }
-    return fetchOriginal(input, init);
+    var stow = isPacs(url) && isStow(url) &&
+      String((init && init.method) || (typeof input !== "string" && input.method) || "GET").toUpperCase() === "POST";
+    var result = fetchOriginal(input, init);
+    if (stow) {
+      result.then(function (r) { if (r.status === 401 || r.status === 403) refusedSave(); }, function () {});
+    }
+    return result;
   };
 })();
 

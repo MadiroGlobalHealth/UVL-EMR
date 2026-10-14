@@ -850,7 +850,12 @@
         "admin"
       ],
       "notBefore": 0,
-      "groups": []
+      "groups": [],
+      "clientRoles": {
+        "realm-management": [
+          "view-users"
+        ]
+      }
     }
   ],
   "scopeMappings": [

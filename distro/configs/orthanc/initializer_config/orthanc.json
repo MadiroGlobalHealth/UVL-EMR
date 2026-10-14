@@ -32,6 +32,7 @@
     "WebServiceUsername": "orthanc",
     "WebServicePassword": "orthanc",
     "CheckedLevel": "studies",
+    "EnableAuditLogs": true,
     "TokenHttpHeaders": [
       "token"
     ],
