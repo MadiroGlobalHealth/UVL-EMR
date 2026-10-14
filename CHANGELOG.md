@@ -116,8 +116,9 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   encounter, and sets the order's fulfiller status to `COMPLETED`. A report is also never filed
   twice: on UAT a 401 on a save that had succeeded left the report unmarked, and the next bridge
   start filed it again. The text is one line, because O3's Results tab drops line breaks, and is
-  posted as UTF-8 (an em dash had been stored as `?`). Bridge jar from eip-openmrs-orthanc
-  `37eb1a5` (jnsereko fork). (#427)
+  posted as UTF-8 (an em dash had been stored as `?`). It ends with "Reported by: <name>", read
+  from the PACS audit log and Keycloak (needs #430 and deploy note 9). Bridge jar from
+  eip-openmrs-orthanc `530c314` (jnsereko fork). (#427, #429)
 
 ### Deploy notes for production
 1. Record the running image digests and take a database backup first.
