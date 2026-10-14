@@ -1,0 +1,45 @@
+slice_name: PBF – Lignes de vérification
+description: null
+certified_by: null
+certification_details: null
+viz_type: table
+params:
+  datasource: 61__table
+  viz_type: table
+  query_mode: raw
+  groupby: []
+  metrics: []
+  all_columns:
+  - indicator
+  - period_start
+  - event_datetime
+  - visit_id
+  - uvl_id
+  - quantity
+  - detail
+  percent_metrics: []
+  adhoc_filters:
+  - clause: WHERE
+    subject: event_datetime
+    operator: TEMPORAL_RANGE
+    comparator: No filter
+    expressionType: SIMPLE
+  order_by_cols: []
+  row_limit: 50000
+  server_page_length: 25
+  order_desc: true
+  table_timestamp_format: smart_date
+  page_length: 0
+  include_search: true
+  show_cell_bars: false
+  align_pn: false
+  color_pn: false
+  conditional_formatting: []
+  extra_form_data: {}
+  temporal_columns_lookup:
+    event_datetime: true
+query_context: null
+cache_timeout: null
+uuid: c36fe0b7-8c94-4d30-9e7b-6a0fd2835bc7
+version: 1.0.0
+dataset_uuid: 7c1a9b62-3d4f-4e8b-8f26-1b5a8d3e0c72
