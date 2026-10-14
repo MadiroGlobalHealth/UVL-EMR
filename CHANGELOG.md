@@ -67,6 +67,13 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   appears in the blood count. (#366)
 - **Queues load for the Pharmacist, X-Ray Technician and Lab Technician** without a 403 on the home
   page. (#351, #365)
+- **The radiologist's report reaches the X-ray order.** A report saved in the PACS viewer (OHIF)
+  shows under the order's result on one line, with the findings and measurements written on the
+  image (French accents intact), not only the report name, at the time it was saved. The X-ray
+  order is then marked Completed. (#427)
+- **Only a radiologist can save a report in the PACS viewer, under their own login, and the chart
+  says who reported** ("Reported by: <name>"). An X-ray technician can still view images and
+  worklists; a save they try is refused with a clear message in French and English. (#429)
 
 ### Added
 - Person attribute type "Chef de ménage" (`c108c6bc-5f23-4e4a-ad34-8c788b86f288`). (#389)
@@ -93,6 +100,17 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   on the tunnel (LIME-EMR-Tooling `ede296b27`). (#372)
 
 ### Fixed
+- **On a fresh database, eight roles were never created:** Print Patient Label Sticker, Help Nurse,
+  Nurse, Doctor, Midwife, Ophtalmologist, Dentist and Anesthesist. `roles_mugamba.csv` gives two of them
+  `App: Can View Patient Identifier Sticker Report`, a privilege nothing in the distribution defined,
+  and the rest inherit from those two. It is now in `mugamba-privileges.csv`. Existing databases (UAT,
+  production) already have it and match it by name, so nothing is duplicated.
+- **Local run only (`start.sh`): OpenMRS core 2.7.7 → 2.8.9.** The local compose pinned 2.7.7 while
+  the distribution's modules need 2.8, so emrapi, attachments, openconceptlab and stockmanagement
+  failed to start for volunteers and the O3 app didn't work. UAT and production are unaffected: they
+  run the bundled image, built on `openmrs.version` 2.8.9. The local MariaDB also gets
+  `--log-bin-trust-function-creators=1`, without which stockmanagement could not create its triggers
+  and took Billing down with it. (#369, #423)
 - **Odoo: printing a customer invoice from "Send & Print" crashed** (#375). This is a database
   fix, not a code change: two views and two server actions left behind by the Odoo 17 migration.
   It was applied on UAT on 2026-10-07. **Production needs the same steps by hand; see the deploy
@@ -106,6 +124,23 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   `ORTHANC_WORKLIST_STATION_AET` (default `ORTHANC`), which the unit, `XMARUM`, filters on. X-rays
   were `XR`; they are now `DX`, as the unit encodes them (`ORTHANC_WORKLIST_XRAY_MODALITY`).
   Ultrasound and CT are unchanged. Bridge jar from eip-openmrs-orthanc `77ab760`. (#424)
+- **A radiology report reached the chart as its title only, at midnight, on no order.** The bridge
+  read only the SR's series description. It now reads the report's content (each annotation's label
+  and measurements), files the result against the order matched by accession and that order's
+  encounter, and sets the order's fulfiller status to `COMPLETED`. A report is also never filed
+  twice: on UAT a 401 on a save that had succeeded left the report unmarked, and the next bridge
+  start filed it again. The text is one line, because O3's Results tab drops line breaks, and is
+  posted as UTF-8 (an em dash had been stored as `?`). It ends with "Reported by: <name>", read
+  from the PACS audit log and Keycloak (needs #430 and deploy note 9). Bridge jar from
+  eip-openmrs-orthanc `530c314` (jnsereko fork). (#427, #429)
+- **Anyone on the internet could upload into the PACS without signing in.** The
+  orthancteam/orthanc-auth-service image's default anonymous profile grants `upload`, so a request
+  with no token could `POST /instances` or STOW (reads and deletes were always refused). Ours now
+  grants nothing. OHIF's report save had only worked through that hole: it sent the PACS UI's
+  viewer instant link, which carries no user. OHIF's `app-config.js` now sends the signed-in
+  user's own Keycloak token (kept by Orthanc Explorer 2 in localStorage) on every PACS request and
+  refreshes it, so the user's PACS role decides. `upload` moves from `xray_technician` (images
+  arrive over DICOM, which it doesn't cover) to `radiologist`. (#429)
 - **Billing bridge (eip-odoo-openmrs jar from jnsereko fork `0001068`, which contains #401's
   `28d1594`):**
   - A syrup or cream prescribed in mL, g, drops, applications or sprays is billed as one container,
@@ -138,6 +173,11 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
    Orthanc's DICOM port to it. The X-ray PC keeps `10.66.0.2` in both tunnels, which is the address
    `orthanc.json` names, so the file is the same on UAT and production. Without `wg0`, DICOM binds
    loopback and the X-ray PC can't reach it, but nothing else is affected.
+9. **#429, report author:** in Keycloak, give the `service-account-orthanc-service` user the
+   `realm-management` client role **`view-users`** (Users → service-account-orthanc-service → Role
+   mapping). The realm file has it, but `keycloak-apply-realm.sh` skips users that already exist.
+   Without it reports are still filed, just without "Reported by". Audit logs are switched on in
+   `orthanc.json` and need nothing else.
 
 ### Known issues
 - **Stool results recorded before the change** (about 23, July–August) no longer show on the
