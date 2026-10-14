@@ -171,6 +171,22 @@ services:
 
   mysql:
     image: mariadb:10.11.13
+    # Ozone's options (docker-compose-common.yml; a command override replaces the whole list), plus
+    # --log-bin-trust-function-creators=1. Binary logging is on for the EIP bridges, and without
+    # that flag the stockmanagement module cannot create its triggers ("You do not have the SUPER
+    # privilege and binary logging is enabled"), so Stock Management, then Billing, then UVL's own
+    # Liquibase changes fail on a local start (#369). Local run only.
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --skip-character-set-client-handshake
+      - --skip-innodb-read-only-compressed
+      - --log-bin=mysqld-bin
+      - --binlog-format=ROW
+      - --server-id=2
+      - --sync-binlog=1
+      - --binlog-annotate-row-events=0
+      - --log-bin-trust-function-creators=1
 
   frontend:
     volumes:
