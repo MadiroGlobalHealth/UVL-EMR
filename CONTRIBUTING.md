@@ -116,11 +116,13 @@ Three things that are not obvious and have each cost us time:
   separately.
 
 - **Config you delete from the repo is removed at the next start, but only since
-  #341.** The OpenMRS 2.8.x entrypoint means to clear `configuration/` and
-  `modules/` before refilling them from the image. It never did, because the glob
-  is inside the quotes: `rm -fR "${OMRS_CONFIG_DIR:?}/*"` deletes a file literally
-  named `*`. We patch that line when the image is built
-  (`scripts/bundled-docker/openmrs/patch-startup-init.sh`, #341). The flip side is
+  #341.** The OpenMRS 2.8.x entrypoint means to clear `configuration/`,
+  `modules/`, `owa/` and `frontend/` before refilling them from the image. It never
+  did, because the glob is inside the quotes: `rm -fR "${OMRS_CONFIG_DIR:?}/*"`
+  deletes a file literally named `*`. We patch those lines when the image is built
+  (`scripts/bundled-docker/openmrs/patch-startup-init.sh`: `configuration/` since
+  #341, the other three since #362, so an old `.omod` no longer sits beside its
+  replacement). The flip side is
   that anything added to an environment's volume by hand, rather than through this
   repo, disappears on the next start. `P6` in the pre-flight suite below checks the
   volume against the image.

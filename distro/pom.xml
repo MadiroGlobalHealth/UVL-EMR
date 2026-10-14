@@ -456,7 +456,7 @@
         <executions>
           <execution>
             <!--
-              Tests the OpenMRS entrypoint patch (#305) against the real openmrs-core
+              Tests the OpenMRS entrypoint patch (#305, #362) against the real openmrs-core
               lines it edits, in every build, so it does not wait for an image build
               to be exercised. The bundled-docker profile below wires the patch into
               the Dockerfile; see scripts/bundled-docker/openmrs/patch-startup-init.sh.
@@ -752,10 +752,11 @@
                                             match="FROM openmrs/openmrs-core.*" replace="FROM openmrs/openmrs-core:${openmrs.version}" />
 
                     <!--
-                      Make the entrypoint empty /openmrs/data/configuration before it
-                      refills it from the image (#305). openmrs-core 2.8.x quotes the
-                      glob in `rm -fR "${OMRS_CONFIG_DIR:?}/*"`, so config deleted from
-                      the repo stays in the volume and keeps loading. The script says
+                      Make the entrypoint empty /openmrs/data/configuration, modules,
+                      owa and frontend before it refills them from the image (#305,
+                      #362). openmrs-core 2.8.x quotes the glob in
+                      `rm -fR "${OMRS_CONFIG_DIR:?}/*"`, so config or a module deleted
+                      from the repo stays in the volume and keeps loading. The script says
                       why it is patched the way it is, and fails the image build if
                       the upstream line is no longer there to patch.
 
@@ -765,7 +766,7 @@
                       The script reaches bundled-docker/openmrs/ through
                       "Add UVL bundled docker files".
                     -->
-                    <echo level="info" message="Patching the OpenMRS entrypoint to mirror the image's configuration"/>
+                    <echo level="info" message="Patching the OpenMRS entrypoint to mirror the image's configuration and modules"/>
                     <replaceregexp file="${project.build.directory}/bundled-docker-tmp/bundled-docker/openmrs/Dockerfile"
                                             match="[\r\n]+[^\r\n]*patch-startup-init\.sh[^\r\n]*"
                                             replace=""
