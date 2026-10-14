@@ -86,6 +86,11 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   drug for every failure, which was wrong. The "Déjà actif - utiliser Modifier" tag stays. (#364)
 - The Pharmacist, X-Ray Technician and Lab Technician get `Get Queue Entries`. The Doctor,
   Ophtalmologist and Dentist get `Get ChargeItemDefinition` and `Get InventoryItem`. (#365)
+- **Orthanc accepts DICOM only from the X-ray PC.** The PC is registered as `XMARUM` (its real AE
+  title; the old entry said `XMARU` with a placeholder address) at its WireGuard tunnel address
+  `10.66.0.2`. `DicomAlwaysAllowStore` and `DicomAlwaysAllowFind` are off, so storing and worklist
+  queries need that AE title. The `FINDSCU` test entry is gone. The port itself is published only
+  on the tunnel (LIME-EMR-Tooling `ede296b27`). (#372)
 
 ### Fixed
 - **Odoo: printing a customer invoice from "Send & Print" crashed** (#375). This is a database
@@ -94,6 +99,24 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   notes.**
 - Payer and dispensing answers were duplicated after the OCL import. Five X-ray procedures were
   never created because of a name clash. The X-ray billable services had no concept. (#366)
+- **A paid X-ray reached the Orthanc worklist hours late, and the X-ray unit couldn't see it.**
+  The Orthanc bridge read only the first 100 orders of its seven-day window, oldest first, so a new
+  X-ray waited for older orders to age out: two paid on UAT reached the worklist 12 and 16 hours
+  later. It now follows every page. Entries named the station `ORTHANC`; it is now
+  `ORTHANC_WORKLIST_STATION_AET` (default `ORTHANC`), which the unit, `XMARUM`, filters on. X-rays
+  were `XR`; they are now `DX`, as the unit encodes them (`ORTHANC_WORKLIST_XRAY_MODALITY`).
+  Ultrasound and CT are unchanged. Bridge jar from eip-openmrs-orthanc `77ab760`. (#424)
+- **Billing bridge (eip-odoo-openmrs jar from jnsereko fork `0001068`, which contains #401's
+  `28d1594`):**
+  - A syrup or cream prescribed in mL, g, drops, applications or sprays is billed as one container,
+    not once per millilitre. It needs `ODOO_PER_CONTAINER_UOMS` (LIME-EMR-Tooling `cfcd75cd7`). (#385)
+  - A discontinued or undispensed order is removed from the draft quote instead of being invoiced.
+    (#386, #401)
+  - A repeat of an active lab test or procedure on the same visit raises the line quantity instead
+    of being lost. (#360)
+  - The radiology payment poll reads each order's visit once and logs what it is waiting for, instead
+    of reprocessing the same orders every 32 seconds. (#316)
+  - The X-Ray Technician's PACS 403 was fixed by the `xray_technician` role (#396). (#387)
 
 ### Deploy notes for production
 1. Record the running image digests and take a database backup first.
@@ -107,6 +130,14 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
 5. In Odoo, archive the duplicate **Cefixime Comprimé 400mg, product 535**. Orders land on 609.
 6. Once it's live, check that the three Liquibase changesets of #388 are `EXECUTED`, Payer has 8
    answers, and BP06 and BP09 show their structured fields.
+7. **#424:** check the `eip-openmrs-orthanc` container has `ORTHANC_WORKLIST_STATION_AET=XMARUM`
+   and `ORTHANC_WORKLIST_XRAY_MODALITY=DX` (LIME-EMR-Tooling `ede296b27` defaults both). Unset,
+   entries are labelled `ORTHANC` and the X-ray unit sees none of them.
+8. **#372, radiology tunnel:** before this release, set up WireGuard on the production host
+   (`wg0` = `10.66.0.11`, UDP 51820 open in Azure's network rules too) so the env generator binds
+   Orthanc's DICOM port to it. The X-ray PC keeps `10.66.0.2` in both tunnels, which is the address
+   `orthanc.json` names, so the file is the same on UAT and production. Without `wg0`, DICOM binds
+   loopback and the X-ray PC can't reach it, but nothing else is affected.
 
 ### Known issues
 - **Stool results recorded before the change** (about 23, July–August) no longer show on the
@@ -118,8 +149,7 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
 - **357 products are still at 1.00:** 283 have no tariff price (the pharmacy is priced at purchase
   price plus margin), and 73 matches await the product owner. Some existing prices disagree with
   the tariff. (#270)
-- Suspected over-billing of syrups per mL (#385). Discontinued lab and imaging orders are still
-  billed (#386, #254). The PACS viewer returns 403 for the X-Ray Technician (#387).
+- Some orders arrive in Odoo cancelled and empty (#254).
 - **H. pylori and albuminuria** wait for the product owner's choice of test method. (#371)
 - Vitals from the chart box are saved without a visit when the user's location differs from the
   visit's. This matters more now that the chart box is the only route for vitals. (#347)

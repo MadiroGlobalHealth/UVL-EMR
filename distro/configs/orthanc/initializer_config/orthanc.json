@@ -21,7 +21,7 @@
   "AuthenticationEnabled": false,
   "DicomAet": "ORTHANC",
   "DicomPort": 4242,
-  "DicomAlwaysAllowStore": true,
+  "DicomAlwaysAllowStore": false,
   "DicomAlwaysAllowEcho": true,
   "StoneWebViewer": {},
   "OverwriteInstances": true,
@@ -62,16 +62,18 @@
     ]
   },
   "DicomModalities": {
-    "XmaruPro": [
-      "XMARU",
-      "192.168.1.XX",
-      104
-    ],
-    "FINDSCU": [
-      "FINDSCU",
-      "192.168.65.1",
-      1
-    ]
+    "XmaruPro": {
+      "AET": "XMARUM",
+      "Host": "10.66.0.2",
+      "Port": 5000,
+      "AllowEcho": true,
+      "AllowFind": true,
+      "AllowFindWorklist": true,
+      "AllowStore": true,
+      "AllowStorageCommitment": true,
+      "AllowGet": false,
+      "AllowMove": false
+    }
   },
   "OrthancExplorer2": {
     "IsDefaultOrthancUI": true,
@@ -102,7 +104,7 @@
   "ImagingWorklistUsername": "admin",
   "ImagingWorklistPassword": "Admin123",
   "PythonScript": "/etc/orthanc/orthancWorklist.py",
-  "DicomAlwaysAllowFind": true,
+  "DicomAlwaysAllowFind": false,
   "UnknownSopClassAccepted": true,
   "Worklists": {
     "Enable": true,
