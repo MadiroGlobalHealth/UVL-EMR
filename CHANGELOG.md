@@ -100,6 +100,10 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   on the tunnel (LIME-EMR-Tooling `ede296b27`). (#372)
 
 ### Fixed
+- **Local run only (`start.sh`): OpenMRS core 2.7.7 → 2.8.9.** The local compose pinned 2.7.7 while
+  the distribution's modules need 2.8, so emrapi, attachments, openconceptlab and stockmanagement
+  failed to start for volunteers and the O3 app didn't work. UAT and production are unaffected: they
+  run the bundled image, built on `openmrs.version` 2.8.9. (#369, #423)
 - **Odoo: printing a customer invoice from "Send & Print" crashed** (#375). This is a database
   fix, not a code change: two views and two server actions left behind by the Odoo 17 migration.
   It was applied on UAT on 2026-10-07. **Production needs the same steps by hand; see the deploy
