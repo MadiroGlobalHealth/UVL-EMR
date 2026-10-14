@@ -1,6 +1,6 @@
 services:
   openmrs:
-    image: openmrs/openmrs-core:2.7.7-amazoncorretto-17
+    image: openmrs/openmrs-core:2.8.9-amazoncorretto-17
     environment:
       ORTHANCTOKEN_KEYCLOAK_CLIENTSECRET: ${ORTHANC_CLIENT_SECRET}
     healthcheck:
@@ -56,6 +56,7 @@ services:
           - orthanc-auth-service
     volumes:
       - ${ORTHANC_CONFIG_PATH}/../permissions.json:/orthanc-auth-service/permissions.json
+      - ${ORTHANC_CONFIG_PATH}/../anonymous-profile.json:/orthanc_auth_service/anonymous-profile.json
     environment:
       ENABLE_KEYCLOAK: "true"
       PERMISSIONS_FILE_PATH: "/orthanc-auth-service/permissions.json"
@@ -170,6 +171,22 @@ services:
 
   mysql:
     image: mariadb:10.11.13
+    # Ozone's options (docker-compose-common.yml; a command override replaces the whole list), plus
+    # --log-bin-trust-function-creators=1. Binary logging is on for the EIP bridges, and without
+    # that flag the stockmanagement module cannot create its triggers ("You do not have the SUPER
+    # privilege and binary logging is enabled"), so Stock Management, then Billing, then UVL's own
+    # Liquibase changes fail on a local start (#369). Local run only.
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --skip-character-set-client-handshake
+      - --skip-innodb-read-only-compressed
+      - --log-bin=mysqld-bin
+      - --binlog-format=ROW
+      - --server-id=2
+      - --sync-binlog=1
+      - --binlog-annotate-row-events=0
+      - --log-bin-trust-function-creators=1
 
   frontend:
     volumes:
