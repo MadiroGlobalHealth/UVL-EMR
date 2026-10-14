@@ -68,8 +68,9 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
 - **Queues load for the Pharmacist, X-Ray Technician and Lab Technician** without a 403 on the home
   page. (#351, #365)
 - **The radiologist's report reaches the X-ray order.** A report saved in the PACS viewer (OHIF)
-  shows under the order's result with the findings and measurements written on the image, not only
-  the report name, at the time it was saved. The X-ray order is then marked Completed. (#427)
+  shows under the order's result on one line, with the findings and measurements written on the
+  image (French accents intact), not only the report name, at the time it was saved. The X-ray
+  order is then marked Completed. (#427)
 
 ### Added
 - Person attribute type "Chef de ménage" (`c108c6bc-5f23-4e4a-ad34-8c788b86f288`). (#389)
@@ -114,7 +115,9 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   and measurements), files the result against the order matched by accession and that order's
   encounter, and sets the order's fulfiller status to `COMPLETED`. A report is also never filed
   twice: on UAT a 401 on a save that had succeeded left the report unmarked, and the next bridge
-  start filed it again. Bridge jar from eip-openmrs-orthanc `f10a086` (jnsereko fork). (#427)
+  start filed it again. The text is one line, because O3's Results tab drops line breaks, and is
+  posted as UTF-8 (an em dash had been stored as `?`). Bridge jar from eip-openmrs-orthanc
+  `37eb1a5` (jnsereko fork). (#427)
 
 ### Deploy notes for production
 1. Record the running image digests and take a database backup first.
