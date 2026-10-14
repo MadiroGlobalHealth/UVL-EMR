@@ -1,0 +1,23 @@
+{
+  "uuid": "a458d4ec-ffb3-439f-abbc-ab8c44cded7c",
+  "form": "UVL Vitals",
+  "description": "Fr Translations for 'UVL Vitals'",
+  "language": "fr",
+  "translations": {
+    "BMI (kg/m²)": "IMC (kg/m²)",
+    "Biometrics": "Biométrie",
+    "Diastolic blood pressure (mmHg)": "Tension artérielle diastolique (mmHg)",
+    "Height (cm)": "Taille (cm)",
+    "Mid-upper arm circumference (cm)": "Périmètre brachial (cm)",
+    "Notes": "Notes",
+    "Oxygen saturation (%)": "Saturation en oxygène (%)",
+    "Pulse (beats/min)": "Pouls (battements/min)",
+    "Respiratory rate (breaths/min)": "Fréquence respiratoire (cycles/min)",
+    "Systolic blood pressure (mmHg)": "Tension artérielle systolique (mmHg)",
+    "Temperature (°C)": "Température (°C)",
+    "Vital signs": "Signes vitaux",
+    "Vitals": "Signes vitaux",
+    "Weight (kg)": "Poids (kg)"
+  },
+  "form_name_translation": "Signes vitaux"
+}

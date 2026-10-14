@@ -284,6 +284,11 @@
       "generalPatientNoteUuid": "9dc2962b-bdd0-4261-b69d-55769e078be0",
       "midUpperArmCircumferenceUuid": "6d4a1b5a-d41d-4779-b441-70ba440b64de",
       "vitalSignsConceptSetUuid": "7f0b11e7-7446-4cfe-9011-83ba4b694e25"
+    },
+    "vitals": {
+      "useFormEngine": true,
+      "formUuid": "07eb0c26-6884-4d7b-8a1f-8e6e9c6995ac",
+      "formName": "Signes vitaux"
     }
   },
   "@openmrs/esm-patient-medications-app": {
