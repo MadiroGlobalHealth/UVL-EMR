@@ -56,6 +56,7 @@ services:
           - orthanc-auth-service
     volumes:
       - ${ORTHANC_CONFIG_PATH}/../permissions.json:/orthanc-auth-service/permissions.json
+      - ${ORTHANC_CONFIG_PATH}/../anonymous-profile.json:/orthanc_auth_service/anonymous-profile.json
     environment:
       ENABLE_KEYCLOAK: "true"
       PERMISSIONS_FILE_PATH: "/orthanc-auth-service/permissions.json"

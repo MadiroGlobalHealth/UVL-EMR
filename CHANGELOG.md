@@ -71,6 +71,9 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   shows under the order's result on one line, with the findings and measurements written on the
   image (French accents intact), not only the report name, at the time it was saved. The X-ray
   order is then marked Completed. (#427)
+- **Only a radiologist can save a report in the PACS viewer, under their own login, and the chart
+  says who reported** ("Reported by: <name>"). An X-ray technician can still view images and
+  worklists; a save they try is refused with a clear message in French and English. (#429)
 
 ### Added
 - Person attribute type "Chef de ménage" (`c108c6bc-5f23-4e4a-ad34-8c788b86f288`). (#389)
@@ -119,6 +122,14 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   posted as UTF-8 (an em dash had been stored as `?`). It ends with "Reported by: <name>", read
   from the PACS audit log and Keycloak (needs #430 and deploy note 9). Bridge jar from
   eip-openmrs-orthanc `530c314` (jnsereko fork). (#427, #429)
+- **Anyone on the internet could upload into the PACS without signing in.** The
+  orthancteam/orthanc-auth-service image's default anonymous profile grants `upload`, so a request
+  with no token could `POST /instances` or STOW (reads and deletes were always refused). Ours now
+  grants nothing. OHIF's report save had only worked through that hole: it sent the PACS UI's
+  viewer instant link, which carries no user. OHIF's `app-config.js` now sends the signed-in
+  user's own Keycloak token (kept by Orthanc Explorer 2 in localStorage) on every PACS request and
+  refreshes it, so the user's PACS role decides. `upload` moves from `xray_technician` (images
+  arrive over DICOM, which it doesn't cover) to `radiologist`. (#429)
 
 ### Deploy notes for production
 1. Record the running image digests and take a database backup first.
@@ -140,6 +151,11 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
    Orthanc's DICOM port to it. The X-ray PC keeps `10.66.0.2` in both tunnels, which is the address
    `orthanc.json` names, so the file is the same on UAT and production. Without `wg0`, DICOM binds
    loopback and the X-ray PC can't reach it, but nothing else is affected.
+9. **#429, report author:** in Keycloak, give the `service-account-orthanc-service` user the
+   `realm-management` client role **`view-users`** (Users → service-account-orthanc-service → Role
+   mapping). The realm file has it, but `keycloak-apply-realm.sh` skips users that already exist.
+   Without it reports are still filed, just without "Reported by". Audit logs are switched on in
+   `orthanc.json` and need nothing else.
 
 ### Known issues
 - **Stool results recorded before the change** (about 23, July–August) no longer show on the
