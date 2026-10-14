@@ -141,6 +141,17 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   user's own Keycloak token (kept by Orthanc Explorer 2 in localStorage) on every PACS request and
   refreshes it, so the user's PACS role decides. `upload` moves from `xray_technician` (images
   arrive over DICOM, which it doesn't cover) to `radiologist`. (#429)
+- **Billing bridge (eip-odoo-openmrs jar from jnsereko fork `0001068`, which contains #401's
+  `28d1594`):**
+  - A syrup or cream prescribed in mL, g, drops, applications or sprays is billed as one container,
+    not once per millilitre. It needs `ODOO_PER_CONTAINER_UOMS` (LIME-EMR-Tooling `cfcd75cd7`). (#385)
+  - A discontinued or undispensed order is removed from the draft quote instead of being invoiced.
+    (#386, #401)
+  - A repeat of an active lab test or procedure on the same visit raises the line quantity instead
+    of being lost. (#360)
+  - The radiology payment poll reads each order's visit once and logs what it is waiting for, instead
+    of reprocessing the same orders every 32 seconds. (#316)
+  - The X-Ray Technician's PACS 403 was fixed by the `xray_technician` role (#396). (#387)
 
 ### Deploy notes for production
 1. Record the running image digests and take a database backup first.
@@ -178,8 +189,7 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
 - **357 products are still at 1.00:** 283 have no tariff price (the pharmacy is priced at purchase
   price plus margin), and 73 matches await the product owner. Some existing prices disagree with
   the tariff. (#270)
-- Suspected over-billing of syrups per mL (#385). Discontinued lab and imaging orders are still
-  billed (#386, #254). The PACS viewer returns 403 for the X-Ray Technician (#387).
+- Some orders arrive in Odoo cancelled and empty (#254).
 - **H. pylori and albuminuria** wait for the product owner's choice of test method. (#371)
 - Vitals from the chart box are saved without a visit when the user's location differs from the
   visit's. This matters more now that the chart box is the only route for vitals. (#347)
