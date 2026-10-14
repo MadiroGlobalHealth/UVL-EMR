@@ -100,6 +100,11 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   on the tunnel (LIME-EMR-Tooling `ede296b27`). (#372)
 
 ### Fixed
+- **On a fresh database, eight roles were never created:** Print Patient Label Sticker, Help Nurse,
+  Nurse, Doctor, Midwife, Ophtalmologist, Dentist and Anesthesist. `roles_mugamba.csv` gives two of them
+  `App: Can View Patient Identifier Sticker Report`, a privilege nothing in the distribution defined,
+  and the rest inherit from those two. It is now in `mugamba-privileges.csv`. Existing databases (UAT,
+  production) already have it and match it by name, so nothing is duplicated.
 - **Local run only (`start.sh`): OpenMRS core 2.7.7 → 2.8.9.** The local compose pinned 2.7.7 while
   the distribution's modules need 2.8, so emrapi, attachments, openconceptlab and stockmanagement
   failed to start for volunteers and the O3 app didn't work. UAT and production are unaffected: they
