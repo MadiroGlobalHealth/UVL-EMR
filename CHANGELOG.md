@@ -18,22 +18,28 @@ MSF-OCG/LIME-EMR-Tooling.
 
 ---
 
-## Current status — 2026-10-07
+## Current status — 2026-10-15
 
 - Production last received an EMR update on **2026-09-30**: UVL-EMR `main` `393f5b5`, which is
   release candidate `a218cae` plus #357, #358 and #359 (section `[2026-09-30]` below). The
   product owner checked it on production the same day.
-- `[Unreleased]` below is UVL-EMR `main` `a76d0a7`. It holds every requirement the product owner
-  sent between 30 Sep and 6 Oct that was still open. It is planned for production on the night of
-  **7 → 8 Oct 2026**. Each change passed the browser journey on UAT on 2026-10-07, run as the real
-  staff roles, on a personal build of the same branches. The official `globalmadiro` images are
-  re-checked on UAT before the production deploy.
+- `[Unreleased]` below is UVL-EMR `main` `75a339a`. It holds the 7 Oct release (#388–#391), the
+  product owner's answers of 8 Oct (#417–#421), radiology (#424, #427–#430), the billing bridge
+  (#404, #435) and the local-run fixes (#432, #433). The 7 Oct release was not deployed on
+  7 → 8 Oct; the whole section goes to production with the move to the new Scaleway host, planned for
+  **Thursday 2026-10-15**, once the DNS points there.
+- **UAT, 2026-10-15:** the official `globalmadiro` images of `dbc82ff` passed the full browser
+  journey as the real staff roles, and every item of this release passed. One fault was found: a
+  drug dispensed after the quote was confirmed was billed again. It was fixed by #435 (`75a339a`),
+  which passed its own UAT test the same day. Two radiology checks need a separate account: an
+  X-ray technician without the radiologist role, to see a report save refused; and a radiologist
+  saving a report on a fresh study. Both passed on UAT on 2026-10-14.
 - When it reaches production, give the section the deployment date, tag it `Production`, and
   record the running image digests.
 
 ---
 
-## [Unreleased] — `UAT` · `main` `a76d0a7`
+## [Unreleased] — `UAT` · `main` `75a339a`
 
 Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
 
@@ -67,6 +73,20 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   appears in the blood count. (#366)
 - **Queues load for the Pharmacist, X-Ray Technician and Lab Technician** without a 403 on the home
   page. (#351, #365)
+- **205 more products carry the product owner's price** (8 Oct sheet): 165 pharmacy, 38 procedures
+  and 2 lab tests. 67 of them are priced per bottle, tube or ampoule and bill correctly only with
+  the per-container rule below. Pénicilline V Flacon 1MUI (written `3OOO`) is loaded as 3,000 and
+  Vital Signs Check as 10,000; both await the product owner's confirmation. (#270, #417)
+- **Stool results recorded before the structured BP06 show again.** The 23 old single-answer results
+  (July–August) become a BP06 result with the old answer as its comment ("Résultat antérieur
+  (liste unique) : …"). The old row is voided, not deleted. (#415, #418)
+- **Prescriptions dispensed in full before the dispensing change no longer offer Dispense.** They are
+  marked Completed, with the comment `#416 backfill: dispensed in full before #374`. Paused, closed
+  and partly dispensed prescriptions are untouched. (#416, #419)
+- **H. pylori (HS26) and Albuminurie (BP10) can be billed,** at 1.00 until they are priced. Their
+  OCL concepts are in `uvl-labtests` 20261008. (#371, #420)
+- **The order basket no longer shows "Prix: 0,00 BIF" and "En rupture de stock"** on every line.
+  Both rows are hidden until fhir-odoo reads the sale price and stock exists. (#363, #421)
 - **The radiologist's report reaches the X-ray order.** A report saved in the PACS viewer (OHIF)
   shows under the order's result on one line, with the findings and measurements written on the
   image (French accents intact), not only the report name, at the time it was saved. The X-ray
@@ -80,6 +100,9 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
 - Odoo `product_price` initializer loader. The product loader treats `lst_price` as `NO_UPDATE`,
   so it can't change the price of a product that already exists. (#391)
 - OCL releases UVL-Burundi `uvl-registration` 20261007 and `uvl-labtests` 20261007-5. (#388)
+- OCL release `uvl-labtests` 20261008 (sources `uvl-ciel` and `uvl-custom` 20261008). (#420)
+- Liquibase changesets `migrate_single_answer_stool_results-20261008` (#418) and
+  `complete_fully_dispensed_drug_orders-20261008` (#419).
 - Concepts that existed only in Initializer CSVs now live in OCL (drugs, supplies, procedures,
   dispensing ValueSets, payer, insurance tiers, radiology), and each keeps its UUID. (#366)
 
@@ -104,13 +127,13 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   Nurse, Doctor, Midwife, Ophtalmologist, Dentist and Anesthesist. `roles_mugamba.csv` gives two of them
   `App: Can View Patient Identifier Sticker Report`, a privilege nothing in the distribution defined,
   and the rest inherit from those two. It is now in `mugamba-privileges.csv`. Existing databases (UAT,
-  production) already have it and match it by name, so nothing is duplicated.
+  production) already have it and match it by name, so nothing is duplicated. (#433)
 - **Local run only (`start.sh`): OpenMRS core 2.7.7 → 2.8.9.** The local compose pinned 2.7.7 while
   the distribution's modules need 2.8, so emrapi, attachments, openconceptlab and stockmanagement
   failed to start for volunteers and the O3 app didn't work. UAT and production are unaffected: they
   run the bundled image, built on `openmrs.version` 2.8.9. The local MariaDB also gets
   `--log-bin-trust-function-creators=1`, without which stockmanagement could not create its triggers
-  and took Billing down with it. (#369, #423)
+  and took Billing down with it. (#369, #423, #432)
 - **Odoo: printing a customer invoice from "Send & Print" crashed** (#375). This is a database
   fix, not a code change: two views and two server actions left behind by the Odoo 17 migration.
   It was applied on UAT on 2026-10-07. **Production needs the same steps by hand; see the deploy
@@ -132,7 +155,7 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   start filed it again. The text is one line, because O3's Results tab drops line breaks, and is
   posted as UTF-8 (an em dash had been stored as `?`). It ends with "Reported by: <name>", read
   from the PACS audit log and Keycloak (needs #430 and deploy note 9). Bridge jar from
-  eip-openmrs-orthanc `530c314` (jnsereko fork). (#427, #429)
+  eip-openmrs-orthanc `530c314` (jnsereko fork). (#427, #428, #429)
 - **Anyone on the internet could upload into the PACS without signing in.** The
   orthancteam/orthanc-auth-service image's default anonymous profile grants `upload`, so a request
   with no token could `POST /instances` or STOW (reads and deletes were always refused). Ours now
@@ -140,8 +163,8 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   viewer instant link, which carries no user. OHIF's `app-config.js` now sends the signed-in
   user's own Keycloak token (kept by Orthanc Explorer 2 in localStorage) on every PACS request and
   refreshes it, so the user's PACS role decides. `upload` moves from `xray_technician` (images
-  arrive over DICOM, which it doesn't cover) to `radiologist`. (#429)
-- **Billing bridge (eip-odoo-openmrs jar from jnsereko fork `0001068`, which contains #401's
+  arrive over DICOM, which it doesn't cover) to `radiologist`. (#429, #430)
+- **Billing bridge, #404 (eip-odoo-openmrs jar from jnsereko fork `0001068`, which contains #401's
   `28d1594`):**
   - A syrup or cream prescribed in mL, g, drops, applications or sprays is billed as one container,
     not once per millilitre. It needs `ODOO_PER_CONTAINER_UOMS` (LIME-EMR-Tooling `cfcd75cd7`). (#385)
@@ -152,6 +175,11 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   - The radiology payment poll reads each order's visit once and logs what it is waiting for, instead
     of reprocessing the same orders every 32 seconds. (#316)
   - The X-Ray Technician's PACS 403 was fixed by the `xray_technician` role (#396). (#387)
+  - **Dispensing after the visit's quote was confirmed billed the drugs a second time.** When the
+    cashier took the X-ray payment first, every later dispense or pause found no draft quote and
+    opened a new one holding the drugs again. A drug already on a confirmed sale order of the visit
+    now gets no new line; a new prescription of the same drug is still billed. Jar from jnsereko
+    fork `5ec0e3b`, on top of `0001068`. (#434, #435)
 
 ### Deploy notes for production
 1. Record the running image digests and take a database backup first.
@@ -178,23 +206,31 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
    mapping). The realm file has it, but `keycloak-apply-realm.sh` skips users that already exist.
    Without it reports are still filed, just without "Reported by". Audit logs are switched on in
    `orthanc.json` and need nothing else.
+10. **#418 and #419:** run each PR's dry-run query on production first (UAT: 23 stool results, 6
+    prescriptions); production's counts will differ. After the deploy, check both changesets are
+    `EXECUTED` in `liquibasechangelog`.
+11. **#417 needs #404's `ODOO_PER_CONTAINER_UOMS` live** in the `eip-odoo-openmrs` container, or a
+    syrup prescribed as 10 mL bills 10 bottles at the new per-bottle price.
+12. **New Scaleway host (78.232.45.125):** it is a fresh install, so after the data copy re-check
+    notes 8 and 9 there (`wg0` 10.66.0.11 is already up) and give the radiology users their Keycloak
+    roles: `radiologist` for whoever writes reports, `xray_technician` for the technician.
 
 ### Known issues
-- **Stool results recorded before the change** (about 23, July–August) no longer show on the
-  Results page now that BP06 is a set. They are intact in the database and the API. Whether to
-  convert them is a product owner decision.
-- **Prescriptions fully dispensed before this change** still show Dispense. Backfilling them is a
-  separate data decision. The block is in the interface only; the server doesn't refuse an
-  over-dispense. (#374)
-- **357 products are still at 1.00:** 283 have no tariff price (the pharmacy is priced at purchase
-  price plus margin), and 73 matches await the product owner. Some existing prices disagree with
-  the tariff. (#270)
+- The dispensing block is in the interface only; the server doesn't refuse an over-dispense. (#374)
+- **About 150 products are still at 1.00:** #417 priced 205 of the 357, and the product
+  owner left 82 rows of his sheet blank. HS26 and BP10 (#420) also start at 1.00. Some existing
+  prices disagree with the tariff. (#270)
 - Some orders arrive in Odoo cancelled and empty (#254).
-- **H. pylori and albuminuria** wait for the product owner's choice of test method. (#371)
+- **Vitals are sometimes saved without a visit or provider** (1 of 1 on UAT on 2026-10-15, 2 of 3 on
+  2026-10-08; seen since 2026-09-28). (#347)
+- When several orders are signed together, OpenMRS's own billing module can log "Duplicate entry …
+  for key cashier_bill_receipt_number_idx". Odoo billing is unaffected.
+- **H. pylori and albuminuria** can be billed but not yet ordered or resulted: H. pylori's test method
+  (serology or stool antigen) and the albuminuria result fields wait for the product owner. (#371)
 - Vitals from the chart box are saved without a visit when the user's location differs from the
   visit's. This matters more now that the chart box is the only route for vitals. (#347)
-- The order basket's price and stock lookups fail on fhirproxy's unfilled
-  `${EXTERNAL_FHIR_API_URL}`. (#363)
+- The order basket's price and stock rows are hidden, not fixed: fhir-odoo prices from Odoo's cost
+  (0 on every product) and there is no stock yet. (#363)
 
 ---
 
