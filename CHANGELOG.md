@@ -94,10 +94,20 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
 - **Only a radiologist can save a report in the PACS viewer, under their own login, and the chart
   says who reported** ("Reported by: <name>"). An X-ray technician can still view images and
   worklists; a save they try is refused with a clear message in French and English. (#429)
+- **The pharmacy has a Stock Management app, in the app menu.** Pharmacie (Rx) is the central
+  store (receipts, counts, issues) and Pharmacie - Dispensation (Rx-DISP) the dispensing point.
+  204 catalogue drugs are stock items there (166 medicines, 38 consumables), with no batches and
+  no quantities yet, so the pharmacy can count and move stock. A Receipt goes into Pharmacie (Rx),
+  and the stock module's own demo locations, "Main Store" and "Main Pharmacy", are no longer
+  offered. **Dispensing does not deduct stock yet** and works as before. (#437)
 - **A price finance changes in Odoo stays changed.** A deploy or a database restore no longer
   resets 290 product prices to the configuration's values. (#439)
 
 ### Added
+- OpenMRS role and Keycloak `openmrs` client role **Central Pharmacist** (inherits `Pharmacist`
+  and `Inventory Manager`), and the Keycloak `openmrs` client role **Inventory Administrator** for
+  whoever manages stock user role scopes. The build now fails on a Keycloak `openmrs` client role
+  or an inherited role that OpenMRS does not define (`scripts/check-openmrs-roles.groovy`). (#438)
 - Person attribute type "Chef de ménage" (`c108c6bc-5f23-4e4a-ad34-8c788b86f288`). (#389)
 - Odoo `product_price` initializer loader. The product loader treats `lst_price` as `NO_UPDATE`,
   so it can't change the price of a product that already exists. (#391)
@@ -107,8 +117,27 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   `complete_fully_dispensed_drug_orders-20261008` (#419).
 - Concepts that existed only in Initializer CSVs now live in OCL (drugs, supplies, procedures,
   dispensing ValueSets, payer, insurance tiers, radiology), and each keeps its UUID. (#366)
+- `@openmrs/esm-stock-management-app` 3.2.1, its menu entry added to `app-menu-slot` (the app
+  registers it in `app-menu-item-slot`, which this navigation does not render). Liquibase
+  changesets for the stock items and the Rx/Rx-DISP stock parties; `stockmanagement.xml` global
+  properties; OCL coded concepts, with their values as answers, for stock source types and
+  adjustment reasons (`uvl-drug-entry` 20261021-1). A Stock Issue can be saved without a
+  requisition (`stockmanagement.allowStockIssueWithoutRequisition`). Liquibase
+  `retire_stockmanagement_demo_locations-20261020` removes the stock tags from the module's demo
+  locations "Main Store" and "Main Pharmacy" and retires each one where nothing was recorded (no
+  encounter, visit, obs or stock movement), so Pharmacie (Rx) is the only Main Store and the
+  Receipt form's destination. (#437)
 
 ### Changed
+- **The Pharmacist can request stock from the central store and receive it** at the dispensation:
+  inherits `Inventory Dispensing` and `Stock Management Base Role`, and gets
+  `Task: stockmanagement.stockoperations.mutate`, `...receiveitems` and
+  `App: stockmanagement.userRoleScopes`. The last one lets the stock app read the pharmacist's own
+  scope; without it the Operations page got a 403 and offered nothing to create. It is read-only:
+  editing scopes stays with `Inventory Administrator`. Every existing privilege is kept, so
+  dispensing (#374, #394) is unchanged. What each pharmacist may do, and where, is set by stock user
+  role scopes (deploy note 14). The build now also fails on a Keycloak role that may create stock
+  operations but cannot read its scopes. (#438)
 - Liquibase converts BP06 from Coded to LabSet and BP09 from Text to LabSet. It also removes the set
   members an earlier OCL release had shared between them, because the OCL import never removes
   members. Old results are kept. (#388)
@@ -225,8 +254,30 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
 12. **New Scaleway host (78.232.45.125):** it is a fresh install, so after the data copy re-check
     notes 8 and 9 there (`wg0` 10.66.0.11 is already up) and give the radiology users their Keycloak
     roles: `radiologist` for whoever writes reports, `xray_technician` for the technician.
+13. **#437, turning on stock deduction** (opening-count day, not at deploy): in
+    `uvl-mugamba-frontend-config.json` set `@openmrs/esm-dispensing-app` →
+    `"enableStockDispense": true`. Then the Pharmacist must pick a batch for every dispense, from
+    stock at the session location. Do it only when both are true:
+    - every drug that is prescribed is a stock item. On UAT 224 of 428 drugs are not, and Dispense
+      is disabled for them, with no message. The product owner's sheet adds them.
+    - the opening stock is counted at **Pharmacie - Dispensation (Rx-DISP)**, and pharmacists
+      dispense logged in there. A drug with no stock there cannot be dispensed.
+    Check the dispensing app's batch filter (`validateBatch`) on UAT before switching; see Known
+    issues.
+14. **#438, pharmacy stock roles:** run `keycloak-apply-realm.sh` so the `openmrs` client gets
+    `Central Pharmacist` and `Inventory Administrator`. Give the central pharmacist
+    `Central Pharmacist`, and the product owner `Inventory Administrator` alongside
+    `System Developer`. After each pharmacist's first sign-in, the product owner creates their stock
+    user role scopes, as listed in `sites/mugamba/configs/keycloak/users/staff-roster.example.csv`:
+    one scope per person, because the Operations page reads only the first. Without a scope a
+    pharmacist can still dispense but records no stock operation. Needs the stock locations of #437.
 
 ### Known issues
+- On the stock app's new user role scope form, `Inventory Administrator` gets a 403 from
+  `GET /ws/rest/v1/role`, which needs `Manage Roles`. The form doesn't use the answer: its Role list
+  shows the chosen user's own roles, so `Manage Roles` isn't granted. (#438)
+- A Keycloak role change reaches OpenMRS only at the user's second sign-in. Until then the stock
+  scope form lists no role for that user. (#438)
 - The dispensing block is in the interface only; the server doesn't refuse an over-dispense. (#374)
 - **About 150 products are still at 1.00:** #417 priced 205 of the 357, and the product
   owner left 82 rows of his sheet blank. HS26 and BP10 (#420) also start at 1.00. Some existing
@@ -242,6 +293,32 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   visit's. This matters more now that the chart box is the only route for vitals. (#347)
 - The order basket's price and stock rows are hidden, not fixed: fhir-odoo prices from Odoo's cost
   (0 on every product) and there is no stock yet. (#363)
+- **Stock deduction is off** (`enableStockDispense: false`). With it on, on UAT on 2026-10-20 a drug
+  with a stock item but no stock at Rx-DISP offered an empty "quantity 0" batch; choosing it saved
+  the dispense, then the stock request failed with a 500. The dispense is saved before the stock
+  request, so a failure leaves a dispense without a deduction. In dispensing app 1.11.1,
+  `validateBatch` (default `true`) is the only filter: it hides zero-quantity batches, but also
+  every batch when the prescription has no duration, or the item no expiry date (the 38
+  consumables). (#437)
+- **Stock app, the receiver's "Complete dispatch" may not show** for a dispatched Stock Issue. The
+  operations list takes each operation's buttons from a permission cache in stockmanagement 2.1.2
+  that is kept per server thread, keyed by the operation only, and never cleared. A thread that saw
+  the issue before it was dispatched, or for another user, keeps those buttons. Opening the issue
+  on its own gets fresh values. The approved requisition's "Issue stock" action is hidden the same
+  way, so Rx issues without a requisition (above). No role or scope changes it; it needs a module
+  fix. (#437)
+- **The server doesn't enforce stock scopes or self-approval**: on UAT on 2026-10-20 a pharmacist
+  created an Opening Stock at Rx, outside her scope. Upstream. (#437)
+- **Expiry dates are saved one day early** in browsers east of UTC (31/12 becomes 30/12): upstream
+  stock app. Pharmacists should check the saved expiry. (#437)
+- **Typing an expiry date blocks the save.** Use the date picker. (#437)
+- **Stock app, saving a Receipt creates its batch at once.** Saving again, or a second draft with
+  the same lot number and expiry, fails with a duplicate-batch error (500). Edit the draft you
+  already saved, or delete it before starting a new one. Upstream stock app 3.2.1. (#437)
+- **Stock app, opening a Stock Issue shows a red "Demande de stock associée Requise" message.**
+  It is wrong: the issue saves without a requisition. Upstream stock app 3.2.1. (#437)
+- **Stock app, some dialogs and messages are in English** in the French interface: upstream stock
+  app 3.2.1 has no translation for them. (#437)
 
 ---
 
