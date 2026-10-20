@@ -96,6 +96,10 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   worklists; a save they try is refused with a clear message in French and English. (#429)
 
 ### Added
+- OpenMRS role and Keycloak `openmrs` client role **Central Pharmacist** (inherits `Pharmacist`
+  and `Inventory Manager`), and the Keycloak `openmrs` client role **Inventory Administrator** for
+  whoever manages stock user role scopes. The build now fails on a Keycloak `openmrs` client role
+  or an inherited role that OpenMRS does not define (`scripts/check-openmrs-roles.groovy`). (#438)
 - Person attribute type "Chef de ménage" (`c108c6bc-5f23-4e4a-ad34-8c788b86f288`). (#389)
 - Odoo `product_price` initializer loader. The product loader treats `lst_price` as `NO_UPDATE`,
   so it can't change the price of a product that already exists. (#391)
@@ -107,6 +111,11 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   dispensing ValueSets, payer, insurance tiers, radiology), and each keeps its UUID. (#366)
 
 ### Changed
+- **The Pharmacist can request stock from the central store and receive it** at the dispensation:
+  inherits `Inventory Dispensing` and `Stock Management Base Role`, and gets
+  `Task: stockmanagement.stockoperations.mutate` and `...receiveitems`. Every existing privilege is
+  kept, so dispensing (#374, #394) is unchanged. What each pharmacist may do, and where, is set by
+  stock user role scopes (deploy note 13). (#438)
 - Liquibase converts BP06 from Coded to LabSet and BP09 from Text to LabSet. It also removes the set
   members an earlier OCL release had shared between them, because the OCL import never removes
   members. Old results are kept. (#388)
@@ -214,6 +223,13 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
 12. **New Scaleway host (78.232.45.125):** it is a fresh install, so after the data copy re-check
     notes 8 and 9 there (`wg0` 10.66.0.11 is already up) and give the radiology users their Keycloak
     roles: `radiologist` for whoever writes reports, `xray_technician` for the technician.
+13. **#438, pharmacy stock roles:** run `keycloak-apply-realm.sh` so the `openmrs` client gets
+    `Central Pharmacist` and `Inventory Administrator`. Give the central pharmacist
+    `Central Pharmacist`, and the product owner `Inventory Administrator` alongside
+    `System Developer`. After each pharmacist's first sign-in, the product owner creates their stock
+    user role scopes, as listed in `sites/mugamba/configs/keycloak/users/staff-roster.example.csv`.
+    Without a scope a pharmacist can still dispense but records no stock operation. Needs the stock
+    locations of #437.
 
 ### Known issues
 - The dispensing block is in the interface only; the server doesn't refuse an over-dispense. (#374)
