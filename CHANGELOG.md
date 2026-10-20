@@ -94,6 +94,11 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
 - **Only a radiologist can save a report in the PACS viewer, under their own login, and the chart
   says who reported** ("Reported by: <name>"). An X-ray technician can still view images and
   worklists; a save they try is refused with a clear message in French and English. (#429)
+- **The pharmacy has a Stock Management app, in the app menu.** Pharmacie (Rx) is the central
+  store (receipts, counts, issues) and Pharmacie - Dispensation (Rx-DISP) the dispensing point.
+  204 catalogue drugs are stock items there (166 medicines, 38 consumables), with no batches and
+  no quantities yet, so the pharmacy can count and move stock. **Dispensing does not deduct stock
+  yet** and works as before. (#437)
 
 ### Added
 - Person attribute type "Chef de ménage" (`c108c6bc-5f23-4e4a-ad34-8c788b86f288`). (#389)
@@ -105,6 +110,12 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   `complete_fully_dispensed_drug_orders-20261008` (#419).
 - Concepts that existed only in Initializer CSVs now live in OCL (drugs, supplies, procedures,
   dispensing ValueSets, payer, insurance tiers, radiology), and each keeps its UUID. (#366)
+- `@openmrs/esm-stock-management-app` 3.2.1, its menu entry added to `app-menu-slot` (the app
+  registers it in `app-menu-item-slot`, which this navigation does not render). Liquibase
+  changesets for the stock items and the Rx/Rx-DISP stock parties; `stockmanagement.xml` global
+  properties; OCL coded concepts, with their values as answers, for stock source types and
+  adjustment reasons (`uvl-drug-entry` 20261021-1). A Stock Issue can be saved without a
+  requisition (`stockmanagement.allowStockIssueWithoutRequisition`). (#437)
 
 ### Changed
 - Liquibase converts BP06 from Coded to LabSet and BP09 from Text to LabSet. It also removes the set
@@ -214,6 +225,16 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
 12. **New Scaleway host (78.232.45.125):** it is a fresh install, so after the data copy re-check
     notes 8 and 9 there (`wg0` 10.66.0.11 is already up) and give the radiology users their Keycloak
     roles: `radiologist` for whoever writes reports, `xray_technician` for the technician.
+13. **#437, turning on stock deduction** (opening-count day, not at deploy): in
+    `uvl-mugamba-frontend-config.json` set `@openmrs/esm-dispensing-app` →
+    `"enableStockDispense": true`. Then the Pharmacist must pick a batch for every dispense, from
+    stock at the session location. Do it only when both are true:
+    - every drug that is prescribed is a stock item. On UAT 224 of 428 drugs are not, and Dispense
+      is disabled for them, with no message. The product owner's sheet adds them.
+    - the opening stock is counted at **Pharmacie - Dispensation (Rx-DISP)**, and pharmacists
+      dispense logged in there. A drug with no stock there cannot be dispensed.
+    Check the dispensing app's batch filter (`validateBatch`) on UAT before switching; see Known
+    issues.
 
 ### Known issues
 - The dispensing block is in the interface only; the server doesn't refuse an over-dispense. (#374)
@@ -231,6 +252,25 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   visit's. This matters more now that the chart box is the only route for vitals. (#347)
 - The order basket's price and stock rows are hidden, not fixed: fhir-odoo prices from Odoo's cost
   (0 on every product) and there is no stock yet. (#363)
+- **Stock deduction is off** (`enableStockDispense: false`). With it on, on UAT on 2026-10-20 a drug
+  with a stock item but no stock at Rx-DISP offered an empty "quantity 0" batch; choosing it saved
+  the dispense, then the stock request failed with a 500. The dispense is saved before the stock
+  request, so a failure leaves a dispense without a deduction. In dispensing app 1.11.1,
+  `validateBatch` (default `true`) is the only filter: it hides zero-quantity batches, but also
+  every batch when the prescription has no duration, or the item no expiry date (the 38
+  consumables). (#437)
+- **Stock app, the receiver's "Complete dispatch" may not show** for a dispatched Stock Issue. The
+  operations list takes each operation's buttons from a permission cache in stockmanagement 2.1.2
+  that is kept per server thread, keyed by the operation only, and never cleared. A thread that saw
+  the issue before it was dispatched, or for another user, keeps those buttons. Opening the issue
+  on its own gets fresh values. The approved requisition's "Issue stock" action is hidden the same
+  way, so Rx issues without a requisition (above). No role or scope changes it; it needs a module
+  fix. (#437)
+- **The server doesn't enforce stock scopes or self-approval**: on UAT on 2026-10-20 a pharmacist
+  created an Opening Stock at Rx, outside her scope. Upstream. (#437)
+- **Expiry dates are saved one day early** in browsers east of UTC (31/12 becomes 30/12): upstream
+  stock app. Pharmacists should check the saved expiry. (#437)
+- **Typing an expiry date blocks the save.** Use the date picker. (#437)
 
 ---
 
