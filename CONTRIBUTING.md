@@ -106,7 +106,7 @@ sites/mugamba/configs/
 └── keycloak/                 realm, clients, roles
 ```
 
-Three things that are not obvious and have each cost us time:
+Four things that are not obvious and have each cost us time:
 
 - **OpenMRS configuration is copied from the image into the running container on
   every start.** Change a file here, rebuild, redeploy, and it applies.
@@ -124,6 +124,24 @@ Three things that are not obvious and have each cost us time:
   that anything added to an environment's volume by hand, rather than through this
   repo, disappears on the next start. `P6` in the pre-flight suite below checks the
   volume against the image.
+
+- **Finance owns Odoo prices; the configuration does not set them** (#439). The
+  Odoo initializer re-imports a CSV whenever the file changes or its checksum is
+  cleared, which we do after every database restore, and Odoo keeps no history
+  of price changes. So there is no price file, and the product loader
+  (`product_variant/`) applies `lst_price` only when it creates a product
+  (`NO_UPDATE`). To add products:
+  - put them in their own **new** file, `product_variant/<name>-issueNNN.csv`;
+  - if the price is known, add an `lst_price` column and fill it on **every**
+    row. The loader reads column names from the first row only, and an empty
+    price imports as 0, a free product;
+  - never add `lst_price` to an existing variant file, and never edit a price
+    in a CSV to change it in Odoo: it will not apply;
+  - a product without a price arrives at 1.00, and finance prices it in Odoo
+    (Billing Administrator).
+
+  `scripts/check-odoo-prices.groovy` fails the build on a loader that would
+  overwrite prices, or a product row with an empty price.
 
 ## Building images
 

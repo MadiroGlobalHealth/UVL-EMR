@@ -100,6 +100,8 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   no quantities yet, so the pharmacy can count and move stock. A Receipt goes into Pharmacie (Rx),
   and the stock module's own demo locations, "Main Store" and "Main Pharmacy", are no longer
   offered. **Dispensing does not deduct stock yet** and works as before. (#437)
+- **A price finance changes in Odoo stays changed.** A deploy or a database restore no longer
+  resets 290 product prices to the configuration's values. (#439)
 
 ### Added
 - OpenMRS role and Keycloak `openmrs` client role **Central Pharmacist** (inherits `Pharmacist`
@@ -150,6 +152,15 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   `10.66.0.2`. `DicomAlwaysAllowStore` and `DicomAlwaysAllowFind` are off, so storing and worklist
   queries need that AE title. The `FINDSCU` test entry is gone. The port itself is published only
   on the tunnel (LIME-EMR-Tooling `ede296b27`). (#372)
+
+### Removed
+- **The Odoo `product_price` loader and `prices.csv` (290 products).** Finance owns prices in Odoo;
+  the file put them back to its own values whenever it changed or the Odoo checksums were cleared,
+  as after every database restore. Every row already matched production and UAT, so no price
+  changes on deploy. Products are still created from `product_variant/`, which sets `lst_price`
+  only on creation; a new product without a price arrives at 1.00 and finance prices it. The rule
+  is in `CONTRIBUTING.md`, and `scripts/check-odoo-prices.groovy` fails the build on a loader
+  that would overwrite prices or a product row with an empty price. (#439)
 
 ### Fixed
 - **On a fresh database, eight roles were never created:** Print Patient Label Sticker, Help Nurse,
