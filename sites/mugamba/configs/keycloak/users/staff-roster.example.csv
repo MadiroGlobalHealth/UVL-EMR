@@ -21,7 +21,30 @@
 #
 # openmrs_role must be one of the roles in
 # sites/mugamba/configs/openmrs/initializer_config/roles/roles_mugamba.csv, or the
-# OpenMRS built-in System Developer.
+# OpenMRS built-in System Developer, or Inventory Administrator (stock settings,
+# see below).
+#
+# PHARMACY STOCK (#438). Two jobs, one openmrs_role each:
+#   - `Pharmacist`, the dispensing pharmacist: dispenses, asks the central store
+#     for stock (requisition) and receives what it sends.
+#   - `Central Pharmacist`, the central store: everything a Pharmacist does, plus
+#     receipts, opening stock, stock takes, adjustments, approving and issuing.
+# Neither can do anything in the stock app until they hold a USER ROLE SCOPE: the
+# stock module's own rule saying which operations a role may perform at which
+# location. Scopes are not configuration. They name a user, who exists in OpenMRS
+# only after their first sign-in, so they are set at run time in the stock app
+# (Stock Management > User role scopes) or POST /ws/rest/v1/stockmanagement/userrolescope,
+# by someone holding `Inventory Administrator`. Nobody can set their own scope.
+# Create, per person, after their first sign-in:
+#   Central Pharmacist  at `Pharmacie (Rx)`: Receipt, Opening Stock, Stock Take,
+#                       Adjustment, Stock Issue;
+#                       at `Pharmacie - Dispensation (Rx-DISP)`: Requisition
+#   Pharmacist          at `Pharmacie - Dispensation (Rx-DISP)`: Requisition,
+#                       Stock Issue (to receive what the central store sends)
+# Without a scope the person can still dispense, but records no stock operation.
+# An administrator who should manage scopes needs `Inventory Administrator` as
+# well as `System Developer`; this script assigns one openmrs_role per row, so
+# add the second one in the Keycloak console.
 #
 # odoo_role must be one of the roles declared on the `odoo` client in
 # sites/mugamba/configs/keycloak/realms/ozone-realm.json. odoo_role may hold
@@ -60,6 +83,7 @@ username,first_name,last_name,openmrs_role,odoo_role,pacs_role
 jane.doe,Jane,DOE,Doctor,-,-
 john.roe,John,ROE,Nurse,-,-
 mary.moe,Mary,MOE,Pharmacist,-,-
+mark.moe,Mark,MOE,Central Pharmacist,-,-
 rose.doe,Rose,DOE,X-Ray Technician,-,xray_technician
 peter.poe,Peter,POE,-,Invoicing / Billing;Sales / User: All Documents,-
 paula.poe,Paula,POE,-,Invoicing / Billing Administrator;Sales / User: All Documents,-
