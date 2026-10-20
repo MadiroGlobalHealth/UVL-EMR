@@ -1,0 +1,50 @@
+<config>
+    <globalProperties>
+        <!--
+          #437. stockmanagement's concept settings. The module's defaults are CIEL and KenyaEMR
+          uuids that do not exist here. The stock app 3.2.1 reads the same settings from its own
+          frontend config (@openmrs/esm-stock-management-app in uvl-mugamba-frontend-config.json);
+          these are for the module itself (its stock item import and its legacy pages), and must
+          name the same concepts.
+
+          Units: the dosing units set that order entry already uses (order.drugDosingUnitsConceptUuid),
+          which holds Comprimé, Gellule, Millilitre, Ampoule(s), Unité, Boîte, Conteneur...
+        -->
+        <globalProperty>
+            <property>stockmanagement.dispensingUnitsConceptId</property>
+            <value>7026a506-6fec-4b6b-86c1-ef691bb52261</value>
+        </globalProperty>
+        <globalProperty>
+            <property>stockmanagement.packagingUnitsConceptId</property>
+            <value>7026a506-6fec-4b6b-86c1-ef691bb52261</value>
+        </globalProperty>
+        <!-- The UVL "Unknown" concept (Inconnu). -->
+        <globalProperty>
+            <property>stockmanagement.unknownConceptId</property>
+            <value>c9be680f-4d74-4098-8682-9cb4416429f7</value>
+        </globalProperty>
+        <!--
+          Stock source types (supplier kinds) and stock adjustment reasons: UVL concept sets
+          created for #437 in OCL.
+        -->
+        <globalProperty>
+            <property>stockmanagement.stockSourceCodeConceptId</property>
+            <value>291efb6a-0364-5ef7-96b8-47f24d50ab3d</value>
+        </globalProperty>
+        <globalProperty>
+            <property>stockmanagement.stockAdjustmentReasonCodeConceptId</property>
+            <value>2973a766-bdb8-56c3-a5d2-d101a611a770</value>
+        </globalProperty>
+        <!--
+          The module default, stated for the day dispensing deducts stock (enableStockDispense in
+          the frontend config, off for now): an operation that would take a batch below zero at
+          its source is refused. Dispensing is refused in that case whatever this says, so once
+          deduction is on, a drug with no counted stock at the dispensation cannot be dispensed
+          until it is counted or issued there.
+        -->
+        <globalProperty>
+            <property>stockmanagement.negativeStockBalanceAllowed</property>
+            <value>false</value>
+        </globalProperty>
+    </globalProperties>
+</config>
