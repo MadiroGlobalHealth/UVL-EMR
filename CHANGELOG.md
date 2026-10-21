@@ -18,22 +18,28 @@ MSF-OCG/LIME-EMR-Tooling.
 
 ---
 
-## Current status — 2026-10-07
+## Current status — 2026-10-15
 
 - Production last received an EMR update on **2026-09-30**: UVL-EMR `main` `393f5b5`, which is
   release candidate `a218cae` plus #357, #358 and #359 (section `[2026-09-30]` below). The
   product owner checked it on production the same day.
-- `[Unreleased]` below is UVL-EMR `main` `a76d0a7`. It holds every requirement the product owner
-  sent between 30 Sep and 6 Oct that was still open. It is planned for production on the night of
-  **7 → 8 Oct 2026**. Each change passed the browser journey on UAT on 2026-10-07, run as the real
-  staff roles, on a personal build of the same branches. The official `globalmadiro` images are
-  re-checked on UAT before the production deploy.
+- `[Unreleased]` below is UVL-EMR `main` `75a339a`. It holds the 7 Oct release (#388–#391), the
+  product owner's answers of 8 Oct (#417–#421), radiology (#424, #427–#430), the billing bridge
+  (#404, #435) and the local-run fixes (#432, #433). The 7 Oct release was not deployed on
+  7 → 8 Oct; the whole section goes to production with the move to the new Scaleway host, planned for
+  **Thursday 2026-10-15**, once the DNS points there.
+- **UAT, 2026-10-15:** the official `globalmadiro` images of `dbc82ff` passed the full browser
+  journey as the real staff roles, and every item of this release passed. One fault was found: a
+  drug dispensed after the quote was confirmed was billed again. It was fixed by #435 (`75a339a`),
+  which passed its own UAT test the same day. Two radiology checks need a separate account: an
+  X-ray technician without the radiologist role, to see a report save refused; and a radiologist
+  saving a report on a fresh study. Both passed on UAT on 2026-10-14.
 - When it reaches production, give the section the deployment date, tag it `Production`, and
   record the running image digests.
 
 ---
 
-## [Unreleased] — `UAT` · `main` `a76d0a7`
+## [Unreleased] — `UAT` · `main` `75a339a`
 
 Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
 
@@ -67,16 +73,71 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   appears in the blood count. (#366)
 - **Queues load for the Pharmacist, X-Ray Technician and Lab Technician** without a 403 on the home
   page. (#351, #365)
+- **205 more products carry the product owner's price** (8 Oct sheet): 165 pharmacy, 38 procedures
+  and 2 lab tests. 67 of them are priced per bottle, tube or ampoule and bill correctly only with
+  the per-container rule below. Pénicilline V Flacon 1MUI (written `3OOO`) is loaded as 3,000 and
+  Vital Signs Check as 10,000; both await the product owner's confirmation. (#270, #417)
+- **Stool results recorded before the structured BP06 show again.** The 23 old single-answer results
+  (July–August) become a BP06 result with the old answer as its comment ("Résultat antérieur
+  (liste unique) : …"). The old row is voided, not deleted. (#415, #418)
+- **Prescriptions dispensed in full before the dispensing change no longer offer Dispense.** They are
+  marked Completed, with the comment `#416 backfill: dispensed in full before #374`. Paused, closed
+  and partly dispensed prescriptions are untouched. (#416, #419)
+- **H. pylori (HS26) and Albuminurie (BP10) can be billed,** at 1.00 until they are priced. Their
+  OCL concepts are in `uvl-labtests` 20261008. (#371, #420)
+- **The order basket no longer shows "Prix: 0,00 BIF" and "En rupture de stock"** on every line.
+  Both rows are hidden until fhir-odoo reads the sale price and stock exists. (#363, #421)
+- **The radiologist's report reaches the X-ray order.** A report saved in the PACS viewer (OHIF)
+  shows under the order's result on one line, with the findings and measurements written on the
+  image (French accents intact), not only the report name, at the time it was saved. The X-ray
+  order is then marked Completed. (#427)
+- **Only a radiologist can save a report in the PACS viewer, under their own login, and the chart
+  says who reported** ("Reported by: <name>"). An X-ray technician can still view images and
+  worklists; a save they try is refused with a clear message in French and English. (#429)
+- **The pharmacy has a Stock Management app, in the app menu.** Pharmacie (Rx) is the central
+  store (receipts, counts, issues) and Pharmacie - Dispensation (Rx-DISP) the dispensing point.
+  204 catalogue drugs are stock items there (166 medicines, 38 consumables), with no batches and
+  no quantities yet, so the pharmacy can count and move stock. A Receipt goes into Pharmacie (Rx),
+  and the stock module's own demo locations, "Main Store" and "Main Pharmacy", are no longer
+  offered. **Dispensing does not deduct stock yet** and works as before. (#437)
+- **A price finance changes in Odoo stays changed.** A deploy or a database restore no longer
+  resets 290 product prices to the configuration's values. (#439)
 
 ### Added
+- OpenMRS role and Keycloak `openmrs` client role **Central Pharmacist** (inherits `Pharmacist`
+  and `Inventory Manager`), and the Keycloak `openmrs` client role **Inventory Administrator** for
+  whoever manages stock user role scopes. The build now fails on a Keycloak `openmrs` client role
+  or an inherited role that OpenMRS does not define (`scripts/check-openmrs-roles.groovy`). (#438)
 - Person attribute type "Chef de ménage" (`c108c6bc-5f23-4e4a-ad34-8c788b86f288`). (#389)
 - Odoo `product_price` initializer loader. The product loader treats `lst_price` as `NO_UPDATE`,
   so it can't change the price of a product that already exists. (#391)
 - OCL releases UVL-Burundi `uvl-registration` 20261007 and `uvl-labtests` 20261007-5. (#388)
+- OCL release `uvl-labtests` 20261008 (sources `uvl-ciel` and `uvl-custom` 20261008). (#420)
+- Liquibase changesets `migrate_single_answer_stool_results-20261008` (#418) and
+  `complete_fully_dispensed_drug_orders-20261008` (#419).
 - Concepts that existed only in Initializer CSVs now live in OCL (drugs, supplies, procedures,
   dispensing ValueSets, payer, insurance tiers, radiology), and each keeps its UUID. (#366)
+- `@openmrs/esm-stock-management-app` 3.2.1, its menu entry added to `app-menu-slot` (the app
+  registers it in `app-menu-item-slot`, which this navigation does not render). Liquibase
+  changesets for the stock items and the Rx/Rx-DISP stock parties; `stockmanagement.xml` global
+  properties; OCL coded concepts, with their values as answers, for stock source types and
+  adjustment reasons (`uvl-drug-entry` 20261021-1). A Stock Issue can be saved without a
+  requisition (`stockmanagement.allowStockIssueWithoutRequisition`). Liquibase
+  `retire_stockmanagement_demo_locations-20261020` removes the stock tags from the module's demo
+  locations "Main Store" and "Main Pharmacy" and retires each one where nothing was recorded (no
+  encounter, visit, obs or stock movement), so Pharmacie (Rx) is the only Main Store and the
+  Receipt form's destination. (#437)
 
 ### Changed
+- **The Pharmacist can request stock from the central store and receive it** at the dispensation:
+  inherits `Inventory Dispensing` and `Stock Management Base Role`, and gets
+  `Task: stockmanagement.stockoperations.mutate`, `...receiveitems` and
+  `App: stockmanagement.userRoleScopes`. The last one lets the stock app read the pharmacist's own
+  scope; without it the Operations page got a 403 and offered nothing to create. It is read-only:
+  editing scopes stays with `Inventory Administrator`. Every existing privilege is kept, so
+  dispensing (#374, #394) is unchanged. What each pharmacist may do, and where, is set by stock user
+  role scopes (deploy note 14). The build now also fails on a Keycloak role that may create stock
+  operations but cannot read its scopes. (#438)
 - Liquibase converts BP06 from Coded to LabSet and BP09 from Text to LabSet. It also removes the set
   members an earlier OCL release had shared between them, because the OCL import never removes
   members. Old results are kept. (#388)
@@ -86,14 +147,79 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   drug for every failure, which was wrong. The "Déjà actif - utiliser Modifier" tag stays. (#364)
 - The Pharmacist, X-Ray Technician and Lab Technician get `Get Queue Entries`. The Doctor,
   Ophtalmologist and Dentist get `Get ChargeItemDefinition` and `Get InventoryItem`. (#365)
+- **Orthanc accepts DICOM only from the X-ray PC.** The PC is registered as `XMARUM` (its real AE
+  title; the old entry said `XMARU` with a placeholder address) at its WireGuard tunnel address
+  `10.66.0.2`. `DicomAlwaysAllowStore` and `DicomAlwaysAllowFind` are off, so storing and worklist
+  queries need that AE title. The `FINDSCU` test entry is gone. The port itself is published only
+  on the tunnel (LIME-EMR-Tooling `ede296b27`). (#372)
+
+### Removed
+- **The Odoo `product_price` loader and `prices.csv` (290 products).** Finance owns prices in Odoo;
+  the file put them back to its own values whenever it changed or the Odoo checksums were cleared,
+  as after every database restore. Every row already matched production and UAT, so no price
+  changes on deploy. Products are still created from `product_variant/`, which sets `lst_price`
+  only on creation; a new product without a price arrives at 1.00 and finance prices it. The rule
+  is in `CONTRIBUTING.md`, and `scripts/check-odoo-prices.groovy` fails the build on a loader
+  that would overwrite prices or a product row with an empty price. (#439)
 
 ### Fixed
+- **On a fresh database, eight roles were never created:** Print Patient Label Sticker, Help Nurse,
+  Nurse, Doctor, Midwife, Ophtalmologist, Dentist and Anesthesist. `roles_mugamba.csv` gives two of them
+  `App: Can View Patient Identifier Sticker Report`, a privilege nothing in the distribution defined,
+  and the rest inherit from those two. It is now in `mugamba-privileges.csv`. Existing databases (UAT,
+  production) already have it and match it by name, so nothing is duplicated. (#433)
+- **Local run only (`start.sh`): OpenMRS core 2.7.7 → 2.8.9.** The local compose pinned 2.7.7 while
+  the distribution's modules need 2.8, so emrapi, attachments, openconceptlab and stockmanagement
+  failed to start for volunteers and the O3 app didn't work. UAT and production are unaffected: they
+  run the bundled image, built on `openmrs.version` 2.8.9. The local MariaDB also gets
+  `--log-bin-trust-function-creators=1`, without which stockmanagement could not create its triggers
+  and took Billing down with it. (#369, #423, #432)
 - **Odoo: printing a customer invoice from "Send & Print" crashed** (#375). This is a database
   fix, not a code change: two views and two server actions left behind by the Odoo 17 migration.
   It was applied on UAT on 2026-10-07. **Production needs the same steps by hand; see the deploy
   notes.**
 - Payer and dispensing answers were duplicated after the OCL import. Five X-ray procedures were
   never created because of a name clash. The X-ray billable services had no concept. (#366)
+- **A paid X-ray reached the Orthanc worklist hours late, and the X-ray unit couldn't see it.**
+  The Orthanc bridge read only the first 100 orders of its seven-day window, oldest first, so a new
+  X-ray waited for older orders to age out: two paid on UAT reached the worklist 12 and 16 hours
+  later. It now follows every page. Entries named the station `ORTHANC`; it is now
+  `ORTHANC_WORKLIST_STATION_AET` (default `ORTHANC`), which the unit, `XMARUM`, filters on. X-rays
+  were `XR`; they are now `DX`, as the unit encodes them (`ORTHANC_WORKLIST_XRAY_MODALITY`).
+  Ultrasound and CT are unchanged. Bridge jar from eip-openmrs-orthanc `77ab760`. (#424)
+- **A radiology report reached the chart as its title only, at midnight, on no order.** The bridge
+  read only the SR's series description. It now reads the report's content (each annotation's label
+  and measurements), files the result against the order matched by accession and that order's
+  encounter, and sets the order's fulfiller status to `COMPLETED`. A report is also never filed
+  twice: on UAT a 401 on a save that had succeeded left the report unmarked, and the next bridge
+  start filed it again. The text is one line, because O3's Results tab drops line breaks, and is
+  posted as UTF-8 (an em dash had been stored as `?`). It ends with "Reported by: <name>", read
+  from the PACS audit log and Keycloak (needs #430 and deploy note 9). Bridge jar from
+  eip-openmrs-orthanc `530c314` (jnsereko fork). (#427, #428, #429)
+- **Anyone on the internet could upload into the PACS without signing in.** The
+  orthancteam/orthanc-auth-service image's default anonymous profile grants `upload`, so a request
+  with no token could `POST /instances` or STOW (reads and deletes were always refused). Ours now
+  grants nothing. OHIF's report save had only worked through that hole: it sent the PACS UI's
+  viewer instant link, which carries no user. OHIF's `app-config.js` now sends the signed-in
+  user's own Keycloak token (kept by Orthanc Explorer 2 in localStorage) on every PACS request and
+  refreshes it, so the user's PACS role decides. `upload` moves from `xray_technician` (images
+  arrive over DICOM, which it doesn't cover) to `radiologist`. (#429, #430)
+- **Billing bridge, #404 (eip-odoo-openmrs jar from jnsereko fork `0001068`, which contains #401's
+  `28d1594`):**
+  - A syrup or cream prescribed in mL, g, drops, applications or sprays is billed as one container,
+    not once per millilitre. It needs `ODOO_PER_CONTAINER_UOMS` (LIME-EMR-Tooling `cfcd75cd7`). (#385)
+  - A discontinued or undispensed order is removed from the draft quote instead of being invoiced.
+    (#386, #401)
+  - A repeat of an active lab test or procedure on the same visit raises the line quantity instead
+    of being lost. (#360)
+  - The radiology payment poll reads each order's visit once and logs what it is waiting for, instead
+    of reprocessing the same orders every 32 seconds. (#316)
+  - The X-Ray Technician's PACS 403 was fixed by the `xray_technician` role (#396). (#387)
+  - **Dispensing after the visit's quote was confirmed billed the drugs a second time.** When the
+    cashier took the X-ray payment first, every later dispense or pause found no draft quote and
+    opened a new one holding the drugs again. A drug already on a confirmed sale order of the visit
+    now gets no new line; a new prescription of the same drug is still billed. Jar from jnsereko
+    fork `5ec0e3b`, on top of `0001068`. (#434, #435)
 
 ### Deploy notes for production
 1. Record the running image digests and take a database backup first.
@@ -107,24 +233,92 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
 5. In Odoo, archive the duplicate **Cefixime Comprimé 400mg, product 535**. Orders land on 609.
 6. Once it's live, check that the three Liquibase changesets of #388 are `EXECUTED`, Payer has 8
    answers, and BP06 and BP09 show their structured fields.
+7. **#424:** check the `eip-openmrs-orthanc` container has `ORTHANC_WORKLIST_STATION_AET=XMARUM`
+   and `ORTHANC_WORKLIST_XRAY_MODALITY=DX` (LIME-EMR-Tooling `ede296b27` defaults both). Unset,
+   entries are labelled `ORTHANC` and the X-ray unit sees none of them.
+8. **#372, radiology tunnel:** before this release, set up WireGuard on the production host
+   (`wg0` = `10.66.0.11`, UDP 51820 open in Azure's network rules too) so the env generator binds
+   Orthanc's DICOM port to it. The X-ray PC keeps `10.66.0.2` in both tunnels, which is the address
+   `orthanc.json` names, so the file is the same on UAT and production. Without `wg0`, DICOM binds
+   loopback and the X-ray PC can't reach it, but nothing else is affected.
+9. **#429, report author:** in Keycloak, give the `service-account-orthanc-service` user the
+   `realm-management` client role **`view-users`** (Users → service-account-orthanc-service → Role
+   mapping). The realm file has it, but `keycloak-apply-realm.sh` skips users that already exist.
+   Without it reports are still filed, just without "Reported by". Audit logs are switched on in
+   `orthanc.json` and need nothing else.
+10. **#418 and #419:** run each PR's dry-run query on production first (UAT: 23 stool results, 6
+    prescriptions); production's counts will differ. After the deploy, check both changesets are
+    `EXECUTED` in `liquibasechangelog`.
+11. **#417 needs #404's `ODOO_PER_CONTAINER_UOMS` live** in the `eip-odoo-openmrs` container, or a
+    syrup prescribed as 10 mL bills 10 bottles at the new per-bottle price.
+12. **New Scaleway host (78.232.45.125):** it is a fresh install, so after the data copy re-check
+    notes 8 and 9 there (`wg0` 10.66.0.11 is already up) and give the radiology users their Keycloak
+    roles: `radiologist` for whoever writes reports, `xray_technician` for the technician.
+13. **#437, turning on stock deduction** (opening-count day, not at deploy): in
+    `uvl-mugamba-frontend-config.json` set `@openmrs/esm-dispensing-app` →
+    `"enableStockDispense": true`. Then the Pharmacist must pick a batch for every dispense, from
+    stock at the session location. Do it only when both are true:
+    - every drug that is prescribed is a stock item. On UAT 224 of 428 drugs are not, and Dispense
+      is disabled for them, with no message. The product owner's sheet adds them.
+    - the opening stock is counted at **Pharmacie - Dispensation (Rx-DISP)**, and pharmacists
+      dispense logged in there. A drug with no stock there cannot be dispensed.
+    Check the dispensing app's batch filter (`validateBatch`) on UAT before switching; see Known
+    issues.
+14. **#438, pharmacy stock roles:** run `keycloak-apply-realm.sh` so the `openmrs` client gets
+    `Central Pharmacist` and `Inventory Administrator`. Give the central pharmacist
+    `Central Pharmacist`, and the product owner `Inventory Administrator` alongside
+    `System Developer`. After each pharmacist's first sign-in, the product owner creates their stock
+    user role scopes, as listed in `sites/mugamba/configs/keycloak/users/staff-roster.example.csv`:
+    one scope per person, because the Operations page reads only the first. Without a scope a
+    pharmacist can still dispense but records no stock operation. Needs the stock locations of #437.
 
 ### Known issues
-- **Stool results recorded before the change** (about 23, July–August) no longer show on the
-  Results page now that BP06 is a set. They are intact in the database and the API. Whether to
-  convert them is a product owner decision.
-- **Prescriptions fully dispensed before this change** still show Dispense. Backfilling them is a
-  separate data decision. The block is in the interface only; the server doesn't refuse an
-  over-dispense. (#374)
-- **357 products are still at 1.00:** 283 have no tariff price (the pharmacy is priced at purchase
-  price plus margin), and 73 matches await the product owner. Some existing prices disagree with
-  the tariff. (#270)
-- Suspected over-billing of syrups per mL (#385). Discontinued lab and imaging orders are still
-  billed (#386, #254). The PACS viewer returns 403 for the X-Ray Technician (#387).
-- **H. pylori and albuminuria** wait for the product owner's choice of test method. (#371)
+- On the stock app's new user role scope form, `Inventory Administrator` gets a 403 from
+  `GET /ws/rest/v1/role`, which needs `Manage Roles`. The form doesn't use the answer: its Role list
+  shows the chosen user's own roles, so `Manage Roles` isn't granted. (#438)
+- A Keycloak role change reaches OpenMRS only at the user's second sign-in. Until then the stock
+  scope form lists no role for that user. (#438)
+- The dispensing block is in the interface only; the server doesn't refuse an over-dispense. (#374)
+- **About 150 products are still at 1.00:** #417 priced 205 of the 357, and the product
+  owner left 82 rows of his sheet blank. HS26 and BP10 (#420) also start at 1.00. Some existing
+  prices disagree with the tariff. (#270)
+- Some orders arrive in Odoo cancelled and empty (#254).
+- **Vitals are sometimes saved without a visit or provider** (1 of 1 on UAT on 2026-10-15, 2 of 3 on
+  2026-10-08; seen since 2026-09-28). (#347)
+- When several orders are signed together, OpenMRS's own billing module can log "Duplicate entry …
+  for key cashier_bill_receipt_number_idx". Odoo billing is unaffected.
+- **H. pylori and albuminuria** can be billed but not yet ordered or resulted: H. pylori's test method
+  (serology or stool antigen) and the albuminuria result fields wait for the product owner. (#371)
 - Vitals from the chart box are saved without a visit when the user's location differs from the
   visit's. This matters more now that the chart box is the only route for vitals. (#347)
-- The order basket's price and stock lookups fail on fhirproxy's unfilled
-  `${EXTERNAL_FHIR_API_URL}`. (#363)
+- The order basket's price and stock rows are hidden, not fixed: fhir-odoo prices from Odoo's cost
+  (0 on every product) and there is no stock yet. (#363)
+- **Stock deduction is off** (`enableStockDispense: false`). With it on, on UAT on 2026-10-20 a drug
+  with a stock item but no stock at Rx-DISP offered an empty "quantity 0" batch; choosing it saved
+  the dispense, then the stock request failed with a 500. The dispense is saved before the stock
+  request, so a failure leaves a dispense without a deduction. In dispensing app 1.11.1,
+  `validateBatch` (default `true`) is the only filter: it hides zero-quantity batches, but also
+  every batch when the prescription has no duration, or the item no expiry date (the 38
+  consumables). (#437)
+- **Stock app, the receiver's "Complete dispatch" may not show** for a dispatched Stock Issue. The
+  operations list takes each operation's buttons from a permission cache in stockmanagement 2.1.2
+  that is kept per server thread, keyed by the operation only, and never cleared. A thread that saw
+  the issue before it was dispatched, or for another user, keeps those buttons. Opening the issue
+  on its own gets fresh values. The approved requisition's "Issue stock" action is hidden the same
+  way, so Rx issues without a requisition (above). No role or scope changes it; it needs a module
+  fix. (#437)
+- **The server doesn't enforce stock scopes or self-approval**: on UAT on 2026-10-20 a pharmacist
+  created an Opening Stock at Rx, outside her scope. Upstream. (#437)
+- **Expiry dates are saved one day early** in browsers east of UTC (31/12 becomes 30/12): upstream
+  stock app. Pharmacists should check the saved expiry. (#437)
+- **Typing an expiry date blocks the save.** Use the date picker. (#437)
+- **Stock app, saving a Receipt creates its batch at once.** Saving again, or a second draft with
+  the same lot number and expiry, fails with a duplicate-batch error (500). Edit the draft you
+  already saved, or delete it before starting a new one. Upstream stock app 3.2.1. (#437)
+- **Stock app, opening a Stock Issue shows a red "Demande de stock associée Requise" message.**
+  It is wrong: the issue saves without a requisition. Upstream stock app 3.2.1. (#437)
+- **Stock app, some dialogs and messages are in English** in the French interface: upstream stock
+  app 3.2.1 has no translation for them. (#437)
 
 ---
 

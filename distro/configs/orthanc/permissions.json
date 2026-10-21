@@ -6,11 +6,11 @@
     },
     "radiologist": {
       "authorized-labels": ["*"],
-      "permissions": ["view", "download", "modify", "worklists", "q-r-remote-modalities"]
+      "permissions": ["view", "download", "modify", "upload", "worklists", "q-r-remote-modalities"]
     },
     "xray_technician": {
       "authorized-labels": ["*"],
-      "permissions": ["upload", "worklists", "q-r-remote-modalities", "view"]
+      "permissions": ["view", "worklists", "q-r-remote-modalities"]
     }
   }
 }

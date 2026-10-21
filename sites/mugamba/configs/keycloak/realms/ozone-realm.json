@@ -273,6 +273,24 @@
           "clientRole": true,
           "containerId": "714e1fe8-a430-44c7-9e27-37e96966892b",
           "attributes": {}
+        },
+        {
+          "id": "ef16294e-5670-4e0d-a4e9-7cd13dc03518",
+          "name": "Central Pharmacist",
+          "description": "Central Pharmacist",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "714e1fe8-a430-44c7-9e27-37e96966892b",
+          "attributes": {}
+        },
+        {
+          "id": "d0a30c0c-a5db-479d-8eb5-5ad76bcef756",
+          "name": "Inventory Administrator",
+          "description": "Inventory Administrator",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "714e1fe8-a430-44c7-9e27-37e96966892b",
+          "attributes": {}
         }
       ],
       "realm-management": [
@@ -850,7 +868,12 @@
         "admin"
       ],
       "notBefore": 0,
-      "groups": []
+      "groups": [],
+      "clientRoles": {
+        "realm-management": [
+          "view-users"
+        ]
+      }
     }
   ],
   "scopeMappings": [

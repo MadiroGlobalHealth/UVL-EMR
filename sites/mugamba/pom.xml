@@ -281,12 +281,49 @@
               </scripts>
             </configuration>
           </execution>
+          <execution>
+            <!--
+Fails the build on a Keycloak openmrs client role or an inherited role that
+              OpenMRS does not define; both are dropped silently at run time (#438).
+            -->
+            <id>Check the OpenMRS roles</id>
+            <goals>
+              <goal>execute</goal>
+            </goals>
+            <phase>prepare-package</phase>
+            <configuration>
+              <scripts>
+                <script>file://${project.basedir}/../../scripts/check-openmrs-roles.groovy</script>
+              </scripts>
+            </configuration>
+          </execution>
+          <execution>
+            <!--
+              Fails the build on an Odoo loader that would overwrite the prices finance sets in
+              Odoo, or a product CSV with an empty price (#439). See the script.
+            -->
+            <id>Check the Odoo prices</id>
+            <goals>
+              <goal>execute</goal>
+            </goals>
+            <phase>prepare-package</phase>
+            <configuration>
+              <scripts>
+                <script>file://${project.basedir}/../../scripts/check-odoo-prices.groovy</script>
+              </scripts>
+            </configuration>
+          </execution>
         </executions>
         <dependencies>
           <!-- Same Groovy line as the bundled-docker profile's groovy-templates. -->
           <dependency>
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy-xml</artifactId>
+            <version>3.0.22</version>
+          </dependency>
+          <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-json</artifactId>
             <version>3.0.22</version>
           </dependency>
           <!-- The Liquibase openmrs-core 2.8.9 runs (distro/pom.xml openmrs.version), so parsing here matches parsing there. -->

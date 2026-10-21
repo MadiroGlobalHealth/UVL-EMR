@@ -17,11 +17,43 @@
 #
 # COLUMNS
 #
-#   username,first_name,last_name,openmrs_role,odoo_role
+#   username,first_name,last_name,openmrs_role,odoo_role,pacs_role
 #
 # openmrs_role must be one of the roles in
 # sites/mugamba/configs/openmrs/initializer_config/roles/roles_mugamba.csv, or the
-# OpenMRS built-in System Developer.
+# OpenMRS built-in System Developer, or Inventory Administrator (stock settings,
+# see below).
+#
+# PHARMACY STOCK (#438). Two jobs, one openmrs_role each:
+#   - `Pharmacist`, the dispensing pharmacist: dispenses, asks the central store
+#     for stock (requisition) and receives what it sends.
+#   - `Central Pharmacist`, the central store: everything a Pharmacist does, plus
+#     receipts, opening stock, stock takes, adjustments, approving and issuing.
+# Neither can do anything in the stock app until they hold a USER ROLE SCOPE: the
+# stock module's own rule saying which operations a role may perform at which
+# location. Scopes are not configuration. They name a user, who exists in OpenMRS
+# only after their first sign-in, so they are set at run time in the stock app
+# (Stock Management > User role scopes) or POST /ws/rest/v1/stockmanagement/userrolescope,
+# by someone holding `Inventory Administrator`. Nobody can set their own scope.
+# Create ONE scope per person, after their first sign-in, with the role the person
+# holds (the Role list shows only the chosen user's own roles; if it is empty, the
+# user has not signed in since being given the role in Keycloak):
+#   Central Pharmacist  locations `Pharmacie (Rx)` and `Pharmacie - Dispensation
+#                       (Rx-DISP)`; operations Receipt, Opening Stock, Stock Take,
+#                       Adjustment, Stock Issue, Requisition
+#   Pharmacist          location `Pharmacie - Dispensation (Rx-DISP)`; operations
+#                       Requisition, Stock Issue
+# One scope, not one per location: the Operations page offers only the operation
+# types of the FIRST scope it finds for the user, so a second scope's types never
+# appear there (the server still honours them).
+# The Pharmacist's Stock Issue at Rx-DISP is what lets them receive what the central
+# store sends: receiving a dispatched Stock Issue is checked against the Stock Issue
+# type at its destination, not against Receipt. Receipt is only for stock arriving
+# from outside the hospital, at the central store.
+# Without a scope the person can still dispense, but records no stock operation.
+# An administrator who should manage scopes needs `Inventory Administrator` as
+# well as `System Developer`; this script assigns one openmrs_role per row, so
+# add the second one in the Keycloak console.
 #
 # odoo_role must be one of the roles declared on the `odoo` client in
 # sites/mugamba/configs/keycloak/realms/ozone-realm.json. odoo_role may hold
@@ -39,16 +71,28 @@
 # On UAT, 2026-09-28: "Access Denied by ACLs for operation: read ...
 # stock.warehouse.orderpoint" for a cashier holding Invoicing / Billing only.
 #
-# Either column may be `-`. A row needs at least one of the two.
+# pacs_role is the Keycloak REALM role that opens PACS (Orthanc). It must be one
+# of the roles in distro/configs/orthanc/permissions.json: `xray_technician`,
+# `radiologist` or `admin`. Several may be separated by `;`. The column is
+# optional; a roster without it gives nobody PACS access.
+#
+# THE X-RAY TECHNICIAN NEEDS BOTH `X-Ray Technician` (openmrs_role) AND
+# `xray_technician` (pacs_role). orthanc-auth-service reads realm roles only and
+# never the openmrs client role, so with the first alone PACS opens blank: 403 on
+# tools/find, statistics and dicom-web/servers (issue #387, UAT 2026-10-07).
+#
+# Any role column may be `-`. A row needs at least one of them.
 #
 # DO NOT leave billing staff with `-` in both columns. They will be created with
 # no access to anything. That was issue #331: the cashier step of the patient
 # journey had never once been performable by a real user, because not one
 # non-administrator in the realm could raise an invoice.
 #
-username,first_name,last_name,openmrs_role,odoo_role
-jane.doe,Jane,DOE,Doctor,-
-john.roe,John,ROE,Nurse,-
-mary.moe,Mary,MOE,Pharmacist,-
-peter.poe,Peter,POE,-,Invoicing / Billing;Sales / User: All Documents
-paula.poe,Paula,POE,-,Invoicing / Billing Administrator;Sales / User: All Documents
+username,first_name,last_name,openmrs_role,odoo_role,pacs_role
+jane.doe,Jane,DOE,Doctor,-,-
+john.roe,John,ROE,Nurse,-,-
+mary.moe,Mary,MOE,Pharmacist,-,-
+mark.moe,Mark,MOE,Central Pharmacist,-,-
+rose.doe,Rose,DOE,X-Ray Technician,-,xray_technician
+peter.poe,Peter,POE,-,Invoicing / Billing;Sales / User: All Documents,-
+paula.poe,Paula,POE,-,Invoicing / Billing Administrator;Sales / User: All Documents,-
