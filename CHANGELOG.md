@@ -102,6 +102,15 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   offered. **Dispensing does not deduct stock yet** and works as before. (#437)
 - **A price finance changes in Odoo stays changed.** A deploy or a database restore no longer
   resets 290 product prices to the configuration's values. (#439)
+- **The chart's Forms list has "UVL Discharge Summary Form" (Synthèse de sortie d'hospitalisation),**
+  for doctors and midwives. It records the reporting indicators (maternal death, perinatal death,
+  transfusion or anaemia, positive RDT, post-procedure infection), suspected nosocomial
+  infections, pregnancy, malaria, diarrhoea and pneumonia classifications and their treatment,
+  the discharge diagnoses, clinical summary, discharge treatment, prevention of complications,
+  follow-up and general observations, and the discharging clinician, who is required. Identity,
+  commune, discharge date and payer come from the patient banner, the encounter and the visit,
+  so they are not asked again. It saves a "Discharge Summary" encounter, which does **not**
+  discharge the patient: the patient stays admitted until discharged from the ward. (#380)
 
 ### Added
 - OpenMRS role and Keycloak `openmrs` client role **Central Pharmacist** (inherits `Pharmacist`
