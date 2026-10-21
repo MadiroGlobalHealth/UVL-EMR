@@ -102,6 +102,13 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   offered. **Dispensing does not deduct stock yet** and works as before. (#437)
 - **A price finance changes in Odoo stays changed.** A deploy or a database restore no longer
   resets 290 product prices to the configuration's values. (#439)
+- **The chart's Forms list has "UVL Contact Form" (Fiche d'enregistrement d'un contact),** for
+  nurses, midwives and doctors. It records the patient's origin, the clinical service, the
+  responsible provider, who accompanies the patient (name and telephone), the internal transfer
+  destination, the case type (Nouveau / Ancien), its category, the clinical situation, and the
+  diagnostic hypothesis, which is required. Identity, contact type, dates and payer come from the
+  patient banner and the visit, so they are not asked again. It saves a "Contact" encounter.
+  (#376)
 
 ### Added
 - OpenMRS role and Keycloak `openmrs` client role **Central Pharmacist** (inherits `Pharmacist`
