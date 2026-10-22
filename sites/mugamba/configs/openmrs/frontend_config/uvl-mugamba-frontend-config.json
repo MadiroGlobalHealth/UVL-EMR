@@ -73,6 +73,10 @@
       {
         "uuid": "9e3c5a71-0d82-4f16-b5a9-1c7e64d3b208",
         "required": false
+      },
+      {
+        "uuid": "09529492-ed24-464a-b2e3-0658091828b5",
+        "required": false
       }
     ],
     "restrictByVisitLocationTag": true
