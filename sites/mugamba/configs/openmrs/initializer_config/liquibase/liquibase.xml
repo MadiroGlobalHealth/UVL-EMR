@@ -1633,4 +1633,89 @@
         </rollback>
     </changeSet>
 
+    <!--
+        #454 - consumables track batch and expiry too.
+
+        The product owner asked on 22 Oct 2026 for batch and expiry "même pour les consommables
+        médicaux". add_stock_items_from_catalogue-20261020 created the 38 consumable items with
+        has_expiration off; that changeset has run, so it is left as is and this one turns expiry
+        on. With it on, the stock app asks for a batch number and an expiry date on a receipt.
+
+        The items are found by their drug, so an item that existed before #437 is covered as well.
+        The precondition waits until #437 has created all 38 (onFail CONTINUE: unrecorded, tried
+        again on the next start); the update itself is idempotent. The rollback turns expiry off
+        again only on the items #437 created that have no batch with an expiry date yet.
+    -->
+    <changeSet id="consumables_track_expiry-20261023" author="Joshua">
+        <preConditions onFail="CONTINUE" onError="CONTINUE"
+                       onFailMessage="WARN (#454): the 38 consumable stock items of #437 do not all exist yet, so expiry was NOT turned on for them; this changeset is retried on every start.">
+            <tableExists tableName="stockmgmt_stock_item"/>
+            <columnExists tableName="stockmgmt_stock_item" columnName="has_expiration"/>
+            <sqlCheck expectedResult="38">
+                SELECT COUNT(DISTINCT d.uuid)
+                  FROM stockmgmt_stock_item si
+                  JOIN drug d ON d.drug_id = si.drug_id
+                 WHERE d.uuid IN (
+                                 'f757c47e-ba33-49c8-b480-86b833d7fe2c', 'deca7191-b059-4ca7-96bf-d1f4fd464566', '385415b2-8acb-4059-9f41-fc80cdb28536',
+                                 'd5728a3e-1079-4982-81b9-c299f9c962e0', '6f6eac84-1f8b-4195-b679-510ade2b11fd', '2633fab8-65c3-471c-93ce-c9d22a4141e7',
+                                 'f74820f2-ed9d-461f-8f68-9cf173637121', 'fc31500c-117d-4d85-bad3-b7e2214ecb3b', '08da2277-5bc8-497b-8b09-b5cf31f19153',
+                                 '997b1d6c-8fac-4d10-b190-1fd81da07ef4', 'ca317da9-d60c-4c99-84be-ce8bf9c9e4a0', 'b73dae17-d783-4405-aaf9-386d115b4bee',
+                                 '5cbd3265-647a-405d-b604-3f01abac28ae', '4aae662c-bed8-4072-aad3-fd4678d44adb', 'a76d2394-7da7-4447-801e-debc75a1cd59',
+                                 'c8b1c1f7-ef08-49b4-bef9-e3c90612015d', '1584d1a8-4f17-4d3b-9709-6c7c4700c2c6', '21b335be-53ea-41b6-a7f6-bf303a94ff95',
+                                 '8dd3ab60-0ffa-402d-923e-febe7e0d04b5', '2a843b45-acfc-461a-857e-bd7f010af8ba', 'b0fe9fc2-905d-43d3-acdb-b8fc9e5640cf',
+                                 'c296f8db-783d-44d0-9fcf-a7778e9ffc4f', '8c9c4875-7945-4e5b-b540-911428359888', '3830c927-c9c9-4cfe-b07f-f546d2f756c7',
+                                 'b52aaf8d-d0ed-41ac-bcc1-e89bd38a40a8', 'fddb038c-6bb1-4279-9032-e9169d857168', 'b31b8536-27e6-448c-b9f8-eec90b932663',
+                                 'e37eab30-6536-4a17-bfce-923b206f907b', 'baecc8a6-ad4d-4b67-8b3c-a855dd291d72', 'a1661e95-7897-4038-86cb-954d386fa8f9',
+                                 'a14a9244-2385-48b3-97cb-00df0cff240b', 'be5b5aec-0147-4d76-9e8f-5252f74188d8', 'e8d0cca7-f80f-4b70-8777-c158a4f996f4',
+                                 '5aa469d4-ddc6-4044-9607-bb25518031f1', '251caad1-14f3-4d5a-9233-ef5077acd5b3', 'fc8c6bc1-4dc3-406b-92bb-d0d1f34c18eb',
+                                 '4dd363d1-b503-4ce3-ad9b-d5dc0710236e', '1bcc87b5-1ae9-426b-b0a4-ad5929c00b02')
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            Turn on batch and expiry tracking for the 38 consumable stock items (#454).
+        </comment>
+        <sql>
+            UPDATE stockmgmt_stock_item si
+              JOIN drug d ON d.drug_id = si.drug_id
+               SET si.has_expiration = 1
+             WHERE si.has_expiration = 0
+               AND d.uuid IN (
+                                 'f757c47e-ba33-49c8-b480-86b833d7fe2c', 'deca7191-b059-4ca7-96bf-d1f4fd464566', '385415b2-8acb-4059-9f41-fc80cdb28536',
+                                 'd5728a3e-1079-4982-81b9-c299f9c962e0', '6f6eac84-1f8b-4195-b679-510ade2b11fd', '2633fab8-65c3-471c-93ce-c9d22a4141e7',
+                                 'f74820f2-ed9d-461f-8f68-9cf173637121', 'fc31500c-117d-4d85-bad3-b7e2214ecb3b', '08da2277-5bc8-497b-8b09-b5cf31f19153',
+                                 '997b1d6c-8fac-4d10-b190-1fd81da07ef4', 'ca317da9-d60c-4c99-84be-ce8bf9c9e4a0', 'b73dae17-d783-4405-aaf9-386d115b4bee',
+                                 '5cbd3265-647a-405d-b604-3f01abac28ae', '4aae662c-bed8-4072-aad3-fd4678d44adb', 'a76d2394-7da7-4447-801e-debc75a1cd59',
+                                 'c8b1c1f7-ef08-49b4-bef9-e3c90612015d', '1584d1a8-4f17-4d3b-9709-6c7c4700c2c6', '21b335be-53ea-41b6-a7f6-bf303a94ff95',
+                                 '8dd3ab60-0ffa-402d-923e-febe7e0d04b5', '2a843b45-acfc-461a-857e-bd7f010af8ba', 'b0fe9fc2-905d-43d3-acdb-b8fc9e5640cf',
+                                 'c296f8db-783d-44d0-9fcf-a7778e9ffc4f', '8c9c4875-7945-4e5b-b540-911428359888', '3830c927-c9c9-4cfe-b07f-f546d2f756c7',
+                                 'b52aaf8d-d0ed-41ac-bcc1-e89bd38a40a8', 'fddb038c-6bb1-4279-9032-e9169d857168', 'b31b8536-27e6-448c-b9f8-eec90b932663',
+                                 'e37eab30-6536-4a17-bfce-923b206f907b', 'baecc8a6-ad4d-4b67-8b3c-a855dd291d72', 'a1661e95-7897-4038-86cb-954d386fa8f9',
+                                 'a14a9244-2385-48b3-97cb-00df0cff240b', 'be5b5aec-0147-4d76-9e8f-5252f74188d8', 'e8d0cca7-f80f-4b70-8777-c158a4f996f4',
+                                 '5aa469d4-ddc6-4044-9607-bb25518031f1', '251caad1-14f3-4d5a-9233-ef5077acd5b3', 'fc8c6bc1-4dc3-406b-92bb-d0d1f34c18eb',
+                                 '4dd363d1-b503-4ce3-ad9b-d5dc0710236e', '1bcc87b5-1ae9-426b-b0a4-ad5929c00b02');
+        </sql>
+        <rollback>
+            <sql>
+                UPDATE stockmgmt_stock_item si
+                   SET si.has_expiration = 0
+                 WHERE si.uuid IN (
+                                 '7ce8d8ea-f21d-5525-a908-a0b83f34766a', '788e61ae-9c05-5f14-8068-d8c2d87da2b4', 'f839ffef-804c-5954-8e3d-4d3001b87b5b',
+                                 '666e4ee8-2bba-5102-970a-d4c1decad1dd', '98c74646-b6f3-5661-9a38-3a3c9bce1c62', '35003750-1b7b-56db-9ff5-0176ae6b9130',
+                                 '6fdc5ef6-09de-5a27-987b-c06c144bb00d', '8182e77c-2b70-5f0b-ad31-b045deb5187c', 'ccceae55-0271-54b3-9486-9f7509d4c1d8',
+                                 '8ee6a628-4ccf-502d-b38d-a3ecaab8c0ec', 'd2f7e57a-7bd7-5ae5-bb3b-f2973cf4ebe5', '7e56a745-19aa-5086-87f4-6f0ad0f961f3',
+                                 '5191bc1c-dcd2-5aaf-b3f1-6b2b3d6f784d', '7baddabc-b459-5edf-b2e0-6631cce6dde1', '97999d66-e1d4-590c-8fd8-d2d8dc90a4b8',
+                                 '735158b8-727e-5719-ae88-fda2398c0e70', '064cb067-1760-5e65-b5f2-8baf7d938dad', '4a262830-7873-5412-9ceb-1236a0d11f41',
+                                 'c0b798e7-f238-5cb5-9185-3ac3080b678a', '98f3a5e7-0b7f-5d13-8fef-03c61ec6e9a8', '34511d6b-ce64-5cac-8f71-d116c8bca694',
+                                 '09a8a405-e566-5f89-b7b3-483cc4e9e896', '195a642f-e5bd-5106-9d93-afe4d3d71030', 'f3678566-4c86-59e5-b87d-0d5054b1062d',
+                                 'af505d86-e929-5f41-b932-a93a3c2dda67', 'b2faa78f-6875-5bd9-bdcc-bf60bde7488c', '2a5a3b23-07f1-5a93-b100-a58f83c52f31',
+                                 'ae6c4b19-c903-5447-bbd3-13a7abee3167', '3961115d-268a-55a8-a37e-85ff6a05582a', 'a1094d32-9c62-5bfd-8c47-fe0e00e0ab81',
+                                 'cf5ef15a-4a9b-51b7-b1d0-0f27efd08462', '717f63b2-6750-5805-8085-919326ce275f', 'cefb98bd-6b23-5fcb-b7ec-8ea153920ba1',
+                                 'ba27c8c3-a6fe-53ce-8a91-9148f7bf41d4', '078a3f7c-2724-5bd0-bb41-202ed2291747', '123ba003-b225-582f-9443-862fa480b74f',
+                                 '595e5b44-c2e1-550d-a4c9-d81332ef1e5a', 'ed6ce6e9-0033-5a59-8a6c-a54170c72f4c')
+                   AND NOT EXISTS (SELECT 1 FROM stockmgmt_stock_batch b
+                                    WHERE b.stock_item_id = si.stock_item_id AND b.expiration IS NOT NULL);
+            </sql>
+        </rollback>
+    </changeSet>
+
 </databaseChangeLog>
