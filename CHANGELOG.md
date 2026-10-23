@@ -102,6 +102,14 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   offered. **Dispensing does not deduct stock yet** and works as before. (#437)
 - **A price finance changes in Odoo stays changed.** A deploy or a database restore no longer
   resets 290 product prices to the configuration's values. (#439)
+- **Consumables ask for a batch number and an expiry date on receipt,** like medicines: the
+  product owner asked for both on medical consumables too. Two adjustment reasons are added,
+  **Détérioré** (Deteriorated) and **Cassé** (Broken), before "Autre raison". The stock app's
+  packaging and dispensing unit lists, empty until now, offer in French and in alphabetical order
+  every pack unit of the stock catalogue (Flacon, Comprimé, Pièce, Ampoule(s), Tube, Rouleau,
+  Gélule, Ovule, Paire, Baxter) and every unit an existing stock item already uses. Bouteille is
+  now called **Flacon** and Unité **Pièce**, everywhere the unit is shown, prescriptions
+  included. (#454)
 
 ### Added
 - OpenMRS role and Keycloak `openmrs` client role **Central Pharmacist** (inherits `Pharmacist`
@@ -127,6 +135,25 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   locations "Main Store" and "Main Pharmacy" and retires each one where nothing was recorded (no
   encounter, visit, obs or stock movement), so Pharmacie (Rx) is the only Main Store and the
   Receipt form's destination. (#437)
+- OCL release `uvl-drug-entry` 20261023-1 (sources `uvl-ciel` and `uvl-custom` 20261023 and
+  20261023-3), which replaces 20261021-1. New `uvl-custom` concepts: the adjustment reasons Détérioré
+  (`e25e1ab4-56c7-51c1-a35c-e0c2eece30ba`) and Cassé (`5f5f6f87-06e8-5af9-b6d0-a8d23443720d`),
+  and the units Rouleau (`cb3566e8-0ba7-51a7-b468-719953d7bffa`), Ovule
+  (`ad460f3a-0eec-54db-95a1-d358b8fa3a51`), Paire (`40af7514-27d1-59f7-8acf-e2a1b5f35065`) and
+  Baxter, "Poche" as a synonym (`7f4638f9-17fe-5bf4-83c5-8a2eff7d54dc`), members of the dosing
+  units set. CIEL has no unit concept for a roll, a pair or an IV bag (only a generic Bag), so
+  none is a CIEL clone. (#454)
+- `uvl-custom` coded concept **Unités de stock / Stock units**
+  (`d8ec6bbb-d988-5ce5-879a-6e3068aca253`), whose 21 answers are the stock units, and the stock
+  app's `packingUnitsUUID` and `dispensingUnitsUUID` point at it. The stock app 3.2.1 lists a
+  concept's answers, and the dosing units set they pointed at has set members only; it stays a set
+  because order entry reads its members. The answers are the product owner's ten pack units plus
+  every unit a stock item used on UAT on 2026-10-23: Aérosol, Application, Boîte, Conteneur,
+  Goutte (gtt), Gramme, Milligramme, Millilitre, Sachets, Seringue and Suppositoire. A unit added
+  to the catalogue later must be added to both. The `stockmanagement.*UnitsConceptId` global
+  properties are unchanged: stockmanagement 2.1.2 declares them but never reads them. (#454)
+- Liquibase `consumables_track_expiry-20261023` turns on `has_expiration` for the 38 consumable
+  stock items of #437. (#454)
 
 ### Changed
 - **The Pharmacist can request stock from the central store and receive it** at the dispensation:
@@ -152,6 +179,10 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   `10.66.0.2`. `DicomAlwaysAllowStore` and `DicomAlwaysAllowFind` are off, so storing and worklist
   queries need that AE title. The `FINDSCU` test entry is gone. The port itself is published only
   on the tunnel (LIME-EMR-Tooling `ede296b27`). (#372)
+- French unit names: Bouteille becomes **Flacon** and Unité **Pièce** (the old names stay as
+  synonyms), Gélule replaces the misspelt Gellule as the preferred name, and Tube gets its French
+  name, and so does Application. Only the names change: the concepts keep their UUIDs, so drugs, stock items, orders and
+  the Odoo units, which are matched by UUID, are unaffected. (#454)
 
 ### Removed
 - **The Odoo `product_price` loader and `prices.csv` (290 products).** Finance owns prices in Odoo;
@@ -299,7 +330,7 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   request, so a failure leaves a dispense without a deduction. In dispensing app 1.11.1,
   `validateBatch` (default `true`) is the only filter: it hides zero-quantity batches, but also
   every batch when the prescription has no duration, or the item no expiry date (the 38
-  consumables). (#437)
+  consumables until #454 turned expiry on for them). (#437)
 - **Stock app, the receiver's "Complete dispatch" may not show** for a dispatched Stock Issue. The
   operations list takes each operation's buttons from a permission cache in stockmanagement 2.1.2
   that is kept per server thread, keyed by the operation only, and never cleared. A thread that saw
@@ -319,6 +350,9 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   It is wrong: the issue saves without a requisition. Upstream stock app 3.2.1. (#437)
 - **Stock app, some dialogs and messages are in English** in the French interface: upstream stock
   app 3.2.1 has no translation for them. (#437)
+- **Stock app, a stock item's unit may show its English name** ("Unit" rather than "Pièce") in the
+  item lists. stockmanagement 2.1.2 names units by any fully specified name, whatever the locale,
+  so the English and the French name compete. The unit pickers are in French. Upstream. (#454)
 
 ---
 
