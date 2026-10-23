@@ -24,12 +24,20 @@
 # OpenMRS built-in System Developer, or Inventory Administrator (stock settings,
 # see below).
 #
-# PHARMACY STOCK (#438). Two jobs, one openmrs_role each:
-#   - `Pharmacist`, the dispensing pharmacist: dispenses, asks the central store
-#     for stock (requisition) and receives what it sends.
-#   - `Central Pharmacist`, the central store: everything a Pharmacist does, plus
-#     receipts, opening stock, stock takes, adjustments, approving and issuing.
-# Neither can do anything in the stock app until they hold a USER ROLE SCOPE: the
+# PHARMACY STOCK (#438, #453). Two jobs, one openmrs_role each:
+#   - `Pharmacist`, a dispensing pharmacist: dispenses from their own dispensing
+#     box, asks the central store for stock (requisition), receives what it sends,
+#     and sends stock to another box that has run out (box to box).
+#   - `Central Pharmacist`, the central store: receipts, opening stock, stock
+#     takes, adjustments, approving, and issuing to the boxes. Does NOT dispense
+#     (#453): the role no longer inherits Pharmacist, and the build fails if it
+#     gains a dispensing privilege.
+# Each dispensing pharmacist has their own box, a stock location under
+# `Pharmacie - Dispensation (Rx-DISP)`: `Pharmacie - Dispensation Box 1 (Rx-DISP-1)`,
+# Box 2 (Rx-DISP-2) and Box 3 (Rx-DISP-3). A dispense deducts from the stock of the
+# location the pharmacist SIGNED IN AT, so each signs in at their own box. Which
+# pharmacist has which box is not in this file: it is their stock scope, below.
+# Neither role can do anything in the stock app until they hold a USER ROLE SCOPE: the
 # stock module's own rule saying which operations a role may perform at which
 # location. Scopes are not configuration. They name a user, who exists in OpenMRS
 # only after their first sign-in, so they are set at run time in the stock app
@@ -37,19 +45,29 @@
 # by someone holding `Inventory Administrator`. Nobody can set their own scope.
 # Create ONE scope per person, after their first sign-in, with the role the person
 # holds (the Role list shows only the chosen user's own roles; if it is empty, the
-# user has not signed in since being given the role in Keycloak):
-#   Central Pharmacist  locations `Pharmacie (Rx)` and `Pharmacie - Dispensation
-#                       (Rx-DISP)`; operations Receipt, Opening Stock, Stock Take,
-#                       Adjustment, Stock Issue, Requisition
-#   Pharmacist          location `Pharmacie - Dispensation (Rx-DISP)`; operations
-#                       Requisition, Stock Issue
+# user has not signed in since being given the role in Keycloak). Leave "enable
+# descendants" off:
+#   Central Pharmacist      locations `Pharmacie (Rx)`, `Pharmacie - Dispensation
+#                           (Rx-DISP)` and the three boxes; operations Receipt,
+#                           Opening Stock, Stock Take, Adjustment, Stock Issue,
+#                           Requisition
+#   Pharmacist at box N     location `Pharmacie - Dispensation Box N (Rx-DISP-N)`
+#                           only; operations Requisition, Stock Issue
 # One scope, not one per location: the Operations page offers only the operation
 # types of the FIRST scope it finds for the user, so a second scope's types never
 # appear there (the server still honours them).
-# The Pharmacist's Stock Issue at Rx-DISP is what lets them receive what the central
-# store sends: receiving a dispatched Stock Issue is checked against the Stock Issue
-# type at its destination, not against Receipt. Receipt is only for stock arriving
-# from outside the hospital, at the central store.
+# The Pharmacist's Stock Issue at their box does three things. Receiving a dispatched
+# Stock Issue is checked against the Stock Issue type at its DESTINATION, not against
+# Receipt, so it lets them receive what the central store or another box sends to
+# their box. It lets them issue FROM their box to another box: a Stock Issue's source
+# must carry the Main Store or Sub Store tag, which is why the boxes are tagged
+# Sub Store as well as Dispensary. And the destination box needs nothing in the
+# sender's scope. To send without anyone else, answer "No" to "Does the transaction
+# require approval?" and Dispatch; answered "Yes", it waits for someone holding
+# Stock Issue and approve at the sending box, which is the Central Pharmacist.
+# The boxes in the Central Pharmacist's scope are what let them approve those, and
+# count the boxes (opening stock, stock take).
+# Receipt is only for stock arriving from outside the hospital, at the central store.
 # Without a scope the person can still dispense, but records no stock operation.
 # An administrator who should manage scopes needs `Inventory Administrator` as
 # well as `System Developer`; this script assigns one openmrs_role per row, so
@@ -92,6 +110,8 @@ username,first_name,last_name,openmrs_role,odoo_role,pacs_role
 jane.doe,Jane,DOE,Doctor,-,-
 john.roe,John,ROE,Nurse,-,-
 mary.moe,Mary,MOE,Pharmacist,-,-
+anna.moe,Anna,MOE,Pharmacist,-,-
+lisa.moe,Lisa,MOE,Pharmacist,-,-
 mark.moe,Mark,MOE,Central Pharmacist,-,-
 rose.doe,Rose,DOE,X-Ray Technician,-,xray_technician
 peter.poe,Peter,POE,-,Invoicing / Billing;Sales / User: All Documents,-
