@@ -100,6 +100,12 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   no quantities yet, so the pharmacy can count and move stock. A Receipt goes into Pharmacie (Rx),
   and the stock module's own demo locations, "Main Store" and "Main Pharmacy", are no longer
   offered. **Dispensing does not deduct stock yet** and works as before. (#437)
+- **Each dispensing pharmacist has their own stock box.** Pharmacie - Dispensation Box 1, 2 and 3
+  (Rx-DISP-1 to -3) sit under Pharmacie - Dispensation. A pharmacist signs in at their box; once
+  deduction is on, a dispense takes from that box. The central pharmacy issues to the boxes, and a
+  pharmacist can send stock from their box to another box that has run out. (#453)
+- **The Central Pharmacist no longer dispenses.** They receive, count, correct and issue stock;
+  in the dispensing app they can see prescriptions but get no Dispense action. (#453)
 - **A price finance changes in Odoo stays changed.** A deploy or a database restore no longer
   resets 290 product prices to the configuration's values. (#439)
 
@@ -108,6 +114,13 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   and `Inventory Manager`), and the Keycloak `openmrs` client role **Inventory Administrator** for
   whoever manages stock user role scopes. The build now fails on a Keycloak `openmrs` client role
   or an inherited role that OpenMRS does not define (`scripts/check-openmrs-roles.groovy`). (#438)
+- Locations **Pharmacie - Dispensation Box 1 (Rx-DISP-1)**, **Box 2 (Rx-DISP-2)** and **Box 3
+  (Rx-DISP-3)**, children of Pharmacie - Dispensation (Rx-DISP), tagged Login Location, Dispensary
+  and Sub Store, and made stock locations by Liquibase `pharmacy_dispensing_boxes_party-20261023`.
+  Sub Store is what lets a box be the source of a Stock Issue (box to box): stockmanagement 2.1.2
+  allows only Main Store and Sub Store as a Stock Issue source, and checks it on the server. They
+  are not visit locations; a visit started at a box belongs to Rx-DISP. Rx-DISP stays a stock
+  location as it was. (#453)
 - Person attribute type "Chef de ménage" (`c108c6bc-5f23-4e4a-ad34-8c788b86f288`). (#389)
 - Odoo `product_price` initializer loader. The product loader treats `lst_price` as `NO_UPDATE`,
   so it can't change the price of a product that already exists. (#391)
@@ -138,6 +151,14 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   dispensing (#374, #394) is unchanged. What each pharmacist may do, and where, is set by stock user
   role scopes (deploy note 14). The build now also fails on a Keycloak role that may create stock
   operations but cannot read its scopes. (#438)
+- **Central Pharmacist no longer inherits Pharmacist**, so it can't dispense. It inherits
+  `Inventory Manager` and holds directly the stock app privileges it used (stock items,
+  `stockoperations.mutate`, `...approve`, `...receiveitems`, `App: stockmanagement.userRoleScopes`)
+  and the read privileges it had through Pharmacist. It loses `Edit Medication Dispense`, the
+  `Task: dispensing.*` privileges, `Task: stockmanagement.stockItems.dispense` and `...dispense.qty`,
+  `Pharmacy`, `Dispensing Features`, `Edit Orders`, `Edit Encounters` and `Add Observations`. The
+  build fails if Central Pharmacist gains a dispensing privilege again
+  (`scripts/check-openmrs-roles.groovy`). The Pharmacist role is unchanged. (#453)
 - Liquibase converts BP06 from Coded to LabSet and BP09 from Text to LabSet. It also removes the set
   members an earlier OCL release had shared between them, because the OCL import never removes
   members. Old results are kept. (#388)
@@ -260,8 +281,10 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
     stock at the session location. Do it only when both are true:
     - every drug that is prescribed is a stock item. On UAT 224 of 428 drugs are not, and Dispense
       is disabled for them, with no message. The product owner's sheet adds them.
-    - the opening stock is counted at **Pharmacie - Dispensation (Rx-DISP)**, and pharmacists
-      dispense logged in there. A drug with no stock there cannot be dispensed.
+    - the opening stock is counted at **each pharmacist's box** (Rx-DISP-1 to -3, #453), and each
+      pharmacist dispenses logged in at their own box. A drug with no stock in that box cannot be
+      dispensed there. Stock left at Rx-DISP itself can't be dispensed from a box, and Rx-DISP
+      can't issue it (a Dispensary is not a Stock Issue source): count it into the boxes.
     Check the dispensing app's batch filter (`validateBatch`) on UAT before switching; see Known
     issues.
 14. **#438, pharmacy stock roles:** run `keycloak-apply-realm.sh` so the `openmrs` client gets
@@ -271,6 +294,14 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
     user role scopes, as listed in `sites/mugamba/configs/keycloak/users/staff-roster.example.csv`:
     one scope per person, because the Operations page reads only the first. Without a scope a
     pharmacist can still dispense but records no stock operation. Needs the stock locations of #437.
+15. **#453, dispensing boxes:** the boxes are created at start, with their stock parties. Then, at
+    run time, the product owner (`Inventory Administrator`):
+    - edits the Central Pharmacist's stock scope to add the three boxes to its locations;
+    - gives each dispensing pharmacist ONE scope, at their own box only, with Requisition and
+      Stock Issue, replacing any scope at Rx-DISP. Which box is whose is decided there, not in
+      the configuration. See `staff-roster.example.csv`.
+    Pharmacists then sign in at their box, not at Rx-DISP. No Keycloak change: the roles keep
+    their names.
 
 ### Known issues
 - On the stock app's new user role scope form, `Inventory Administrator` gets a 403 from
