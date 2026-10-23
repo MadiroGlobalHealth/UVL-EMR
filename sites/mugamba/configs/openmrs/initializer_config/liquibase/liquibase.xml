@@ -1633,4 +1633,67 @@
         </rollback>
     </changeSet>
 
+    <!--
+        #453 - one dispensing box per dispensing pharmacist.
+
+        locations.csv adds Pharmacie - Dispensation Box 1, 2 and 3 (Rx-DISP-1 to -3) under
+        Pharmacie - Dispensation (Rx-DISP). Like Rx and Rx-DISP in #437, a box is a stock
+        location only once it has a stockmgmt_party row and a depth-0 stockmgmt_location_tree
+        row, which the module's MySQL-only location_tag_map trigger would create and which does
+        not exist on MariaDB. This inserts the same rows for the three boxes, looked up by uuid.
+
+        Only the depth-0 row, as that trigger does: no Rx-DISP -> box row. The dispensing app
+        looks for batches in the location tree under the login location
+        (stockiteminventory?dispenseLocationUuid=, StockManagementServiceImpl
+        .getCompleteStockDispensingLocationPartyList), so a parent row would let a pharmacist
+        signed in at Rx-DISP pick, and deduct, any box's batch. Each box stays its own stock.
+
+        onFail CONTINUE because the Initializer runs this file before the locations domain: on a
+        new database the boxes do not exist yet and this waits for the next start.
+        Idempotent: a box that already has a party or a tree row is skipped.
+    -->
+    <changeSet id="pharmacy_dispensing_boxes_party-20261023" author="Joshua">
+        <preConditions onFail="CONTINUE" onError="CONTINUE"
+                       onFailMessage="WARN (#453): the dispensing boxes Rx-DISP-1 to -3, or the stockmanagement tables, do not exist yet, so they were NOT made stock locations; this changeset is retried on every start.">
+            <tableExists tableName="stockmgmt_party"/>
+            <tableExists tableName="stockmgmt_location_tree"/>
+            <sqlCheck expectedResult="3">
+                SELECT COUNT(*) FROM location
+                 WHERE uuid IN ('7b6364f2-c2e8-432c-92e9-e560feec7e28', '068b1fde-3394-4e12-9108-e61f329c9f18', 'b7824502-1d56-4203-9ece-62ec69487263')
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            Make the dispensing boxes Rx-DISP-1, Rx-DISP-2 and Rx-DISP-3 stock locations: the party and location-tree rows the module's MySQL-only trigger would have created (#453).
+        </comment>
+        <sql>
+            INSERT INTO stockmgmt_party (location_id, creator, date_created, voided, uuid)
+            SELECT l.location_id, 1, NOW(), 0, v.party_uuid
+              FROM location l
+              JOIN (SELECT '7b6364f2-c2e8-432c-92e9-e560feec7e28' AS location_uuid, '3a207ca7-2785-47ee-98a4-a12c9cfa47fd' AS party_uuid
+                    UNION ALL
+                    SELECT '068b1fde-3394-4e12-9108-e61f329c9f18', '6fa88ea1-52e8-4b8a-81f7-1bfaf976239c'
+                    UNION ALL
+                    SELECT 'b7824502-1d56-4203-9ece-62ec69487263', '18b26d08-079b-4967-8494-26fe473851bc') v ON v.location_uuid = l.uuid
+             WHERE NOT EXISTS (SELECT 1 FROM stockmgmt_party p WHERE p.location_id = l.location_id OR p.uuid = v.party_uuid);
+
+            INSERT INTO stockmgmt_location_tree (parent_location_id, child_location_id, depth, uuid)
+            SELECT l.location_id, l.location_id, 0, v.tree_uuid
+              FROM location l
+              JOIN (SELECT '7b6364f2-c2e8-432c-92e9-e560feec7e28' AS location_uuid, '81e93631-ab44-4f49-8865-a0e26877fad1' AS tree_uuid
+                    UNION ALL
+                    SELECT '068b1fde-3394-4e12-9108-e61f329c9f18', '5c207c0d-e83a-41be-a0e4-87a95cbff419'
+                    UNION ALL
+                    SELECT 'b7824502-1d56-4203-9ece-62ec69487263', 'be8bfe11-45a5-415a-b782-c5fae409cef0') v ON v.location_uuid = l.uuid
+             WHERE NOT EXISTS (SELECT 1 FROM stockmgmt_location_tree t
+                                WHERE (t.parent_location_id = l.location_id AND t.child_location_id = l.location_id AND t.depth = 0)
+                                   OR t.uuid = v.tree_uuid);
+        </sql>
+        <rollback>
+            <sql>
+                DELETE FROM stockmgmt_location_tree WHERE uuid IN ('81e93631-ab44-4f49-8865-a0e26877fad1', '5c207c0d-e83a-41be-a0e4-87a95cbff419', 'be8bfe11-45a5-415a-b782-c5fae409cef0');
+                DELETE FROM stockmgmt_party WHERE uuid IN ('3a207ca7-2785-47ee-98a4-a12c9cfa47fd', '6fa88ea1-52e8-4b8a-81f7-1bfaf976239c', '18b26d08-079b-4967-8494-26fe473851bc');
+            </sql>
+        </rollback>
+    </changeSet>
+
 </databaseChangeLog>
