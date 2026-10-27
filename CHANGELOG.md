@@ -102,6 +102,11 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   offered. **Dispensing does not deduct stock yet** and works as before. (#437)
 - **A price finance changes in Odoo stays changed.** A deploy or a database restore no longer
   resets 290 product prices to the configuration's values. (#439)
+- **Stock operations show which product each line is for.** Expanding a requisition, stock
+  issue or stock count showed an empty **Article** column, and Items an empty **Nom Commun**:
+  no stock item had a common name. Each stock item without one now takes its drug's name, on
+  every start, so items a later seed adds get it too. A name typed in the app is kept.
+  Liquibase `stock_item_common_name_from_drug-20261027`. (#463)
 
 ### Added
 - OpenMRS role and Keycloak `openmrs` client role **Central Pharmacist** (inherits `Pharmacist`
