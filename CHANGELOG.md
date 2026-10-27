@@ -102,6 +102,15 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   offered. **Dispensing does not deduct stock yet** and works as before. (#437)
 - **A price finance changes in Odoo stays changed.** A deploy or a database restore no longer
   resets 290 product prices to the configuration's values. (#439)
+- **The chart's Forms list has "UVL Childbirth Record Form" (Dossier d'accouchement, MSPLS),**
+  for midwives and doctors only. Three pages follow the paper's sections 1 to 13: admission and
+  history (obstetric history, recent labs, current complications, ANC, PMTCT), labour and
+  delivery (vital signs, labour progress, admission examination, delivery, complications,
+  placenta), and postpartum and newborn (a monitoring row per time point, a block per newborn).
+  The person who performed the delivery is required. Identity, commune, marital status and the
+  head of family come from registration, so they are not asked again. It saves a "Childbirth
+  Record" encounter that only midwives and doctors can view, because it holds HIV and PMTCT
+  data. **Draft:** 80 of its questions wait for concepts to be added in OCL. (#381)
 
 ### Added
 - OpenMRS role and Keycloak `openmrs` client role **Central Pharmacist** (inherits `Pharmacist`
