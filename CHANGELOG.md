@@ -109,8 +109,8 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   patient position, airway and breathing mode, the anaesthesia machine and any technical problem,
   medications given, known allergies, incidents, side effects, the contact diagnoses (CISP-2 /
   CIM-10) and the anaesthetist-intensivist, who is required. Identity comes from the patient
-  banner. It saves an "Anaesthesia Report" encounter. **Draft: most of its concepts are not in
-  OCL yet**, so it does not load until they are added. (#384)
+  banner. It saves an "Anaesthesia Report" encounter. Its concepts come with the uvl-forms
+  20261027 OCL export (#376). (#384)
 
 ### Added
 - OpenMRS role and Keycloak `openmrs` client role **Central Pharmacist** (inherits `Pharmacist`
