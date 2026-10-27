@@ -69,6 +69,7 @@
               "label": "Responsible Provider",
               "type": "encounterProvider",
               "id": "encProvider",
+              "required": true,
               "questionOptions": {
                 "rendering": "ui-select-extended"
               }
