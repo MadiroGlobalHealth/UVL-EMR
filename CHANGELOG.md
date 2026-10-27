@@ -102,6 +102,14 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   offered. **Dispensing does not deduct stock yet** and works as before. (#437)
 - **A price finance changes in Odoo stays changed.** A deploy or a database restore no longer
   resets 290 product prices to the configuration's values. (#439)
+- **The chart's Forms list has "UVL Pre-operative Record Form" (Dossier préopératoire),** for
+  doctors and anaesthetists. It records the planned procedure and whether it is an emergency or
+  elective, the patient's history (tobacco, asthma, diabetes, hepatitis, allergy, heart disease,
+  hypertension, other, previous anaesthesia, neurological problem), the clinical examination
+  with blood pressure on each arm, the paraclinical results (chest X-ray, ECG, fundoscopy and the
+  pre-operative lab values), current treatment, intubation difficulty and Mallampati, ASA class,
+  anaesthesia protocol, fasting time, premedication and the planned anaesthesia type, and the
+  doctor or anaesthetist, who is required. It saves a "Pre-operative Record" encounter. (#383)
 
 ### Added
 - OpenMRS role and Keycloak `openmrs` client role **Central Pharmacist** (inherits `Pharmacist`
