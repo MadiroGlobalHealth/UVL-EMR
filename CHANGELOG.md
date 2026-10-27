@@ -102,6 +102,16 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   offered. **Dispensing does not deduct stock yet** and works as before. (#437)
 - **A price finance changes in Odoo stays changed.** A deploy or a database restore no longer
   resets 290 product prices to the configuration's values. (#439)
+- **The chart's Forms list has "UVL Admission Note Form" (Fiche d'admission en hospitalisation),**
+  for doctors. It records vital signs (blood pressure on both arms) and anthropometry (BMI is
+  calculated from weight and height), the reason for admission, history of the illness, family,
+  medical, surgical and gynaeco-obstetric history, lifestyle, the physical examination
+  (general condition, symptoms, percussion, auscultation, summary), tests already done, the
+  admission hypotheses and diagnoses, tests requested and treatment (with the order basket),
+  suspected nosocomial infections, integrated observations, and the clinician, who is required.
+  Identity, age, sex, commune and admission date come from the patient banner, the encounter and
+  the ward admission, so they are not asked again. It saves an "Inpatient Consultation"
+  encounter and does **not** admit the patient: admission stays in the ward app. (#377)
 
 ### Added
 - OpenMRS role and Keycloak `openmrs` client role **Central Pharmacist** (inherits `Pharmacist`

@@ -1,0 +1,484 @@
+{
+  "uuid": "724a6640-3f2d-47f5-9cde-758cb45e955b",
+  "name": "UVL Admission Note Form",
+  "description": "UVL inpatient admission note (Fiche d'admission en hospitalisation, HPRC)",
+  "version": "1",
+  "published": true,
+  "retired": false,
+  "encounter": "Inpatient Consultation",
+  "processor": "EncounterFormProcessor",
+  "referencedForms": [],
+  "encounterType": "43f383ec-90fd-4273-be45-9c1906dda9aa",
+  "pages": [
+    {
+      "label": "Admission Note",
+      "sections": [
+        {
+          "label": "Physiological Parameters & Paramedical Examination",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Temperature (°C)",
+              "type": "obs",
+              "id": "temperature",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "748f8d43-617a-40ba-9474-20522e73fb8a",
+                "min": 25,
+                "max": 45
+              }
+            },
+            {
+              "label": "Heart Rate (bpm)",
+              "type": "obs",
+              "id": "pulse",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "bc54cb7c-bb45-45aa-84d6-2346748b7c93",
+                "min": 0,
+                "max": 300,
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "BP Right Arm: Systolic (mmHg)",
+              "type": "obs",
+              "id": "systolicRightArm",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "6d0b8551-feb8-4d57-892a-d75398181b3f",
+                "min": 0,
+                "max": 300,
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "BP Right Arm: Diastolic (mmHg)",
+              "type": "obs",
+              "id": "diastolicRightArm",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "c46fcfdd-a785-4416-80bc-2d9e2edf5a45",
+                "min": 0,
+                "max": 200,
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "BP Left Arm (mmHg)",
+              "type": "obsGroup",
+              "id": "bpLeftArm",
+              "questionOptions": {
+                "rendering": "group",
+                "concept": "f8f990f9-6249-4451-abc7-396733830011"
+              },
+              "questions": [
+                {
+                  "label": "BP Left Arm: Systolic (mmHg)",
+                  "type": "obs",
+                  "id": "systolicLeftArm",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "6d0b8551-feb8-4d57-892a-d75398181b3f",
+                    "min": 0,
+                    "max": 300,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "BP Left Arm: Diastolic (mmHg)",
+                  "type": "obs",
+                  "id": "diastolicLeftArm",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "c46fcfdd-a785-4416-80bc-2d9e2edf5a45",
+                    "min": 0,
+                    "max": 200,
+                    "disallowDecimals": true
+                  }
+                }
+              ]
+            },
+            {
+              "label": "Respiratory Rate (/min)",
+              "type": "obs",
+              "id": "respiratoryRate",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "b39db318-d563-4114-bec0-31ad3d254b24",
+                "min": 0,
+                "max": 120,
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "Oxygen Saturation (SaO2, %)",
+              "type": "obs",
+              "id": "oxygenSaturation",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "46091095-b138-465e-9a7d-17a243932812",
+                "min": 0,
+                "max": 100,
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "Weight (kg)",
+              "type": "obs",
+              "id": "weight",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "5302aa6f-7528-4aeb-a3e8-0dc16a39b6ce",
+                "min": 0,
+                "max": 250
+              }
+            },
+            {
+              "label": "Height (cm)",
+              "type": "obs",
+              "id": "height",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "b32af377-04c0-4f00-a571-d01170a16d9d",
+                "min": 10,
+                "max": 250
+              }
+            },
+            {
+              "label": "BMI (kg/m²)",
+              "type": "obs",
+              "id": "bmi",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "2316f309-8802-431d-92a0-fc7cfa4df5c8",
+                "calculate": {
+                  "calculateExpression": "calcBMI(height,weight)"
+                }
+              }
+            },
+            {
+              "label": "Weight-for-Height (W/H, z-score)",
+              "type": "obs",
+              "id": "weightForHeight",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "cc68076a-b109-420a-a80c-a8430f4021eb",
+                "min": -10,
+                "max": 10
+              }
+            },
+            {
+              "label": "Mid-Upper Arm Circumference (cm)",
+              "type": "obs",
+              "id": "muac",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "6d4a1b5a-d41d-4779-b441-70ba440b64de",
+                "min": 0,
+                "max": 60
+              }
+            },
+            {
+              "label": "Waist Circumference (cm)",
+              "type": "obs",
+              "id": "waistCircumference",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "bd00f0fc-35ab-4e88-8d0d-bc4c781461bb",
+                "min": 0,
+                "max": 250
+              }
+            },
+            {
+              "label": "Fetal Heart Rate (bpm)",
+              "type": "obs",
+              "id": "fetalHeartRate",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "c62be10d-5b4e-44e3-a989-e0f4858ba77f",
+                "min": 0,
+                "max": 250,
+                "disallowDecimals": true
+              },
+              "hide": {
+                "hideWhenExpression": "sex !== 'F'"
+              }
+            }
+          ]
+        },
+        {
+          "label": "History & Clinical Background",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Reason for Admission",
+              "type": "obs",
+              "id": "admissionReason",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "c8523ef7-c18e-46fe-a760-c243fd3a3bd2"
+              }
+            },
+            {
+              "label": "History of Present Illness",
+              "type": "obs",
+              "id": "historyOfIllness",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "bbd42472-9025-4771-875b-8ae6eda3733a"
+              }
+            },
+            {
+              "label": "Family History",
+              "type": "obs",
+              "id": "familyHistory",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "d42ce204-2ec8-46fa-9c47-5b202e68717a"
+              }
+            },
+            {
+              "label": "Medical History",
+              "type": "obs",
+              "id": "medicalHistory",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "30344fed-b645-410f-8d57-ea50d46971cf"
+              }
+            },
+            {
+              "label": "Surgical History",
+              "type": "obs",
+              "id": "surgicalHistory",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "f8c3c8ff-e4f3-41bd-9507-c1f6aedb4a95"
+              }
+            },
+            {
+              "label": "Gynaecological & Obstetric History",
+              "type": "obs",
+              "id": "gynObHistory",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "937e4e80-2314-48de-9f49-c4dd86be7547"
+              },
+              "hide": {
+                "hideWhenExpression": "sex !== 'F'"
+              }
+            },
+            {
+              "label": "Lifestyle & Eating Habits",
+              "type": "obs",
+              "id": "lifestyleHabits",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "0bb5ba74-dbdd-4fce-8463-9664721f8680"
+              }
+            }
+          ]
+        },
+        {
+          "label": "Complete Physical Examination",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "General Condition",
+              "type": "obs",
+              "id": "generalCondition",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "26b6bd3f-5367-4a73-aa1d-9c3063522b2b"
+              }
+            },
+            {
+              "label": "Symptoms",
+              "type": "obs",
+              "id": "symptoms",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "a19e6cc0-7fe2-4b9c-a53a-9aed4ca3adcc"
+              }
+            },
+            {
+              "label": "Percussion",
+              "type": "obs",
+              "id": "percussion",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "974a3938-421d-4386-b8c6-a857f903d397"
+              }
+            },
+            {
+              "label": "Auscultation",
+              "type": "obs",
+              "id": "auscultation",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "eb7d7c64-aa03-4c38-8adf-4e69d14b6ebf"
+              }
+            },
+            {
+              "label": "Physical Examination Summary",
+              "type": "obs",
+              "id": "physicalExamSummary",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "0b481e35-48fc-4ea1-9f1f-410b0bc96fb8"
+              }
+            }
+          ]
+        },
+        {
+          "label": "Diagnoses, Investigations & Treatment",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Tests Already Performed",
+              "type": "obs",
+              "id": "testsAlreadyDone",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "1582dbcf-1e2a-46aa-adea-820bf1a95ef2"
+              }
+            },
+            {
+              "label": "Hypotheses / Diagnoses (ICPC-2 / ICD-10)",
+              "type": "diagnosis",
+              "id": "admissionDiagnosis",
+              "questionOptions": {
+                "rendering": "repeating",
+                "dataSource": "diagnoses",
+                "isSearchable": "true",
+                "diagnosis": {
+                  "isConfirmed": false,
+                  "rank": 1,
+                  "conceptClasses": [
+                    "8d4918b0-c2cc-11de-8d13-0010c6dffd0f"
+                  ]
+                }
+              }
+            },
+            {
+              "label": "Additional Tests Requested",
+              "type": null,
+              "id": "newOrder",
+              "questionOptions": {
+                "rendering": "workspace-launcher",
+                "buttonLabel": "Order Tests",
+                "workspaceName": "order-basket"
+              }
+            },
+            {
+              "label": "Lab Test",
+              "type": "obs",
+              "id": "labTest",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "f448385e-5c73-4b7e-b40c-7c859cf1cd24"
+              }
+            },
+            {
+              "label": "X-ray",
+              "type": "obs",
+              "id": "xrayTest",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "39a60662-bcc1-4b26-9764-6013af93bbdb"
+              }
+            },
+            {
+              "label": "Ultrasound",
+              "type": "obs",
+              "id": "ultrasoundTest",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "9d107c46-458f-4f39-b31a-e19d5a9e12ab"
+              }
+            },
+            {
+              "label": "Other Tests (specify)",
+              "type": "obs",
+              "id": "otherTests",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "5eedb588-cf20-4b73-a2d4-37cb5ecaf3dd"
+              }
+            },
+            {
+              "label": "Treatment / Medications Prescribed",
+              "type": null,
+              "id": "newPrescription",
+              "questionOptions": {
+                "rendering": "workspace-launcher",
+                "buttonLabel": "Order Prescription",
+                "workspaceName": "order-basket"
+              }
+            },
+            {
+              "label": "Treatment / Medications",
+              "type": "obs",
+              "id": "treatmentPlan",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "29ff306b-5a2a-48c1-affa-8fa4620a8fda"
+              }
+            }
+          ]
+        },
+        {
+          "label": "Nosocomial Infections & Follow-up",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Suspected Nosocomial Infections",
+              "type": "obs",
+              "id": "nosocomialInfections",
+              "questionOptions": {
+                "rendering": "multiCheckbox",
+                "concept": "42983f28-8cf3-40f1-bb7e-5058ea4e4b7e",
+                "answers": [
+                  {
+                    "concept": "f8a121b0-b276-44ba-90c2-2982c92c9221",
+                    "label": "Post-Procedure (In-Facility)"
+                  },
+                  {
+                    "concept": "80e1f197-1aeb-412a-9f19-90ba564ab0ae",
+                    "label": "Post-Procedure (External)"
+                  },
+                  {
+                    "concept": "4b3707c1-7748-497a-ae92-aeeed086a0bf",
+                    "label": "Post-Operative (In-Facility)"
+                  },
+                  {
+                    "concept": "b5687d7c-2973-4d4b-bf75-d6c9c90ec942",
+                    "label": "Post-Operative (External)"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Integrated Observations",
+              "type": "obs",
+              "id": "integratedObservations",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "9dc2962b-bdd0-4261-b69d-55769e078be0"
+              }
+            },
+            {
+              "label": "Clinician / Head of Department",
+              "type": "encounterProvider",
+              "id": "encProvider",
+              "required": true,
+              "questionOptions": {
+                "rendering": "ui-select-extended"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
