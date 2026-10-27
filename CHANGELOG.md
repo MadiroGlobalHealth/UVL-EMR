@@ -110,7 +110,7 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   The person who performed the delivery is required. Identity, commune, marital status and the
   head of family come from registration, so they are not asked again. It saves a "Childbirth
   Record" encounter that only midwives and doctors can view, because it holds HIV and PMTCT
-  data. **Draft:** 80 of its questions wait for concepts to be added in OCL. (#381)
+  data. Its concepts come with the uvl-forms 20261027 OCL export (#376). (#381)
 
 ### Added
 - OpenMRS role and Keycloak `openmrs` client role **Central Pharmacist** (inherits `Pharmacist`
