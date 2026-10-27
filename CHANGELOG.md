@@ -102,6 +102,14 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   offered. **Dispensing does not deduct stock yet** and works as before. (#437)
 - **A price finance changes in Odoo stays changed.** A deploy or a database restore no longer
   resets 290 product prices to the configuration's values. (#439)
+- **The chart's Forms list has "UVL IPD Monitoring Form" (Protocole de surveillance globale),**
+  for nurses, midwives and doctors. Each round of checks is saved as its own "IPD Monitoring"
+  encounter, at the date and time the round was done, so the values chart over the stay. It
+  records vital and respiratory signs (with SpO2 on room air and on oxygen, oxygen flow and
+  mode), the Glasgow score (total calculated), pain score, weight, height and BMI, fluid intake
+  and output with their totals and the balance, meals and feeds, MUAC, weight-for-height for
+  children under 5, and the nurse's observations. The monitoring nurse is required. Vital signs
+  use the same concepts as the Vitals box, so they appear there too. (#379)
 
 ### Added
 - OpenMRS role and Keycloak `openmrs` client role **Central Pharmacist** (inherits `Pharmacist`
