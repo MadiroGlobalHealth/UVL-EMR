@@ -1,0 +1,283 @@
+{
+  "uuid": "b6372bdc-3842-4b0b-a9ef-9f797406cf10",
+  "name": "UVL Partograph Reading Form",
+  "description": "UVL partograph reading, one encounter per reading (Partogramme, modèle MSPLS)",
+  "version": "1",
+  "published": true,
+  "retired": false,
+  "encounter": "Partograph Reading",
+  "processor": "EncounterFormProcessor",
+  "referencedForms": [],
+  "encounterType": "48d7672c-78a9-4dc0-b21f-40a8faeb61db",
+  "pages": [
+    {
+      "label": "Partograph Reading",
+      "sections": [
+        {
+          "label": "Reading",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Date and time of the reading",
+              "type": "encounterDatetime",
+              "id": "readingDatetime",
+              "required": true,
+              "datePickerFormat": "both",
+              "questionOptions": {
+                "rendering": "date"
+              },
+              "validators": [
+                {
+                  "type": "date",
+                  "allowFutureDates": "false"
+                }
+              ]
+            },
+            {
+              "label": "Midwife / Clinician",
+              "type": "encounterProvider",
+              "id": "encProvider",
+              "required": true,
+              "questionOptions": {
+                "rendering": "ui-select-extended"
+              }
+            }
+          ]
+        },
+        {
+          "label": "Fetal Heart Rate",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Fetal heart rate (bpm)",
+              "type": "obs",
+              "id": "fetalHeartRate",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "c62be10d-5b4e-44e3-a989-e0f4858ba77f",
+                "min": "40",
+                "max": "250",
+                "disallowDecimals": true
+              }
+            }
+          ]
+        },
+        {
+          "label": "Amniotic Fluid / Head Moulding",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Amniotic fluid",
+              "type": "obs",
+              "id": "amnioticFluid",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "f571d5d7-34cf-4afd-b876-fa618379e561",
+                "answers": [
+                  {
+                    "concept": "9c4e7be2-47a0-4838-bb24-4b2796844f21",
+                    "label": "I: Membranes intact"
+                  },
+                  {
+                    "concept": "1115AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "label": "C: Clear"
+                  },
+                  {
+                    "concept": "33b7ef0e-ddff-4557-b363-6e72e859e7a2",
+                    "label": "M: Meconium-stained"
+                  },
+                  {
+                    "concept": "6aa7408b-43fa-438a-9bac-994591280fa4",
+                    "label": "B: Blood-stained"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Head moulding",
+              "type": "obs",
+              "id": "headMoulding",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "6443292c-1743-418f-8bb9-eb19463bf371",
+                "answers": [
+                  {
+                    "concept": "01ff87e9-f0b0-4997-b402-7b12862d1784",
+                    "label": "0: None"
+                  },
+                  {
+                    "concept": "e9fa7532-a9dd-447d-9a32-ef2e3750385b",
+                    "label": "+: Bones touching"
+                  },
+                  {
+                    "concept": "52506e95-0ae4-4718-b622-d4226b4238dd",
+                    "label": "++: Bones overlapping, reducible"
+                  },
+                  {
+                    "concept": "487fb8c7-29c3-4954-937c-090c1a4a4ced",
+                    "label": "+++: Bones overlapping, not reducible"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "label": "Medications",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Medications given (e.g. Ab: antibiotic)",
+              "type": "obs",
+              "id": "medicationsGiven",
+              "questionOptions": {
+                "rendering": "text",
+                "concept": "057723c1-6b41-4e30-9fc0-7a9be2cf2e6f"
+              }
+            }
+          ]
+        },
+        {
+          "label": "Cervical Dilatation / Descent",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Cervical dilatation (cm)",
+              "type": "obs",
+              "id": "cervicalDilatation",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "41eae39d-389d-463f-b24b-81ecc321fc7e",
+                "min": "0",
+                "max": "10",
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "Descent of the head (fifths palpable, 5/5 = mobile)",
+              "type": "obs",
+              "id": "headDescent",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "4c5021fa-f586-411d-bcc1-9005a8b51829",
+                "min": "0",
+                "max": "5",
+                "disallowDecimals": true
+              }
+            }
+          ]
+        },
+        {
+          "label": "Contractions",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Contractions per 10 minutes",
+              "type": "obs",
+              "id": "contractionsPer10Min",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "91792645-572f-436e-9d23-b99e55754919",
+                "min": "0",
+                "max": "10",
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "Duration of contractions (seconds)",
+              "type": "obs",
+              "id": "contractionDuration",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "be0efe80-47a8-43e8-bbb1-0aeda72edac8",
+                "min": "0",
+                "max": "300",
+                "disallowDecimals": true
+              }
+            }
+          ]
+        },
+        {
+          "label": "Oxytocin",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Oxytocin (U/L)",
+              "type": "obs",
+              "id": "oxytocinConcentration",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "36577c7e-c94f-441a-b868-95ba42682f63",
+                "min": "0"
+              }
+            },
+            {
+              "label": "Oxytocin drip (drops/min)",
+              "type": "obs",
+              "id": "oxytocinDrops",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "c0391844-883d-4795-a259-cddef3553b91",
+                "min": "0",
+                "disallowDecimals": true
+              }
+            }
+          ]
+        },
+        {
+          "label": "Maternal Vital Signs",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Pulse (/min)",
+              "type": "obs",
+              "id": "pulse",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "bc54cb7c-bb45-45aa-84d6-2346748b7c93",
+                "min": "0",
+                "max": "230",
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "Systolic blood pressure (mmHg)",
+              "type": "obs",
+              "id": "systolicBp",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "6d0b8551-feb8-4d57-892a-d75398181b3f",
+                "min": "0",
+                "max": "250",
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "Diastolic blood pressure (mmHg)",
+              "type": "obs",
+              "id": "diastolicBp",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "c46fcfdd-a785-4416-80bc-2d9e2edf5a45",
+                "min": "0",
+                "max": "150",
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "Temperature (°C)",
+              "type": "obs",
+              "id": "temperature",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "748f8d43-617a-40ba-9474-20522e73fb8a",
+                "min": "25",
+                "max": "43"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

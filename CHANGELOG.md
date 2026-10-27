@@ -102,6 +102,16 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   offered. **Dispensing does not deduct stock yet** and works as before. (#437)
 - **A price finance changes in Odoo stays changed.** A deploy or a database restore no longer
   resets 290 product prices to the configuration's values. (#439)
+- **The chart's Forms list has "UVL Partograph Reading Form" (Lecture du partogramme),** for
+  midwives and doctors. Each reading is one "Partograph Reading" encounter, stored at the date and
+  time the reading was taken, so a reading typed in late still plots at the right time. A reading
+  records any of: fetal heart rate, amniotic fluid, head moulding, medications given, cervical
+  dilatation, descent, contractions per 10 minutes and their duration, oxytocin (U/L and
+  drops/min), pulse, blood pressure and temperature; none is required except the clinician. The
+  patient summary shows a "Partograph" graph (fetal heart rate, dilatation and descent,
+  contractions, oxytocin, pulse and blood pressure, temperature) and a table of the coded rows,
+  to midwives and doctors only. The graph has no alert or action lines. Type of delivery and
+  uterine revision are recorded in the childbirth record (#381), not here. (#382)
 
 ### Added
 - OpenMRS role and Keycloak `openmrs` client role **Central Pharmacist** (inherits `Pharmacist`
