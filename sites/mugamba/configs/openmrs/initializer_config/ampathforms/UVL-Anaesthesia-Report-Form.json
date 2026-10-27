@@ -1,0 +1,460 @@
+{
+  "uuid": "d0ad9d6c-cc85-4e50-9815-89c79737ec95",
+  "name": "UVL Anaesthesia Report Form",
+  "description": "UVL anaesthesia report (Rapport d'anesthésie)",
+  "version": "1",
+  "published": true,
+  "retired": false,
+  "encounter": "Anaesthesia Report",
+  "processor": "EncounterFormProcessor",
+  "referencedForms": [],
+  "encounterType": "491b13b5-b38b-4a23-bc14-534ae6210bc8",
+  "pages": [
+    {
+      "label": "Anaesthesia Report",
+      "sections": [
+        {
+          "label": "Patient Identification",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Referring Service",
+              "type": "obs",
+              "id": "referringService",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "b5f30fce-f71c-4a9e-9bae-d13c9d73c726",
+                "answers": [
+                  {
+                    "concept": "37112a4c-e8e9-4df5-8259-d610e9d36566",
+                    "label": "Internal Medicine"
+                  },
+                  {
+                    "concept": "ba39e9aa-4f48-45fe-a9da-c2a7795dc063",
+                    "label": "Surgery"
+                  },
+                  {
+                    "concept": "1d66f34f-3dda-496b-881b-e38ba2cab2cc",
+                    "label": "Gynecology-Obstetrics"
+                  },
+                  {
+                    "concept": "73b7e837-109a-4c01-8fcb-d605b8724f70",
+                    "label": "Pediatrics"
+                  },
+                  {
+                    "concept": "219b6489-0992-47bb-a780-b97c85d10d33",
+                    "label": "Neonatology"
+                  },
+                  {
+                    "concept": "f8fbea1a-8579-4733-9add-59dfa2adc453",
+                    "label": "Emergency"
+                  },
+                  {
+                    "concept": "6c00b50f-4d8e-418a-b48d-9a6b51dcbd2f",
+                    "label": "Intensive Care"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "label": "Timing of the Surgical and Anaesthetic Procedure",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Start of Anaesthesia",
+              "type": "obs",
+              "id": "anaesthesiaStart",
+              "required": true,
+              "questionOptions": {
+                "rendering": "datetime",
+                "concept": "19c203ac-fb85-41c0-94b1-b084ec8058b7"
+              }
+            },
+            {
+              "label": "End of Anaesthesia",
+              "type": "obs",
+              "id": "anaesthesiaEnd",
+              "required": true,
+              "questionOptions": {
+                "rendering": "datetime",
+                "concept": "0b1f6973-0377-49be-b1c3-7295dea5f87d"
+              },
+              "validators": [
+                {
+                  "type": "js_expression",
+                  "failsWhenExpression": "!isEmpty(myValue) && !isEmpty(anaesthesiaStart) && new Date(myValue) - new Date(anaesthesiaStart) < 0",
+                  "message": "The end of anaesthesia must be after its start"
+                }
+              ]
+            },
+            {
+              "label": "Duration of Anaesthesia (min)",
+              "type": "obs",
+              "id": "anaesthesiaDuration",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "e97f88cb-a37e-42b2-8830-16e75ffe2bf9",
+                "calculate": {
+                  "calculateExpression": "!isEmpty(anaesthesiaStart) && !isEmpty(anaesthesiaEnd) && new Date(anaesthesiaEnd) - new Date(anaesthesiaStart) >= 0 ? Math.round((new Date(anaesthesiaEnd) - new Date(anaesthesiaStart)) / 60000) : undefined"
+                },
+                "min": "0",
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "Start of the Procedure",
+              "type": "obs",
+              "id": "surgeryStart",
+              "questionOptions": {
+                "rendering": "datetime",
+                "concept": "01f8fb65-57ac-4743-8d00-d8c405789cb2"
+              }
+            },
+            {
+              "label": "End of the Procedure",
+              "type": "obs",
+              "id": "surgeryEnd",
+              "questionOptions": {
+                "rendering": "datetime",
+                "concept": "a8f782e5-64e5-460d-a304-e8cd4acb1388"
+              },
+              "validators": [
+                {
+                  "type": "js_expression",
+                  "failsWhenExpression": "!isEmpty(myValue) && !isEmpty(surgeryStart) && new Date(myValue) - new Date(surgeryStart) < 0",
+                  "message": "The end of the procedure must be after its start"
+                }
+              ]
+            },
+            {
+              "label": "Duration of the Procedure (min)",
+              "type": "obs",
+              "id": "surgeryDuration",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "545878d1-6198-4dab-9a90-952e38b8e306",
+                "calculate": {
+                  "calculateExpression": "!isEmpty(surgeryStart) && !isEmpty(surgeryEnd) && new Date(surgeryEnd) - new Date(surgeryStart) >= 0 ? Math.round((new Date(surgeryEnd) - new Date(surgeryStart)) / 60000) : undefined"
+                },
+                "min": "0",
+                "disallowDecimals": true
+              }
+            }
+          ]
+        },
+        {
+          "label": "Medical Team & Surgical Indications",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Pre-operative Diagnosis",
+              "type": "obs",
+              "id": "preopDiagnosis",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "ae0bd12a-d8f7-4581-9858-8fd33c89d405"
+              }
+            },
+            {
+              "label": "Post-operative Diagnosis",
+              "type": "obs",
+              "id": "postopDiagnosis",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "3e3346ee-345b-4f1c-b73d-a167df9b5e33"
+              }
+            },
+            {
+              "label": "Procedure Performed",
+              "type": "obs",
+              "id": "procedurePerformed",
+              "required": true,
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "1cb8cdd5-2ca4-4ace-b1ff-eef6e59a7811"
+              }
+            },
+            {
+              "label": "Anaesthetist",
+              "type": "obs",
+              "id": "anaesthetistName",
+              "questionOptions": {
+                "rendering": "text",
+                "concept": "06bc374b-6862-48ce-9426-3b4e81ed0521"
+              }
+            },
+            {
+              "label": "Surgeon",
+              "type": "obs",
+              "id": "surgeonName",
+              "questionOptions": {
+                "rendering": "text",
+                "concept": "9b01093f-21cc-4723-9ea4-88edfa8fccb8"
+              }
+            },
+            {
+              "label": "Anaesthesia Nurse",
+              "type": "obs",
+              "id": "anaesthesiaNurseName",
+              "questionOptions": {
+                "rendering": "text",
+                "concept": "f6cf8dc5-48ad-4c18-8dc4-c2ec9632768e"
+              }
+            },
+            {
+              "label": "Scrub Nurse",
+              "type": "obs",
+              "id": "scrubNurseName",
+              "questionOptions": {
+                "rendering": "text",
+                "concept": "510edcc4-54a9-4eb4-8653-3d0ef0468fcd"
+              }
+            },
+            {
+              "label": "Other Team Members",
+              "type": "obs",
+              "id": "otherTeamMembers",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "19b7d43f-a59a-45f1-84b8-bc45fa7dd04e"
+              }
+            }
+          ]
+        },
+        {
+          "label": "Anaesthesia Technique",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Type of Anaesthesia",
+              "type": "obs",
+              "id": "anaesthesiaType",
+              "required": true,
+              "questionOptions": {
+                "rendering": "checkbox",
+                "concept": "e56083c5-658e-4715-85ce-30cd78e0b13b",
+                "answers": [
+                  {
+                    "concept": "0c279f31-78c9-4c5c-9714-0f5bfc19fb1e",
+                    "label": "General"
+                  },
+                  {
+                    "concept": "993c7783-e6dd-4786-961a-e658476ea753",
+                    "label": "Loco-regional"
+                  },
+                  {
+                    "concept": "6e625252-c2c7-407a-8dba-406f1c2cf3c7",
+                    "label": "Local"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Patient Position",
+              "type": "obs",
+              "id": "patientPosition",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "ebd5529c-05f1-4c98-a31a-276dae547989",
+                "answers": [
+                  {
+                    "concept": "7dc30a0b-f0fa-4714-a582-f3efa8798d73",
+                    "label": "Dorsal (supine)"
+                  },
+                  {
+                    "concept": "415391c8-4a35-41e4-9c73-4d71aa110b3a",
+                    "label": "Ventral (prone)"
+                  },
+                  {
+                    "concept": "d446f668-d8fb-40e3-b791-13a2a613fceb",
+                    "label": "Lateral"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Airway Technique",
+              "type": "obs",
+              "id": "ventilationTechnique",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "5e26870e-6ef6-441a-bab5-9eadc72919ba",
+                "answers": [
+                  {
+                    "concept": "b98480a5-bca5-4baa-a29d-aaa26e203d23",
+                    "label": "Mask"
+                  },
+                  {
+                    "concept": "0cb33e21-b186-4255-983e-371cfd44f857",
+                    "label": "Oral Tube"
+                  },
+                  {
+                    "concept": "f70fa570-46d4-45a3-94c7-522491ce8e01",
+                    "label": "Nasal Tube"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Breathing Mode",
+              "type": "obs",
+              "id": "breathingMode",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "5e91ef85-45e4-429b-b683-0d0b8f277e7f",
+                "answers": [
+                  {
+                    "concept": "7c6bb501-538c-416e-a19e-0931c3f2b231",
+                    "label": "Spontaneous"
+                  },
+                  {
+                    "concept": "739410d6-43bb-433f-bcd0-c00e820ebe94",
+                    "label": "Assisted"
+                  },
+                  {
+                    "concept": "86974058-6e5c-4671-bb2b-9a81a2683f1f",
+                    "label": "Controlled"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "label": "Device Vigilance, Drug Vigilance & Incidents",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Anaesthesia Machine Reference",
+              "type": "obs",
+              "id": "anaesthesiaMachineRef",
+              "questionOptions": {
+                "rendering": "text",
+                "concept": "dc9adbb9-7694-4cc9-b597-aabcb37b7f3d"
+              }
+            },
+            {
+              "label": "Technical Problems",
+              "type": "obs",
+              "id": "technicalProblems",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "3730bfcd-2d08-437a-8c11-3bfb3afafeaf",
+                "answers": [
+                  {
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e",
+                    "label": "Yes"
+                  },
+                  {
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725",
+                    "label": "No"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Description of the Problem",
+              "type": "obs",
+              "id": "technicalProblemDescription",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "c60951d1-bc00-4e7a-a70c-878abe341002"
+              },
+              "hide": {
+                "hideWhenExpression": "technicalProblems !== '2f20b5d3-ce71-4b89-a3b4-388f416fc62e'"
+              }
+            },
+            {
+              "label": "Medications Administered",
+              "type": "obs",
+              "id": "medicationsAdministered",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "3de260aa-d483-407e-a77d-52c072257670"
+              }
+            },
+            {
+              "label": "Known Allergies",
+              "type": "obs",
+              "id": "knownAllergies",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "edb0ee08-8d9a-4b92-81ee-36e997837c4a"
+              }
+            },
+            {
+              "label": "Foreseeable Incidents",
+              "type": "obs",
+              "id": "foreseeableIncidents",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "d970bcb2-08c9-4b63-87a4-6165eb546a1e"
+              }
+            },
+            {
+              "label": "Unforeseeable Incidents",
+              "type": "obs",
+              "id": "unforeseeableIncidents",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "f4529719-6578-4baa-8c20-458541530394"
+              }
+            }
+          ]
+        },
+        {
+          "label": "Post-operative Drug Vigilance & Coding",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Side Effects Observed",
+              "type": "obs",
+              "id": "sideEffectsObserved",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "df8c9356-41ab-40be-a463-de3ce270d2c2"
+              }
+            },
+            {
+              "label": "Other Key Observations",
+              "type": "obs",
+              "id": "otherKeyObservations",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "9dc2962b-bdd0-4261-b69d-55769e078be0"
+              }
+            },
+            {
+              "label": "Contact Diagnoses (ICPC-2 / ICD-10)",
+              "type": "diagnosis",
+              "id": "contactDiagnosis",
+              "questionOptions": {
+                "rendering": "repeating",
+                "dataSource": "diagnoses",
+                "isSearchable": "true",
+                "diagnosis": {
+                  "isConfirmed": true,
+                  "rank": 1,
+                  "conceptClasses": [
+                    "8d4918b0-c2cc-11de-8d13-0010c6dffd0f"
+                  ]
+                }
+              }
+            },
+            {
+              "label": "Anaesthetist-Intensivist (Name and Signature)",
+              "type": "encounterProvider",
+              "id": "encProvider",
+              "required": true,
+              "questionOptions": {
+                "rendering": "ui-select-extended"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

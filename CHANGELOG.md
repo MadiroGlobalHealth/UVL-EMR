@@ -102,6 +102,15 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   offered. **Dispensing does not deduct stock yet** and works as before. (#437)
 - **A price finance changes in Odoo stays changed.** A deploy or a database restore no longer
   resets 290 product prices to the configuration's values. (#439)
+- **The chart's Forms list has "UVL Anaesthesia Report Form" (Rapport d'anesthésie),** for
+  anaesthetists and doctors. It records the referring service, the start and end of anaesthesia
+  and of the procedure as date and time, with both durations in minutes calculated, the pre- and
+  post-operative diagnoses, the procedure performed, the theatre team, the anaesthesia type,
+  patient position, airway and breathing mode, the anaesthesia machine and any technical problem,
+  medications given, known allergies, incidents, side effects, the contact diagnoses (CISP-2 /
+  CIM-10) and the anaesthetist-intensivist, who is required. Identity comes from the patient
+  banner. It saves an "Anaesthesia Report" encounter. Its concepts come with the uvl-forms
+  20261027 OCL export (#376). (#384)
 
 ### Added
 - OpenMRS role and Keycloak `openmrs` client role **Central Pharmacist** (inherits `Pharmacist`
