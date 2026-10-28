@@ -1,0 +1,261 @@
+dashboard_title: Rapports PBF et DHIS2
+description: null
+css: ''
+slug: pbf-dhis2-reports
+certified_by: null
+certification_details: null
+published: true
+uuid: 0a7c4dfb-c0d8-4174-b2bf-ae4d16c79f0b
+position:
+  DASHBOARD_VERSION_KEY: v2
+  ROOT_ID:
+    children:
+    - GRID_ID
+    id: ROOT_ID
+    type: ROOT
+  GRID_ID:
+    children:
+    - HEADER_1
+    - ROW-pbf-notes
+    - ROW-pbf-0
+    - ROW-pbf-1
+    - ROW-pbf-2
+    - ROW-pbf-3
+    - ROW-pbf-4
+    id: GRID_ID
+    parents:
+    - ROOT_ID
+    type: GRID
+  HEADER_1:
+    id: HEADER_1
+    meta:
+      text: Rapports PBF et DHIS2
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    type: HEADER
+  HEADER_ID:
+    id: HEADER_ID
+    meta:
+      text: Rapports PBF et DHIS2
+    type: HEADER
+  MARKDOWN-pbf-notes:
+    children: []
+    id: MARKDOWN-pbf-notes
+    meta:
+      code: "### Rapports PBF et DHIS2 — version provisoire\n\n**À confirmer avec Didier avant toute soumission.**\
+        \ Les modèles source (PBF_Template_Translated.xlsx\net Hospital_Activity_Report_Translated.pdf,\
+        \ envoyés le 6 août 2026) n'étaient pas disponibles lors de la\nconstruction : la liste des indicateurs,\
+        \ les tranches d'âge et les règles sont provisoires (UVL-EMR#240, #241, #242).\n\n- **PBF – Indicateurs\
+        \ par mois** : une ligne par indicateur. *Statut* : `computed` (l'EMR enregistre ce qu'il faut),\n\
+        \  `partial` (approximation, voir la liste des écarts), `not captured` (pas encore saisi : la\
+        \ cellule reste vide, ce n'est pas un zéro).\n- **Liste des écarts** : ce que le modèle demande\
+        \ et ce que l'EMR ne fournit pas encore (#240).\n- **Lignes de vérification** : chaque unité comptée\
+        \ (visite, examen, journée), avec l'ID UVL, pour la vérification\n  mensuelle (contrat, art. 4\
+        \ et 6). Le total d'un mois est la somme de la colonne *quantity*.\n- **MSP** : consultations\
+        \ externes = visites avec une rencontre *Outpatient Consultation*; date et service = la\n  dernière\
+        \ consultation de la visite. Âge à la date de consultation. Morbidité : diagnostics confirmés\
+        \ seulement.\n- Les dates sont en UTC (heure OpenMRS). Utilisez le filtre **Date / Période** pour\
+        \ choisir le mois."
+      height: 50
+      width: 12
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-pbf-notes
+    type: MARKDOWN
+  ROW-pbf-notes:
+    children:
+    - MARKDOWN-pbf-notes
+    id: ROW-pbf-notes
+    meta:
+      background: BACKGROUND_TRANSPARENT
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    type: ROW
+  ROW-pbf-0:
+    children:
+    - CHART-pbf-60
+    id: ROW-pbf-0
+    meta:
+      background: BACKGROUND_TRANSPARENT
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    type: ROW
+  CHART-pbf-60:
+    children: []
+    id: CHART-pbf-60
+    meta:
+      chartId: 60
+      height: 60
+      sliceName: PBF – Indicateurs par mois
+      uuid: a14dce95-6a72-4b1e-9c59-4e8db0613fa5
+      width: 12
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-pbf-0
+    type: CHART
+  ROW-pbf-1:
+    children:
+    - CHART-pbf-61
+    id: ROW-pbf-1
+    meta:
+      background: BACKGROUND_TRANSPARENT
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    type: ROW
+  CHART-pbf-61:
+    children: []
+    id: CHART-pbf-61
+    meta:
+      chartId: 61
+      height: 50
+      sliceName: PBF – Liste des écarts (modèle vs EMR)
+      uuid: b25edfa6-7b83-4c2f-8d6a-5f9ec1724ab6
+      width: 12
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-pbf-1
+    type: CHART
+  ROW-pbf-2:
+    children:
+    - CHART-pbf-62
+    id: ROW-pbf-2
+    meta:
+      background: BACKGROUND_TRANSPARENT
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    type: ROW
+  CHART-pbf-62:
+    children: []
+    id: CHART-pbf-62
+    meta:
+      chartId: 62
+      height: 60
+      sliceName: PBF – Lignes de vérification
+      uuid: c36fe0b7-8c94-4d30-9e7b-6a0fd2835bc7
+      width: 12
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-pbf-2
+    type: CHART
+  ROW-pbf-3:
+    children:
+    - CHART-pbf-63
+    - CHART-pbf-64
+    id: ROW-pbf-3
+    meta:
+      background: BACKGROUND_TRANSPARENT
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    type: ROW
+  CHART-pbf-63:
+    children: []
+    id: CHART-pbf-63
+    meta:
+      chartId: 63
+      height: 40
+      sliceName: MSP – Consultations externes par âge et sexe
+      uuid: d470f1c8-9da5-4e41-8f8c-7b1ae3946cd8
+      width: 6
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-pbf-3
+    type: CHART
+  CHART-pbf-64:
+    children: []
+    id: CHART-pbf-64
+    meta:
+      chartId: 64
+      height: 40
+      sliceName: MSP – Nouveaux et anciens cas par âge
+      uuid: e581a2d9-aeb6-4f52-909d-8c2bf4a57de9
+      width: 6
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-pbf-3
+    type: CHART
+  ROW-pbf-4:
+    children:
+    - CHART-pbf-65
+    id: ROW-pbf-4
+    meta:
+      background: BACKGROUND_TRANSPARENT
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    type: ROW
+  CHART-pbf-65:
+    children: []
+    id: CHART-pbf-65
+    meta:
+      chartId: 65
+      height: 70
+      sliceName: MSP – Morbidité (diagnostics confirmés) par âge et sexe
+      uuid: f692b3ea-bfc7-4063-a1ae-9d3c05b68efa
+      width: 12
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-pbf-4
+    type: CHART
+metadata:
+  color_scheme: supersetColors
+  cross_filters_enabled: false
+  native_filter_configuration:
+  - id: NATIVE_FILTER-pbf_time_range
+    name: Date / Période
+    filterType: filter_time
+    type: NATIVE_FILTER
+    targets:
+    - {}
+    defaultDataMask:
+      extraFormData: {}
+      filterState:
+        value: No filter
+    cascadeParentIds: []
+    scope:
+      rootPath:
+      - ROOT_ID
+      excluded:
+      - 61
+    controlValues: {}
+    chartsInScope:
+    - 60
+    - 62
+    - 63
+    - 64
+    - 65
+    tabsInScope: []
+    description: ''
+  chart_configuration: {}
+  global_chart_configuration:
+    scope:
+      rootPath:
+      - ROOT_ID
+      excluded: []
+    chartsInScope:
+    - 60
+    - 61
+    - 62
+    - 63
+    - 64
+    - 65
+  timed_refresh_immune_slices: []
+  expanded_slices: {}
+  refresh_frequency: 0
+  label_colors: {}
+  default_filters: '{}'
+  shared_label_colors: {}
+  color_scheme_domain: []
+version: 1.0.0

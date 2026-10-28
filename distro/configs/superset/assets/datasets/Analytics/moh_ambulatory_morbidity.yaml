@@ -1,0 +1,194 @@
+table_name: moh_ambulatory_morbidity
+main_dttm_col: consultation_datetime
+description: 'MoH ambulatory morbidity: one row per outpatient consultation and confirmed diagnosis (UVL-EMR#242)'
+default_endpoint: null
+offset: 0
+cache_timeout: null
+schema: public
+sql: |-
+  -- MoH ambulatory activity report for DHIS2 (UVL-EMR#242).
+  --
+  -- PROVISIONAL. The source form (Hospital_Activity_Report_Translated.pdf, sent by
+  -- Didier on 6 Aug 2026) could not be retrieved when this was written. Age bands,
+  -- the new/old case split and the morbidity list are TO CONFIRM WITH DIDIER, and
+  -- each figure still needs its DHIS2 data element.
+  --
+  -- A consultation is a visit with an Outpatient Consultation encounter (the same
+  -- rule as PBF-01 and the visits dashboard). Its date and service point are those
+  -- of the most recent outpatient consultation in the visit (#222 tie-break).
+  -- Age is at the consultation date.
+  WITH visit_base AS (
+      SELECT v.visit_id, v.visit_uuid, v.patient_uuid, v.visit_attributes,
+             COALESCE(p.birthdate, v.patient_birthdate) AS birthdate,
+             COALESCE(p.gender, v.patient_gender)       AS gender
+      FROM visits v
+      LEFT JOIN patients p ON p.patient_uuid = v.patient_uuid
+      WHERE COALESCE(v.visit_voided, false) = false
+        AND COALESCE(p.person_voided, false) = false
+  ),
+  consultation AS (
+      SELECT DISTINCT ON (vb.visit_id)
+             vb.visit_id, vb.visit_uuid, vb.birthdate, vb.gender, vb.visit_attributes,
+             e.encounter_datetime AS consultation_datetime,
+             e.location           AS service_point
+      FROM visit_base vb
+      JOIN encounters e
+        ON e.visit_uuid = vb.visit_uuid
+       AND COALESCE(e.encounter_voided, false) = false
+       AND e.encounter_type = 'Outpatient Consultation'
+      ORDER BY vb.visit_id, e.encounter_datetime DESC, e.encounter_id DESC
+  ),
+  classified AS (
+      SELECT c.*,
+             CAST(DATE_TRUNC('month', c.consultation_datetime) AS DATE) AS period_start,
+             CASE
+                 WHEN c.birthdate IS NULL THEN '9. Âge inconnu'
+                 WHEN AGE(CAST(c.consultation_datetime AS DATE), c.birthdate) < INTERVAL '1 year'   THEN '1. 0-11 mois'
+                 WHEN AGE(CAST(c.consultation_datetime AS DATE), c.birthdate) < INTERVAL '5 years'  THEN '2. 12-59 mois'
+                 WHEN AGE(CAST(c.consultation_datetime AS DATE), c.birthdate) < INTERVAL '15 years' THEN '3. 5-14 ans'
+                 ELSE '4. 15 ans et plus'
+             END AS age_band,
+             CASE UPPER(c.gender) WHEN 'F' THEN 'F' WHEN 'M' THEN 'M' ELSE 'Inconnu' END AS sex,
+             (SELECT CASE
+                         WHEN SUBSTRING(part FROM POSITION(': ' IN part) + 2) ILIKE 'new%'
+                           OR SUBSTRING(part FROM POSITION(': ' IN part) + 2) ILIKE '%nouveau%' THEN 'Nouveau cas'
+                         ELSE 'Ancien cas'
+                     END
+                FROM UNNEST(STRING_TO_ARRAY(c.visit_attributes, ' / ')) AS part
+               WHERE LOWER(SPLIT_PART(part, ': ', 1)) = 'case type'
+               LIMIT 1) AS case_type
+      FROM consultation c
+  ),
+  confirmed AS (
+      SELECT DISTINCT e.visit_uuid, COALESCE(cn.name, ed.diagnosis_non_coded) AS diagnosis
+      FROM encounter_diagnoses ed
+      JOIN encounters e ON e.encounter_id = ed.encounter_id AND COALESCE(e.encounter_voided, false) = false
+      LEFT JOIN concepts cn ON cn.concept_id = ed.diagnosis_coded AND cn.locale = 'en'
+      WHERE COALESCE(ed.voided, false) = false
+        AND UPPER(ed.certainty) = 'CONFIRMED'
+  )
+  -- One row per consultation and confirmed diagnosis (a visit with two diagnoses
+  -- counts once under each). Presumed diagnoses are left out.
+  SELECT k.period_start,
+         k.consultation_datetime,
+         k.visit_id,
+         d.diagnosis,
+         k.age_band,
+         k.sex,
+         COALESCE(k.case_type, 'Non renseigné') AS case_type
+  FROM classified k
+  JOIN confirmed d ON d.visit_uuid = k.visit_uuid
+params: null
+template_params: null
+filter_select_enabled: true
+fetch_values_predicate: null
+extra: null
+normalize_columns: false
+always_filter_main_dttm: false
+uuid: 9e3cbd84-5f61-4a0d-8b48-3d7caf502e94
+metrics:
+- metric_name: count
+  verbose_name: COUNT(*)
+  metric_type: null
+  expression: COUNT(*)
+  description: null
+  d3format: null
+  currency: null
+  extra: null
+  warning_text: null
+- metric_name: cases
+  verbose_name: Cas
+  metric_type: null
+  expression: COUNT(*)
+  description: Consultations with this confirmed diagnosis
+  d3format: null
+  currency: null
+  extra: null
+  warning_text: null
+columns:
+- column_name: period_start
+  verbose_name: null
+  is_dttm: true
+  is_active: true
+  type: DATE
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: consultation_datetime
+  verbose_name: null
+  is_dttm: true
+  is_active: true
+  type: TIMESTAMP WITHOUT TIME ZONE
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: visit_id
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: diagnosis
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: age_band
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: sex
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: case_type
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+version: 1.0.0
+database_uuid: 4e5f4045-a62d-4964-b719-58229a60e7fe
