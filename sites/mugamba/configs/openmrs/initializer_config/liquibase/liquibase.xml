@@ -1633,4 +1633,293 @@
         </rollback>
     </changeSet>
 
+    <!--
+        #454 - consumables track batch and expiry too.
+
+        The product owner asked on 22 Oct 2026 for batch and expiry "même pour les consommables
+        médicaux". add_stock_items_from_catalogue-20261020 created the 38 consumable items with
+        has_expiration off; that changeset has run, so it is left as is and this one turns expiry
+        on. With it on, the stock app asks for a batch number and an expiry date on a receipt.
+
+        The items are found by their drug, so an item that existed before #437 is covered as well.
+        The precondition waits until #437 has created all 38 (onFail CONTINUE: unrecorded, tried
+        again on the next start); the update itself is idempotent. The rollback turns expiry off
+        again only on the items #437 created that have no batch with an expiry date yet.
+    -->
+    <changeSet id="consumables_track_expiry-20261023" author="Joshua">
+        <preConditions onFail="CONTINUE" onError="CONTINUE"
+                       onFailMessage="WARN (#454): the 38 consumable stock items of #437 do not all exist yet, so expiry was NOT turned on for them; this changeset is retried on every start.">
+            <tableExists tableName="stockmgmt_stock_item"/>
+            <columnExists tableName="stockmgmt_stock_item" columnName="has_expiration"/>
+            <sqlCheck expectedResult="38">
+                SELECT COUNT(DISTINCT d.uuid)
+                  FROM stockmgmt_stock_item si
+                  JOIN drug d ON d.drug_id = si.drug_id
+                 WHERE d.uuid IN (
+                                 'f757c47e-ba33-49c8-b480-86b833d7fe2c', 'deca7191-b059-4ca7-96bf-d1f4fd464566', '385415b2-8acb-4059-9f41-fc80cdb28536',
+                                 'd5728a3e-1079-4982-81b9-c299f9c962e0', '6f6eac84-1f8b-4195-b679-510ade2b11fd', '2633fab8-65c3-471c-93ce-c9d22a4141e7',
+                                 'f74820f2-ed9d-461f-8f68-9cf173637121', 'fc31500c-117d-4d85-bad3-b7e2214ecb3b', '08da2277-5bc8-497b-8b09-b5cf31f19153',
+                                 '997b1d6c-8fac-4d10-b190-1fd81da07ef4', 'ca317da9-d60c-4c99-84be-ce8bf9c9e4a0', 'b73dae17-d783-4405-aaf9-386d115b4bee',
+                                 '5cbd3265-647a-405d-b604-3f01abac28ae', '4aae662c-bed8-4072-aad3-fd4678d44adb', 'a76d2394-7da7-4447-801e-debc75a1cd59',
+                                 'c8b1c1f7-ef08-49b4-bef9-e3c90612015d', '1584d1a8-4f17-4d3b-9709-6c7c4700c2c6', '21b335be-53ea-41b6-a7f6-bf303a94ff95',
+                                 '8dd3ab60-0ffa-402d-923e-febe7e0d04b5', '2a843b45-acfc-461a-857e-bd7f010af8ba', 'b0fe9fc2-905d-43d3-acdb-b8fc9e5640cf',
+                                 'c296f8db-783d-44d0-9fcf-a7778e9ffc4f', '8c9c4875-7945-4e5b-b540-911428359888', '3830c927-c9c9-4cfe-b07f-f546d2f756c7',
+                                 'b52aaf8d-d0ed-41ac-bcc1-e89bd38a40a8', 'fddb038c-6bb1-4279-9032-e9169d857168', 'b31b8536-27e6-448c-b9f8-eec90b932663',
+                                 'e37eab30-6536-4a17-bfce-923b206f907b', 'baecc8a6-ad4d-4b67-8b3c-a855dd291d72', 'a1661e95-7897-4038-86cb-954d386fa8f9',
+                                 'a14a9244-2385-48b3-97cb-00df0cff240b', 'be5b5aec-0147-4d76-9e8f-5252f74188d8', 'e8d0cca7-f80f-4b70-8777-c158a4f996f4',
+                                 '5aa469d4-ddc6-4044-9607-bb25518031f1', '251caad1-14f3-4d5a-9233-ef5077acd5b3', 'fc8c6bc1-4dc3-406b-92bb-d0d1f34c18eb',
+                                 '4dd363d1-b503-4ce3-ad9b-d5dc0710236e', '1bcc87b5-1ae9-426b-b0a4-ad5929c00b02')
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            Turn on batch and expiry tracking for the 38 consumable stock items (#454).
+        </comment>
+        <sql>
+            UPDATE stockmgmt_stock_item si
+              JOIN drug d ON d.drug_id = si.drug_id
+               SET si.has_expiration = 1
+             WHERE si.has_expiration = 0
+               AND d.uuid IN (
+                                 'f757c47e-ba33-49c8-b480-86b833d7fe2c', 'deca7191-b059-4ca7-96bf-d1f4fd464566', '385415b2-8acb-4059-9f41-fc80cdb28536',
+                                 'd5728a3e-1079-4982-81b9-c299f9c962e0', '6f6eac84-1f8b-4195-b679-510ade2b11fd', '2633fab8-65c3-471c-93ce-c9d22a4141e7',
+                                 'f74820f2-ed9d-461f-8f68-9cf173637121', 'fc31500c-117d-4d85-bad3-b7e2214ecb3b', '08da2277-5bc8-497b-8b09-b5cf31f19153',
+                                 '997b1d6c-8fac-4d10-b190-1fd81da07ef4', 'ca317da9-d60c-4c99-84be-ce8bf9c9e4a0', 'b73dae17-d783-4405-aaf9-386d115b4bee',
+                                 '5cbd3265-647a-405d-b604-3f01abac28ae', '4aae662c-bed8-4072-aad3-fd4678d44adb', 'a76d2394-7da7-4447-801e-debc75a1cd59',
+                                 'c8b1c1f7-ef08-49b4-bef9-e3c90612015d', '1584d1a8-4f17-4d3b-9709-6c7c4700c2c6', '21b335be-53ea-41b6-a7f6-bf303a94ff95',
+                                 '8dd3ab60-0ffa-402d-923e-febe7e0d04b5', '2a843b45-acfc-461a-857e-bd7f010af8ba', 'b0fe9fc2-905d-43d3-acdb-b8fc9e5640cf',
+                                 'c296f8db-783d-44d0-9fcf-a7778e9ffc4f', '8c9c4875-7945-4e5b-b540-911428359888', '3830c927-c9c9-4cfe-b07f-f546d2f756c7',
+                                 'b52aaf8d-d0ed-41ac-bcc1-e89bd38a40a8', 'fddb038c-6bb1-4279-9032-e9169d857168', 'b31b8536-27e6-448c-b9f8-eec90b932663',
+                                 'e37eab30-6536-4a17-bfce-923b206f907b', 'baecc8a6-ad4d-4b67-8b3c-a855dd291d72', 'a1661e95-7897-4038-86cb-954d386fa8f9',
+                                 'a14a9244-2385-48b3-97cb-00df0cff240b', 'be5b5aec-0147-4d76-9e8f-5252f74188d8', 'e8d0cca7-f80f-4b70-8777-c158a4f996f4',
+                                 '5aa469d4-ddc6-4044-9607-bb25518031f1', '251caad1-14f3-4d5a-9233-ef5077acd5b3', 'fc8c6bc1-4dc3-406b-92bb-d0d1f34c18eb',
+                                 '4dd363d1-b503-4ce3-ad9b-d5dc0710236e', '1bcc87b5-1ae9-426b-b0a4-ad5929c00b02');
+        </sql>
+        <rollback>
+            <sql>
+                UPDATE stockmgmt_stock_item si
+                   SET si.has_expiration = 0
+                 WHERE si.uuid IN (
+                                 '7ce8d8ea-f21d-5525-a908-a0b83f34766a', '788e61ae-9c05-5f14-8068-d8c2d87da2b4', 'f839ffef-804c-5954-8e3d-4d3001b87b5b',
+                                 '666e4ee8-2bba-5102-970a-d4c1decad1dd', '98c74646-b6f3-5661-9a38-3a3c9bce1c62', '35003750-1b7b-56db-9ff5-0176ae6b9130',
+                                 '6fdc5ef6-09de-5a27-987b-c06c144bb00d', '8182e77c-2b70-5f0b-ad31-b045deb5187c', 'ccceae55-0271-54b3-9486-9f7509d4c1d8',
+                                 '8ee6a628-4ccf-502d-b38d-a3ecaab8c0ec', 'd2f7e57a-7bd7-5ae5-bb3b-f2973cf4ebe5', '7e56a745-19aa-5086-87f4-6f0ad0f961f3',
+                                 '5191bc1c-dcd2-5aaf-b3f1-6b2b3d6f784d', '7baddabc-b459-5edf-b2e0-6631cce6dde1', '97999d66-e1d4-590c-8fd8-d2d8dc90a4b8',
+                                 '735158b8-727e-5719-ae88-fda2398c0e70', '064cb067-1760-5e65-b5f2-8baf7d938dad', '4a262830-7873-5412-9ceb-1236a0d11f41',
+                                 'c0b798e7-f238-5cb5-9185-3ac3080b678a', '98f3a5e7-0b7f-5d13-8fef-03c61ec6e9a8', '34511d6b-ce64-5cac-8f71-d116c8bca694',
+                                 '09a8a405-e566-5f89-b7b3-483cc4e9e896', '195a642f-e5bd-5106-9d93-afe4d3d71030', 'f3678566-4c86-59e5-b87d-0d5054b1062d',
+                                 'af505d86-e929-5f41-b932-a93a3c2dda67', 'b2faa78f-6875-5bd9-bdcc-bf60bde7488c', '2a5a3b23-07f1-5a93-b100-a58f83c52f31',
+                                 'ae6c4b19-c903-5447-bbd3-13a7abee3167', '3961115d-268a-55a8-a37e-85ff6a05582a', 'a1094d32-9c62-5bfd-8c47-fe0e00e0ab81',
+                                 'cf5ef15a-4a9b-51b7-b1d0-0f27efd08462', '717f63b2-6750-5805-8085-919326ce275f', 'cefb98bd-6b23-5fcb-b7ec-8ea153920ba1',
+                                 'ba27c8c3-a6fe-53ce-8a91-9148f7bf41d4', '078a3f7c-2724-5bd0-bb41-202ed2291747', '123ba003-b225-582f-9443-862fa480b74f',
+                                 '595e5b44-c2e1-550d-a4c9-d81332ef1e5a', 'ed6ce6e9-0033-5a59-8a6c-a54170c72f4c')
+                   AND NOT EXISTS (SELECT 1 FROM stockmgmt_stock_batch b
+                                    WHERE b.stock_item_id = si.stock_item_id AND b.expiration IS NOT NULL);
+            </sql>
+        </rollback>
+    </changeSet>
+
+    <!--
+        #455 - the catalogue and the OpenMRS drugs aligned (product owner's answers of 22 Oct 2026).
+
+        sql/catalogue_alignment.csv maps every catalogue line of sheet 1 and every prescribed drug
+        of sheet 2 to its drug, its name and its stock unit, and says what was left out and why.
+        Renames and new drugs are in the drugs domain (drugs/*.csv); these changesets only make
+        the stock items and set their units.
+
+        The Initializer runs this file before the OCL import and the drugs domain, so on a new
+        database the drugs, the new drugs and the #454 units do not exist yet: each precondition
+        lists what its file needs, and onFail CONTINUE leaves the changeset unrecorded so it is
+        tried again on the next start (as add_stock_items_from_catalogue-20261020).
+    -->
+    <changeSet id="add_stock_items_catalogue_alignment-20261023" author="Joshua">
+        <preConditions onFail="CONTINUE" onError="CONTINUE"
+                       onFailMessage="WARN (#455): some confirmed drugs or stock units do not exist yet (drugs or OCL not loaded), or the stockmanagement tables are missing, so their stock items were NOT created; this changeset is retried on every start.">
+            <tableExists tableName="stockmgmt_stock_item"/>
+            <tableExists tableName="stockmgmt_stock_item_packaging_uom"/>
+            <columnExists tableName="stockmgmt_stock_item" columnName="has_expiration"/>
+            <sqlCheck expectedResult="120">
+                SELECT COUNT(DISTINCT uuid) FROM drug
+                 WHERE uuid IN (
+                                 '007d8518-52a6-47e0-bf3e-61b208661c65', '0539c860-2b7d-4479-aae9-b4442e69c4a5', '072054ee-b1d3-433b-9808-b4a29f482e63',
+                                 '0b273e54-5dc0-4718-ac57-6c13dcbb961d', '0d69879e-1b29-4286-816d-024a63180d57', '0d9c3538-b0ac-4aed-9508-49a6b342fd87',
+                                 '0ff4bd85-b243-472d-a35b-13e33fc62219', '12bcc620-d2d4-4968-a032-d956f893c90e', '1465c189-a180-45aa-baef-92e784200d65',
+                                 '163a4146-4b54-48b1-ac0c-96f7e053916b', '18f38708-0f59-442a-b545-4a767e901534', '1b236044-7df7-488c-958d-b83b642a24e7',
+                                 '1cca586a-cf7d-4076-a9c1-d18b80914e92', '1da6a789-fff0-4ae2-926f-5a9cb3795311', '200cf098-d019-47f1-865f-7ec9099d49be',
+                                 '2331b3f7-e97f-41b6-99f5-d29a16d2d230', '241df482-d756-404b-987c-4a080ac53c73', '245628ce-af36-40b9-bcef-7555e5b3e627',
+                                 '25ef1ac8-f926-4ff8-af12-d4317b06f9b7', '2610eccc-4e39-4a7f-81d0-f5b95c5874e2', '2a84e0ae-caaf-434e-baca-8ed1baf5adb3',
+                                 '2b25ef7c-d710-4c1d-bc5a-bd8e2e34133c', '2b6bf939-8f96-4171-8eee-b454199133b8', '2b8d6e0a-9d9d-44c7-b9f2-36d2fc898bda',
+                                 '2ddc56ea-ea59-4e6c-a7f2-db9555fcf2e5', '2ec9e0d1-e89c-4da8-9cf8-8a7ffa1300c5', '30d8f5ce-89ba-4805-8d80-e3571ca38ba2',
+                                 '31b26b90-e8fe-47af-9771-86805f270fd7', '331aa9d0-83cb-4206-a49e-f20bd09f4566', '35ee19da-c333-411a-8936-a5fd4561ef7d',
+                                 '362e76bc-bb0e-4fc8-9b14-6938e04fbd4a', '3b0bbf89-2ba1-42cc-b75b-f71df03747ad', '3cc8ca86-64b1-4b39-bbd2-0a64197d70ce',
+                                 '3ed44baf-bae0-4484-907b-4fbeeec85c13', '410b3fde-c736-41a8-931d-5dd5550297d1', '4165a730-89e3-47bb-a3e2-ba523771dce0',
+                                 '43f0af98-cd9f-4baa-99b1-75f56fcf84d7', '46076a0c-a67b-4d42-a96f-69bbd6de644c', '473946b5-7a58-4f78-a3db-72eb6eac57e2',
+                                 '4a89fb08-6005-4be1-9f97-a4ec5c220dda', '4d42b0b3-8c2a-43c7-bb13-a8df441debfe', '50edd29c-2e36-4a1a-97e8-ba0dc656aee0',
+                                 '54f24ddc-2a49-49bf-931e-f437ba1507e1', '58000c77-00ec-408f-883b-0c0412c54bb6', '58fe137b-5b34-4ba0-ae2f-49793434e603',
+                                 '596e6322-20d8-487d-8416-f0fe67d8386f', '5a45d516-4cf9-4393-9c41-d659084ca491', '5b49f421-fdc2-4ff8-b688-6cf912c34236',
+                                 '5d9220a1-65d8-4b6f-be9e-7d373810dafe', '5eac7195-bd6e-42f2-9fc6-bfe314f2d92a', '634b366d-213a-467e-98c6-59a5e61af715',
+                                 '634cc60c-29e1-45cc-b7a4-025682996acf', '65d1e9c2-7424-4df3-bd64-211143d0f1c3', '6694bb74-9c2f-4bf5-87fe-d90069b6c788',
+                                 '675545bd-76f0-45bf-a575-a79edc578f36', '688b604b-ee59-4486-883e-3b3ba4622609', '6b561480-3352-46c8-a54c-4d0c5999aef6',
+                                 '6b6d5453-c931-4c9a-93d2-57019057ef25', '6b98dae0-246b-4348-a253-4647d6ba8717', '6ccb5987-3bea-41c6-9376-e5f9f02de369',
+                                 '6fd05b9d-3a0e-4cf0-91c8-aa94dbbdac10', '728b1639-8d38-44ca-b3e8-ba33eb09631e', '75264f61-a28e-4670-aa0c-1fdaf148207e',
+                                 '77317d9a-9f31-4b9b-8aff-fa8ad59b61d1', '786bee02-faf2-4041-9601-9f3a8b975651', '789f3f90-5529-409d-b6aa-3841c823f3d9',
+                                 '7e5698a1-a926-4a2f-ab28-47c413c5a4b8', '7fe7b391-0095-4005-b2e4-c64e890dc548', '82e09f5e-6fe4-42da-918a-a5abc1daa92c',
+                                 '86ee5756-be99-4cf1-bd07-64ae58072376', '871b78c8-6f21-4e45-b2dc-a5a7f8d0e6b9', '87ab3604-95f3-47fd-9c2e-c12bb64c4b77',
+                                 '8dadaa53-bc90-4b0e-8967-a850599c7f37', '913a6fe5-0727-4b9f-9269-bc83f0c7d7a2', '91f37030-c050-4964-a3d7-051763090bf2',
+                                 '960eba46-585a-4763-b74b-c08996899af1', '9685b6a5-0a16-454a-bcf1-cfee5a705312', '9b95b450-bace-4eb8-a665-7b7ce93cef07',
+                                 '9c2c5a67-a300-4f57-ab28-dfaab8edd6b3', '9d2244bb-be72-4443-bf5e-001d0ae32d20', 'a1113e6c-13c4-4fe0-ae01-9ffe57805805',
+                                 'a334e047-7f89-4e4e-88f6-d99bb9ce1e26', 'a3bb95b7-158c-4568-b17b-877b2e0d65a1', 'a5890a9b-ce92-44a9-a929-b33709bd5d8a',
+                                 'a7549fad-09d5-4a1d-a2f9-0d83aede10df', 'ac7c10ed-19e1-4784-9a95-cb2f9ea71d8a', 'afec8e63-860d-48dd-b143-55fc21bd1967',
+                                 'b0a2cd9f-12bf-4d49-bed3-aa2ba4f6e2bc', 'b0e044fb-8a54-4d16-9fc3-502c11b22c2c', 'bb0121c5-b218-4917-88ce-949226160c53',
+                                 'c0b992fd-cc53-4b51-a77f-7908634b5d12', 'c273b18a-8e47-45f2-ac39-352e96ad68c7', 'c3426765-6b26-457f-adf3-d3d829f62e25',
+                                 'c3468a8f-ea19-4abf-9f0e-b318bd2f4e55', 'c4a86f97-688f-478c-942e-97afa0ca2d54', 'c72a6b80-8c81-4450-b02e-87d8b4cdae46',
+                                 'c77ccb7d-2612-439d-8216-ca9f3ca22a16', 'c848954c-078b-4ad3-8fcb-114f27c9c43d', 'cb3f13b3-4c69-4462-b3b9-07690ae7ce86',
+                                 'cef563d7-05c9-4804-8684-a75b35e3405f', 'd2ebc592-3ebe-4a44-b374-32c82745069e', 'd337d23d-a300-4f1a-b151-34c3b7f0d740',
+                                 'd568c612-69ee-4e7f-b49c-f810cc0a43cd', 'da50d14b-6d8a-43ca-ae82-dfe43dcb1fdd', 'db7df9f0-3d00-4ace-8143-1254b7b674c2',
+                                 'dde7cb81-78c6-4918-b307-a5902c2a2a74', 'e012215b-6498-42c5-b70b-59d7efd2e61f', 'e3661b89-123d-4946-96ea-791dc5b281cf',
+                                 'e3a6020f-5693-464e-941c-0d13e8ab6ed5', 'e9d0579d-65b5-4214-8dd0-757b2cf76153', 'ebaca3cf-8c36-48a5-8456-737906180e78',
+                                 'edb36207-2e2c-4e56-b8f4-199b130445c8', 'ee7f0744-9fcc-47d1-99b2-8b97860c6b79', 'f275b7ef-42cd-4be8-8269-05ed96ace01e',
+                                 'f38172a5-e63b-4edd-82f8-171d48ca20d8', 'f58db908-8343-4ed9-874a-840e6e606560', 'f5d2e03a-77d2-48d5-958d-ba5abba0c711',
+                                 'fd74b4d5-db14-466e-bea8-e211e655dcf7', 'fe72403a-4b29-4673-babd-23b7e464e9b1', 'ffeaf200-5288-41c6-9754-e0e310d83273')
+            </sqlCheck>
+            <sqlCheck expectedResult="9">
+                SELECT COUNT(DISTINCT uuid) FROM concept
+                 WHERE uuid IN (
+                                 '04144d11-cfed-4930-8ffc-f1b8be92440b', '2867b8c2-53d1-41cd-a1e9-aad3b1789712', '391d2a1b-2aec-4bd7-b43b-e294e7f2b9b9',
+                                 '7f4638f9-17fe-5bf4-83c5-8a2eff7d54dc', '8f61152c-e4e4-4c27-9f31-b52fdfde4943', '94b2f0e7-0885-430f-8733-e2a93f03095d',
+                                 'ad460f3a-0eec-54db-95a1-d358b8fa3a51', 'c4b6c7b7-4906-4f76-af51-60ec9a34932e', 'd81e10fe-0f6a-4b75-b9c0-a5e72d56f3b2')
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            Create a stock item for each confirmed catalogue drug and each prescribed drug that has none, in its pack unit (#455).
+        </comment>
+        <sqlFile path="sql/stock_items_catalogue_alignment.sql" relativeToChangelogFile="true" stripComments="true"/>
+        <rollback>
+            <sqlFile path="sql/stock_items_catalogue_alignment_rollback.sql" relativeToChangelogFile="true" stripComments="true"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="add_stock_items_new_drugs-20261023" author="Joshua">
+        <preConditions onFail="CONTINUE" onError="CONTINUE"
+                       onFailMessage="WARN (#455): the drugs created by #455 do not all exist yet (drugs or OCL not loaded), so their stock items were NOT created; this changeset is retried on every start.">
+            <tableExists tableName="stockmgmt_stock_item"/>
+            <tableExists tableName="stockmgmt_stock_item_packaging_uom"/>
+            <sqlCheck expectedResult="7">
+                SELECT COUNT(DISTINCT uuid) FROM drug
+                 WHERE uuid IN (
+                                 'b8ad6a27-762b-511a-9754-3bd31756261d', 'd675376d-b35f-48d3-aa21-dd5250106f8a', 'd848cbec-c583-5ef2-8b3d-bf1c4fb33ee2',
+                                 'e024b3ce-1c66-541a-8a8e-48042147d645', 'ec2ec644-fd9f-5de9-99c3-12d2fee69208', 'f9f45782-4f27-5a12-9601-02a64e010848',
+                                 'fc4a6e17-91fd-5022-a605-f1a144bc3899')
+            </sqlCheck>
+            <sqlCheck expectedResult="3">
+                SELECT COUNT(DISTINCT uuid) FROM concept
+                 WHERE uuid IN (
+                                 '04144d11-cfed-4930-8ffc-f1b8be92440b', '391d2a1b-2aec-4bd7-b43b-e294e7f2b9b9', 'd81e10fe-0f6a-4b75-b9c0-a5e72d56f3b2')
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            Create a stock item for each of the 7 drugs created by #455.
+        </comment>
+        <sqlFile path="sql/stock_items_new_drugs.sql" relativeToChangelogFile="true" stripComments="true"/>
+        <rollback>
+            <sqlFile path="sql/stock_items_new_drugs_rollback.sql" relativeToChangelogFile="true" stripComments="true"/>
+        </rollback>
+    </changeSet>
+
+    <!--
+        #455 - sheet 3: the stock and dispensing unit of the #437 stock items.
+
+        The product owner gave the pack unit of each item (Flacon for a syrup, Ampoule for an
+        injection, Rouleau for a bandage...). add_stock_items_from_catalogue-20261020 has run, so
+        it is left as is and this changeset changes the units of the 79 items whose unit differs.
+        It waits until all 79 items and the units exist (Rouleau, Ovule, Paire and Baxter come
+        with the #454 OCL release).
+    -->
+    <changeSet id="stock_item_units_sheet3-20261023" author="Joshua">
+        <preConditions onFail="CONTINUE" onError="CONTINUE"
+                       onFailMessage="WARN (#455): the #437 stock items or the pack units of #454 do not all exist yet, so the sheet-3 units were NOT set; this changeset is retried on every start.">
+            <tableExists tableName="stockmgmt_stock_item_packaging_uom"/>
+            <sqlCheck expectedResult="79">
+                SELECT COUNT(DISTINCT uuid) FROM stockmgmt_stock_item
+                 WHERE uuid IN (
+                                 '12367a52-b1a5-5fe2-aa1f-8d5006832f29', '123ba003-b225-582f-9443-862fa480b74f', '14ebe40b-4b37-5e72-a178-a84fe7095518',
+                                 '15e46c39-6b32-5f9e-bc40-373afc1c4a8b', '170e4aa9-9213-530e-af1d-de66d109ca59', '195a642f-e5bd-5106-9d93-afe4d3d71030',
+                                 '1db804d4-4cdb-5a59-8f0d-046498b10cd8', '2171d539-1f37-521d-b83b-628dad97731a', '28042cbc-2adf-5310-8bbf-8a10f9dfcbc5',
+                                 '287ab082-2155-532c-ac0e-6f2f58e9cbc8', '2e03709b-a69d-5614-8fcd-3d50e9a5c56a', '31e72bfe-e52e-57d9-8a6d-7d19f11c3ea7',
+                                 '34511d6b-ce64-5cac-8f71-d116c8bca694', '3ca36f1d-02a8-5d6a-91ce-4e51468ec51e', '3ffe7dc3-7bfd-5cb0-9135-1f3e2ed4e5cd',
+                                 '444e9d88-be09-5c01-9235-9269f7b8cacc', '44d84aee-a03a-543a-9d7e-68bac7e8bcd0', '44fb1907-4cf1-5dfb-9c61-0d5de90377a5',
+                                 '4ae08fc9-19d4-5f3e-87aa-9e02015d9118', '4bce91f1-d8a9-596a-a1b8-ee0d5248aed9', '4db91674-0fd5-5cef-b0a3-c1fe42cb1c38',
+                                 '514a329d-70ee-5941-b274-f5e95ba0a76f', '538eca2f-80e1-5607-b044-421e1a7c49c9', '540361a9-2e7a-5151-a80a-24c74a6133e1',
+                                 '556fed48-d5d5-5487-b862-8c85771add2c', '5a37ee74-1d84-5e9f-8705-8a4a627fc057', '618aad15-ce68-5995-a325-6a7cd8d90b08',
+                                 '6198c3c3-9df8-590e-98d1-1275b7d77899', '62ef0f90-687e-5041-9303-c0de941e30d7', '641719d7-53e4-5d53-b4e8-904b2448f213',
+                                 '6fdc5ef6-09de-5a27-987b-c06c144bb00d', '761000a7-c43c-51ff-9b17-35f03001dd62', '76ff8079-523d-5ee2-ad13-9d650ceb17ba',
+                                 '7e5c06e1-94f6-583b-8be2-ed5162a98e7f', '8182e77c-2b70-5f0b-ad31-b045deb5187c', '822c96a9-1721-532c-9116-fcfb4d4c3d58',
+                                 '8a79d883-4029-52a4-bace-55fad090a61c', '8b9102db-9b8b-5f52-afa1-cda6dafb6059', '933722fc-f384-5c7e-bdc6-35e63fec6b5a',
+                                 '9380b518-ec39-5354-bd6a-ffdffabcbe39', '93e2a4ec-f0b8-526f-b0e7-1444871aaebc', '953db035-2439-51c0-a17e-ee5eabc7897d',
+                                 '96f3fa75-22c2-52c4-9f2d-c18969aac299', '97999d66-e1d4-590c-8fd8-d2d8dc90a4b8', '996f1ded-06c3-50f8-96f7-50d079ad642a',
+                                 'a1094d32-9c62-5bfd-8c47-fe0e00e0ab81', 'a47cd4a6-dc2f-58ba-9894-34c6a61d0949', 'a5065b9e-4e01-5ef5-be1e-1a074bf7018d',
+                                 'a56539d7-554c-5f3b-8031-f0eefcbad003', 'a67b2015-1d6f-5811-aaad-5ea3a92d73bd', 'a79d0017-fad3-5fb1-a9a0-cf8843e08733',
+                                 'b14153a5-cad5-57ec-9363-e887552ca319', 'b1863c5f-884a-5213-a49f-33c0cc415931', 'b32333f3-17dd-5f52-9e6a-360391453a83',
+                                 'b342347a-68a0-5b5d-b045-fe5e137d4c85', 'b47e6bb6-d090-5146-848c-b8017e3ec684', 'b62e07b1-7cf4-51ec-9380-648ec06a1029',
+                                 'b6d882d0-e442-5593-9be0-22c8dd6f0525', 'b6eb3798-f994-5ede-9760-436bd1272ca0', 'bb24db96-2601-59ec-b311-a3c5809c57ed',
+                                 'bbc2e588-735f-53a2-872f-236a1f55f8bb', 'bfa7616f-ff55-53cc-a8c7-2c2df08d241b', 'c2840600-068d-5c43-828a-62e2ff055951',
+                                 'c4d37fb1-6a27-5293-9875-f9165f6378f8', 'c5f673dd-15f1-5e68-aaf2-6848184d684a', 'c8e73d63-efee-5de8-a34e-0322e8de5465',
+                                 'cb03bb61-9d62-56a7-8913-3721c21009bd', 'ccceae55-0271-54b3-9486-9f7509d4c1d8', 'd45bb867-9850-5717-b4a3-f08da03742a8',
+                                 'd661baca-d6a3-5208-b33a-124881dca560', 'd7d349a1-a7bb-567b-973b-f2f8594faebe', 'd950492c-81c4-51db-8ef6-14596a3a0bab',
+                                 'd95c6d93-9c27-58f9-871a-4456b31540d2', 'e2d709ce-bfeb-5d94-8d88-82743adfba71', 'e5f80555-27f4-5fd2-b0dc-9a323ca84278',
+                                 'ea4f361a-b41a-5279-acbb-96dd952ffbbf', 'f563d83b-0cfa-513b-814c-966eb1ac20ca', 'fc5de89e-2bc6-51f7-a277-a3b0c8bf3816',
+                                 'fffcc989-7af9-5c26-915c-512c7973b21b')
+            </sqlCheck>
+            <sqlCheck expectedResult="9">
+                SELECT COUNT(DISTINCT uuid) FROM concept
+                 WHERE uuid IN (
+                                 '04144d11-cfed-4930-8ffc-f1b8be92440b', '2867b8c2-53d1-41cd-a1e9-aad3b1789712', '391d2a1b-2aec-4bd7-b43b-e294e7f2b9b9',
+                                 '40af7514-27d1-59f7-8acf-e2a1b5f35065', '7f4638f9-17fe-5bf4-83c5-8a2eff7d54dc', 'ad460f3a-0eec-54db-95a1-d358b8fa3a51',
+                                 'c4b6c7b7-4906-4f76-af51-60ec9a34932e', 'cb3566e8-0ba7-51a7-b468-719953d7bffa', 'd81e10fe-0f6a-4b75-b9c0-a5e72d56f3b2')
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            Set the stock and dispensing unit of the #437 stock items from the product owner's sheet 3 (#455).
+        </comment>
+        <sqlFile path="sql/stock_item_units_sheet3.sql" relativeToChangelogFile="true" stripComments="true"/>
+        <rollback>
+            <sqlFile path="sql/stock_item_units_sheet3_rollback.sql" relativeToChangelogFile="true" stripComments="true"/>
+        </rollback>
+    </changeSet>
+
+    <!--
+        #455 - the 15 catalogue items that did not exist in OpenMRS (11 medicines, 4 consumables).
+        Their concepts are in the OCL release uvl-drugs 20261023-1 and their drugs in
+        drugs/uvl-drugs-issue455.csv, which load after this file: the changeset waits for them
+        (onFail CONTINUE, tried again on the next start).
+    -->
+    <changeSet id="add_stock_items_catalogue_new_items-20261023" author="Joshua">
+        <preConditions onFail="CONTINUE" onError="CONTINUE"
+                       onFailMessage="WARN (#455): the 15 catalogue items created by #455 do not all exist yet as drugs (drugs or OCL not loaded), so their stock items were NOT created; this changeset is retried on every start.">
+            <tableExists tableName="stockmgmt_stock_item"/>
+            <tableExists tableName="stockmgmt_stock_item_packaging_uom"/>
+            <sqlCheck expectedResult="15">
+                SELECT COUNT(DISTINCT uuid) FROM drug
+                 WHERE uuid IN (
+                                 '15c1c28f-b42c-5bc7-bf1a-7042f5282b79', '19c548d7-93e8-5640-894e-0af3340a8f77', '2913f1b6-5a2a-5a82-910d-0153738bae7d',
+                                 '480a8630-392b-5d05-a58d-bf1357b92927', '48fceeae-7c8a-5314-8163-4273263775e9', '5b0fcfb2-dc90-5004-9c96-c03a993283ae',
+                                 '62d3cb2f-2603-5db3-8b8c-5b3a25282ec1', '876055fc-04a5-5999-921c-583bd2f8f3a8', '8e6c7618-c278-57c3-9074-f6c84aae7dcf',
+                                 'a20b85ad-0ea5-521f-a7fa-b1d3feae7bee', 'b75a92eb-d373-5b2c-87f7-b1fe9ad5b635', 'd91ba34d-7b16-5827-be4e-bf9abc2e89e4',
+                                 'db025a04-ac09-56be-89e6-57edaff547dc', 'e3bdc9a1-1cfd-5c2a-808a-eee6556102c2', 'e6eedfd7-8f9b-5791-93ad-9bf2e192aabb')
+            </sqlCheck>
+            <sqlCheck expectedResult="6">
+                SELECT COUNT(DISTINCT uuid) FROM concept
+                 WHERE uuid IN (
+                                 '04144d11-cfed-4930-8ffc-f1b8be92440b', '391d2a1b-2aec-4bd7-b43b-e294e7f2b9b9', 'bbe6f178-8adf-401c-89e4-ca8e0ccc378a',
+                                 'c4b6c7b7-4906-4f76-af51-60ec9a34932e', 'cb3566e8-0ba7-51a7-b468-719953d7bffa', 'd81e10fe-0f6a-4b75-b9c0-a5e72d56f3b2')
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            Create a stock item for each of the 15 catalogue items created by #455.
+        </comment>
+        <sqlFile path="sql/stock_items_catalogue_new_items.sql" relativeToChangelogFile="true" stripComments="true"/>
+        <rollback>
+            <sqlFile path="sql/stock_items_catalogue_new_items_rollback.sql" relativeToChangelogFile="true" stripComments="true"/>
+        </rollback>
+    </changeSet>
+
 </databaseChangeLog>
