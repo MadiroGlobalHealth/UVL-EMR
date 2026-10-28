@@ -2032,4 +2032,46 @@
         </rollback>
     </changeSet>
 
+    <!--
+        #463 - every stock item shows its product name.
+
+        The stock app shows a stock item by its common name: the "Article" column of an
+        operation's lines (stock-items-table.tsx, key commonName) and the "Nom Commun" column of
+        Items (app 3.2.1). The seed SQL (sql/stock_items.sql, #437, and any later seed) inserts
+        stock items without one, so both columns were empty. This copies the drug's name into
+        common_name wherever it is NULL or blank.
+
+        runAlways, so a stock item that a seed adds later gets its name on the next start
+        without touching that seed; runOnChange, so editing this changeset does not stop
+        OpenMRS on a checksum. Idempotent: an item that has a name is left alone, so a name
+        typed in the app is never overwritten and a second run changes nothing.
+        common_name is VARCHAR(255) (stockmanagement liquibase, stockmanagement-1758855877841-2),
+        as is drug.name; LEFT keeps that true whatever the drug table allows.
+
+        The stock module also indexes common_name for its full-text search (Hibernate Search),
+        and this UPDATE does not reach that index. Search is unaffected: the stock item search
+        falls back to drug and concept names (StockItemResource), as it did before.
+
+        No rollback: once run, a copied name cannot be told apart from one a user typed.
+    -->
+    <changeSet id="stock_item_common_name_from_drug-20261027" author="Joshua" runAlways="true" runOnChange="true">
+        <preConditions onFail="CONTINUE" onError="CONTINUE"
+                       onFailMessage="WARN (#463): the stockmanagement table stockmgmt_stock_item does not exist yet, so stock items were NOT given their drug name; this changeset runs again on every start.">
+            <tableExists tableName="stockmgmt_stock_item"/>
+            <columnExists tableName="stockmgmt_stock_item" columnName="common_name"/>
+        </preConditions>
+        <comment>
+            Give each stock item with a drug and no common name the drug's name, so stock operations and Items show the product (#463).
+        </comment>
+        <sql>
+            UPDATE stockmgmt_stock_item si
+              JOIN drug d ON d.drug_id = si.drug_id
+               SET si.common_name = LEFT(TRIM(d.name), 255)
+             WHERE si.voided = 0
+               AND (si.common_name IS NULL OR TRIM(si.common_name) = '')
+               AND d.name IS NOT NULL AND TRIM(d.name) &lt;&gt; '';
+        </sql>
+        <rollback/>
+    </changeSet>
+
 </databaseChangeLog>
