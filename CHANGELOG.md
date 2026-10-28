@@ -118,6 +118,20 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   Gélule, Ovule, Paire, Baxter) and every unit an existing stock item already uses. Bouteille is
   now called **Flacon** and Unité **Pièce**, everywhere the unit is shown, prescriptions
   included. (#454)
+- **Prescriptions and the stock use the catalogue's names and lists.** 33 drugs take the name the
+  product owner gave them on 22 Oct 2026 (for example Amoxicilline Gélule 500mg, was Capsule;
+  Céfotaxime Injectable 1g; Fluditec Sirop 2% and 5%). Seven drugs are new: Febrilex Junior Sirop,
+  Ibuprofène Comprimé 200mg, Neuroba Comprimé 300mg, Nystatine Comprimé 500 000UI, Pénicilline G
+  Injectable 1MUI, Phénobarbital Injectable 40mg/2ml and Presept Comprimé. So are the 15 catalogue
+  items the product owner named that OpenMRS lacked: 11 medicines (Alcool dénaturé 98%, Artésunate
+  Suppositoire, Auropent, Aurozole and Predimax Collyre, Cefixime Sirop 100mg, Clavox Injectable,
+  Cloxacilline Injectable 500mg, Cotrimoxazole Comprimé 160/800mg, Salbutamol Injectable 0,5mg,
+  Vecuronium Injectable) and 4 consumables (Gel Echographique, Robinet à 3 voies, Rouleau de gaze
+  90 cm x 91 m, Sachets pour le conditionnement des MEG). All 22 new drugs can be billed: each has an
+  Odoo product at 1.00, for finance to price. 142 drugs get a stock item, so every drug prescribed
+  on UAT in the last 90 days now is one. 79 stock items change to
+  the pack unit of sheet 3 (Flacon for a syrup or eye drops, Ampoule for an injection, Rouleau for a
+  bandage, Paire for gloves). Past prescriptions are unchanged: only the names change. (#455)
 
 ### Added
 - OpenMRS role and Keycloak `openmrs` client role **Central Pharmacist** (inherits `Pharmacist`
@@ -173,6 +187,37 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   properties are unchanged: stockmanagement 2.1.2 declares them but never reads them. (#454)
 - Liquibase `consumables_track_expiry-20261023` turns on `has_expiration` for the 38 consumable
   stock items of #437. (#454)
+- OCL release `uvl-drugs` 20261023-1 (sources `uvl-ciel` and `uvl-custom` 20261023-2), which
+  replaces 20261001 and adds twelve concepts; nothing else in the collection changes:
+  - CIEL clones in `uvl-ciel` under CIEL's UUID, each with a SAME-AS mapping to CIEL in the
+    source: Penicillin G / Pénicilline G (`81725AAAA…`, no mapping yet), Vecuronium / Vécuronium
+    (`86144AAAA…`) and Denatured ethanol / Éthanol dénaturé (`74436AAAA…`, synonym Alcool dénaturé).
+  - `uvl-custom` drugs: Febrilex Junior (`dc9b1284-9af3-5bf6-b649-d4d3336d8ffc`), Presept
+    (`2528e3b8-5033-53c7-b903-6faae749cb87`), Auropent (`0959df36-5b51-5702-9069-dab6d6b8aa79`),
+    Aurozole (`e3fa2473-5e92-5440-b61e-317ee0e963ea`), Predimax
+    (`c038a409-1466-529b-8954-6ee295122733`).
+  - `uvl-custom` medical supplies: Gel échographique (`e92664ff-a497-559d-bac6-03d8b24113c8`),
+    Robinet à 3 voies (`98638538-715a-59bb-b392-4ef9cc8bf9ba`), Rouleau de gaze
+    (`53e24daf-43a9-5b00-9605-68513cf9d2f3`), Sachets pour le conditionnement des MEG
+    (`1a4719d4-f393-53f4-a095-926afd893f88`).
+  Artésunate, Cefixime, Amoxicillin / clavulanate (Clavox), Cloxacillin, Cotrimoxazole and
+  Salbutamol reuse their existing concepts. (#455)
+- `drugs/uvl-drugs-issue455.csv`: 21 new drugs. Neuroba Comprimé 300mg was already in
+  `uvl-drugs.csv` but never loaded, because its concept is in no OCL release; it now uses
+  Gabapentin (`d315de65`), of which Neuroba is a synonym. (#455)
+- Liquibase `add_stock_items_catalogue_alignment-20261023` (120 drugs) and
+  `add_stock_items_new_drugs-20261023` (the 7 new ones): stock items, batch and expiry tracked, in
+  the pack unit, built like those of #437. Each waits until its drugs and units exist.
+  `add_stock_items_catalogue_new_items-20261023` does the same for the 15 created catalogue items.
+  `sql/catalogue_alignment.csv` maps every catalogue line of sheet 1 and every prescribed drug of
+  sheet 2 to its drug, final name and unit, and lists what was left out. (#455)
+- Odoo `product_variant/uvl-drugs-issue455.csv`: a product for each of the 21 new drugs (Neuroba
+  already had one), keyed `init.<drug uuid>` as the bridge looks them up, category
+  `categ_products_drug_orders`, UoM the drug's dosage form, tracked by lot with expiry. No
+  `lst_price` column, so each arrives at 1.00 for finance to price (#439). (#455)
+- Liquibase `stock_item_units_sheet3-20261023`: the unit of 79 stock items of #437, from sheet 3.
+  A packaging unit already used by a stock movement is not rewritten: the item gets a second one
+  in the new unit. (#455)
 
 ### Changed
 - **The Pharmacist can request stock from the central store and receive it** at the dispensation:
@@ -210,6 +255,15 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   synonyms), Gélule replaces the misspelt Gellule as the preferred name, and Tube gets its French
   name, and so does Application. Only the names change: the concepts keep their UUIDs, so drugs, stock items, orders and
   the Odoo units, which are matched by UUID, are unaffected. (#454)
+- Drug names follow the catalogue for the 33 drugs the product owner named. A drug's name in
+  OpenMRS is the **Odoo product name**: the Initializer writes the drugs CSV's `Name` column (not
+  `Name:fr`) on load, and minutes later the `eip-odoo-openmrs` product synchronizer writes the
+  Odoo product's name over it. So the new name is set in the Odoo `product_variant` CSVs (the
+  product loader updates `name` on reload; only `lst_price` is `NO_UPDATE`, so no price changes)
+  and in `Name` and `Name:fr` of the drugs CSVs, so both writers agree. The 21 new drugs get their
+  French name in `Name` too. The drug UUIDs do not change, so orders, dispenses, stock items and
+  the Odoo products keep pointing at the same drug. Fluditec's strengths read 5% and 2% (were
+  0.05% and 0.02%), and Glibenclamide gets 5mg. (#455)
 
 ### Removed
 - **The Odoo `product_price` loader and `prices.csv` (290 products).** Finance owns prices in Odoo;
@@ -316,8 +370,8 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
     `uvl-mugamba-frontend-config.json` set `@openmrs/esm-dispensing-app` →
     `"enableStockDispense": true`. Then the Pharmacist must pick a batch for every dispense, from
     stock at the session location. Do it only when both are true:
-    - every drug that is prescribed is a stock item. On UAT 224 of 428 drugs are not, and Dispense
-      is disabled for them, with no message. The product owner's sheet adds them.
+    - every drug that is prescribed is a stock item. Since #455 all 141 drugs prescribed on UAT in
+      the 90 days to 21 Oct 2026 are. A drug without one has Dispense disabled, with no message.
     - the opening stock is counted at **each pharmacist's box** (Rx-DISP-1 to -3, #453), and each
       pharmacist dispenses logged in at their own box. A drug with no stock in that box cannot be
       dispensed there. Stock left at Rx-DISP itself can't be dispensed from a box, and Rx-DISP
@@ -341,6 +395,14 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
       the configuration. See `staff-roster.example.csv`.
     Pharmacists then sign in at their box, not at Rx-DISP. No Keycloak change: the roles keep
     their names.
+16. **#455, catalogue alignment:** the stock items and units need the drugs and the #454 units,
+    which the Initializer loads after Liquibase. Restart OpenMRS once after the first start, then
+    check that `add_stock_items_catalogue_alignment-20261023`, `add_stock_items_new_drugs-20261023`
+    `stock_item_units_sheet3-20261023` and `add_stock_items_catalogue_new_items-20261023` are
+    `EXECUTED`. Finance prices the 21 new Odoo products (they arrive at 1.00; the list is
+    `product_variant/uvl-drugs-issue455.csv`). Stock items now count in pack units
+    (Flacon, Ampoule...) while many prescriptions are written in millilitres or milligrams: before
+    stock deduction goes on (note 13), the pharmacists must know to dispense in the pack unit.
 
 ### Known issues
 - On the stock app's new user role scope form, `Inventory Administrator` gets a 403 from
