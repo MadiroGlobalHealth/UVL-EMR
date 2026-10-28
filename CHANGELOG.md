@@ -100,6 +100,14 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   no quantities yet, so the pharmacy can count and move stock. A Receipt goes into Pharmacie (Rx),
   and the stock module's own demo locations, "Main Store" and "Main Pharmacy", are no longer
   offered. **Dispensing does not deduct stock yet** and works as before. (#437)
+- **Each dispensing pharmacist has their own stock box.** Pharmacie - Dispensation Box 1, 2 and 3
+  (Rx-DISP-1 to -3) sit under Pharmacie - Dispensation. A pharmacist signs in at their box; once
+  deduction is on, a dispense takes from that box. The central pharmacy issues to the boxes, and a
+  pharmacist can send stock from their box to another box that has run out. Each pharmacist enters
+  their own box's opening stock and month-end count (stock take); the central pharmacist can too.
+  (#453)
+- **The Central Pharmacist no longer dispenses.** They receive, count, correct and issue stock;
+  in the dispensing app they can see prescriptions but get no Dispense action. (#453)
 - **A price finance changes in Odoo stays changed.** A deploy or a database restore no longer
   resets 290 product prices to the configuration's values. (#439)
 - **Stock operations show which product each line is for.** Expanding a requisition, stock
@@ -107,12 +115,45 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   no stock item had a common name. Each stock item without one now takes its drug's name, on
   every start, so items a later seed adds get it too. A name typed in the app is kept.
   Liquibase `stock_item_common_name_from_drug-20261027`. (#463)
+- **Consumables ask for a batch number and an expiry date on receipt,** like medicines: the
+  product owner asked for both on medical consumables too. Two adjustment reasons are added,
+  **Détérioré** (Deteriorated) and **Cassé** (Broken), before "Autre raison". The stock app's
+  packaging and dispensing unit lists, empty until now, offer in French and in alphabetical order
+  every pack unit of the stock catalogue (Flacon, Comprimé, Pièce, Ampoule(s), Tube, Rouleau,
+  Gélule, Ovule, Paire, Baxter) and every unit an existing stock item already uses. Bouteille is
+  now called **Flacon** and Unité **Pièce**, everywhere the unit is shown, prescriptions
+  included. (#454)
+- **Prescriptions and the stock use the catalogue's names and lists.** 33 drugs take the name the
+  product owner gave them on 22 Oct 2026 (for example Amoxicilline Gélule 500mg, was Capsule;
+  Céfotaxime Injectable 1g; Fluditec Sirop 2% and 5%). Seven drugs are new: Febrilex Junior Sirop,
+  Ibuprofène Comprimé 200mg, Neuroba Comprimé 300mg, Nystatine Comprimé 500 000UI, Pénicilline G
+  Injectable 1MUI, Phénobarbital Injectable 40mg/2ml and Presept Comprimé. So are the 15 catalogue
+  items the product owner named that OpenMRS lacked: 11 medicines (Alcool dénaturé 98%, Artésunate
+  Suppositoire, Auropent, Aurozole and Predimax Collyre, Cefixime Sirop 100mg, Clavox Injectable,
+  Cloxacilline Injectable 500mg, Cotrimoxazole Comprimé 160/800mg, Salbutamol Injectable 0,5mg,
+  Vecuronium Injectable) and 4 consumables (Gel Echographique, Robinet à 3 voies, Rouleau de gaze
+  90 cm x 91 m, Sachets pour le conditionnement des MEG). All 22 new drugs can be billed: each has an
+  Odoo product at 1.00, for finance to price. 142 drugs get a stock item, so every drug prescribed
+  on UAT in the last 90 days now is one. 79 stock items change to
+  the pack unit of sheet 3 (Flacon for a syrup or eye drops, Ampoule for an injection, Rouleau for a
+  bandage, Paire for gloves). Past prescriptions are unchanged: only the names change. (#455)
 
 ### Added
 - OpenMRS role and Keycloak `openmrs` client role **Central Pharmacist** (inherits `Pharmacist`
   and `Inventory Manager`), and the Keycloak `openmrs` client role **Inventory Administrator** for
   whoever manages stock user role scopes. The build now fails on a Keycloak `openmrs` client role
   or an inherited role that OpenMRS does not define (`scripts/check-openmrs-roles.groovy`). (#438)
+- Locations **Pharmacie - Dispensation Box 1 (Rx-DISP-1)**, **Box 2 (Rx-DISP-2)** and **Box 3
+  (Rx-DISP-3)**, children of Pharmacie - Dispensation (Rx-DISP), tagged Login Location, Dispensary
+  and Sub Store, and made stock locations by Liquibase `pharmacy_dispensing_boxes_party-20261023`.
+  Liquibase `pharmacy_dispensing_boxes_locations-20261023` creates the three boxes first, with
+  their `locations.csv` uuids, because the Initializer runs Liquibase before its locations domain:
+  without it the stock parties came only on a second start. `locations.csv` then sets their name,
+  parent and tags in the same start.
+  Sub Store is what lets a box be the source of a Stock Issue (box to box): stockmanagement 2.1.2
+  allows only Main Store and Sub Store as a Stock Issue source, and checks it on the server. They
+  are not visit locations; a visit started at a box belongs to Rx-DISP. Rx-DISP stays a stock
+  location as it was. (#453)
 - Person attribute type "Chef de ménage" (`c108c6bc-5f23-4e4a-ad34-8c788b86f288`). (#389)
 - Odoo `product_price` initializer loader. The product loader treats `lst_price` as `NO_UPDATE`,
   so it can't change the price of a product that already exists. (#391)
@@ -132,6 +173,56 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   locations "Main Store" and "Main Pharmacy" and retires each one where nothing was recorded (no
   encounter, visit, obs or stock movement), so Pharmacie (Rx) is the only Main Store and the
   Receipt form's destination. (#437)
+- OCL release `uvl-drug-entry` 20261023-1 (sources `uvl-ciel` and `uvl-custom` 20261023 and
+  20261023-3), which replaces 20261021-1. New `uvl-custom` concepts: the adjustment reasons Détérioré
+  (`e25e1ab4-56c7-51c1-a35c-e0c2eece30ba`) and Cassé (`5f5f6f87-06e8-5af9-b6d0-a8d23443720d`),
+  and the units Rouleau (`cb3566e8-0ba7-51a7-b468-719953d7bffa`), Ovule
+  (`ad460f3a-0eec-54db-95a1-d358b8fa3a51`), Paire (`40af7514-27d1-59f7-8acf-e2a1b5f35065`) and
+  Baxter, "Poche" as a synonym (`7f4638f9-17fe-5bf4-83c5-8a2eff7d54dc`), members of the dosing
+  units set. CIEL has no unit concept for a roll, a pair or an IV bag (only a generic Bag), so
+  none is a CIEL clone. (#454)
+- `uvl-custom` coded concept **Unités de stock / Stock units**
+  (`d8ec6bbb-d988-5ce5-879a-6e3068aca253`), whose 21 answers are the stock units, and the stock
+  app's `packingUnitsUUID` and `dispensingUnitsUUID` point at it. The stock app 3.2.1 lists a
+  concept's answers, and the dosing units set they pointed at has set members only; it stays a set
+  because order entry reads its members. The answers are the product owner's ten pack units plus
+  every unit a stock item used on UAT on 2026-10-23: Aérosol, Application, Boîte, Conteneur,
+  Goutte (gtt), Gramme, Milligramme, Millilitre, Sachets, Seringue and Suppositoire. A unit added
+  to the catalogue later must be added to both. The `stockmanagement.*UnitsConceptId` global
+  properties are unchanged: stockmanagement 2.1.2 declares them but never reads them. (#454)
+- Liquibase `consumables_track_expiry-20261023` turns on `has_expiration` for the 38 consumable
+  stock items of #437. (#454)
+- OCL release `uvl-drugs` 20261023-1 (sources `uvl-ciel` and `uvl-custom` 20261023-2), which
+  replaces 20261001 and adds twelve concepts; nothing else in the collection changes:
+  - CIEL clones in `uvl-ciel` under CIEL's UUID, each with a SAME-AS mapping to CIEL in the
+    source: Penicillin G / Pénicilline G (`81725AAAA…`, no mapping yet), Vecuronium / Vécuronium
+    (`86144AAAA…`) and Denatured ethanol / Éthanol dénaturé (`74436AAAA…`, synonym Alcool dénaturé).
+  - `uvl-custom` drugs: Febrilex Junior (`dc9b1284-9af3-5bf6-b649-d4d3336d8ffc`), Presept
+    (`2528e3b8-5033-53c7-b903-6faae749cb87`), Auropent (`0959df36-5b51-5702-9069-dab6d6b8aa79`),
+    Aurozole (`e3fa2473-5e92-5440-b61e-317ee0e963ea`), Predimax
+    (`c038a409-1466-529b-8954-6ee295122733`).
+  - `uvl-custom` medical supplies: Gel échographique (`e92664ff-a497-559d-bac6-03d8b24113c8`),
+    Robinet à 3 voies (`98638538-715a-59bb-b392-4ef9cc8bf9ba`), Rouleau de gaze
+    (`53e24daf-43a9-5b00-9605-68513cf9d2f3`), Sachets pour le conditionnement des MEG
+    (`1a4719d4-f393-53f4-a095-926afd893f88`).
+  Artésunate, Cefixime, Amoxicillin / clavulanate (Clavox), Cloxacillin, Cotrimoxazole and
+  Salbutamol reuse their existing concepts. (#455)
+- `drugs/uvl-drugs-issue455.csv`: 21 new drugs. Neuroba Comprimé 300mg was already in
+  `uvl-drugs.csv` but never loaded, because its concept is in no OCL release; it now uses
+  Gabapentin (`d315de65`), of which Neuroba is a synonym. (#455)
+- Liquibase `add_stock_items_catalogue_alignment-20261023` (120 drugs) and
+  `add_stock_items_new_drugs-20261023` (the 7 new ones): stock items, batch and expiry tracked, in
+  the pack unit, built like those of #437. Each waits until its drugs and units exist.
+  `add_stock_items_catalogue_new_items-20261023` does the same for the 15 created catalogue items.
+  `sql/catalogue_alignment.csv` maps every catalogue line of sheet 1 and every prescribed drug of
+  sheet 2 to its drug, final name and unit, and lists what was left out. (#455)
+- Odoo `product_variant/uvl-drugs-issue455.csv`: a product for each of the 21 new drugs (Neuroba
+  already had one), keyed `init.<drug uuid>` as the bridge looks them up, category
+  `categ_products_drug_orders`, UoM the drug's dosage form, tracked by lot with expiry. No
+  `lst_price` column, so each arrives at 1.00 for finance to price (#439). (#455)
+- Liquibase `stock_item_units_sheet3-20261023`: the unit of 79 stock items of #437, from sheet 3.
+  A packaging unit already used by a stock movement is not rewritten: the item gets a second one
+  in the new unit. (#455)
 
 ### Changed
 - **The Pharmacist can request stock from the central store and receive it** at the dispensation:
@@ -143,6 +234,14 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   dispensing (#374, #394) is unchanged. What each pharmacist may do, and where, is set by stock user
   role scopes (deploy note 14). The build now also fails on a Keycloak role that may create stock
   operations but cannot read its scopes. (#438)
+- **Central Pharmacist no longer inherits Pharmacist**, so it can't dispense. It inherits
+  `Inventory Manager` and holds directly the stock app privileges it used (stock items,
+  `stockoperations.mutate`, `...approve`, `...receiveitems`, `App: stockmanagement.userRoleScopes`)
+  and the read privileges it had through Pharmacist. It loses `Edit Medication Dispense`, the
+  `Task: dispensing.*` privileges, `Task: stockmanagement.stockItems.dispense` and `...dispense.qty`,
+  `Pharmacy`, `Dispensing Features`, `Edit Orders`, `Edit Encounters` and `Add Observations`. The
+  build fails if Central Pharmacist gains a dispensing privilege again
+  (`scripts/check-openmrs-roles.groovy`). The Pharmacist role is unchanged. (#453)
 - Liquibase converts BP06 from Coded to LabSet and BP09 from Text to LabSet. It also removes the set
   members an earlier OCL release had shared between them, because the OCL import never removes
   members. Old results are kept. (#388)
@@ -157,6 +256,19 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   `10.66.0.2`. `DicomAlwaysAllowStore` and `DicomAlwaysAllowFind` are off, so storing and worklist
   queries need that AE title. The `FINDSCU` test entry is gone. The port itself is published only
   on the tunnel (LIME-EMR-Tooling `ede296b27`). (#372)
+- French unit names: Bouteille becomes **Flacon** and Unité **Pièce** (the old names stay as
+  synonyms), Gélule replaces the misspelt Gellule as the preferred name, and Tube gets its French
+  name, and so does Application. Only the names change: the concepts keep their UUIDs, so drugs, stock items, orders and
+  the Odoo units, which are matched by UUID, are unaffected. (#454)
+- Drug names follow the catalogue for the 33 drugs the product owner named. A drug's name in
+  OpenMRS is the **Odoo product name**: the Initializer writes the drugs CSV's `Name` column (not
+  `Name:fr`) on load, and minutes later the `eip-odoo-openmrs` product synchronizer writes the
+  Odoo product's name over it. So the new name is set in the Odoo `product_variant` CSVs (the
+  product loader updates `name` on reload; only `lst_price` is `NO_UPDATE`, so no price changes)
+  and in `Name` and `Name:fr` of the drugs CSVs, so both writers agree. The 21 new drugs get their
+  French name in `Name` too. The drug UUIDs do not change, so orders, dispenses, stock items and
+  the Odoo products keep pointing at the same drug. Fluditec's strengths read 5% and 2% (were
+  0.05% and 0.02%), and Glibenclamide gets 5mg. (#455)
 
 ### Removed
 - **The Odoo `product_price` loader and `prices.csv` (290 products).** Finance owns prices in Odoo;
@@ -263,10 +375,12 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
     `uvl-mugamba-frontend-config.json` set `@openmrs/esm-dispensing-app` →
     `"enableStockDispense": true`. Then the Pharmacist must pick a batch for every dispense, from
     stock at the session location. Do it only when both are true:
-    - every drug that is prescribed is a stock item. On UAT 224 of 428 drugs are not, and Dispense
-      is disabled for them, with no message. The product owner's sheet adds them.
-    - the opening stock is counted at **Pharmacie - Dispensation (Rx-DISP)**, and pharmacists
-      dispense logged in there. A drug with no stock there cannot be dispensed.
+    - every drug that is prescribed is a stock item. Since #455 all 141 drugs prescribed on UAT in
+      the 90 days to 21 Oct 2026 are. A drug without one has Dispense disabled, with no message.
+    - the opening stock is counted at **each pharmacist's box** (Rx-DISP-1 to -3, #453), and each
+      pharmacist dispenses logged in at their own box. A drug with no stock in that box cannot be
+      dispensed there. Stock left at Rx-DISP itself can't be dispensed from a box, and Rx-DISP
+      can't issue it (a Dispensary is not a Stock Issue source): count it into the boxes.
     Check the dispensing app's batch filter (`validateBatch`) on UAT before switching; see Known
     issues.
 14. **#438, pharmacy stock roles:** run `keycloak-apply-realm.sh` so the `openmrs` client gets
@@ -276,6 +390,24 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
     user role scopes, as listed in `sites/mugamba/configs/keycloak/users/staff-roster.example.csv`:
     one scope per person, because the Operations page reads only the first. Without a scope a
     pharmacist can still dispense but records no stock operation. Needs the stock locations of #437.
+15. **#453, dispensing boxes:** the boxes and their stock parties are created in the first start;
+    no second restart is needed. Check `pharmacy_dispensing_boxes_locations-20261023` and
+    `pharmacy_dispensing_boxes_party-20261023` are both `EXECUTED`. Then, at
+    run time, the product owner (`Inventory Administrator`):
+    - edits the Central Pharmacist's stock scope to add the three boxes to its locations;
+    - gives each dispensing pharmacist ONE scope, at their own box only, with Requisition,
+      Stock Issue, Stock Take and Opening Stock, replacing any scope at Rx-DISP. Which box is whose is decided there, not in
+      the configuration. See `staff-roster.example.csv`.
+    Pharmacists then sign in at their box, not at Rx-DISP. No Keycloak change: the roles keep
+    their names.
+16. **#455, catalogue alignment:** the stock items and units need the drugs and the #454 units,
+    which the Initializer loads after Liquibase. Restart OpenMRS once after the first start, then
+    check that `add_stock_items_catalogue_alignment-20261023`, `add_stock_items_new_drugs-20261023`
+    `stock_item_units_sheet3-20261023` and `add_stock_items_catalogue_new_items-20261023` are
+    `EXECUTED`. Finance prices the 21 new Odoo products (they arrive at 1.00; the list is
+    `product_variant/uvl-drugs-issue455.csv`). Stock items now count in pack units
+    (Flacon, Ampoule...) while many prescriptions are written in millilitres or milligrams: before
+    stock deduction goes on (note 13), the pharmacists must know to dispense in the pack unit.
 
 ### Known issues
 - On the stock app's new user role scope form, `Inventory Administrator` gets a 403 from
@@ -304,7 +436,7 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   request, so a failure leaves a dispense without a deduction. In dispensing app 1.11.1,
   `validateBatch` (default `true`) is the only filter: it hides zero-quantity batches, but also
   every batch when the prescription has no duration, or the item no expiry date (the 38
-  consumables). (#437)
+  consumables until #454 turned expiry on for them). (#437)
 - **Stock app, the receiver's "Complete dispatch" may not show** for a dispatched Stock Issue. The
   operations list takes each operation's buttons from a permission cache in stockmanagement 2.1.2
   that is kept per server thread, keyed by the operation only, and never cleared. A thread that saw
@@ -324,6 +456,9 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   It is wrong: the issue saves without a requisition. Upstream stock app 3.2.1. (#437)
 - **Stock app, some dialogs and messages are in English** in the French interface: upstream stock
   app 3.2.1 has no translation for them. (#437)
+- **Stock app, a stock item's unit may show its English name** ("Unit" rather than "Pièce") in the
+  item lists. stockmanagement 2.1.2 names units by any fully specified name, whatever the locale,
+  so the English and the French name compete. The unit pickers are in French. Upstream. (#454)
 
 ---
 
