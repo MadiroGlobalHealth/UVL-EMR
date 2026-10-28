@@ -1,0 +1,46 @@
+slice_name: "Usage \u2013 Activity per Week"
+description: null
+certified_by: null
+certification_details: null
+viz_type: pivot_table_v2
+params:
+  datasource: 40__table
+  viz_type: pivot_table_v2
+  groupbyRows:
+  - activity_datetime
+  groupbyColumns: []
+  temporal_columns_lookup:
+    activity_datetime: true
+  time_grain_sqla: P1W
+  metrics:
+  - active_users
+  - patients_registered
+  - patients_seen
+  - visits
+  - encounters
+  - orders
+  metricsLayout: COLUMNS
+  adhoc_filters:
+  - clause: WHERE
+    subject: activity_datetime
+    operator: TEMPORAL_RANGE
+    comparator: No filter
+    expressionType: SIMPLE
+  row_limit: 10000
+  order_desc: true
+  aggregateFunction: Sum
+  valueFormat: SMART_NUMBER
+  date_format: smart_date
+  rowOrder: key_a_to_z
+  colOrder: key_a_to_z
+  rowTotals: false
+  colTotals: false
+  rowSubTotals: false
+  colSubTotals: false
+  transposePivot: false
+  combineMetric: false
+query_context: null
+cache_timeout: null
+uuid: 70fe82a0-caa9-45ab-ba3d-5eadd086c5ec
+version: 1.0.0
+dataset_uuid: c5df3d0c-fe8d-493c-a726-359d52972e1b
