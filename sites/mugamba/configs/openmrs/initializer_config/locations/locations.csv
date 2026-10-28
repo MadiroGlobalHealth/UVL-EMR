@@ -17,3 +17,6 @@ f2a5bc28-7ed6-435a-da49-6cbf8ecfad75,,Dentisterie (DEN),,,Login Location;Visit L
 a3b6cd39-8fe7-446b-eb5a-7dcaf9d0be86,,Bloc opératoire (OR),,,Login Location;Visit Location;Queue Location,TRUE,,,,,,,,,,,,
 b4c7de4a-90f8-4570-fc6b-8edba0e1cf97,,Échographie (US),,,Login Location;Visit Location;Queue Location,TRUE,,,,,,,,,,,,
 c5d8ef5b-a109-4681-0d7c-9fecb1f2da08,,Pharmacie - Dispensation (Rx-DISP),,,Login Location;Visit Location;Queue Location;Dispensary,TRUE,,,,,,,,,,,,
+7b6364f2-c2e8-432c-92e9-e560feec7e28,,Pharmacie - Dispensation Box 1 (Rx-DISP-1),,Pharmacie - Dispensation (Rx-DISP),Login Location;Dispensary;Sub Store,TRUE,,,,,,,,,,,,
+068b1fde-3394-4e12-9108-e61f329c9f18,,Pharmacie - Dispensation Box 2 (Rx-DISP-2),,Pharmacie - Dispensation (Rx-DISP),Login Location;Dispensary;Sub Store,TRUE,,,,,,,,,,,,
+b7824502-1d56-4203-9ece-62ec69487263,,Pharmacie - Dispensation Box 3 (Rx-DISP-3),,Pharmacie - Dispensation (Rx-DISP),Login Location;Dispensary;Sub Store,TRUE,,,,,,,,,,,,

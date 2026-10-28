@@ -1633,4 +1633,114 @@
         </rollback>
     </changeSet>
 
+    <!--
+        #453 - create the three dispensing boxes before they are made stock locations.
+
+        Liquibase is the Initializer's first domain and locations come later in the same start
+        (Domain order in Initializer 2.12.0, not configurable: initializer.domains and
+        initializer.exclude only filter). The party changeset below needs the boxes to exist, so
+        without this it is skipped on the start that brings them and runs only on the next one.
+
+        This inserts each box with the uuid locations.csv gives it, only where no location has
+        that uuid. Later in the same start the Initializer finds the box by uuid and updates it in
+        place: name, parent and tags (Login Location, Dispensary, Sub Store) come from
+        locations.csv, which stays the source of truth. The parent is set here too when
+        Pharmacie - Dispensation (Rx-DISP) already exists, and left empty otherwise for the
+        Initializer to fill. No location_tag_map rows: on MySQL the stock module's trigger on that
+        table would create a second party.
+
+        Rollback removes a box only while nothing refers to it.
+    -->
+    <changeSet id="pharmacy_dispensing_boxes_locations-20261023" author="Joshua">
+        <comment>
+            Create the dispensing boxes Rx-DISP-1 to -3 with their locations.csv uuids where they do not exist yet, so their stock parties can be created in the same start (#453).
+        </comment>
+        <sql>
+            INSERT INTO location (name, creator, date_created, retired, uuid, parent_location)
+            SELECT v.name, 1, NOW(), 0, v.uuid,
+                   (SELECT p.location_id FROM location p WHERE p.uuid = 'c5d8ef5b-a109-4681-0d7c-9fecb1f2da08')
+              FROM (SELECT '7b6364f2-c2e8-432c-92e9-e560feec7e28' AS uuid, 'Pharmacie - Dispensation Box 1 (Rx-DISP-1)' AS name
+                    UNION ALL
+                    SELECT '068b1fde-3394-4e12-9108-e61f329c9f18', 'Pharmacie - Dispensation Box 2 (Rx-DISP-2)'
+                    UNION ALL
+                    SELECT 'b7824502-1d56-4203-9ece-62ec69487263', 'Pharmacie - Dispensation Box 3 (Rx-DISP-3)') v
+             WHERE NOT EXISTS (SELECT 1 FROM location l WHERE l.uuid = v.uuid);
+        </sql>
+        <rollback>
+            <sql>
+                DELETE l FROM location l
+                 WHERE l.uuid IN ('7b6364f2-c2e8-432c-92e9-e560feec7e28', '068b1fde-3394-4e12-9108-e61f329c9f18', 'b7824502-1d56-4203-9ece-62ec69487263')
+                   AND NOT EXISTS (SELECT 1 FROM stockmgmt_party p WHERE p.location_id = l.location_id)
+                   AND NOT EXISTS (SELECT 1 FROM location_tag_map m WHERE m.location_id = l.location_id)
+                   AND NOT EXISTS (SELECT 1 FROM encounter e WHERE e.location_id = l.location_id)
+                   AND NOT EXISTS (SELECT 1 FROM visit vi WHERE vi.location_id = l.location_id);
+            </sql>
+        </rollback>
+    </changeSet>
+
+    <!--
+        #453 - one dispensing box per dispensing pharmacist.
+
+        locations.csv adds Pharmacie - Dispensation Box 1, 2 and 3 (Rx-DISP-1 to -3) under
+        Pharmacie - Dispensation (Rx-DISP). Like Rx and Rx-DISP in #437, a box is a stock
+        location only once it has a stockmgmt_party row and a depth-0 stockmgmt_location_tree
+        row, which the module's MySQL-only location_tag_map trigger would create and which does
+        not exist on MariaDB. This inserts the same rows for the three boxes, looked up by uuid.
+
+        Only the depth-0 row, as that trigger does: no Rx-DISP -> box row. The dispensing app
+        looks for batches in the location tree under the login location
+        (stockiteminventory?dispenseLocationUuid=, StockManagementServiceImpl
+        .getCompleteStockDispensingLocationPartyList), so a parent row would let a pharmacist
+        signed in at Rx-DISP pick, and deduct, any box's batch. Each box stays its own stock.
+
+        The Initializer runs this file before its locations domain, so on a database where the
+        boxes are new they would not exist yet here, and this would wait for a second start (seen
+        on UAT, 2026-10-23). pharmacy_dispensing_boxes_locations-20261023, just above, creates them
+        first, so a single start is enough. onFail CONTINUE stays as a safety net.
+        Idempotent: a box that already has a party or a tree row is skipped.
+    -->
+    <changeSet id="pharmacy_dispensing_boxes_party-20261023" author="Joshua">
+        <preConditions onFail="CONTINUE" onError="CONTINUE"
+                       onFailMessage="WARN (#453): the dispensing boxes Rx-DISP-1 to -3, or the stockmanagement tables, do not exist yet, so they were NOT made stock locations; this changeset is retried on every start.">
+            <tableExists tableName="stockmgmt_party"/>
+            <tableExists tableName="stockmgmt_location_tree"/>
+            <sqlCheck expectedResult="3">
+                SELECT COUNT(*) FROM location
+                 WHERE uuid IN ('7b6364f2-c2e8-432c-92e9-e560feec7e28', '068b1fde-3394-4e12-9108-e61f329c9f18', 'b7824502-1d56-4203-9ece-62ec69487263')
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            Make the dispensing boxes Rx-DISP-1, Rx-DISP-2 and Rx-DISP-3 stock locations: the party and location-tree rows the module's MySQL-only trigger would have created (#453).
+        </comment>
+        <sql>
+            INSERT INTO stockmgmt_party (location_id, creator, date_created, voided, uuid)
+            SELECT l.location_id, 1, NOW(), 0, v.party_uuid
+              FROM location l
+              JOIN (SELECT '7b6364f2-c2e8-432c-92e9-e560feec7e28' AS location_uuid, '3a207ca7-2785-47ee-98a4-a12c9cfa47fd' AS party_uuid
+                    UNION ALL
+                    SELECT '068b1fde-3394-4e12-9108-e61f329c9f18', '6fa88ea1-52e8-4b8a-81f7-1bfaf976239c'
+                    UNION ALL
+                    SELECT 'b7824502-1d56-4203-9ece-62ec69487263', '18b26d08-079b-4967-8494-26fe473851bc') v ON v.location_uuid = l.uuid
+             WHERE NOT EXISTS (SELECT 1 FROM stockmgmt_party p WHERE p.location_id = l.location_id OR p.uuid = v.party_uuid);
+
+            INSERT INTO stockmgmt_location_tree (parent_location_id, child_location_id, depth, uuid)
+            SELECT l.location_id, l.location_id, 0, v.tree_uuid
+              FROM location l
+              JOIN (SELECT '7b6364f2-c2e8-432c-92e9-e560feec7e28' AS location_uuid, '81e93631-ab44-4f49-8865-a0e26877fad1' AS tree_uuid
+                    UNION ALL
+                    SELECT '068b1fde-3394-4e12-9108-e61f329c9f18', '5c207c0d-e83a-41be-a0e4-87a95cbff419'
+                    UNION ALL
+                    SELECT 'b7824502-1d56-4203-9ece-62ec69487263', 'be8bfe11-45a5-415a-b782-c5fae409cef0') v ON v.location_uuid = l.uuid
+             WHERE NOT EXISTS (SELECT 1 FROM stockmgmt_location_tree t
+                                WHERE (t.parent_location_id = l.location_id AND t.child_location_id = l.location_id AND t.depth = 0)
+                                   OR t.uuid = v.tree_uuid);
+        </sql>
+        <rollback>
+            <sql>
+                DELETE FROM stockmgmt_location_tree WHERE uuid IN ('81e93631-ab44-4f49-8865-a0e26877fad1', '5c207c0d-e83a-41be-a0e4-87a95cbff419', 'be8bfe11-45a5-415a-b782-c5fae409cef0');
+                DELETE FROM stockmgmt_party WHERE uuid IN ('3a207ca7-2785-47ee-98a4-a12c9cfa47fd', '6fa88ea1-52e8-4b8a-81f7-1bfaf976239c', '18b26d08-079b-4967-8494-26fe473851bc');
+            </sql>
+        </rollback>
+    </changeSet>
+
 </databaseChangeLog>
