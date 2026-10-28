@@ -1,0 +1,157 @@
+catalogue_line,catalogue_product,source,decision,drug_uuid,openmrs_name_before,name_after,renamed,stock_unit,unit_source,stock_item,note
+M5,Alcool dénaturé 98%,sheet 1,new drug,d91ba34d-7b16-5827-be4e-bf9abc2e89e4,,Alcool dénaturé 98%,new,Flacon,"catalogue form ""sol"" (solution, as Dettol/Javel in sheet 3)",new,concept 74436AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+M6,ALGESAL pde,sheet 1,confirmed,e9d0579d-65b5-4214-8dd0-757b2cf76153,"Algesal Suractive 6,54 %/3,46 %/1 % Tube 40g","Algesal Suractive 6,54 %/3,46 %/1 % Tube 40g",,Tube,derived: form (cream/ointment),new,
+M11,AMOXICILLINE gel 500 mg,sheet 1,confirmed,25ef1ac8-f926-4ff8-af12-d4317b06f9b7,Amoxicilline Capsule 500mg,Amoxicilline Gélule 500mg,renamed,Gélule,derived: form (capsule),new,
+M12,AMOXICILLINE sirop 125 mg,sheet 1,confirmed,072054ee-b1d3-433b-9808-b4a29f482e63,Amoxicillin 125mg/5ml Sirop 60ml,Amoxicilline Sirop 125mg/5ml,renamed,Flacon,derived: form (liquid),new,
+M13,AMOXICILLINE sirop 250 mg,sheet 1,low confidence: left out,,,,,,,none,"answer ""Amoxicilline sirop 250 mg/5ml"" has no volume; 3 candidates of different volumes: 17 Sirop 80ml, 19 Suspension 100ml, 20 Suspension 60ml"
+M19,ARTEMETHER cp,sheet 1,confirmed,65d1e9c2-7424-4df3-bd64-211143d0f1c3,Artéméther-Luméfantrine Comprimé Boîte de 24,Artéméther-Luméfantrine Comprimé Boîte de 24,,Comprimé,derived: form (tablet),new,
+M19,ARTEMETHER cp,sheet 1,confirmed,1cca586a-cf7d-4076-a9c1-d18b80914e92,Artéméther-Luméfantrine Comprimé Boîte de 12,Artéméther-Luméfantrine Comprimé Boîte de 12,,Comprimé,derived: form (tablet),new,
+M19,ARTEMETHER cp,sheet 1,confirmed,d337d23d-a300-4f1a-b151-34c3b7f0d740,Artéméther-Luméfantrine Comprimé Boîte de 18,Artéméther-Luméfantrine Comprimé Boîte de 18,,Comprimé,derived: form (tablet),new,
+M19,ARTEMETHER cp,sheet 1,confirmed,d568c612-69ee-4e7f-b49c-f810cc0a43cd,Artéméther-Luméfantrine Comprimé Boîte de 6,Artéméther-Luméfantrine Comprimé Boîte de 6,,Comprimé,derived: form (tablet),new,
+M21,ARTESUNATE suppositoire,sheet 1,new drug,8e6c7618-c278-57c3-9074-f6c84aae7dcf,,Artésunate Suppositoire,new,Suppositoire,"catalogue form ""supp""",new,concept 6d651ad8-dc39-4b5d-88f5-39b0d15fd8fc
+M22,ATARAX cp,sheet 1,confirmed,e012215b-6498-42c5-b70b-59d7efd2e61f,Atarax Comprimé 25mg,Atarax Comprimé 25mg,,Comprimé,derived: form (tablet),new,
+M27,AUROPENT,sheet 1,new drug,480a8630-392b-5d05-a58d-bf1357b92927,,Auropent Collyre,new,Flacon,"catalogue form ""collyre"" (sheet 3: collyre -> Flacon)",new,concept 0959df36-5b51-5702-9069-dab6d6b8aa79
+M29,AUROZOLE,sheet 1,new drug,e3bdc9a1-1cfd-5c2a-808a-eee6556102c2,,Aurozole Collyre,new,Flacon,"catalogue form ""collyre"" (sheet 3: collyre -> Flacon)",new,concept e3fa2473-5e92-5440-b61e-317ee0e963ea
+M31,AZITHROMYCINE,sheet 1,confirmed,a1113e6c-13c4-4fe0-ae01-9ffe57805805,Azithromycine Suspension 200mg/5ml 15ml,Azithromycine Sirop 200mg/5ml 15ml,renamed,Flacon,derived: form (liquid),new,
+M43,CAPTOPRIL cp,sheet 1,confirmed,0ff4bd85-b243-472d-a35b-13e33fc62219,Captopril Comprimé 25mg,Captopril Comprimé 25mg,,Comprimé,derived: form (tablet),new,
+M44,CARBAMAZEPINE cp,sheet 1,low confidence: left out,,,,,,,none,"answer ""52 Carbamazepine Comprimé 500mg"" picks drug 52 but changes its strength 400mg -> 500mg; a strength change is not a rename"
+M45,CARBOSOL collyre,sheet 1,confirmed,8dadaa53-bc90-4b0e-8967-a850599c7f37,Carbasol Gouttes Oculaires 0.5% 10ml,Carbosol Collyre,renamed,Flacon,derived: form (liquid),new,
+M48,CEFIXIME sp 100 mg,sheet 1,confirmed,6448b20c-b21a-4d78-92f5-8f99c3c07af6,Cefixime Suspension 200mg,Cefixime Sirop 200mg,renamed,Flacon,sheet 3,existing (#437),
+M48,CEFIXIME sp 100 mg,sheet 1,new drug,e6eedfd7-8f9b-5791-93ad-9bf2e192aabb,,Cefixime Sirop 100mg,new,Flacon,"catalogue form ""flacon""",new,concept 313a1423-8f0c-4a46-8d7b-4954d14ff87b
+M50,CEFOTAXIME flacon 1g/Claforan,sheet 1,confirmed,789f3f90-5529-409d-b6aa-3841c823f3d9,Cefotaxime 1g Injection,Céfotaxime Injectable 1g,renamed,Flacon,"derived: catalogue form ""flacon""",new,
+M52,CETIRIZNE sirop,sheet 1,confirmed,1d67cc95-d786-435c-b974-201d2d3a5736,Cetirizine Comprimé 10mg,Cetirizine Comprimé 10mg,,Comprimé,unchanged (#437; not in sheet 3),existing (#437),
+M52,CETIRIZNE sirop,sheet 1,confirmed,6ccb5987-3bea-41c6-9376-e5f9f02de369,Cetirizine Gouttes Orales 10mg/ml 60ml,Cetirizine Sirop 10mg/ml,renamed,Flacon,derived: form (liquid),new,
+M53,CHIBRO CADRON,sheet 1,confirmed,d2ebc592-3ebe-4a44-b374-32c82745069e,Chibrocadron Collyre,Chibro Cadron Collyre,renamed,Flacon,derived: form (liquid),new,
+M57,CHLORPHENIRAMINE sp,sheet 1,confirmed,f38172a5-e63b-4edd-82f8-171d48ca20d8,Chlorpheniramine Sirop 2mg/5ml 100ml,Chlorpheniramine Sirop 2mg/5ml,renamed,Flacon,derived: form (liquid),new,
+M64,CLAVOX inj,sheet 1,confirmed,e818c162-80be-4e94-9fae-d40b06e3320a,Clavox Comprimé 500/125mg,Clavox Comprimé 500/125mg,,Comprimé,sheet 3,existing (#437),
+M64,CLAVOX inj,sheet 1,confirmed,ec04e363-90df-4c57-ae28-1eec17516458,Clavox Suspension 200/28mg/5ml 70ml,Clavox Sirop 200/28mg/5ml 70ml,renamed,Flacon,sheet 3,existing (#437),
+M64,CLAVOX inj,sheet 1,new drug,876055fc-04a5-5999-921c-583bd2f8f3a8,,Clavox Injectable,new,Flacon,"catalogue form ""flacon""",new,concept 4accf0d9-7e53-447f-ae98-2b7f250086c7
+M67,CLONIDINE/Catapressan 150 inj,sheet 1,confirmed,87ab3604-95f3-47fd-9c2e-c12bb64c4b77,"Catapressan Injection 0,15mg/ml","Clonidine Injectable 0,15mg/ml",renamed,Ampoule,"derived: catalogue form ""amp""",new,
+M68,CLOTRINE B crème,sheet 1,confirmed,18f38708-0f59-442a-b545-4a767e901534,Clotrine B Crème,Clotrine B Crème,,Tube,derived: form (cream/ointment),new,
+M69,CLOTRINE BG crème,sheet 1,confirmed,fe72403a-4b29-4673-babd-23b7e464e9b1,Clotrine BG Crème,Clotrine BG Crème,,Tube,derived: form (cream/ointment),new,
+M70,CLOTRINE ovule,sheet 1,confirmed,86ee5756-be99-4cf1-bd07-64ae58072376,Clotrimazole Ovule,Clotrine Ovule,renamed,Ovule,derived: form (vaginal tablet/ovule),new,
+M71,CLOXACILLINE fl 125 ml,sheet 1,confirmed,688b604b-ee59-4486-883e-3b3ba4622609,Cloxacillin Suspension 125mg/5ml 100ml,Cloxacilline Sirop 125mg/5ml 100ml,renamed,Flacon,derived: form (liquid),new,
+M72,CLOXACILLINE FL 250 ml,sheet 1,confirmed,331aa9d0-83cb-4206-a49e-f20bd09f4566,Cloxacillin Suspension 250mg/5ml 100ml,Cloxacilline Sirop 250mg/5ml 100ml,renamed,Flacon,derived: form (liquid),new,
+M73,CLOXACILLINE inj,sheet 1,new drug,48fceeae-7c8a-5314-8163-4273263775e9,,Cloxacilline Injectable 500mg,new,Flacon,"catalogue form ""flacon""",new,concept 2255c6a8-b1fe-4517-9cd3-38d87cd2c86e
+M74,CLOXACILLINE sp 125mg,sheet 1,Ne pas stocker,,,,,,,none,Ne pas stocker (the same product is line M71)
+M79,COTRIMOXAZOLE cp 480mg,sheet 1,confirmed,b0e044fb-8a54-4d16-9fc3-502c11b22c2c,Cotrimoxazole Comprimé 80/400mg,Cotrimoxazole Comprimé 80/400mg,,Comprimé,derived: form (tablet),new,
+M80,COTRIMOXAZOLE cp 960 mg,sheet 1,new drug,db025a04-ac09-56be-89e6-57edaff547dc,,Cotrimoxazole Comprimé 160/800mg,new,Comprimé,"catalogue form ""co""",new,concept 13c4aa75-d3b6-4930-ae7e-f3388286b095
+M89,DEXAMETHASONE inj,sheet 1,confirmed,ac7c10ed-19e1-4784-9a95-cb2f9ea71d8a,Dexaméthasone Injection 4mg,Dexaméthasone Injectable 4mg/ml,renamed,Ampoule,"derived: catalogue form ""amp""",new,
+M91,DIAZEPAM cp 10mg,sheet 1,confirmed,58000c77-00ec-408f-883b-0c0412c54bb6,Diazepam Comprimé 5mg,Diazepam Comprimé 5mg,,Comprimé,derived: form (tablet),new,
+M91,DIAZEPAM cp 10mg,sheet 1,confirmed,2e6e25dc-fb0a-402a-af74-367155459690,Diazepam Injection 10mg/2ml,Diazepam Injectable 10mg/2ml,renamed,Ampoule,sheet 3,existing (#437),
+M93,DICLOFENAC cp 100mg,sheet 1,confirmed,728b1639-8d38-44ca-b3e8-ba33eb09631e,Diclofenac Comprimé 100mg,Diclofenac Comprimé 100mg,,Comprimé,derived: form (tablet),new,
+M94,DICLOFENAC pde,sheet 1,confirmed,afec8e63-860d-48dd-b143-55fc21bd1967,"Diclofenac Pommade 0,01% 30g","Diclofenac Pommade 0,01% 30g",,Tube,derived: form (cream/ointment),new,
+M97,DICYTAM GEL,sheet 1,low confidence: left out,,,,,,,none,"answer ""Dicytam Gélule"": OpenMRS has only Dicytam Comprimé 500mg (and an injection); a capsule is a different form"
+M100,DIPYRONE 500mg inj,sheet 1,low confidence: left out,,,,,,,none,"answer ""Dipyrone Injectable 500mg/ml"" fits both 119 Injection 1g/2ml and 120 Injection 2.5g/5ml"
+M103,DOXYCYCLINE cp,sheet 1,confirmed,43f0af98-cd9f-4baa-99b1-75f56fcf84d7,Doxy Comprimé 200mg,Doxycycline Comprimé 200mg,renamed,Comprimé,derived: form (tablet),new,
+M105,DUPHASTON cp,sheet 1,confirmed,c4a86f97-688f-478c-942e-97afa0ca2d54,Duphaston Comprimé 10mg,Duphaston Comprimé 10mg,,Comprimé,derived: form (tablet),new,
+M107,DYNAMOGENE inj,sheet 1,low confidence: left out,,,,,,,none,"answer ""Dynamogen Ampoule 10 ml"" fits neither 130 Dynamogen Ampoule nor 131 Dynamogen Ampoule 3mg/1g with certainty"
+M109,EAU DISTILLEE flac 10ml,sheet 1,confirmed,9c2c5a67-a300-4f57-ab28-dfaab8edd6b3,Eau pour Injection 10ml,Eau Distillée Flacon 10ml,renamed,Flacon,derived: form (liquid),new,
+M110,EAU OXYGENEE,sheet 1,confirmed,c3468a8f-ea19-4abf-9f0e-b318bd2f4e55,Solution de Peroxyde d'Hydrogène 250ml,Solution de Peroxyde d'Hydrogène 250ml,,Flacon,derived: form (liquid),new,
+M114,FEBRILEX JUNIOR,sheet 1,new drug,fc4a6e17-91fd-5022-a605-f1a144bc3899,,Febrilex Junior Sirop,new,Flacon,"catalogue form ""flacon""",new,concept dc9b1284-9af3-5bf6-b649-d4d3336d8ffc
+M123,FLUDITEC 2%,sheet 1,confirmed,2ec9e0d1-e89c-4da8-9cf8-8a7ffa1300c5,"Fluditec Sirop 0,02% 125ml",Fluditec Sirop 2%,renamed,Flacon,derived: form (liquid),new,
+M124,FLUDITEC 5%,sheet 1,confirmed,a3bb95b7-158c-4568-b17b-877b2e0d65a1,"Fluditec Sirop 0,05% 125ml",Fluditec Sirop 5%,renamed,Flacon,derived: form (liquid),new,
+M127,FUROSEMIDE 10mg inj,sheet 1,confirmed,77317d9a-9f31-4b9b-8aff-fa8ad59b61d1,Furosémide Injection 20mg/2ml,Furosémide Injectable 10mg/ml,renamed,Ampoule,"derived: catalogue form ""amp""",new,
+M128,FUROSEMIDE cp 40mg/LASIX,sheet 1,confirmed,913a6fe5-0727-4b9f-9269-bc83f0c7d7a2,Fuorsemide Comprimé 40mg,Furosémide Comprimé 40mg,renamed,Comprimé,derived: form (tablet),new,
+M129,GAMALATE cp,sheet 1,confirmed,c77ccb7d-2612-439d-8216-ca9f3ca22a16,Gamalate B6 Comprimé,Gamalate B6 Comprimé,,Comprimé,derived: form (tablet),new,
+M130,GEL LARME,sheet 1,confirmed,200cf098-d019-47f1-865f-7ec9099d49be,Gel Larmes Collyre,Gel Larmes Collyre,,Flacon,derived: form (liquid),new,
+M132,GENTAMYCINE collyre,sheet 1,confirmed,b0a2cd9f-12bf-4d49-bed3-aa2ba4f6e2bc,Gentamicin Collyre 0.3% 5ml,Gentamicine Collyre,renamed,Flacon,derived: form (liquid),new,
+M133,GLIBENCLAMIDE / DAONIL cp 5mg,sheet 1,confirmed,5eac7195-bd6e-42f2-9fc6-bfe314f2d92a,Glipinclamide Comprimé,Glibenclamide Comprimé 5mg,renamed,Comprimé,derived: form (tablet),new,
+M137,HAEMACEL ® ou Plasmagel ® 1/2l,sheet 1,confirmed,edb36207-2e2c-4e56-b8f4-199b130445c8,Haemacel Solution 500ml,Haemacel Solution 500ml,,Baxter,derived: form (infusion bag),new,
+M140,HYOSCIN 20 mg/Buscopam inj,sheet 1,confirmed,3cc8ca86-64b1-4b39-bbd2-0a64197d70ce,Hyoscine (Buscopan) Injection 20mg,Hyoscine (Buscopan) Injectable 20mg,renamed,Ampoule,"derived: catalogue form ""amp""",new,
+M141,HYOSCINE/Buscopam 10 mg cp,sheet 1,confirmed,a5890a9b-ce92-44a9-a929-b33709bd5d8a,Hyoscine Comprimé 10mg,Hyoscine Comprimé 10mg,,Comprimé,derived: form (tablet),new,
+M142,IBUPROFEN 200mg cp,sheet 1,new drug,ec2ec644-fd9f-5de9-99c3-12d2fee69208,,Ibuprofène Comprimé 200mg,new,Comprimé,"catalogue form ""co""",new,concept ae999966-db86-46cd-ad74-5ee26d155057
+M143,IBUPROFEN 400mg cp,sheet 1,confirmed,c273b18a-8e47-45f2-ac39-352e96ad68c7,Ibuprofène Comprimé 400mg,Ibuprofène Comprimé 400mg,,Comprimé,derived: form (tablet),new,
+M144,IBUPROFEN sirop 100mg,sheet 1,low confidence: left out,,,,,,,none,"answer ""Ibuprofen Sirop 100mg/5ml"" has no volume; fits 177 (100ml) and 178 (60ml)"
+M148,KEMOXYL GEL,sheet 1,confirmed,0b273e54-5dc0-4718-ac57-6c13dcbb961d,Kemoxyl+F Capsule 250/250mg,Kemoxyl+F Capsule 250/250mg,,Gélule,derived: form (capsule),new,
+M152,KETOCONAZOLE crème,sheet 1,confirmed,82e09f5e-6fe4-42da-918a-a5abc1daa92c,"Crème de Ketoconazole 0,02 % 15g","Ketoconazole Crème 0,02% 15g",renamed,Tube,derived: form (cream/ointment),new,
+M153,KETOLAC OU KETAC collyre,sheet 1,confirmed,0539c860-2b7d-4479-aae9-b4442e69c4a5,Ketolac Collyre,Ketolac Collyre,,Flacon,derived: form (liquid),new,
+M157,LIDOCAÏNE 2% flacon 50ml,sheet 1,confirmed,9d2244bb-be72-4443-bf5e-001d0ae32d20,Lidocaine 2% Injection,Lidocaïne Injectable 2%,renamed,Flacon,"derived: catalogue form ""flacon""",new,
+M158,LOAKTAN - H cp,sheet 1,confirmed,a7549fad-09d5-4a1d-a2f9-0d83aede10df,Loaktan-H Comprimé 50/12.5mg,Loaktan-H Comprimé 50/12.5mg,,Comprimé,derived: form (tablet),new,
+M159,LOAKTAN cp,sheet 1,confirmed,6694bb74-9c2f-4bf5-87fe-d90069b6c788,Loaktan Comprimé 50mg,Loaktan Comprimé 50mg,,Comprimé,derived: form (tablet),new,
+M167,METFORMIN cp,sheet 1,confirmed,3b0bbf89-2ba1-42cc-b75b-f71df03747ad,Metformin Comprimé 850mg,Metformin Comprimé 850mg,,Comprimé,derived: form (tablet),new,
+M174,MICONAZOLE crème,sheet 1,confirmed,3ed44baf-bae0-4484-907b-4fbeeec85c13,Crème de Miconazole 0.02% 15g,Miconazole Crème 0.02% 15g,renamed,Tube,derived: form (cream/ointment),new,
+M181,NEUROBA cp,sheet 1,new drug,d675376d-b35f-48d3-aa21-dd5250106f8a,,Neuroba Comprimé 300mg,new,Comprimé,"catalogue form ""co""",new,concept d315de65-e732-4bd4-87ed-d95ace187717
+M184,NYSTATINE 500 000UI cp,sheet 1,new drug,d848cbec-c583-5ef2-8b3d-bf1c4fb33ee2,,Nystatine Comprimé 500 000UI,new,Comprimé,"catalogue form ""co""",new,concept 36772ff5-37e2-4f48-b45a-6db33331e8a3
+M189,OMEPRAZOLE gel 20ml,sheet 1,confirmed,cef563d7-05c9-4804-8684-a75b35e3405f,Omeprazole Capsule 20mg,Omeprazole Gélule 20mg,renamed,Gélule,derived: form (capsule),new,
+M202,PARACETAMOL inj,sheet 1,confirmed,f58db908-8343-4ed9-874a-840e6e606560,Paracétamol Injection 10mg/ml 100ml,Paracétamol Injectable 1%W/V,renamed,Flacon,"derived: catalogue form ""flacon""",new,
+M203,PARACETAMOL sirop 120 ml,sheet 1,confirmed,2b25ef7c-d710-4c1d-bc5a-bd8e2e34133c,Paracetamol Sirop 120mg/5ml 100ml,Paracetamol Sirop 120mg/5ml,renamed,Flacon,derived: form (liquid),new,
+M204,PENI G inj,sheet 1,new drug,e024b3ce-1c66-541a-8a8e-48042147d645,,Pénicilline G Injectable 1MUI,new,Flacon,"catalogue form ""flacon""",new,concept 81725AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+M205,PHENOBARBITAL 40mg inj,sheet 1,new drug,f9f45782-4f27-5a12-9601-02a64e010848,,Phénobarbital Injectable 40mg/2ml,new,Ampoule,"catalogue form ""amp""",new,concept 9ab6f025-e5c8-4fce-a4d0-f2f4da5687bb
+M206,PHENOBARBITAL 50mg cp,sheet 1,confirmed,f5d2e03a-77d2-48d5-958d-ba5abba0c711,Phenobarbital Comprimé 100mg,Phenobarbital Comprimé 100mg,,Comprimé,derived: form (tablet),new,
+M207,PHENOXYMETHYLPENICILLINE/Péni V 250 mg cp,sheet 1,confirmed,0d9c3538-b0ac-4aed-9508-49a6b342fd87,Pénicilline V Comprimé 250mg,Pénicilline V Comprimé 250mg,,Comprimé,derived: form (tablet),new,
+M213,PREDIMX collyre,sheet 1,new drug,15c1c28f-b42c-5bc7-bf1a-7042f5282b79,,Predimax Collyre,new,Flacon,"catalogue form ""collyre"" (sheet 3: collyre -> Flacon)",new,concept c038a409-1466-529b-8954-6ee295122733
+M215,PRESEPT cp,sheet 1,new drug,b8ad6a27-762b-511a-9754-3bd31756261d,,Presept Comprimé,new,Comprimé,"catalogue form ""co""",new,concept 2528e3b8-5033-53c7-b903-6faae749cb87
+M222,RELCER GEL,sheet 1,confirmed,2ddc56ea-ea59-4e6c-a7f2-db9555fcf2e5,Relcer Suspension 365/80/100/400mg/5ml 180ml,Relcer Gel Sirop,renamed,Flacon,derived: form (liquid),new,
+M223,REX DINE,sheet 1,confirmed,4d42b0b3-8c2a-43c7-bb13-a8df441debfe,"Rexedine Bain de bouche 0,01 % 150 ml","Rexedine Bain de bouche 0,01 % 150 ml",,Flacon,derived: form (liquid),new,
+M226,"SALBUTAMOL 0,5mg inj",sheet 1,new drug,62d3cb2f-2603-5db3-8b8c-5b3a25282ec1,,"Salbutamol Injectable 0,5mg",new,Ampoule,"catalogue form ""amp""",new,concept 26af305d-84bf-41fa-8c3b-99aa31987115
+M230,SAT inj,sheet 1,confirmed,2610eccc-4e39-4a7f-81d0-f5b95c5874e2,Sérum Antitétanique 1500UI Injection,Sérum Antitétanique 1500UI Injection,,Ampoule,"derived: catalogue form ""amp""",new,
+M232,SECNIDAZOLE cp,sheet 1,confirmed,9685b6a5-0a16-454a-bcf1-cfee5a705312,Secnidazole Comprimé 500mg,Secnidazole Comprimé 500mg,,Comprimé,derived: form (tablet),new,
+M235,SOLUTE DE GLUCOSE 10%,sheet 1,confirmed,675545bd-76f0-45bf-a575-a79edc578f36,Glucose 10% Solution 500ml,Glucose 10% Solution 500ml,,Baxter,derived: form (infusion bag),new,
+M236,SOLUTE DE GLUCOSE 5%,sheet 1,confirmed,58fe137b-5b34-4ba0-ae2f-49793434e603,Glucose 5% Solution 500ml,Glucose 5% Solution 500ml,,Baxter,derived: form (infusion bag),new,
+M237,SOLUTE DE RINGER LACTATE,sheet 1,confirmed,6b98dae0-246b-4348-a253-4647d6ba8717,Solution de Ringer Lactate 500ml,Solution de Ringer Lactate 500ml,,Baxter,derived: form (infusion bag),new,
+M241,SRO,sheet 1,confirmed,31b26b90-e8fe-47af-9771-86805f270fd7,Solution de Réhydratation Orale Sachet,Solution de Réhydratation Orale Sachet,,Sachet,derived: form (sachet),new,
+M242,SUCCINYL CHOLINE inj,sheet 1,confirmed,dde7cb81-78c6-4918-b307-a5902c2a2a74,Succinylcholine Injection,Succinylcholine Injectable,renamed,Ampoule,"derived: catalogue form ""amp""",new,
+M250,UPACOF expectorant,sheet 1,confirmed,634cc60c-29e1-45cc-b7a4-025682996acf,Upacof Expectorant Flacon,Upacof Expectorant Flacon,,Flacon,derived: form (liquid),new,
+M251,UPACOF ped sp,sheet 1,confirmed,e3661b89-123d-4946-96ea-791dc5b281cf,Upacof Pédiatrique Sirop,Upacof Pédiatrique Sirop,,Flacon,derived: form (liquid),new,
+M252,VECURONIUM inj,sheet 1,new drug,b75a92eb-d373-5b2c-87f7-b1fe9ad5b635,,Vecuronium Injectable,new,Ampoule,"catalogue form ""amp""",new,concept 86144AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+M253,VIT K inj,sheet 1,low confidence: left out,,,,,,,none,"answer ""Vitamine K injectable"" (catalogue 1mg); the only candidate is 301 Injection de Vitamine K 10mg, a different strength. It is stocked anyway as a prescribed drug (sheet 2)"
+C16,Fil de suture dexon,sheet 1,low confidence: left out,,,,,,,none,"answer ""Fil non resorbable"" for ""Fil de suture dexon"": the non-absorbable suture is already line C21 (Suture Non-Absorbable); Dexon is absorbable"
+C25,GEL pour Echographie,sheet 1,new drug,2913f1b6-5a2a-5a82-910d-0153738bae7d,,Gel Echographique,new,Pièce,"catalogue form ""Unité"" (sheet 3: Unité -> Pièce)",new,concept e92664ff-a497-559d-bac6-03d8b24113c8
+C27,Robinet,sheet 1,new drug,19c548d7-93e8-5640-894e-0af3340a8f77,,Robinet à 3 voies,new,Pièce,"catalogue form ""Unité"" (sheet 3: Unité -> Pièce)",new,concept 98638538-715a-59bb-b392-4ef9cc8bf9ba
+C28,Rouleau de gaz 90 cm x91 m,sheet 1,new drug,a20b85ad-0ea5-521f-a7fa-b1d3feae7bee,,Rouleau de gaze 90 cm x 91 m,new,Rouleau,"catalogue form ""Rouleau""",new,concept 53e24daf-43a9-5b00-9605-68513cf9d2f3
+C29,Sachets pour le conditionnement des MEG,sheet 1,new drug,5b0fcfb2-dc90-5004-9c96-c03a993283ae,,Sachets pour le conditionnement des MEG,new,Pièce,"catalogue form ""Unité"" (sheet 3: Unité -> Pièce)",new,concept 1a4719d4-f393-53f4-a095-926afd893f88
+,,sheet 2 #1,"prescribed, stocked",bb0121c5-b218-4917-88ce-949226160c53,Spasfon Comprimé 80mg,Spasfon Comprimé 80mg,,Comprimé,derived: form (tablet),new,no catalogue line names it
+,,sheet 2 #2,"prescribed, stocked",2b8d6e0a-9d9d-44c7-b9f2-36d2fc898bda,Paracétamol Sirop 125mg/5ml 100ml,Paracétamol Sirop 125mg/5ml 100ml,,Flacon,derived: form (liquid),new,no catalogue line names it
+,,sheet 2 #8,"prescribed, stocked",4165a730-89e3-47bb-a3e2-ba523771dce0,Amoxicillin Sirop 250mg/5ml 80ml,Amoxicillin Sirop 250mg/5ml 80ml,,Flacon,derived: form (liquid),new,no catalogue line names it
+,,sheet 2 #11,"prescribed, stocked",241df482-d756-404b-987c-4a080ac53c73,Crème de Miconazole 20g,Crème de Miconazole 20g,,Tube,derived: form (cream/ointment),new,no catalogue line names it
+,,sheet 2 #12,"prescribed, stocked",54f24ddc-2a49-49bf-931e-f437ba1507e1,Amoxicillin+Clavulanic Acid 500/62.5mg Comprimé,Amoxicillin+Clavulanic Acid 500/62.5mg Comprimé,,Comprimé,derived: form (tablet),new,no catalogue line names it
+,,sheet 2 #14,"prescribed, stocked",30d8f5ce-89ba-4805-8d80-e3571ca38ba2,Ibuprofen Suspension 100mg/5ml 100ml,Ibuprofen Suspension 100mg/5ml 100ml,,Flacon,derived: form (liquid),new,no catalogue line names it
+,,sheet 2 #19,"prescribed, stocked",1465c189-a180-45aa-baef-92e784200d65,Ciprofloxacine Comprimé 250mg,Ciprofloxacine Comprimé 250mg,,Comprimé,derived: form (tablet),new,no catalogue line names it
+,,sheet 2 #20,"prescribed, stocked",2a84e0ae-caaf-434e-baca-8ed1baf5adb3,Efferalgan Comprimé 500mg,Efferalgan Comprimé 500mg,,Comprimé,derived: form (tablet),new,no catalogue line names it
+,,sheet 2 #21,"prescribed, stocked",634b366d-213a-467e-98c6-59a5e61af715,Kemoxyl+F Capsule 500mg,Kemoxyl+F Capsule 500mg,,Gélule,derived: form (capsule),new,no catalogue line names it
+,,sheet 2 #22,"prescribed, stocked",2b6bf939-8f96-4171-8eee-b454199133b8,Gentamicin Injection 40mg/2ml,Gentamicin Injection 40mg/2ml,,Ampoule,derived: form (injection),new,no catalogue line names it
+,,sheet 2 #23,"prescribed, stocked",596e6322-20d8-487d-8416-f0fe67d8386f,Diclofenac Pommade 20g,Diclofenac Pommade 20g,,Tube,derived: form (cream/ointment),new,no catalogue line names it
+,,sheet 2 #25,"prescribed, stocked",6b6d5453-c931-4c9a-93d2-57019057ef25,Doxycycline Comprimé 100mg,Doxycycline Comprimé 100mg,,Comprimé,derived: form (tablet),new,no catalogue line names it
+,,sheet 2 #26,"prescribed, stocked",871b78c8-6f21-4e45-b2dc-a5a7f8d0e6b9,Spasfon Lyoc Comprimé 80mg,Spasfon Lyoc Comprimé 80mg,,Comprimé,derived: form (tablet),new,no catalogue line names it
+,,sheet 2 #28,"prescribed, stocked",a334e047-7f89-4e4e-88f6-d99bb9ce1e26,Solution de Ringer Lactate 250ml,Solution de Ringer Lactate 250ml,,Baxter,derived: form (infusion bag),new,no catalogue line names it
+,,sheet 2 #30,"prescribed, stocked",12bcc620-d2d4-4968-a032-d956f893c90e,Pénicilline Comprimé 250mg,Pénicilline Comprimé 250mg,,Comprimé,derived: form (tablet),new,no catalogue line names it
+,,sheet 2 #31,"prescribed, stocked",46076a0c-a67b-4d42-a96f-69bbd6de644c,Neurontin Comprimé 300mg,Neurontin Comprimé 300mg,,Comprimé,derived: form (tablet),new,no catalogue line names it
+,,sheet 2 #33,"prescribed, stocked",c72a6b80-8c81-4450-b02e-87d8b4cdae46,Kemoxyl+F Comprimé 500mg,Kemoxyl+F Comprimé 500mg,,Comprimé,derived: form (tablet),new,no catalogue line names it
+,,sheet 2 #35,"prescribed, stocked",5a45d516-4cf9-4393-9c41-d659084ca491,Amoxicillin Suspension 250mg/5ml 100ml,Amoxicillin Suspension 250mg/5ml 100ml,,Flacon,derived: form (liquid),new,no catalogue line names it
+,,sheet 2 #36,"prescribed, stocked",7fe7b391-0095-4005-b2e4-c64e890dc548,Dipyrone Injection 1g/2ml,Dipyrone Injection 1g/2ml,,Ampoule,derived: form (injection),new,no catalogue line names it
+,,sheet 2 #39,"prescribed, stocked",1da6a789-fff0-4ae2-926f-5a9cb3795311,Dompéridone Comprimé 100mg,Dompéridone Comprimé 100mg,,Comprimé,derived: form (tablet),new,no catalogue line names it
+,,sheet 2 #40,"prescribed, stocked",e3a6020f-5693-464e-941c-0d13e8ab6ed5,Amoxicillin Suspension 125mg/5ml 60ml,Amoxicillin Suspension 125mg/5ml 60ml,,Flacon,derived: form (liquid),new,no catalogue line names it
+,,sheet 2 #42,"prescribed, stocked",5b49f421-fdc2-4ff8-b688-6cf912c34236,Cloxacillin Gel,Cloxacillin Gel,,Gélule,derived: form (capsule),new,no catalogue line names it
+,,sheet 2 #44,"prescribed, stocked",c848954c-078b-4ad3-8fcb-114f27c9c43d,Ibuprofen Suspension 100mg/5ml 60ml,Ibuprofen Suspension 100mg/5ml 60ml,,Flacon,derived: form (liquid),new,no catalogue line names it
+,,sheet 2 #45,"prescribed, stocked",2331b3f7-e97f-41b6-99f5-d29a16d2d230,Chloramphenicol Suspension 125mg/5ml 60ml,Chloramphenicol Suspension 125mg/5ml 60ml,,Flacon,derived: form (liquid),new,no catalogue line names it
+,,sheet 2 #46,"prescribed, stocked",fd74b4d5-db14-466e-bea8-e211e655dcf7,Injection de Vitamine K 10mg,Injection de Vitamine K 10mg,,Ampoule,derived: form (injection),new,no catalogue line names it
+,,sheet 2 #47,"prescribed, stocked",007d8518-52a6-47e0-bf3e-61b208661c65,Nifedipine Comprimé 10mg,Nifedipine Comprimé 10mg,,Comprimé,derived: form (tablet),new,no catalogue line names it
+,,sheet 2 #48,"prescribed, stocked",4a89fb08-6005-4be1-9f97-a4ec5c220dda,Dipyrone Injection 2.5g/5ml,Dipyrone Injection 2.5g/5ml,,Ampoule,derived: form (injection),new,no catalogue line names it
+,,sheet 2 #50,"prescribed, stocked",5d9220a1-65d8-4b6f-be9e-7d373810dafe,Ataktan Comprimé 100mg,Ataktan Comprimé 100mg,,Comprimé,derived: form (tablet),new,no catalogue line names it
+,,sheet 2 #51,"prescribed, stocked",f275b7ef-42cd-4be8-8269-05ed96ace01e,Betrozole Comprimé 30mg,Betrozole Comprimé 30mg,,Comprimé,derived: form (tablet),new,no catalogue line names it
+,,sheet 2 #53,"prescribed, stocked",cb3f13b3-4c69-4462-b3b9-07690ae7ce86,Bronchathiol Sirop 0.05% 150ml,Bronchathiol Sirop 0.05% 150ml,,Flacon,derived: form (liquid),new,no catalogue line names it
+,,sheet 2 #56,"prescribed, stocked",c0b992fd-cc53-4b51-a77f-7908634b5d12,Amoxicillin+Acide Clavulanique 1g/200mg Injection,Amoxicillin+Acide Clavulanique 1g/200mg Injection,,Flacon,derived: form (powder vial),new,no catalogue line names it
+,,sheet 2 #57,"prescribed, stocked",1b236044-7df7-488c-958d-b83b642a24e7,Acefen Comprimé 100mg,Acefen Comprimé 100mg,,Comprimé,derived: form (tablet),new,no catalogue line names it
+,,sheet 2 #62,"prescribed, stocked",9b95b450-bace-4eb8-a665-7b7ce93cef07,Duphaston Comprimé 100mg,Duphaston Comprimé 100mg,,Comprimé,derived: form (tablet),new,no catalogue line names it
+,,sheet 2 #66,"prescribed, stocked",473946b5-7a58-4f78-a3db-72eb6eac57e2,"Micozal Crème 0,02% 15g","Micozal Crème 0,02% 15g",,Tube,derived: form (cream/ointment),new,no catalogue line names it
+,,sheet 2 #70,"prescribed, stocked",50edd29c-2e36-4a1a-97e8-ba0dc656aee0,Chlorure de sodium,Chlorure de sodium,,Baxter,derived: form (infusion bag),new,no catalogue line names it
+,,sheet 2 #72,"prescribed, stocked",362e76bc-bb0e-4fc8-9b14-6938e04fbd4a,Bromhexine Sirop 4mg/5ml 100ml,Bromhexine Sirop 4mg/5ml 100ml,,Flacon,derived: form (liquid),new,no catalogue line names it
+,,sheet 2 #73,"prescribed, stocked",786bee02-faf2-4041-9601-9f3a8b975651,Candid V3 Comprimé vaginal 200mg,Candid V3 Comprimé vaginal 200mg,,Ovule,derived: form (vaginal tablet/ovule),new,no catalogue line names it
+,,sheet 2 #75,"prescribed, stocked",ffeaf200-5288-41c6-9754-e0e310d83273,Amoxicillin/Flucloxacillin 250mg Capsule,Amoxicillin/Flucloxacillin 250mg Capsule,,Gélule,derived: form (capsule),new,no catalogue line names it
+,,sheet 2 #76,"prescribed, stocked",6fd05b9d-3a0e-4cf0-91c8-aa94dbbdac10,Cardiurine Comprimé 50mg/25mg,Cardiurine Comprimé 50mg/25mg,,Comprimé,derived: form (tablet),new,no catalogue line names it
+,,sheet 2 #77,"prescribed, stocked",75264f61-a28e-4670-aa0c-1fdaf148207e,Dicytam Comprimé 500mg,Dicytam Comprimé 500mg,,Comprimé,derived: form (tablet),new,no catalogue line names it
+,,sheet 2 #78,"prescribed, stocked",410b3fde-c736-41a8-931d-5dd5550297d1,Secnidazole Comprimé 1mg,Secnidazole Comprimé 1mg,,Comprimé,derived: form (tablet),new,no catalogue line names it
+,,sheet 2 #79,"prescribed, stocked",91f37030-c050-4964-a3d7-051763090bf2,Dafrazol Capsule 20mg,Dafrazol Capsule 20mg,,Gélule,derived: form (capsule),new,no catalogue line names it
+,,sheet 2 #80,"prescribed, stocked",960eba46-585a-4763-b74b-c08996899af1,Gentalline Gouttes Ophtalmiques 0.3% 5ml,Gentalline Gouttes Ophtalmiques 0.3% 5ml,,Flacon,derived: form (liquid),new,no catalogue line names it
+,,sheet 2 #81,"prescribed, stocked",da50d14b-6d8a-43ca-ae82-dfe43dcb1fdd,Depakine Sirop 200mg/5ml 150ml,Depakine Sirop 200mg/5ml 150ml,,Flacon,derived: form (liquid),new,no catalogue line names it
+,,sheet 2 #83,"prescribed, stocked",7e5698a1-a926-4a2f-ab28-47c413c5a4b8,Clonidine Injection,Clonidine Injection,,Ampoule,derived: form (injection),new,no catalogue line names it
+,,sheet 2 #84,"prescribed, stocked",db7df9f0-3d00-4ace-8143-1254b7b674c2,Trialgic Comprimé 325/200/30mg,Trialgic Comprimé 325/200/30mg,,Comprimé,derived: form (tablet),new,no catalogue line names it
+,,sheet 2 #85,"prescribed, stocked",ee7f0744-9fcc-47d1-99b2-8b97860c6b79,Diclofenac Retard Comprimé 100mg,Diclofenac Retard Comprimé 100mg,,Comprimé,derived: form (tablet),new,no catalogue line names it
+,,sheet 2 #86,"prescribed, stocked",c3426765-6b26-457f-adf3-d3d829f62e25,Neuro Forte Comprimé,Neuro Forte Comprimé,,Comprimé,derived: form (tablet),new,no catalogue line names it
+,,sheet 2 #87,"prescribed, stocked",163a4146-4b54-48b1-ac0c-96f7e053916b,"Fucidin Crème 0,02% Tube 15g","Fucidin Crème 0,02% Tube 15g",,Tube,derived: form (cream/ointment),new,no catalogue line names it
+,,sheet 2 #89,"prescribed, stocked",6b561480-3352-46c8-a54c-4d0c5999aef6,Flacon à selles,Flacon à selles,,Pièce,derived: consumable,new,no catalogue line names it
+,,sheet 2 #91,"prescribed, stocked",35ee19da-c333-411a-8936-a5fd4561ef7d,Fucidin Suspension 250mg/5ml 90ml,Fucidin Suspension 250mg/5ml 90ml,,Flacon,derived: form (liquid),new,no catalogue line names it
+,,sheet 2 #92,"prescribed, stocked",ebaca3cf-8c36-48a5-8456-737906180e78,Cotrimoxazole Suspension 240mg/5ml 100ml,Cotrimoxazole Suspension 240mg/5ml 100ml,,Flacon,derived: form (liquid),new,no catalogue line names it
+,,sheet 2 #93,"prescribed, stocked",0d69879e-1b29-4286-816d-024a63180d57,Cotrimoxazole Comprimé,Cotrimoxazole Comprimé,,Comprimé,derived: form (tablet),new,no catalogue line names it
+,,sheet 2 #94,"prescribed, stocked",245628ce-af36-40b9-bcef-7555e5b3e627,Astaph Capsule 500mg,Astaph Capsule 500mg,,Gélule,derived: form (capsule),new,no catalogue line names it
