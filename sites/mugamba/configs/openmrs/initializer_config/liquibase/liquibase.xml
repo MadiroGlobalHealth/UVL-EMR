@@ -2074,4 +2074,274 @@
         <rollback/>
     </changeSet>
 
+    <!--
+        #478 - one name per medicine (list of 28 Oct 2026, confirmed by the product owner 29 Oct 2026).
+
+        The same medicine was prescribable and stockable under two or three names, brand and
+        generic. sql/one_name_per_medicine.csv lists, for each medicine, the drug kept (the
+        catalogue's name) and the drugs retired as its duplicates. The drugs are retired in the
+        drugs domain (drugs/uvl-drugs-issue478-retired.csv, Void/Retire), so past orders keep
+        their drug and stay readable; the Initializer would un-retire any drug a CSV line lists
+        without Void/Retire, so that file is where they stay retired. Their Odoo products are
+        archived (odoo/initializer_config/product/uvl-drugs-issue478-archived.csv): the
+        eip-odoo-openmrs product sync restores a retired drug whose Odoo product is still active,
+        and retires one whose product is archived, so both sides must agree.
+
+        These changesets do the OpenMRS side the drugs domain cannot.
+    -->
+
+    <!--
+        Three drugs for aceclofenac were linked to the concept Diphenhydramine / ibuprofen, and the
+        six diclofenac drugs to Aceclofenac. The drugs CSVs now name the right concepts, but the
+        drugs domain does not fill a line it retires, so the two retired aceclofenac drugs keep
+        the wrong concept unless it is changed here; the kept drugs are changed here too so a
+        stock item created before the drugs load (below) takes the right concept.
+        Stock items copy their drug's concept, so theirs follow.
+
+        Past orders keep the concept they were placed with: an UPDATE of orders would reach
+        eip-odoo-openmrs as an order update and could put an old prescription on a new quote.
+        OpenMRS refuses to revise or discontinue a drug order whose concept differs from its
+        drug's, so an order of these drugs still active at deploy time cannot be modified; it is
+        left to complete or expire. Idempotent: a drug or item already on the right concept is
+        not touched. On a new database the concepts arrive with OCL after this file runs, so the
+        precondition fails and it is tried again on the next start (onFail CONTINUE).
+    -->
+    <changeSet id="drug_concept_links-20261028" author="Joshua">
+        <preConditions onFail="CONTINUE" onError="CONTINUE"
+                       onFailMessage="WARN (#478): the Aceclofenac or Diclofenac concept does not exist yet (OCL not loaded), or the stockmanagement tables are missing, so the drug concept links were NOT corrected; this changeset is retried on every start.">
+            <tableExists tableName="stockmgmt_stock_item"/>
+            <sqlCheck expectedResult="2">
+                SELECT COUNT(DISTINCT uuid) FROM concept
+                 WHERE uuid IN ('0dc279bf-5ea3-4f48-a9fd-e8aff07a269e', 'e9f32faf-16e8-4d20-8562-29d160cc09e3')
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            Link the aceclofenac drugs to Aceclofenac and the diclofenac drugs to Diclofenac, with their stock items (#478).
+        </comment>
+        <sql>
+            UPDATE drug d
+              JOIN concept c ON c.uuid = '0dc279bf-5ea3-4f48-a9fd-e8aff07a269e'
+               SET d.concept_id = c.concept_id, d.changed_by = 1, d.date_changed = NOW()
+             WHERE d.uuid IN ('7fca28e6-2e0c-4a6d-8843-c2649b62e506', '59b159f1-2d27-4fbc-9a66-811c97859e39',
+                              '1b236044-7df7-488c-958d-b83b642a24e7')
+               AND d.concept_id &lt;&gt; c.concept_id;
+
+            UPDATE drug d
+              JOIN concept c ON c.uuid = 'e9f32faf-16e8-4d20-8562-29d160cc09e3'
+               SET d.concept_id = c.concept_id, d.changed_by = 1, d.date_changed = NOW()
+             WHERE d.uuid IN ('728b1639-8d38-44ca-b3e8-ba33eb09631e', 'f3dbf825-a129-4354-a5d3-905d2eea6c45',
+                              'afec8e63-860d-48dd-b143-55fc21bd1967', '596e6322-20d8-487d-8416-f0fe67d8386f',
+                              'ee7f0744-9fcc-47d1-99b2-8b97860c6b79', '8dc8e0e7-ab74-42e2-8f8c-c9bae00333eb')
+               AND d.concept_id &lt;&gt; c.concept_id;
+
+            UPDATE stockmgmt_stock_item si
+              JOIN drug d ON d.drug_id = si.drug_id
+               SET si.concept_id = d.concept_id
+             WHERE d.uuid IN ('7fca28e6-2e0c-4a6d-8843-c2649b62e506', '59b159f1-2d27-4fbc-9a66-811c97859e39',
+                              '1b236044-7df7-488c-958d-b83b642a24e7', '728b1639-8d38-44ca-b3e8-ba33eb09631e',
+                              'f3dbf825-a129-4354-a5d3-905d2eea6c45', 'afec8e63-860d-48dd-b143-55fc21bd1967',
+                              '596e6322-20d8-487d-8416-f0fe67d8386f', 'ee7f0744-9fcc-47d1-99b2-8b97860c6b79',
+                              '8dc8e0e7-ab74-42e2-8f8c-c9bae00333eb')
+               AND (si.concept_id IS NULL OR si.concept_id &lt;&gt; d.concept_id);
+        </sql>
+        <rollback/>
+    </changeSet>
+
+    <!--
+        Aceclofenac Comprimé 100mg is kept and Acefen Comprimé 100mg retired, but the stock item was
+        Acefen's (#455). This gives the kept drug its own; Acefen's is voided below. Waits for the
+        drug and the unit, as the #455 seeds do.
+    -->
+    <changeSet id="add_stock_item_aceclofenac-20261028" author="Joshua">
+        <preConditions onFail="CONTINUE" onError="CONTINUE"
+                       onFailMessage="WARN (#478): the drug Aceclofenac Comprimé 100mg or the unit Comprimé does not exist yet (drugs or OCL not loaded), so its stock item was NOT created; this changeset is retried on every start.">
+            <tableExists tableName="stockmgmt_stock_item"/>
+            <tableExists tableName="stockmgmt_stock_item_packaging_uom"/>
+            <columnExists tableName="stockmgmt_stock_item" columnName="has_expiration"/>
+            <sqlCheck expectedResult="1">
+                SELECT COUNT(*) FROM drug WHERE uuid = '7fca28e6-2e0c-4a6d-8843-c2649b62e506'
+            </sqlCheck>
+            <sqlCheck expectedResult="1">
+                SELECT COUNT(*) FROM concept WHERE uuid = '391d2a1b-2aec-4bd7-b43b-e294e7f2b9b9'
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            Create the stock item of Aceclofenac Comprimé 100mg, the drug kept for aceclofenac 100 mg (#478).
+        </comment>
+        <sqlFile path="sql/stock_items_one_name_per_medicine.sql" relativeToChangelogFile="true" stripComments="true"/>
+        <rollback>
+            <sqlFile path="sql/stock_items_one_name_per_medicine_rollback.sql" relativeToChangelogFile="true" stripComments="true"/>
+        </rollback>
+    </changeSet>
+
+    <!--
+        The stock item above is created without a common name, and
+        stock_item_common_name_from_drug-20261027 (#463) runs before it, so the item showed blank
+        in the stock app until the next start.
+        This gives the stock item of Aceclofenac Comprimé 100mg the drug's French name, as in the
+        drugs CSV and the Odoo product; it is written here, not copied from the drug, because the
+        eip-odoo-openmrs product sync may rename the drug. Matched by the drug, so it also names
+        an item another seed created for it.
+
+        Inline SQL, not a sqlFile: the checksum of a sqlFile cannot be recomputed by the
+        Initializer once its changeset has run (Resource does not exist), and a runAlways or
+        runOnChange changeset recomputes it on every start. Only an empty common name is
+        filled, so a name typed in the stock app is kept. runAlways, runOnChange, idempotent,
+        no rollback, as stock_item_common_name_renamed_drugs-20261029.
+    -->
+    <changeSet id="stock_item_common_name_aceclofenac-20261030" author="Joshua" runAlways="true" runOnChange="true">
+        <preConditions onFail="CONTINUE" onError="CONTINUE"
+                       onFailMessage="WARN (#478): the stockmanagement table stockmgmt_stock_item does not exist yet, so the stock item of Aceclofenac Comprimé 100mg was NOT given its name; this changeset runs again on every start.">
+            <tableExists tableName="stockmgmt_stock_item"/>
+            <columnExists tableName="stockmgmt_stock_item" columnName="common_name"/>
+        </preConditions>
+        <comment>
+            Give the stock item of Aceclofenac Comprimé 100mg its common name when it has none (#478).
+        </comment>
+        <sql>
+            UPDATE stockmgmt_stock_item si
+              JOIN drug d ON d.drug_id = si.drug_id
+               SET si.common_name = 'Aceclofenac Comprimé 100mg'
+             WHERE d.uuid = '7fca28e6-2e0c-4a6d-8843-c2649b62e506'
+               AND (si.common_name IS NULL OR TRIM(si.common_name) = '');
+        </sql>
+        <rollback/>
+    </changeSet>
+
+    <!--
+        One stock item per medicine: the stock items of the retired drugs
+        (drugs/uvl-drugs-issue478-retired.csv) are voided, the way a user voids one in the stock
+        app, with a reason that names the drug that replaces it; sql/one_name_per_medicine.csv
+        lists the same pairs.
+
+        An item is voided only when it holds nothing, so no stock disappears: every party and
+        batch nets to zero, and no stock operation that is still open (not completed, cancelled
+        or rejected) has a line for it. An item that still holds stock stays active until the
+        pharmacy moves or adjusts that stock to zero; it is voided on the next start after that.
+
+        runAlways, so an item a seed creates later for a retired drug, or one the pharmacy
+        empties after this deploy, is voided on the next start. Idempotent: an item already
+        voided is left alone. Inline SQL, not a sqlFile: the Initializer cannot recompute the
+        checksum of a sqlFile once its changeset has run (Resource does not exist), and a
+        runAlways or runOnChange changeset recomputes it on every start. runOnChange, so the
+        move from the sqlFile to inline SQL, or a later edit, does not stop OpenMRS on a checksum.
+    -->
+    <changeSet id="stock_items_void_duplicates-20261028" author="Joshua" runAlways="true" runOnChange="true">
+        <preConditions onFail="CONTINUE" onError="CONTINUE"
+                       onFailMessage="WARN (#478): the stockmanagement tables do not exist yet, so the stock items of the retired duplicate drugs were NOT voided; this changeset runs again on every start.">
+            <tableExists tableName="stockmgmt_stock_item"/>
+            <tableExists tableName="stockmgmt_stock_item_transaction"/>
+            <tableExists tableName="stockmgmt_stock_operation_item"/>
+        </preConditions>
+        <comment>
+            Void the stock items of the drugs retired as duplicates, when they hold no stock (#478).
+        </comment>
+        <sql stripComments="true">
+            CREATE TEMPORARY TABLE uvl_retired_duplicate (
+                drug_uuid CHAR(38) NOT NULL,
+                void_reason VARCHAR(255) NOT NULL
+            );
+
+            INSERT INTO uvl_retired_duplicate (drug_uuid, void_reason) VALUES
+                ('c2ad3349-a436-4aff-880f-62054bff5590', '#478 duplicate of Ibuprofène Comprimé 400mg'), -- Ibuprofen Denk Comprimé 400mg
+                ('ecebe807-256e-4932-880c-8bc317ec80c8', '#478 duplicate of Metformin Comprimé 850mg'), -- Glucophage XR Comprimé 850mg
+                ('26f6a1df-da4b-4dc2-be29-866c829a54a9', '#478 duplicate of Metformin Comprimé 850mg'), -- Metformin Denk Comprimé 850mg
+                ('91f37030-c050-4964-a3d7-051763090bf2', '#478 duplicate of Omeprazole Gélule 20mg'), -- Dafrazol Capsule 20mg
+                ('8e64d9a4-f814-43c9-a8e7-9ffce54f219b', '#478 duplicate of Aceclofenac Comprimé 100mg'), -- AC Fenac Comprimé 100mg
+                ('59b159f1-2d27-4fbc-9a66-811c97859e39', '#478 duplicate of Aceclofenac Comprimé 100mg'), -- Aceclofenac Comprimé
+                ('1b236044-7df7-488c-958d-b83b642a24e7', '#478 duplicate of Aceclofenac Comprimé 100mg'), -- Acefen Comprimé 100mg
+                ('473946b5-7a58-4f78-a3db-72eb6eac57e2', '#478 duplicate of Miconazole crème 2% 15gr'), -- Micozal Crème 0,02% 15g
+                ('241df482-d756-404b-987c-4a080ac53c73', '#478 duplicate of Miconazole crème 2% 15gr'), -- Crème de Miconazole 20g
+                ('960eba46-585a-4763-b74b-c08996899af1', '#478 duplicate of Gentamicine Collyre'), -- Gentalline Gouttes Ophtalmiques 0.3% 5ml
+                ('0d69879e-1b29-4286-816d-024a63180d57', '#478 duplicate of Cotrimoxazole Comprimé 80/400mg'), -- Cotrimoxazole Comprimé
+                ('abeef200-a906-4528-b2b3-2186f0d5a172', '#478 duplicate of Celestene Gouttes 0,05% 30ml'), -- Celestene Gouttes 0,05%
+                ('e3a6020f-5693-464e-941c-0d13e8ab6ed5', '#478 duplicate of Amoxicilline Sirop 125mg/5ml'), -- Amoxicillin Suspension 125mg/5ml 60ml
+                ('7e5698a1-a926-4a2f-ab28-47c413c5a4b8', '#478 duplicate of Clonidine Injectable 0,15mg/ml'), -- Clonidine Injection
+                ('ffeaf200-5288-41c6-9754-e0e310d83273', '#478 duplicate of Kemoxyl+F Capsule 250/250mg'), -- Amoxicillin/Flucloxacillin 250mg Capsule
+                ('1f0c7f1f-cb74-440d-8ebf-d0b82328cb83', '#478 duplicate of Kemoxyl+F Suspension 125/125mg/5ml 100ml'), -- Amoxicillin/Flucloxacillin Suspension 125mg 100ml
+                ('ec4b3fff-3f65-4b9c-9440-ce99f4b60eaa', '#478 duplicate of Ketolac Collyre'), -- Ketac Collyre 0.5%
+                ('43553c4d-3aee-42e1-af08-0607fa6619d3', '#478 duplicate of Gamalate B6 Comprimé'), -- Gamalate Comprimé 75/37/75/37/210mg
+                ('dfc4d640-1ab8-4b8c-a90f-5ad2e18162d0', '#478 duplicate of Polydexa Gouttes Auriculaires 1mg+10mg+10000UI/ml 10ml'), -- Polydexa Gouttes Auriculaires
+                ('0b128957-066a-4cab-9a9e-c896a700f947', '#478 duplicate of Diagone Kit 20mg+SRO'), -- Diagone Kit
+                ('a6ce707b-e64c-4945-a8fb-1a62741c00c0', '#478 duplicate of Rogophen (CAF) Collyre'), -- Chloramphenicol Gouttes Oculaires 0.5% 10ml
+                ('12bcc620-d2d4-4968-a032-d956f893c90e', '#478 duplicate of Pénicilline V Comprimé 250mg'), -- Pénicilline Comprimé 250mg
+                ('9a139f8a-db0e-4e5f-b8bb-b73b1e769172', '#478 duplicate of Pénicilline G Injectable 1MUI'), -- Pénicilline V (Phénoxyméthylpénicilline) Flacon 1MUI
+                ('596e6322-20d8-487d-8416-f0fe67d8386f', '#478 duplicate of Diclofenac Pommade 0,01% 30g'), -- Diclofenac Pommade 20g
+                ('383d0826-bb4e-41a1-b69c-54330c7fd8f6', '#478 duplicate of Cotrimoxazole Suspension 240mg/5ml 100ml'), -- Cotrimoxazole Suspension 200/40mg/5ml 60ml
+                ('ccb9c05d-c875-427e-807a-9821f472564d', '#478 duplicate of Artéméther-Luméfantrine Comprimé Boîte de 24'), -- Lonart Comprimé 120mg
+                ('9b95b450-bace-4eb8-a665-7b7ce93cef07', '#478 duplicate of Duphaston Comprimé 10mg'), -- Duphaston Comprimé 100mg
+                ('1da6a789-fff0-4ae2-926f-5a9cb3795311', '#478 duplicate of Domperidone Comprimé 10mg'), -- Dompéridone Comprimé 100mg
+                ('50edd29c-2e36-4a1a-97e8-ba0dc656aee0', '#478 duplicate of Soluté NaCl 0.9% 500ml'), -- Chlorure de sodium
+                ('15c1c28f-b42c-5bc7-bf1a-7042f5282b79', '#478 duplicate of Auropred (Prednisolone) Collyre'), -- Predimax Collyre
+                ('1578421e-96e0-425b-9287-622b13a91d78', '#478 duplicate of Tulle Gras 10cmx10cm'), -- Tulle Gras
+                ('7b0310ac-5225-4d48-959b-313eb9f22ddf', '#478 duplicate of Dynamogen Ampoule 3mg/1g'); -- Dynamogen Ampoule
+
+            UPDATE stockmgmt_stock_item si
+              JOIN drug d ON d.drug_id = si.drug_id
+              JOIN uvl_retired_duplicate r ON r.drug_uuid = d.uuid
+               SET si.voided = 1,
+                   si.voided_by = 1,
+                   si.date_voided = NOW(),
+                   si.void_reason = r.void_reason
+             WHERE si.voided = 0
+               AND NOT EXISTS (SELECT 1 FROM stockmgmt_stock_item_transaction t
+                                WHERE t.stock_item_id = si.stock_item_id
+                                GROUP BY t.party_id, t.stock_batch_id
+                               HAVING SUM(t.quantity) &lt;&gt; 0)
+               AND NOT EXISTS (SELECT 1 FROM stockmgmt_stock_operation_item oi
+                                 JOIN stockmgmt_stock_operation o ON o.stock_operation_id = oi.stock_operation_id
+                                WHERE oi.stock_item_id = si.stock_item_id
+                                  AND o.voided = 0
+                                  AND o.status NOT IN ('COMPLETED', 'CANCELLED', 'REJECTED'));
+
+            DROP TEMPORARY TABLE uvl_retired_duplicate;
+        </sql>
+        <rollback>
+            <sql>
+                UPDATE stockmgmt_stock_item
+                   SET voided = 0, voided_by = NULL, date_voided = NULL, void_reason = NULL
+                 WHERE voided = 1
+                   AND void_reason LIKE '#478 duplicate of %';
+            </sql>
+        </rollback>
+    </changeSet>
+
+    <!--
+        Two kept drugs are renamed (product owner, 29 Oct 2026): Efferalgan Comprimé 500mg becomes
+        Paracétamol Effervescent, and Miconazole Crème 0.02% 15g becomes Miconazole crème 2% 15gr.
+        The drugs CSV renames the drug and the Odoo CSV its product, but the stock item's common
+        name was copied from the old drug name (#463), and that changeset never overwrites a
+        name. The new name is written here, not copied from the drug, because this file runs
+        before the drugs domain renames the drug.
+
+        Only a common name that is empty or still one of the old names is changed, so a name
+        typed in the stock app is kept. runAlways, so an item a seed creates later is renamed
+        on the next start; runOnChange, so editing it does not stop OpenMRS on a checksum.
+        Idempotent. No rollback: the old names are the drugs' names in the CSVs of main.
+    -->
+    <changeSet id="stock_item_common_name_renamed_drugs-20261029" author="Joshua" runAlways="true" runOnChange="true">
+        <preConditions onFail="CONTINUE" onError="CONTINUE"
+                       onFailMessage="WARN (#478): the stockmanagement table stockmgmt_stock_item does not exist yet, so the stock items of the renamed drugs were NOT renamed; this changeset runs again on every start.">
+            <tableExists tableName="stockmgmt_stock_item"/>
+            <columnExists tableName="stockmgmt_stock_item" columnName="common_name"/>
+        </preConditions>
+        <comment>
+            Give the stock items of the two renamed drugs their new name (#478).
+        </comment>
+        <sql>
+            UPDATE stockmgmt_stock_item si
+              JOIN drug d ON d.drug_id = si.drug_id
+               SET si.common_name = 'Paracétamol Effervescent'
+             WHERE d.uuid = '2a84e0ae-caaf-434e-baca-8ed1baf5adb3'
+               AND (si.common_name IS NULL OR TRIM(si.common_name) IN ('', 'Efferalgan Comprimé 500mg', 'Efferalgan 500mg Tablet'));
+
+            UPDATE stockmgmt_stock_item si
+              JOIN drug d ON d.drug_id = si.drug_id
+               SET si.common_name = 'Miconazole crème 2% 15gr'
+             WHERE d.uuid = '3ed44baf-bae0-4484-907b-4fbeeec85c13'
+               AND (si.common_name IS NULL OR TRIM(si.common_name) IN ('', 'Miconazole Crème 0.02% 15g', 'Crème de Miconazole 0.02% 15g', 'Miconazole Cream 0.02% 15g'));
+        </sql>
+        <rollback/>
+    </changeSet>
+
 </databaseChangeLog>

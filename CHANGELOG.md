@@ -137,6 +137,19 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   on UAT in the last 90 days now is one. 79 stock items change to
   the pack unit of sheet 3 (Flacon for a syrup or eye drops, Ampoule for an injection, Rouleau for a
   bandage, Paire for gloves). Past prescriptions are unchanged: only the names change. (#455)
+- **One name per medicine.** 32 drugs that duplicated another under a brand or a second spelling
+  (for example Ibuprofen Denk for Ibuprofène Comprimé 400mg, Dafrazol for Omeprazole Gélule 20mg,
+  Micozal and Crème de Miconazole 20g for the miconazole cream, Predimax for Auropred, Chlorure de
+  sodium for Soluté NaCl 0.9% 500ml) can no longer be prescribed; the catalogue's name stays, as
+  confirmed by the product owner on 29 Oct 2026. Past prescriptions keep their drug and still
+  display. Their stock items are voided when they hold no stock, and their Odoo products are
+  archived, not deleted, so past invoices are unchanged. Brufen, Neurontin, Halothane, Cromulline
+  and Cromsol stay as their own products. Efferalgan Comprimé 500mg stays and is renamed
+  **Paracétamol Effervescent**, and Miconazole Crème 0.02% 15g is renamed **Miconazole crème 2%
+  15gr** (strength 2%), in OpenMRS, Odoo and the stock item. Aceclofenac Comprimé 100mg replaces
+  Acefen and gets its own stock item. The aceclofenac drugs now use the Aceclofenac concept and
+  the six diclofenac drugs the Diclofenac concept. `sql/one_name_per_medicine.csv` lists each
+  drug kept and retired. (#478)
 
 ### Added
 - OpenMRS role and Keycloak `openmrs` client role **Central Pharmacist** (inherits `Pharmacist`
