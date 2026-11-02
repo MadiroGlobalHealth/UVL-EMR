@@ -150,6 +150,13 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   Acefen and gets its own stock item. The aceclofenac drugs now use the Aceclofenac concept and
   the six diclofenac drugs the Diclofenac concept. `sql/one_name_per_medicine.csv` lists each
   drug kept and retired. (#478)
+- **A Doctor sees every label on the Ward Admission form and can open the ward page.** Coded
+  answers referenced as `CIEL:` showed blank radio and location labels, and the ward page at
+  Hospitalisation (IPD) crashed with "Cannot read properties of undefined (reading 'patient')".
+  `Register patients` gains the two read-only privileges `Get Concept Reference Terms` and
+  `View Metadata Via Mapping`, so every role inheriting it has them: Help Nurse, Nurse, Doctor,
+  Midwife, Ophtalmologist, Dentist and Anesthesist. Pharmacist, Lab Technician and X-Ray
+  Technician are unchanged. (#480)
 
 ### Added
 - OpenMRS role and Keycloak `openmrs` client role **Central Pharmacist** (inherits `Pharmacist`
