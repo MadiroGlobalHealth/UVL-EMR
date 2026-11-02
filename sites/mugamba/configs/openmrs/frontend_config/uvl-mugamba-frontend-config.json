@@ -451,7 +451,7 @@
         "withQuantity": "avec la quantité"
       }
     },
-    "enableStockDispense": false
+    "enableStockDispense": true
   },
   "@openmrs/esm-stock-management-app": {
     "packingUnitsUUID": "d8ec6bbb-d988-5ce5-879a-6e3068aca253",
