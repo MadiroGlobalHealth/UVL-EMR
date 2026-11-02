@@ -1,0 +1,353 @@
+{
+  "uuid": "83e1f63e-8fac-4fe1-aa44-e780656637d4",
+  "name": "UVL Discharge Summary Form",
+  "description": "UVL inpatient discharge summary (Synthèse de sortie d'hospitalisation, HPRC)",
+  "version": "1",
+  "published": true,
+  "retired": false,
+  "encounter": "Discharge Summary",
+  "processor": "EncounterFormProcessor",
+  "referencedForms": [],
+  "encounterType": "669262a8-f351-4d5b-8480-3551734eed8f",
+  "pages": [
+    {
+      "label": "Discharge Summary",
+      "sections": [
+        {
+          "label": "Major Event Reporting & Vigilance",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Reporting Indicators",
+              "type": "obs",
+              "id": "reportingIndicators",
+              "questionOptions": {
+                "rendering": "multiCheckbox",
+                "concept": "30e721c6-5839-4bb3-83a2-f981a305638b",
+                "answers": [
+                  {
+                    "concept": "69c8d26c-cbdb-4773-9ac9-59cba7f761b5",
+                    "label": "Maternal Death"
+                  },
+                  {
+                    "concept": "d394c17c-4eec-40da-bbc8-19e1d984845f",
+                    "label": "Perinatal Death"
+                  },
+                  {
+                    "concept": "cb601a13-3b25-489e-91dc-ffa85349c580",
+                    "label": "Transfusion or Anaemia"
+                  },
+                  {
+                    "concept": "9692ddcf-09ef-45d4-ae1a-da644e387ae0",
+                    "label": "Positive RDT"
+                  },
+                  {
+                    "concept": "2c37fef6-406e-4b2c-b79f-4d1cf213c909",
+                    "label": "Post-Procedure Infection"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Suspected Nosocomial Infections",
+              "type": "obs",
+              "id": "nosocomialInfections",
+              "questionOptions": {
+                "rendering": "multiCheckbox",
+                "concept": "42983f28-8cf3-40f1-bb7e-5058ea4e4b7e",
+                "answers": [
+                  {
+                    "concept": "f8a121b0-b276-44ba-90c2-2982c92c9221",
+                    "label": "Post-Procedure (In-Facility)"
+                  },
+                  {
+                    "concept": "80e1f197-1aeb-412a-9f19-90ba564ab0ae",
+                    "label": "Post-Procedure (External)"
+                  },
+                  {
+                    "concept": "4b3707c1-7748-497a-ae92-aeeed086a0bf",
+                    "label": "Post-Operative (In-Facility)"
+                  },
+                  {
+                    "concept": "b5687d7c-2973-4d4b-bf75-d6c9c90ec942",
+                    "label": "Post-Operative (External)"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "label": "Standardised Clinical Assessment by Condition",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Pregnant Woman",
+              "type": "obs",
+              "id": "pregnantWoman",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "1ec6ce6a-607a-4b6a-af5d-e14911fe98c5",
+                "answers": [
+                  {
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725",
+                    "label": "No"
+                  },
+                  {
+                    "concept": "f9022461-c5fd-4fcb-a12f-075471cb5e8c",
+                    "label": "<=3 months"
+                  },
+                  {
+                    "concept": "ae846c0d-ab46-4a87-9c5d-f48285f26d6e",
+                    "label": ">3 Months"
+                  }
+                ]
+              },
+              "hide": {
+                "hideWhenExpression": "sex !== 'F'"
+              }
+            },
+            {
+              "label": "Malaria: Classification",
+              "type": "obs",
+              "id": "malariaClassification",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "a2bfe9b7-c373-4805-96c9-16e1039eac04",
+                "answers": [
+                  {
+                    "concept": "11cd65c5-0175-47fa-af4e-c7f125faeb58",
+                    "label": "Without Test"
+                  },
+                  {
+                    "concept": "8edea3c3-d5de-4772-9d14-abed591bf957",
+                    "label": "Uncomplicated"
+                  },
+                  {
+                    "concept": "9692ddcf-09ef-45d4-ae1a-da644e387ae0",
+                    "label": "Tested Positive"
+                  },
+                  {
+                    "concept": "7906e56e-4729-4a54-970c-3e199f407992",
+                    "label": "Severe"
+                  },
+                  {
+                    "concept": "6cb1ed22-bdd2-4a18-985c-3bb56400a911",
+                    "label": "Confirmed with Severe Anaemia"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Malaria: Treatment Prescribed",
+              "type": "obs",
+              "id": "malariaTreatment",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "29778367-63f7-47f7-a02a-d17c9643578a",
+                "answers": [
+                  {
+                    "concept": "bf4b4034-5331-461e-b839-fc71add06420",
+                    "label": "Artemether-Lumefantrine (6/12/18/24 tablets)"
+                  },
+                  {
+                    "concept": "eb44b2cc-48e7-4bbf-9f05-bb5462e8408f",
+                    "label": "Dihydroartemisinin-Piperaquine"
+                  },
+                  {
+                    "concept": "834c9ecb-be7a-4b8f-962c-9a5a52d3908d",
+                    "label": "Quinine Tablets"
+                  },
+                  {
+                    "concept": "c14d15fa-838d-4af6-a802-9d53fc782669",
+                    "label": "Quinine Tablets + Clindamycin"
+                  },
+                  {
+                    "concept": "da7e3699-9a19-4f9f-bbe5-5ab3d33a861d",
+                    "label": "Artesunate Injection"
+                  },
+                  {
+                    "concept": "19c3ae10-f224-468c-9d42-26fcc16cc190",
+                    "label": "Quinine Injection"
+                  }
+                ]
+              },
+              "hide": {
+                "hideWhenExpression": "isEmpty(malariaClassification) || malariaClassification === '11cd65c5-0175-47fa-af4e-c7f125faeb58'"
+              }
+            },
+            {
+              "label": "Diarrhea: Classification",
+              "type": "obs",
+              "id": "diarrhea",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "5841a760-ac78-4c75-8d31-9df9af3891ec",
+                "answers": [
+                  {
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725",
+                    "label": "No"
+                  },
+                  {
+                    "concept": "3ad826e0-e1c3-4eae-b910-9698e65e9553",
+                    "label": "Without Dehydration"
+                  },
+                  {
+                    "concept": "b88b4fa9-3216-4531-b9fe-502713468fbe",
+                    "label": "With Dehydration"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Diarrhea treated?",
+              "type": "obs",
+              "id": "diarrheaTreated",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "2c10adc6-9bdf-4ff8-a36e-6166ea66e2c8",
+                "answers": [
+                  {
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e",
+                    "label": "Yes"
+                  },
+                  {
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725",
+                    "label": "No"
+                  }
+                ]
+              },
+              "hide": {
+                "hideWhenExpression": "diarrhea !== '3ad826e0-e1c3-4eae-b910-9698e65e9553' && diarrhea !== 'b88b4fa9-3216-4531-b9fe-502713468fbe'"
+              }
+            },
+            {
+              "label": "Pneumonia: Classification",
+              "type": "obs",
+              "id": "pneumonia",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "186dfb2f-be92-41ca-bd3d-3997462c53f4",
+                "answers": [
+                  {
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725",
+                    "label": "No"
+                  },
+                  {
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e",
+                    "label": "Yes"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Treated with Antibiotics?",
+              "type": "obs",
+              "id": "treatedWithAntibiotics",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "fdde8fc7-b854-49ab-8b01-08ba156a779e",
+                "answers": [
+                  {
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e",
+                    "label": "Yes"
+                  },
+                  {
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725",
+                    "label": "No"
+                  }
+                ]
+              },
+              "hide": {
+                "hideWhenExpression": "pneumonia !== '2f20b5d3-ce71-4b89-a3b4-388f416fc62e'"
+              }
+            }
+          ]
+        },
+        {
+          "label": "Medical Conclusions, Treatment & Follow-up",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Diagnoses (ICPC-2 / ICD-10)",
+              "type": "diagnosis",
+              "id": "dischargeDiagnosis",
+              "questionOptions": {
+                "rendering": "repeating",
+                "dataSource": "diagnoses",
+                "isSearchable": "true",
+                "diagnosis": {
+                  "isConfirmed": true,
+                  "rank": 1,
+                  "conceptClasses": [
+                    "8d4918b0-c2cc-11de-8d13-0010c6dffd0f"
+                  ]
+                }
+              }
+            },
+            {
+              "label": "Clinical Summary at Discharge",
+              "type": "obs",
+              "id": "clinicalSummary",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "30469992-d33e-4cff-adbf-a32be08233bc"
+              }
+            },
+            {
+              "label": "Discharge Treatment / Medications",
+              "type": "obs",
+              "id": "dischargeTreatment",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "29ff306b-5a2a-48c1-affa-8fa4620a8fda"
+              }
+            },
+            {
+              "label": "Prevention of Complications",
+              "type": "obs",
+              "id": "complicationPrevention",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "39b4ec6f-73dd-413b-83ce-985f2fd29ac2"
+              }
+            },
+            {
+              "label": "Course of Action / Follow-up",
+              "type": "obs",
+              "id": "followUpPlan",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "9af39f47-d3bd-418a-84e9-968863430578"
+              }
+            },
+            {
+              "label": "General Observations",
+              "type": "obs",
+              "id": "generalObservations",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "9dc2962b-bdd0-4261-b69d-55769e078be0"
+              }
+            }
+          ]
+        },
+        {
+          "label": "Administrative Closure",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Discharging Doctor / Clinician",
+              "type": "encounterProvider",
+              "id": "encProvider",
+              "required": true,
+              "questionOptions": {
+                "rendering": "ui-select-extended"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
