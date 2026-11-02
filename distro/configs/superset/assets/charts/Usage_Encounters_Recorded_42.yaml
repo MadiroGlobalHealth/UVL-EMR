@@ -1,0 +1,25 @@
+slice_name: "Usage \u2013 Encounters Recorded"
+description: null
+certified_by: null
+certification_details: null
+viz_type: big_number_total
+params:
+  datasource: 40__table
+  viz_type: big_number_total
+  metric: encounters
+  adhoc_filters:
+  - clause: WHERE
+    subject: activity_datetime
+    operator: TEMPORAL_RANGE
+    comparator: No filter
+    expressionType: SIMPLE
+  subheader: all encounter types
+  header_font_size: 0.4
+  subheader_font_size: 0.15
+  y_axis_format: SMART_NUMBER
+  time_format: smart_date
+query_context: null
+cache_timeout: null
+uuid: cdc9dffe-3dce-4c4c-acf3-e51fd4b28153
+version: 1.0.0
+dataset_uuid: c5df3d0c-fe8d-493c-a726-359d52972e1b

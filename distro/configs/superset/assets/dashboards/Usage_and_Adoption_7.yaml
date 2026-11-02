@@ -1,0 +1,468 @@
+dashboard_title: Usage and Adoption
+description: null
+css: ''
+slug: usage-and-adoption
+certified_by: null
+certification_details: null
+published: true
+uuid: 9d27cc97-6007-413a-9a42-27de4205c67d
+position:
+  DASHBOARD_VERSION_KEY: v2
+  ROOT_ID:
+    children:
+    - GRID_ID
+    id: ROOT_ID
+    type: ROOT
+  GRID_ID:
+    children:
+    - HEADER_1
+    - ROW-usage-notes
+    - ROW-usage-kpi
+    - ROW-usage-periods
+    - ROW-usage-target-week
+    - ROW-usage-target-month
+    - ROW-usage-week-services
+    - ROW-usage-month-services
+    - ROW-usage-baseline
+    - ROW-usage-baseline-services
+    id: GRID_ID
+    parents:
+    - ROOT_ID
+    type: GRID
+  HEADER_1:
+    id: HEADER_1
+    meta:
+      text: Usage and Adoption
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    type: HEADER
+  HEADER_ID:
+    id: HEADER_ID
+    meta:
+      text: Usage and Adoption
+    type: HEADER
+  MARKDOWN-usage-notes:
+    children: []
+    id: MARKDOWN-usage-notes
+    meta:
+      code: '### Usage and adoption
+
+
+        Reported monthly by the implementation lead (UVL-EMR#285). The **Date / Period** filter
+        sets the range for every chart except the target tables and the fixed baseline.
+
+
+        - **Active users**: distinct OpenMRS users who saved an encounter, an order or a visit
+        in the period. Logins are not recorded in the analytics database, so a user who only
+        looked at records is not counted.
+
+        - **Patients registered**: new patient records (by creation date). **Patients seen**:
+        distinct patients with an encounter or a visit.
+
+        - **Encounters** by encounter type; **orders** by order type, new orders only (revisions
+        and discontinuations excluded). Voided records are excluded everywhere.
+
+        - **Against target**: targets and their denominators (staff trained, eligible encounters
+        and orders) are set in the `targets` list of the *usage_summary* dataset. Target columns
+        stay empty until they are set.
+
+        - Weeks start on Monday. Times are UTC as stored by OpenMRS (02:00 in Bujumbura).'
+      height: 40
+      width: 12
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-usage-notes
+    type: MARKDOWN
+  ROW-usage-notes:
+    children:
+    - MARKDOWN-usage-notes
+    id: ROW-usage-notes
+    meta:
+      background: BACKGROUND_TRANSPARENT
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    type: ROW
+  CHART-usage-40:
+    children: []
+    id: CHART-usage-40
+    meta:
+      chartId: 40
+      height: 20
+      sliceName: "Usage \u2013 Active Users"
+      uuid: cdce3462-fae6-4fc5-9bc4-3efb68f78580
+      width: 3
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-usage-kpi
+    type: CHART
+  CHART-usage-41:
+    children: []
+    id: CHART-usage-41
+    meta:
+      chartId: 41
+      height: 20
+      sliceName: "Usage \u2013 Patients Registered"
+      uuid: 1268e641-bd08-4c5c-b698-bd473139a22c
+      width: 3
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-usage-kpi
+    type: CHART
+  CHART-usage-42:
+    children: []
+    id: CHART-usage-42
+    meta:
+      chartId: 42
+      height: 20
+      sliceName: "Usage \u2013 Encounters Recorded"
+      uuid: cdc9dffe-3dce-4c4c-acf3-e51fd4b28153
+      width: 3
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-usage-kpi
+    type: CHART
+  CHART-usage-43:
+    children: []
+    id: CHART-usage-43
+    meta:
+      chartId: 43
+      height: 20
+      sliceName: "Usage \u2013 Orders Placed"
+      uuid: 9a3653c5-7000-4f47-8391-bf0cbd978503
+      width: 3
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-usage-kpi
+    type: CHART
+  ROW-usage-kpi:
+    children:
+    - CHART-usage-40
+    - CHART-usage-41
+    - CHART-usage-42
+    - CHART-usage-43
+    id: ROW-usage-kpi
+    meta:
+      background: BACKGROUND_TRANSPARENT
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    type: ROW
+  CHART-usage-44:
+    children: []
+    id: CHART-usage-44
+    meta:
+      chartId: 44
+      height: 60
+      sliceName: "Usage \u2013 Activity per Week"
+      uuid: 70fe82a0-caa9-45ab-ba3d-5eadd086c5ec
+      width: 6
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-usage-periods
+    type: CHART
+  CHART-usage-45:
+    children: []
+    id: CHART-usage-45
+    meta:
+      chartId: 45
+      height: 60
+      sliceName: "Usage \u2013 Activity per Month"
+      uuid: 1050eb4a-1c61-42e0-8a4d-81115640f370
+      width: 6
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-usage-periods
+    type: CHART
+  ROW-usage-periods:
+    children:
+    - CHART-usage-44
+    - CHART-usage-45
+    id: ROW-usage-periods
+    meta:
+      background: BACKGROUND_TRANSPARENT
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    type: ROW
+  CHART-usage-46:
+    children: []
+    id: CHART-usage-46
+    meta:
+      chartId: 46
+      height: 60
+      sliceName: "Usage \u2013 Against Target per Week"
+      uuid: 6ba0ec08-f6eb-45d2-aac5-e57e6b0928c0
+      width: 12
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-usage-target-week
+    type: CHART
+  ROW-usage-target-week:
+    children:
+    - CHART-usage-46
+    id: ROW-usage-target-week
+    meta:
+      background: BACKGROUND_TRANSPARENT
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    type: ROW
+  CHART-usage-47:
+    children: []
+    id: CHART-usage-47
+    meta:
+      chartId: 47
+      height: 50
+      sliceName: "Usage \u2013 Against Target per Month"
+      uuid: ee845768-c97e-46ff-a23b-723e3fee8a2b
+      width: 12
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-usage-target-month
+    type: CHART
+  ROW-usage-target-month:
+    children:
+    - CHART-usage-47
+    id: ROW-usage-target-month
+    meta:
+      background: BACKGROUND_TRANSPARENT
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    type: ROW
+  CHART-usage-48:
+    children: []
+    id: CHART-usage-48
+    meta:
+      chartId: 48
+      height: 60
+      sliceName: "Usage \u2013 Encounters per Service per Week"
+      uuid: 55819c4b-0b34-4176-a5a3-286002a2616e
+      width: 6
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-usage-week-services
+    type: CHART
+  CHART-usage-49:
+    children: []
+    id: CHART-usage-49
+    meta:
+      chartId: 49
+      height: 60
+      sliceName: "Usage \u2013 Orders per Type per Week"
+      uuid: 6c7ca72e-4f76-4c2b-aef9-86619780f5bc
+      width: 6
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-usage-week-services
+    type: CHART
+  ROW-usage-week-services:
+    children:
+    - CHART-usage-48
+    - CHART-usage-49
+    id: ROW-usage-week-services
+    meta:
+      background: BACKGROUND_TRANSPARENT
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    type: ROW
+  CHART-usage-50:
+    children: []
+    id: CHART-usage-50
+    meta:
+      chartId: 50
+      height: 60
+      sliceName: "Usage \u2013 Encounters per Service per Month"
+      uuid: 1bad8d72-33f0-46e7-a57f-57f4db856cdc
+      width: 6
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-usage-month-services
+    type: CHART
+  CHART-usage-51:
+    children: []
+    id: CHART-usage-51
+    meta:
+      chartId: 51
+      height: 60
+      sliceName: "Usage \u2013 Orders per Type per Month"
+      uuid: 84d0eb75-6985-4a24-86dc-c2273317bb97
+      width: 6
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-usage-month-services
+    type: CHART
+  ROW-usage-month-services:
+    children:
+    - CHART-usage-50
+    - CHART-usage-51
+    id: ROW-usage-month-services
+    meta:
+      background: BACKGROUND_TRANSPARENT
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    type: ROW
+  CHART-usage-52:
+    children: []
+    id: CHART-usage-52
+    meta:
+      chartId: 52
+      height: 20
+      sliceName: "Usage \u2013 Baseline 16\u201322 Sep 2026"
+      uuid: 6ff94c5d-8404-4f23-8ada-4ba1d863886c
+      width: 12
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-usage-baseline
+    type: CHART
+  ROW-usage-baseline:
+    children:
+    - CHART-usage-52
+    id: ROW-usage-baseline
+    meta:
+      background: BACKGROUND_TRANSPARENT
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    type: ROW
+  CHART-usage-53:
+    children: []
+    id: CHART-usage-53
+    meta:
+      chartId: 53
+      height: 50
+      sliceName: "Usage \u2013 Baseline 16\u201322 Sep 2026 by Service"
+      uuid: 9f9efa74-a772-4852-a5ba-689ce6356af1
+      width: 12
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-usage-baseline-services
+    type: CHART
+  ROW-usage-baseline-services:
+    children:
+    - CHART-usage-53
+    id: ROW-usage-baseline-services
+    meta:
+      background: BACKGROUND_TRANSPARENT
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    type: ROW
+metadata:
+  color_scheme: supersetColors
+  cross_filters_enabled: false
+  native_filter_configuration:
+  - id: NATIVE_FILTER-usage_time_range
+    name: Date / Period
+    filterType: filter_time
+    type: NATIVE_FILTER
+    targets:
+    - {}
+    defaultDataMask:
+      extraFormData: {}
+      filterState:
+        value: No filter
+    cascadeParentIds: []
+    scope:
+      rootPath:
+      - ROOT_ID
+      excluded:
+      - 46
+      - 47
+      - 52
+      - 53
+    controlValues: {}
+    chartsInScope:
+    - 40
+    - 41
+    - 42
+    - 43
+    - 44
+    - 45
+    - 48
+    - 49
+    - 50
+    - 51
+    tabsInScope: []
+    description: ''
+  - id: NATIVE_FILTER-usage_target_period
+    name: Target period
+    filterType: filter_time
+    type: NATIVE_FILTER
+    targets:
+    - {}
+    defaultDataMask:
+      extraFormData: {}
+      filterState:
+        value: No filter
+    cascadeParentIds: []
+    scope:
+      rootPath:
+      - ROOT_ID
+      excluded:
+      - 40
+      - 41
+      - 42
+      - 43
+      - 44
+      - 45
+      - 48
+      - 49
+      - 50
+      - 51
+      - 52
+      - 53
+    controlValues: {}
+    chartsInScope:
+    - 46
+    - 47
+    tabsInScope: []
+    description: ''
+  chart_configuration: {}
+  global_chart_configuration:
+    scope:
+      rootPath:
+      - ROOT_ID
+      excluded: []
+    chartsInScope:
+    - 40
+    - 41
+    - 42
+    - 43
+    - 44
+    - 45
+    - 46
+    - 47
+    - 48
+    - 49
+    - 50
+    - 51
+    - 52
+    - 53
+  timed_refresh_immune_slices: []
+  expanded_slices: {}
+  refresh_frequency: 0
+  label_colors: {}
+  default_filters: '{}'
+  shared_label_colors: {}
+  color_scheme_domain: []
+version: 1.0.0

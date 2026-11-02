@@ -1,0 +1,291 @@
+table_name: usage_summary
+main_dttm_col: period_start
+description: 'Usage and adoption per ISO week and calendar month, against targets set in the query (UVL-EMR#285)'
+default_endpoint: null
+offset: 0
+cache_timeout: null
+schema: public
+sql: |-
+  -- Usage and adoption against target, per ISO week and per calendar month
+  -- (UVL-EMR#285). One row per period, metric and service; service '(all)' is the
+  -- total. The activity block is the same query as the usage_activity dataset.
+  --
+  -- TARGETS ARE PARAMETERS: edit the targets list, not the queries below it.
+  --   denominator  what the target is a share of: staff trained (training
+  --                register) for Active users, eligible encounters or orders in
+  --                the period (paper-register baseline) for Encounters and Orders.
+  --                NULL until Alexis and Didier set the baseline; the target
+  --                columns stay empty until then.
+  --   target_pct   share to reach; the plan's 30-day target is 80%.
+  -- A row for a single service (e.g. 'Outpatient Consultation') sets a target for
+  -- that service alone.
+  WITH targets (period_grain, metric, service, denominator, target_pct, note) AS (
+      VALUES
+          ('week',  'Active users', '(all)', CAST(NULL AS numeric), 0.80, 'Trained staff active in the week'),
+          ('month', 'Active users', '(all)', CAST(NULL AS numeric), 0.80, 'Trained staff active in the month'),
+          ('week',  'Encounters',   '(all)', CAST(NULL AS numeric), 0.80, 'Eligible encounters recorded in OpenMRS'),
+          ('month', 'Encounters',   '(all)', CAST(NULL AS numeric), 0.80, 'Eligible encounters recorded in OpenMRS'),
+          ('week',  'Orders',       '(all)', CAST(NULL AS numeric), 0.80, 'Eligible orders recorded in OpenMRS'),
+          ('month', 'Orders',       '(all)', CAST(NULL AS numeric), 0.80, 'Eligible orders recorded in OpenMRS')
+  ),
+  activity AS (
+      SELECT 'Encounter' AS activity_kind,
+             e.encounter_datetime AS activity_datetime,
+             COALESCE(e.encounter_type, '(unknown)') AS service,
+             e.location AS location,
+             e.creator_uuid AS user_key,
+             e.patient_uuid AS patient_uuid,
+             e.encounter_uuid AS record_uuid
+      FROM encounters e
+      WHERE COALESCE(e.encounter_voided, false) = false
+      UNION ALL
+      SELECT 'Order',
+             COALESCE(o.date_activated, o.date_created, o.encounter_datetime),
+             COALESCE(o.order_type_name, '(unknown)'),
+             NULL,
+             o.creator_uuid,
+             o.patient_uuid,
+             o.uuid
+      FROM orders o
+      WHERE COALESCE(o.voided, false) = false
+        AND COALESCE(o.order_action, 'NEW') = 'NEW'
+      UNION ALL
+      SELECT 'Visit',
+             v.date_started,
+             COALESCE(v.type, '(unknown)'),
+             v.location,
+             v.creator_uuid,
+             v.patient_uuid,
+             v.visit_uuid
+      FROM visits v
+      WHERE COALESCE(v.visit_voided, false) = false
+      UNION ALL
+      SELECT 'Registration',
+             p.date_created,
+             'Patient registration',
+             NULL,
+             NULL,
+             p.patient_uuid,
+             p.patient_uuid
+      FROM patients p
+      WHERE COALESCE(p.person_voided, false) = false
+  ),
+  bucketed AS (
+      SELECT g.period_grain,
+             date_trunc(g.period_grain, a.activity_datetime) AS period_start,
+             a.activity_kind,
+             a.service,
+             a.user_key,
+             a.patient_uuid
+      FROM activity a
+      CROSS JOIN (VALUES ('week'), ('month')) AS g (period_grain)
+      WHERE a.activity_datetime IS NOT NULL
+  ),
+  actuals AS (
+      SELECT period_grain, period_start, 'Active users' AS metric, '(all)' AS service, COUNT(DISTINCT user_key) AS actual
+      FROM bucketed GROUP BY period_grain, period_start
+      UNION ALL
+      SELECT period_grain, period_start, 'Patients registered', '(all)', COUNT(*)
+      FROM bucketed WHERE activity_kind = 'Registration' GROUP BY period_grain, period_start
+      UNION ALL
+      SELECT period_grain, period_start, 'Patients seen', '(all)', COUNT(DISTINCT patient_uuid)
+      FROM bucketed WHERE activity_kind IN ('Encounter', 'Visit') GROUP BY period_grain, period_start
+      UNION ALL
+      SELECT period_grain, period_start, 'Visits', '(all)', COUNT(*)
+      FROM bucketed WHERE activity_kind = 'Visit' GROUP BY period_grain, period_start
+      UNION ALL
+      SELECT period_grain, period_start, 'Encounters', '(all)', COUNT(*)
+      FROM bucketed WHERE activity_kind = 'Encounter' GROUP BY period_grain, period_start
+      UNION ALL
+      SELECT period_grain, period_start, 'Encounters', service, COUNT(*)
+      FROM bucketed WHERE activity_kind = 'Encounter' GROUP BY period_grain, period_start, service
+      UNION ALL
+      SELECT period_grain, period_start, 'Orders', '(all)', COUNT(*)
+      FROM bucketed WHERE activity_kind = 'Order' GROUP BY period_grain, period_start
+      UNION ALL
+      SELECT period_grain, period_start, 'Orders', service, COUNT(*)
+      FROM bucketed WHERE activity_kind = 'Order' GROUP BY period_grain, period_start, service
+  )
+  SELECT a.period_grain,
+         a.period_start,
+         a.metric,
+         a.service,
+         a.actual,
+         t.denominator AS target_denominator,
+         t.target_pct,
+         ROUND(t.denominator * t.target_pct) AS target_value,
+         ROUND(100.0 * a.actual / NULLIF(t.denominator * t.target_pct, 0), 1) AS pct_of_target,
+         t.note AS target_note
+  FROM actuals a
+  LEFT JOIN targets t
+         ON t.period_grain = a.period_grain
+        AND t.metric = a.metric
+        AND t.service = a.service
+params: null
+template_params: null
+filter_select_enabled: true
+fetch_values_predicate: null
+extra: null
+normalize_columns: false
+always_filter_main_dttm: false
+uuid: 918583c5-74c6-403f-8530-eab82a220abb
+metrics:
+- metric_name: count
+  verbose_name: COUNT(*)
+  metric_type: null
+  expression: COUNT(*)
+  description: null
+  d3format: null
+  currency: null
+  extra: null
+  warning_text: null
+- metric_name: actual_total
+  verbose_name: Actual
+  metric_type: null
+  expression: SUM(actual)
+  description: null
+  d3format: null
+  currency: null
+  extra: null
+  warning_text: null
+- metric_name: target_total
+  verbose_name: Target
+  metric_type: null
+  expression: SUM(target_value)
+  description: null
+  d3format: null
+  currency: null
+  extra: null
+  warning_text: null
+- metric_name: pct_of_target_calc
+  verbose_name: '% of target'
+  metric_type: null
+  expression: ROUND(100.0 * SUM(actual) / NULLIF(SUM(target_value), 0), 1)
+  description: null
+  d3format: null
+  currency: null
+  extra: null
+  warning_text: null
+columns:
+- column_name: period_grain
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: period_start
+  verbose_name: null
+  is_dttm: true
+  is_active: true
+  type: DATETIME
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: metric
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: service
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: actual
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: target_denominator
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: DECIMAL
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: target_pct
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: DECIMAL
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: target_value
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: DECIMAL
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: pct_of_target
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: DECIMAL
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: target_note
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+version: 1.0.0
+database_uuid: 4e5f4045-a62d-4964-b719-58229a60e7fe

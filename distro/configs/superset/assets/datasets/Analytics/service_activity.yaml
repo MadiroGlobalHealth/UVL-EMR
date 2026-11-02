@@ -1,0 +1,208 @@
+table_name: service_activity
+main_dttm_col: encounter_datetime
+description: One row per encounter belonging to a clinical service, mapped by location, encounter type
+  or form (UVL-EMR#243)
+default_endpoint: null
+offset: 0
+cache_timeout: null
+schema: public
+sql: |-
+  -- Clinical service activity (UVL-EMR#243): one row per encounter that belongs to
+  -- a clinical service, for the dashboards Didier asked for as each service goes live
+  -- (inpatient, maternity, theatre, blood bank, family planning, nutrition).
+  --
+  -- SERVICE MAP: edit `services`, not the query below it. An encounter belongs to
+  -- a service when its location matches `location_like`, or its encounter type
+  -- matches `encounter_type_like`, or its form name matches `form_like` (ILIKE
+  -- patterns; NULL = not used). The first matching service by `priority` wins, so
+  -- a caesarean room encounter counts under Maternité, not Hospitalisation.
+  -- `status` records whether the service is live; a pending service shows no rows
+  -- until its forms are in use. When a service goes live, check its patterns
+  -- against the real location / form names and set status to 'live'.
+  WITH services (priority, service, location_like, encounter_type_like, form_like, status) AS (
+      VALUES
+          (1, 'Bloc opératoire',          'Bloc opératoire%',   NULL,               '%opérat%',       'pending'),
+          (2, 'Maternité',                'Soins maternels%',   NULL,               '%accouchement%', 'pending'),
+          (2, 'Maternité',                'Salle de césarienne%', NULL,             '%partogram%',    'pending'),
+          (3, 'Néonatologie',             'Salle néonatale%',   NULL,               NULL,             'pending'),
+          (4, 'Banque de sang',           NULL,                 NULL,               '%transfusion%',  'pending'),
+          (5, 'Planification familiale',  NULL,                 NULL,               '%planification%', 'pending'),
+          (6, 'Nutrition',                NULL,                 NULL,               '%nutrition%',    'pending'),
+          (7, 'Urgences',                 'Salle d''urgence%',  NULL,               NULL,             'live'),
+          (8, 'Hospitalisation',          'Hospitalisation%',   NULL,               NULL,             'pending'),
+          (8, 'Hospitalisation',          NULL,                 'Admission',        NULL,             'pending'),
+          (8, 'Hospitalisation',          NULL,                 'Discharge',        NULL,             'pending'),
+          (8, 'Hospitalisation',          NULL,                 'Inpatient Consultation', NULL,       'pending')
+  ),
+  matched AS (
+      SELECT DISTINCT ON (e.encounter_id)
+             e.encounter_id,
+             e.encounter_datetime,
+             e.encounter_type,
+             e.location,
+             e.form_name,
+             e.patient_uuid,
+             e.visit_uuid,
+             s.service,
+             s.status
+      FROM encounters e
+      JOIN services s
+        ON (s.location_like IS NOT NULL AND e.location ILIKE s.location_like)
+        OR (s.encounter_type_like IS NOT NULL AND e.encounter_type ILIKE s.encounter_type_like)
+        OR (s.form_like IS NOT NULL AND e.form_name ILIKE s.form_like)
+      WHERE COALESCE(e.encounter_voided, false) = false
+      ORDER BY e.encounter_id, s.priority
+  )
+  SELECT encounter_datetime,
+         service,
+         status AS service_status,
+         encounter_type,
+         location,
+         form_name,
+         patient_uuid,
+         visit_uuid
+  FROM matched
+params: null
+template_params: null
+filter_select_enabled: true
+fetch_values_predicate: null
+extra: null
+normalize_columns: false
+always_filter_main_dttm: false
+uuid: 1b8d5e0c-d1e9-4285-c3c0-bf5e27d8a01c
+metrics:
+- metric_name: count
+  verbose_name: COUNT(*)
+  metric_type: null
+  expression: COUNT(*)
+  description: null
+  d3format: null
+  currency: null
+  extra: null
+  warning_text: null
+- metric_name: encounters
+  verbose_name: Rencontres
+  metric_type: null
+  expression: COUNT(*)
+  description: null
+  d3format: null
+  currency: null
+  extra: null
+  warning_text: null
+- metric_name: patients
+  verbose_name: Patients
+  metric_type: null
+  expression: COUNT(DISTINCT patient_uuid)
+  description: Distinct patients seen in the service
+  d3format: null
+  currency: null
+  extra: null
+  warning_text: null
+- metric_name: visits
+  verbose_name: Visites
+  metric_type: null
+  expression: COUNT(DISTINCT visit_uuid)
+  description: null
+  d3format: null
+  currency: null
+  extra: null
+  warning_text: null
+columns:
+- column_name: encounter_datetime
+  verbose_name: null
+  is_dttm: true
+  is_active: true
+  type: TIMESTAMP WITHOUT TIME ZONE
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: service
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: service_status
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: encounter_type
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: location
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: form_name
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: patient_uuid
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: visit_uuid
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+version: 1.0.0
+database_uuid: 4e5f4045-a62d-4964-b719-58229a60e7fe
