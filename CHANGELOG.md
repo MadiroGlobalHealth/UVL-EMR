@@ -231,6 +231,13 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   CIM-10) and the anaesthetist-intensivist, who is required. Identity comes from the patient
   banner. It saves an "Anaesthesia Report" encounter. Its concepts come with the uvl-forms
   20261027 OCL export (#376). (#384)
+- **A Doctor sees every label on the Ward Admission form and can open the ward page.** Coded
+  answers referenced as `CIEL:` showed blank radio and location labels, and the ward page at
+  Hospitalisation (IPD) crashed with "Cannot read properties of undefined (reading 'patient')".
+  `Register patients` gains the two read-only privileges `Get Concept Reference Terms` and
+  `View Metadata Via Mapping`, so every role inheriting it has them: Help Nurse, Nurse, Doctor,
+  Midwife, Ophtalmologist, Dentist and Anesthesist. Pharmacist, Lab Technician and X-Ray
+  Technician are unchanged. (#480)
 
 ### Added
 - OpenMRS role and Keycloak `openmrs` client role **Central Pharmacist** (inherits `Pharmacist`
