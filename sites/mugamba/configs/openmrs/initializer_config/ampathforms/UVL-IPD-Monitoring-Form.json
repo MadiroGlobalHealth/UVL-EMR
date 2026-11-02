@@ -1,0 +1,560 @@
+{
+  "uuid": "a9c97b4f-2adc-420f-b98a-896f0e93906b",
+  "name": "UVL IPD Monitoring Form",
+  "description": "UVL inpatient monitoring chart, one encounter per round of observations (Protocole de surveillance globale)",
+  "version": "1",
+  "published": true,
+  "retired": false,
+  "encounter": "IPD Monitoring",
+  "processor": "EncounterFormProcessor",
+  "referencedForms": [],
+  "encounterType": "61729ccc-04ac-4b6c-9d28-fd6fdd1eeaee",
+  "pages": [
+    {
+      "label": "IPD Monitoring",
+      "sections": [
+        {
+          "label": "Monitoring Round",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Date and Time of the Round",
+              "type": "encounterDatetime",
+              "id": "encDatetime",
+              "required": "true",
+              "datePickerFormat": "both",
+              "questionOptions": {
+                "rendering": "datetime"
+              },
+              "validators": [
+                {
+                  "type": "date"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "1. Vital and Respiratory Signs",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Systolic BP (mmHg)",
+              "type": "obs",
+              "id": "systolicBp",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "6d0b8551-feb8-4d57-892a-d75398181b3f",
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "Diastolic BP (mmHg)",
+              "type": "obs",
+              "id": "diastolicBp",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "c46fcfdd-a785-4416-80bc-2d9e2edf5a45",
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "Pulse (/min)",
+              "type": "obs",
+              "id": "pulse",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "bc54cb7c-bb45-45aa-84d6-2346748b7c93",
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "Temperature (°C)",
+              "type": "obs",
+              "id": "temperature",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "748f8d43-617a-40ba-9474-20522e73fb8a"
+              }
+            },
+            {
+              "label": "Respiratory Rate (/min)",
+              "type": "obs",
+              "id": "respiratoryRate",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "b39db318-d563-4114-bec0-31ad3d254b24",
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "SpO2 on Room Air (%)",
+              "type": "obs",
+              "id": "spo2RoomAir",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "46091095-b138-465e-9a7d-17a243932812",
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "SpO2 on Oxygen (%)",
+              "type": "obs",
+              "id": "spo2OnOxygen",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "85bdd055-670b-4a51-94be-f3bf128dd3e6",
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "Oxygen Flow (L/min)",
+              "type": "obs",
+              "id": "oxygenFlowRate",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "650ea787-6597-484a-b0c3-eb6f15874d33"
+              }
+            },
+            {
+              "label": "Oxygen Delivery Mode",
+              "type": "obs",
+              "id": "oxygenMode",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "94b01891-427d-44a7-bbe6-8bdf0afcd175",
+                "answers": [
+                  {
+                    "concept": "137b0800-a9dd-49d0-ab42-1dcdc91eca74",
+                    "label": "Nasal Cannula"
+                  },
+                  {
+                    "concept": "705e6d1f-94eb-4142-8918-22bb81be2208",
+                    "label": "Simple Mask"
+                  },
+                  {
+                    "concept": "7bcd2ec2-a142-463c-8089-ad99d93e1d9b",
+                    "label": "Non-rebreather Mask"
+                  },
+                  {
+                    "concept": "1b37fbcd-1f60-4a84-b73f-084eac0ee059",
+                    "label": "Venturi Mask"
+                  },
+                  {
+                    "concept": "796d9d6a-a013-46ea-9f6a-77c77bd7b623",
+                    "label": "High-flow Nasal Cannula"
+                  },
+                  {
+                    "concept": "b5c4b807-d3de-40cd-aae9-178df9b40535",
+                    "label": "Other"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "label": "2. Consciousness (Glasgow Coma Scale) and Biometrics",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Eye Opening (/4)",
+              "type": "obs",
+              "id": "gcsEye",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "71d3d368-8b25-47b7-9888-77c1bf4b8ede",
+                "min": "1",
+                "max": "4",
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "Motor Response (/6)",
+              "type": "obs",
+              "id": "gcsMotor",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "2fabe22a-c38c-43c1-a282-6a6e841b3699",
+                "min": "1",
+                "max": "6",
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "Verbal Response (/5)",
+              "type": "obs",
+              "id": "gcsVerbal",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "9d6312bd-b04c-40ff-bafb-3fbf77ee69cc",
+                "min": "1",
+                "max": "5",
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "Glasgow Total (/15)",
+              "type": "obs",
+              "id": "gcsTotal",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "d7a8ed6f-21ae-4305-93bd-235c2e7bd22b",
+                "min": "3",
+                "max": "15",
+                "calculate": {
+                  "calculateExpression": "(gcsEye && gcsMotor && gcsVerbal) ? (+gcsEye) + (+gcsMotor) + (+gcsVerbal) : undefined"
+                },
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "Pain Score (0-10)",
+              "type": "obs",
+              "id": "painScore",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "9bc08804-6684-4f38-b01d-cf9db87eab31",
+                "min": "0",
+                "max": "10",
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "Weight (kg)",
+              "type": "obs",
+              "id": "weight",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "5302aa6f-7528-4aeb-a3e8-0dc16a39b6ce"
+              }
+            },
+            {
+              "label": "Height (cm)",
+              "type": "obs",
+              "id": "height",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "b32af377-04c0-4f00-a571-d01170a16d9d"
+              }
+            },
+            {
+              "label": "BMI",
+              "type": "obs",
+              "id": "bmi",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "2316f309-8802-431d-92a0-fc7cfa4df5c8",
+                "calculate": {
+                  "calculateExpression": "calcBMI(height, weight)"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "label": "3. Fluid Balance: Intake",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Ringer's Lactate (ml)",
+              "type": "obs",
+              "id": "ringerLactate",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "bb3bd6f0-a75c-4272-9aa7-932fe3f53b3f",
+                "min": "0",
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "Glucose 5% (ml)",
+              "type": "obs",
+              "id": "glucose5",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "9a7cdd65-b310-4e41-8c61-fa2a5897ae37",
+                "min": "0",
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "Normal Saline (ml)",
+              "type": "obs",
+              "id": "normalSaline",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "77ad79e7-d6c9-43f4-81cc-0259e3105497",
+                "min": "0",
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "Transfusion: Type",
+              "type": "obs",
+              "id": "transfusionType",
+              "questionOptions": {
+                "rendering": "text",
+                "concept": "db98c93f-1775-4442-9171-9560c7952790"
+              }
+            },
+            {
+              "label": "Transfusion: Volume (ml)",
+              "type": "obs",
+              "id": "transfusionVolume",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "8e5f6ff4-8512-4603-80d1-bfc556b3cfee",
+                "min": "0",
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "Total Intake (ml)",
+              "type": "obs",
+              "id": "totalIntake",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "0f78f052-9659-4691-9d49-60a319c10370",
+                "min": "0",
+                "calculate": {
+                  "calculateExpression": "(ringerLactate || glucose5 || normalSaline || transfusionVolume) ? (+ringerLactate || 0) + (+glucose5 || 0) + (+normalSaline || 0) + (+transfusionVolume || 0) : undefined"
+                },
+                "disallowDecimals": true
+              }
+            }
+          ]
+        },
+        {
+          "label": "3. Fluid Balance: Output",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Urine Output (ml)",
+              "type": "obs",
+              "id": "urineOutput",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "1d50f82a-01e7-4281-af70-9650a4510b5c",
+                "min": "0",
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "Nasogastric Tube (ml)",
+              "type": "obs",
+              "id": "nasogastricOutput",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "5941fff4-429c-404e-8b3e-3aeedb4f133e",
+                "min": "0",
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "Aspiration (ml)",
+              "type": "obs",
+              "id": "aspirationOutput",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "3cf64748-b581-4f01-b771-4b58e7ad43a3",
+                "min": "0",
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "Chest Drain (ml)",
+              "type": "obs",
+              "id": "chestDrainOutput",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "10031e08-87e6-496d-bd8b-b23e9339317f",
+                "min": "0",
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "Abdominal Drain (ml)",
+              "type": "obs",
+              "id": "abdominalDrainOutput",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "4728c024-8023-4991-962a-31f7ff60241b",
+                "min": "0",
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "Stool / Vomiting (ml)",
+              "type": "obs",
+              "id": "stoolVomitOutput",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "a820bef4-dd91-428e-bf0a-97eaf2bca3ee",
+                "min": "0",
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "Total Output (ml)",
+              "type": "obs",
+              "id": "totalOutput",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "69f2e4ba-de4d-4cc0-947f-e592d7a4f564",
+                "min": "0",
+                "calculate": {
+                  "calculateExpression": "(urineOutput || nasogastricOutput || aspirationOutput || chestDrainOutput || abdominalDrainOutput || stoolVomitOutput) ? (+urineOutput || 0) + (+nasogastricOutput || 0) + (+aspirationOutput || 0) + (+chestDrainOutput || 0) + (+abdominalDrainOutput || 0) + (+stoolVomitOutput || 0) : undefined"
+                },
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "Fluid Balance (Intake - Output) (ml)",
+              "type": "obs",
+              "id": "fluidBalance",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "5c525a2b-61f9-4382-9638-76491b3b42f7",
+                "calculate": {
+                  "calculateExpression": "(totalIntake || totalOutput) ? (+totalIntake || 0) - (+totalOutput || 0) : undefined"
+                },
+                "disallowDecimals": true
+              }
+            }
+          ]
+        },
+        {
+          "label": "4. Nutrition and Paediatric Biometrics",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Meals Taken",
+              "type": "obs",
+              "id": "meals",
+              "questionOptions": {
+                "rendering": "checkbox",
+                "concept": "367b48b8-ef82-48d7-9523-f3ee3a3c0b13",
+                "answers": [
+                  {
+                    "concept": "7dd06052-3e8b-4721-b9a2-5c1361115a4b",
+                    "label": "Morning"
+                  },
+                  {
+                    "concept": "034dea03-6741-4f65-bc22-838085ea377a",
+                    "label": "Midday"
+                  },
+                  {
+                    "concept": "e2cf2a07-1c10-4e17-bf1d-45a4452a85ae",
+                    "label": "Evening"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Special Diet",
+              "type": "obs",
+              "id": "specialDiet",
+              "questionOptions": {
+                "rendering": "text",
+                "concept": "e51aef7b-e246-4503-8aaf-478a99775ca2"
+              }
+            },
+            {
+              "label": "Milk (ml)",
+              "type": "obs",
+              "id": "milkIntake",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "c70e5288-dc00-494a-aa12-b3cc9ed1940a",
+                "min": "0",
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "Porridge (ml)",
+              "type": "obs",
+              "id": "porridgeIntake",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "d201d34e-31c0-468f-b8ea-5b09a9403a91",
+                "min": "0",
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "Soup / Juice (ml)",
+              "type": "obs",
+              "id": "soupJuiceIntake",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "6a553c6b-6640-49f4-94ec-8425b84c2d90",
+                "min": "0",
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "Water (ml)",
+              "type": "obs",
+              "id": "waterIntake",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "1354f8f2-1cd7-4d29-8d76-ee2fa23d112f",
+                "min": "0",
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "MUAC (cm)",
+              "type": "obs",
+              "id": "muac",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "6d4a1b5a-d41d-4779-b441-70ba440b64de"
+              }
+            },
+            {
+              "label": "Weight-for-Height (z-score)",
+              "type": "obs",
+              "id": "weightForHeight",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "cc68076a-b109-420a-a80c-a8430f4021eb",
+                "calculate": {
+                  "calculateExpression": "calcWeightForHeightZscore(height, weight)"
+                }
+              },
+              "hide": {
+                "hideWhenExpression": "age >= 5"
+              }
+            }
+          ]
+        },
+        {
+          "label": "Nursing Observations and Signature",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Additional Nursing Observations",
+              "type": "obs",
+              "id": "nursingObservations",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "9dc2962b-bdd0-4261-b69d-55769e078be0"
+              }
+            },
+            {
+              "label": "Monitoring Nurse",
+              "type": "encounterProvider",
+              "id": "encProvider",
+              "required": true,
+              "questionOptions": {
+                "rendering": "ui-select-extended"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
