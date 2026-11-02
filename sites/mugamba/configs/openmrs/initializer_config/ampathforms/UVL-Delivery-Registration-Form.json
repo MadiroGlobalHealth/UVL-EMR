@@ -1,0 +1,313 @@
+{
+  "uuid": "1975634a-aa21-4ae9-81bf-89b5903bd8af",
+  "name": "UVL Delivery Registration Form",
+  "description": "UVL delivery registration, filled at delivery (forms metadata Release 1, F14)",
+  "version": "1",
+  "published": true,
+  "retired": false,
+  "encounter": "Delivery Registration",
+  "processor": "EncounterFormProcessor",
+  "referencedForms": [],
+  "encounterType": "cbe294b9-8a80-48b0-b65a-db19166a892b",
+  "pages": [
+    {
+      "label": "Not applicable",
+      "hide": {
+        "hideWhenExpression": "sex !== 'M'"
+      },
+      "sections": [
+        {
+          "label": "Not applicable",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Not applicable",
+              "type": "markdown",
+              "id": "maleNotice",
+              "questionOptions": {
+                "rendering": "markdown"
+              },
+              "value": [
+                "This form is for female patients only."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Delivery Registration",
+      "sections": [
+        {
+          "label": "Delivery",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Delivery Performed By",
+              "type": "encounterProvider",
+              "id": "encProvider",
+              "required": true,
+              "questionOptions": {
+                "rendering": "ui-select-extended"
+              }
+            },
+            {
+              "label": "Doctor Called (time)",
+              "type": "obs",
+              "id": "doctorCalledAt",
+              "questionOptions": {
+                "rendering": "datetime",
+                "concept": "e828f49d-d47c-4774-94bc-56c60712be88"
+              }
+            },
+            {
+              "label": "Doctor Arrived (time)",
+              "type": "obs",
+              "id": "doctorArrivedAt",
+              "questionOptions": {
+                "rendering": "datetime",
+                "concept": "16f8d29e-75bb-41ae-9592-ee7bf4f80523"
+              }
+            },
+            {
+              "label": "Delivery Procedures",
+              "type": "obs",
+              "id": "deliveryProcedures",
+              "questionOptions": {
+                "rendering": "checkbox",
+                "concept": "6af027e5-8737-4ce0-8343-79b024cd1989",
+                "answers": [
+                  {
+                    "concept": "95a06703-15e4-493c-bc65-9d7ff4448a4d",
+                    "label": "Episiotomy"
+                  },
+                  {
+                    "concept": "9270cf59-2a50-4c06-b119-3bcba54b12b9",
+                    "label": "Suture"
+                  },
+                  {
+                    "concept": "3de182b6-f7fe-4185-a7b5-89237593c1f1",
+                    "label": "Eutocic delivery"
+                  },
+                  {
+                    "concept": "b08d3e60-2e3c-4d23-906c-9e36cd222bea",
+                    "label": "Dystocic delivery"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Problems Detected",
+              "type": "obs",
+              "id": "deliveryComplications",
+              "questionOptions": {
+                "rendering": "checkbox",
+                "concept": "5d214371-cf09-4589-b357-de8b091b66d3",
+                "answers": [
+                  {
+                    "concept": "14864b59-f7b3-4ad1-b620-c79f50370b4d",
+                    "label": "Infection"
+                  },
+                  {
+                    "concept": "059d5f70-20d1-4b5c-a7bf-b26b605e5d11",
+                    "label": "Prematurity"
+                  },
+                  {
+                    "concept": "af8a0f43-0c8d-44f3-aac0-c926f9fff57e",
+                    "label": "Eclampsia"
+                  },
+                  {
+                    "concept": "638ddd5f-dc66-469a-8497-d056addd6e02",
+                    "label": "Perineal tear"
+                  },
+                  {
+                    "concept": "af56e6aa-3148-4a9b-a9c3-0000d39de2ed",
+                    "label": "Fistula"
+                  },
+                  {
+                    "concept": "bdc1ea1f-2a7d-424d-a3d0-5a3bab9f5e33",
+                    "label": "Vaginal tear"
+                  },
+                  {
+                    "concept": "7b7945b4-625b-4f0f-9288-2598e6602230",
+                    "label": "Uterine rupture"
+                  },
+                  {
+                    "concept": "56fd47e3-6f14-4ee4-8ddf-1a54d8ecd90a",
+                    "label": "Cervical tear"
+                  },
+                  {
+                    "concept": "69c8d26c-cbdb-4773-9ac9-59cba7f761b5",
+                    "label": "Maternal death"
+                  },
+                  {
+                    "concept": "2c87c079-e5d3-49a7-a350-a10d449e3697",
+                    "label": "Antepartum haemorrhage"
+                  },
+                  {
+                    "concept": "44060e30-bae8-464d-b63b-ec7c83e8f980",
+                    "label": "Postpartum haemorrhage"
+                  },
+                  {
+                    "concept": "5b2b9b02-7edf-4ec7-853e-2610711b3482",
+                    "label": "Abortion"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Placenta Weight (g)",
+              "type": "obs",
+              "id": "placentaWeight",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "3614f37e-8574-4ac3-88f7-37a26747bb25",
+                "min": "0",
+                "max": "2000",
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "Placental Anomalies",
+              "type": "obs",
+              "id": "placentalAnomalies",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "fc4877d6-4976-4e2a-8dca-6e4abbb30bc9"
+              }
+            }
+          ]
+        },
+        {
+          "label": "Newborn(s)",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Newborn",
+              "type": "obsGroup",
+              "id": "newborn",
+              "questionOptions": {
+                "rendering": "repeating",
+                "concept": "ac11ec86-844a-496f-9726-a39f0a7b47a5"
+              },
+              "questions": [
+                {
+                  "label": "Date & Time of Birth",
+                  "type": "obs",
+                  "id": "nbBirthDatetime",
+                  "questionOptions": {
+                    "rendering": "datetime",
+                    "concept": "b1fa6cba-2b54-4d51-9e91-323e7129224b"
+                  }
+                },
+                {
+                  "label": "Sex",
+                  "type": "obs",
+                  "id": "nbSex",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "59bb5013-c82b-4755-b348-4d14793e6174",
+                    "answers": [
+                      {
+                        "concept": "adfdcfe7-f2e9-4eb6-9e49-5b3c795c5870",
+                        "label": "Male"
+                      },
+                      {
+                        "concept": "d5d86c99-dacc-478e-b2b3-21ccb98a0476",
+                        "label": "Female"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "label": "Newborn Status",
+                  "type": "obs",
+                  "id": "nbStatus",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "cd96c0b6-a08f-49eb-94ad-9a914f1612f0",
+                    "answers": [
+                      {
+                        "concept": "4056a982-6a2d-4062-9514-efcf4e66dd0a",
+                        "label": "Live birth"
+                      },
+                      {
+                        "concept": "63f4b85c-de5a-48e9-a9a5-bf2656c10125",
+                        "label": "Stillbirth"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "label": "Weight (g)",
+                  "type": "obs",
+                  "id": "nbWeight",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "237d5a2a-fd87-4c2a-b291-d813cd76c6f2",
+                    "min": "0",
+                    "max": "7000",
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Length (cm)",
+                  "type": "obs",
+                  "id": "nbLength",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "59bc311b-4e61-4b6a-8b96-2172ba7178c3",
+                    "min": "0",
+                    "max": "70"
+                  }
+                },
+                {
+                  "label": "Head Circumference (cm)",
+                  "type": "obs",
+                  "id": "nbHeadCircumference",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "39e137c4-7a68-4963-baed-1c6890ecde23",
+                    "min": "0",
+                    "max": "60"
+                  }
+                },
+                {
+                  "label": "Resuscitation: Intubation",
+                  "type": "obs",
+                  "id": "nbIntubation",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "0722acc5-9c9f-4a34-80c8-31e7afcaf325",
+                    "answers": [
+                      {
+                        "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e",
+                        "label": "Yes"
+                      },
+                      {
+                        "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725",
+                        "label": "No"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "label": "Adrenaline Dose",
+                  "type": "obs",
+                  "id": "nbAdrenalineDose",
+                  "questionOptions": {
+                    "rendering": "text",
+                    "concept": "af44918f-bbb4-4dcb-9f55-0cc609afdaaa"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "hide": {
+        "hideWhenExpression": "sex === 'M'"
+      }
+    }
+  ]
+}
