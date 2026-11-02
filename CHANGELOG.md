@@ -47,9 +47,10 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
 - **The childbirth record is easier to work through.** Sections are numbered 1–12 with no gap.
   The diagnosis is split into a primary diagnosis and secondary diagnoses. Gestational age is
   calculated from the last menstrual period, and the fundal-height field in weeks is now labelled
-  as gestational age by fundal height (fundal height itself stays in cm). The partograph accepts
-  a cervical dilatation with decimals (e.g. 4.5 cm). The childbirth record and partograph reading
-  show only a "not applicable" note for male patients. (#247)
+  as gestational age by fundal height (fundal height itself stays in cm). When a saved record is
+  reopened, the gestational age keeps its saved value instead of being recalculated. The
+  childbirth record and partograph reading show only a "not applicable" note for male patients.
+  (#247)
 - **Registration has a "Chef de ménage (Head of household)" field,** under Additional
   information. It is free text and optional, and the patient banner shows it next to the
   telephone. It feeds the PBF report's head-of-household column; the dashboard column itself is
