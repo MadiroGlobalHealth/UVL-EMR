@@ -150,6 +150,15 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   Acefen and gets its own stock item. The aceclofenac drugs now use the Aceclofenac concept and
   the six diclofenac drugs the Diclofenac concept. `sql/one_name_per_medicine.csv` lists each
   drug kept and retired. (#478)
+- **The chart's Forms list has "UVL Contact Form" (Fiche d'enregistrement d'un contact),** for
+  nurses, midwives and doctors. It records the patient's origin, the clinical service, the
+  responsible provider, who accompanies the patient (name and telephone), the internal transfer
+  destination, the case type (Nouveau / Ancien), its category, the clinical situation, and the
+  diagnostic hypothesis. The clinical service, the responsible provider and the diagnostic
+  hypothesis are required: a form saved without a provider failed with "Cannot read properties of
+  null (reading 'uuid')" for a user who has no provider account. Identity, contact type, dates and payer come from the
+  patient banner and the visit, so they are not asked again. It saves a "Contact" encounter.
+  (#376)
 - **The chart's Forms list has "UVL Discharge Summary Form" (Synthèse de sortie d'hospitalisation),**
   for doctors and midwives. It records the reporting indicators (maternal death, perinatal death,
   transfusion or anaemia, positive RDT, post-procedure infection), suspected nosocomial
