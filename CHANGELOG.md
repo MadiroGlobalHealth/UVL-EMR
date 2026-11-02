@@ -150,6 +150,78 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   Acefen and gets its own stock item. The aceclofenac drugs now use the Aceclofenac concept and
   the six diclofenac drugs the Diclofenac concept. `sql/one_name_per_medicine.csv` lists each
   drug kept and retired. (#478)
+- **The chart's Forms list has "UVL Contact Form" (Fiche d'enregistrement d'un contact),** for
+  nurses, midwives and doctors. It records the patient's origin, the clinical service, the
+  responsible provider, who accompanies the patient (name and telephone), the internal transfer
+  destination, the case type (Nouveau / Ancien), its category, the clinical situation, and the
+  diagnostic hypothesis. The clinical service, the responsible provider and the diagnostic
+  hypothesis are required: a form saved without a provider failed with "Cannot read properties of
+  null (reading 'uuid')" for a user who has no provider account. Identity, contact type, dates and payer come from the
+  patient banner and the visit, so they are not asked again. It saves a "Contact" encounter.
+  (#376)
+- **The chart's Forms list has "UVL Discharge Summary Form" (Synthèse de sortie d'hospitalisation),**
+  for doctors and midwives. It records the reporting indicators (maternal death, perinatal death,
+  transfusion or anaemia, positive RDT, post-procedure infection), suspected nosocomial
+  infections, pregnancy, malaria, diarrhoea and pneumonia classifications and their treatment,
+  the discharge diagnoses, clinical summary, discharge treatment, prevention of complications,
+  follow-up and general observations, and the discharging clinician, who is required. Identity,
+  commune, discharge date and payer come from the patient banner, the encounter and the visit,
+  so they are not asked again. It saves a "Discharge Summary" encounter, which does **not**
+  discharge the patient: the patient stays admitted until discharged from the ward. (#380)
+- **The chart's Forms list has "UVL Admission Note Form" (Fiche d'admission en hospitalisation),**
+  for doctors. It records vital signs (blood pressure on both arms) and anthropometry (BMI is
+  calculated from weight and height), the reason for admission, history of the illness, family,
+  medical, surgical and gynaeco-obstetric history, lifestyle, the physical examination
+  (general condition, symptoms, percussion, auscultation, summary), tests already done, the
+  admission hypotheses and diagnoses, tests requested and treatment (with the order basket),
+  suspected nosocomial infections, integrated observations, and the clinician, who is required.
+  Identity, age, sex, commune and admission date come from the patient banner, the encounter and
+  the ward admission, so they are not asked again. It saves an "Inpatient Consultation"
+  encounter and does **not** admit the patient: admission stays in the ward app. (#377)
+- **The chart's Forms list has "UVL Inpatient Follow-up Form" (Fiche de suivi d'hospitalisation),**
+  for nurses, midwives and doctors, filled as often as needed during a stay. It records the time
+  the doctor was called and arrived, neurological danger signs, complaints, vital signs (blood
+  pressure on each arm, BMI calculated from weight and height, fetal heart rate for women), the
+  fluid balance (inputs, outputs and a calculated total), stools, the examination, treatment and
+  progress, tests and new treatment (with buttons to order them), recommendations, Ikirezi clinical
+  information and suspected nosocomial infections, and the clinician or nurse on duty, who is
+  required. Identity and ward come from the patient banner and the session location. Each note
+  saves one "Inpatient Follow-up" encounter. (#378)
+- **The chart's Forms list has "UVL IPD Monitoring Form" (Protocole de surveillance globale),**
+  for nurses, midwives and doctors. Each round of checks is saved as its own "IPD Monitoring"
+  encounter, at the date and time the round was done, so the values chart over the stay. It
+  records vital and respiratory signs (with SpO2 on room air and on oxygen, oxygen flow and
+  mode), the Glasgow score (total calculated), pain score, weight, height and BMI, fluid intake
+  and output with their totals and the balance, meals and feeds, MUAC, weight-for-height for
+  children under 5, and the nurse's observations. The monitoring nurse is required. Vital signs
+  use the same concepts as the Vitals box, so they appear there too. (#379)
+- **The chart's Forms list has "UVL Childbirth Record Form" (Dossier d'accouchement, MSPLS),**
+  for midwives and doctors only. Three pages follow the paper's sections 1 to 13: admission and
+  history (obstetric history, recent labs, current complications, ANC, PMTCT), labour and
+  delivery (vital signs, labour progress, admission examination, delivery, complications,
+  placenta), and postpartum and newborn (a monitoring row per time point, a block per newborn).
+  The person who performed the delivery is required. Identity, commune, marital status and the
+  head of family come from registration, so they are not asked again. It saves a "Childbirth
+  Record" encounter that only midwives and doctors can view, because it holds HIV and PMTCT
+  data. Its concepts come with the uvl-forms 20261027 OCL export (#376). (#381)
+- **The chart's Forms list has "UVL Partograph Reading Form" (Lecture du partogramme),** for
+  midwives and doctors. Each reading is one "Partograph Reading" encounter, stored at the date and
+  time the reading was taken, so a reading typed in late still plots at the right time. A reading
+  records any of: fetal heart rate, amniotic fluid, head moulding, medications given, cervical
+  dilatation, descent, contractions per 10 minutes and their duration, oxytocin (U/L and
+  drops/min), pulse, blood pressure and temperature; none is required except the clinician. The
+  patient summary shows a "Partograph" graph (fetal heart rate, dilatation and descent,
+  contractions, oxytocin, pulse and blood pressure, temperature) and a table of the coded rows,
+  to midwives and doctors only. The graph has no alert or action lines. Type of delivery and
+  uterine revision are recorded in the childbirth record (#381), not here. (#382)
+- **The chart's Forms list has "UVL Pre-operative Record Form" (Dossier préopératoire),** for
+  doctors and anaesthetists. It records the planned procedure and whether it is an emergency or
+  elective, the patient's history (tobacco, asthma, diabetes, hepatitis, allergy, heart disease,
+  hypertension, other, previous anaesthesia, neurological problem), the clinical examination
+  with blood pressure on each arm, the paraclinical results (chest X-ray, ECG, fundoscopy and the
+  pre-operative lab values), current treatment, intubation difficulty and Mallampati, ASA class,
+  anaesthesia protocol, fasting time, premedication and the planned anaesthesia type, and the
+  doctor or anaesthetist, who is required. It saves a "Pre-operative Record" encounter. (#383)
 - **The chart's Forms list has "UVL Anaesthesia Report Form" (Rapport d'anesthésie),** for
   anaesthetists and doctors. It records the referring service, the start and end of anaesthesia
   and of the procedure as date and time, with both durations in minutes calculated, the pre- and
