@@ -245,6 +245,29 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   `View Metadata Via Mapping`, so every role inheriting it has them: Help Nurse, Nurse, Doctor,
   Midwife, Ophtalmologist, Dentist and Anesthesist. Pharmacist, Lab Technician and X-Ray
   Technician are unchanged. (#480)
+- **The chart's Forms list has four maternity forms from the forms metadata sheet, Release 1,**
+  for midwives and doctors only. Each saves its own encounter, which only midwives and doctors
+  can view. For a male patient each form shows only "This form is for female patients only."
+  - "UVL Maternity Consultation Form" (Consultation de maternité), filled on arrival so it can
+    be saved before delivery: gestational age, contact person, gynaecological and obstetric
+    history (gravidity and parity required; the caesarean indication and date appear only when
+    a previous caesarean is ticked), medical and surgical history, blood group, ANC,
+    pregnancy particularities, current symptoms, examination and cervix.
+  - "UVL Delivery Registration Form" (Enregistrement de l'accouchement): who performed the
+    delivery (required), doctor called and arrived, procedures (now also eutocic or dystocic
+    delivery), problems detected, placenta, and a block per newborn.
+  - "UVL Gynaecology Ultrasound Form" (Échographie gynécologique): gestational age, pregnancy
+    type, a block per fetus (status, sex, estimated weight), presentation, amniotic fluid,
+    placenta and notes.
+  - "UVL ANC Consultation Form" (Consultation prénatale): gestational age, visit type (CPN 1 to
+    CPN 6 and more), pregnancy period, smoking and alcohol, HIV and syphilis counselling and
+    testing, obstetric counts, examination, treatments given, PMTCT, high-risk pregnancy and
+    gender-based violence screening (the type of violence appears only when screening is Yes).
+  - In the three forms that ask for the last menstrual period, the expected delivery date and
+    the weeks of amenorrhoea are calculated from it and can be corrected by hand.
+  - Questions already in the Childbirth Record use the same concepts, so their data stays
+    comparable. The Childbirth Record form is unchanged. The new concepts come with the
+    uvl-forms 20261102 OCL export, which replaces 20261027. (#485)
 
 ### Added
 - OpenMRS role and Keycloak `openmrs` client role **Central Pharmacist** (inherits `Pharmacist`

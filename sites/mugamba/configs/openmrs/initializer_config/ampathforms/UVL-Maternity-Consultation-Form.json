@@ -1,0 +1,863 @@
+{
+  "uuid": "e8c08524-df02-4d33-9873-8a07fb098f0d",
+  "name": "UVL Maternity Consultation Form",
+  "description": "UVL maternity consultation on arrival, before delivery (forms metadata Release 1, F13)",
+  "version": "1",
+  "published": true,
+  "retired": false,
+  "encounter": "Maternity Consultation",
+  "processor": "EncounterFormProcessor",
+  "referencedForms": [],
+  "encounterType": "82ee375d-e608-4efe-b06a-44d1e834cb1c",
+  "pages": [
+    {
+      "label": "Not applicable",
+      "hide": {
+        "hideWhenExpression": "sex !== 'M'"
+      },
+      "sections": [
+        {
+          "label": "Not applicable",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Not applicable",
+              "type": "markdown",
+              "id": "maleNotice",
+              "questionOptions": {
+                "rendering": "markdown"
+              },
+              "value": [
+                "This form is for female patients only."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Maternity Consultation",
+      "sections": [
+        {
+          "label": "Gestational Age",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Last Menstrual Period (LMP)",
+              "type": "obs",
+              "id": "lmp",
+              "questionOptions": {
+                "rendering": "date",
+                "concept": "2f622f0a-4ef2-482b-9a98-9bd207dd9d7d"
+              }
+            },
+            {
+              "label": "Estimated Date of Delivery (EDD)",
+              "type": "obs",
+              "id": "edd",
+              "questionOptions": {
+                "rendering": "date",
+                "concept": "61f90263-7fe9-4836-a4ef-0739329db8a8",
+                "calculate": {
+                  "calculateExpression": "isEmpty(lmp) ? null : calcEDD(lmp)"
+                }
+              }
+            },
+            {
+              "label": "Weeks of Amenorrhoea",
+              "type": "obs",
+              "id": "gestationalAge",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "ab6aac99-e061-4bd9-a51a-50981989ef35",
+                "min": "0",
+                "max": "45",
+                "disallowDecimals": true,
+                "calculate": {
+                  "calculateExpression": "mode !== 'enter' && !isEmpty(myValue) ? myValue : (isEmpty(lmp) ? undefined : calcTimeDifference(lmp, 'w'))"
+                }
+              }
+            },
+            {
+              "label": "Ultrasound Date",
+              "type": "obs",
+              "id": "ultrasoundDate",
+              "questionOptions": {
+                "rendering": "date",
+                "concept": "1fdf7c57-e19e-4d73-af6d-4e70bc6ea668"
+              }
+            },
+            {
+              "label": "Gestational Age by Ultrasound (weeks)",
+              "type": "obs",
+              "id": "ultrasoundGestationalAge",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "e367878d-e506-47ce-94ed-8023e77b30f6",
+                "min": "0",
+                "max": "45"
+              }
+            },
+            {
+              "label": "Trimester",
+              "type": "obs",
+              "id": "trimester",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "3e687c69-8004-4d13-af18-03fad39368f5",
+                "answers": [
+                  {
+                    "concept": "f0b8f3cc-bf30-4b90-850e-eec5e640c8ac",
+                    "label": "Q1"
+                  },
+                  {
+                    "concept": "3aa0e609-4c94-44a7-b119-32969dbb30b3",
+                    "label": "Q2"
+                  },
+                  {
+                    "concept": "707e858d-d8c4-4b01-91a2-104046cf3e08",
+                    "label": "Q3"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "label": "Contact Person",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Contact Person Name",
+              "type": "obs",
+              "id": "contactName",
+              "questionOptions": {
+                "rendering": "text",
+                "concept": "298617a8-aa87-4fec-a18a-51403e0009ba"
+              }
+            },
+            {
+              "label": "Contact Person Telephone",
+              "type": "obs",
+              "id": "contactPhone",
+              "questionOptions": {
+                "rendering": "text",
+                "concept": "7f58a211-207d-485b-9a57-5d63ad1c7708"
+              }
+            }
+          ]
+        },
+        {
+          "label": "Gynaecological and Obstetric History",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Gravidity",
+              "type": "obs",
+              "id": "gravida",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "59c072eb-e253-4c85-a748-077f086158b4",
+                "min": "0",
+                "max": "30",
+                "disallowDecimals": true
+              },
+              "required": true
+            },
+            {
+              "label": "Parity",
+              "type": "obs",
+              "id": "parity",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "29301b07-6835-4a1c-89d6-d12ac01acdc1",
+                "min": "0",
+                "max": "30",
+                "disallowDecimals": true
+              },
+              "required": true
+            },
+            {
+              "label": "Living Children",
+              "type": "obs",
+              "id": "livingChildren",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "9a1ad424-adf5-485e-95e3-ba1fa7484a33",
+                "min": "0",
+                "max": "30",
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "Number of Children Deceased",
+              "type": "obs",
+              "id": "deceasedChildrenCount",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "a85812ec-5e7f-4e7d-b0da-d75ec56182f7",
+                "min": "0",
+                "max": "20",
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "Number of Stillbirths",
+              "type": "obs",
+              "id": "stillbirthsCount",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "a6e86791-f24b-4cd9-9c6a-6e30fb3ef842",
+                "min": "0",
+                "max": "20",
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "Abortions",
+              "type": "obs",
+              "id": "abortions",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "459e2e4d-0a02-403d-bcb1-e43a6e4aba23",
+                "min": "0",
+                "max": "30",
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "Gynaecological and Obstetric Surgery",
+              "type": "obs",
+              "id": "obstetricSurgicalHistory",
+              "questionOptions": {
+                "rendering": "checkbox",
+                "concept": "c79efc79-3aa8-4781-a683-7d13ebe13834",
+                "answers": [
+                  {
+                    "concept": "ad33b801-c6ef-4ae7-8e3e-59a6473069db",
+                    "label": "Myomectomy"
+                  },
+                  {
+                    "concept": "a426b306-3c23-4ebf-9459-50ad49560ad5",
+                    "label": "Caesarean section"
+                  },
+                  {
+                    "concept": "e97fe72b-28bf-438c-951d-4e0bedea8d0e",
+                    "label": "Ectopic pregnancy"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Indication of the Previous Caesarean Section",
+              "type": "obs",
+              "id": "caesareanIndication",
+              "questionOptions": {
+                "rendering": "text",
+                "concept": "580b0191-7b6a-40f7-b99d-dab155f12dbf"
+              },
+              "hide": {
+                "hideWhenExpression": "isEmpty(obstetricSurgicalHistory) || !includes(obstetricSurgicalHistory, 'a426b306-3c23-4ebf-9459-50ad49560ad5')"
+              }
+            },
+            {
+              "label": "Date of Last Caesarean Section",
+              "type": "obs",
+              "id": "lastCaesareanDate",
+              "questionOptions": {
+                "rendering": "date",
+                "concept": "901c5277-39d1-4632-bf14-3f620721af15"
+              },
+              "hide": {
+                "hideWhenExpression": "isEmpty(obstetricSurgicalHistory) || !includes(obstetricSurgicalHistory, 'a426b306-3c23-4ebf-9459-50ad49560ad5')"
+              }
+            }
+          ]
+        },
+        {
+          "label": "Medical History",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Medical History",
+              "type": "obs",
+              "id": "medicalHistory",
+              "questionOptions": {
+                "rendering": "checkbox",
+                "concept": "7254dc15-5afe-43be-8cf7-0997391ba7c9",
+                "answers": [
+                  {
+                    "concept": "2ee7f690-0ec2-4be1-ba18-556f934c1942",
+                    "label": "Arterial hypertension"
+                  },
+                  {
+                    "concept": "723d9b6e-86d9-40f3-8f0c-242bf3338b54",
+                    "label": "Nephropathy"
+                  },
+                  {
+                    "concept": "ce39d6af-a74f-40d7-a06f-ead8cb298126",
+                    "label": "Heart disease"
+                  },
+                  {
+                    "concept": "505ce8f3-84ee-4936-b7f2-d0083bed8b97",
+                    "label": "Diabetes"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "History of Anaemia",
+              "type": "obs",
+              "id": "anaemiaHistory",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "f049ea0a-0b92-443a-aab5-74b0a3c98124",
+                "answers": [
+                  {
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e",
+                    "label": "Yes"
+                  },
+                  {
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725",
+                    "label": "No"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "label": "Surgical History",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Surgical History Notes",
+              "type": "obs",
+              "id": "surgicalHistory",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "f8c3c8ff-e4f3-41bd-9507-c1f6aedb4a95"
+              }
+            },
+            {
+              "label": "Blood Group & Rhesus",
+              "type": "obs",
+              "id": "bloodGroup",
+              "questionOptions": {
+                "rendering": "select",
+                "concept": "a9e52d34-3dc7-46c6-84a5-0db65faefaf6",
+                "answers": [
+                  {
+                    "concept": "817dd6ab-b51f-4c79-8943-86aa1793567c",
+                    "label": "A+"
+                  },
+                  {
+                    "concept": "01b26397-f0a1-4020-a95c-8087aeba4701",
+                    "label": "A-"
+                  },
+                  {
+                    "concept": "e80fdeac-b6f0-4682-b2c5-0b79c8dd2d28",
+                    "label": "B+"
+                  },
+                  {
+                    "concept": "969db265-95e2-42a8-a1ee-b060208ef00f",
+                    "label": "B-"
+                  },
+                  {
+                    "concept": "167d1731-ef95-4fc8-b029-8a01f87c83a1",
+                    "label": "AB+"
+                  },
+                  {
+                    "concept": "2f24b34a-b9f6-43e9-91b2-189ab008a59b",
+                    "label": "AB-"
+                  },
+                  {
+                    "concept": "27ebb9bd-09a5-4146-93e1-269363735b23",
+                    "label": "O+"
+                  },
+                  {
+                    "concept": "d228097e-dfe5-4c67-b370-7f92cd5f0e89",
+                    "label": "O-"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "label": "Antenatal Care (ANC)",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Number of ANC Visits",
+              "type": "obs",
+              "id": "ancVisits",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "5086bd0c-d4b1-4fa5-bbbf-d2a1dda0fed6",
+                "min": "0",
+                "max": "20",
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "Place of ANC",
+              "type": "obs",
+              "id": "ancLocation",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "ee47af2f-438b-4bf1-b528-26ef24a5c6ea",
+                "answers": [
+                  {
+                    "concept": "b8cbdb46-7e7b-4afe-a604-11340acf96d6",
+                    "label": "Hospital"
+                  },
+                  {
+                    "concept": "61967a86-6cc2-42aa-82b4-3e7cb39da619",
+                    "label": "Health Centre"
+                  },
+                  {
+                    "concept": "f5f15fa7-a96d-465c-aedc-8f6f21ee6e73",
+                    "label": "Private Clinic"
+                  },
+                  {
+                    "concept": "b5c4b807-d3de-40cd-aae9-178df9b40535",
+                    "label": "Other"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "ANC Results Summary",
+              "type": "obs",
+              "id": "ancSummary",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "5165645a-5b3a-42ed-a8b6-44758dae53d9"
+              }
+            },
+            {
+              "label": "IPTp Doses",
+              "type": "obs",
+              "id": "iptDoses",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "fb3f13ce-b041-4bce-8ea4-aeb94c00a8c5",
+                "min": "0",
+                "max": "10",
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "High-Risk Pregnancy",
+              "type": "obs",
+              "id": "highRiskPregnancy",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "37b150f3-f90d-425d-9b85-0ed7dab7d22a",
+                "answers": [
+                  {
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e",
+                    "label": "Yes"
+                  },
+                  {
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725",
+                    "label": "No"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Last Haemoglobin (g/dl)",
+              "type": "obs",
+              "id": "haemoglobin",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "6d792222-d3e8-4b1e-a1b3-7af9bd7b0f2a",
+                "min": "0",
+                "max": "25"
+              }
+            },
+            {
+              "label": "Date of Last Haemoglobin",
+              "type": "obs",
+              "id": "haemoglobinDate",
+              "questionOptions": {
+                "rendering": "date",
+                "concept": "af20c4a5-8413-4d34-aab1-95f37615c0c6"
+              }
+            }
+          ]
+        },
+        {
+          "label": "Pregnancy Particularities",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Pregnancy Conditions",
+              "type": "obs",
+              "id": "pregnancyConditions",
+              "questionOptions": {
+                "rendering": "checkbox",
+                "concept": "a00dcc3e-c828-4f1f-a25e-8b538e432a0d",
+                "answers": [
+                  {
+                    "concept": "2cf73d01-4716-4171-8c42-101660b86cc2",
+                    "label": "Lower limb oedema (OMI)"
+                  },
+                  {
+                    "concept": "2ee7f690-0ec2-4be1-ba18-556f934c1942",
+                    "label": "Arterial hypertension"
+                  },
+                  {
+                    "concept": "505ce8f3-84ee-4936-b7f2-d0083bed8b97",
+                    "label": "Diabetes"
+                  },
+                  {
+                    "concept": "085bab88-5235-4e14-902d-ab1055156240",
+                    "label": "Urinary tract infection"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Chemoprophylaxis",
+              "type": "obs",
+              "id": "pregnancyTreatments",
+              "questionOptions": {
+                "rendering": "checkbox",
+                "concept": "4fc17e46-75f3-47d9-bfc1-2fabb068fa6e",
+                "answers": [
+                  {
+                    "concept": "3f108aa3-7a75-434b-b86f-7b6355d8711d",
+                    "label": "Malaria chemoprophylaxis"
+                  },
+                  {
+                    "concept": "34523751-b025-42b7-8f5a-2393988f63f2",
+                    "label": "Anti-anaemia chemoprophylaxis: iron / folic acid"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Tetanus Vaccine (VAT) Doses",
+              "type": "obs",
+              "id": "tetanusDoses",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "d5dcfbbf-9793-4d43-9e45-6432d3dadea5",
+                "min": "0",
+                "max": "10",
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "Syphilis Screening",
+              "type": "obs",
+              "id": "syphilisScreening",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "5a34a049-1d83-4875-9a51-bfb9723452aa",
+                "answers": [
+                  {
+                    "concept": "5ebcf822-0398-43ef-8d70-117e363541da",
+                    "label": "Positive"
+                  },
+                  {
+                    "concept": "5c8d6240-9cc2-4bc1-b783-30eb887f950c",
+                    "label": "Negative"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "HIV Screening",
+              "type": "obs",
+              "id": "hivScreening",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "d9a94f49-412b-41fe-ac47-437dbc66ffda",
+                "answers": [
+                  {
+                    "concept": "5ebcf822-0398-43ef-8d70-117e363541da",
+                    "label": "Positive"
+                  },
+                  {
+                    "concept": "5c8d6240-9cc2-4bc1-b783-30eb887f950c",
+                    "label": "Negative"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Partner HIV Screening",
+              "type": "obs",
+              "id": "partnerHivScreening",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "6af22417-adc8-4d40-bc13-3a552bb131ea",
+                "answers": [
+                  {
+                    "concept": "5ebcf822-0398-43ef-8d70-117e363541da",
+                    "label": "Positive"
+                  },
+                  {
+                    "concept": "5c8d6240-9cc2-4bc1-b783-30eb887f950c",
+                    "label": "Negative"
+                  },
+                  {
+                    "concept": "c9be680f-4d74-4098-8682-9cb4416429f7",
+                    "label": "Unknown"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "PMTCT Status / Protocol",
+              "type": "obs",
+              "id": "pmtctStatus",
+              "questionOptions": {
+                "rendering": "select",
+                "concept": "5fac5cd6-13d3-4851-a20c-d02cb21320be",
+                "answers": [
+                  {
+                    "concept": "9252290a-63a4-4304-9f04-9ce72431fe08",
+                    "label": "Known HIV positive before pregnancy"
+                  },
+                  {
+                    "concept": "675b5522-fa0e-4b43-a5bc-0189209f067c",
+                    "label": "HIV positive, diagnosed in this pregnancy"
+                  },
+                  {
+                    "concept": "c1abc032-80a8-4544-ba97-2b8396592a46",
+                    "label": "HIV negative"
+                  },
+                  {
+                    "concept": "7441b681-e89e-470e-8f74-24bbe2b5217c",
+                    "label": "Status unknown"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Prescribed Medication",
+              "type": "obs",
+              "id": "prescribedMedication",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "29ff306b-5a2a-48c1-affa-8fa4620a8fda"
+              }
+            }
+          ]
+        },
+        {
+          "label": "History of Present Illness",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Current Symptoms",
+              "type": "obs",
+              "id": "presentingSymptoms",
+              "questionOptions": {
+                "rendering": "checkbox",
+                "concept": "bf8d41d2-8d5a-4224-b259-ea0665bafff4",
+                "answers": [
+                  {
+                    "concept": "b1a1d695-7e4e-43cd-8263-f0a6ab770de4",
+                    "label": "Uterine bleeding (metrorrhagia)"
+                  },
+                  {
+                    "concept": "1c05e1f1-b1f2-4d30-8d82-3bd47e036d0b",
+                    "label": "Intravaginal fluid leak (premature rupture of membranes)"
+                  },
+                  {
+                    "concept": "67996910-c7ad-42cd-bc62-84c87c8b8be9",
+                    "label": "Low back pain presenting as uterine contractions"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "label": "Physical Examination",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Fundal Height (cm)",
+              "type": "obs",
+              "id": "fundalHeight",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "ab5b1972-ca49-40f4-81d0-5d242e8edaaf",
+                "min": "0",
+                "max": "60"
+              }
+            },
+            {
+              "label": "Fetal Heart Rate (/min)",
+              "type": "obs",
+              "id": "fetalHeartRate",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "c62be10d-5b4e-44e3-a989-e0f4858ba77f",
+                "min": "0",
+                "max": "250",
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "Active Fetal Movements (MAF)",
+              "type": "obs",
+              "id": "activeFetalMovements",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "7e31897b-8091-4d09-ab54-55467982f41e",
+                "answers": [
+                  {
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e",
+                    "label": "Yes"
+                  },
+                  {
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725",
+                    "label": "No"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Membranes",
+              "type": "obs",
+              "id": "membranes",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "473467ac-d6ee-418c-acd0-5110eb08bfbe",
+                "answers": [
+                  {
+                    "concept": "9c4e7be2-47a0-4838-bb24-4b2796844f21",
+                    "label": "Intact"
+                  },
+                  {
+                    "concept": "65cedc3a-502e-4380-8fe2-8b0d03801524",
+                    "label": "Ruptured"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Ruptured Since",
+              "type": "obs",
+              "id": "membranesRupturedAt",
+              "questionOptions": {
+                "rendering": "datetime",
+                "concept": "a5bfd49b-8f7f-4666-be00-dfbdce93139e"
+              },
+              "hide": {
+                "hideWhenExpression": "membranes !== '65cedc3a-502e-4380-8fe2-8b0d03801524'"
+              }
+            },
+            {
+              "label": "Amniotic fluid",
+              "type": "obs",
+              "id": "amnioticFluid",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "f571d5d7-34cf-4afd-b876-fa618379e561",
+                "answers": [
+                  {
+                    "concept": "9c4e7be2-47a0-4838-bb24-4b2796844f21",
+                    "label": "I: Membranes intact"
+                  },
+                  {
+                    "concept": "1115AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "label": "C: Clear"
+                  },
+                  {
+                    "concept": "33b7ef0e-ddff-4557-b363-6e72e859e7a2",
+                    "label": "M: Meconium-stained"
+                  },
+                  {
+                    "concept": "6aa7408b-43fa-438a-9bac-994591280fa4",
+                    "label": "B: Blood-stained"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "label": "Cervix",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Cervix: Length",
+              "type": "obs",
+              "id": "cervixLength",
+              "questionOptions": {
+                "rendering": "text",
+                "concept": "3957d3d6-445d-4629-a870-e2ec3a6c2a62"
+              }
+            },
+            {
+              "label": "Cervix: Position",
+              "type": "obs",
+              "id": "cervixPosition",
+              "questionOptions": {
+                "rendering": "text",
+                "concept": "11b41978-144b-454a-b4b5-6a978bcc6988"
+              }
+            },
+            {
+              "label": "Cervix: Consistency",
+              "type": "obs",
+              "id": "cervixConsistency",
+              "questionOptions": {
+                "rendering": "text",
+                "concept": "ee2b4370-0117-479d-a433-5f8e4adbdfd2"
+              }
+            },
+            {
+              "label": "Cervical Dilation (cm)",
+              "type": "obs",
+              "id": "cervicalDilation",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "41eae39d-389d-463f-b24b-81ecc321fc7e",
+                "min": "0",
+                "max": "10",
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "Cervix: Other Findings",
+              "type": "obs",
+              "id": "cervixOther",
+              "questionOptions": {
+                "rendering": "text",
+                "concept": "b5830b03-558e-4d1a-acbb-1963dee49c1d"
+              }
+            }
+          ]
+        },
+        {
+          "label": "Consultation",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Consultation Performed By",
+              "type": "encounterProvider",
+              "id": "encProvider",
+              "required": true,
+              "questionOptions": {
+                "rendering": "ui-select-extended"
+              }
+            }
+          ]
+        }
+      ],
+      "hide": {
+        "hideWhenExpression": "sex === 'M'"
+      }
+    }
+  ]
+}
