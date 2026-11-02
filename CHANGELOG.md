@@ -178,6 +178,15 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   Identity, age, sex, commune and admission date come from the patient banner, the encounter and
   the ward admission, so they are not asked again. It saves an "Inpatient Consultation"
   encounter and does **not** admit the patient: admission stays in the ward app. (#377)
+- **The chart's Forms list has "UVL Inpatient Follow-up Form" (Fiche de suivi d'hospitalisation),**
+  for nurses, midwives and doctors, filled as often as needed during a stay. It records the time
+  the doctor was called and arrived, neurological danger signs, complaints, vital signs (blood
+  pressure on each arm, BMI calculated from weight and height, fetal heart rate for women), the
+  fluid balance (inputs, outputs and a calculated total), stools, the examination, treatment and
+  progress, tests and new treatment (with buttons to order them), recommendations, Ikirezi clinical
+  information and suspected nosocomial infections, and the clinician or nurse on duty, who is
+  required. Identity and ward come from the patient banner and the session location. Each note
+  saves one "Inpatient Follow-up" encounter. (#378)
 
 ### Added
 - OpenMRS role and Keycloak `openmrs` client role **Central Pharmacist** (inherits `Pharmacist`
