@@ -319,7 +319,7 @@
                 "min": "0",
                 "max": "45",
                 "calculate": {
-                  "calculateExpression": "isEmpty(lmp) ? undefined : calcTimeDifference(lmp, 'w')"
+                  "calculateExpression": "mode !== 'enter' && !isEmpty(myValue) ? myValue : (isEmpty(lmp) ? undefined : calcTimeDifference(lmp, 'w'))"
                 }
               }
             },
