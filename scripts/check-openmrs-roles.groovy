@@ -23,6 +23,15 @@
      gets a 403 and offers nothing to create, though the scope exists (#438, UAT
      2026-10-20). Only Keycloak roles are checked: the stock module's own roles are
      never given to anyone directly here.
+
+  5. The central pharmacist cannot dispense (#453). They feed the dispensing boxes and
+     never dispense to patients, so Central Pharmacist must not hold, directly or through
+     an inherited role, a privilege that saves a dispense: `Edit Medication Dispense`
+     (core MedicationDispenseService.saveMedicationDispense), the dispensing app's
+     `Task: dispensing.create.dispense` (it hides the Dispense action without it), or the
+     stock module's `Task: stockmanagement.stockItems.dispense` (POST dispenserequest,
+     which deducts the dispensed stock). Until #453 it inherited Pharmacist, and with it
+     all three.
 */
 
 import groovy.json.JsonSlurper
@@ -32,6 +41,9 @@ Set<String> coreRoles = ['System Developer', 'Provider', 'Anonymous', 'Authentic
 int maxRoleNameLength = 50
 String createOperations = 'Task: stockmanagement.stockoperations.mutate'
 String readScopes = 'App: stockmanagement.userRoleScopes'
+List<String> nonDispensingRoles = ['Central Pharmacist']
+List<String> dispensingPrivileges = ['Edit Medication Dispense', 'Task: dispensing.create.dispense',
+        'Task: stockmanagement.stockItems.dispense']
 
 File distroConfigs = new File(project.build.directory,
         "${project.artifactId}-${project.version}/distro/configs")
@@ -135,6 +147,19 @@ Set<String> effectivePrivileges(String role, Map<String, Set<String>> privileges
     Set<String> all = new HashSet<>(privilegesOf[role] ?: [])
     inheritances.findAll { it.role == role }.each { all.addAll(effectivePrivileges(it.parent, privilegesOf, inheritances, seen)) }
     return all
+}
+
+nonDispensingRoles.each { name ->
+    if (!definedIn.containsKey(name)) {
+        problems << "role '${name}' is not defined in any roles CSV; cannot check that it does not dispense"
+        return
+    }
+    Set<String> privileges = effectivePrivileges(name, privilegesOf, inheritances)
+    List<String> held = dispensingPrivileges.findAll { privileges.contains(it) }
+    if (held) {
+        problems << "${definedIn[name]}: role '${name}' must not dispense, but holds ${held.collect { "'${it}'" }.join(', ')}" +
+                " (directly or through an inherited role)"
+    }
 }
 
 if (realmFile.isFile()) {
