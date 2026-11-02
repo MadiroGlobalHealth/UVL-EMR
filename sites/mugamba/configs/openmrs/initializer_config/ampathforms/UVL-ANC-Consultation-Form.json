@@ -74,7 +74,7 @@
                 "max": "45",
                 "disallowDecimals": true,
                 "calculate": {
-                  "calculateExpression": "isEmpty(lmp) ? null : calcTimeDifference(lmp, 'w')"
+                  "calculateExpression": "mode !== 'enter' && !isEmpty(myValue) ? myValue : (isEmpty(lmp) ? undefined : calcTimeDifference(lmp, 'w'))"
                 }
               }
             },
