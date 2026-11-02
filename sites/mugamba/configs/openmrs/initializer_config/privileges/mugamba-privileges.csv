@@ -7,3 +7,5 @@ c3e0224b-0388-46e7-9374-5dc20a7b5331,View Inpatient Consultation,Able to view In
 412feea9-dcf3-4c7c-a6d8-13256f02425e,App: Can View Patient Identifier Sticker Report,Able to view and print the patient identifier sticker (needed by the Print Patient Label Sticker and Doctor roles),
 ee2903c5-26bb-4ce6-9d5c-297643d58c32,View Contact Record,Able to view Contact Record observations,
 1e2fea4b-b4cb-4399-bfb6-416622e4629a,Edit Contact Record,Able to edit Contact Record observations,
+936a0cbf-12f4-42c6-b591-f3958d50b78d,View Discharge Summary,Able to view Discharge Summary observations,
+c43f361b-a830-4504-91f0-f204a7f505de,Edit Discharge Summary,Able to edit Discharge Summary observations,
