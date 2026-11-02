@@ -92,7 +92,7 @@
         },
         {
           "label": "2. Obstetric History & Previous Pregnancies",
-          "isExpanded": "false",
+          "isExpanded": "true",
           "questions": [
             {
               "label": "Number of Stillbirths",
@@ -168,7 +168,7 @@
         },
         {
           "label": "3. Biological Data & Recent Laboratory Tests",
-          "isExpanded": "false",
+          "isExpanded": "true",
           "questions": [
             {
               "label": "Last Haemoglobin (g/dl)",
@@ -203,7 +203,7 @@
         },
         {
           "label": "4. Assessment of Current Complications & Conditions",
-          "isExpanded": "false",
+          "isExpanded": "true",
           "questions": [
             {
               "label": "Current Complications",
@@ -280,7 +280,7 @@
         },
         {
           "label": "5. Obstetric Data, Antenatal Care & History of Illness",
-          "isExpanded": "false",
+          "isExpanded": "true",
           "questions": [
             {
               "label": "Onset of Labour",
@@ -799,7 +799,7 @@
         },
         {
           "label": "6. Prevention of Mother-to-Child Transmission (PMTCT)",
-          "isExpanded": "false",
+          "isExpanded": "true",
           "questions": [
             {
               "label": "PMTCT Status / Protocol",
@@ -968,7 +968,7 @@
         },
         {
           "label": "8. Clinical Observations, Progress & Team Decisions",
-          "isExpanded": "false",
+          "isExpanded": "true",
           "questions": [
             {
               "label": "Initial Clinical Observations / Intermediate Assessment",
@@ -992,7 +992,7 @@
         },
         {
           "label": "9. Clinical Examination on Admission & Obstetric Examination",
-          "isExpanded": "false",
+          "isExpanded": "true",
           "questions": [
             {
               "label": "Mid-Upper Arm Circumference (cm)",
@@ -1225,7 +1225,7 @@
         },
         {
           "label": "10. Labour & Delivery",
-          "isExpanded": "false",
+          "isExpanded": "true",
           "questions": [
             {
               "label": "Primary Diagnosis",
@@ -1425,10 +1425,7 @@
               "id": "postpartumMonitoring",
               "questionOptions": {
                 "rendering": "repeating",
-                "concept": "13675d71-d936-4e5d-8b45-3f9264ab58ae",
-                "repeatOptions": {
-                  "addText": "Add a time point"
-                }
+                "concept": "13675d71-d936-4e5d-8b45-3f9264ab58ae"
               },
               "questions": [
                 {
@@ -1608,7 +1605,7 @@
         },
         {
           "label": "12. Newborn(s)",
-          "isExpanded": "false",
+          "isExpanded": "true",
           "questions": [
             {
               "label": "Newborn",
@@ -1616,11 +1613,7 @@
               "id": "newborn",
               "questionOptions": {
                 "rendering": "repeating",
-                "concept": "ac11ec86-844a-496f-9726-a39f0a7b47a5",
-                "repeatOptions": {
-                  "addText": "Add another newborn (twins)",
-                  "limitExpression": "isEmpty(fetusCount) ? 5 : fetusCount"
-                }
+                "concept": "ac11ec86-844a-496f-9726-a39f0a7b47a5"
               },
               "questions": [
                 {
