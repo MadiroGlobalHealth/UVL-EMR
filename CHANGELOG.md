@@ -214,6 +214,14 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   contractions, oxytocin, pulse and blood pressure, temperature) and a table of the coded rows,
   to midwives and doctors only. The graph has no alert or action lines. Type of delivery and
   uterine revision are recorded in the childbirth record (#381), not here. (#382)
+- **The chart's Forms list has "UVL Pre-operative Record Form" (Dossier préopératoire),** for
+  doctors and anaesthetists. It records the planned procedure and whether it is an emergency or
+  elective, the patient's history (tobacco, asthma, diabetes, hepatitis, allergy, heart disease,
+  hypertension, other, previous anaesthesia, neurological problem), the clinical examination
+  with blood pressure on each arm, the paraclinical results (chest X-ray, ECG, fundoscopy and the
+  pre-operative lab values), current treatment, intubation difficulty and Mallampati, ASA class,
+  anaesthesia protocol, fasting time, premedication and the planned anaesthesia type, and the
+  doctor or anaesthetist, who is required. It saves a "Pre-operative Record" encounter. (#383)
 
 ### Added
 - OpenMRS role and Keycloak `openmrs` client role **Central Pharmacist** (inherits `Pharmacist`
