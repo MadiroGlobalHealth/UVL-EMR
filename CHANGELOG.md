@@ -222,6 +222,15 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   pre-operative lab values), current treatment, intubation difficulty and Mallampati, ASA class,
   anaesthesia protocol, fasting time, premedication and the planned anaesthesia type, and the
   doctor or anaesthetist, who is required. It saves a "Pre-operative Record" encounter. (#383)
+- **The chart's Forms list has "UVL Anaesthesia Report Form" (Rapport d'anesthésie),** for
+  anaesthetists and doctors. It records the referring service, the start and end of anaesthesia
+  and of the procedure as date and time, with both durations in minutes calculated, the pre- and
+  post-operative diagnoses, the procedure performed, the theatre team, the anaesthesia type,
+  patient position, airway and breathing mode, the anaesthesia machine and any technical problem,
+  medications given, known allergies, incidents, side effects, the contact diagnoses (CISP-2 /
+  CIM-10) and the anaesthetist-intensivist, who is required. Identity comes from the patient
+  banner. It saves an "Anaesthesia Report" encounter. Its concepts come with the uvl-forms
+  20261027 OCL export (#376). (#384)
 
 ### Added
 - OpenMRS role and Keycloak `openmrs` client role **Central Pharmacist** (inherits `Pharmacist`
