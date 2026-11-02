@@ -44,6 +44,10 @@ MSF-OCG/LIME-EMR-Tooling.
 Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
 
 ### Staff will notice
+- **Dispensing takes the dispensed quantity off stock.** The quantity dispensed is deducted
+  from the batch chosen at the dispensation location, and the Pharmacist must pick a batch to
+  dispense. A drug with no counted stock at that location can't be dispensed until it is counted
+  or issued there. (#457)
 - **Registration has a "Chef de ménage (Head of household)" field,** under Additional
   information. It is free text and optional, and the patient banner shows it next to the
   telephone. It feeds the PBF report's head-of-household column; the dashboard column itself is
