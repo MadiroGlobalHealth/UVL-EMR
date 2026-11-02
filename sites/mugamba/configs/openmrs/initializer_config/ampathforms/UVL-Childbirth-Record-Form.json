@@ -11,6 +11,31 @@
   "encounterType": "df81a52a-d450-4525-8eb7-42a690914777",
   "pages": [
     {
+      "label": "Not applicable",
+      "hide": {
+        "hideWhenExpression": "sex !== 'M'"
+      },
+      "sections": [
+        {
+          "label": "Not applicable",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Not applicable",
+              "type": "markdown",
+              "id": "maleNotice",
+              "questionOptions": {
+                "rendering": "markdown"
+              },
+              "value": [
+                "This form is for female patients only."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
       "label": "Admission & History",
       "sections": [
         {
@@ -66,7 +91,7 @@
           ]
         },
         {
-          "label": "3. Obstetric History & Previous Pregnancies",
+          "label": "2. Obstetric History & Previous Pregnancies",
           "isExpanded": "true",
           "questions": [
             {
@@ -142,7 +167,7 @@
           ]
         },
         {
-          "label": "4. Biological Data & Recent Laboratory Tests",
+          "label": "3. Biological Data & Recent Laboratory Tests",
           "isExpanded": "true",
           "questions": [
             {
@@ -177,7 +202,7 @@
           ]
         },
         {
-          "label": "5. Assessment of Current Complications & Conditions",
+          "label": "4. Assessment of Current Complications & Conditions",
           "isExpanded": "true",
           "questions": [
             {
@@ -254,7 +279,7 @@
           ]
         },
         {
-          "label": "6. Obstetric Data, Antenatal Care & History of Illness",
+          "label": "5. Obstetric Data, Antenatal Care & History of Illness",
           "isExpanded": "true",
           "questions": [
             {
@@ -285,18 +310,21 @@
               }
             },
             {
-              "label": "Gestational Age (weeks)",
+              "label": "Gestational Age from LMP (weeks)",
               "type": "obs",
               "id": "gestationalAge",
               "questionOptions": {
                 "rendering": "number",
                 "concept": "ab6aac99-e061-4bd9-a51a-50981989ef35",
                 "min": "0",
-                "max": "45"
+                "max": "45",
+                "calculate": {
+                  "calculateExpression": "mode !== 'enter' && !isEmpty(myValue) ? myValue : (isEmpty(lmp) ? undefined : calcTimeDifference(lmp, 'w'))"
+                }
               }
             },
             {
-              "label": "Fundal Height (weeks)",
+              "label": "Gestational Age by Fundal Height (weeks)",
               "type": "obs",
               "id": "gaFundalHeight",
               "questionOptions": {
@@ -770,7 +798,7 @@
           ]
         },
         {
-          "label": "7. Prevention of Mother-to-Child Transmission (PMTCT)",
+          "label": "6. Prevention of Mother-to-Child Transmission (PMTCT)",
           "isExpanded": "true",
           "questions": [
             {
@@ -830,13 +858,16 @@
             }
           ]
         }
-      ]
+      ],
+      "hide": {
+        "hideWhenExpression": "sex === 'M'"
+      }
     },
     {
       "label": "Labour & Delivery",
       "sections": [
         {
-          "label": "8. Vital Signs & Labour Progress",
+          "label": "7. Vital Signs & Labour Progress",
           "isExpanded": "true",
           "questions": [
             {
@@ -863,7 +894,7 @@
               }
             },
             {
-              "label": "Twins (number of fetuses)",
+              "label": "Number of Fetuses",
               "type": "obs",
               "id": "fetusCount",
               "questionOptions": {
@@ -936,7 +967,7 @@
           ]
         },
         {
-          "label": "9. Clinical Observations, Progress & Team Decisions",
+          "label": "8. Clinical Observations, Progress & Team Decisions",
           "isExpanded": "true",
           "questions": [
             {
@@ -960,7 +991,7 @@
           ]
         },
         {
-          "label": "10. Clinical Examination on Admission & Obstetric Examination",
+          "label": "9. Clinical Examination on Admission & Obstetric Examination",
           "isExpanded": "true",
           "questions": [
             {
@@ -1193,11 +1224,11 @@
           ]
         },
         {
-          "label": "11. Labour & Delivery",
+          "label": "10. Labour & Delivery",
           "isExpanded": "true",
           "questions": [
             {
-              "label": "Diagnosis",
+              "label": "Primary Diagnosis",
               "type": "diagnosis",
               "id": "deliveryDiagnosis",
               "questionOptions": {
@@ -1207,6 +1238,23 @@
                 "diagnosis": {
                   "isConfirmed": true,
                   "rank": 1,
+                  "conceptClasses": [
+                    "8d4918b0-c2cc-11de-8d13-0010c6dffd0f"
+                  ]
+                }
+              }
+            },
+            {
+              "label": "Secondary Diagnoses",
+              "type": "diagnosis",
+              "id": "secondaryDiagnosis",
+              "questionOptions": {
+                "rendering": "repeating",
+                "dataSource": "diagnoses",
+                "isSearchable": "true",
+                "diagnosis": {
+                  "isConfirmed": true,
+                  "rank": 2,
                   "conceptClasses": [
                     "8d4918b0-c2cc-11de-8d13-0010c6dffd0f"
                   ]
@@ -1359,13 +1407,16 @@
             }
           ]
         }
-      ]
+      ],
+      "hide": {
+        "hideWhenExpression": "sex === 'M'"
+      }
     },
     {
       "label": "Postpartum & Newborn",
       "sections": [
         {
-          "label": "12. Immediate Postpartum Monitoring (24 hours)",
+          "label": "11. Immediate Postpartum Monitoring (24 hours)",
           "isExpanded": "true",
           "questions": [
             {
@@ -1553,7 +1604,7 @@
           ]
         },
         {
-          "label": "13. Newborn(s)",
+          "label": "12. Newborn(s)",
           "isExpanded": "true",
           "questions": [
             {
@@ -1740,7 +1791,10 @@
             }
           ]
         }
-      ]
+      ],
+      "hide": {
+        "hideWhenExpression": "sex === 'M'"
+      }
     }
   ]
 }

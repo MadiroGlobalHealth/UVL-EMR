@@ -36,6 +36,8 @@
     "Pulse (/min)": "Pulse (/min)",
     "Reading": "Reading",
     "Systolic blood pressure (mmHg)": "Systolic blood pressure (mmHg)",
-    "Temperature (°C)": "Temperature (°C)"
+    "Temperature (°C)": "Temperature (°C)",
+    "Not applicable": "Not applicable",
+    "This form is for female patients only.": "This form is for female patients only."
   }
 }

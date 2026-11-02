@@ -11,6 +11,31 @@
   "encounterType": "48d7672c-78a9-4dc0-b21f-40a8faeb61db",
   "pages": [
     {
+      "label": "Not applicable",
+      "hide": {
+        "hideWhenExpression": "sex !== 'M'"
+      },
+      "sections": [
+        {
+          "label": "Not applicable",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Not applicable",
+              "type": "markdown",
+              "id": "maleNotice",
+              "questionOptions": {
+                "rendering": "markdown"
+              },
+              "value": [
+                "This form is for female patients only."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
       "label": "Partograph Reading",
       "sections": [
         {
@@ -277,7 +302,10 @@
             }
           ]
         }
-      ]
+      ],
+      "hide": {
+        "hideWhenExpression": "sex === 'M'"
+      }
     }
   ]
 }
