@@ -174,8 +174,7 @@
                 "rendering": "number",
                 "concept": "41eae39d-389d-463f-b24b-81ecc321fc7e",
                 "min": "0",
-                "max": "10",
-                "disallowDecimals": true
+                "max": "10"
               }
             },
             {
