@@ -43,6 +43,54 @@
             }
           }
         }
+      },
+      "patient-chart-summary-dashboard-slot": {
+        "add": ["obs-by-encounter-widget#partograph-graph", "obs-table-horizontal-widget#partograph-table"],
+        "configure": {
+          "obs-by-encounter-widget#partograph-graph": {
+            "Display conditions": {
+              "privileges": ["View Partograph Reading"]
+            },
+            "title": "Partograph",
+            "resultsName": "partograph readings",
+            "showGraphByDefault": true,
+            "graphOldestFirst": true,
+            "dateFormat": "dateTime",
+            "encounterTypes": ["48d7672c-78a9-4dc0-b21f-40a8faeb61db"],
+            "table": {
+              "pageSize": 10
+            },
+            "data": [
+              { "concept": "c62be10d-5b4e-44e3-a989-e0f4858ba77f", "label": "Fetal heart rate (bpm)", "color": "red", "graphGroup": "Fetal heart rate" },
+              { "concept": "41eae39d-389d-463f-b24b-81ecc321fc7e", "label": "Cervical dilatation (cm)", "color": "blue", "graphGroup": "Dilatation and descent" },
+              { "concept": "4c5021fa-f586-411d-bcc1-9005a8b51829", "label": "Descent (fifths)", "color": "green", "graphGroup": "Dilatation and descent" },
+              { "concept": "91792645-572f-436e-9d23-b99e55754919", "label": "Contractions per 10 minutes", "color": "purple", "graphGroup": "Contractions" },
+              { "concept": "36577c7e-c94f-441a-b868-95ba42682f63", "label": "Oxytocin (U/L)", "color": "orange", "graphGroup": "Oxytocin" },
+              { "concept": "c0391844-883d-4795-a259-cddef3553b91", "label": "Oxytocin drip (drops/min)", "color": "teal", "graphGroup": "Oxytocin" },
+              { "concept": "bc54cb7c-bb45-45aa-84d6-2346748b7c93", "label": "Pulse (/min)", "color": "red", "graphGroup": "Pulse and blood pressure" },
+              { "concept": "6d0b8551-feb8-4d57-892a-d75398181b3f", "label": "Systolic blood pressure (mmHg)", "color": "blue", "graphGroup": "Pulse and blood pressure" },
+              { "concept": "c46fcfdd-a785-4416-80bc-2d9e2edf5a45", "label": "Diastolic blood pressure (mmHg)", "color": "green", "graphGroup": "Pulse and blood pressure" },
+              { "concept": "748f8d43-617a-40ba-9474-20522e73fb8a", "label": "Temperature (°C)", "color": "orange", "graphGroup": "Temperature", "decimalPlaces": 1 }
+            ]
+          },
+          "obs-table-horizontal-widget#partograph-table": {
+            "Display conditions": {
+              "privileges": ["View Partograph Reading"]
+            },
+            "title": "Partograph: liquor, moulding, contractions, medications",
+            "editable": false,
+            "oldestFirst": true,
+            "maxColumns": 8,
+            "encounterTypes": ["48d7672c-78a9-4dc0-b21f-40a8faeb61db"],
+            "encounterTypeToCreateUuid": "48d7672c-78a9-4dc0-b21f-40a8faeb61db",
+            "data": [
+              { "concept": "f571d5d7-34cf-4afd-b876-fa618379e561", "label": "Amniotic fluid" },
+              { "concept": "6443292c-1743-418f-8bb9-eb19463bf371", "label": "Head moulding" },
+              { "concept": "be0efe80-47a8-43e8-bbb1-0aeda72edac8", "label": "Duration of contractions (seconds)", "decimalPlaces": 0 },
+              { "concept": "057723c1-6b41-4e30-9fc0-7a9be2cf2e6f", "label": "Medications given" }
+            ]
+          }
+        }
       }
     },
     "visitAttributeTypes": [
@@ -412,5 +460,34 @@
     "stockAdjustmentReasonUUID": "2973a766-bdb8-56c3-a5d2-d101a611a770",
     "stockTakeReasonUUID": "2973a766-bdb8-56c3-a5d2-d101a611a770",
     "useItemCommonNameAsDisplay": false
+  },
+  "@openmrs/esm-generic-patient-widgets-app": {
+    "Translation overrides": {
+      "fr": {
+        "Partograph": "Partogramme",
+        "partograph readings": "lectures du partogramme",
+        "Partograph: liquor, moulding, contractions, medications": "Partogramme : liquide amniotique, modelage, contractions, médicaments",
+        "Fetal heart rate": "Fréquence cardiaque fœtale",
+        "Fetal heart rate (bpm)": "Fréquence cardiaque fœtale (bpm)",
+        "Dilatation and descent": "Dilatation et engagement",
+        "Cervical dilatation (cm)": "Dilatation du col (cm)",
+        "Descent (fifths)": "Engagement (cinquièmes)",
+        "Contractions": "Contractions",
+        "Contractions per 10 minutes": "Contractions par 10 minutes",
+        "Oxytocin": "Oxytocine",
+        "Oxytocin (U/L)": "Oxytocine (U/L)",
+        "Oxytocin drip (drops/min)": "Oxytocine (gouttes/min)",
+        "Pulse and blood pressure": "Pouls et tension artérielle",
+        "Pulse (/min)": "Pouls (/min)",
+        "Systolic blood pressure (mmHg)": "Tension artérielle systolique (mmHg)",
+        "Diastolic blood pressure (mmHg)": "Tension artérielle diastolique (mmHg)",
+        "Temperature": "Température",
+        "Temperature (°C)": "Température (°C)",
+        "Amniotic fluid": "Liquide amniotique",
+        "Head moulding": "Modelage de la tête",
+        "Duration of contractions (seconds)": "Durée des contractions (secondes)",
+        "Medications given": "Médicaments administrés"
+      }
+    }
   }
 }
