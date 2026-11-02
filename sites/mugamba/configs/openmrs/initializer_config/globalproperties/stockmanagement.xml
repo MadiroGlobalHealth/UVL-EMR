@@ -37,11 +37,11 @@
             <value>2973a766-bdb8-56c3-a5d2-d101a611a770</value>
         </globalProperty>
         <!--
-          The module default, stated for the day dispensing deducts stock (enableStockDispense in
-          the frontend config, off for now): an operation that would take a batch below zero at
-          its source is refused. Dispensing is refused in that case whatever this says, so once
-          deduction is on, a drug with no counted stock at the dispensation cannot be dispensed
-          until it is counted or issued there.
+          The module default, stated because dispensing deducts stock (enableStockDispense in
+          the frontend config is on): an operation that would take a batch below zero at its
+          source is refused. Dispensing is refused in that case whatever this says, so a drug
+          with no counted stock at the dispensation location cannot be dispensed until it is
+          counted or issued there.
         -->
         <globalProperty>
             <property>stockmanagement.negativeStockBalanceAllowed</property>
