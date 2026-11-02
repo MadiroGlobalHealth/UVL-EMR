@@ -168,6 +168,16 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   commune, discharge date and payer come from the patient banner, the encounter and the visit,
   so they are not asked again. It saves a "Discharge Summary" encounter, which does **not**
   discharge the patient: the patient stays admitted until discharged from the ward. (#380)
+- **The chart's Forms list has "UVL Admission Note Form" (Fiche d'admission en hospitalisation),**
+  for doctors. It records vital signs (blood pressure on both arms) and anthropometry (BMI is
+  calculated from weight and height), the reason for admission, history of the illness, family,
+  medical, surgical and gynaeco-obstetric history, lifestyle, the physical examination
+  (general condition, symptoms, percussion, auscultation, summary), tests already done, the
+  admission hypotheses and diagnoses, tests requested and treatment (with the order basket),
+  suspected nosocomial infections, integrated observations, and the clinician, who is required.
+  Identity, age, sex, commune and admission date come from the patient banner, the encounter and
+  the ward admission, so they are not asked again. It saves an "Inpatient Consultation"
+  encounter and does **not** admit the patient: admission stays in the ward app. (#377)
 
 ### Added
 - OpenMRS role and Keycloak `openmrs` client role **Central Pharmacist** (inherits `Pharmacist`
