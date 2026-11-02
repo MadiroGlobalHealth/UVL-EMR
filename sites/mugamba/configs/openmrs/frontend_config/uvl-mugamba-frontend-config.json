@@ -406,8 +406,8 @@
     "enableStockDispense": false
   },
   "@openmrs/esm-stock-management-app": {
-    "packingUnitsUUID": "7026a506-6fec-4b6b-86c1-ef691bb52261",
-    "dispensingUnitsUUID": "7026a506-6fec-4b6b-86c1-ef691bb52261",
+    "packingUnitsUUID": "d8ec6bbb-d988-5ce5-879a-6e3068aca253",
+    "dispensingUnitsUUID": "d8ec6bbb-d988-5ce5-879a-6e3068aca253",
     "stockSourceTypeUUID": "291efb6a-0364-5ef7-96b8-47f24d50ab3d",
     "stockAdjustmentReasonUUID": "2973a766-bdb8-56c3-a5d2-d101a611a770",
     "stockTakeReasonUUID": "2973a766-bdb8-56c3-a5d2-d101a611a770",
