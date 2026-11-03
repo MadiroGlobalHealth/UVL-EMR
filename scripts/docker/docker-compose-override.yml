@@ -1,6 +1,6 @@
 services:
   openmrs:
-    image: openmrs/openmrs-core:2.7.7-amazoncorretto-17
+    image: openmrs/openmrs-core:2.8.9-amazoncorretto-17
     environment:
       ORTHANCTOKEN_KEYCLOAK_CLIENTSECRET: ${ORTHANC_CLIENT_SECRET}
     healthcheck:
@@ -56,6 +56,7 @@ services:
           - orthanc-auth-service
     volumes:
       - ${ORTHANC_CONFIG_PATH}/../permissions.json:/orthanc-auth-service/permissions.json
+      - ${ORTHANC_CONFIG_PATH}/../anonymous-profile.json:/orthanc_auth_service/anonymous-profile.json
     environment:
       ENABLE_KEYCLOAK: "true"
       PERMISSIONS_FILE_PATH: "/orthanc-auth-service/permissions.json"
@@ -167,9 +168,31 @@ services:
   # Keep in step with the pins above and with LIME-EMR-Tooling's docker-compose-orthanc.yml.
   eip-odoo-openmrs:
     image: mekomsolutions/eip-client:2.4.0-SNAPSHOT@sha256:fef2ffee0bdc97b46bcf93b5bbffe091b906ea6db50db9145e61cf273d555d93
+    environment:
+      # Dispensing units that measure an amount taken from a container, not a number of containers:
+      # Milliliter, Gram, Drop, Application, Spray (the OpenMRS concept uuids, which are also the Odoo
+      # unit external ids). A prescription in one of them is billed as one bottle/tube, because
+      # these drugs are priced per container. Unset, "10 mL" bills ten bottles (#385).
+      - ODOO_PER_CONTAINER_UOMS=bf712910-1c7f-4e72-9d50-6eb5453efcfd,c2beca4d-0e35-4989-8e9d-54134982bb37,11ae7979-7bb6-49c7-9715-9adacc1b4005,72262ed3-d3e2-4c94-b4d6-567934107481,2befd840-e135-4fc9-bb9d-acdcce088f19
 
   mysql:
     image: mariadb:10.11.13
+    # Ozone's options (docker-compose-common.yml; a command override replaces the whole list), plus
+    # --log-bin-trust-function-creators=1. Binary logging is on for the EIP bridges, and without
+    # that flag the stockmanagement module cannot create its triggers ("You do not have the SUPER
+    # privilege and binary logging is enabled"), so Stock Management, then Billing, then UVL's own
+    # Liquibase changes fail on a local start (#369). Local run only.
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --skip-character-set-client-handshake
+      - --skip-innodb-read-only-compressed
+      - --log-bin=mysqld-bin
+      - --binlog-format=ROW
+      - --server-id=2
+      - --sync-binlog=1
+      - --binlog-annotate-row-events=0
+      - --log-bin-trust-function-creators=1
 
   frontend:
     volumes:

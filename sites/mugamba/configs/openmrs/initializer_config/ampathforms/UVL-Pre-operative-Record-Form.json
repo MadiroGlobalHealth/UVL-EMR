@@ -1,0 +1,578 @@
+{
+  "uuid": "e2906603-792b-4b0d-8baf-fd8dfe36fe61",
+  "name": "UVL Pre-operative Record Form",
+  "description": "UVL pre-operative record (Dossier préopératoire)",
+  "version": "1",
+  "published": true,
+  "retired": false,
+  "encounter": "Pre-operative Record",
+  "processor": "EncounterFormProcessor",
+  "referencedForms": [],
+  "encounterType": "f0a19a36-4c36-496a-87f5-cd47f4c2f5b4",
+  "pages": [
+    {
+      "label": "Pre-operative Record",
+      "sections": [
+        {
+          "label": "Procedure Details",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Surgical Indication",
+              "type": "obs",
+              "id": "surgeryUrgency",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "ba193b51-7617-4186-93a5-de8657855aaa",
+                "answers": [
+                  {
+                    "concept": "90a3cdc3-342e-456f-8154-5e6802166584",
+                    "label": "Emergency"
+                  },
+                  {
+                    "concept": "79a559a9-c7aa-4006-98c2-02c530f6f7db",
+                    "label": "Elective"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Planned Procedure",
+              "type": "obs",
+              "id": "plannedProcedure",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "d346e0d9-44ce-4809-ae37-82a2033d5517"
+              }
+            }
+          ]
+        },
+        {
+          "label": "Patient History",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Medical History",
+              "type": "obs",
+              "id": "medicalHistory",
+              "questionOptions": {
+                "rendering": "multiCheckbox",
+                "concept": "b9f2b623-ab12-4cd3-b5e6-e10b274b0504",
+                "answers": [
+                  {
+                    "concept": "0777c7dc-b6d4-4a3b-8742-c0280f93ee76",
+                    "label": "Tobacco"
+                  },
+                  {
+                    "concept": "fed68a32-1c52-4c2a-a446-e8cd30b440e7",
+                    "label": "Asthma"
+                  },
+                  {
+                    "concept": "505ce8f3-84ee-4936-b7f2-d0083bed8b97",
+                    "label": "Diabetes"
+                  },
+                  {
+                    "concept": "ced33062-8c28-4ca0-ac5d-83a833490435",
+                    "label": "Hepatitis"
+                  },
+                  {
+                    "concept": "9c67e8a4-702f-47fe-8350-92f5ed09b5a2",
+                    "label": "Allergy"
+                  },
+                  {
+                    "concept": "ce39d6af-a74f-40d7-a06f-ead8cb298126",
+                    "label": "Heart Disease"
+                  },
+                  {
+                    "concept": "47f36ee7-fa3f-462f-91bf-a549b9b3b9f9",
+                    "label": "Hypertension"
+                  },
+                  {
+                    "concept": "b5c4b807-d3de-40cd-aae9-178df9b40535",
+                    "label": "Other"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Previous Anaesthesia",
+              "type": "obs",
+              "id": "previousAnaesthesia",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "f06c9a5a-5d3f-44c9-9312-f72655140c51"
+              }
+            },
+            {
+              "label": "Neurological Problem",
+              "type": "obs",
+              "id": "neurologicalProblem",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "a8939af0-7530-405c-8142-faef8938904b"
+              }
+            },
+            {
+              "label": "Comment",
+              "type": "obs",
+              "id": "historyComment",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "e55584c3-ac3d-4a43-a3e2-98602602159f"
+              }
+            }
+          ]
+        },
+        {
+          "label": "Clinical Examination",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "General Condition",
+              "type": "obs",
+              "id": "generalCondition",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "26b6bd3f-5367-4a73-aa1d-9c3063522b2b"
+              }
+            },
+            {
+              "label": "Conjunctival Colour",
+              "type": "obs",
+              "id": "conjunctivalColour",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "802334a8-632f-4b46-a5d8-5058700f9763",
+                "answers": [
+                  {
+                    "concept": "1115AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "label": "Normal"
+                  },
+                  {
+                    "concept": "3157daa5-93aa-4ac2-912c-5e4379116bf0",
+                    "label": "Pale"
+                  },
+                  {
+                    "concept": "91771868-aff4-4fd1-a3f7-d8a5acea2d5c",
+                    "label": "Icteric"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Blood Pressure (Right Arm)",
+              "type": "obsGroup",
+              "id": "bpRightArm",
+              "questionOptions": {
+                "rendering": "group",
+                "concept": "4e887505-0db7-40be-b375-cc19965207f6"
+              },
+              "questions": [
+                {
+                  "label": "Systolic (mmHg)",
+                  "type": "obs",
+                  "id": "bpRightSystolic",
+                  "questionOptions": {
+                    "rendering": "numeric",
+                    "concept": "6d0b8551-feb8-4d57-892a-d75398181b3f",
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Diastolic (mmHg)",
+                  "type": "obs",
+                  "id": "bpRightDiastolic",
+                  "questionOptions": {
+                    "rendering": "numeric",
+                    "concept": "c46fcfdd-a785-4416-80bc-2d9e2edf5a45",
+                    "disallowDecimals": true
+                  }
+                }
+              ]
+            },
+            {
+              "label": "Blood Pressure (Left Arm)",
+              "type": "obsGroup",
+              "id": "bpLeftArm",
+              "questionOptions": {
+                "rendering": "group",
+                "concept": "f8f990f9-6249-4451-abc7-396733830011"
+              },
+              "questions": [
+                {
+                  "label": "Systolic (mmHg)",
+                  "type": "obs",
+                  "id": "bpLeftSystolic",
+                  "questionOptions": {
+                    "rendering": "numeric",
+                    "concept": "6d0b8551-feb8-4d57-892a-d75398181b3f",
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Diastolic (mmHg)",
+                  "type": "obs",
+                  "id": "bpLeftDiastolic",
+                  "questionOptions": {
+                    "rendering": "numeric",
+                    "concept": "c46fcfdd-a785-4416-80bc-2d9e2edf5a45",
+                    "disallowDecimals": true
+                  }
+                }
+              ]
+            },
+            {
+              "label": "Lower Limb Oedema",
+              "type": "obs",
+              "id": "lowerLimbOedema",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "cfce22f3-9296-4af1-8c68-4e86cf02bf44",
+                "answers": [
+                  {
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e",
+                    "label": "Yes"
+                  },
+                  {
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725",
+                    "label": "No"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Dyspnoea",
+              "type": "obs",
+              "id": "dyspnoea",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "ccc826d6-6b46-4330-a5d2-2d2fd6df7524",
+                "answers": [
+                  {
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e",
+                    "label": "Yes"
+                  },
+                  {
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725",
+                    "label": "No"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Other Findings",
+              "type": "obs",
+              "id": "examOther",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "f3401215-8c2f-4cf4-acab-9d524fbbf6c6"
+              }
+            }
+          ]
+        },
+        {
+          "label": "Paraclinical Investigations",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Chest X-ray",
+              "type": "obs",
+              "id": "chestXray",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "39a60662-bcc1-4b26-9764-6013af93bbdb"
+              }
+            },
+            {
+              "label": "ECG",
+              "type": "obs",
+              "id": "ecg",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "0ccd264a-a16c-46c8-8272-a92dffdea8aa"
+              }
+            },
+            {
+              "label": "Fundoscopy",
+              "type": "obs",
+              "id": "fundoscopy",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "cbf3f223-d3b9-454c-92a8-4af410db86db"
+              }
+            },
+            {
+              "label": "Hb",
+              "type": "obs",
+              "id": "haemoglobin",
+              "questionOptions": {
+                "rendering": "numeric",
+                "concept": "6d792222-d3e8-4b1e-a1b3-7af9bd7b0f2a"
+              }
+            },
+            {
+              "label": "Blood Glucose",
+              "type": "obs",
+              "id": "glycaemia",
+              "questionOptions": {
+                "rendering": "numeric",
+                "concept": "8c72c21f-e119-4f71-9d9c-41dd5d04bf5d"
+              }
+            },
+            {
+              "label": "Na",
+              "type": "obs",
+              "id": "sodium",
+              "questionOptions": {
+                "rendering": "numeric",
+                "concept": "55e44bd4-5281-4d84-b596-1211cc940b4c"
+              }
+            },
+            {
+              "label": "K",
+              "type": "obs",
+              "id": "potassium",
+              "questionOptions": {
+                "rendering": "numeric",
+                "concept": "68bdf257-e599-4ccb-b209-53e46b696559"
+              }
+            },
+            {
+              "label": "Ca",
+              "type": "obs",
+              "id": "calcium",
+              "questionOptions": {
+                "rendering": "numeric",
+                "concept": "bc180afd-140b-4bca-bd58-df4022028d63"
+              }
+            },
+            {
+              "label": "Urea",
+              "type": "obs",
+              "id": "urea",
+              "questionOptions": {
+                "rendering": "numeric",
+                "concept": "2ce344ef-b701-4218-809c-826642e490e4"
+              }
+            },
+            {
+              "label": "Creatinine",
+              "type": "obs",
+              "id": "creatinine",
+              "questionOptions": {
+                "rendering": "numeric",
+                "concept": "f1057206-bbe6-4193-bc34-3ed8a691f2ca"
+              }
+            },
+            {
+              "label": "Total Protein",
+              "type": "obs",
+              "id": "totalProtein",
+              "questionOptions": {
+                "rendering": "numeric",
+                "concept": "c447ae6b-5e77-47f0-bc44-3d156da9ac0e"
+              }
+            },
+            {
+              "label": "SGOT",
+              "type": "obs",
+              "id": "sgot",
+              "questionOptions": {
+                "rendering": "numeric",
+                "concept": "20c8e6ef-116d-4a25-8e8d-956c8eb54949"
+              }
+            },
+            {
+              "label": "SGPT",
+              "type": "obs",
+              "id": "sgpt",
+              "questionOptions": {
+                "rendering": "numeric",
+                "concept": "3fa54ce0-3c3d-43a9-80d1-2ad43e3a3a00"
+              }
+            },
+            {
+              "label": "Fibrinogen",
+              "type": "obs",
+              "id": "fibrinogen",
+              "questionOptions": {
+                "rendering": "numeric",
+                "concept": "19c391f9-a358-4ce1-9bdb-96adc2338ebe",
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "Platelets",
+              "type": "obs",
+              "id": "platelets",
+              "questionOptions": {
+                "rendering": "numeric",
+                "concept": "5c5d139d-b9bc-4167-a454-639c30e8a8d3"
+              }
+            },
+            {
+              "label": "aPTT",
+              "type": "obs",
+              "id": "aptt",
+              "questionOptions": {
+                "rendering": "numeric",
+                "concept": "bbab6fa6-69bc-45f4-8a43-677883bee6be"
+              }
+            }
+          ]
+        },
+        {
+          "label": "Treatment & Conclusion",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Current Treatment",
+              "type": "obs",
+              "id": "currentTreatment",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "1deb77a2-9fa1-4e0f-a0a0-6f4f751f728f"
+              }
+            },
+            {
+              "label": "Anticipated Difficult Intubation",
+              "type": "obs",
+              "id": "difficultIntubation",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "f6b7d315-4038-4d88-8acf-4b1c7cd33f75",
+                "answers": [
+                  {
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e",
+                    "label": "Yes"
+                  },
+                  {
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725",
+                    "label": "No"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Mallampati",
+              "type": "obs",
+              "id": "mallampati",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "de1bb094-a800-4d98-b0d1-0a9d48f318ac",
+                "answers": [
+                  {
+                    "concept": "22704541-99ae-4e19-9a60-dc0773b36039",
+                    "label": "Class I"
+                  },
+                  {
+                    "concept": "b197d73f-ae75-4808-9979-7c49493e8b11",
+                    "label": "Class II"
+                  },
+                  {
+                    "concept": "b41572ee-1b13-4804-8a1b-c7530e851588",
+                    "label": "Class III"
+                  },
+                  {
+                    "concept": "07eb4574-b134-4afc-882c-81eda442aea7",
+                    "label": "Class IV"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "ASA Class",
+              "type": "obs",
+              "id": "asaClass",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "480fdb45-e432-4c0a-9a0e-e67a1da68401",
+                "answers": [
+                  {
+                    "concept": "383f9874-7ebe-45ce-82c4-644fed31e14c",
+                    "label": "ASA I"
+                  },
+                  {
+                    "concept": "4b751ac7-1dd1-4fc1-b279-27353df4d43a",
+                    "label": "ASA II"
+                  },
+                  {
+                    "concept": "0f4dc3bd-adba-4d10-a8fc-e29269949952",
+                    "label": "ASA III"
+                  },
+                  {
+                    "concept": "552c3605-e8ef-4e0a-b6eb-e805c8c945e3",
+                    "label": "ASA IV"
+                  },
+                  {
+                    "concept": "7fb481a4-1af1-42ce-a7c1-472765f02114",
+                    "label": "ASA V"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Anaesthesia Protocol",
+              "type": "obs",
+              "id": "anaesthesiaProtocol",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "21ac1ec7-c28f-4f51-ab00-4e137bcf221a"
+              }
+            },
+            {
+              "label": "Fasting Since",
+              "type": "obs",
+              "id": "fastingSince",
+              "questionOptions": {
+                "rendering": "datetime",
+                "concept": "f8bcceee-9377-4785-8eef-77318d6b2abf"
+              }
+            },
+            {
+              "label": "Premedication",
+              "type": "obs",
+              "id": "premedication",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "6c31f599-302b-4516-b107-98fdccdd5155"
+              }
+            },
+            {
+              "label": "Planned Anaesthesia Type",
+              "type": "obs",
+              "id": "plannedAnaesthesiaType",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "e56083c5-658e-4715-85ce-30cd78e0b13b",
+                "answers": [
+                  {
+                    "concept": "0c279f31-78c9-4c5c-9714-0f5bfc19fb1e",
+                    "label": "General"
+                  },
+                  {
+                    "concept": "993c7783-e6dd-4786-961a-e658476ea753",
+                    "label": "Loco-regional"
+                  },
+                  {
+                    "concept": "6e625252-c2c7-407a-8dba-406f1c2cf3c7",
+                    "label": "Local"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Doctor / Anaesthetist",
+              "type": "encounterProvider",
+              "id": "encProvider",
+              "required": true,
+              "questionOptions": {
+                "rendering": "ui-select-extended"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

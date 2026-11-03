@@ -18,9 +18,12 @@
      (preConditions after comment) is rejected at parse time, and the failure takes the
      whole changelog down with it, including changesets that were fine.
 
+  3. Every <sqlFile> a reachable changelog names (rollbacks included) exists. Liquibase only
+     opens it when the changeset runs, so a missing or misnamed file would otherwise surface
+     as a failed changeset on the server, or as a rollback that cannot run.
+
   Reachability follows <include file> and <includeAll path>, honouring
-  relativeToChangelogFile. .sql files referenced by <sqlFile> are not changelogs and are
-  not checked.
+  relativeToChangelogFile. The .sql files themselves are not parsed.
 */
 
 import groovy.xml.XmlSlurper
@@ -83,6 +86,24 @@ liquibase.xml, and nothing includes these:
 ${list}
 Include each one from its liquibase.xml (<include file="..." relativeToChangelogFile="true"/>),
 or delete it.""")
+}
+
+List<String> missingSqlFiles = []
+reachable.each { changelog ->
+    def root = new XmlSlurper(false, false).parse(changelog)
+    root.'**'.findAll { it.name() == 'sqlFile' }.each { node ->
+        boolean relative = node.@relativeToChangelogFile.text() == 'true'
+        String target = node.@path.text()
+        File resolved = (relative ? new File(changelog.parentFile, target) : new File(configDir.parentFile, target)).canonicalFile
+        if (!resolved.isFile()) {
+            missingSqlFiles << "  ${liquibaseDir.toPath().relativize(changelog.toPath())}: ${target}"
+        }
+    }
+}
+if (!missingSqlFiles.isEmpty()) {
+    throw new IllegalStateException("""\
+These <sqlFile> paths do not exist in the assembled configuration:
+${missingSqlFiles.join('\n')}""")
 }
 
 // Parse each entry point the way OpenMRS will; includes are parsed with it.

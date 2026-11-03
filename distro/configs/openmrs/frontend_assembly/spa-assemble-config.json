@@ -41,13 +41,13 @@
     "@openmrs/esm-user-onboarding-app": "4.1.0",
     "@openmrs/esm-ward-app": "11.1.0",
     "@openmrs/esm-bed-management-app": "11.1.0",
-    "@openmrs/esm-reports-app": "4.4.0"
+    "@openmrs/esm-reports-app": "4.4.0",
+    "@openmrs/esm-stock-management-app": "3.2.1"
   },
   "__comment": "Excluding modules some default modules to ensure we are using the specified versions. Every module here is pinned to a release that requires @openmrs/esm-framework 10.x, which is what coreVersion provides -- keep it that way when bumping any single entry.",
   "frontendModuleExcludes": [
     "@openmrs/esm-help-menu-app",
     "@openmrs/esm-billing-app",
-    "@openmrs/esm-stock-management-app",
     "@openmrs/esm-patient-labs-app"
   ]
 }
