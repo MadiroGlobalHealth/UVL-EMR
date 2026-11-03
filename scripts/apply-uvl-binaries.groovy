@@ -7,9 +7,12 @@
 
     eip-odoo-openmrs/                          the UVL Odoo EIP bridge
     eip-openmrs-orthanc/                       the UVL Orthanc EIP bridge
-    openmrs/frontend/openmrs-esm-patient-attachments/   the patched attachments ESM
     openmrs/modules/                           OpenMRS modules with nowhere to resolve
                                                from (currently orthanctoken)
+
+  The patched patient-attachments ESM (openmrs/frontend/openmrs-esm-patient-attachments/)
+  was dropped with the move to frontend core 11 (#490): it was a core-10 build, and the
+  distro now ships the stock esm-patient-attachments-app pinned in spa-assemble-config.json.
 
   Nothing here is hard-coded to a version. Each directory is applied if it has
   content and skipped if it does not, so adding or dropping an override is a matter
@@ -27,10 +30,9 @@
   - Maven's copy-resources never deletes, so on a build without `mvn clean` whatever
     a previous build put there survives — including UVL jars under their old names.
 
-  Why prepare-package: the parent's 'Rebuild OpenMRS Frontend if necessary' execution
-  empties distro/binaries/openmrs/frontend, the inherited-Ozone copy overwrites
-  distro/binaries, and 'Upgrade UVL OpenMRS to RefApp 3.4.0' deletes *.omod from the
-  modules directory — all three at process-resources. Anything applied earlier is
+  Why prepare-package: the inherited-Ozone copy overwrites distro/binaries, and
+  'Upgrade UVL OpenMRS to RefApp 3.4.0' deletes *.omod from the modules directory —
+  both at process-resources. Anything applied earlier is
   undone.
 
   Why these are committed binaries at all: none of them is published anywhere Maven
@@ -97,23 +99,6 @@ def replaceContents = { String label, File source, File target ->
     } else {
         log.info("No ${bridge} override in ${source}; keeping the inherited bridge")
     }
-}
-
-// The attachments ESM: into the directory `openmrs assemble` created, version suffix
-// and all, because importmap.json and routes.registry.json already name it.
-File attachments = new File(sourceBinaries, 'openmrs/frontend/openmrs-esm-patient-attachments')
-if (overridesIn(attachments)) {
-    File frontend = new File(targetBinaries, 'openmrs/frontend')
-    def assembled = (frontend.listFiles() ?: new File[0]).findAll {
-        it.isDirectory() && it.name.startsWith('openmrs-esm-patient-attachments-app')
-    }
-    if (!assembled) {
-        throw new RuntimeException("${attachments} holds an override but the assembled frontend at " +
-                "${frontend} has no openmrs-esm-patient-attachments-app* directory to apply it to")
-    }
-    assembled.each { replaceContents('the patient-attachments app', attachments, it) }
-} else {
-    log.info("No patient-attachments override in ${attachments}; keeping the assembled app")
 }
 
 // OpenMRS modules: per omod, so an override replaces its own module and leaves the
