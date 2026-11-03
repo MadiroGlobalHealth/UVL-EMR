@@ -1,0 +1,60 @@
+{
+  "name": "@madiro/esm-uvl-imaging-app",
+  "version": "1.0.0",
+  "license": "MPL-2.0",
+  "private": true,
+  "description": "UVL imaging card: opens the patient's radiology studies in the Orthanc viewer from the chart (UVL-EMR #494)",
+  "browser": "dist/madiro-esm-uvl-imaging-app.js",
+  "main": "src/index.ts",
+  "source": true,
+  "scripts": {
+    "start": "openmrs develop",
+    "build": "rspack --mode production",
+    "typescript": "tsc",
+    "test": "cross-env TZ=UTC vitest run"
+  },
+  "browserslist": [
+    "extends browserslist-config-openmrs"
+  ],
+  "keywords": [
+    "openmrs",
+    "uvl",
+    "imaging",
+    "orthanc"
+  ],
+  "dependencies": {
+    "@carbon/react": "^1.83.0"
+  },
+  "peerDependencies": {
+    "@openmrs/esm-framework": "11.x",
+    "dayjs": "1.x",
+    "react": "18.x",
+    "react-dom": "18.x",
+    "react-i18next": "16.x",
+    "rxjs": "6.x"
+  },
+  "devDependencies": {
+    "@openmrs/esm-framework": "11.0.0",
+    "@openmrs/esm-styleguide": "11.0.0",
+    "@testing-library/dom": "^10.1.0",
+    "@testing-library/jest-dom": "^6.4.5",
+    "@testing-library/react": "^15.0.6",
+    "@testing-library/user-event": "^14.5.2",
+    "@types/react": "^18.3.21",
+    "@types/react-dom": "^18.3.0",
+    "cross-env": "^10.1.0",
+    "dayjs": "^1.11.13",
+    "happy-dom": "^20.0.0",
+    "i18next": "^25.0.0",
+    "openmrs": "11.0.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-i18next": "^16.0.0",
+    "react-router-dom": "^6.14.1",
+    "rxjs": "^6.6.7",
+    "single-spa": "^6.0.3",
+    "swr": "^2.2.5",
+    "typescript": "^5.0.0",
+    "vitest": "^4.1.2"
+  }
+}
