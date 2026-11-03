@@ -29,3 +29,5 @@ ea7fd063-3fcd-4065-8551-3ec486b269ca,Edit Pre-operative Record,Able to edit Pre-
 9dc8d82f-95fd-48af-b26b-d7e1ab1d87fb,Edit Gynaecology Ultrasound,Able to edit Gynaecology Ultrasound observations,
 e0d5d37f-e39c-441f-802f-c73bb50886e9,View ANC Consultation,Able to view ANC Consultation observations,
 5415d847-6a1e-4e91-a8c7-9cee4c18b562,Edit ANC Consultation,Able to edit ANC Consultation observations,
+53b2f66a-8158-4e10-8bfa-11547cc59f26,View OrderTemplates,Able to view OrderTemplates,
+96d80220-c06d-4168-9fb9-ac929edd66d2,App: Can generate a Patient Identity Sticker,Allows user to access the patient identifier sticker report.,
