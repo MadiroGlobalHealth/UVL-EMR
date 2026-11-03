@@ -42,7 +42,7 @@
     <metadatamapping.version>2.0.0</metadatamapping.version>
     <openconceptlab.version>3.1.0</openconceptlab.version>
     <attachments.version>4.0.0</attachments.version>
-    <queue.version>3.0.0</queue.version>
+    <queue.version>3.1.1</queue.version>
     <appointments.version>2.1.0-20250318.070530-1</appointments.version>
     <teleconsultation.version>2.1.0-20250318.154145-1</teleconsultation.version>
     <cohort.version>3.7.3</cohort.version>
@@ -59,7 +59,7 @@
     <emrapi.version>3.4.0</emrapi.version>
     <event.version>4.0.0</event.version>
     <bedmanagement.version>6.2.0-20250806.164740-6</bedmanagement.version>
-    <patientdocuments.version>1.0.0-SNAPSHOT</patientdocuments.version>
+    <patientdocuments.version>1.2.0</patientdocuments.version>
 
     <!-- Ozone alpha 13 modules -->
     <oauth2loginVersion>1.5.0</oauth2loginVersion>
@@ -202,6 +202,12 @@
       <groupId>org.openmrs.module</groupId>
       <artifactId>htmlwidgets-omod</artifactId>
       <version>${htmlwidgets.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.openmrs.module</groupId>
+      <artifactId>ordertemplates-omod</artifactId>
+      <version>${ordertemplates.version}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -558,10 +564,13 @@
                   loudly. The bind mount in scripts/docker/docker-compose-override.yml
                   was removed alongside this.
 
-                  To reinstate the patched attachments app, publish the ESM and pin
-                  its version in
-                  distro/configs/openmrs/frontend_assembly/spa-assemble-config.json,
-                  so the frontend assembly carries it like every other ESM.
+                  The patched attachments app was later committed under
+                  distro/binaries and applied by scripts/apply-uvl-binaries.groovy.
+                  That override was dropped with the move to frontend core 11 (#490):
+                  the distro now ships the stock esm-patient-attachments-app pinned in
+                  distro/configs/openmrs/frontend_assembly/spa-assemble-config.json.
+                  To reinstate a patched app, publish the ESM and pin its version
+                  there, so the frontend assembly carries it like every other ESM.
                 -->
 
                 <!--
@@ -623,6 +632,47 @@
               </target>
             </configuration>
           </execution>
+          <execution>
+            <!--
+              UVL's own frontend modules (distro/frontend), handed to the frontend
+              assembly like any published ESM.
+
+              Each module's built dist/ is committed (see its README for how to
+              rebuild it), so this build needs no npm install. The tarball has the
+              npm-pack layout (package/package.json + package/dist) that
+              `openmrs assemble` expects, and spa-assemble-config.json pins the
+              module as "file:<tarball>". assemble then extracts it next to the
+              other ESMs and writes its importmap.json and routes.registry.json
+              entries itself, so nothing post-processes those files.
+
+              assemble resolves "file:" against its working directory, which is
+              wherever Maven was started; the relative names are therefore anchored
+              here to the directory the tarballs are written to. Must run in
+              process-resources after "Copy spa-assemble-config.json"
+              (generate-resources) and before "Rebuild OpenMRS Frontend if
+              necessary", like the core-version edit above.
+            -->
+            <id>Package the UVL frontend modules</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
+                <property name="uvl.frontend.modules" value="${project.build.directory}/uvl-frontend-modules" />
+                <mkdir dir="${uvl.frontend.modules}" />
+                <tar destfile="${uvl.frontend.modules}/madiro-esm-uvl-imaging-app.tgz" compression="gzip" longfile="posix">
+                  <tarfileset dir="${project.basedir}/frontend/esm-uvl-imaging-app" prefix="package">
+                    <include name="package.json" />
+                    <include name="dist/**" />
+                    <exclude name="dist/**/*.map" />
+                  </tarfileset>
+                </tar>
+                <replaceregexp file="${project.build.directory}/openmrs_frontend/spa-assemble-config.json"
+                               match="&quot;file:(?!/)" replace="&quot;file:${uvl.frontend.modules}/" flags="g" />
+              </target>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
       <plugin>
@@ -632,8 +682,8 @@
         <executions>
           <execution>
             <!--
-              Applies distro/binaries over the build output: the two EIP bridges, the
-              patched patient-attachments ESM and the custom omods. See the script for
+              Applies distro/binaries over the build output: the two EIP bridges and
+              the custom omods. See the script for
               why each target is emptied before the override is copied in, and why this
               cannot run before prepare-package.
             -->
