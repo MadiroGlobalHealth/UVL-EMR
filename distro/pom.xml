@@ -564,10 +564,13 @@
                   loudly. The bind mount in scripts/docker/docker-compose-override.yml
                   was removed alongside this.
 
-                  To reinstate the patched attachments app, publish the ESM and pin
-                  its version in
-                  distro/configs/openmrs/frontend_assembly/spa-assemble-config.json,
-                  so the frontend assembly carries it like every other ESM.
+                  The patched attachments app was later committed under
+                  distro/binaries and applied by scripts/apply-uvl-binaries.groovy.
+                  That override was dropped with the move to frontend core 11 (#490):
+                  the distro now ships the stock esm-patient-attachments-app pinned in
+                  distro/configs/openmrs/frontend_assembly/spa-assemble-config.json.
+                  To reinstate a patched app, publish the ESM and pin its version
+                  there, so the frontend assembly carries it like every other ESM.
                 -->
 
                 <!--
@@ -638,8 +641,8 @@
         <executions>
           <execution>
             <!--
-              Applies distro/binaries over the build output: the two EIP bridges, the
-              patched patient-attachments ESM and the custom omods. See the script for
+              Applies distro/binaries over the build output: the two EIP bridges and
+              the custom omods. See the script for
               why each target is emptied before the override is copied in, and why this
               cannot run before prepare-package.
             -->
