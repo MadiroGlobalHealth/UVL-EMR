@@ -1,0 +1,8 @@
+<config>
+    <globalProperties>
+        <globalProperty>
+            <property>attachments.allowedFileExtensions</property>
+            <value>pdf,jpg,jpeg,png</value>
+        </globalProperty>
+    </globalProperties>
+</config>
