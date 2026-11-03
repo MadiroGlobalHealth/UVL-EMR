@@ -202,7 +202,8 @@ services:
       # ${ORTHANC_ATTACHMENTS_PATCH_PATH}, which distro/pom.xml set to a sibling
       # checkout of openmrs-esm-patient-chart. That path exists on no other machine,
       # and since the mount target is a directory Docker silently creates an empty
-      # one — serving an EMPTY attachments app instead of failing. To reinstate it,
+      # one — serving an EMPTY attachments app instead of failing. Since #490 the
+      # stock esm-patient-attachments-app is used; to reinstate a patched one,
       # publish the ESM and pin its version in spa-assemble-config.json.
 
   ohif:
