@@ -42,9 +42,10 @@
     "@openmrs/esm-ward-app": "12.1.1",
     "@openmrs/esm-bed-management-app": "12.1.1",
     "@openmrs/esm-reports-app": "4.6.1",
-    "@openmrs/esm-stock-management-app": "3.3.1"
+    "@openmrs/esm-stock-management-app": "3.3.1",
+    "@madiro/esm-uvl-imaging-app": "file:madiro-esm-uvl-imaging-app.tgz"
   },
-  "__comment": "Excluding modules some default modules to ensure we are using the specified versions. Every module here is pinned to a release that requires @openmrs/esm-framework 11.x, which is what coreVersion provides -- keep it that way when bumping any single entry. The patient-chart monorepo apps (including esm-form-engine-app) share one build number and move together; 13.0.2-pre.12863 is the first build that bundles esm-form-engine-lib with the fix for duplicated obs on re-save (#490).",
+  "__comment": "Excluding modules some default modules to ensure we are using the specified versions. Every module here is pinned to a release that requires @openmrs/esm-framework 11.x, which is what coreVersion provides -- keep it that way when bumping any single entry. The patient-chart monorepo apps (including esm-form-engine-app) share one build number and move together; 13.0.2-pre.12863 is the first build that bundles esm-form-engine-lib with the fix for duplicated obs on re-save (#490). \"file:\" entries are UVL's own modules from distro/frontend: distro/pom.xml packs each into target/uvl-frontend-modules and anchors the name there (#494).",
   "frontendModuleExcludes": [
     "@openmrs/esm-help-menu-app",
     "@openmrs/esm-billing-app",

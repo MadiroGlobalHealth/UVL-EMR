@@ -1,0 +1,11 @@
+{
+  "couldNotOpenViewer": "Impossible d'ouvrir le visualiseur DICOM : {{error}}",
+  "date": "Date",
+  "description": "Description",
+  "dicomViewerError": "Erreur du visualiseur DICOM",
+  "imaging": "Imagerie",
+  "noImagingStudies": "Aucun examen radiologique pour ce patient",
+  "openInViewer": "Ouvrir dans le visualiseur",
+  "radiologyStudy": "Examen radiologique",
+  "studyIdNotFound": "Impossible de lire l'identifiant de l'examen dans cette pièce jointe."
+}

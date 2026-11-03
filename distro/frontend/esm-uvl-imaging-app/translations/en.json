@@ -1,0 +1,11 @@
+{
+  "couldNotOpenViewer": "Could not open the DICOM viewer: {{error}}",
+  "date": "Date",
+  "description": "Description",
+  "dicomViewerError": "DICOM Viewer Error",
+  "imaging": "Imaging",
+  "noImagingStudies": "There are no radiology studies for this patient",
+  "openInViewer": "Open in viewer",
+  "radiologyStudy": "Radiology study",
+  "studyIdNotFound": "Could not extract the study id from this attachment."
+}

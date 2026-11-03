@@ -632,6 +632,47 @@
               </target>
             </configuration>
           </execution>
+          <execution>
+            <!--
+              UVL's own frontend modules (distro/frontend), handed to the frontend
+              assembly like any published ESM.
+
+              Each module's built dist/ is committed (see its README for how to
+              rebuild it), so this build needs no npm install. The tarball has the
+              npm-pack layout (package/package.json + package/dist) that
+              `openmrs assemble` expects, and spa-assemble-config.json pins the
+              module as "file:<tarball>". assemble then extracts it next to the
+              other ESMs and writes its importmap.json and routes.registry.json
+              entries itself, so nothing post-processes those files.
+
+              assemble resolves "file:" against its working directory, which is
+              wherever Maven was started; the relative names are therefore anchored
+              here to the directory the tarballs are written to. Must run in
+              process-resources after "Copy spa-assemble-config.json"
+              (generate-resources) and before "Rebuild OpenMRS Frontend if
+              necessary", like the core-version edit above.
+            -->
+            <id>Package the UVL frontend modules</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
+                <property name="uvl.frontend.modules" value="${project.build.directory}/uvl-frontend-modules" />
+                <mkdir dir="${uvl.frontend.modules}" />
+                <tar destfile="${uvl.frontend.modules}/madiro-esm-uvl-imaging-app.tgz" compression="gzip" longfile="posix">
+                  <tarfileset dir="${project.basedir}/frontend/esm-uvl-imaging-app" prefix="package">
+                    <include name="package.json" />
+                    <include name="dist/**" />
+                    <exclude name="dist/**/*.map" />
+                  </tarfileset>
+                </tar>
+                <replaceregexp file="${project.build.directory}/openmrs_frontend/spa-assemble-config.json"
+                               match="&quot;file:(?!/)" replace="&quot;file:${uvl.frontend.modules}/" flags="g" />
+              </target>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
       <plugin>
