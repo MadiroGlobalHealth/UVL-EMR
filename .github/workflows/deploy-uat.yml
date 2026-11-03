@@ -97,7 +97,8 @@ jobs:
             o=$(curl -s -o /dev/null -m 15 -w '%{http_code}' "https://$UAT_DOMAIN/openmrs/health/started" || true)
             d=$(curl -s -o /dev/null -m 15 -w '%{http_code}' "https://odoo.$UAT_DOMAIN/web/login" || true)
             echo "try $i: openmrs=$o odoo=$d"
-            [ "$o" = 200 ] && [ "$d" = 200 ] && exit 0
+            # With SSO, /web/login redirects to Keycloak (303).
+            [ "$o" = 200 ] && { [ "$d" = 200 ] || [ "$d" = 303 ]; } && exit 0
             sleep 20
           done
           echo "::error::UAT did not become healthy within 20 minutes"
