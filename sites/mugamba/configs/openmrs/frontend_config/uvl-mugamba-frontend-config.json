@@ -357,6 +357,9 @@
   "@openmrs/esm-patient-search-app": {
     "Display conditions": {
       "privileges": ["Get Patients"]
+    },
+    "search": {
+      "showRecentlySearchedPatients": false
     }
   },
   "@openmrs/esm-patient-programs-app": {
