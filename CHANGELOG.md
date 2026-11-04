@@ -300,6 +300,36 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   - Data saved with Release 1 keeps its concepts; questions that changed type (for example the
     adrenaline dose, now a number) use new concepts. The new concepts come with the uvl-forms
     20261104 OCL export, which replaces 20261102. (#496)
+- **The partograph is drawn like the Ministry's MSPLS partogram.** On the patient summary,
+  "Partogramme" replaces the generic graph. It is shown to roles with "View Partograph Reading"
+  only, and only for a patient who has partograph readings. Its layout is the MSPLS partogram,
+  the "Accouchement (modèle MSPLS)" model the clinic uses on paper and in OpenClinic. The alert
+  and action lines are the WHO rule.
+  - **Time axis:** marked 00 to 12, with the clock time under each hour and the date where it
+    changes. Hour 00 is the first reading of 4 cm or more, where the alert line starts. Each
+    reading sits at its real time, and earlier (latent-phase) readings sit before 00.
+  - **Panels, top to bottom, each with its legend:**
+    - fetal heart rate, 80–200, with reference lines at 100 and 180 /min;
+    - liquor and moulding, as codes (I, C, M, B; 0, +, ++, +++);
+    - medications, numbered, with the full text listed under the chart;
+    - cervical dilatation (×, 0–10 cm) and descent (○), with the **alert line** (4 cm at 00 to
+      10 cm at 06) and the **action line** (4 cm at 04 to 10 cm at 10);
+    - contractions per 10 minutes, 0–5, shaded by duration;
+    - oxytocin, U/L and drops/min;
+    - pulse, 40–180;
+    - blood pressure, 40–200;
+    - temperature, 35–43 °C.
+  - When the first reading of 4 cm or more is above 4 cm, it is placed on the alert line (WHO
+    rule). A first reading at 6 cm, for example, is at hour 02.
+  - The codes, medications and oxytocin are written in half-hour cells, as on the paper sheet.
+    Readings in the same half hour (14:00 and 14:25) are stacked one per line, so `++` and `+++`
+    stay apart.
+  - Every label is in French.
+  - Only the current labour is drawn: a gap of more than 24 hours between readings starts a new
+    one.
+  - The generic partograph table ("Partogramme : liquide amniotique, modelage, contractions,
+    médicaments") is removed. It showed even for patients without readings, and the chart now
+    shows what it did. (#498, #264)
 - **Antenatal care (CPN) has its own place, "Consultations prénatales (CPN)".** Pregnancy
   follow-up is outpatient care, so it is a service of its own, not under Hospitalisation (IPD).
   Staff can choose it at sign-in and as the visit location, book appointments there and queue
@@ -309,6 +339,18 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   comes to give birth, stay with the delivery room. (#501)
 
 ### Added
+- UVL frontend module `@madiro/esm-uvl-partograph-app` 1.0.1 (`distro/frontend/esm-uvl-partograph-app`,
+  `dist/` committed), packed by `distro/pom.xml` and pinned in `spa-assemble-config.json` as
+  `file:madiro-esm-uvl-partograph-app.tgz`, like the imaging module. Extension
+  `uvl-partograph-chart-widget`, added to `patient-chart-summary-dashboard-slot` by the site config
+  with the display condition "View Partograph Reading". It replaces
+  `obs-by-encounter-widget#partograph-graph` and `obs-table-horizontal-widget#partograph-table`,
+  whose configuration and `@openmrs/esm-generic-patient-widgets-app` French overrides are removed.
+  The encounter type, concepts and liquor/moulding code mapping are in the site config under
+  `@madiro/uvl-partograph`, a namespace of their own rather than the module name, so core 11 does
+  not log "Unknown config key" before the module has loaded; the module ships no UUID. The chart is plain SVG.
+  The layout follows the MSPLS partogram (OpenClinic "Accouchement (modèle MSPLS)"); the
+  hour-00 and alert/action-line rules are in the module README. (#498)
 - OpenMRS role and Keycloak `openmrs` client role **Central Pharmacist** (inherits `Pharmacist`
   and `Inventory Manager`), and the Keycloak `openmrs` client role **Inventory Administrator** for
   whoever manages stock user role scopes. The build now fails on a Keycloak `openmrs` client role
@@ -450,6 +492,18 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   that would overwrite prices or a product row with an empty price. (#439)
 
 ### Fixed
+- **Cervical dilatation takes half centimetres (e.g. 4.5 cm)** in the partograph reading, the
+  maternity consultation and the childbirth record. The concept now allows decimals in OCL
+  (uvl-ciel 20261104; the uvl-forms 20261104-2 export replaces 20261104) and the three fields no
+  longer refuse them. The other partograph readings (fetal heart rate, contractions, duration,
+  oxytocin drops, pulse, blood pressure, descent in fifths) are counts or whole units and stay
+  whole numbers. (#488)
+- **A maternity form can no longer be saved for a male patient.** The seven maternity forms show
+  only a "not applicable" note to a male patient, but Save still created an empty encounter that
+  counted in encounter-based reports. The page now says "Ce formulaire concerne uniquement les
+  patientes : ne pas enregistrer", and Save is refused with the same sentence under the field.
+  Female patients are not affected. The build
+  checks both faults on every form (`scripts/check-ampath-forms.groovy`). (#489)
 - **On a fresh database, eight roles were never created:** Print Patient Label Sticker, Help Nurse,
   Nurse, Doctor, Midwife, Ophtalmologist, Dentist and Anesthesist. `roles_mugamba.csv` gives two of them
   `App: Can View Patient Identifier Sticker Report`, a privilege nothing in the distribution defined,
