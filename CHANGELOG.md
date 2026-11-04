@@ -485,6 +485,18 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   that would overwrite prices or a product row with an empty price. (#439)
 
 ### Fixed
+- **Cervical dilatation takes half centimetres (e.g. 4.5 cm)** in the partograph reading, the
+  maternity consultation and the childbirth record. The concept now allows decimals in OCL
+  (uvl-ciel 20261104; the uvl-forms 20261104-2 export replaces 20261104) and the three fields no
+  longer refuse them. The other partograph readings (fetal heart rate, contractions, duration,
+  oxytocin drops, pulse, blood pressure, descent in fifths) are counts or whole units and stay
+  whole numbers. (#488)
+- **A maternity form can no longer be saved for a male patient.** The seven maternity forms show
+  only a "not applicable" note to a male patient, but Save still created an empty encounter that
+  counted in encounter-based reports. The page now says "Ce formulaire concerne uniquement les
+  patientes : ne pas enregistrer", and Save is refused with the same sentence under the field.
+  Female patients are not affected. The build
+  checks both faults on every form (`scripts/check-ampath-forms.groovy`). (#489)
 - **On a fresh database, eight roles were never created:** Print Patient Label Sticker, Help Nurse,
   Nurse, Doctor, Midwife, Ophtalmologist, Dentist and Anesthesist. `roles_mugamba.csv` gives two of them
   `App: Can View Patient Identifier Sticker Report`, a privilege nothing in the distribution defined,

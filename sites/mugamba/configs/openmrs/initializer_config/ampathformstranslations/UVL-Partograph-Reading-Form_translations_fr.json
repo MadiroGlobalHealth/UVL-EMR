@@ -38,6 +38,7 @@
     "Systolic blood pressure (mmHg)": "Tension artérielle systolique (mmHg)",
     "Temperature (°C)": "Température (°C)",
     "Not applicable": "Non applicable",
-    "This form is for female patients only.": "Ce formulaire concerne uniquement les patientes."
+    "This form is for female patients only.": "Ce formulaire concerne uniquement les patientes.",
+    "Ce formulaire concerne uniquement les patientes : ne pas enregistrer. / This form is for female patients only: do not save.": "Ce formulaire concerne uniquement les patientes : ne pas enregistrer. / This form is for female patients only: do not save."
   }
 }

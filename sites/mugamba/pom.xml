@@ -313,6 +313,23 @@ Fails the build on a Keycloak openmrs client role or an inherited role that
               </scripts>
             </configuration>
           </execution>
+          <execution>
+            <!--
+              Fails the build on a form question that accepts decimals its concept refuses
+              (#488), or a male-only "not applicable" page that can still be saved (#489).
+              See the script.
+            -->
+            <id>Check the O3 forms</id>
+            <goals>
+              <goal>execute</goal>
+            </goals>
+            <phase>prepare-package</phase>
+            <configuration>
+              <scripts>
+                <script>file://${project.basedir}/../../scripts/check-ampath-forms.groovy</script>
+              </scripts>
+            </configuration>
+          </execution>
         </executions>
         <dependencies>
           <!-- Same Groovy line as the bundled-docker profile's groovy-templates. -->

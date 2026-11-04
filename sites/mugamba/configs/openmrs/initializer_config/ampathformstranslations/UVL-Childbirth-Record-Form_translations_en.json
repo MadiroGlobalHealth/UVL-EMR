@@ -216,6 +216,7 @@
     "Yes": "Yes",
     "Secondary Diagnoses": "Secondary Diagnoses",
     "Not applicable": "Not applicable",
-    "This form is for female patients only.": "This form is for female patients only."
+    "This form is for female patients only.": "This form is for female patients only.",
+    "Ce formulaire concerne uniquement les patientes : ne pas enregistrer. / This form is for female patients only: do not save.": "Ce formulaire concerne uniquement les patientes : ne pas enregistrer. / This form is for female patients only: do not save."
   }
 }
