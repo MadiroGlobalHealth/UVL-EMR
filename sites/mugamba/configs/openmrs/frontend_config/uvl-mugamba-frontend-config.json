@@ -123,7 +123,17 @@
         "required": false
       }
     ],
-    "restrictByVisitLocationTag": true
+    "restrictByVisitLocationTag": true,
+    "Translation overrides": {
+      "fr": {
+        "completedForms": "Formulaires remplis",
+        "collapseEncounter": "Réduire la consultation",
+        "expandEncounter": "Développer la consultation",
+        "printEncounter": "Imprimer cette consultation",
+        "printSelected": "Imprimer la sélection",
+        "recordedVia": "Enregistré via {{formName}}"
+      }
+    }
   },
   "@openmrs/esm-primary-navigation-app": {
     "externalRefLinks": [
@@ -400,6 +410,36 @@
   "@openmrs/esm-patient-forms-app": {
     "Display conditions": {
       "privileges": ["Get Forms"]
+    },
+    "Translation overrides": {
+      "fr": {
+        "backToClinicalForms": "Retour aux formulaires cliniques"
+      }
+    }
+  },
+  "@openmrs/esm-form-engine-app": {
+    "Translation overrides": {
+      "fr": {
+        "submittedForm": "Formulaire enregistré",
+        "submittedFormDescription": "Formulaire enregistré avec succès",
+        "updatedRecord": "Dossier mis à jour",
+        "updatedRecordDescription": "La consultation du patient a été mise à jour",
+        "errorTitle": "Une erreur s'est produite dans ce formulaire",
+        "errorProcessingFormSubmission": "Erreur lors du traitement de l'envoi du formulaire",
+        "errorLoadingFormDependencies": "Impossible de charger les données du formulaire",
+        "retryLoadingFormDependencies": "Les données nécessaires au formulaire n'ont pas pu être chargées. Réessayez pour compléter et enregistrer ce formulaire.",
+        "retry": "Réessayer",
+        "tryAgainMessage": "Essayez d'ouvrir un autre formulaire depuis",
+        "or": "ou",
+        "closeThisPanel": "Fermer ce panneau",
+        "noPatientContext": "Aucun patient sélectionné",
+        "noPatientContextSubtitle": "Ouvrez le dossier d'un patient pour utiliser ce bouton.",
+        "errorLaunchingWorkspace": "Erreur lors de l'ouverture de l'espace de travail",
+        "errorLaunchingWorkspaceSubtitle": "Une erreur inattendue s'est produite lors de l'ouverture de l'espace de travail.",
+        "errorMarkingAsDeceased": "Erreur lors de l'enregistrement du décès du patient",
+        "personAttributesSaved": "Attribut(s) de la personne enregistré(s) avec succès",
+        "errorSavingPersonAttributes": "Erreur lors de l'enregistrement des attributs de la personne"
+      }
     }
   },
   "@openmrs/esm-patient-notes-app": {
