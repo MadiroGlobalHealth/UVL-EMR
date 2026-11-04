@@ -268,6 +268,38 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   - Questions already in the Childbirth Record use the same concepts, so their data stays
     comparable. The Childbirth Record form is unchanged. The new concepts come with the
     uvl-forms 20261102 OCL export, which replaces 20261027. (#485)
+- **The maternity forms follow the forms metadata sheet, Release 1.1, and a fifth one is added.**
+  - "UVL 24-Hour Surveillance Form" (Surveillance des 24 heures) is new, for midwives and doctors
+    only, with its own encounter. One form is filled at each time point (30 min, 1 h, 2 h, 6 h,
+    12 h, 24 h), and the time point is required. It has a block per newborn, up to 3, shown by
+    the number of newborns (status, term and
+    weight, sex, weight, size, APGAR at birth, resuscitation, breathing, pulse, temperature,
+    malformation, urine, stool, breastfeeding, umbilical cord, skin colour) and the mother's
+    monitoring: complications, blood loss in mL, contracted uterus, breathing, pulse, blood
+    pressure as systolic and diastolic (mmHg), temperature, urine in mL and treatment.
+  - Delivery Registration: the profession of the person who delivered, the number of newborns
+    (required, 1 to 3), and, in each newborn's block (one block per newborn, up to 3), the type of stillbirth (shown for a stillbirth only), the
+    intubation time, the adrenaline dose in mg, where the newborn goes, and the APGAR at 1, 5
+    and 10 minutes. Each APGAR item scores 0, 1 or 2 and the total is calculated. The 10-minute
+    APGAR appears only when the 5 items at 5 minutes are filled and total less than 7. The APGAR
+    is hidden for a stillbirth.
+  - Maternity Consultation: labour start and the mother-child health record; the contact
+    person's nationality and relationship; myomectomy and caesarean section, medical history,
+    pregnancy particularities and current symptoms as one Yes/No question each instead of tick
+    lists (the caesarean date and indication appear only when Caesarean section is Yes); the IPTp
+    dose, VAT and PMTCT as asked; the pelvis, fetal heart sounds and cervix length, position and
+    consistency as choices.
+  - ANC Consultation: smoking, alcohol, bed net, iron and folic acid, albendazole, PMTCT,
+    pregnancy problem and GBV screening are required; gravidity and parity are required; the VAT
+    dose and the IPTp dose are choices.
+  - Gynaecology Ultrasound: up to 3 fetus blocks. The second shows for a multiple pregnancy; the
+    third when the number of fetuses (asked for a multiple pregnancy) is 3.
+  - The newborn and fetus blocks are fixed blocks, not "add another" groups: in edit mode the
+    form engine reopened only the first block of a repeating group (UAT, #496). A block hidden
+    by a lower count is not saved, and its saved values are voided.
+  - Data saved with Release 1 keeps its concepts; questions that changed type (for example the
+    adrenaline dose, now a number) use new concepts. The new concepts come with the uvl-forms
+    20261104 OCL export, which replaces 20261102. (#496)
 
 ### Added
 - OpenMRS role and Keycloak `openmrs` client role **Central Pharmacist** (inherits `Pharmacist`

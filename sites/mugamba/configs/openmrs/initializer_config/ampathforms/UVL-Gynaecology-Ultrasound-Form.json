@@ -1,7 +1,7 @@
 {
   "uuid": "f1d936c3-9e5e-483a-98f8-4476e5abdd25",
   "name": "UVL Gynaecology Ultrasound Form",
-  "description": "UVL gynaecology / obstetric ultrasound examination (forms metadata Release 1, F15)",
+  "description": "UVL gynaecology / obstetric ultrasound examination (forms metadata Release 1.1, F15)",
   "version": "1",
   "published": true,
   "retired": false,
@@ -79,7 +79,7 @@
               }
             },
             {
-              "label": "Ultrasound Date",
+              "label": "Date of Ultrasound",
               "type": "obs",
               "id": "ultrasoundDate",
               "questionOptions": {
@@ -88,7 +88,7 @@
               }
             },
             {
-              "label": "Gestational Age by Ultrasound (weeks)",
+              "label": "Theoretical Term of Pregnancy (weeks)",
               "type": "obs",
               "id": "ultrasoundGestationalAge",
               "questionOptions": {
@@ -108,15 +108,15 @@
                 "answers": [
                   {
                     "concept": "f0b8f3cc-bf30-4b90-850e-eec5e640c8ac",
-                    "label": "Q1"
+                    "label": "Trimester 1"
                   },
                   {
                     "concept": "3aa0e609-4c94-44a7-b119-32969dbb30b3",
-                    "label": "Q2"
+                    "label": "Trimester 2"
                   },
                   {
                     "concept": "707e858d-d8c4-4b01-91a2-104046cf3e08",
-                    "label": "Q3"
+                    "label": "Trimester 3"
                   }
                 ]
               }
@@ -145,6 +145,21 @@
                   }
                 ]
               }
+            },
+            {
+              "label": "Number of Fetuses",
+              "type": "obs",
+              "id": "fetusCount",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "366102d3-c2f2-49ee-ba19-3de1924e2fca",
+                "min": "2",
+                "max": "3",
+                "disallowDecimals": true
+              },
+              "hide": {
+                "hideWhenExpression": "pregnancyType !== 'be80699e-1ab2-47b4-8b98-a11efc7cb24d'"
+              }
             }
           ]
         },
@@ -153,11 +168,11 @@
           "isExpanded": "true",
           "questions": [
             {
-              "label": "Fetus / Embryo",
+              "label": "Fetus 1",
               "type": "obsGroup",
               "id": "fetus",
               "questionOptions": {
-                "rendering": "repeating",
+                "rendering": "group",
                 "concept": "fea115f0-a966-4737-9bba-1ff0a00587a7"
               },
               "questions": [
@@ -216,6 +231,160 @@
                   }
                 }
               ]
+            },
+            {
+              "label": "Fetus 2",
+              "type": "obsGroup",
+              "id": "fetus_1",
+              "questionOptions": {
+                "rendering": "group",
+                "concept": "fea115f0-a966-4737-9bba-1ff0a00587a7"
+              },
+              "questions": [
+                {
+                  "label": "Fetal Status",
+                  "type": "obs",
+                  "id": "fetusState_1",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "acb8f573-3f90-4eed-ae00-ca90ed64c9b0",
+                    "answers": [
+                      {
+                        "concept": "9a2dcdce-a779-4578-8201-4152a3e746c0",
+                        "label": "Alive"
+                      },
+                      {
+                        "concept": "ae30027b-e84c-425e-82bc-f55411630a37",
+                        "label": "Active"
+                      },
+                      {
+                        "concept": "80e3e98b-65e7-482b-8487-f20d8609796f",
+                        "label": "Intrauterine fetal death (IUFD)"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "pregnancyType !== 'be80699e-1ab2-47b4-8b98-a11efc7cb24d'"
+                  }
+                },
+                {
+                  "label": "Sex",
+                  "type": "obs",
+                  "id": "fetusSex_1",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "59bb5013-c82b-4755-b348-4d14793e6174",
+                    "answers": [
+                      {
+                        "concept": "adfdcfe7-f2e9-4eb6-9e49-5b3c795c5870",
+                        "label": "Male"
+                      },
+                      {
+                        "concept": "d5d86c99-dacc-478e-b2b3-21ccb98a0476",
+                        "label": "Female"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "pregnancyType !== 'be80699e-1ab2-47b4-8b98-a11efc7cb24d'"
+                  }
+                },
+                {
+                  "label": "Estimated Fetal Weight (g)",
+                  "type": "obs",
+                  "id": "fetusWeight_1",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "2cc1d9a4-d743-462b-b389-45331625318f",
+                    "min": "0",
+                    "max": "7000",
+                    "disallowDecimals": true
+                  },
+                  "hide": {
+                    "hideWhenExpression": "pregnancyType !== 'be80699e-1ab2-47b4-8b98-a11efc7cb24d'"
+                  }
+                }
+              ],
+              "hide": {
+                "hideWhenExpression": "pregnancyType !== 'be80699e-1ab2-47b4-8b98-a11efc7cb24d'"
+              }
+            },
+            {
+              "label": "Fetus 3",
+              "type": "obsGroup",
+              "id": "fetus_2",
+              "questionOptions": {
+                "rendering": "group",
+                "concept": "fea115f0-a966-4737-9bba-1ff0a00587a7"
+              },
+              "questions": [
+                {
+                  "label": "Fetal Status",
+                  "type": "obs",
+                  "id": "fetusState_2",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "acb8f573-3f90-4eed-ae00-ca90ed64c9b0",
+                    "answers": [
+                      {
+                        "concept": "9a2dcdce-a779-4578-8201-4152a3e746c0",
+                        "label": "Alive"
+                      },
+                      {
+                        "concept": "ae30027b-e84c-425e-82bc-f55411630a37",
+                        "label": "Active"
+                      },
+                      {
+                        "concept": "80e3e98b-65e7-482b-8487-f20d8609796f",
+                        "label": "Intrauterine fetal death (IUFD)"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "pregnancyType !== 'be80699e-1ab2-47b4-8b98-a11efc7cb24d' || isEmpty(fetusCount) || fetusCount < 3"
+                  }
+                },
+                {
+                  "label": "Sex",
+                  "type": "obs",
+                  "id": "fetusSex_2",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "59bb5013-c82b-4755-b348-4d14793e6174",
+                    "answers": [
+                      {
+                        "concept": "adfdcfe7-f2e9-4eb6-9e49-5b3c795c5870",
+                        "label": "Male"
+                      },
+                      {
+                        "concept": "d5d86c99-dacc-478e-b2b3-21ccb98a0476",
+                        "label": "Female"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "pregnancyType !== 'be80699e-1ab2-47b4-8b98-a11efc7cb24d' || isEmpty(fetusCount) || fetusCount < 3"
+                  }
+                },
+                {
+                  "label": "Estimated Fetal Weight (g)",
+                  "type": "obs",
+                  "id": "fetusWeight_2",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "2cc1d9a4-d743-462b-b389-45331625318f",
+                    "min": "0",
+                    "max": "7000",
+                    "disallowDecimals": true
+                  },
+                  "hide": {
+                    "hideWhenExpression": "pregnancyType !== 'be80699e-1ab2-47b4-8b98-a11efc7cb24d' || isEmpty(fetusCount) || fetusCount < 3"
+                  }
+                }
+              ],
+              "hide": {
+                "hideWhenExpression": "pregnancyType !== 'be80699e-1ab2-47b4-8b98-a11efc7cb24d' || isEmpty(fetusCount) || fetusCount < 3"
+              }
             }
           ]
         },
@@ -224,7 +393,7 @@
           "isExpanded": "true",
           "questions": [
             {
-              "label": "Presentation",
+              "label": "Head Presentation",
               "type": "obs",
               "id": "presentation",
               "questionOptions": {
@@ -293,7 +462,7 @@
               }
             },
             {
-              "label": "Notes",
+              "label": "Observation",
               "type": "obs",
               "id": "ultrasoundNotes",
               "questionOptions": {

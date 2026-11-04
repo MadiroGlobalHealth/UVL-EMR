@@ -1,7 +1,7 @@
 {
   "uuid": "1975634a-aa21-4ae9-81bf-89b5903bd8af",
   "name": "UVL Delivery Registration Form",
-  "description": "UVL delivery registration, filled at delivery (forms metadata Release 1, F14)",
+  "description": "UVL delivery registration, filled at delivery (forms metadata Release 1.1, F14)",
   "version": "1",
   "published": true,
   "retired": false,
@@ -49,6 +49,33 @@
               "required": true,
               "questionOptions": {
                 "rendering": "ui-select-extended"
+              }
+            },
+            {
+              "label": "Performed By (Profession)",
+              "type": "obs",
+              "id": "deliveryPerformedByRole",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "0c26bb7d-11e0-4d5b-9238-b645f924f29d",
+                "answers": [
+                  {
+                    "concept": "31c7d379-1191-4823-a970-fdf665792362",
+                    "label": "Nurse"
+                  },
+                  {
+                    "concept": "331be736-309d-4e28-939f-efbd317ba431",
+                    "label": "Doctor"
+                  },
+                  {
+                    "concept": "96e75bb2-8f26-4a10-99f8-7af041672b62",
+                    "label": "Midwife"
+                  },
+                  {
+                    "concept": "b5c4b807-d3de-40cd-aae9-178df9b40535",
+                    "label": "Other"
+                  }
+                ]
               }
             },
             {
@@ -179,15 +206,28 @@
           ]
         },
         {
-          "label": "Newborn(s)",
+          "label": "Newborn Details and APGAR",
           "isExpanded": "true",
           "questions": [
             {
-              "label": "Newborn",
+              "label": "Number of Newborns",
+              "type": "obs",
+              "id": "newbornCount",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "40f8524b-3951-47e0-a0ce-203a14f16440",
+                "min": "1",
+                "max": "3",
+                "disallowDecimals": true
+              },
+              "required": true
+            },
+            {
+              "label": "Newborn 1",
               "type": "obsGroup",
               "id": "newborn",
               "questionOptions": {
-                "rendering": "repeating",
+                "rendering": "group",
                 "concept": "ac11ec86-844a-496f-9726-a39f0a7b47a5"
               },
               "questions": [
@@ -229,13 +269,35 @@
                     "answers": [
                       {
                         "concept": "4056a982-6a2d-4062-9514-efcf4e66dd0a",
-                        "label": "Live birth"
+                        "label": "Born alive"
                       },
                       {
                         "concept": "63f4b85c-de5a-48e9-a9a5-bf2656c10125",
                         "label": "Stillbirth"
                       }
                     ]
+                  }
+                },
+                {
+                  "label": "Stillbirth Type",
+                  "type": "obs",
+                  "id": "nbStillbirthType",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "52325f44-b6dd-470b-a672-97fefbd119e1",
+                    "answers": [
+                      {
+                        "concept": "8312584c-d0b7-404e-b575-9b93fbe09736",
+                        "label": "Fresh"
+                      },
+                      {
+                        "concept": "f5cee4c8-2f54-43ff-8169-c7d64223a4ea",
+                        "label": "Macerated"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "nbStatus !== '63f4b85c-de5a-48e9-a9a5-bf2656c10125'"
                   }
                 },
                 {
@@ -273,34 +335,1767 @@
                   }
                 },
                 {
-                  "label": "Resuscitation: Intubation",
+                  "label": "Intubation (time)",
                   "type": "obs",
-                  "id": "nbIntubation",
+                  "id": "nbIntubationTime",
+                  "questionOptions": {
+                    "rendering": "datetime",
+                    "concept": "6551bb19-9430-42d7-a878-73195ed256f8"
+                  }
+                },
+                {
+                  "label": "Adrenaline Dose (mg)",
+                  "type": "obs",
+                  "id": "nbAdrenalineDose",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "bd619dea-1d0c-4812-bf34-23bded19460a",
+                    "min": "0",
+                    "max": "10"
+                  }
+                },
+                {
+                  "label": "Destination of the Newborn",
+                  "type": "obs",
+                  "id": "nbDestination",
                   "questionOptions": {
                     "rendering": "radio",
-                    "concept": "0722acc5-9c9f-4a34-80c8-31e7afcaf325",
+                    "concept": "09472798-dc1b-4d5c-9451-38d4100bed19",
                     "answers": [
                       {
-                        "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e",
-                        "label": "Yes"
+                        "concept": "554993c3-d261-4b50-9dcd-b370dd6f7602",
+                        "label": "Incubator"
                       },
                       {
-                        "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725",
-                        "label": "No"
+                        "concept": "9891d315-790e-4d62-a546-14a2d5e296b1",
+                        "label": "Mother's room"
+                      },
+                      {
+                        "concept": "1c47742a-4eeb-46a8-94c5-70fdb0e85e7d",
+                        "label": "Transfer to another hospital"
+                      },
+                      {
+                        "concept": "b5c4b807-d3de-40cd-aae9-178df9b40535",
+                        "label": "Other"
                       }
                     ]
                   }
                 },
                 {
-                  "label": "Adrenaline Dose",
+                  "label": "APGAR 1 min: Heart Rate",
                   "type": "obs",
-                  "id": "nbAdrenalineDose",
+                  "id": "apgar1Hr",
                   "questionOptions": {
-                    "rendering": "text",
-                    "concept": "af44918f-bbb4-4dcb-9f55-0cc609afdaaa"
+                    "rendering": "radio",
+                    "concept": "6c78e461-7922-4483-9788-3e40ed2e35b8",
+                    "answers": [
+                      {
+                        "concept": "5a14afcd-358f-4ec8-9d6f-5be54f1a2e00",
+                        "label": "Absent (0)"
+                      },
+                      {
+                        "concept": "1034d639-4fb8-44e7-80ef-75a8aa9373fe",
+                        "label": "< 100 /min (1)"
+                      },
+                      {
+                        "concept": "475f0140-91ce-4b0c-ae3f-2c820871fbc1",
+                        "label": "> 100 /min (2)"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "nbStatus === '63f4b85c-de5a-48e9-a9a5-bf2656c10125'"
+                  }
+                },
+                {
+                  "label": "APGAR 1 min: Respiratory Movements",
+                  "type": "obs",
+                  "id": "apgar1Resp",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "efb5a10f-8efc-4c7d-a03a-8cecb37d4671",
+                    "answers": [
+                      {
+                        "concept": "86e8defb-6231-43fa-bda7-b6a0053a93de",
+                        "label": "Absent (0)"
+                      },
+                      {
+                        "concept": "0019c755-3bf4-4a3c-8047-17d8ed9ba658",
+                        "label": "Slow, irregular (1)"
+                      },
+                      {
+                        "concept": "27f526c7-e5cb-4034-8a4a-381ac74819ad",
+                        "label": "Regular, vigorous, with cry (2)"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "nbStatus === '63f4b85c-de5a-48e9-a9a5-bf2656c10125'"
+                  }
+                },
+                {
+                  "label": "APGAR 1 min: Muscle Tone",
+                  "type": "obs",
+                  "id": "apgar1Tone",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "4915bfad-0bda-472c-9116-4e785941bf88",
+                    "answers": [
+                      {
+                        "concept": "7b904017-7468-48de-b4ee-32ee42674273",
+                        "label": "Absent (limp) (0)"
+                      },
+                      {
+                        "concept": "d9e538a1-4722-4647-87f7-e3e2e3d6f7c7",
+                        "label": "Arms and legs flexed (1)"
+                      },
+                      {
+                        "concept": "aeb00d31-7ebd-41be-830d-dffd75e10e07",
+                        "label": "Active movement (2)"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "nbStatus === '63f4b85c-de5a-48e9-a9a5-bf2656c10125'"
+                  }
+                },
+                {
+                  "label": "APGAR 1 min: Reactivity to Stimulation",
+                  "type": "obs",
+                  "id": "apgar1Refl",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "ee202c67-1f19-417e-afc7-7d01fa217071",
+                    "answers": [
+                      {
+                        "concept": "f53bb7a7-9009-4a9d-8c50-66813ba066a0",
+                        "label": "No response (0)"
+                      },
+                      {
+                        "concept": "9b9eefd3-d29e-4296-9229-4c3a80fa5c07",
+                        "label": "Weak: grimace (1)"
+                      },
+                      {
+                        "concept": "8746e646-6c98-4fec-8d70-aad5a8f6b6b1",
+                        "label": "Strong: cry, cough (2)"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "nbStatus === '63f4b85c-de5a-48e9-a9a5-bf2656c10125'"
+                  }
+                },
+                {
+                  "label": "APGAR 1 min: Colour",
+                  "type": "obs",
+                  "id": "apgar1Col",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "64ffeec0-059a-47ed-9122-302ca3a74229",
+                    "answers": [
+                      {
+                        "concept": "bb3f61e2-34f4-42dd-b8c8-333f6aff8bb8",
+                        "label": "Blue or pale all over (0)"
+                      },
+                      {
+                        "concept": "80ebaa43-d932-497d-a94f-8f03fe169c3e",
+                        "label": "Pink body, blue extremities (1)"
+                      },
+                      {
+                        "concept": "75b37b86-2a58-4f82-ac3a-e5a7ee5d1b57",
+                        "label": "Completely pink (2)"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "nbStatus === '63f4b85c-de5a-48e9-a9a5-bf2656c10125'"
+                  }
+                },
+                {
+                  "label": "APGAR 1 min: Total",
+                  "type": "obs",
+                  "id": "apgar1Total",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "b4fc4494-79af-4b43-af09-5908bb13f803",
+                    "min": "0",
+                    "max": "10",
+                    "disallowDecimals": true,
+                    "calculate": {
+                      "calculateExpression": "isEmpty(apgar1Hr) && isEmpty(apgar1Resp) && isEmpty(apgar1Tone) && isEmpty(apgar1Refl) && isEmpty(apgar1Col) ? undefined : (apgar1Hr === '475f0140-91ce-4b0c-ae3f-2c820871fbc1' ? 2 : (apgar1Hr === '1034d639-4fb8-44e7-80ef-75a8aa9373fe' ? 1 : 0)) + (apgar1Resp === '27f526c7-e5cb-4034-8a4a-381ac74819ad' ? 2 : (apgar1Resp === '0019c755-3bf4-4a3c-8047-17d8ed9ba658' ? 1 : 0)) + (apgar1Tone === 'aeb00d31-7ebd-41be-830d-dffd75e10e07' ? 2 : (apgar1Tone === 'd9e538a1-4722-4647-87f7-e3e2e3d6f7c7' ? 1 : 0)) + (apgar1Refl === '8746e646-6c98-4fec-8d70-aad5a8f6b6b1' ? 2 : (apgar1Refl === '9b9eefd3-d29e-4296-9229-4c3a80fa5c07' ? 1 : 0)) + (apgar1Col === '75b37b86-2a58-4f82-ac3a-e5a7ee5d1b57' ? 2 : (apgar1Col === '80ebaa43-d932-497d-a94f-8f03fe169c3e' ? 1 : 0))"
+                    }
+                  },
+                  "hide": {
+                    "hideWhenExpression": "nbStatus === '63f4b85c-de5a-48e9-a9a5-bf2656c10125'"
+                  }
+                },
+                {
+                  "label": "APGAR 5 min: Heart Rate",
+                  "type": "obs",
+                  "id": "apgar5Hr",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "5176ac83-38e2-47be-b4ce-eb5e77eb8639",
+                    "answers": [
+                      {
+                        "concept": "5a14afcd-358f-4ec8-9d6f-5be54f1a2e00",
+                        "label": "Absent (0)"
+                      },
+                      {
+                        "concept": "1034d639-4fb8-44e7-80ef-75a8aa9373fe",
+                        "label": "< 100 /min (1)"
+                      },
+                      {
+                        "concept": "475f0140-91ce-4b0c-ae3f-2c820871fbc1",
+                        "label": "> 100 /min (2)"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "nbStatus === '63f4b85c-de5a-48e9-a9a5-bf2656c10125'"
+                  }
+                },
+                {
+                  "label": "APGAR 5 min: Respiratory Movements",
+                  "type": "obs",
+                  "id": "apgar5Resp",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "e26bd1f9-ad93-4616-b711-d87932235ab3",
+                    "answers": [
+                      {
+                        "concept": "86e8defb-6231-43fa-bda7-b6a0053a93de",
+                        "label": "Absent (0)"
+                      },
+                      {
+                        "concept": "0019c755-3bf4-4a3c-8047-17d8ed9ba658",
+                        "label": "Slow, irregular (1)"
+                      },
+                      {
+                        "concept": "27f526c7-e5cb-4034-8a4a-381ac74819ad",
+                        "label": "Regular, vigorous, with cry (2)"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "nbStatus === '63f4b85c-de5a-48e9-a9a5-bf2656c10125'"
+                  }
+                },
+                {
+                  "label": "APGAR 5 min: Muscle Tone",
+                  "type": "obs",
+                  "id": "apgar5Tone",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "464a3a1b-ac57-467b-8ad8-56a102b94f62",
+                    "answers": [
+                      {
+                        "concept": "7b904017-7468-48de-b4ee-32ee42674273",
+                        "label": "Absent (limp) (0)"
+                      },
+                      {
+                        "concept": "d9e538a1-4722-4647-87f7-e3e2e3d6f7c7",
+                        "label": "Arms and legs flexed (1)"
+                      },
+                      {
+                        "concept": "aeb00d31-7ebd-41be-830d-dffd75e10e07",
+                        "label": "Active movement (2)"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "nbStatus === '63f4b85c-de5a-48e9-a9a5-bf2656c10125'"
+                  }
+                },
+                {
+                  "label": "APGAR 5 min: Reactivity to Stimulation",
+                  "type": "obs",
+                  "id": "apgar5Refl",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "30cdd64b-bdfd-4f73-b74a-d75bac346aa1",
+                    "answers": [
+                      {
+                        "concept": "f53bb7a7-9009-4a9d-8c50-66813ba066a0",
+                        "label": "No response (0)"
+                      },
+                      {
+                        "concept": "9b9eefd3-d29e-4296-9229-4c3a80fa5c07",
+                        "label": "Weak: grimace (1)"
+                      },
+                      {
+                        "concept": "8746e646-6c98-4fec-8d70-aad5a8f6b6b1",
+                        "label": "Strong: cry, cough (2)"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "nbStatus === '63f4b85c-de5a-48e9-a9a5-bf2656c10125'"
+                  }
+                },
+                {
+                  "label": "APGAR 5 min: Colour",
+                  "type": "obs",
+                  "id": "apgar5Col",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "c2ac127b-7e1e-4aad-8f34-e10cd91db9ef",
+                    "answers": [
+                      {
+                        "concept": "bb3f61e2-34f4-42dd-b8c8-333f6aff8bb8",
+                        "label": "Blue or pale all over (0)"
+                      },
+                      {
+                        "concept": "80ebaa43-d932-497d-a94f-8f03fe169c3e",
+                        "label": "Pink body, blue extremities (1)"
+                      },
+                      {
+                        "concept": "75b37b86-2a58-4f82-ac3a-e5a7ee5d1b57",
+                        "label": "Completely pink (2)"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "nbStatus === '63f4b85c-de5a-48e9-a9a5-bf2656c10125'"
+                  }
+                },
+                {
+                  "label": "APGAR 5 min: Total",
+                  "type": "obs",
+                  "id": "apgar5Total",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "f5e56be1-714b-434b-8b6f-def6bedadb4b",
+                    "min": "0",
+                    "max": "10",
+                    "disallowDecimals": true,
+                    "calculate": {
+                      "calculateExpression": "isEmpty(apgar5Hr) && isEmpty(apgar5Resp) && isEmpty(apgar5Tone) && isEmpty(apgar5Refl) && isEmpty(apgar5Col) ? undefined : (apgar5Hr === '475f0140-91ce-4b0c-ae3f-2c820871fbc1' ? 2 : (apgar5Hr === '1034d639-4fb8-44e7-80ef-75a8aa9373fe' ? 1 : 0)) + (apgar5Resp === '27f526c7-e5cb-4034-8a4a-381ac74819ad' ? 2 : (apgar5Resp === '0019c755-3bf4-4a3c-8047-17d8ed9ba658' ? 1 : 0)) + (apgar5Tone === 'aeb00d31-7ebd-41be-830d-dffd75e10e07' ? 2 : (apgar5Tone === 'd9e538a1-4722-4647-87f7-e3e2e3d6f7c7' ? 1 : 0)) + (apgar5Refl === '8746e646-6c98-4fec-8d70-aad5a8f6b6b1' ? 2 : (apgar5Refl === '9b9eefd3-d29e-4296-9229-4c3a80fa5c07' ? 1 : 0)) + (apgar5Col === '75b37b86-2a58-4f82-ac3a-e5a7ee5d1b57' ? 2 : (apgar5Col === '80ebaa43-d932-497d-a94f-8f03fe169c3e' ? 1 : 0))"
+                    }
+                  },
+                  "hide": {
+                    "hideWhenExpression": "nbStatus === '63f4b85c-de5a-48e9-a9a5-bf2656c10125'"
+                  }
+                },
+                {
+                  "label": "APGAR 10 min: Heart Rate",
+                  "type": "obs",
+                  "id": "apgar10Hr",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "6bdd3faa-bfac-4d37-b19d-7dffb8f3cead",
+                    "answers": [
+                      {
+                        "concept": "5a14afcd-358f-4ec8-9d6f-5be54f1a2e00",
+                        "label": "Absent (0)"
+                      },
+                      {
+                        "concept": "1034d639-4fb8-44e7-80ef-75a8aa9373fe",
+                        "label": "< 100 /min (1)"
+                      },
+                      {
+                        "concept": "475f0140-91ce-4b0c-ae3f-2c820871fbc1",
+                        "label": "> 100 /min (2)"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "nbStatus === '63f4b85c-de5a-48e9-a9a5-bf2656c10125' || isEmpty(apgar5Hr) || isEmpty(apgar5Resp) || isEmpty(apgar5Tone) || isEmpty(apgar5Refl) || isEmpty(apgar5Col) || ((apgar5Hr === '475f0140-91ce-4b0c-ae3f-2c820871fbc1' ? 2 : (apgar5Hr === '1034d639-4fb8-44e7-80ef-75a8aa9373fe' ? 1 : 0)) + (apgar5Resp === '27f526c7-e5cb-4034-8a4a-381ac74819ad' ? 2 : (apgar5Resp === '0019c755-3bf4-4a3c-8047-17d8ed9ba658' ? 1 : 0)) + (apgar5Tone === 'aeb00d31-7ebd-41be-830d-dffd75e10e07' ? 2 : (apgar5Tone === 'd9e538a1-4722-4647-87f7-e3e2e3d6f7c7' ? 1 : 0)) + (apgar5Refl === '8746e646-6c98-4fec-8d70-aad5a8f6b6b1' ? 2 : (apgar5Refl === '9b9eefd3-d29e-4296-9229-4c3a80fa5c07' ? 1 : 0)) + (apgar5Col === '75b37b86-2a58-4f82-ac3a-e5a7ee5d1b57' ? 2 : (apgar5Col === '80ebaa43-d932-497d-a94f-8f03fe169c3e' ? 1 : 0))) >= 7"
+                  }
+                },
+                {
+                  "label": "APGAR 10 min: Respiratory Movements",
+                  "type": "obs",
+                  "id": "apgar10Resp",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "d2b58503-941e-46c5-88a7-914790ae1140",
+                    "answers": [
+                      {
+                        "concept": "86e8defb-6231-43fa-bda7-b6a0053a93de",
+                        "label": "Absent (0)"
+                      },
+                      {
+                        "concept": "0019c755-3bf4-4a3c-8047-17d8ed9ba658",
+                        "label": "Slow, irregular (1)"
+                      },
+                      {
+                        "concept": "27f526c7-e5cb-4034-8a4a-381ac74819ad",
+                        "label": "Regular, vigorous, with cry (2)"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "nbStatus === '63f4b85c-de5a-48e9-a9a5-bf2656c10125' || isEmpty(apgar5Hr) || isEmpty(apgar5Resp) || isEmpty(apgar5Tone) || isEmpty(apgar5Refl) || isEmpty(apgar5Col) || ((apgar5Hr === '475f0140-91ce-4b0c-ae3f-2c820871fbc1' ? 2 : (apgar5Hr === '1034d639-4fb8-44e7-80ef-75a8aa9373fe' ? 1 : 0)) + (apgar5Resp === '27f526c7-e5cb-4034-8a4a-381ac74819ad' ? 2 : (apgar5Resp === '0019c755-3bf4-4a3c-8047-17d8ed9ba658' ? 1 : 0)) + (apgar5Tone === 'aeb00d31-7ebd-41be-830d-dffd75e10e07' ? 2 : (apgar5Tone === 'd9e538a1-4722-4647-87f7-e3e2e3d6f7c7' ? 1 : 0)) + (apgar5Refl === '8746e646-6c98-4fec-8d70-aad5a8f6b6b1' ? 2 : (apgar5Refl === '9b9eefd3-d29e-4296-9229-4c3a80fa5c07' ? 1 : 0)) + (apgar5Col === '75b37b86-2a58-4f82-ac3a-e5a7ee5d1b57' ? 2 : (apgar5Col === '80ebaa43-d932-497d-a94f-8f03fe169c3e' ? 1 : 0))) >= 7"
+                  }
+                },
+                {
+                  "label": "APGAR 10 min: Muscle Tone",
+                  "type": "obs",
+                  "id": "apgar10Tone",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "0dcaeaa2-1cd6-4e4e-9564-079cc37b78cf",
+                    "answers": [
+                      {
+                        "concept": "7b904017-7468-48de-b4ee-32ee42674273",
+                        "label": "Absent (limp) (0)"
+                      },
+                      {
+                        "concept": "d9e538a1-4722-4647-87f7-e3e2e3d6f7c7",
+                        "label": "Arms and legs flexed (1)"
+                      },
+                      {
+                        "concept": "aeb00d31-7ebd-41be-830d-dffd75e10e07",
+                        "label": "Active movement (2)"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "nbStatus === '63f4b85c-de5a-48e9-a9a5-bf2656c10125' || isEmpty(apgar5Hr) || isEmpty(apgar5Resp) || isEmpty(apgar5Tone) || isEmpty(apgar5Refl) || isEmpty(apgar5Col) || ((apgar5Hr === '475f0140-91ce-4b0c-ae3f-2c820871fbc1' ? 2 : (apgar5Hr === '1034d639-4fb8-44e7-80ef-75a8aa9373fe' ? 1 : 0)) + (apgar5Resp === '27f526c7-e5cb-4034-8a4a-381ac74819ad' ? 2 : (apgar5Resp === '0019c755-3bf4-4a3c-8047-17d8ed9ba658' ? 1 : 0)) + (apgar5Tone === 'aeb00d31-7ebd-41be-830d-dffd75e10e07' ? 2 : (apgar5Tone === 'd9e538a1-4722-4647-87f7-e3e2e3d6f7c7' ? 1 : 0)) + (apgar5Refl === '8746e646-6c98-4fec-8d70-aad5a8f6b6b1' ? 2 : (apgar5Refl === '9b9eefd3-d29e-4296-9229-4c3a80fa5c07' ? 1 : 0)) + (apgar5Col === '75b37b86-2a58-4f82-ac3a-e5a7ee5d1b57' ? 2 : (apgar5Col === '80ebaa43-d932-497d-a94f-8f03fe169c3e' ? 1 : 0))) >= 7"
+                  }
+                },
+                {
+                  "label": "APGAR 10 min: Reactivity to Stimulation",
+                  "type": "obs",
+                  "id": "apgar10Refl",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "2238549c-cb64-46ca-ad57-e602087442e2",
+                    "answers": [
+                      {
+                        "concept": "f53bb7a7-9009-4a9d-8c50-66813ba066a0",
+                        "label": "No response (0)"
+                      },
+                      {
+                        "concept": "9b9eefd3-d29e-4296-9229-4c3a80fa5c07",
+                        "label": "Weak: grimace (1)"
+                      },
+                      {
+                        "concept": "8746e646-6c98-4fec-8d70-aad5a8f6b6b1",
+                        "label": "Strong: cry, cough (2)"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "nbStatus === '63f4b85c-de5a-48e9-a9a5-bf2656c10125' || isEmpty(apgar5Hr) || isEmpty(apgar5Resp) || isEmpty(apgar5Tone) || isEmpty(apgar5Refl) || isEmpty(apgar5Col) || ((apgar5Hr === '475f0140-91ce-4b0c-ae3f-2c820871fbc1' ? 2 : (apgar5Hr === '1034d639-4fb8-44e7-80ef-75a8aa9373fe' ? 1 : 0)) + (apgar5Resp === '27f526c7-e5cb-4034-8a4a-381ac74819ad' ? 2 : (apgar5Resp === '0019c755-3bf4-4a3c-8047-17d8ed9ba658' ? 1 : 0)) + (apgar5Tone === 'aeb00d31-7ebd-41be-830d-dffd75e10e07' ? 2 : (apgar5Tone === 'd9e538a1-4722-4647-87f7-e3e2e3d6f7c7' ? 1 : 0)) + (apgar5Refl === '8746e646-6c98-4fec-8d70-aad5a8f6b6b1' ? 2 : (apgar5Refl === '9b9eefd3-d29e-4296-9229-4c3a80fa5c07' ? 1 : 0)) + (apgar5Col === '75b37b86-2a58-4f82-ac3a-e5a7ee5d1b57' ? 2 : (apgar5Col === '80ebaa43-d932-497d-a94f-8f03fe169c3e' ? 1 : 0))) >= 7"
+                  }
+                },
+                {
+                  "label": "APGAR 10 min: Colour",
+                  "type": "obs",
+                  "id": "apgar10Col",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "08a54719-1088-45b8-b5fe-fc296f0332a4",
+                    "answers": [
+                      {
+                        "concept": "bb3f61e2-34f4-42dd-b8c8-333f6aff8bb8",
+                        "label": "Blue or pale all over (0)"
+                      },
+                      {
+                        "concept": "80ebaa43-d932-497d-a94f-8f03fe169c3e",
+                        "label": "Pink body, blue extremities (1)"
+                      },
+                      {
+                        "concept": "75b37b86-2a58-4f82-ac3a-e5a7ee5d1b57",
+                        "label": "Completely pink (2)"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "nbStatus === '63f4b85c-de5a-48e9-a9a5-bf2656c10125' || isEmpty(apgar5Hr) || isEmpty(apgar5Resp) || isEmpty(apgar5Tone) || isEmpty(apgar5Refl) || isEmpty(apgar5Col) || ((apgar5Hr === '475f0140-91ce-4b0c-ae3f-2c820871fbc1' ? 2 : (apgar5Hr === '1034d639-4fb8-44e7-80ef-75a8aa9373fe' ? 1 : 0)) + (apgar5Resp === '27f526c7-e5cb-4034-8a4a-381ac74819ad' ? 2 : (apgar5Resp === '0019c755-3bf4-4a3c-8047-17d8ed9ba658' ? 1 : 0)) + (apgar5Tone === 'aeb00d31-7ebd-41be-830d-dffd75e10e07' ? 2 : (apgar5Tone === 'd9e538a1-4722-4647-87f7-e3e2e3d6f7c7' ? 1 : 0)) + (apgar5Refl === '8746e646-6c98-4fec-8d70-aad5a8f6b6b1' ? 2 : (apgar5Refl === '9b9eefd3-d29e-4296-9229-4c3a80fa5c07' ? 1 : 0)) + (apgar5Col === '75b37b86-2a58-4f82-ac3a-e5a7ee5d1b57' ? 2 : (apgar5Col === '80ebaa43-d932-497d-a94f-8f03fe169c3e' ? 1 : 0))) >= 7"
+                  }
+                },
+                {
+                  "label": "APGAR 10 min: Total",
+                  "type": "obs",
+                  "id": "apgar10Total",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "2e3c5525-f21c-4287-a482-3c8ae6cc9cbe",
+                    "min": "0",
+                    "max": "10",
+                    "disallowDecimals": true,
+                    "calculate": {
+                      "calculateExpression": "isEmpty(apgar10Hr) && isEmpty(apgar10Resp) && isEmpty(apgar10Tone) && isEmpty(apgar10Refl) && isEmpty(apgar10Col) ? undefined : (apgar10Hr === '475f0140-91ce-4b0c-ae3f-2c820871fbc1' ? 2 : (apgar10Hr === '1034d639-4fb8-44e7-80ef-75a8aa9373fe' ? 1 : 0)) + (apgar10Resp === '27f526c7-e5cb-4034-8a4a-381ac74819ad' ? 2 : (apgar10Resp === '0019c755-3bf4-4a3c-8047-17d8ed9ba658' ? 1 : 0)) + (apgar10Tone === 'aeb00d31-7ebd-41be-830d-dffd75e10e07' ? 2 : (apgar10Tone === 'd9e538a1-4722-4647-87f7-e3e2e3d6f7c7' ? 1 : 0)) + (apgar10Refl === '8746e646-6c98-4fec-8d70-aad5a8f6b6b1' ? 2 : (apgar10Refl === '9b9eefd3-d29e-4296-9229-4c3a80fa5c07' ? 1 : 0)) + (apgar10Col === '75b37b86-2a58-4f82-ac3a-e5a7ee5d1b57' ? 2 : (apgar10Col === '80ebaa43-d932-497d-a94f-8f03fe169c3e' ? 1 : 0))"
+                    }
+                  },
+                  "hide": {
+                    "hideWhenExpression": "nbStatus === '63f4b85c-de5a-48e9-a9a5-bf2656c10125' || isEmpty(apgar5Hr) || isEmpty(apgar5Resp) || isEmpty(apgar5Tone) || isEmpty(apgar5Refl) || isEmpty(apgar5Col) || ((apgar5Hr === '475f0140-91ce-4b0c-ae3f-2c820871fbc1' ? 2 : (apgar5Hr === '1034d639-4fb8-44e7-80ef-75a8aa9373fe' ? 1 : 0)) + (apgar5Resp === '27f526c7-e5cb-4034-8a4a-381ac74819ad' ? 2 : (apgar5Resp === '0019c755-3bf4-4a3c-8047-17d8ed9ba658' ? 1 : 0)) + (apgar5Tone === 'aeb00d31-7ebd-41be-830d-dffd75e10e07' ? 2 : (apgar5Tone === 'd9e538a1-4722-4647-87f7-e3e2e3d6f7c7' ? 1 : 0)) + (apgar5Refl === '8746e646-6c98-4fec-8d70-aad5a8f6b6b1' ? 2 : (apgar5Refl === '9b9eefd3-d29e-4296-9229-4c3a80fa5c07' ? 1 : 0)) + (apgar5Col === '75b37b86-2a58-4f82-ac3a-e5a7ee5d1b57' ? 2 : (apgar5Col === '80ebaa43-d932-497d-a94f-8f03fe169c3e' ? 1 : 0))) >= 7"
                   }
                 }
               ]
+            },
+            {
+              "label": "Newborn 2",
+              "type": "obsGroup",
+              "id": "newborn_1",
+              "questionOptions": {
+                "rendering": "group",
+                "concept": "ac11ec86-844a-496f-9726-a39f0a7b47a5"
+              },
+              "questions": [
+                {
+                  "label": "Date & Time of Birth",
+                  "type": "obs",
+                  "id": "nbBirthDatetime_1",
+                  "questionOptions": {
+                    "rendering": "datetime",
+                    "concept": "b1fa6cba-2b54-4d51-9e91-323e7129224b"
+                  },
+                  "hide": {
+                    "hideWhenExpression": "isEmpty(newbornCount) || newbornCount < 2"
+                  }
+                },
+                {
+                  "label": "Sex",
+                  "type": "obs",
+                  "id": "nbSex_1",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "59bb5013-c82b-4755-b348-4d14793e6174",
+                    "answers": [
+                      {
+                        "concept": "adfdcfe7-f2e9-4eb6-9e49-5b3c795c5870",
+                        "label": "Male"
+                      },
+                      {
+                        "concept": "d5d86c99-dacc-478e-b2b3-21ccb98a0476",
+                        "label": "Female"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "isEmpty(newbornCount) || newbornCount < 2"
+                  }
+                },
+                {
+                  "label": "Newborn Status",
+                  "type": "obs",
+                  "id": "nbStatus_1",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "cd96c0b6-a08f-49eb-94ad-9a914f1612f0",
+                    "answers": [
+                      {
+                        "concept": "4056a982-6a2d-4062-9514-efcf4e66dd0a",
+                        "label": "Born alive"
+                      },
+                      {
+                        "concept": "63f4b85c-de5a-48e9-a9a5-bf2656c10125",
+                        "label": "Stillbirth"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "isEmpty(newbornCount) || newbornCount < 2"
+                  }
+                },
+                {
+                  "label": "Stillbirth Type",
+                  "type": "obs",
+                  "id": "nbStillbirthType_1",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "52325f44-b6dd-470b-a672-97fefbd119e1",
+                    "answers": [
+                      {
+                        "concept": "8312584c-d0b7-404e-b575-9b93fbe09736",
+                        "label": "Fresh"
+                      },
+                      {
+                        "concept": "f5cee4c8-2f54-43ff-8169-c7d64223a4ea",
+                        "label": "Macerated"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "(isEmpty(newbornCount) || newbornCount < 2) || (nbStatus_1 !== '63f4b85c-de5a-48e9-a9a5-bf2656c10125')"
+                  }
+                },
+                {
+                  "label": "Weight (g)",
+                  "type": "obs",
+                  "id": "nbWeight_1",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "237d5a2a-fd87-4c2a-b291-d813cd76c6f2",
+                    "min": "0",
+                    "max": "7000",
+                    "disallowDecimals": true
+                  },
+                  "hide": {
+                    "hideWhenExpression": "isEmpty(newbornCount) || newbornCount < 2"
+                  }
+                },
+                {
+                  "label": "Length (cm)",
+                  "type": "obs",
+                  "id": "nbLength_1",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "59bc311b-4e61-4b6a-8b96-2172ba7178c3",
+                    "min": "0",
+                    "max": "70"
+                  },
+                  "hide": {
+                    "hideWhenExpression": "isEmpty(newbornCount) || newbornCount < 2"
+                  }
+                },
+                {
+                  "label": "Head Circumference (cm)",
+                  "type": "obs",
+                  "id": "nbHeadCircumference_1",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "39e137c4-7a68-4963-baed-1c6890ecde23",
+                    "min": "0",
+                    "max": "60"
+                  },
+                  "hide": {
+                    "hideWhenExpression": "isEmpty(newbornCount) || newbornCount < 2"
+                  }
+                },
+                {
+                  "label": "Intubation (time)",
+                  "type": "obs",
+                  "id": "nbIntubationTime_1",
+                  "questionOptions": {
+                    "rendering": "datetime",
+                    "concept": "6551bb19-9430-42d7-a878-73195ed256f8"
+                  },
+                  "hide": {
+                    "hideWhenExpression": "isEmpty(newbornCount) || newbornCount < 2"
+                  }
+                },
+                {
+                  "label": "Adrenaline Dose (mg)",
+                  "type": "obs",
+                  "id": "nbAdrenalineDose_1",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "bd619dea-1d0c-4812-bf34-23bded19460a",
+                    "min": "0",
+                    "max": "10"
+                  },
+                  "hide": {
+                    "hideWhenExpression": "isEmpty(newbornCount) || newbornCount < 2"
+                  }
+                },
+                {
+                  "label": "Destination of the Newborn",
+                  "type": "obs",
+                  "id": "nbDestination_1",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "09472798-dc1b-4d5c-9451-38d4100bed19",
+                    "answers": [
+                      {
+                        "concept": "554993c3-d261-4b50-9dcd-b370dd6f7602",
+                        "label": "Incubator"
+                      },
+                      {
+                        "concept": "9891d315-790e-4d62-a546-14a2d5e296b1",
+                        "label": "Mother's room"
+                      },
+                      {
+                        "concept": "1c47742a-4eeb-46a8-94c5-70fdb0e85e7d",
+                        "label": "Transfer to another hospital"
+                      },
+                      {
+                        "concept": "b5c4b807-d3de-40cd-aae9-178df9b40535",
+                        "label": "Other"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "isEmpty(newbornCount) || newbornCount < 2"
+                  }
+                },
+                {
+                  "label": "APGAR 1 min: Heart Rate",
+                  "type": "obs",
+                  "id": "apgar1Hr_1",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "6c78e461-7922-4483-9788-3e40ed2e35b8",
+                    "answers": [
+                      {
+                        "concept": "5a14afcd-358f-4ec8-9d6f-5be54f1a2e00",
+                        "label": "Absent (0)"
+                      },
+                      {
+                        "concept": "1034d639-4fb8-44e7-80ef-75a8aa9373fe",
+                        "label": "< 100 /min (1)"
+                      },
+                      {
+                        "concept": "475f0140-91ce-4b0c-ae3f-2c820871fbc1",
+                        "label": "> 100 /min (2)"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "(isEmpty(newbornCount) || newbornCount < 2) || (nbStatus_1 === '63f4b85c-de5a-48e9-a9a5-bf2656c10125')"
+                  }
+                },
+                {
+                  "label": "APGAR 1 min: Respiratory Movements",
+                  "type": "obs",
+                  "id": "apgar1Resp_1",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "efb5a10f-8efc-4c7d-a03a-8cecb37d4671",
+                    "answers": [
+                      {
+                        "concept": "86e8defb-6231-43fa-bda7-b6a0053a93de",
+                        "label": "Absent (0)"
+                      },
+                      {
+                        "concept": "0019c755-3bf4-4a3c-8047-17d8ed9ba658",
+                        "label": "Slow, irregular (1)"
+                      },
+                      {
+                        "concept": "27f526c7-e5cb-4034-8a4a-381ac74819ad",
+                        "label": "Regular, vigorous, with cry (2)"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "(isEmpty(newbornCount) || newbornCount < 2) || (nbStatus_1 === '63f4b85c-de5a-48e9-a9a5-bf2656c10125')"
+                  }
+                },
+                {
+                  "label": "APGAR 1 min: Muscle Tone",
+                  "type": "obs",
+                  "id": "apgar1Tone_1",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "4915bfad-0bda-472c-9116-4e785941bf88",
+                    "answers": [
+                      {
+                        "concept": "7b904017-7468-48de-b4ee-32ee42674273",
+                        "label": "Absent (limp) (0)"
+                      },
+                      {
+                        "concept": "d9e538a1-4722-4647-87f7-e3e2e3d6f7c7",
+                        "label": "Arms and legs flexed (1)"
+                      },
+                      {
+                        "concept": "aeb00d31-7ebd-41be-830d-dffd75e10e07",
+                        "label": "Active movement (2)"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "(isEmpty(newbornCount) || newbornCount < 2) || (nbStatus_1 === '63f4b85c-de5a-48e9-a9a5-bf2656c10125')"
+                  }
+                },
+                {
+                  "label": "APGAR 1 min: Reactivity to Stimulation",
+                  "type": "obs",
+                  "id": "apgar1Refl_1",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "ee202c67-1f19-417e-afc7-7d01fa217071",
+                    "answers": [
+                      {
+                        "concept": "f53bb7a7-9009-4a9d-8c50-66813ba066a0",
+                        "label": "No response (0)"
+                      },
+                      {
+                        "concept": "9b9eefd3-d29e-4296-9229-4c3a80fa5c07",
+                        "label": "Weak: grimace (1)"
+                      },
+                      {
+                        "concept": "8746e646-6c98-4fec-8d70-aad5a8f6b6b1",
+                        "label": "Strong: cry, cough (2)"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "(isEmpty(newbornCount) || newbornCount < 2) || (nbStatus_1 === '63f4b85c-de5a-48e9-a9a5-bf2656c10125')"
+                  }
+                },
+                {
+                  "label": "APGAR 1 min: Colour",
+                  "type": "obs",
+                  "id": "apgar1Col_1",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "64ffeec0-059a-47ed-9122-302ca3a74229",
+                    "answers": [
+                      {
+                        "concept": "bb3f61e2-34f4-42dd-b8c8-333f6aff8bb8",
+                        "label": "Blue or pale all over (0)"
+                      },
+                      {
+                        "concept": "80ebaa43-d932-497d-a94f-8f03fe169c3e",
+                        "label": "Pink body, blue extremities (1)"
+                      },
+                      {
+                        "concept": "75b37b86-2a58-4f82-ac3a-e5a7ee5d1b57",
+                        "label": "Completely pink (2)"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "(isEmpty(newbornCount) || newbornCount < 2) || (nbStatus_1 === '63f4b85c-de5a-48e9-a9a5-bf2656c10125')"
+                  }
+                },
+                {
+                  "label": "APGAR 1 min: Total",
+                  "type": "obs",
+                  "id": "apgar1Total_1",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "b4fc4494-79af-4b43-af09-5908bb13f803",
+                    "min": "0",
+                    "max": "10",
+                    "disallowDecimals": true,
+                    "calculate": {
+                      "calculateExpression": "isEmpty(apgar1Hr_1) && isEmpty(apgar1Resp_1) && isEmpty(apgar1Tone_1) && isEmpty(apgar1Refl_1) && isEmpty(apgar1Col_1) ? undefined : (apgar1Hr_1 === '475f0140-91ce-4b0c-ae3f-2c820871fbc1' ? 2 : (apgar1Hr_1 === '1034d639-4fb8-44e7-80ef-75a8aa9373fe' ? 1 : 0)) + (apgar1Resp_1 === '27f526c7-e5cb-4034-8a4a-381ac74819ad' ? 2 : (apgar1Resp_1 === '0019c755-3bf4-4a3c-8047-17d8ed9ba658' ? 1 : 0)) + (apgar1Tone_1 === 'aeb00d31-7ebd-41be-830d-dffd75e10e07' ? 2 : (apgar1Tone_1 === 'd9e538a1-4722-4647-87f7-e3e2e3d6f7c7' ? 1 : 0)) + (apgar1Refl_1 === '8746e646-6c98-4fec-8d70-aad5a8f6b6b1' ? 2 : (apgar1Refl_1 === '9b9eefd3-d29e-4296-9229-4c3a80fa5c07' ? 1 : 0)) + (apgar1Col_1 === '75b37b86-2a58-4f82-ac3a-e5a7ee5d1b57' ? 2 : (apgar1Col_1 === '80ebaa43-d932-497d-a94f-8f03fe169c3e' ? 1 : 0))"
+                    }
+                  },
+                  "hide": {
+                    "hideWhenExpression": "(isEmpty(newbornCount) || newbornCount < 2) || (nbStatus_1 === '63f4b85c-de5a-48e9-a9a5-bf2656c10125')"
+                  }
+                },
+                {
+                  "label": "APGAR 5 min: Heart Rate",
+                  "type": "obs",
+                  "id": "apgar5Hr_1",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "5176ac83-38e2-47be-b4ce-eb5e77eb8639",
+                    "answers": [
+                      {
+                        "concept": "5a14afcd-358f-4ec8-9d6f-5be54f1a2e00",
+                        "label": "Absent (0)"
+                      },
+                      {
+                        "concept": "1034d639-4fb8-44e7-80ef-75a8aa9373fe",
+                        "label": "< 100 /min (1)"
+                      },
+                      {
+                        "concept": "475f0140-91ce-4b0c-ae3f-2c820871fbc1",
+                        "label": "> 100 /min (2)"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "(isEmpty(newbornCount) || newbornCount < 2) || (nbStatus_1 === '63f4b85c-de5a-48e9-a9a5-bf2656c10125')"
+                  }
+                },
+                {
+                  "label": "APGAR 5 min: Respiratory Movements",
+                  "type": "obs",
+                  "id": "apgar5Resp_1",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "e26bd1f9-ad93-4616-b711-d87932235ab3",
+                    "answers": [
+                      {
+                        "concept": "86e8defb-6231-43fa-bda7-b6a0053a93de",
+                        "label": "Absent (0)"
+                      },
+                      {
+                        "concept": "0019c755-3bf4-4a3c-8047-17d8ed9ba658",
+                        "label": "Slow, irregular (1)"
+                      },
+                      {
+                        "concept": "27f526c7-e5cb-4034-8a4a-381ac74819ad",
+                        "label": "Regular, vigorous, with cry (2)"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "(isEmpty(newbornCount) || newbornCount < 2) || (nbStatus_1 === '63f4b85c-de5a-48e9-a9a5-bf2656c10125')"
+                  }
+                },
+                {
+                  "label": "APGAR 5 min: Muscle Tone",
+                  "type": "obs",
+                  "id": "apgar5Tone_1",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "464a3a1b-ac57-467b-8ad8-56a102b94f62",
+                    "answers": [
+                      {
+                        "concept": "7b904017-7468-48de-b4ee-32ee42674273",
+                        "label": "Absent (limp) (0)"
+                      },
+                      {
+                        "concept": "d9e538a1-4722-4647-87f7-e3e2e3d6f7c7",
+                        "label": "Arms and legs flexed (1)"
+                      },
+                      {
+                        "concept": "aeb00d31-7ebd-41be-830d-dffd75e10e07",
+                        "label": "Active movement (2)"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "(isEmpty(newbornCount) || newbornCount < 2) || (nbStatus_1 === '63f4b85c-de5a-48e9-a9a5-bf2656c10125')"
+                  }
+                },
+                {
+                  "label": "APGAR 5 min: Reactivity to Stimulation",
+                  "type": "obs",
+                  "id": "apgar5Refl_1",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "30cdd64b-bdfd-4f73-b74a-d75bac346aa1",
+                    "answers": [
+                      {
+                        "concept": "f53bb7a7-9009-4a9d-8c50-66813ba066a0",
+                        "label": "No response (0)"
+                      },
+                      {
+                        "concept": "9b9eefd3-d29e-4296-9229-4c3a80fa5c07",
+                        "label": "Weak: grimace (1)"
+                      },
+                      {
+                        "concept": "8746e646-6c98-4fec-8d70-aad5a8f6b6b1",
+                        "label": "Strong: cry, cough (2)"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "(isEmpty(newbornCount) || newbornCount < 2) || (nbStatus_1 === '63f4b85c-de5a-48e9-a9a5-bf2656c10125')"
+                  }
+                },
+                {
+                  "label": "APGAR 5 min: Colour",
+                  "type": "obs",
+                  "id": "apgar5Col_1",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "c2ac127b-7e1e-4aad-8f34-e10cd91db9ef",
+                    "answers": [
+                      {
+                        "concept": "bb3f61e2-34f4-42dd-b8c8-333f6aff8bb8",
+                        "label": "Blue or pale all over (0)"
+                      },
+                      {
+                        "concept": "80ebaa43-d932-497d-a94f-8f03fe169c3e",
+                        "label": "Pink body, blue extremities (1)"
+                      },
+                      {
+                        "concept": "75b37b86-2a58-4f82-ac3a-e5a7ee5d1b57",
+                        "label": "Completely pink (2)"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "(isEmpty(newbornCount) || newbornCount < 2) || (nbStatus_1 === '63f4b85c-de5a-48e9-a9a5-bf2656c10125')"
+                  }
+                },
+                {
+                  "label": "APGAR 5 min: Total",
+                  "type": "obs",
+                  "id": "apgar5Total_1",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "f5e56be1-714b-434b-8b6f-def6bedadb4b",
+                    "min": "0",
+                    "max": "10",
+                    "disallowDecimals": true,
+                    "calculate": {
+                      "calculateExpression": "isEmpty(apgar5Hr_1) && isEmpty(apgar5Resp_1) && isEmpty(apgar5Tone_1) && isEmpty(apgar5Refl_1) && isEmpty(apgar5Col_1) ? undefined : (apgar5Hr_1 === '475f0140-91ce-4b0c-ae3f-2c820871fbc1' ? 2 : (apgar5Hr_1 === '1034d639-4fb8-44e7-80ef-75a8aa9373fe' ? 1 : 0)) + (apgar5Resp_1 === '27f526c7-e5cb-4034-8a4a-381ac74819ad' ? 2 : (apgar5Resp_1 === '0019c755-3bf4-4a3c-8047-17d8ed9ba658' ? 1 : 0)) + (apgar5Tone_1 === 'aeb00d31-7ebd-41be-830d-dffd75e10e07' ? 2 : (apgar5Tone_1 === 'd9e538a1-4722-4647-87f7-e3e2e3d6f7c7' ? 1 : 0)) + (apgar5Refl_1 === '8746e646-6c98-4fec-8d70-aad5a8f6b6b1' ? 2 : (apgar5Refl_1 === '9b9eefd3-d29e-4296-9229-4c3a80fa5c07' ? 1 : 0)) + (apgar5Col_1 === '75b37b86-2a58-4f82-ac3a-e5a7ee5d1b57' ? 2 : (apgar5Col_1 === '80ebaa43-d932-497d-a94f-8f03fe169c3e' ? 1 : 0))"
+                    }
+                  },
+                  "hide": {
+                    "hideWhenExpression": "(isEmpty(newbornCount) || newbornCount < 2) || (nbStatus_1 === '63f4b85c-de5a-48e9-a9a5-bf2656c10125')"
+                  }
+                },
+                {
+                  "label": "APGAR 10 min: Heart Rate",
+                  "type": "obs",
+                  "id": "apgar10Hr_1",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "6bdd3faa-bfac-4d37-b19d-7dffb8f3cead",
+                    "answers": [
+                      {
+                        "concept": "5a14afcd-358f-4ec8-9d6f-5be54f1a2e00",
+                        "label": "Absent (0)"
+                      },
+                      {
+                        "concept": "1034d639-4fb8-44e7-80ef-75a8aa9373fe",
+                        "label": "< 100 /min (1)"
+                      },
+                      {
+                        "concept": "475f0140-91ce-4b0c-ae3f-2c820871fbc1",
+                        "label": "> 100 /min (2)"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "(isEmpty(newbornCount) || newbornCount < 2) || (nbStatus_1 === '63f4b85c-de5a-48e9-a9a5-bf2656c10125' || isEmpty(apgar5Hr_1) || isEmpty(apgar5Resp_1) || isEmpty(apgar5Tone_1) || isEmpty(apgar5Refl_1) || isEmpty(apgar5Col_1) || ((apgar5Hr_1 === '475f0140-91ce-4b0c-ae3f-2c820871fbc1' ? 2 : (apgar5Hr_1 === '1034d639-4fb8-44e7-80ef-75a8aa9373fe' ? 1 : 0)) + (apgar5Resp_1 === '27f526c7-e5cb-4034-8a4a-381ac74819ad' ? 2 : (apgar5Resp_1 === '0019c755-3bf4-4a3c-8047-17d8ed9ba658' ? 1 : 0)) + (apgar5Tone_1 === 'aeb00d31-7ebd-41be-830d-dffd75e10e07' ? 2 : (apgar5Tone_1 === 'd9e538a1-4722-4647-87f7-e3e2e3d6f7c7' ? 1 : 0)) + (apgar5Refl_1 === '8746e646-6c98-4fec-8d70-aad5a8f6b6b1' ? 2 : (apgar5Refl_1 === '9b9eefd3-d29e-4296-9229-4c3a80fa5c07' ? 1 : 0)) + (apgar5Col_1 === '75b37b86-2a58-4f82-ac3a-e5a7ee5d1b57' ? 2 : (apgar5Col_1 === '80ebaa43-d932-497d-a94f-8f03fe169c3e' ? 1 : 0))) >= 7)"
+                  }
+                },
+                {
+                  "label": "APGAR 10 min: Respiratory Movements",
+                  "type": "obs",
+                  "id": "apgar10Resp_1",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "d2b58503-941e-46c5-88a7-914790ae1140",
+                    "answers": [
+                      {
+                        "concept": "86e8defb-6231-43fa-bda7-b6a0053a93de",
+                        "label": "Absent (0)"
+                      },
+                      {
+                        "concept": "0019c755-3bf4-4a3c-8047-17d8ed9ba658",
+                        "label": "Slow, irregular (1)"
+                      },
+                      {
+                        "concept": "27f526c7-e5cb-4034-8a4a-381ac74819ad",
+                        "label": "Regular, vigorous, with cry (2)"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "(isEmpty(newbornCount) || newbornCount < 2) || (nbStatus_1 === '63f4b85c-de5a-48e9-a9a5-bf2656c10125' || isEmpty(apgar5Hr_1) || isEmpty(apgar5Resp_1) || isEmpty(apgar5Tone_1) || isEmpty(apgar5Refl_1) || isEmpty(apgar5Col_1) || ((apgar5Hr_1 === '475f0140-91ce-4b0c-ae3f-2c820871fbc1' ? 2 : (apgar5Hr_1 === '1034d639-4fb8-44e7-80ef-75a8aa9373fe' ? 1 : 0)) + (apgar5Resp_1 === '27f526c7-e5cb-4034-8a4a-381ac74819ad' ? 2 : (apgar5Resp_1 === '0019c755-3bf4-4a3c-8047-17d8ed9ba658' ? 1 : 0)) + (apgar5Tone_1 === 'aeb00d31-7ebd-41be-830d-dffd75e10e07' ? 2 : (apgar5Tone_1 === 'd9e538a1-4722-4647-87f7-e3e2e3d6f7c7' ? 1 : 0)) + (apgar5Refl_1 === '8746e646-6c98-4fec-8d70-aad5a8f6b6b1' ? 2 : (apgar5Refl_1 === '9b9eefd3-d29e-4296-9229-4c3a80fa5c07' ? 1 : 0)) + (apgar5Col_1 === '75b37b86-2a58-4f82-ac3a-e5a7ee5d1b57' ? 2 : (apgar5Col_1 === '80ebaa43-d932-497d-a94f-8f03fe169c3e' ? 1 : 0))) >= 7)"
+                  }
+                },
+                {
+                  "label": "APGAR 10 min: Muscle Tone",
+                  "type": "obs",
+                  "id": "apgar10Tone_1",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "0dcaeaa2-1cd6-4e4e-9564-079cc37b78cf",
+                    "answers": [
+                      {
+                        "concept": "7b904017-7468-48de-b4ee-32ee42674273",
+                        "label": "Absent (limp) (0)"
+                      },
+                      {
+                        "concept": "d9e538a1-4722-4647-87f7-e3e2e3d6f7c7",
+                        "label": "Arms and legs flexed (1)"
+                      },
+                      {
+                        "concept": "aeb00d31-7ebd-41be-830d-dffd75e10e07",
+                        "label": "Active movement (2)"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "(isEmpty(newbornCount) || newbornCount < 2) || (nbStatus_1 === '63f4b85c-de5a-48e9-a9a5-bf2656c10125' || isEmpty(apgar5Hr_1) || isEmpty(apgar5Resp_1) || isEmpty(apgar5Tone_1) || isEmpty(apgar5Refl_1) || isEmpty(apgar5Col_1) || ((apgar5Hr_1 === '475f0140-91ce-4b0c-ae3f-2c820871fbc1' ? 2 : (apgar5Hr_1 === '1034d639-4fb8-44e7-80ef-75a8aa9373fe' ? 1 : 0)) + (apgar5Resp_1 === '27f526c7-e5cb-4034-8a4a-381ac74819ad' ? 2 : (apgar5Resp_1 === '0019c755-3bf4-4a3c-8047-17d8ed9ba658' ? 1 : 0)) + (apgar5Tone_1 === 'aeb00d31-7ebd-41be-830d-dffd75e10e07' ? 2 : (apgar5Tone_1 === 'd9e538a1-4722-4647-87f7-e3e2e3d6f7c7' ? 1 : 0)) + (apgar5Refl_1 === '8746e646-6c98-4fec-8d70-aad5a8f6b6b1' ? 2 : (apgar5Refl_1 === '9b9eefd3-d29e-4296-9229-4c3a80fa5c07' ? 1 : 0)) + (apgar5Col_1 === '75b37b86-2a58-4f82-ac3a-e5a7ee5d1b57' ? 2 : (apgar5Col_1 === '80ebaa43-d932-497d-a94f-8f03fe169c3e' ? 1 : 0))) >= 7)"
+                  }
+                },
+                {
+                  "label": "APGAR 10 min: Reactivity to Stimulation",
+                  "type": "obs",
+                  "id": "apgar10Refl_1",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "2238549c-cb64-46ca-ad57-e602087442e2",
+                    "answers": [
+                      {
+                        "concept": "f53bb7a7-9009-4a9d-8c50-66813ba066a0",
+                        "label": "No response (0)"
+                      },
+                      {
+                        "concept": "9b9eefd3-d29e-4296-9229-4c3a80fa5c07",
+                        "label": "Weak: grimace (1)"
+                      },
+                      {
+                        "concept": "8746e646-6c98-4fec-8d70-aad5a8f6b6b1",
+                        "label": "Strong: cry, cough (2)"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "(isEmpty(newbornCount) || newbornCount < 2) || (nbStatus_1 === '63f4b85c-de5a-48e9-a9a5-bf2656c10125' || isEmpty(apgar5Hr_1) || isEmpty(apgar5Resp_1) || isEmpty(apgar5Tone_1) || isEmpty(apgar5Refl_1) || isEmpty(apgar5Col_1) || ((apgar5Hr_1 === '475f0140-91ce-4b0c-ae3f-2c820871fbc1' ? 2 : (apgar5Hr_1 === '1034d639-4fb8-44e7-80ef-75a8aa9373fe' ? 1 : 0)) + (apgar5Resp_1 === '27f526c7-e5cb-4034-8a4a-381ac74819ad' ? 2 : (apgar5Resp_1 === '0019c755-3bf4-4a3c-8047-17d8ed9ba658' ? 1 : 0)) + (apgar5Tone_1 === 'aeb00d31-7ebd-41be-830d-dffd75e10e07' ? 2 : (apgar5Tone_1 === 'd9e538a1-4722-4647-87f7-e3e2e3d6f7c7' ? 1 : 0)) + (apgar5Refl_1 === '8746e646-6c98-4fec-8d70-aad5a8f6b6b1' ? 2 : (apgar5Refl_1 === '9b9eefd3-d29e-4296-9229-4c3a80fa5c07' ? 1 : 0)) + (apgar5Col_1 === '75b37b86-2a58-4f82-ac3a-e5a7ee5d1b57' ? 2 : (apgar5Col_1 === '80ebaa43-d932-497d-a94f-8f03fe169c3e' ? 1 : 0))) >= 7)"
+                  }
+                },
+                {
+                  "label": "APGAR 10 min: Colour",
+                  "type": "obs",
+                  "id": "apgar10Col_1",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "08a54719-1088-45b8-b5fe-fc296f0332a4",
+                    "answers": [
+                      {
+                        "concept": "bb3f61e2-34f4-42dd-b8c8-333f6aff8bb8",
+                        "label": "Blue or pale all over (0)"
+                      },
+                      {
+                        "concept": "80ebaa43-d932-497d-a94f-8f03fe169c3e",
+                        "label": "Pink body, blue extremities (1)"
+                      },
+                      {
+                        "concept": "75b37b86-2a58-4f82-ac3a-e5a7ee5d1b57",
+                        "label": "Completely pink (2)"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "(isEmpty(newbornCount) || newbornCount < 2) || (nbStatus_1 === '63f4b85c-de5a-48e9-a9a5-bf2656c10125' || isEmpty(apgar5Hr_1) || isEmpty(apgar5Resp_1) || isEmpty(apgar5Tone_1) || isEmpty(apgar5Refl_1) || isEmpty(apgar5Col_1) || ((apgar5Hr_1 === '475f0140-91ce-4b0c-ae3f-2c820871fbc1' ? 2 : (apgar5Hr_1 === '1034d639-4fb8-44e7-80ef-75a8aa9373fe' ? 1 : 0)) + (apgar5Resp_1 === '27f526c7-e5cb-4034-8a4a-381ac74819ad' ? 2 : (apgar5Resp_1 === '0019c755-3bf4-4a3c-8047-17d8ed9ba658' ? 1 : 0)) + (apgar5Tone_1 === 'aeb00d31-7ebd-41be-830d-dffd75e10e07' ? 2 : (apgar5Tone_1 === 'd9e538a1-4722-4647-87f7-e3e2e3d6f7c7' ? 1 : 0)) + (apgar5Refl_1 === '8746e646-6c98-4fec-8d70-aad5a8f6b6b1' ? 2 : (apgar5Refl_1 === '9b9eefd3-d29e-4296-9229-4c3a80fa5c07' ? 1 : 0)) + (apgar5Col_1 === '75b37b86-2a58-4f82-ac3a-e5a7ee5d1b57' ? 2 : (apgar5Col_1 === '80ebaa43-d932-497d-a94f-8f03fe169c3e' ? 1 : 0))) >= 7)"
+                  }
+                },
+                {
+                  "label": "APGAR 10 min: Total",
+                  "type": "obs",
+                  "id": "apgar10Total_1",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "2e3c5525-f21c-4287-a482-3c8ae6cc9cbe",
+                    "min": "0",
+                    "max": "10",
+                    "disallowDecimals": true,
+                    "calculate": {
+                      "calculateExpression": "isEmpty(apgar10Hr_1) && isEmpty(apgar10Resp_1) && isEmpty(apgar10Tone_1) && isEmpty(apgar10Refl_1) && isEmpty(apgar10Col_1) ? undefined : (apgar10Hr_1 === '475f0140-91ce-4b0c-ae3f-2c820871fbc1' ? 2 : (apgar10Hr_1 === '1034d639-4fb8-44e7-80ef-75a8aa9373fe' ? 1 : 0)) + (apgar10Resp_1 === '27f526c7-e5cb-4034-8a4a-381ac74819ad' ? 2 : (apgar10Resp_1 === '0019c755-3bf4-4a3c-8047-17d8ed9ba658' ? 1 : 0)) + (apgar10Tone_1 === 'aeb00d31-7ebd-41be-830d-dffd75e10e07' ? 2 : (apgar10Tone_1 === 'd9e538a1-4722-4647-87f7-e3e2e3d6f7c7' ? 1 : 0)) + (apgar10Refl_1 === '8746e646-6c98-4fec-8d70-aad5a8f6b6b1' ? 2 : (apgar10Refl_1 === '9b9eefd3-d29e-4296-9229-4c3a80fa5c07' ? 1 : 0)) + (apgar10Col_1 === '75b37b86-2a58-4f82-ac3a-e5a7ee5d1b57' ? 2 : (apgar10Col_1 === '80ebaa43-d932-497d-a94f-8f03fe169c3e' ? 1 : 0))"
+                    }
+                  },
+                  "hide": {
+                    "hideWhenExpression": "(isEmpty(newbornCount) || newbornCount < 2) || (nbStatus_1 === '63f4b85c-de5a-48e9-a9a5-bf2656c10125' || isEmpty(apgar5Hr_1) || isEmpty(apgar5Resp_1) || isEmpty(apgar5Tone_1) || isEmpty(apgar5Refl_1) || isEmpty(apgar5Col_1) || ((apgar5Hr_1 === '475f0140-91ce-4b0c-ae3f-2c820871fbc1' ? 2 : (apgar5Hr_1 === '1034d639-4fb8-44e7-80ef-75a8aa9373fe' ? 1 : 0)) + (apgar5Resp_1 === '27f526c7-e5cb-4034-8a4a-381ac74819ad' ? 2 : (apgar5Resp_1 === '0019c755-3bf4-4a3c-8047-17d8ed9ba658' ? 1 : 0)) + (apgar5Tone_1 === 'aeb00d31-7ebd-41be-830d-dffd75e10e07' ? 2 : (apgar5Tone_1 === 'd9e538a1-4722-4647-87f7-e3e2e3d6f7c7' ? 1 : 0)) + (apgar5Refl_1 === '8746e646-6c98-4fec-8d70-aad5a8f6b6b1' ? 2 : (apgar5Refl_1 === '9b9eefd3-d29e-4296-9229-4c3a80fa5c07' ? 1 : 0)) + (apgar5Col_1 === '75b37b86-2a58-4f82-ac3a-e5a7ee5d1b57' ? 2 : (apgar5Col_1 === '80ebaa43-d932-497d-a94f-8f03fe169c3e' ? 1 : 0))) >= 7)"
+                  }
+                }
+              ],
+              "hide": {
+                "hideWhenExpression": "isEmpty(newbornCount) || newbornCount < 2"
+              }
+            },
+            {
+              "label": "Newborn 3",
+              "type": "obsGroup",
+              "id": "newborn_2",
+              "questionOptions": {
+                "rendering": "group",
+                "concept": "ac11ec86-844a-496f-9726-a39f0a7b47a5"
+              },
+              "questions": [
+                {
+                  "label": "Date & Time of Birth",
+                  "type": "obs",
+                  "id": "nbBirthDatetime_2",
+                  "questionOptions": {
+                    "rendering": "datetime",
+                    "concept": "b1fa6cba-2b54-4d51-9e91-323e7129224b"
+                  },
+                  "hide": {
+                    "hideWhenExpression": "isEmpty(newbornCount) || newbornCount < 3"
+                  }
+                },
+                {
+                  "label": "Sex",
+                  "type": "obs",
+                  "id": "nbSex_2",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "59bb5013-c82b-4755-b348-4d14793e6174",
+                    "answers": [
+                      {
+                        "concept": "adfdcfe7-f2e9-4eb6-9e49-5b3c795c5870",
+                        "label": "Male"
+                      },
+                      {
+                        "concept": "d5d86c99-dacc-478e-b2b3-21ccb98a0476",
+                        "label": "Female"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "isEmpty(newbornCount) || newbornCount < 3"
+                  }
+                },
+                {
+                  "label": "Newborn Status",
+                  "type": "obs",
+                  "id": "nbStatus_2",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "cd96c0b6-a08f-49eb-94ad-9a914f1612f0",
+                    "answers": [
+                      {
+                        "concept": "4056a982-6a2d-4062-9514-efcf4e66dd0a",
+                        "label": "Born alive"
+                      },
+                      {
+                        "concept": "63f4b85c-de5a-48e9-a9a5-bf2656c10125",
+                        "label": "Stillbirth"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "isEmpty(newbornCount) || newbornCount < 3"
+                  }
+                },
+                {
+                  "label": "Stillbirth Type",
+                  "type": "obs",
+                  "id": "nbStillbirthType_2",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "52325f44-b6dd-470b-a672-97fefbd119e1",
+                    "answers": [
+                      {
+                        "concept": "8312584c-d0b7-404e-b575-9b93fbe09736",
+                        "label": "Fresh"
+                      },
+                      {
+                        "concept": "f5cee4c8-2f54-43ff-8169-c7d64223a4ea",
+                        "label": "Macerated"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "(isEmpty(newbornCount) || newbornCount < 3) || (nbStatus_2 !== '63f4b85c-de5a-48e9-a9a5-bf2656c10125')"
+                  }
+                },
+                {
+                  "label": "Weight (g)",
+                  "type": "obs",
+                  "id": "nbWeight_2",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "237d5a2a-fd87-4c2a-b291-d813cd76c6f2",
+                    "min": "0",
+                    "max": "7000",
+                    "disallowDecimals": true
+                  },
+                  "hide": {
+                    "hideWhenExpression": "isEmpty(newbornCount) || newbornCount < 3"
+                  }
+                },
+                {
+                  "label": "Length (cm)",
+                  "type": "obs",
+                  "id": "nbLength_2",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "59bc311b-4e61-4b6a-8b96-2172ba7178c3",
+                    "min": "0",
+                    "max": "70"
+                  },
+                  "hide": {
+                    "hideWhenExpression": "isEmpty(newbornCount) || newbornCount < 3"
+                  }
+                },
+                {
+                  "label": "Head Circumference (cm)",
+                  "type": "obs",
+                  "id": "nbHeadCircumference_2",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "39e137c4-7a68-4963-baed-1c6890ecde23",
+                    "min": "0",
+                    "max": "60"
+                  },
+                  "hide": {
+                    "hideWhenExpression": "isEmpty(newbornCount) || newbornCount < 3"
+                  }
+                },
+                {
+                  "label": "Intubation (time)",
+                  "type": "obs",
+                  "id": "nbIntubationTime_2",
+                  "questionOptions": {
+                    "rendering": "datetime",
+                    "concept": "6551bb19-9430-42d7-a878-73195ed256f8"
+                  },
+                  "hide": {
+                    "hideWhenExpression": "isEmpty(newbornCount) || newbornCount < 3"
+                  }
+                },
+                {
+                  "label": "Adrenaline Dose (mg)",
+                  "type": "obs",
+                  "id": "nbAdrenalineDose_2",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "bd619dea-1d0c-4812-bf34-23bded19460a",
+                    "min": "0",
+                    "max": "10"
+                  },
+                  "hide": {
+                    "hideWhenExpression": "isEmpty(newbornCount) || newbornCount < 3"
+                  }
+                },
+                {
+                  "label": "Destination of the Newborn",
+                  "type": "obs",
+                  "id": "nbDestination_2",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "09472798-dc1b-4d5c-9451-38d4100bed19",
+                    "answers": [
+                      {
+                        "concept": "554993c3-d261-4b50-9dcd-b370dd6f7602",
+                        "label": "Incubator"
+                      },
+                      {
+                        "concept": "9891d315-790e-4d62-a546-14a2d5e296b1",
+                        "label": "Mother's room"
+                      },
+                      {
+                        "concept": "1c47742a-4eeb-46a8-94c5-70fdb0e85e7d",
+                        "label": "Transfer to another hospital"
+                      },
+                      {
+                        "concept": "b5c4b807-d3de-40cd-aae9-178df9b40535",
+                        "label": "Other"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "isEmpty(newbornCount) || newbornCount < 3"
+                  }
+                },
+                {
+                  "label": "APGAR 1 min: Heart Rate",
+                  "type": "obs",
+                  "id": "apgar1Hr_2",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "6c78e461-7922-4483-9788-3e40ed2e35b8",
+                    "answers": [
+                      {
+                        "concept": "5a14afcd-358f-4ec8-9d6f-5be54f1a2e00",
+                        "label": "Absent (0)"
+                      },
+                      {
+                        "concept": "1034d639-4fb8-44e7-80ef-75a8aa9373fe",
+                        "label": "< 100 /min (1)"
+                      },
+                      {
+                        "concept": "475f0140-91ce-4b0c-ae3f-2c820871fbc1",
+                        "label": "> 100 /min (2)"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "(isEmpty(newbornCount) || newbornCount < 3) || (nbStatus_2 === '63f4b85c-de5a-48e9-a9a5-bf2656c10125')"
+                  }
+                },
+                {
+                  "label": "APGAR 1 min: Respiratory Movements",
+                  "type": "obs",
+                  "id": "apgar1Resp_2",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "efb5a10f-8efc-4c7d-a03a-8cecb37d4671",
+                    "answers": [
+                      {
+                        "concept": "86e8defb-6231-43fa-bda7-b6a0053a93de",
+                        "label": "Absent (0)"
+                      },
+                      {
+                        "concept": "0019c755-3bf4-4a3c-8047-17d8ed9ba658",
+                        "label": "Slow, irregular (1)"
+                      },
+                      {
+                        "concept": "27f526c7-e5cb-4034-8a4a-381ac74819ad",
+                        "label": "Regular, vigorous, with cry (2)"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "(isEmpty(newbornCount) || newbornCount < 3) || (nbStatus_2 === '63f4b85c-de5a-48e9-a9a5-bf2656c10125')"
+                  }
+                },
+                {
+                  "label": "APGAR 1 min: Muscle Tone",
+                  "type": "obs",
+                  "id": "apgar1Tone_2",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "4915bfad-0bda-472c-9116-4e785941bf88",
+                    "answers": [
+                      {
+                        "concept": "7b904017-7468-48de-b4ee-32ee42674273",
+                        "label": "Absent (limp) (0)"
+                      },
+                      {
+                        "concept": "d9e538a1-4722-4647-87f7-e3e2e3d6f7c7",
+                        "label": "Arms and legs flexed (1)"
+                      },
+                      {
+                        "concept": "aeb00d31-7ebd-41be-830d-dffd75e10e07",
+                        "label": "Active movement (2)"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "(isEmpty(newbornCount) || newbornCount < 3) || (nbStatus_2 === '63f4b85c-de5a-48e9-a9a5-bf2656c10125')"
+                  }
+                },
+                {
+                  "label": "APGAR 1 min: Reactivity to Stimulation",
+                  "type": "obs",
+                  "id": "apgar1Refl_2",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "ee202c67-1f19-417e-afc7-7d01fa217071",
+                    "answers": [
+                      {
+                        "concept": "f53bb7a7-9009-4a9d-8c50-66813ba066a0",
+                        "label": "No response (0)"
+                      },
+                      {
+                        "concept": "9b9eefd3-d29e-4296-9229-4c3a80fa5c07",
+                        "label": "Weak: grimace (1)"
+                      },
+                      {
+                        "concept": "8746e646-6c98-4fec-8d70-aad5a8f6b6b1",
+                        "label": "Strong: cry, cough (2)"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "(isEmpty(newbornCount) || newbornCount < 3) || (nbStatus_2 === '63f4b85c-de5a-48e9-a9a5-bf2656c10125')"
+                  }
+                },
+                {
+                  "label": "APGAR 1 min: Colour",
+                  "type": "obs",
+                  "id": "apgar1Col_2",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "64ffeec0-059a-47ed-9122-302ca3a74229",
+                    "answers": [
+                      {
+                        "concept": "bb3f61e2-34f4-42dd-b8c8-333f6aff8bb8",
+                        "label": "Blue or pale all over (0)"
+                      },
+                      {
+                        "concept": "80ebaa43-d932-497d-a94f-8f03fe169c3e",
+                        "label": "Pink body, blue extremities (1)"
+                      },
+                      {
+                        "concept": "75b37b86-2a58-4f82-ac3a-e5a7ee5d1b57",
+                        "label": "Completely pink (2)"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "(isEmpty(newbornCount) || newbornCount < 3) || (nbStatus_2 === '63f4b85c-de5a-48e9-a9a5-bf2656c10125')"
+                  }
+                },
+                {
+                  "label": "APGAR 1 min: Total",
+                  "type": "obs",
+                  "id": "apgar1Total_2",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "b4fc4494-79af-4b43-af09-5908bb13f803",
+                    "min": "0",
+                    "max": "10",
+                    "disallowDecimals": true,
+                    "calculate": {
+                      "calculateExpression": "isEmpty(apgar1Hr_2) && isEmpty(apgar1Resp_2) && isEmpty(apgar1Tone_2) && isEmpty(apgar1Refl_2) && isEmpty(apgar1Col_2) ? undefined : (apgar1Hr_2 === '475f0140-91ce-4b0c-ae3f-2c820871fbc1' ? 2 : (apgar1Hr_2 === '1034d639-4fb8-44e7-80ef-75a8aa9373fe' ? 1 : 0)) + (apgar1Resp_2 === '27f526c7-e5cb-4034-8a4a-381ac74819ad' ? 2 : (apgar1Resp_2 === '0019c755-3bf4-4a3c-8047-17d8ed9ba658' ? 1 : 0)) + (apgar1Tone_2 === 'aeb00d31-7ebd-41be-830d-dffd75e10e07' ? 2 : (apgar1Tone_2 === 'd9e538a1-4722-4647-87f7-e3e2e3d6f7c7' ? 1 : 0)) + (apgar1Refl_2 === '8746e646-6c98-4fec-8d70-aad5a8f6b6b1' ? 2 : (apgar1Refl_2 === '9b9eefd3-d29e-4296-9229-4c3a80fa5c07' ? 1 : 0)) + (apgar1Col_2 === '75b37b86-2a58-4f82-ac3a-e5a7ee5d1b57' ? 2 : (apgar1Col_2 === '80ebaa43-d932-497d-a94f-8f03fe169c3e' ? 1 : 0))"
+                    }
+                  },
+                  "hide": {
+                    "hideWhenExpression": "(isEmpty(newbornCount) || newbornCount < 3) || (nbStatus_2 === '63f4b85c-de5a-48e9-a9a5-bf2656c10125')"
+                  }
+                },
+                {
+                  "label": "APGAR 5 min: Heart Rate",
+                  "type": "obs",
+                  "id": "apgar5Hr_2",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "5176ac83-38e2-47be-b4ce-eb5e77eb8639",
+                    "answers": [
+                      {
+                        "concept": "5a14afcd-358f-4ec8-9d6f-5be54f1a2e00",
+                        "label": "Absent (0)"
+                      },
+                      {
+                        "concept": "1034d639-4fb8-44e7-80ef-75a8aa9373fe",
+                        "label": "< 100 /min (1)"
+                      },
+                      {
+                        "concept": "475f0140-91ce-4b0c-ae3f-2c820871fbc1",
+                        "label": "> 100 /min (2)"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "(isEmpty(newbornCount) || newbornCount < 3) || (nbStatus_2 === '63f4b85c-de5a-48e9-a9a5-bf2656c10125')"
+                  }
+                },
+                {
+                  "label": "APGAR 5 min: Respiratory Movements",
+                  "type": "obs",
+                  "id": "apgar5Resp_2",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "e26bd1f9-ad93-4616-b711-d87932235ab3",
+                    "answers": [
+                      {
+                        "concept": "86e8defb-6231-43fa-bda7-b6a0053a93de",
+                        "label": "Absent (0)"
+                      },
+                      {
+                        "concept": "0019c755-3bf4-4a3c-8047-17d8ed9ba658",
+                        "label": "Slow, irregular (1)"
+                      },
+                      {
+                        "concept": "27f526c7-e5cb-4034-8a4a-381ac74819ad",
+                        "label": "Regular, vigorous, with cry (2)"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "(isEmpty(newbornCount) || newbornCount < 3) || (nbStatus_2 === '63f4b85c-de5a-48e9-a9a5-bf2656c10125')"
+                  }
+                },
+                {
+                  "label": "APGAR 5 min: Muscle Tone",
+                  "type": "obs",
+                  "id": "apgar5Tone_2",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "464a3a1b-ac57-467b-8ad8-56a102b94f62",
+                    "answers": [
+                      {
+                        "concept": "7b904017-7468-48de-b4ee-32ee42674273",
+                        "label": "Absent (limp) (0)"
+                      },
+                      {
+                        "concept": "d9e538a1-4722-4647-87f7-e3e2e3d6f7c7",
+                        "label": "Arms and legs flexed (1)"
+                      },
+                      {
+                        "concept": "aeb00d31-7ebd-41be-830d-dffd75e10e07",
+                        "label": "Active movement (2)"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "(isEmpty(newbornCount) || newbornCount < 3) || (nbStatus_2 === '63f4b85c-de5a-48e9-a9a5-bf2656c10125')"
+                  }
+                },
+                {
+                  "label": "APGAR 5 min: Reactivity to Stimulation",
+                  "type": "obs",
+                  "id": "apgar5Refl_2",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "30cdd64b-bdfd-4f73-b74a-d75bac346aa1",
+                    "answers": [
+                      {
+                        "concept": "f53bb7a7-9009-4a9d-8c50-66813ba066a0",
+                        "label": "No response (0)"
+                      },
+                      {
+                        "concept": "9b9eefd3-d29e-4296-9229-4c3a80fa5c07",
+                        "label": "Weak: grimace (1)"
+                      },
+                      {
+                        "concept": "8746e646-6c98-4fec-8d70-aad5a8f6b6b1",
+                        "label": "Strong: cry, cough (2)"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "(isEmpty(newbornCount) || newbornCount < 3) || (nbStatus_2 === '63f4b85c-de5a-48e9-a9a5-bf2656c10125')"
+                  }
+                },
+                {
+                  "label": "APGAR 5 min: Colour",
+                  "type": "obs",
+                  "id": "apgar5Col_2",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "c2ac127b-7e1e-4aad-8f34-e10cd91db9ef",
+                    "answers": [
+                      {
+                        "concept": "bb3f61e2-34f4-42dd-b8c8-333f6aff8bb8",
+                        "label": "Blue or pale all over (0)"
+                      },
+                      {
+                        "concept": "80ebaa43-d932-497d-a94f-8f03fe169c3e",
+                        "label": "Pink body, blue extremities (1)"
+                      },
+                      {
+                        "concept": "75b37b86-2a58-4f82-ac3a-e5a7ee5d1b57",
+                        "label": "Completely pink (2)"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "(isEmpty(newbornCount) || newbornCount < 3) || (nbStatus_2 === '63f4b85c-de5a-48e9-a9a5-bf2656c10125')"
+                  }
+                },
+                {
+                  "label": "APGAR 5 min: Total",
+                  "type": "obs",
+                  "id": "apgar5Total_2",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "f5e56be1-714b-434b-8b6f-def6bedadb4b",
+                    "min": "0",
+                    "max": "10",
+                    "disallowDecimals": true,
+                    "calculate": {
+                      "calculateExpression": "isEmpty(apgar5Hr_2) && isEmpty(apgar5Resp_2) && isEmpty(apgar5Tone_2) && isEmpty(apgar5Refl_2) && isEmpty(apgar5Col_2) ? undefined : (apgar5Hr_2 === '475f0140-91ce-4b0c-ae3f-2c820871fbc1' ? 2 : (apgar5Hr_2 === '1034d639-4fb8-44e7-80ef-75a8aa9373fe' ? 1 : 0)) + (apgar5Resp_2 === '27f526c7-e5cb-4034-8a4a-381ac74819ad' ? 2 : (apgar5Resp_2 === '0019c755-3bf4-4a3c-8047-17d8ed9ba658' ? 1 : 0)) + (apgar5Tone_2 === 'aeb00d31-7ebd-41be-830d-dffd75e10e07' ? 2 : (apgar5Tone_2 === 'd9e538a1-4722-4647-87f7-e3e2e3d6f7c7' ? 1 : 0)) + (apgar5Refl_2 === '8746e646-6c98-4fec-8d70-aad5a8f6b6b1' ? 2 : (apgar5Refl_2 === '9b9eefd3-d29e-4296-9229-4c3a80fa5c07' ? 1 : 0)) + (apgar5Col_2 === '75b37b86-2a58-4f82-ac3a-e5a7ee5d1b57' ? 2 : (apgar5Col_2 === '80ebaa43-d932-497d-a94f-8f03fe169c3e' ? 1 : 0))"
+                    }
+                  },
+                  "hide": {
+                    "hideWhenExpression": "(isEmpty(newbornCount) || newbornCount < 3) || (nbStatus_2 === '63f4b85c-de5a-48e9-a9a5-bf2656c10125')"
+                  }
+                },
+                {
+                  "label": "APGAR 10 min: Heart Rate",
+                  "type": "obs",
+                  "id": "apgar10Hr_2",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "6bdd3faa-bfac-4d37-b19d-7dffb8f3cead",
+                    "answers": [
+                      {
+                        "concept": "5a14afcd-358f-4ec8-9d6f-5be54f1a2e00",
+                        "label": "Absent (0)"
+                      },
+                      {
+                        "concept": "1034d639-4fb8-44e7-80ef-75a8aa9373fe",
+                        "label": "< 100 /min (1)"
+                      },
+                      {
+                        "concept": "475f0140-91ce-4b0c-ae3f-2c820871fbc1",
+                        "label": "> 100 /min (2)"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "(isEmpty(newbornCount) || newbornCount < 3) || (nbStatus_2 === '63f4b85c-de5a-48e9-a9a5-bf2656c10125' || isEmpty(apgar5Hr_2) || isEmpty(apgar5Resp_2) || isEmpty(apgar5Tone_2) || isEmpty(apgar5Refl_2) || isEmpty(apgar5Col_2) || ((apgar5Hr_2 === '475f0140-91ce-4b0c-ae3f-2c820871fbc1' ? 2 : (apgar5Hr_2 === '1034d639-4fb8-44e7-80ef-75a8aa9373fe' ? 1 : 0)) + (apgar5Resp_2 === '27f526c7-e5cb-4034-8a4a-381ac74819ad' ? 2 : (apgar5Resp_2 === '0019c755-3bf4-4a3c-8047-17d8ed9ba658' ? 1 : 0)) + (apgar5Tone_2 === 'aeb00d31-7ebd-41be-830d-dffd75e10e07' ? 2 : (apgar5Tone_2 === 'd9e538a1-4722-4647-87f7-e3e2e3d6f7c7' ? 1 : 0)) + (apgar5Refl_2 === '8746e646-6c98-4fec-8d70-aad5a8f6b6b1' ? 2 : (apgar5Refl_2 === '9b9eefd3-d29e-4296-9229-4c3a80fa5c07' ? 1 : 0)) + (apgar5Col_2 === '75b37b86-2a58-4f82-ac3a-e5a7ee5d1b57' ? 2 : (apgar5Col_2 === '80ebaa43-d932-497d-a94f-8f03fe169c3e' ? 1 : 0))) >= 7)"
+                  }
+                },
+                {
+                  "label": "APGAR 10 min: Respiratory Movements",
+                  "type": "obs",
+                  "id": "apgar10Resp_2",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "d2b58503-941e-46c5-88a7-914790ae1140",
+                    "answers": [
+                      {
+                        "concept": "86e8defb-6231-43fa-bda7-b6a0053a93de",
+                        "label": "Absent (0)"
+                      },
+                      {
+                        "concept": "0019c755-3bf4-4a3c-8047-17d8ed9ba658",
+                        "label": "Slow, irregular (1)"
+                      },
+                      {
+                        "concept": "27f526c7-e5cb-4034-8a4a-381ac74819ad",
+                        "label": "Regular, vigorous, with cry (2)"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "(isEmpty(newbornCount) || newbornCount < 3) || (nbStatus_2 === '63f4b85c-de5a-48e9-a9a5-bf2656c10125' || isEmpty(apgar5Hr_2) || isEmpty(apgar5Resp_2) || isEmpty(apgar5Tone_2) || isEmpty(apgar5Refl_2) || isEmpty(apgar5Col_2) || ((apgar5Hr_2 === '475f0140-91ce-4b0c-ae3f-2c820871fbc1' ? 2 : (apgar5Hr_2 === '1034d639-4fb8-44e7-80ef-75a8aa9373fe' ? 1 : 0)) + (apgar5Resp_2 === '27f526c7-e5cb-4034-8a4a-381ac74819ad' ? 2 : (apgar5Resp_2 === '0019c755-3bf4-4a3c-8047-17d8ed9ba658' ? 1 : 0)) + (apgar5Tone_2 === 'aeb00d31-7ebd-41be-830d-dffd75e10e07' ? 2 : (apgar5Tone_2 === 'd9e538a1-4722-4647-87f7-e3e2e3d6f7c7' ? 1 : 0)) + (apgar5Refl_2 === '8746e646-6c98-4fec-8d70-aad5a8f6b6b1' ? 2 : (apgar5Refl_2 === '9b9eefd3-d29e-4296-9229-4c3a80fa5c07' ? 1 : 0)) + (apgar5Col_2 === '75b37b86-2a58-4f82-ac3a-e5a7ee5d1b57' ? 2 : (apgar5Col_2 === '80ebaa43-d932-497d-a94f-8f03fe169c3e' ? 1 : 0))) >= 7)"
+                  }
+                },
+                {
+                  "label": "APGAR 10 min: Muscle Tone",
+                  "type": "obs",
+                  "id": "apgar10Tone_2",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "0dcaeaa2-1cd6-4e4e-9564-079cc37b78cf",
+                    "answers": [
+                      {
+                        "concept": "7b904017-7468-48de-b4ee-32ee42674273",
+                        "label": "Absent (limp) (0)"
+                      },
+                      {
+                        "concept": "d9e538a1-4722-4647-87f7-e3e2e3d6f7c7",
+                        "label": "Arms and legs flexed (1)"
+                      },
+                      {
+                        "concept": "aeb00d31-7ebd-41be-830d-dffd75e10e07",
+                        "label": "Active movement (2)"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "(isEmpty(newbornCount) || newbornCount < 3) || (nbStatus_2 === '63f4b85c-de5a-48e9-a9a5-bf2656c10125' || isEmpty(apgar5Hr_2) || isEmpty(apgar5Resp_2) || isEmpty(apgar5Tone_2) || isEmpty(apgar5Refl_2) || isEmpty(apgar5Col_2) || ((apgar5Hr_2 === '475f0140-91ce-4b0c-ae3f-2c820871fbc1' ? 2 : (apgar5Hr_2 === '1034d639-4fb8-44e7-80ef-75a8aa9373fe' ? 1 : 0)) + (apgar5Resp_2 === '27f526c7-e5cb-4034-8a4a-381ac74819ad' ? 2 : (apgar5Resp_2 === '0019c755-3bf4-4a3c-8047-17d8ed9ba658' ? 1 : 0)) + (apgar5Tone_2 === 'aeb00d31-7ebd-41be-830d-dffd75e10e07' ? 2 : (apgar5Tone_2 === 'd9e538a1-4722-4647-87f7-e3e2e3d6f7c7' ? 1 : 0)) + (apgar5Refl_2 === '8746e646-6c98-4fec-8d70-aad5a8f6b6b1' ? 2 : (apgar5Refl_2 === '9b9eefd3-d29e-4296-9229-4c3a80fa5c07' ? 1 : 0)) + (apgar5Col_2 === '75b37b86-2a58-4f82-ac3a-e5a7ee5d1b57' ? 2 : (apgar5Col_2 === '80ebaa43-d932-497d-a94f-8f03fe169c3e' ? 1 : 0))) >= 7)"
+                  }
+                },
+                {
+                  "label": "APGAR 10 min: Reactivity to Stimulation",
+                  "type": "obs",
+                  "id": "apgar10Refl_2",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "2238549c-cb64-46ca-ad57-e602087442e2",
+                    "answers": [
+                      {
+                        "concept": "f53bb7a7-9009-4a9d-8c50-66813ba066a0",
+                        "label": "No response (0)"
+                      },
+                      {
+                        "concept": "9b9eefd3-d29e-4296-9229-4c3a80fa5c07",
+                        "label": "Weak: grimace (1)"
+                      },
+                      {
+                        "concept": "8746e646-6c98-4fec-8d70-aad5a8f6b6b1",
+                        "label": "Strong: cry, cough (2)"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "(isEmpty(newbornCount) || newbornCount < 3) || (nbStatus_2 === '63f4b85c-de5a-48e9-a9a5-bf2656c10125' || isEmpty(apgar5Hr_2) || isEmpty(apgar5Resp_2) || isEmpty(apgar5Tone_2) || isEmpty(apgar5Refl_2) || isEmpty(apgar5Col_2) || ((apgar5Hr_2 === '475f0140-91ce-4b0c-ae3f-2c820871fbc1' ? 2 : (apgar5Hr_2 === '1034d639-4fb8-44e7-80ef-75a8aa9373fe' ? 1 : 0)) + (apgar5Resp_2 === '27f526c7-e5cb-4034-8a4a-381ac74819ad' ? 2 : (apgar5Resp_2 === '0019c755-3bf4-4a3c-8047-17d8ed9ba658' ? 1 : 0)) + (apgar5Tone_2 === 'aeb00d31-7ebd-41be-830d-dffd75e10e07' ? 2 : (apgar5Tone_2 === 'd9e538a1-4722-4647-87f7-e3e2e3d6f7c7' ? 1 : 0)) + (apgar5Refl_2 === '8746e646-6c98-4fec-8d70-aad5a8f6b6b1' ? 2 : (apgar5Refl_2 === '9b9eefd3-d29e-4296-9229-4c3a80fa5c07' ? 1 : 0)) + (apgar5Col_2 === '75b37b86-2a58-4f82-ac3a-e5a7ee5d1b57' ? 2 : (apgar5Col_2 === '80ebaa43-d932-497d-a94f-8f03fe169c3e' ? 1 : 0))) >= 7)"
+                  }
+                },
+                {
+                  "label": "APGAR 10 min: Colour",
+                  "type": "obs",
+                  "id": "apgar10Col_2",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "08a54719-1088-45b8-b5fe-fc296f0332a4",
+                    "answers": [
+                      {
+                        "concept": "bb3f61e2-34f4-42dd-b8c8-333f6aff8bb8",
+                        "label": "Blue or pale all over (0)"
+                      },
+                      {
+                        "concept": "80ebaa43-d932-497d-a94f-8f03fe169c3e",
+                        "label": "Pink body, blue extremities (1)"
+                      },
+                      {
+                        "concept": "75b37b86-2a58-4f82-ac3a-e5a7ee5d1b57",
+                        "label": "Completely pink (2)"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "(isEmpty(newbornCount) || newbornCount < 3) || (nbStatus_2 === '63f4b85c-de5a-48e9-a9a5-bf2656c10125' || isEmpty(apgar5Hr_2) || isEmpty(apgar5Resp_2) || isEmpty(apgar5Tone_2) || isEmpty(apgar5Refl_2) || isEmpty(apgar5Col_2) || ((apgar5Hr_2 === '475f0140-91ce-4b0c-ae3f-2c820871fbc1' ? 2 : (apgar5Hr_2 === '1034d639-4fb8-44e7-80ef-75a8aa9373fe' ? 1 : 0)) + (apgar5Resp_2 === '27f526c7-e5cb-4034-8a4a-381ac74819ad' ? 2 : (apgar5Resp_2 === '0019c755-3bf4-4a3c-8047-17d8ed9ba658' ? 1 : 0)) + (apgar5Tone_2 === 'aeb00d31-7ebd-41be-830d-dffd75e10e07' ? 2 : (apgar5Tone_2 === 'd9e538a1-4722-4647-87f7-e3e2e3d6f7c7' ? 1 : 0)) + (apgar5Refl_2 === '8746e646-6c98-4fec-8d70-aad5a8f6b6b1' ? 2 : (apgar5Refl_2 === '9b9eefd3-d29e-4296-9229-4c3a80fa5c07' ? 1 : 0)) + (apgar5Col_2 === '75b37b86-2a58-4f82-ac3a-e5a7ee5d1b57' ? 2 : (apgar5Col_2 === '80ebaa43-d932-497d-a94f-8f03fe169c3e' ? 1 : 0))) >= 7)"
+                  }
+                },
+                {
+                  "label": "APGAR 10 min: Total",
+                  "type": "obs",
+                  "id": "apgar10Total_2",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "2e3c5525-f21c-4287-a482-3c8ae6cc9cbe",
+                    "min": "0",
+                    "max": "10",
+                    "disallowDecimals": true,
+                    "calculate": {
+                      "calculateExpression": "isEmpty(apgar10Hr_2) && isEmpty(apgar10Resp_2) && isEmpty(apgar10Tone_2) && isEmpty(apgar10Refl_2) && isEmpty(apgar10Col_2) ? undefined : (apgar10Hr_2 === '475f0140-91ce-4b0c-ae3f-2c820871fbc1' ? 2 : (apgar10Hr_2 === '1034d639-4fb8-44e7-80ef-75a8aa9373fe' ? 1 : 0)) + (apgar10Resp_2 === '27f526c7-e5cb-4034-8a4a-381ac74819ad' ? 2 : (apgar10Resp_2 === '0019c755-3bf4-4a3c-8047-17d8ed9ba658' ? 1 : 0)) + (apgar10Tone_2 === 'aeb00d31-7ebd-41be-830d-dffd75e10e07' ? 2 : (apgar10Tone_2 === 'd9e538a1-4722-4647-87f7-e3e2e3d6f7c7' ? 1 : 0)) + (apgar10Refl_2 === '8746e646-6c98-4fec-8d70-aad5a8f6b6b1' ? 2 : (apgar10Refl_2 === '9b9eefd3-d29e-4296-9229-4c3a80fa5c07' ? 1 : 0)) + (apgar10Col_2 === '75b37b86-2a58-4f82-ac3a-e5a7ee5d1b57' ? 2 : (apgar10Col_2 === '80ebaa43-d932-497d-a94f-8f03fe169c3e' ? 1 : 0))"
+                    }
+                  },
+                  "hide": {
+                    "hideWhenExpression": "(isEmpty(newbornCount) || newbornCount < 3) || (nbStatus_2 === '63f4b85c-de5a-48e9-a9a5-bf2656c10125' || isEmpty(apgar5Hr_2) || isEmpty(apgar5Resp_2) || isEmpty(apgar5Tone_2) || isEmpty(apgar5Refl_2) || isEmpty(apgar5Col_2) || ((apgar5Hr_2 === '475f0140-91ce-4b0c-ae3f-2c820871fbc1' ? 2 : (apgar5Hr_2 === '1034d639-4fb8-44e7-80ef-75a8aa9373fe' ? 1 : 0)) + (apgar5Resp_2 === '27f526c7-e5cb-4034-8a4a-381ac74819ad' ? 2 : (apgar5Resp_2 === '0019c755-3bf4-4a3c-8047-17d8ed9ba658' ? 1 : 0)) + (apgar5Tone_2 === 'aeb00d31-7ebd-41be-830d-dffd75e10e07' ? 2 : (apgar5Tone_2 === 'd9e538a1-4722-4647-87f7-e3e2e3d6f7c7' ? 1 : 0)) + (apgar5Refl_2 === '8746e646-6c98-4fec-8d70-aad5a8f6b6b1' ? 2 : (apgar5Refl_2 === '9b9eefd3-d29e-4296-9229-4c3a80fa5c07' ? 1 : 0)) + (apgar5Col_2 === '75b37b86-2a58-4f82-ac3a-e5a7ee5d1b57' ? 2 : (apgar5Col_2 === '80ebaa43-d932-497d-a94f-8f03fe169c3e' ? 1 : 0))) >= 7)"
+                  }
+                }
+              ],
+              "hide": {
+                "hideWhenExpression": "isEmpty(newbornCount) || newbornCount < 3"
+              }
             }
           ]
         }

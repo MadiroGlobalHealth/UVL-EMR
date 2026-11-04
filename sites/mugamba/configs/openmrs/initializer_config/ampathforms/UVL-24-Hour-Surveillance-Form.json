@@ -1,0 +1,1380 @@
+{
+  "uuid": "df36780e-752e-46e6-aeb7-46a7f11c635d",
+  "name": "UVL 24-Hour Surveillance Form",
+  "description": "UVL postpartum monitoring of the mother and newborn(s), one form per time point from 30 minutes to 24 hours (forms metadata Release 1.1, F17)",
+  "version": "1",
+  "published": true,
+  "retired": false,
+  "encounter": "24-Hour Surveillance",
+  "processor": "EncounterFormProcessor",
+  "referencedForms": [],
+  "encounterType": "79f5e229-1a46-471d-9c14-0092959a7650",
+  "pages": [
+    {
+      "label": "Not applicable",
+      "hide": {
+        "hideWhenExpression": "sex !== 'M'"
+      },
+      "sections": [
+        {
+          "label": "Not applicable",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Not applicable",
+              "type": "markdown",
+              "id": "maleNotice",
+              "questionOptions": {
+                "rendering": "markdown"
+              },
+              "value": [
+                "This form is for female patients only."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "24-Hour Surveillance",
+      "sections": [
+        {
+          "label": "General",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Time Point",
+              "type": "obs",
+              "id": "timePoint",
+              "questionOptions": {
+                "rendering": "select",
+                "concept": "4169c767-e76c-4920-b092-dd038a6108d4",
+                "answers": [
+                  {
+                    "concept": "dd4c1f5f-5252-43fe-94cd-cd415f44e301",
+                    "label": "30 min"
+                  },
+                  {
+                    "concept": "53af324a-2ddd-42bf-8211-7394df293354",
+                    "label": "1 h"
+                  },
+                  {
+                    "concept": "26761674-1076-4c21-8bf7-17cfaf0e39e6",
+                    "label": "2 h"
+                  },
+                  {
+                    "concept": "440bd5e0-dbb6-464d-a971-6245a7bfa0f9",
+                    "label": "6 h"
+                  },
+                  {
+                    "concept": "7c6d4289-f2f0-44ca-b5b5-ba7885a001af",
+                    "label": "12 h"
+                  },
+                  {
+                    "concept": "f7a27b28-cc9b-4e10-b824-d7d2324dc204",
+                    "label": "24 h"
+                  }
+                ]
+              },
+              "required": true
+            }
+          ]
+        },
+        {
+          "label": "Newborn Monitoring",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Number of Newborns",
+              "type": "obs",
+              "id": "newbornCount",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "40f8524b-3951-47e0-a0ce-203a14f16440",
+                "min": "1",
+                "max": "3",
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "Newborn 1",
+              "type": "obsGroup",
+              "id": "newbornMonitoring",
+              "questionOptions": {
+                "rendering": "group",
+                "concept": "776c8759-ab5d-414a-a9f4-4d7b26c5b665"
+              },
+              "questions": [
+                {
+                  "label": "Newborn Status",
+                  "type": "obs",
+                  "id": "nbStatus",
+                  "questionOptions": {
+                    "rendering": "select",
+                    "concept": "238652d6-4aca-451a-9c8e-8336cea6fff4",
+                    "answers": [
+                      {
+                        "concept": "4056a982-6a2d-4062-9514-efcf4e66dd0a",
+                        "label": "Born alive"
+                      },
+                      {
+                        "concept": "63f4b85c-de5a-48e9-a9a5-bf2656c10125",
+                        "label": "Stillbirth"
+                      },
+                      {
+                        "concept": "50e375f7-4d58-46a9-899a-b46a90629599",
+                        "label": "Born alive, died within 24 hours"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "label": "Term and Birth Weight",
+                  "type": "obs",
+                  "id": "nbTermCategory",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "2a8c001c-a278-46b9-9eb1-864c85d50bcd",
+                    "answers": [
+                      {
+                        "concept": "0718eef8-f7f8-4d7d-b735-f501a5680775",
+                        "label": "Term, 2.5 kg or more"
+                      },
+                      {
+                        "concept": "5ee3f18e-8d0b-4285-90fd-a90b3ac16514",
+                        "label": "Term, under 2.5 kg"
+                      },
+                      {
+                        "concept": "059d5f70-20d1-4b5c-a7bf-b26b605e5d11",
+                        "label": "Premature"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "label": "Newborn Sex",
+                  "type": "obs",
+                  "id": "nbSex",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "59bb5013-c82b-4755-b348-4d14793e6174",
+                    "answers": [
+                      {
+                        "concept": "adfdcfe7-f2e9-4eb6-9e49-5b3c795c5870",
+                        "label": "Male"
+                      },
+                      {
+                        "concept": "d5d86c99-dacc-478e-b2b3-21ccb98a0476",
+                        "label": "Female"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "label": "Birth Weight (g)",
+                  "type": "obs",
+                  "id": "nbBirthWeight",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "237d5a2a-fd87-4c2a-b291-d813cd76c6f2",
+                    "min": "0",
+                    "max": "7000",
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Size at Birth (cm)",
+                  "type": "obs",
+                  "id": "nbBirthLength",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "59bc311b-4e61-4b6a-8b96-2172ba7178c3",
+                    "min": "0",
+                    "max": "70"
+                  }
+                },
+                {
+                  "label": "APGAR Score at Birth",
+                  "type": "obs",
+                  "id": "nbApgarAtBirth",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "e822ff27-b1b5-4793-a8fc-9beb9f73bc11",
+                    "min": "0",
+                    "max": "10",
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Resuscitation",
+                  "type": "obs",
+                  "id": "nbResuscitation",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "5f0b0e37-d169-4ba5-a49c-bbf8bb7d5b61",
+                    "answers": [
+                      {
+                        "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e",
+                        "label": "Yes"
+                      },
+                      {
+                        "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725",
+                        "label": "No"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "label": "Breathing (/min)",
+                  "type": "obs",
+                  "id": "nbRespiratoryRate",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "b39db318-d563-4114-bec0-31ad3d254b24",
+                    "min": "0",
+                    "max": "150",
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Pulse (/min)",
+                  "type": "obs",
+                  "id": "nbPulse",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "bc54cb7c-bb45-45aa-84d6-2346748b7c93",
+                    "min": "0",
+                    "max": "300",
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Temperature (°C)",
+                  "type": "obs",
+                  "id": "nbTemperature",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "748f8d43-617a-40ba-9474-20522e73fb8a",
+                    "min": "25",
+                    "max": "45"
+                  }
+                },
+                {
+                  "label": "Congenital Malformation",
+                  "type": "obs",
+                  "id": "nbMalformation",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "05cbda6b-9a32-4d6d-9821-38219e96630f",
+                    "answers": [
+                      {
+                        "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e",
+                        "label": "Yes"
+                      },
+                      {
+                        "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725",
+                        "label": "No"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "label": "Urine",
+                  "type": "obs",
+                  "id": "nbUrine",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "37f0d251-0e5f-4f83-b624-a69bbfe988c1",
+                    "answers": [
+                      {
+                        "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e",
+                        "label": "Yes"
+                      },
+                      {
+                        "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725",
+                        "label": "No"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "label": "Stool",
+                  "type": "obs",
+                  "id": "nbStool",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "e0c25e2a-b3b6-4fbc-8a06-aaa10d7aa46b",
+                    "answers": [
+                      {
+                        "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e",
+                        "label": "Yes"
+                      },
+                      {
+                        "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725",
+                        "label": "No"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "label": "Breastfeeding",
+                  "type": "obs",
+                  "id": "nbBreastfeeding",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "b45bf86a-91be-4848-a1cd-177b70aaab10",
+                    "answers": [
+                      {
+                        "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e",
+                        "label": "Yes"
+                      },
+                      {
+                        "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725",
+                        "label": "No"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "label": "Umbilical Cord",
+                  "type": "obs",
+                  "id": "nbUmbilicalCord",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "85d82933-9f43-49be-8633-7491fef5447d",
+                    "answers": [
+                      {
+                        "concept": "810f1ade-0829-4cc2-ab29-880c2201eddf",
+                        "label": "Clean"
+                      },
+                      {
+                        "concept": "a9627333-520e-4e47-b29a-2975b7ec51e5",
+                        "label": "Infected"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "label": "Skin Colour (Jaundice)",
+                  "type": "obs",
+                  "id": "nbSkinColour",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "efea48f6-3d58-4caf-bbc3-0d54ee851c0a",
+                    "answers": [
+                      {
+                        "concept": "07589fa3-28e7-4f3d-8988-7dc00ef0704f",
+                        "label": "Pale"
+                      },
+                      {
+                        "concept": "998466f8-0b65-4ac7-bc3d-4d6661d1d43a",
+                        "label": "Well coloured"
+                      },
+                      {
+                        "concept": "91771868-aff4-4fd1-a3f7-d8a5acea2d5c",
+                        "label": "Jaundiced (icterus)"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "label": "Newborn 2",
+              "type": "obsGroup",
+              "id": "newbornMonitoring_1",
+              "questionOptions": {
+                "rendering": "group",
+                "concept": "776c8759-ab5d-414a-a9f4-4d7b26c5b665"
+              },
+              "questions": [
+                {
+                  "label": "Newborn Status",
+                  "type": "obs",
+                  "id": "nbStatus_1",
+                  "questionOptions": {
+                    "rendering": "select",
+                    "concept": "238652d6-4aca-451a-9c8e-8336cea6fff4",
+                    "answers": [
+                      {
+                        "concept": "4056a982-6a2d-4062-9514-efcf4e66dd0a",
+                        "label": "Born alive"
+                      },
+                      {
+                        "concept": "63f4b85c-de5a-48e9-a9a5-bf2656c10125",
+                        "label": "Stillbirth"
+                      },
+                      {
+                        "concept": "50e375f7-4d58-46a9-899a-b46a90629599",
+                        "label": "Born alive, died within 24 hours"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "isEmpty(newbornCount) || newbornCount < 2"
+                  }
+                },
+                {
+                  "label": "Term and Birth Weight",
+                  "type": "obs",
+                  "id": "nbTermCategory_1",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "2a8c001c-a278-46b9-9eb1-864c85d50bcd",
+                    "answers": [
+                      {
+                        "concept": "0718eef8-f7f8-4d7d-b735-f501a5680775",
+                        "label": "Term, 2.5 kg or more"
+                      },
+                      {
+                        "concept": "5ee3f18e-8d0b-4285-90fd-a90b3ac16514",
+                        "label": "Term, under 2.5 kg"
+                      },
+                      {
+                        "concept": "059d5f70-20d1-4b5c-a7bf-b26b605e5d11",
+                        "label": "Premature"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "isEmpty(newbornCount) || newbornCount < 2"
+                  }
+                },
+                {
+                  "label": "Newborn Sex",
+                  "type": "obs",
+                  "id": "nbSex_1",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "59bb5013-c82b-4755-b348-4d14793e6174",
+                    "answers": [
+                      {
+                        "concept": "adfdcfe7-f2e9-4eb6-9e49-5b3c795c5870",
+                        "label": "Male"
+                      },
+                      {
+                        "concept": "d5d86c99-dacc-478e-b2b3-21ccb98a0476",
+                        "label": "Female"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "isEmpty(newbornCount) || newbornCount < 2"
+                  }
+                },
+                {
+                  "label": "Birth Weight (g)",
+                  "type": "obs",
+                  "id": "nbBirthWeight_1",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "237d5a2a-fd87-4c2a-b291-d813cd76c6f2",
+                    "min": "0",
+                    "max": "7000",
+                    "disallowDecimals": true
+                  },
+                  "hide": {
+                    "hideWhenExpression": "isEmpty(newbornCount) || newbornCount < 2"
+                  }
+                },
+                {
+                  "label": "Size at Birth (cm)",
+                  "type": "obs",
+                  "id": "nbBirthLength_1",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "59bc311b-4e61-4b6a-8b96-2172ba7178c3",
+                    "min": "0",
+                    "max": "70"
+                  },
+                  "hide": {
+                    "hideWhenExpression": "isEmpty(newbornCount) || newbornCount < 2"
+                  }
+                },
+                {
+                  "label": "APGAR Score at Birth",
+                  "type": "obs",
+                  "id": "nbApgarAtBirth_1",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "e822ff27-b1b5-4793-a8fc-9beb9f73bc11",
+                    "min": "0",
+                    "max": "10",
+                    "disallowDecimals": true
+                  },
+                  "hide": {
+                    "hideWhenExpression": "isEmpty(newbornCount) || newbornCount < 2"
+                  }
+                },
+                {
+                  "label": "Resuscitation",
+                  "type": "obs",
+                  "id": "nbResuscitation_1",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "5f0b0e37-d169-4ba5-a49c-bbf8bb7d5b61",
+                    "answers": [
+                      {
+                        "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e",
+                        "label": "Yes"
+                      },
+                      {
+                        "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725",
+                        "label": "No"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "isEmpty(newbornCount) || newbornCount < 2"
+                  }
+                },
+                {
+                  "label": "Breathing (/min)",
+                  "type": "obs",
+                  "id": "nbRespiratoryRate_1",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "b39db318-d563-4114-bec0-31ad3d254b24",
+                    "min": "0",
+                    "max": "150",
+                    "disallowDecimals": true
+                  },
+                  "hide": {
+                    "hideWhenExpression": "isEmpty(newbornCount) || newbornCount < 2"
+                  }
+                },
+                {
+                  "label": "Pulse (/min)",
+                  "type": "obs",
+                  "id": "nbPulse_1",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "bc54cb7c-bb45-45aa-84d6-2346748b7c93",
+                    "min": "0",
+                    "max": "300",
+                    "disallowDecimals": true
+                  },
+                  "hide": {
+                    "hideWhenExpression": "isEmpty(newbornCount) || newbornCount < 2"
+                  }
+                },
+                {
+                  "label": "Temperature (°C)",
+                  "type": "obs",
+                  "id": "nbTemperature_1",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "748f8d43-617a-40ba-9474-20522e73fb8a",
+                    "min": "25",
+                    "max": "45"
+                  },
+                  "hide": {
+                    "hideWhenExpression": "isEmpty(newbornCount) || newbornCount < 2"
+                  }
+                },
+                {
+                  "label": "Congenital Malformation",
+                  "type": "obs",
+                  "id": "nbMalformation_1",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "05cbda6b-9a32-4d6d-9821-38219e96630f",
+                    "answers": [
+                      {
+                        "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e",
+                        "label": "Yes"
+                      },
+                      {
+                        "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725",
+                        "label": "No"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "isEmpty(newbornCount) || newbornCount < 2"
+                  }
+                },
+                {
+                  "label": "Urine",
+                  "type": "obs",
+                  "id": "nbUrine_1",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "37f0d251-0e5f-4f83-b624-a69bbfe988c1",
+                    "answers": [
+                      {
+                        "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e",
+                        "label": "Yes"
+                      },
+                      {
+                        "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725",
+                        "label": "No"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "isEmpty(newbornCount) || newbornCount < 2"
+                  }
+                },
+                {
+                  "label": "Stool",
+                  "type": "obs",
+                  "id": "nbStool_1",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "e0c25e2a-b3b6-4fbc-8a06-aaa10d7aa46b",
+                    "answers": [
+                      {
+                        "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e",
+                        "label": "Yes"
+                      },
+                      {
+                        "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725",
+                        "label": "No"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "isEmpty(newbornCount) || newbornCount < 2"
+                  }
+                },
+                {
+                  "label": "Breastfeeding",
+                  "type": "obs",
+                  "id": "nbBreastfeeding_1",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "b45bf86a-91be-4848-a1cd-177b70aaab10",
+                    "answers": [
+                      {
+                        "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e",
+                        "label": "Yes"
+                      },
+                      {
+                        "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725",
+                        "label": "No"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "isEmpty(newbornCount) || newbornCount < 2"
+                  }
+                },
+                {
+                  "label": "Umbilical Cord",
+                  "type": "obs",
+                  "id": "nbUmbilicalCord_1",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "85d82933-9f43-49be-8633-7491fef5447d",
+                    "answers": [
+                      {
+                        "concept": "810f1ade-0829-4cc2-ab29-880c2201eddf",
+                        "label": "Clean"
+                      },
+                      {
+                        "concept": "a9627333-520e-4e47-b29a-2975b7ec51e5",
+                        "label": "Infected"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "isEmpty(newbornCount) || newbornCount < 2"
+                  }
+                },
+                {
+                  "label": "Skin Colour (Jaundice)",
+                  "type": "obs",
+                  "id": "nbSkinColour_1",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "efea48f6-3d58-4caf-bbc3-0d54ee851c0a",
+                    "answers": [
+                      {
+                        "concept": "07589fa3-28e7-4f3d-8988-7dc00ef0704f",
+                        "label": "Pale"
+                      },
+                      {
+                        "concept": "998466f8-0b65-4ac7-bc3d-4d6661d1d43a",
+                        "label": "Well coloured"
+                      },
+                      {
+                        "concept": "91771868-aff4-4fd1-a3f7-d8a5acea2d5c",
+                        "label": "Jaundiced (icterus)"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "isEmpty(newbornCount) || newbornCount < 2"
+                  }
+                }
+              ],
+              "hide": {
+                "hideWhenExpression": "isEmpty(newbornCount) || newbornCount < 2"
+              }
+            },
+            {
+              "label": "Newborn 3",
+              "type": "obsGroup",
+              "id": "newbornMonitoring_2",
+              "questionOptions": {
+                "rendering": "group",
+                "concept": "776c8759-ab5d-414a-a9f4-4d7b26c5b665"
+              },
+              "questions": [
+                {
+                  "label": "Newborn Status",
+                  "type": "obs",
+                  "id": "nbStatus_2",
+                  "questionOptions": {
+                    "rendering": "select",
+                    "concept": "238652d6-4aca-451a-9c8e-8336cea6fff4",
+                    "answers": [
+                      {
+                        "concept": "4056a982-6a2d-4062-9514-efcf4e66dd0a",
+                        "label": "Born alive"
+                      },
+                      {
+                        "concept": "63f4b85c-de5a-48e9-a9a5-bf2656c10125",
+                        "label": "Stillbirth"
+                      },
+                      {
+                        "concept": "50e375f7-4d58-46a9-899a-b46a90629599",
+                        "label": "Born alive, died within 24 hours"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "isEmpty(newbornCount) || newbornCount < 3"
+                  }
+                },
+                {
+                  "label": "Term and Birth Weight",
+                  "type": "obs",
+                  "id": "nbTermCategory_2",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "2a8c001c-a278-46b9-9eb1-864c85d50bcd",
+                    "answers": [
+                      {
+                        "concept": "0718eef8-f7f8-4d7d-b735-f501a5680775",
+                        "label": "Term, 2.5 kg or more"
+                      },
+                      {
+                        "concept": "5ee3f18e-8d0b-4285-90fd-a90b3ac16514",
+                        "label": "Term, under 2.5 kg"
+                      },
+                      {
+                        "concept": "059d5f70-20d1-4b5c-a7bf-b26b605e5d11",
+                        "label": "Premature"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "isEmpty(newbornCount) || newbornCount < 3"
+                  }
+                },
+                {
+                  "label": "Newborn Sex",
+                  "type": "obs",
+                  "id": "nbSex_2",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "59bb5013-c82b-4755-b348-4d14793e6174",
+                    "answers": [
+                      {
+                        "concept": "adfdcfe7-f2e9-4eb6-9e49-5b3c795c5870",
+                        "label": "Male"
+                      },
+                      {
+                        "concept": "d5d86c99-dacc-478e-b2b3-21ccb98a0476",
+                        "label": "Female"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "isEmpty(newbornCount) || newbornCount < 3"
+                  }
+                },
+                {
+                  "label": "Birth Weight (g)",
+                  "type": "obs",
+                  "id": "nbBirthWeight_2",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "237d5a2a-fd87-4c2a-b291-d813cd76c6f2",
+                    "min": "0",
+                    "max": "7000",
+                    "disallowDecimals": true
+                  },
+                  "hide": {
+                    "hideWhenExpression": "isEmpty(newbornCount) || newbornCount < 3"
+                  }
+                },
+                {
+                  "label": "Size at Birth (cm)",
+                  "type": "obs",
+                  "id": "nbBirthLength_2",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "59bc311b-4e61-4b6a-8b96-2172ba7178c3",
+                    "min": "0",
+                    "max": "70"
+                  },
+                  "hide": {
+                    "hideWhenExpression": "isEmpty(newbornCount) || newbornCount < 3"
+                  }
+                },
+                {
+                  "label": "APGAR Score at Birth",
+                  "type": "obs",
+                  "id": "nbApgarAtBirth_2",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "e822ff27-b1b5-4793-a8fc-9beb9f73bc11",
+                    "min": "0",
+                    "max": "10",
+                    "disallowDecimals": true
+                  },
+                  "hide": {
+                    "hideWhenExpression": "isEmpty(newbornCount) || newbornCount < 3"
+                  }
+                },
+                {
+                  "label": "Resuscitation",
+                  "type": "obs",
+                  "id": "nbResuscitation_2",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "5f0b0e37-d169-4ba5-a49c-bbf8bb7d5b61",
+                    "answers": [
+                      {
+                        "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e",
+                        "label": "Yes"
+                      },
+                      {
+                        "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725",
+                        "label": "No"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "isEmpty(newbornCount) || newbornCount < 3"
+                  }
+                },
+                {
+                  "label": "Breathing (/min)",
+                  "type": "obs",
+                  "id": "nbRespiratoryRate_2",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "b39db318-d563-4114-bec0-31ad3d254b24",
+                    "min": "0",
+                    "max": "150",
+                    "disallowDecimals": true
+                  },
+                  "hide": {
+                    "hideWhenExpression": "isEmpty(newbornCount) || newbornCount < 3"
+                  }
+                },
+                {
+                  "label": "Pulse (/min)",
+                  "type": "obs",
+                  "id": "nbPulse_2",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "bc54cb7c-bb45-45aa-84d6-2346748b7c93",
+                    "min": "0",
+                    "max": "300",
+                    "disallowDecimals": true
+                  },
+                  "hide": {
+                    "hideWhenExpression": "isEmpty(newbornCount) || newbornCount < 3"
+                  }
+                },
+                {
+                  "label": "Temperature (°C)",
+                  "type": "obs",
+                  "id": "nbTemperature_2",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "748f8d43-617a-40ba-9474-20522e73fb8a",
+                    "min": "25",
+                    "max": "45"
+                  },
+                  "hide": {
+                    "hideWhenExpression": "isEmpty(newbornCount) || newbornCount < 3"
+                  }
+                },
+                {
+                  "label": "Congenital Malformation",
+                  "type": "obs",
+                  "id": "nbMalformation_2",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "05cbda6b-9a32-4d6d-9821-38219e96630f",
+                    "answers": [
+                      {
+                        "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e",
+                        "label": "Yes"
+                      },
+                      {
+                        "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725",
+                        "label": "No"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "isEmpty(newbornCount) || newbornCount < 3"
+                  }
+                },
+                {
+                  "label": "Urine",
+                  "type": "obs",
+                  "id": "nbUrine_2",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "37f0d251-0e5f-4f83-b624-a69bbfe988c1",
+                    "answers": [
+                      {
+                        "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e",
+                        "label": "Yes"
+                      },
+                      {
+                        "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725",
+                        "label": "No"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "isEmpty(newbornCount) || newbornCount < 3"
+                  }
+                },
+                {
+                  "label": "Stool",
+                  "type": "obs",
+                  "id": "nbStool_2",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "e0c25e2a-b3b6-4fbc-8a06-aaa10d7aa46b",
+                    "answers": [
+                      {
+                        "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e",
+                        "label": "Yes"
+                      },
+                      {
+                        "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725",
+                        "label": "No"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "isEmpty(newbornCount) || newbornCount < 3"
+                  }
+                },
+                {
+                  "label": "Breastfeeding",
+                  "type": "obs",
+                  "id": "nbBreastfeeding_2",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "b45bf86a-91be-4848-a1cd-177b70aaab10",
+                    "answers": [
+                      {
+                        "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e",
+                        "label": "Yes"
+                      },
+                      {
+                        "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725",
+                        "label": "No"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "isEmpty(newbornCount) || newbornCount < 3"
+                  }
+                },
+                {
+                  "label": "Umbilical Cord",
+                  "type": "obs",
+                  "id": "nbUmbilicalCord_2",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "85d82933-9f43-49be-8633-7491fef5447d",
+                    "answers": [
+                      {
+                        "concept": "810f1ade-0829-4cc2-ab29-880c2201eddf",
+                        "label": "Clean"
+                      },
+                      {
+                        "concept": "a9627333-520e-4e47-b29a-2975b7ec51e5",
+                        "label": "Infected"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "isEmpty(newbornCount) || newbornCount < 3"
+                  }
+                },
+                {
+                  "label": "Skin Colour (Jaundice)",
+                  "type": "obs",
+                  "id": "nbSkinColour_2",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "efea48f6-3d58-4caf-bbc3-0d54ee851c0a",
+                    "answers": [
+                      {
+                        "concept": "07589fa3-28e7-4f3d-8988-7dc00ef0704f",
+                        "label": "Pale"
+                      },
+                      {
+                        "concept": "998466f8-0b65-4ac7-bc3d-4d6661d1d43a",
+                        "label": "Well coloured"
+                      },
+                      {
+                        "concept": "91771868-aff4-4fd1-a3f7-d8a5acea2d5c",
+                        "label": "Jaundiced (icterus)"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "isEmpty(newbornCount) || newbornCount < 3"
+                  }
+                }
+              ],
+              "hide": {
+                "hideWhenExpression": "isEmpty(newbornCount) || newbornCount < 3"
+              }
+            }
+          ]
+        },
+        {
+          "label": "Mother's Monitoring",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Episiotomy",
+              "type": "obs",
+              "id": "pmEpisiotomy",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "e5d80ce0-865e-4907-ba1c-65bcee2a1400",
+                "answers": [
+                  {
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e",
+                    "label": "Yes"
+                  },
+                  {
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725",
+                    "label": "No"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Perineal Tear",
+              "type": "obs",
+              "id": "pmPerinealTear",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "deffdedd-7a2a-41df-ab05-fbf5477bd728",
+                "answers": [
+                  {
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e",
+                    "label": "Yes"
+                  },
+                  {
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725",
+                    "label": "No"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Haemorrhage",
+              "type": "obs",
+              "id": "pmHaemorrhage",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "c02c01c1-ee00-440c-8dc4-af6cce260465",
+                "answers": [
+                  {
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e",
+                    "label": "Yes"
+                  },
+                  {
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725",
+                    "label": "No"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Uterine Rupture",
+              "type": "obs",
+              "id": "pmUterineRupture",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "ec6486ba-f703-4d63-83f3-12cd639f29ff",
+                "answers": [
+                  {
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e",
+                    "label": "Yes"
+                  },
+                  {
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725",
+                    "label": "No"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Suture",
+              "type": "obs",
+              "id": "pmSuture",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "c06ba8f8-e6ab-441c-ae3a-bad6d2c77f09",
+                "answers": [
+                  {
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e",
+                    "label": "Yes"
+                  },
+                  {
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725",
+                    "label": "No"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Vaginal Tear",
+              "type": "obs",
+              "id": "pmVaginalTear",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "7540aa6b-d329-4c40-8412-3c855bcbbff9",
+                "answers": [
+                  {
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e",
+                    "label": "Yes"
+                  },
+                  {
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725",
+                    "label": "No"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Infection",
+              "type": "obs",
+              "id": "pmInfection",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "99f5b154-e599-49ca-b4a0-f0aafbbb6b1d",
+                "answers": [
+                  {
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e",
+                    "label": "Yes"
+                  },
+                  {
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725",
+                    "label": "No"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Cervical Tear",
+              "type": "obs",
+              "id": "pmCervicalTear",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "c4d299ab-4837-4104-8fbf-c2a6ed915bca",
+                "answers": [
+                  {
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e",
+                    "label": "Yes"
+                  },
+                  {
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725",
+                    "label": "No"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Eclampsia",
+              "type": "obs",
+              "id": "pmEclampsia",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "a9907510-cc0a-4c11-b18d-03ee15ca73b4",
+                "answers": [
+                  {
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e",
+                    "label": "Yes"
+                  },
+                  {
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725",
+                    "label": "No"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Fistula",
+              "type": "obs",
+              "id": "pmFistula",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "711aa5b1-8597-4bb4-a9fa-2442ec981aa3",
+                "answers": [
+                  {
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e",
+                    "label": "Yes"
+                  },
+                  {
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725",
+                    "label": "No"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "label": "Mother's Vital Signs",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Blood Loss (mL)",
+              "type": "obs",
+              "id": "bloodLoss",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "5d32f886-732b-439c-956c-82c0415f17c9",
+                "min": "0",
+                "max": "5000",
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "Contracted Uterus",
+              "type": "obs",
+              "id": "uterusContracted",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "9be23fa1-bd0d-4968-abe9-f96c31f4ee5e",
+                "answers": [
+                  {
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e",
+                    "label": "Yes"
+                  },
+                  {
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725",
+                    "label": "No"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Breathing (/min)",
+              "type": "obs",
+              "id": "respiratoryRate",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "b39db318-d563-4114-bec0-31ad3d254b24",
+                "min": "0",
+                "max": "80",
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "Pulse (/min)",
+              "type": "obs",
+              "id": "pulse",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "bc54cb7c-bb45-45aa-84d6-2346748b7c93",
+                "min": "0",
+                "max": "250",
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "Blood Pressure: Systolic (mmHg)",
+              "type": "obs",
+              "id": "systolic",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "6d0b8551-feb8-4d57-892a-d75398181b3f",
+                "min": "0",
+                "max": "300",
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "Blood Pressure: Diastolic (mmHg)",
+              "type": "obs",
+              "id": "diastolic",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "c46fcfdd-a785-4416-80bc-2d9e2edf5a45",
+                "min": "0",
+                "max": "200",
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "Temperature (°C)",
+              "type": "obs",
+              "id": "temperature",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "748f8d43-617a-40ba-9474-20522e73fb8a",
+                "min": "25",
+                "max": "45"
+              }
+            },
+            {
+              "label": "Urine (mL)",
+              "type": "obs",
+              "id": "urineOutput",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "2161c5cf-5f57-4d9f-b554-4048755da00a",
+                "min": "0",
+                "max": "5000",
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "Treatment",
+              "type": "obs",
+              "id": "treatment",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "29ff306b-5a2a-48c1-affa-8fa4620a8fda"
+              }
+            },
+            {
+              "label": "Monitoring Performed By",
+              "type": "encounterProvider",
+              "id": "encProvider",
+              "required": true,
+              "questionOptions": {
+                "rendering": "ui-select-extended"
+              }
+            }
+          ]
+        }
+      ],
+      "hide": {
+        "hideWhenExpression": "sex === 'M'"
+      }
+    }
+  ]
+}
