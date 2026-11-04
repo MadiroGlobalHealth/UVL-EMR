@@ -30,6 +30,24 @@
               "value": [
                 "This form is for female patients only."
               ]
+            },
+            {
+              "label": "Ce formulaire concerne uniquement les patientes : ne pas enregistrer. / This form is for female patients only: do not save.",
+              "type": "control",
+              "id": "maleSaveBlock",
+              "hide": {
+                "hideWhenExpression": "sex !== 'M'"
+              },
+              "questionOptions": {
+                "rendering": "text"
+              },
+              "validators": [
+                {
+                  "type": "js_expression",
+                  "failsWhenExpression": "sex === 'M'",
+                  "message": "Ce formulaire concerne uniquement les patientes : ne pas enregistrer. / This form is for female patients only: do not save."
+                }
+              ]
             }
           ]
         }
@@ -174,8 +192,7 @@
                 "rendering": "number",
                 "concept": "41eae39d-389d-463f-b24b-81ecc321fc7e",
                 "min": "0",
-                "max": "10",
-                "disallowDecimals": true
+                "max": "10"
               }
             },
             {
