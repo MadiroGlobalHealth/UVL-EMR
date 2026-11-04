@@ -330,6 +330,13 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   - The generic partograph table ("Partogramme : liquide amniotique, modelage, contractions,
     médicaments") is removed. It showed even for patients without readings, and the chart now
     shows what it did. (#498, #264)
+- **Antenatal care (CPN) has its own place, "Consultations prénatales (CPN)".** Pregnancy
+  follow-up is outpatient care, so it is a service of its own, not under Hospitalisation (IPD).
+  Staff can choose it at sign-in and as the visit location, book appointments there and queue
+  patients to it ("CPN Consultation"). An ANC Consultation (F16) filled there is recorded at
+  CPN, so reports by encounter location count it on its own line instead of under the delivery
+  room, IPD or OPD. The ANC questions of the Maternity Consultation (F13), asked when a woman
+  comes to give birth, stay with the delivery room. (#501)
 
 ### Added
 - UVL frontend module `@madiro/esm-uvl-partograph-app` 1.0.1 (`distro/frontend/esm-uvl-partograph-app`,

@@ -20,3 +20,4 @@ c5d8ef5b-a109-4681-0d7c-9fecb1f2da08,,Pharmacie - Dispensation (Rx-DISP),,,Login
 7b6364f2-c2e8-432c-92e9-e560feec7e28,,Pharmacie - Dispensation Box 1 (Rx-DISP-1),,Pharmacie - Dispensation (Rx-DISP),Login Location;Dispensary;Sub Store,TRUE,,,,,,,,,,,,
 068b1fde-3394-4e12-9108-e61f329c9f18,,Pharmacie - Dispensation Box 2 (Rx-DISP-2),,Pharmacie - Dispensation (Rx-DISP),Login Location;Dispensary;Sub Store,TRUE,,,,,,,,,,,,
 b7824502-1d56-4203-9ece-62ec69487263,,Pharmacie - Dispensation Box 3 (Rx-DISP-3),,Pharmacie - Dispensation (Rx-DISP),Login Location;Dispensary;Sub Store,TRUE,,,,,,,,,,,,
+1112edb0-1c00-498b-8b86-1b2008481ee0,,Consultations prénatales (CPN),,,Login Location;Visit Location;Appointment Location;Queue Location,TRUE,,,,,,,,,,,,
