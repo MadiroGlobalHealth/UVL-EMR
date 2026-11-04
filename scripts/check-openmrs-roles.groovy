@@ -32,6 +32,15 @@
      stock module's `Task: stockmanagement.stockItems.dispense` (POST dispenserequest,
      which deducts the dispensed stock). Until #453 it inherited Pharmacist, and with it
      all three.
+
+  6. Only administrators manage user accounts (#502). No Keycloak role but System Developer
+     may hold, directly or through an inherited role, a privilege that creates, changes or
+     removes an OpenMRS user or what it may do: `Add Users` (UserService.createUser),
+     `Edit Users` (saveUser, so the roles of any account), `Edit User Passwords`,
+     `Delete Users`, `Purge Users`, `Manage Roles`, `Manage Privileges` or
+     `Assign System Developer Role`. Until #502 `Add Users` and `Edit Users` sat in
+     "Register patients", which every clinical role inherits. Reading users (`Get Users`,
+     `View Users`) stays allowed: provider and orderer names are read through it.
 */
 
 import groovy.json.JsonSlurper
@@ -44,6 +53,8 @@ String readScopes = 'App: stockmanagement.userRoleScopes'
 List<String> nonDispensingRoles = ['Central Pharmacist']
 List<String> dispensingPrivileges = ['Edit Medication Dispense', 'Task: dispensing.create.dispense',
         'Task: stockmanagement.stockItems.dispense']
+List<String> userAdminPrivileges = ['Add Users', 'Edit Users', 'Edit User Passwords', 'Delete Users',
+        'Purge Users', 'Manage Roles', 'Manage Privileges', 'Assign System Developer Role']
 
 File distroConfigs = new File(project.build.directory,
         "${project.artifactId}-${project.version}/distro/configs")
@@ -174,6 +185,12 @@ if (realmFile.isFile()) {
             if (privileges.contains(createOperations) && !privileges.contains(readScopes)) {
                 problems << "${definedIn[r.name]}: role '${r.name}' has '${createOperations}' but not " +
                         "'${readScopes}'; the stock app could not read its scopes, so it could create no operation"
+            }
+            List<String> userAdmin = userAdminPrivileges.findAll { privileges.contains(it) }
+            if (userAdmin) {
+                problems << "${definedIn[r.name]}: role '${r.name}' can manage user accounts through " +
+                        "${userAdmin.collect { "'${it}'" }.join(', ')} (directly or through an inherited role); " +
+                        "only System Developer may"
             }
         }
     }
