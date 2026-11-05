@@ -505,7 +505,18 @@
         "errorLaunchingWorkspaceSubtitle": "Une erreur inattendue s'est produite lors de l'ouverture de l'espace de travail.",
         "errorMarkingAsDeceased": "Erreur lors de l'enregistrement du décès du patient",
         "personAttributesSaved": "Attribut(s) de la personne enregistré(s) avec succès",
-        "errorSavingPersonAttributes": "Erreur lors de l'enregistrement des attributs de la personne"
+        "errorSavingPersonAttributes": "Erreur lors de l'enregistrement des attributs de la personne",
+        "fieldIsMandatory": "Champ obligatoire",
+        "decimalValuesNotAllowed": "Les valeurs décimales ne sont pas autorisées pour ce champ",
+        "valueMustBeAtMost": "La valeur doit être de {{max}} au maximum",
+        "valueMustBeAtLeast": "La valeur doit être de {{min}} au minimum",
+        "lengthShouldBeAtLeast": "Le texte doit comporter au moins {{minLength}} caractères",
+        "lengthShouldNotExceed": "Le texte ne doit pas dépasser {{maxLength}} caractères",
+        "lengthShouldBeBetween": "Le texte doit comporter entre {{minLength}} et {{maxLength}} caractères",
+        "futureDatesNotAllowed": "Les dates futures ne sont pas autorisées",
+        "valueNotFoundInCodedAnswers": "Valeur absente de la liste des réponses",
+        "invalidDateValue": "Date invalide : '{{- value}}'",
+        "invalidNumericalValue": "Valeur numérique invalide : '{{- value}}'"
       }
     }
   },
