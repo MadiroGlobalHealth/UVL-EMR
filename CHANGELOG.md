@@ -528,6 +528,26 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   uvl-vital-signs 20261104 exports replace uvl-forms 20261104-2 and uvl-vital-signs 20261001.
   The form's own read view (the expanded encounter row) still shows the form's English answer
   labels: see Known issues. (#475)
+- **Concept names read as the form does.** The forms requirements sheet (Release 1.1) is the
+  source of truth for concept names. 305 question and answer concepts of the UVL forms take the
+  sheet's label as their French name, so a French session shows the word staff chose in the form
+  wherever OpenMRS shows the concept (results, the encounter's observation list, summaries):
+  "Céphalique" instead of "présentation vertex", "Transverse" instead of the Haitian Creole
+  fallback, "Siège", "Masque", "Urgences", "Pâles" instead of "Conjoctives pales", "AB-" instead
+  of "AB negatif", "Hauteur utérine (cm)" instead of "Mesure ombilique (Symphsis pubien)". A
+  concept labelled differently in several forms takes the label used most often; each form keeps
+  its own label on screen. Where the sheet word is already another concept's French name, the
+  name is qualified ("Anémie (antécédents)") and the sheet word is kept as a synonym; the old
+  name is kept as a synonym too, so a search by it still finds the concept. Spelling faults of
+  the sheet are fixed, not copied. English names are unchanged. Lab catalogue tests keep their
+  catalogue names, and seven concepts that other exports also carry (procedures, drugs,
+  allergens, immunizations, IPD) wait for those exports. The build now fails when a French
+  name in the OCL exports differs from the sheet (`sites/mugamba/requirements/form-concept-names-fr.tsv`,
+  `scripts/check-ampath-forms.groovy`). OCL: uvl-ciel and uvl-custom 20261105; the uvl-forms,
+  uvl-vital-signs and uvl-labtests 20261105 exports replace uvl-forms 20261104-3,
+  uvl-vital-signs 20261104 and uvl-labtests 20261008. The new uvl-labtests export also carries
+  the "+", "++" and "+++" result answers at the version the forms export already ships, so the two
+  exports no longer disagree on them. (#513)
 - **A maternity form can no longer be saved for a male patient.** The seven maternity forms show
   only a "not applicable" note to a male patient, but Save still created an empty encounter that
   counted in encounter-based reports. The page now says "Ce formulaire concerne uniquement les

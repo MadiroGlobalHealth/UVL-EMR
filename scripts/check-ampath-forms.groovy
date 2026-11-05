@@ -4,7 +4,7 @@
   Run from sites/mugamba/pom.xml at prepare-package, against the assembled
   initializer_config, so it sees every layer (distro, country, site).
 
-  Three checks, each for a fault that passes every review of the form JSON and shows only
+  Five checks, each for a fault that passes every review of the form JSON and shows only
   when someone saves or reads the form:
 
   1. A number question that accepts decimals asks a concept that allows them. The form
@@ -34,6 +34,13 @@
      observation list, results, summaries) a French session falls back to the English name
      when the concept has no French one (#475). The names come from the OCL exports in
      ocl/; a concept that no export defines (e.g. a CIEL:nnn reference) is not checked.
+  5. That French name is the one the requirements sheet gives. The forms requirements sheet is
+     the source of truth for concept names: staff should read in Results the word they picked in
+     the form (Céphalique, not présentation vertex). requirements/form-concept-names-fr.tsv in the
+     site holds, for every question and answer concept the sheet labels, the French preferred name
+     OCL must carry; a name edited in OCL, or an export that brings back an old version, fails
+     here. The file lists the exceptions too (a qualified name where the sheet word is already
+     another concept's name, a lab catalogue name kept), each with its note (#513).
 */
 
 import groovy.io.FileType
@@ -44,6 +51,7 @@ File configDir = new File(project.build.directory,
         "${project.artifactId}-${project.version}/distro/configs/openmrs/initializer_config")
 File formsDir = new File(configDir, 'ampathforms')
 File oclDir = new File(configDir, 'ocl')
+File sheetNamesFile = new File(project.basedir, 'requirements/form-concept-names-fr.tsv')
 
 if (!formsDir.isDirectory()) {
     log.info("No initializer_config/ampathforms in the build output, nothing to check")
@@ -90,6 +98,7 @@ long versionOf(def concept) {
 Map<String, Boolean> allowDecimal = [:]
 Map<String, Boolean> hasFrenchName = [:]
 Map<String, Long> frenchNameVersion = [:]
+Map<String, String> frenchName = [:]
 filesIn(oclDir, '.zip').each { File zip ->
     new ZipFile(zip).withCloseable { ZipFile zf ->
         zf.entries().findAll { it.name.endsWith('.json') }.each { entry ->
@@ -101,6 +110,7 @@ filesIn(oclDir, '.zip').each { File zip ->
                 if (concept.external_id && versionOf(concept) >= frenchNameVersion.getOrDefault(concept.external_id, -1L)) {
                     frenchNameVersion[concept.external_id] = versionOf(concept)
                     hasFrenchName[concept.external_id] = concept.names?.any { isFrenchPreferred(it) } ?: false
+                    frenchName[concept.external_id] = concept.names?.find { isFrenchPreferred(it) }?.name
                 }
             }
         }
@@ -185,9 +195,30 @@ noFrenchName.each { String concept, String where ->
             "French session shows it in English. Add a French name marked locale preferred in OCL (#475)")
 }
 
+// uuid <TAB> French name OCL must carry <TAB> sheet label <TAB> note; first line is the header.
+if (!sheetNamesFile.isFile()) {
+    throw new IllegalStateException("No ${sheetNamesFile}: the concept names would not be checked against the sheet")
+}
+Map<String, String> sheetName = [:]
+sheetNamesFile.readLines('UTF-8').drop(1).findAll { it.trim() }.each { String line ->
+    List<String> cols = line.split('\t', -1) as List
+    sheetName[cols[0].trim()] = cols[1]
+}
+sheetName.each { String concept, String want ->
+    if (!frenchName.containsKey(concept)) {
+        faults << ("${sheetNamesFile.name}: concept ${concept} is in no OCL export in ocl/, so its French name " +
+                "'${want}' is not checked. Export it, or remove the line if the forms no longer use it (#513)")
+    } else if (frenchName[concept] != want) {
+        faults << ("concept ${concept} is called '${frenchName[concept]}' in French in the OCL export, but the " +
+                "forms requirements sheet says '${want}' (${sheetNamesFile.name}). Fix the name in OCL and " +
+                "re-export, or update the file if the sheet changed (#513)")
+    }
+}
+
 if (faults) {
     throw new IllegalStateException("O3 forms check failed:\n  - " + faults.join('\n  - '))
 }
 log.info("Forms OK: ${decimalQuestions} decimal number questions on concepts that allow decimals, " +
         "${maleOnlyPages} male-only pages that refuse to save, ${groupMembersChecked} members of hidden-by-rule " +
-        "groups that repeat the group's rule, ${namedConcepts.size()} question and answer concepts with a French name")
+        "groups that repeat the group's rule, ${namedConcepts.size()} question and answer concepts with a French name, " +
+        "${sheetName.size()} French names as the requirements sheet gives them")
