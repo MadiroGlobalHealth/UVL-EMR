@@ -1,6 +1,7 @@
 {
   "uuid": "ffa53310-25cd-4288-aac6-409001446783",
   "form": "UVL Inpatient Consultation Form",
+  "form_name_translation": "Consultation en hospitalisation",
   "description": "Fr Translations for 'UVL Inpatient Consultation Form'",
   "language": "fr",
   "translations": {
