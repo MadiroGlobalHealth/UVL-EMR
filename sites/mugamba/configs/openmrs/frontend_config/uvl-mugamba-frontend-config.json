@@ -132,6 +132,16 @@
             }
           }
         }
+      },
+      "user-panel-bottom-slot": {
+        "remove": ["logout-button"],
+        "add": ["link#oauth2-logout"],
+        "configure": {
+          "link#oauth2-logout": {
+            "title": "Se déconnecter",
+            "target": "/openmrs/oauth2logout"
+          }
+        }
       }
     },
     "Translation overrides": {
@@ -163,6 +173,18 @@
       "order-item-additional-info-slot": {
         "remove": ["order-price-details", "order-stock-details"]
       }
+    },
+    "Translation overrides": {
+      "fr": {
+        "removeFromBasket": "Retirer de l'ordonnance",
+        "COMPLETED": "Terminé",
+        "DECLINED": "Refusé",
+        "DISCONTINUED": "Arrêté",
+        "EXCEPTION": "Exception",
+        "IN_PROGRESS": "En cours",
+        "ON_HOLD": "En attente",
+        "RECEIVED": "Reçu"
+      }
     }
   },
   "@openmrs/esm-patient-registration-app": {
@@ -180,7 +202,7 @@
         "id": "telephoneNumber",
         "type": "person attribute",
         "uuid": "14d4f066-15f5-102d-96e4-000c29c2a5d7",
-        "label": "Telephone Number",
+        "label": "Numéro de téléphone",
         "validation": {
           "required": false,
           "matches": "^\\+?(\\d{1,3})?[-.\\s]?(\\(?\\d{1,4}?\\)?)?[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,9}$"
@@ -190,7 +212,7 @@
         "id": "maritalStatus",
         "type": "person attribute",
         "uuid": "c65ebb91-0de1-4622-9af4-bf9e19ea569b",
-        "label": "Marital status",
+        "label": "État civil",
         "validation": {
           "required": false
         },
@@ -200,7 +222,7 @@
         "id": "occupation",
         "type": "person attribute",
         "uuid": "96a9f1a6-7bd4-4147-a5b3-98b1f6137340",
-        "label": "Occupation",
+        "label": "Profession",
         "validation": {
           "required": false
         },
@@ -256,14 +278,12 @@
     },
     "Translation overrides": {
       "en": {
-        "Additional Information": "Additional Information",
-        "Occupation": "Occupation",
-        "Marital Status": "Marital Status"
+        "additionalInformationSection": "Additional Information"
       },
       "fr": {
-        "Additional Information": "Informations supplémentaires",
-        "Occupation": "Profession",
-        "Marital Status": "Statut matrimonial"
+        "additionalInformationSection": "Informations supplémentaires",
+        "Country": "Pays",
+        "Address Detail": "Détail de l'adresse"
       }
     }
   },
@@ -303,7 +323,14 @@
         "conceptUuid": "46c8be89-db86-4476-9609-58d184f452c3",
         "defaultOpen": false
       }
-    ]
+    ],
+    "Translation overrides": {
+      "fr": {
+        "removeFromBasket": "Retirer de l'ordonnance",
+        "backToOrderBasket": "Retour à l'ordonnance",
+        "returnToOrderBasket": "Retour à l'ordonnance"
+      }
+    }
   },
   "@openmrs/esm-patient-vitals-app": {
     "Display conditions": {
@@ -322,6 +349,12 @@
       "generalPatientNoteUuid": "9dc2962b-bdd0-4261-b69d-55769e078be0",
       "midUpperArmCircumferenceUuid": "6d4a1b5a-d41d-4779-b441-70ba440b64de",
       "vitalSignsConceptSetUuid": "7f0b11e7-7446-4cfe-9011-83ba4b694e25"
+    },
+    "Translation overrides": {
+      "fr": {
+        "viewNormalRanges": "Voir les valeurs normales",
+        "normalRanges": "Valeurs normales"
+      }
     }
   },
   "@openmrs/esm-patient-medications-app": {
@@ -343,7 +376,11 @@
         "drugAlreadyPrescribed": "Already active - use Modify"
       },
       "fr": {
-        "drugAlreadyPrescribed": "Déjà actif - utiliser Modifier"
+        "drugAlreadyPrescribed": "Déjà actif - utiliser Modifier",
+        "futureMedicationsDisplayText": "traitements à venir",
+        "futureMedicationsHeaderTitle": "Traitements à venir",
+        "futureMedicationsTableTitle": "Traitements à venir",
+        "launchOrderBasket": "Accéder à l'ordonnance"
       }
     }
   },
@@ -392,9 +429,58 @@
     "Display conditions": {
       "privileges": ["Get Forms"]
     },
+    "formSections": [
+      {
+        "name": "Consultation externe",
+        "forms": ["UVL Outpatient Consultation Form"]
+      },
+      {
+        "name": "Hospitalisation",
+        "forms": [
+          "Ward Admission",
+          "UVL Admission Note Form",
+          "UVL Inpatient Consultation Form",
+          "UVL Inpatient Follow-up Form",
+          "UVL IPD Monitoring Form",
+          "UVL 24-Hour Surveillance Form",
+          "UVL Discharge Summary Form"
+        ]
+      },
+      {
+        "name": "Maternité",
+        "forms": [
+          "UVL ANC Consultation Form",
+          "UVL Maternity Consultation Form",
+          "UVL Gynaecology Ultrasound Form",
+          "UVL Delivery Registration Form",
+          "UVL Partograph Reading Form",
+          "UVL Childbirth Record Form"
+        ]
+      },
+      {
+        "name": "Bloc opératoire",
+        "forms": ["UVL Pre-operative Record Form", "UVL Anaesthesia Report Form"]
+      },
+      {
+        "name": "Autres",
+        "forms": ["UVL Contact Form"]
+      }
+    ],
     "Translation overrides": {
       "fr": {
-        "backToClinicalForms": "Retour aux formulaires cliniques"
+        "backToClinicalForms": "Retour aux formulaires cliniques",
+        "Consultation externe": "Consultation externe",
+        "Hospitalisation": "Hospitalisation",
+        "Maternité": "Maternité",
+        "Bloc opératoire": "Bloc opératoire",
+        "Autres": "Autres"
+      },
+      "en": {
+        "Consultation externe": "Outpatient",
+        "Hospitalisation": "Inpatient",
+        "Maternité": "Maternity",
+        "Bloc opératoire": "Theatre",
+        "Autres": "Other"
       }
     }
   },
@@ -441,11 +527,23 @@
   "@openmrs/esm-service-queues-app": {
     "Display conditions": {
       "privileges": ["Get Queues"]
+    },
+    "Translation overrides": {
+      "fr": {
+        "change": "Changer"
+      }
     }
   },
   "@openmrs/esm-laboratory-app": {
     "Display conditions": {
       "privileges": ["Manage Laboratory"]
+    },
+    "Translation overrides": {
+      "fr": {
+        "addTestOrder": "Ajouter une demande d'examen",
+        "urgency": "Urgence",
+        "orderReason": "Motif de la demande :"
+      }
     }
   },
   "@openmrs/esm-patient-list-management-app": {
@@ -471,6 +569,8 @@
       "fr": {
         "stockDispense": "Lot à délivrer (obligatoire)",
         "selectStockDispense": "Choisir un lot pour pouvoir délivrer",
+        "freeTextDosage": "Dosage libre",
+        "route": "Voie d'administration",
         "duplicatePrescriptionTitle": "Délivrance potentiellement en double détectée",
         "duplicatePrescriptionMessageNoPrevious": "Aucune délivrance précédente n'a été trouvée.",
         "duplicateDispenseError": "Erreur lors de la délivrance du médicament",

@@ -44,6 +44,29 @@ MSF-OCG/LIME-EMR-Tooling.
 Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
 
 ### Staff will notice
+- **Se déconnecter now really signs you out.** The user menu's logout entry is « Se déconnecter »
+  and goes to `/openmrs/oauth2logout`, which ends the OpenMRS session and the Keycloak session in
+  one request, then shows the Keycloak sign-in form. Before, Logout ended only the OpenMRS session,
+  so on a shared ward workstation the next person was signed back in as the previous user.
+  `@openmrs/esm-login-app` 11.0.0 ignores `provider.logoutUrl` in `oauth2` mode; the stock Logout
+  button is replaced by primary navigation's generic link. The label is French in both languages
+  (the generic link is not translated). (#323, replaces draft PR #411)
+- **The clinical forms list is grouped by service:** « Consultation externe », « Hospitalisation »,
+  « Maternité », « Bloc opératoire » and « Autres » (English: Outpatient, Inpatient, Maternity,
+  Theatre, Other). Every form is still listed, so the outpatient consultation form still appears on
+  an inpatient visit, under its own heading. Filtering forms by visit type needs a change in the
+  forms app; this grouping is the interim. Each section has its own search box. (#518)
+- **More of the interface is in French:** registration (« Informations supplémentaires », « Pays »,
+  « Détail de l'adresse », « Numéro de téléphone », « État civil », « Profession »), the queues
+  « Changer » button, the order basket (« Retirer de l'ordonnance » everywhere, « Retour à
+  l'ordonnance », « Traitements à venir »), order status tags (« En cours », « Terminé »…), the
+  laboratory (« Ajouter une demande d'examen », « Urgence », « Motif de la demande : »), dispensing
+  (« Dosage libre », « Voie d'administration ») and vitals (« Voir les valeurs normales »). The
+  three registration field labels are written in French in the config, because the registration
+  app does not translate field labels; English sessions see them in French too. Still in English,
+  because they don't go through translation: the list pagination (« Items per page », « of 1
+  page ») and the encounter and visit names built by the server (e.g. « Inpatient visit @ … »).
+  (#529)
 - **The Change language dialog says how to change language for the session.** Its checkbox is
   ticked every time the dialog opens; ticked, it saves the language as the account's default,
   which only the administrator may do (`Edit Users`, removed from clinical roles in #502), so
