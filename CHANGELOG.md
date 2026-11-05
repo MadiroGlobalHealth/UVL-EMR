@@ -362,6 +362,17 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   database are unchanged, so reports and the Odoo bridge are not affected. (#499)
 
 ### Added
+- Inpatient ward locations for the services in the product owner's 3 Sep 2026 service list:
+  « Médecine interne », « Pédiatrie » (including severe acute malnutrition), « Chirurgie » and
+  « Soins intensifs », children of « Hospitalisation (IPD) » like the maternity and neonatal
+  wards, tagged `Login Location`, `Admission Location` and `Transfer Location`. Emergency is the
+  existing « Salle d'urgence (ER) », which now also carries `Admission Location` and
+  `Transfer Location` rather than a second emergency location. The new wards appear in the admit
+  and transfer pickers and can be opened as a ward in the Ward app. No beds: the bed count per
+  ward is not known yet, Initializer 2.12.0 and bedmanagement 6.2.0 have no bed domain, and
+  `bedmanagement.mandatory` is false, so patients are admitted without a bed (the Ward app shows
+  « Aucun lit configuré »). Room-class rates and inpatient billing wait on the fee schedule.
+  (#246)
 - UVL frontend module `@madiro/esm-uvl-partograph-app` 1.0.1 (`distro/frontend/esm-uvl-partograph-app`,
   `dist/` committed), packed by `distro/pom.xml` and pinned in `spa-assemble-config.json` as
   `file:madiro-esm-uvl-partograph-app.tgz`, like the imaging module. Extension

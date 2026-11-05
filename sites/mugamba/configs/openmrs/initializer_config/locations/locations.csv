@@ -1,5 +1,5 @@
 Uuid,Void/Retire,Name,Description,Parent,Tags,Tag|Facility Location,Address 1,Address 2,Address 3,Address 4,Address 5,Address 6,City/Village,County/District,State/Province,Postal Code,Country,_order:1000
-9D062929-CC4F-7A51-C700-2B968AADEC34,,Salle d'urgence (ER),,,Login Location;Visit Location;Queue Location,TRUE,,,,,,,,,,,,
+9D062929-CC4F-7A51-C700-2B968AADEC34,,Salle d'urgence (ER),,,Login Location;Visit Location;Queue Location;Admission Location;Transfer Location,TRUE,,,,,,,,,,,,
 BB9C7BDC-E654-060E-5E6C-4EEF309C7A04,,Accueil-Triage (REG-TRI),,,Login Location;Visit Location;Appointment Location,TRUE,,,,,,,,,,,,
 44c3efb0-2583-4c80-a79e-1f756a03c0a1,,Consultation externe (OPD),,,Login Location;Visit Location;Appointment Location;Queue Location,TRUE,,,,,,,,,,,,
 D2C9F784-6537-EDBC-FD0E-860C2931D0A3,,Laboratoire (LAB),,,Login Location;Visit Location,TRUE,,,,,,,,,,,,
@@ -10,6 +10,10 @@ D6701EED-F0A8-4AE7-84B1-E7ECCA5BAABA,,Hospitalisation (IPD),,,Login Location;Vis
 30081A32-690B-484E-A3C0-7B8E46126250,,Soins maternels (accouchement normal),,Hospitalisation (IPD),Login Location;Appointment Location;Queue Location;Admission Location;Transfer Location,TRUE,,,,,,,,,,,,
 EF741FF1-EAAB-4DED-BC4B-EBEFE08BA7A6,,Salle de césarienne,,Hospitalisation (IPD),Login Location;Appointment Location;Queue Location;Admission Location;Transfer Location,TRUE,,,,,,,,,,,,
 3D1AD726-219C-4F9F-87C2-5BF709D04E41,,Salle néonatale,,Hospitalisation (IPD),Login Location;Admission Location;Transfer Location,TRUE,,,,,,,,,,,,
+ff9a4718-8bdc-4c7e-901b-a66815b1c58d,,Médecine interne,Service d'hospitalisation de médecine interne,Hospitalisation (IPD),Login Location;Admission Location;Transfer Location,TRUE,,,,,,,,,,,,
+5536d753-6d7d-4eef-bff0-65e01f94e8c6,,Pédiatrie,"Service d'hospitalisation de pédiatrie, y compris la malnutrition aiguë sévère (MAS)",Hospitalisation (IPD),Login Location;Admission Location;Transfer Location,TRUE,,,,,,,,,,,,
+34518e24-8481-464f-ab8e-71b3c15265e5,,Chirurgie,Service d'hospitalisation de chirurgie,Hospitalisation (IPD),Login Location;Admission Location;Transfer Location,TRUE,,,,,,,,,,,,
+2948f709-8458-40f2-88c0-54f568f0abf7,,Soins intensifs,Service de soins intensifs,Hospitalisation (IPD),Login Location;Admission Location;Transfer Location,TRUE,,,,,,,,,,,,
 C458A0DB-A405-4DBC-96D2-F95B46EBDA43,,Salle d’imagerie (X-Ray),,,Login Location;Visit Location,TRUE,,,,,,,,,,,,
 450be362-59a7-4ccd-964d-ebd930a8b30f,,Locations test,,,Login Location,TRUE,,,,,,,,,,,,
 e1f4ab17-6dc5-4249-cf38-5bae7dbe9c64,,Ophtalmologie (OPH),,,Login Location;Visit Location;Queue Location,TRUE,,,,,,,,,,,,
