@@ -44,6 +44,13 @@ MSF-OCG/LIME-EMR-Tooling.
 Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
 
 ### Staff will notice
+- **Open visits now close at midnight Burundi time, not at 02:00.** The nightly auto-close ran
+  at 23:59:59 UTC, which is 01:59:59 in Burundi: a visit started after midnight could be closed
+  minutes later, the chart kept showing it active, and the next save failed with
+  `Encounter.datetimeShouldBeInVisitDatesRange`. It now runs at 23:59:59 Burundi time
+  (21:59:59 UTC). (#350)
+- **"No" answers read « Non » in French, not « Faux ».** This includes answers already saved,
+  because an answer stores the concept, not its wording. (#528)
 - **The Change language dialog says how to change language for the session.** Its checkbox is
   ticked every time the dialog opens; ticked, it saves the language as the account's default,
   which only the administrator may do (`Edit Users`, removed from clinical roles in #502), so
@@ -561,6 +568,21 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   these events, so the bridge now acknowledges them and logs them at DEBUG only. Bridge jar from
   eip-openmrs-orthanc `63cfc1c` (jnsereko fork, on `11a85b6`); only the new route class differs
   from the previous jar. Existing rows: see deploy note 17. (#460)
+- **The Auto Close Visits Task starts at 21:59:59 UTC.** Core's task starts at 23:59:59 and the
+  database and containers run on UTC, so visits closed at 01:59:59 CAT. Liquibase changeset
+  `auto_close_visits_task_cat_midnight-20261106` moves the time of day of `scheduler_task_config`
+  "Auto Close Visits Task" (`AutoCloseVisitsTask`) to 21:59:59, only while it is still core's
+  23:59:59. The scheduler reads it at OpenMRS start, after the Initializer, so the start that
+  runs the changeset applies it. The containers' TZ is left on UTC on purpose. (#350)
+- **Concept No (`d45102a2-d9b7-40dc-a30c-8e88494e1725`) has OCL's French names.** OpenMRS had
+  « Faux » as the preferred French name and « Non » as an index term, with no French fully
+  specified name; OCL (`uvl-ciel` 8918106) has « Non » fully specified and preferred, but the
+  OCL import skips a concept already loaded at the same version. Changeset
+  `concept_no_french_name_non-20261106` makes « Faux » a plain synonym and « Non » the fully
+  specified, preferred name, by concept uuid and name text; it runs on every start and changes
+  nothing once the names match. "Other non-coded" (`b5c4b807-…`) also has no French fully
+  specified name, but OCL has none either and its preferred French name is already « Autre »,
+  so it is unchanged. (#528, last item of #475)
 - **A patient chart opened by direct link no longer stays blank for several seconds.** The page
   asked for `importmap.json` and `routes.registry.json` under the chart's own address
   (`/openmrs/spa/patient/<uuid>/chart/importmap.json`), got a 404 and paused 4–9 s before
@@ -824,6 +846,10 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
     ```
     Then check that no new `No consumers available on endpoint: direct://orthanc-event-listener`
     appears in the `eip-openmrs-orthanc` log after a patient is edited.
+18. **#350, #528:** once it's live, check that `auto_close_visits_task_cat_midnight-20261106` is
+    `EXECUTED` and the Auto Close Visits Task's `start_time` ends in `21:59:59`, and that concept
+    No's French preferred, fully specified name is « Non ». Production stores the same core
+    default and, being built from the same history, very likely the same concept drift.
 
 ### Known issues
 - **Clinical roles still see "Supprimer une consultation".** The patient chart shows the delete
