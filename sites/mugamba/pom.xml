@@ -330,6 +330,23 @@ Fails the build on a Keycloak openmrs client role or an inherited role that
               </scripts>
             </configuration>
           </execution>
+          <execution>
+            <!--
+              Fails the build on a UVL encounter type, visit type, visit attribute type or form
+              without both its French and English names, or a localised column Initializer
+              ignores (#499). See the script.
+            -->
+            <id>Check the French metadata names</id>
+            <goals>
+              <goal>execute</goal>
+            </goals>
+            <phase>prepare-package</phase>
+            <configuration>
+              <scripts>
+                <script>file://${project.basedir}/../../scripts/check-french-metadata.groovy</script>
+              </scripts>
+            </configuration>
+          </execution>
         </executions>
         <dependencies>
           <!-- Same Groovy line as the bundled-docker profile's groovy-templates. -->
