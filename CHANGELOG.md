@@ -607,6 +607,19 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   fails when an OCL export has a mapping with no target (`scripts/check-ampath-forms.groovy`).
   The drug entry and diagnosis exports still carry 128 such mappings from the same import,
   allowed by count until they are re-exported. (#520)
+- **Lab tests and results read in French.** 19 lab-test concepts showed in English to a French
+  session: the malaria rapid test answers ("Positif à Plasmodium falciparum", "… vivax", "… falciparum
+  et vivax", "Examen non réalisé", "Examen non réalisé (manque de réactifs)"), the urine question
+  "Cristaux de phosphates amorphes", "Arthritest", and the sets "Résultats de laboratoire" (the
+  heading on the doctor's results page) and "Analyses de laboratoire". Ten more (stool microscopy,
+  stool consistency, pus and mucus in stool, renal epithelial cells in urine) had a French name
+  that was not marked preferred. English names are unchanged. The build now fails when a lab-test
+  concept has no French preferred name (`scripts/check-ampath-forms.groovy`). (#531)
+- **Searching "paludisme" or "goutte épaisse" finds the malaria smear.** The order basket matches
+  every name of a test, and none of "BP01 - Frottis paludéen"'s names contained "paludisme". BP01
+  gets the French synonyms "Paludisme - frottis" and "Goutte épaisse"; its displayed name and the
+  Odoo catalogue name are unchanged. OCL: uvl-ciel 20261105-2, uvl-custom 20261105-1; the
+  uvl-labtests 20261105-5 export replaces 20261105-2. (#532)
 - **A maternity form can no longer be saved for a male patient.** The seven maternity forms show
   only a "not applicable" note to a male patient, but Save still created an empty encounter that
   counted in encounter-based reports. The page now says "Ce formulaire concerne uniquement les
