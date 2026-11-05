@@ -634,6 +634,26 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   match what we ship: the procedures export (GO302 and GO108, older than the forms export), the
   drugs export (a retired Chlorpheniramine whose name id another concept has), one immunization
   answer, two diagnosis mappings and one mapping in the OCL demo queue export. (#533)
+- **A drug order opens with "Jours" and works out the quantity.** The duration unit opened as "Days",
+  which matched no option of the French list, so the doctor had to clear it. The quantity was never
+  calculated, because the calculation only knew CIEL's unit uuids. The frontend config now gives the
+  default unit as "Jours" and maps UVL's day, week, month and year units, so the quantity fills in
+  from dose × frequency × duration; the doctor can still change it. (#536)
+- **Drug order lists read in French.** Duration units (Secondes, Heures, Semaines, Nombre de fois,
+  Années), dispensing units (Sac, Carton, Cartouche, Plaquette, Unité, Inhalateur, Kit), dose units
+  (Gaufrette, Gallon, Compresse, Patch, and "Goutte métrique" and "Cuillère-mesure" instead of
+  "Baisse métrique" and "Scoop") and the routes "Orale" and "Dans l'œil gauche" had English or odd
+  names. OCL: uvl-ciel 20261105-4; `UVL_drug_entry_20261105-2` replaces `UVL_drug_entry_20261105`,
+  names only. (#537)
+- **The pharmacist sees why "Délivrer une prescription" is greyed out.** With stock dispensing on, the
+  button stays disabled until a batch is chosen, and the screen didn't say so. The batch field now
+  reads "Lot à délivrer (obligatoire)" with "Choisir un lot pour pouvoir délivrer" until one is
+  picked. Dispensing 1.11.2 has no setting to pre-select a batch. (#538)
+- **Drug lines on the Odoo quotation give the duration in French** ("5 jours", not "5 day"). The
+  bridge took the unit from FHIR's fixed English display; the eip-odoo-openmrs jar now reads
+  `ODOO_DURATION_UNIT_LABELS` (set for UVL in LIME-EMR-Tooling's `docker-compose-odoo-sso-uvl.yml`
+  and in `scripts/docker/docker-compose-override.yml`). Lines already on a quotation keep their
+  text. Bridge: jnsereko/eip-odoo-openmrs `fix/539-duration-labels` e420457, on 06151ac. (#539)
 - **A maternity form can no longer be saved for a male patient.** The seven maternity forms show
   only a "not applicable" note to a male patient, but Save still created an empty encounter that
   counted in encounter-based reports. The page now says "Ce formulaire concerne uniquement les
