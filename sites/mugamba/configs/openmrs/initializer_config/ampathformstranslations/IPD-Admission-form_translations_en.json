@@ -1,6 +1,7 @@
 {
   "uuid": "591c0162-7c4f-4533-9262-d92798642461",
   "form": "Ward Admission",
+  "form_name_translation": "Ward Admission",
   "description": "En Translations for 'Ward Admission'",
   "language": "en",
   "translations": {
