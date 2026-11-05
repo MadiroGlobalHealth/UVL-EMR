@@ -498,6 +498,19 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   longer refuse them. The other partograph readings (fetal heart rate, contractions, duration,
   oxytocin drops, pulse, blood pressure, descent in fifths) are counts or whole units and stay
   whole numbers. (#488)
+- **Form concepts have French names.** The 59 question and answer concepts of the UVL forms that
+  had no French locale-preferred name now have one, so a French session shows them in French
+  wherever OpenMRS shows the concept name (the encounter's observation list, results, visit
+  summaries). Eleven of them were English or half English: "Post-procédure (External)" is now
+  "Post-procédure (interne/externe)" and likewise for post-operative; "General exam" is "État
+  général"; "GO302 - Episiotomy" and "GO108 - Myomectomy" are "GO302 - Épisiotomie" and "GO108 -
+  Myomectomie"; "General patient note" is "Observations générales"; "Internal facility
+  transfer/referral" is "Transfert interne"; artesunate and dihydroartemisinin-piperaquine are
+  spelled in French. English names are unchanged. The names come from the requirements sheet
+  (Release 1.1). OCL: uvl-ciel and uvl-custom 20261104-2; the uvl-forms 20261104-3 and
+  uvl-vital-signs 20261104 exports replace uvl-forms 20261104-2 and uvl-vital-signs 20261001.
+  The form's own read view (the expanded encounter row) still shows the form's English answer
+  labels: see Known issues. (#475)
 - **A maternity form can no longer be saved for a male patient.** The seven maternity forms show
   only a "not applicable" note to a male patient, but Save still created an empty encounter that
   counted in encounter-based reports. The page now says "Ce formulaire concerne uniquement les
@@ -640,6 +653,11 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
 - A Keycloak role change reaches OpenMRS only at the user's second sign-in. Until then the stock
   scope form lists no role for that user. (#438)
 - The dispensing block is in the interface only; the server doesn't refuse an over-dispense. (#374)
+- **A saved form's read view shows coded answers in English in a French session.** With the
+  `enable-embedded-form-view` flag on, the expanded encounter row renders the form, and
+  form-engine-lib (5.0.1-pre.2754, in esm-form-engine-app 13.0.2-pre.12863, and upstream `main`)
+  prints the answer's raw English `label` without translating it, while the question label is
+  translated. The concept names don't reach this view. It needs a form-engine fix. (#475)
 - **About 150 products are still at 1.00:** #417 priced 205 of the 357, and the product
   owner left 82 rows of his sheet blank. HS26 and BP10 (#420) also start at 1.00. Some existing
   prices disagree with the tariff. (#270)
