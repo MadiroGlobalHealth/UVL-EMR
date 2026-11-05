@@ -23,6 +23,12 @@
      be disabled (the engine skips disabled fields when it validates) and must not be
      read-only (Carbon's TextInput drops `invalid` on a read-only input, so the save is
      refused with no message: UAT, 4 Nov 2026).
+
+  3. A member of an obsGroup that has a hide rule repeats that rule in its own. The engine
+     flattens the members into copies and evaluates each one's own rule, so a member without
+     it is shown and saved while its group is hidden: a foetus 3 answer on a twin pregnancy.
+     The fixed foetus and newborn slots carry the slot rule on the group and every member
+     (#496, #512).
 */
 
 import groovy.io.FileType
@@ -86,6 +92,7 @@ List<Map> questionsOf(List questions) {
 
 int maleOnlyPages = 0
 int decimalQuestions = 0
+int groupMembersChecked = 0
 List<File> formFiles = filesIn(formsDir, '.json')
 if (!formFiles) {
     throw new IllegalStateException("No form under ${formsDir}: the check would pass without checking anything")
@@ -94,6 +101,16 @@ formFiles.each { File file ->
     def form = slurper.parse(file, 'UTF-8')
     form.pages?.each { page ->
         List<Map> questions = questionsOf(page.sections?.collectMany { it.questions ?: [] })
+
+        questions.findAll { it.questions && squash(it.hide?.hideWhenExpression) }.each { group ->
+            String groupRule = squash(group.hide.hideWhenExpression)
+            group.questions.findAll { !squash(it.hide?.hideWhenExpression).contains(groupRule) }.each { member ->
+                faults << ("${file.name}: ${member.id} is in ${group.id}, hidden when " +
+                        "${group.hide.hideWhenExpression}, but its own hide rule does not repeat that, so it " +
+                        "shows and saves while the group is hidden (#512)")
+            }
+            groupMembersChecked += group.questions.size()
+        }
 
         questions.each { q ->
             def options = q.questionOptions ?: [:]
@@ -131,4 +148,5 @@ if (faults) {
     throw new IllegalStateException("O3 forms would accept a save they must refuse:\n  - " + faults.join('\n  - '))
 }
 log.info("Forms OK: ${decimalQuestions} decimal number questions on concepts that allow decimals, " +
-        "${maleOnlyPages} male-only pages that refuse to save")
+        "${maleOnlyPages} male-only pages that refuse to save, ${groupMembersChecked} members of hidden-by-rule " +
+        "groups that repeat the group's rule")
