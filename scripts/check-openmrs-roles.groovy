@@ -58,6 +58,24 @@
      403 for that role (#517, Midwife on UAT 2026-11-05). Until #517 only Doctor and the
      lab, pharmacy and imaging roles held it; Register patients, Help Nurse, Nurse, Midwife
      and every role built on Nurse did not.
+
+  9. Each role below holds, directly or through an inherited role, the read privileges its
+     screens call. Without them the call returns a 403, and some screens retry it for ever.
+     - Help Nurse, Nurse, Midwife and Doctor read drug orders (`Get Orders`, and `Get Care
+       Settings`, because the medications widget filters GET order?patient=... by care
+       setting and core resolves it through OrderService.getCareSettingByUuid) and patient
+       lists (`View Cohorts In Cohort Module`, which the cohort module's services require
+       for GET cohortm/cohort and cohortm/cohortmember). Until #508 Help Nurse had neither,
+       its patient summary looped on the drug orders call, and no clinical role could read a
+       patient list (UAT 2026-11-04).
+     - Pharmacist and Central Pharmacist open Stock -> Reports (#438): `App:
+       stockmanagement.reports`, `Task: stockmanagement.reports.mutate` to request a report,
+       and `Manage Scheduler`, because the stock module queues the report with
+       SchedulerService.scheduleIfNotRunning in the requesting user's session. The three come
+       with the stock module's own `Inventory Reporting` role.
+     - Pharmacist and Doctor read the order basket's price and stock lookups, FHIR
+       ChargeItemDefinition and InventoryItem (`Get ChargeItemDefinition`, `Get
+       InventoryItem`). Until #351 the Pharmacist did not.
 */
 
 import groovy.json.JsonSlurper
@@ -76,6 +94,18 @@ List<String> deletePrivileges = ['Delete Encounters', 'Purge Encounters', 'Delet
         'Delete Observations', 'Purge Observations']
 String openChart = 'Get Patients'
 String readEnrolments = 'Get Patient Programs'
+List<String> readDrugOrders = ['Get Orders', 'Get Care Settings']
+List<String> readPatientLists = ['View Cohorts In Cohort Module']
+List<String> stockReports = ['App: stockmanagement.reports', 'Task: stockmanagement.reports.mutate', 'Manage Scheduler']
+List<String> basketLookups = ['Get ChargeItemDefinition', 'Get InventoryItem']
+Map<String, List<String>> requiredOf = [
+        'Help Nurse'        : readDrugOrders + readPatientLists,
+        'Nurse'             : readDrugOrders + readPatientLists,
+        'Midwife'           : readDrugOrders + readPatientLists,
+        'Doctor'            : readDrugOrders + readPatientLists + basketLookups,
+        'Pharmacist'        : stockReports + basketLookups,
+        'Central Pharmacist': stockReports,
+]
 
 File distroConfigs = new File(project.build.directory,
         "${project.artifactId}-${project.version}/distro/configs")
@@ -191,6 +221,19 @@ nonDispensingRoles.each { name ->
     if (held) {
         problems << "${definedIn[name]}: role '${name}' must not dispense, but holds ${held.collect { "'${it}'" }.join(', ')}" +
                 " (directly or through an inherited role)"
+    }
+}
+
+requiredOf.each { name, required ->
+    if (!definedIn.containsKey(name)) {
+        problems << "role '${name}' is not defined in any roles CSV; cannot check the privileges its screens need"
+        return
+    }
+    Set<String> privileges = effectivePrivileges(name, privilegesOf, inheritances)
+    List<String> missing = required.findAll { !privileges.contains(it) }
+    if (missing) {
+        problems << "${definedIn[name]}: role '${name}' lacks ${missing.collect { "'${it}'" }.join(', ')}" +
+                " (directly or through an inherited role); its screens would get a 403"
     }
 }
 

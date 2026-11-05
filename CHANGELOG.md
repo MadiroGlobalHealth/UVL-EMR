@@ -555,6 +555,30 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   Help Nurse, Nurse, Midwife, Ophtalmologist, Dentist, Anesthesist and Doctor inherit. It is read
   only: enrolling, editing and removing stay with Doctor. The build now fails if a Keycloak role
   that can read patients cannot read their program enrolments. (#517)
+- **Pharmacists can open Stock → Reports.** The page answered 403 for Pharmacist and Central
+  Pharmacist. Both now inherit the stock module's `Inventory Reporting` role, which brings
+  `App: stockmanagement.reports`, `Task: stockmanagement.reports.mutate` and `Manage
+  Scheduler`; the last is needed because the stock module queues each report through the
+  OpenMRS scheduler in the requesting user's session. The item, source, role-scope and settings
+  pages of the stock app (3.3.1) are not tied to any privilege in the app, so a dispensing
+  pharmacist still sees them; saving there stays refused, as Pharmacist has no
+  `Task: stockmanagement.stockItems.mutate`. Hiding them would be a frontend display condition,
+  not a role change. (#438)
+- **The Help Nurse's patient summary no longer loops on drug orders, and clinical staff can read
+  patient lists.** Help Nurse now has `Get Orders` and `Get Care Settings`: the medications
+  widget filters orders by care setting, and without either it retried the 403 more than 100
+  times a minute. Help Nurse also has `View Cohorts In Cohort Module`, which the Patient Lists
+  page and the chart's patient-lists widget need to read `cohortm/cohort` and
+  `cohortm/cohortmember`. Nurse, Midwife, Doctor and the clinical roles built on Nurse inherit
+  both through Help Nurse. Creating or changing a list still needs `Edit Cohorts In Cohort
+  Module`, which no clinical role has. (#508)
+- **The Pharmacist's order basket price and stock lookups no longer fail.** Pharmacist now has
+  `Get ChargeItemDefinition` and `Get InventoryItem`, as Doctor already had. (#351, pharmacist
+  part; the queue 403 was fixed earlier.)
+- The build now fails if Help Nurse, Nurse, Midwife or Doctor cannot read drug orders and patient
+  lists, if Pharmacist or Central Pharmacist cannot open stock reports, or if Pharmacist or
+  Doctor cannot read the order basket lookups (`scripts/check-openmrs-roles.groovy`, check 9).
+  Signed-in users get the new privileges at their next sign-in. (#438, #508, #351)
 - **Cervical dilatation is a whole number from 1 to 10 cm** in the partograph reading, the
   maternity consultation and the childbirth record, as the product owner confirmed on 4 Nov 2026.
   4.5 is refused ("Decimal values are not allowed"), as are 0 and 11. This replaces the
