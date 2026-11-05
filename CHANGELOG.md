@@ -44,6 +44,19 @@ MSF-OCG/LIME-EMR-Tooling.
 Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
 
 ### Staff will notice
+- **The Change language dialog says how to change language for the session.** Its checkbox is
+  ticked every time the dialog opens; ticked, it saves the language as the account's default,
+  which only the administrator may do (`Edit Users`, removed from clinical roles in #502), so
+  clinical staff got a 403 and the language did not change. The checkbox now reads « Enregistrer
+  comme langue par défaut (administrateur uniquement) », with « Décochez cette case pour changer
+  la langue de cette session. » under it (English: "Save as my default language (administrator
+  only)" / "Untick this box to change the language for this session."). Unticked, the dialog
+  only changes the session language, which needs no privilege. This is a translation override
+  of `@openmrs/esm-primary-navigation-app` 11.0.0 in the frontend config; the dialog itself is
+  unchanged. Corrected training note, replacing the one given with #502: « Pour changer de
+  langue : ouvrez Changer de langue, choisissez la langue, décochez « Enregistrer comme langue
+  par défaut », puis cliquez Modifier. La case est cochée à chaque ouverture. Seul
+  l'administrateur change la langue par défaut. » (#524)
 - **The childbirth record is easier to work through.** Sections are numbered 1–12 with no gap.
   The diagnosis is split into a primary diagnosis and secondary diagnoses. Gestational age is
   calculated from the last menstrual period, and the fundal-height field in weeks is now labelled

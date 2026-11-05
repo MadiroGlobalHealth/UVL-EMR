@@ -133,6 +133,16 @@
           }
         }
       }
+    },
+    "Translation overrides": {
+      "fr": {
+        "changeDefaultLocale": "Enregistrer comme langue par défaut (administrateur uniquement)",
+        "changeDefaultLocaleExplanation": "Décochez cette case pour changer la langue de cette session."
+      },
+      "en": {
+        "changeDefaultLocale": "Save as my default language (administrator only)",
+        "changeDefaultLocaleExplanation": "Untick this box to change the language for this session."
+      }
     }
   },
   "@openmrs/esm-active-visits-app": {
