@@ -109,9 +109,9 @@ Map<String, Boolean> allowDecimal = [:]
 Map<String, Boolean> hasFrenchName = [:]
 Map<String, Long> frenchNameVersion = [:]
 Map<String, String> frenchName = [:]
-// Exports re-exported after #520 must have none; these older ones carry the May 2025 faults,
-// already corrected in OCL, until their next export.
-Map<String, Integer> knownMappingFaults = ['UVL_drug_entry_20261023-1.zip': 126, 'UVL_dx_v4.zip': 2]
+// Exports re-exported after #520 must have none. uvl-dx carries 2 from the May 2025 import
+// (retired in OCL); its collection can't be re-exported as is, it would drop 154 concepts (#533).
+Map<String, Integer> knownMappingFaults = ['UVL_dx_v4.zip': 2]
 List<String> mappingFaults = []
 int mappingsChecked = 0
 int labConceptsChecked = 0
