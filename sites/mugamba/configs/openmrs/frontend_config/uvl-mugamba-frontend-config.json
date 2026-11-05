@@ -575,10 +575,26 @@
         "duplicatePrescriptionMessageNoPrevious": "Aucune délivrance précédente n'a été trouvée.",
         "duplicateDispenseError": "Erreur lors de la délivrance du médicament",
         "previousDispenseDetails": "Délivrance précédente le",
-        "withQuantity": "avec la quantité"
+        "withQuantity": "avec la quantité",
+        "forDurationDays_one": "pendant {{count}} jour",
+        "forDurationDays_other": "pendant {{count}} jours",
+        "forDurationWeeks_one": "pendant {{count}} semaine",
+        "forDurationWeeks_other": "pendant {{count}} semaines",
+        "forDurationMonths_one": "pendant {{count}} mois",
+        "forDurationMonths_other": "pendant {{count}} mois",
+        "forDurationYears_one": "pendant {{count}} an",
+        "forDurationYears_other": "pendant {{count}} ans",
+        "forDurationHours_one": "pendant {{count}} heure",
+        "forDurationHours_other": "pendant {{count}} heures",
+        "forDurationMinutes_one": "pendant {{count}} minute",
+        "forDurationMinutes_other": "pendant {{count}} minutes",
+        "forDurationSeconds_one": "pendant {{count}} seconde",
+        "forDurationSeconds_other": "pendant {{count}} secondes",
+        "forDurationOther": "pendant {{duration}} {{durationUnit}}",
+        "partiallyDispensed": "Délivré partiellement {{quantityDispensed}}/{{quantityOrdered}}"
       }
     },
-    "enableStockDispense": false
+    "enableStockDispense": true
   },
   "@openmrs/esm-stock-management-app": {
     "packingUnitsUUID": "d8ec6bbb-d988-5ce5-879a-6e3068aca253",

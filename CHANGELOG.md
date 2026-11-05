@@ -41,6 +41,9 @@ MSF-OCG/LIME-EMR-Tooling.
 
 ## [Unreleased] — `UAT` · `main` `75a339a`
 
+- Dispensing: stock deduction at dispensing is switched on (`enableStockDispense: true`); dispensing takes the quantity off the chosen batch. Reaches production with the M5 release, after opening stock and pharmacist stock roles are in place (#457, supersedes PR #482).
+- Dispensing: French texts for the translated prescription duration (« pendant 5 jours ») and partial dispense (« Délivré partiellement 2/5 ») (#541, #394).
+
 Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
 
 ### Staff will notice
