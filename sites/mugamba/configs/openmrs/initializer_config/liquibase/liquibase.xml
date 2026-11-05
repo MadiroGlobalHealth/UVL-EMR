@@ -2344,4 +2344,115 @@
         <rollback/>
     </changeSet>
 
+    <!--
+        Visits auto-close at 23:59:59 Burundi time, not 02:00 (#350). Core's "Auto Close Visits
+        Task" starts at 23:59:59 and repeats every 24 h, but the servers run on UTC, so it fired at
+        01:59:59 CAT and closed visits in the middle of the night. 21:59:59 UTC is 23:59:59 CAT
+        (UTC+2, no daylight saving). Setting the containers' TZ instead would change how every
+        stored timestamp is read.
+
+        Only the time of day changes, and only while it is still core's default 23:59:59, so a
+        time set in the scheduler admin page is kept. The scheduler reads start_time when it
+        schedules the task at OpenMRS start. Marked ran where the task is absent or already moved.
+    -->
+    <changeSet id="auto_close_visits_task_cat_midnight-20261106" author="Joshua">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="scheduler_task_config"/>
+            <sqlCheck expectedResult="1">
+                SELECT CASE WHEN COUNT(*) > 0 THEN 1 ELSE 0 END
+                FROM scheduler_task_config
+                WHERE schedulable_class = 'org.openmrs.scheduler.tasks.AutoCloseVisitsTask'
+                  AND name = 'Auto Close Visits Task'
+                  AND TIME(start_time) = '23:59:59';
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            Run the Auto Close Visits Task at 21:59:59 UTC, which is 23:59:59 in Burundi (#350).
+        </comment>
+        <sql>
+            UPDATE scheduler_task_config
+               SET start_time = TIMESTAMP(DATE(start_time), '21:59:59'),
+                   changed_by = 1,
+                   date_changed = NOW()
+             WHERE schedulable_class = 'org.openmrs.scheduler.tasks.AutoCloseVisitsTask'
+               AND name = 'Auto Close Visits Task'
+               AND TIME(start_time) = '23:59:59';
+        </sql>
+        <rollback>
+            <sql>
+                UPDATE scheduler_task_config
+                   SET start_time = TIMESTAMP(DATE(start_time), '23:59:59')
+                 WHERE schedulable_class = 'org.openmrs.scheduler.tasks.AutoCloseVisitsTask'
+                   AND name = 'Auto Close Visits Task'
+                   AND TIME(start_time) = '21:59:59';
+            </sql>
+        </rollback>
+    </changeSet>
+
+    <!--
+        The forms' "No" reads "Faux" in French (#528). In OpenMRS, concept No
+        (d45102a2-d9b7-40dc-a30c-8e88494e1725) has fr "Faux" as its preferred name and fr "Non" as
+        an index term, with no French fully specified name. OCL (uvl-ciel 8918106) has "Non" as
+        the fully specified, preferred name and "Faux" as a plain synonym, but the OCL import
+        skips a concept it has already loaded at the same version, so the database never got it.
+
+        This gives the concept OCL's French names: "Faux" stops being preferred and stays a plain
+        synonym, then "Non" becomes the fully specified, preferred name. "Faux" is cleared first,
+        so there is never more than one preferred French name. Each name is found by concept uuid,
+        locale and text, not by id. Obs store the concept, not the name, so the answers already
+        saved read "Non" too.
+
+        Concept "Other non-coded" (b5c4b807-...) also has no French fully specified name, but
+        neither has it in OCL: its preferred French name is "Autre", which is what staff see. It is
+        left as it is.
+
+        runAlways, because this file runs before the OCL domain: where the concept is not loaded
+        yet, nothing happens and the next start applies it. Idempotent; once the names match OCL
+        both updates change no row. runOnChange, so editing it does not stop OpenMRS on a
+        checksum. No rollback: the old names are the drift.
+    -->
+    <changeSet id="concept_no_french_name_non-20261106" author="Joshua" runAlways="true" runOnChange="true">
+        <preConditions onFail="CONTINUE" onError="CONTINUE"
+                       onFailMessage="INFO (#528): concept No (d45102a2-d9b7-40dc-a30c-8e88494e1725) has no French name &quot;Non&quot; yet, so its French names were not changed; this changeset runs again on every start.">
+            <sqlCheck expectedResult="1">
+                SELECT CASE WHEN COUNT(*) > 0 THEN 1 ELSE 0 END
+                FROM concept_name cn
+                JOIN concept c ON c.concept_id = cn.concept_id
+                WHERE c.uuid = 'd45102a2-d9b7-40dc-a30c-8e88494e1725'
+                  AND cn.locale = 'fr'
+                  AND cn.name = 'Non'
+                  AND cn.voided = 0;
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            Make "Non" the French fully specified, preferred name of concept No, and "Faux" a plain synonym (#528).
+        </comment>
+        <sql>
+            UPDATE concept_name cn
+              JOIN concept c ON c.concept_id = cn.concept_id
+               SET cn.concept_name_type = NULL,
+                   cn.locale_preferred = 0,
+                   cn.changed_by = 1,
+                   cn.date_changed = NOW()
+             WHERE c.uuid = 'd45102a2-d9b7-40dc-a30c-8e88494e1725'
+               AND cn.locale = 'fr'
+               AND cn.name &lt;&gt; 'Non'
+               AND cn.voided = 0
+               AND (cn.locale_preferred = 1 OR cn.concept_name_type = 'FULLY_SPECIFIED');
+
+            UPDATE concept_name cn
+              JOIN concept c ON c.concept_id = cn.concept_id
+               SET cn.concept_name_type = 'FULLY_SPECIFIED',
+                   cn.locale_preferred = 1,
+                   cn.changed_by = 1,
+                   cn.date_changed = NOW()
+             WHERE c.uuid = 'd45102a2-d9b7-40dc-a30c-8e88494e1725'
+               AND cn.locale = 'fr'
+               AND cn.name = 'Non'
+               AND cn.voided = 0
+               AND (cn.locale_preferred &lt;&gt; 1 OR cn.concept_name_type IS NULL OR cn.concept_name_type &lt;&gt; 'FULLY_SPECIFIED');
+        </sql>
+        <rollback/>
+    </changeSet>
+
 </databaseChangeLog>
