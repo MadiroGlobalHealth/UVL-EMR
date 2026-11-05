@@ -337,6 +337,16 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   CPN, so reports by encounter location count it on its own line instead of under the delivery
   room, IPD or OPD. The ANC questions of the Maternity Consultation (F13), asked when a woman
   comes to give birth, stay with the delivery room. (#501)
+- **Visit types, consultation types and form names are in French in a French session.** The
+  visit types read "Consultation externe (OPD)", "Hospitalisation (IPD)" and "Visite générale";
+  the fifteen UVL encounter types (e.g. "Consultation de maternité", "Lecture du partogramme")
+  appear in French in the visit's encounter list; the start-visit form asks for "Origine",
+  "Type de cas", "Payeur" and the three other visit fields in French; and every UVL form has a
+  French name in the forms list (e.g. "Échographie gynécologique", "Consultation externe"). The
+  French form names come from the requirements sheet (Release 1.1) and the forms' own French
+  page titles. An English session shows the English names: they are set explicitly too, since
+  without them OpenMRS falls back to the system language, French. The names stored in the
+  database are unchanged, so reports and the Odoo bridge are not affected. (#499)
 
 ### Added
 - UVL frontend module `@madiro/esm-uvl-partograph-app` 1.0.1 (`distro/frontend/esm-uvl-partograph-app`,
@@ -351,6 +361,17 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   not log "Unknown config key" before the module has loaded; the module ships no UUID. The chart is plain SVG.
   The layout follows the MSPLS partogram (OpenClinic "Accouchement (modèle MSPLS)"); the
   hour-00 and alert/action-line rules are in the module README. (#498)
+- French and English display names (`Display:fr`, `Display:en`) for the UVL encounter types,
+  visit types and visit attribute types, and a French and an English `form_name_translation` for
+  every UVL form (French was set for two, English for none). The visit attribute types carried
+  their French names in a `Name:fr` column, which Initializer ignores without a warning; it is now
+  `Display:fr`. Initializer turns `Display:<locale>` into the `ui.i18n.<Class>.name.<uuid>`
+  message that the REST `display` returns in that session language. English is explicit because
+  a missing message falls back to the system default locale (French on UVL) before English: with
+  French alone, an English session showed French names (UAT, 2026-11-05). The build now fails on
+  a UVL encounter type, visit type, visit attribute type or form without both names, or on a
+  localised column Initializer ignores in those domains (`scripts/check-french-metadata.groovy`).
+  (#499)
 - OpenMRS role and Keycloak `openmrs` client role **Central Pharmacist** (inherits `Pharmacist`
   and `Inventory Manager`), and the Keycloak `openmrs` client role **Inventory Administrator** for
   whoever manages stock user role scopes. The build now fails on a Keycloak `openmrs` client role
@@ -712,6 +733,15 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   form-engine-lib (5.0.1-pre.2754, in esm-form-engine-app 13.0.2-pre.12863, and upstream `main`)
   prints the answer's raw English `label` without translating it, while the question label is
   translated. The concept names don't reach this view. It needs a form-engine fix. (#475)
+- **The forms list offers every form on every visit type,** so a doctor on an inpatient visit
+  is offered the UVL Outpatient Consultation Form. The forms app (esm-patient-forms-app
+  13.0.2-pre.12863, and upstream `main`) has no visit-type setting: it hides a form only when it
+  is unpublished, its name contains "component", or the user lacks its encounter type's edit
+  privilege, and no backend module in the distro serves a list filtered by visit. (#518)
+- **The Ozone encounter types stay in English** in a French session ("Vitals", "Visit Note",
+  "Order", "Transfer Request"...). They are inherited, not UVL's; and the chart recognises a
+  visit note by the English display "Visit Note", so translating that one would open its edit
+  in the generic form workspace instead of the visit note. (#499)
 - **About 150 products are still at 1.00:** #417 priced 205 of the 357, and the product
   owner left 82 rows of his sheet blank. HS26 and BP10 (#420) also start at 1.00. Some existing
   prices disagree with the tariff. (#270)

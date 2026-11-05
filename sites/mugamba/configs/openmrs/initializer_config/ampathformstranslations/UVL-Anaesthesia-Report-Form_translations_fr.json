@@ -1,6 +1,7 @@
 {
   "uuid": "08dbb0e8-20a5-4f7d-9bad-f19fb804b983",
   "form": "UVL Anaesthesia Report Form",
+  "form_name_translation": "Rapport d'anesthésie",
   "description": "Fr Translations for 'UVL Anaesthesia Report Form'",
   "language": "fr",
   "translations": {
