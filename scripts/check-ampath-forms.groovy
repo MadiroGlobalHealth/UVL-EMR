@@ -4,7 +4,7 @@
   Run from sites/mugamba/pom.xml at prepare-package, against the assembled
   initializer_config, so it sees every layer (distro, country, site).
 
-  Six checks, each for a fault that passes every review of the form JSON and shows only
+  Seven checks, each for a fault that passes every review of the form JSON and shows only
   when someone saves or reads the form:
 
   1. A number question that accepts decimals asks a concept that allows them. The form
@@ -47,6 +47,10 @@
      lab-test mappings were dropped that way since May 2025 (#520). Exports that still carry
      such mappings and have not been re-exported since are listed in knownMappingFaults, with
      their count, so a new fault in them still fails.
+  7. Every concept of the lab-tests export (UVL_labtests_*.zip) has a French locale-preferred
+     name, as check 4 asks of the form concepts. The lab technician picks the results and the
+     doctor reads them, so a lab answer with no French name shows in English ("Positive for
+     Plasmodium falciparum", #531).
 */
 
 import groovy.io.FileType
@@ -110,6 +114,7 @@ Map<String, String> frenchName = [:]
 Map<String, Integer> knownMappingFaults = ['UVL_drug_entry_20261023-1.zip': 126, 'UVL_dx_v4.zip': 2]
 List<String> mappingFaults = []
 int mappingsChecked = 0
+int labConceptsChecked = 0
 filesIn(oclDir, '.zip').each { File zip ->
     new ZipFile(zip).withCloseable { ZipFile zf ->
         zf.entries().findAll { it.name.endsWith('.json') }.each { entry ->
@@ -118,6 +123,16 @@ filesIn(oclDir, '.zip').each { File zip ->
                 !isTrue(mapping.retired) && !mapping.to_concept_url && !mapping.to_source_url && !mapping.to_source_name
             }
             mappingsChecked += (export.mappings ?: []).size()
+            if (zip.name.startsWith('UVL_labtests_')) {
+                export.concepts?.findAll { !isTrue(it.retired) }?.each { concept ->
+                    labConceptsChecked++
+                    if (!concept.names?.any { isFrenchPreferred(it) }) {
+                        mappingFaults << ("${zip.name}: lab concept ${concept.url} '${concept.display_name}' has no " +
+                                "French locale-preferred name, so a French session shows it in English. Add one in " +
+                                "OCL and re-export (#531)")
+                    }
+                }
+            }
             if (noTarget.size() != knownMappingFaults.getOrDefault(zip.name, 0)) {
                 mappingFaults << ("${zip.name}: ${noTarget.size()} mapping(s) with no target concept and no target " +
                         "source (e.g. ${noTarget.take(3).collect { it.url }}), which the OCL loader drops. Give each " +
@@ -245,4 +260,4 @@ log.info("Forms OK: ${decimalQuestions} decimal number questions on concepts tha
         "${maleOnlyPages} male-only pages that refuse to save, ${groupMembersChecked} members of hidden-by-rule " +
         "groups that repeat the group's rule, ${namedConcepts.size()} question and answer concepts with a French name, " +
         "${sheetName.size()} French names as the requirements sheet gives them, " +
-        "${mappingsChecked} OCL mappings with a target")
+        "${mappingsChecked} OCL mappings with a target, ${labConceptsChecked} lab concepts with a French name")
