@@ -533,6 +533,40 @@
                 <replaceregexp file="${project.build.directory}/openmrs/frontend_assembly/build-openmrs-frontend.groovy"
                               match="openmrsVersion =.*" replace='openmrsVersion = slurper.parse(Paths.get("${project.build.directory}", "openmrs_frontend", "spa-assemble-config.json").toFile())["coreVersion"] ?: "next"'/>
 
+                <!--
+                  Load importmap.json and routes.registry.json from the SPA root (#519).
+
+                  Ozone runs `openmrs build` without the importmap and routes options, so
+                  the CLI writes the relative defaults into index.html. There is no
+                  <base href>, so a chart opened by direct link
+                  (/openmrs/spa/patient/<uuid>/chart) asks for
+                  /openmrs/spa/patient/<uuid>/chart/importmap.json; nginx answers 404 and
+                  the app shell stays blank until it recovers. Pass the same values as the
+                  reference application: `$SPA_PATH/...` goes into index.html literally,
+                  like $SPA_CONFIG_URLS, and the frontend container's startup.sh envsubst
+                  turns it into /openmrs/spa/... (SPA_PATH is set by Ozone's compose).
+
+                  The match needs `build` directly followed by the config-url option, so a
+                  rewritten file is not rewritten twice. The check below fails the build if
+                  an Ozone bump changes the command and the rewrite stops applying.
+                  Four backslashes in `replace` give the groovy source `\$SPA_PATH`: Ant
+                  turns each `\\` into one backslash and escapes the `$` for Java.
+                -->
+                <replaceregexp file="${project.build.directory}/openmrs/frontend_assembly/build-openmrs-frontend.groovy"
+                              match="(openmrs\S* build) (--config-url )"
+                              replace="\1 --importmap \\\\$SPA_PATH/importmap.json --routes \\\\$SPA_PATH/routes.registry.json \2"/>
+                <loadfile property="frontend.build.script.contents"
+                          srcFile="${project.build.directory}/openmrs/frontend_assembly/build-openmrs-frontend.groovy" />
+                <fail message="build-openmrs-frontend.groovy does not pass --importmap/--routes to `openmrs build`; the rewrite for #519 did not match, so a chart opened by direct link would request importmap.json under the chart path. Script contents:${line.separator}${frontend.build.script.contents}">
+                  <condition>
+                    <not>
+                      <contains string="${frontend.build.script.contents}"
+                                substring="build --importmap \$SPA_PATH/importmap.json --routes \$SPA_PATH/routes.registry.json --config-url" />
+                    </not>
+                  </condition>
+                </fail>
+                <echo level="info" message="Verified: openmrs build loads importmap.json and routes.registry.json from $SPA_PATH"/>
+
                 <echo level="info" message="Adding UVL project Name to ozone" />
                 <replace
                   dir="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/scripts"
