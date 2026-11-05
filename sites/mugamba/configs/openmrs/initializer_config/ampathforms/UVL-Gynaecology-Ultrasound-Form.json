@@ -247,6 +247,75 @@
                     "max": "7000",
                     "disallowDecimals": true
                   }
+                },
+                {
+                  "label": "Head Presentation",
+                  "type": "obs",
+                  "id": "fetusPresentation",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "b5d92a81-f711-477c-9fa2-e4d5dacedf87",
+                    "answers": [
+                      {
+                        "concept": "c272a848-c97e-4119-a1e1-544b011fa752",
+                        "label": "Cephalic"
+                      },
+                      {
+                        "concept": "270574b0-31a7-4b9e-83bc-b613b403d9f8",
+                        "label": "Transverse"
+                      },
+                      {
+                        "concept": "e5b0895f-f128-40db-9ba7-713e5ff98e00",
+                        "label": "Breech"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "label": "Amniotic Fluid",
+                  "type": "obs",
+                  "id": "fetusAmnioticFluid",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "87633b8a-3a12-43d5-8d0c-bb4226dd666e",
+                    "answers": [
+                      {
+                        "concept": "768feec2-5b44-4dd2-9478-d025456657f9",
+                        "label": "Polyhydramnios"
+                      },
+                      {
+                        "concept": "107f4e49-89cc-4acc-bdca-4304b6c35eb7",
+                        "label": "Oligohydramnios"
+                      },
+                      {
+                        "concept": "1115AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                        "label": "Normal"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "label": "Placenta",
+                  "type": "obs",
+                  "id": "fetusPlacenta",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "8e2e54e6-2e7c-40bb-a763-8bab0029f387",
+                    "answers": [
+                      {
+                        "concept": "4a5413b5-55e0-486c-b5dc-6db56fced803",
+                        "label": "Anterior"
+                      },
+                      {
+                        "concept": "8548a7a3-e04a-47c6-9848-54de9df2f2e3",
+                        "label": "Posterior"
+                      },
+                      {
+                        "concept": "c82e8e2b-7dc7-4dce-a12f-60148723eccb",
+                        "label": "Covering (placenta praevia)"
+                      }
+                    ]
+                  }
                 }
               ]
             },
@@ -317,6 +386,84 @@
                     "min": "0",
                     "max": "7000",
                     "disallowDecimals": true
+                  },
+                  "hide": {
+                    "hideWhenExpression": "pregnancyType !== 'be80699e-1ab2-47b4-8b98-a11efc7cb24d'"
+                  }
+                },
+                {
+                  "label": "Head Presentation",
+                  "type": "obs",
+                  "id": "fetusPresentation_1",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "b5d92a81-f711-477c-9fa2-e4d5dacedf87",
+                    "answers": [
+                      {
+                        "concept": "c272a848-c97e-4119-a1e1-544b011fa752",
+                        "label": "Cephalic"
+                      },
+                      {
+                        "concept": "270574b0-31a7-4b9e-83bc-b613b403d9f8",
+                        "label": "Transverse"
+                      },
+                      {
+                        "concept": "e5b0895f-f128-40db-9ba7-713e5ff98e00",
+                        "label": "Breech"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "pregnancyType !== 'be80699e-1ab2-47b4-8b98-a11efc7cb24d'"
+                  }
+                },
+                {
+                  "label": "Amniotic Fluid",
+                  "type": "obs",
+                  "id": "fetusAmnioticFluid_1",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "87633b8a-3a12-43d5-8d0c-bb4226dd666e",
+                    "answers": [
+                      {
+                        "concept": "768feec2-5b44-4dd2-9478-d025456657f9",
+                        "label": "Polyhydramnios"
+                      },
+                      {
+                        "concept": "107f4e49-89cc-4acc-bdca-4304b6c35eb7",
+                        "label": "Oligohydramnios"
+                      },
+                      {
+                        "concept": "1115AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                        "label": "Normal"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "pregnancyType !== 'be80699e-1ab2-47b4-8b98-a11efc7cb24d'"
+                  }
+                },
+                {
+                  "label": "Placenta",
+                  "type": "obs",
+                  "id": "fetusPlacenta_1",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "8e2e54e6-2e7c-40bb-a763-8bab0029f387",
+                    "answers": [
+                      {
+                        "concept": "4a5413b5-55e0-486c-b5dc-6db56fced803",
+                        "label": "Anterior"
+                      },
+                      {
+                        "concept": "8548a7a3-e04a-47c6-9848-54de9df2f2e3",
+                        "label": "Posterior"
+                      },
+                      {
+                        "concept": "c82e8e2b-7dc7-4dce-a12f-60148723eccb",
+                        "label": "Covering (placenta praevia)"
+                      }
+                    ]
                   },
                   "hide": {
                     "hideWhenExpression": "pregnancyType !== 'be80699e-1ab2-47b4-8b98-a11efc7cb24d'"
@@ -398,6 +545,84 @@
                   "hide": {
                     "hideWhenExpression": "pregnancyType !== 'be80699e-1ab2-47b4-8b98-a11efc7cb24d' || isEmpty(fetusCount) || fetusCount < 3"
                   }
+                },
+                {
+                  "label": "Head Presentation",
+                  "type": "obs",
+                  "id": "fetusPresentation_2",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "b5d92a81-f711-477c-9fa2-e4d5dacedf87",
+                    "answers": [
+                      {
+                        "concept": "c272a848-c97e-4119-a1e1-544b011fa752",
+                        "label": "Cephalic"
+                      },
+                      {
+                        "concept": "270574b0-31a7-4b9e-83bc-b613b403d9f8",
+                        "label": "Transverse"
+                      },
+                      {
+                        "concept": "e5b0895f-f128-40db-9ba7-713e5ff98e00",
+                        "label": "Breech"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "pregnancyType !== 'be80699e-1ab2-47b4-8b98-a11efc7cb24d' || isEmpty(fetusCount) || fetusCount < 3"
+                  }
+                },
+                {
+                  "label": "Amniotic Fluid",
+                  "type": "obs",
+                  "id": "fetusAmnioticFluid_2",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "87633b8a-3a12-43d5-8d0c-bb4226dd666e",
+                    "answers": [
+                      {
+                        "concept": "768feec2-5b44-4dd2-9478-d025456657f9",
+                        "label": "Polyhydramnios"
+                      },
+                      {
+                        "concept": "107f4e49-89cc-4acc-bdca-4304b6c35eb7",
+                        "label": "Oligohydramnios"
+                      },
+                      {
+                        "concept": "1115AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                        "label": "Normal"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "pregnancyType !== 'be80699e-1ab2-47b4-8b98-a11efc7cb24d' || isEmpty(fetusCount) || fetusCount < 3"
+                  }
+                },
+                {
+                  "label": "Placenta",
+                  "type": "obs",
+                  "id": "fetusPlacenta_2",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "8e2e54e6-2e7c-40bb-a763-8bab0029f387",
+                    "answers": [
+                      {
+                        "concept": "4a5413b5-55e0-486c-b5dc-6db56fced803",
+                        "label": "Anterior"
+                      },
+                      {
+                        "concept": "8548a7a3-e04a-47c6-9848-54de9df2f2e3",
+                        "label": "Posterior"
+                      },
+                      {
+                        "concept": "c82e8e2b-7dc7-4dce-a12f-60148723eccb",
+                        "label": "Covering (placenta praevia)"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "pregnancyType !== 'be80699e-1ab2-47b4-8b98-a11efc7cb24d' || isEmpty(fetusCount) || fetusCount < 3"
+                  }
                 }
               ],
               "hide": {
@@ -411,7 +636,7 @@
           "isExpanded": "true",
           "questions": [
             {
-              "label": "Head Presentation",
+              "label": "Head Presentation (earlier record, whole pregnancy)",
               "type": "obs",
               "id": "presentation",
               "questionOptions": {
@@ -431,10 +656,14 @@
                     "label": "Breech"
                   }
                 ]
+              },
+              "disabled": true,
+              "hide": {
+                "hideWhenExpression": "isEmpty(presentation)"
               }
             },
             {
-              "label": "Amniotic Fluid",
+              "label": "Amniotic Fluid (earlier record, whole pregnancy)",
               "type": "obs",
               "id": "amnioticFluidVolume",
               "questionOptions": {
@@ -454,10 +683,14 @@
                     "label": "Normal"
                   }
                 ]
+              },
+              "disabled": true,
+              "hide": {
+                "hideWhenExpression": "isEmpty(amnioticFluidVolume)"
               }
             },
             {
-              "label": "Placenta",
+              "label": "Placenta (earlier record, whole pregnancy)",
               "type": "obs",
               "id": "placentaLocation",
               "questionOptions": {
@@ -477,6 +710,10 @@
                     "label": "Covering (placenta praevia)"
                   }
                 ]
+              },
+              "disabled": true,
+              "hide": {
+                "hideWhenExpression": "isEmpty(placentaLocation)"
               }
             },
             {
