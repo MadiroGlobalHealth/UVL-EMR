@@ -62,6 +62,8 @@
     <patientdocuments.version>1.2.0</patientdocuments.version>
 
     <!-- Ozone alpha 13 modules -->
+    <!-- overridden by distro/binaries/openmrs/modules/oauth2login-1.5.0-uvl1.omod until upstream
+         releases the role sync fix (UVL-EMR#476, openmrs/openmrs-module-oauth2login#36) -->
     <oauth2loginVersion>1.5.0</oauth2loginVersion>
     <fhirproxyVersion>1.0.0</fhirproxyVersion>
     <patientsummaryVersion>2.2.0</patientsummaryVersion>     
