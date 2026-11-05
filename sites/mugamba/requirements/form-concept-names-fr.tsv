@@ -1,0 +1,1628 @@
+concept_uuid	fr_name	sheet_label	note
+006bb911-3375-462a-8706-2a9e73d8e444	Z42 Soins de controle comprenant une operation plastique		
+00850809-0931-4ce2-a5c2-c6832a331fcb	Type de grossesse		
+00a04006-e98f-4d29-ba7e-919a45709584	G44.0 Syndrome d'algie vasculaire de la face		
+00a4fd0a-9248-48bf-886e-896b2f80ea1b	E03 Autres hypothyroidies		
+011e5b5e-cf9e-49fb-a9a2-a3a08bbb2f1b	T21 Brulure et corrosion du tronc		
+0158876b-d74a-4520-a136-046d7051c49e	S76 Lesion traumatique de muscles et de tendons au niveau de la hanche et de la cuisse		
+01765a8e-0b40-4c08-bee2-4d87a733831a	D63.0 Anemie au cours de maladies tumorales		
+01889dc3-137b-4b93-91e2-110eca2e9df3	R34 Anurie et oligurie		
+0193372e-fe03-4275-8872-6e0b942b5efd	Z71 Sujets en contact avec les services de sante pour d'autres conseils et avis medicaux non classes ailleurs		
+01b26397-f0a1-4020-a95c-8087aeba4701	A-		
+01f8fb65-57ac-4743-8d00-d8c405789cb2	Début de l'intervention		
+01ff87e9-f0b0-4997-b402-7b12862d1784	Aucun	0 : aucun	deferred: also in UVL_immunizations_v2.zip (collection not re-exported in this pass)
+0205ad43-f460-4ead-ac2a-a858f501bcd4	Q89 Autres malformations congenitales non classees ailleurs		
+02162102-675a-42bd-85e9-50d33f593eb0	E06.0 Thyroidite aigue		
+024c5aa2-590b-48fc-9e23-2e3f6c1ff488	O84.8 Autres accouchements multiples		
+0258b418-6ba3-438d-8f60-7d098de4785c	I13 Cardionephropathie hypertensive		
+0262fc73-90d8-4e10-ba3d-b6938d6e0fb4	N89 Autres affections non inflammatoires du vagin		
+026a8da3-508e-4895-93ba-417dc68d28f2	Z40 Operation prophylactique		
+02a433bf-64f0-4e2e-a1d3-6d7237e99a1c	S85 Lesion traumatique de vaisseaux sanguins au niveau de la jambe		
+02aed138-573f-4e0b-82d5-8f290eaa6029	Q60 Agenesie renale et autres defauts de developpement renal		
+02bc8714-7eda-43eb-b10c-3c9dcacc0734	Selles / transit		
+030fcbb8-d378-414f-898d-709f36e119a3	D40 Tumeur des organes genitaux de l'homme a evolution imprevisible ou inconnue		
+034dea03-6741-4f65-bc22-838085ea377a	Midi		
+035d1968-adc3-4872-a85c-2204cb258663	Z01 Autres examens speciaux et investigations de sujets ne se plaignant de rien ou pour lesquels aucun diagnostic n'est rapporte		
+0371a044-e2e5-4229-a380-61c7e0f025b1	O87 Complications veineuses au cours de la puerperalite		
+0371f3f7-b7d5-4449-b880-123bcab9d61d	R41 Autres symptomes et signes relatifs aux fonctions cognitives et a la conscience		
+041ba365-7014-4a7b-bcba-72d7ad394912	C78 Tumeur maligne secondaire des organes respiratoires et digestifs		
+041df9d9-d041-4823-a700-8a04875fb5a5	J36 Angine phlegmoneuse		
+043171b4-f450-4ee6-beee-08bb8be64b01	Traitements / antécédents PTME		
+04afeb18-f3ec-4725-aba0-24578c765665	N28 Autres affections du rein et de l'uretere non classees ailleurs		
+04c66abd-5361-4d45-adf3-68146bbb7eab	J96.1 Insuffisance respiratoire chronique		
+04cdeaec-240c-4416-9286-e6f64d789395	C22.9 Foie sans precision		
+057723c1-6b41-4e30-9fc0-7a9be2cf2e6f	Médicaments administrés (ex. Ab : antibiotique)		
+0579342f-8958-4710-b5d6-f20132e1dd49	B86 Gale		
+059d5f70-20d1-4b5c-a7bf-b26b605e5d11	Prématurité		
+06128667-cf07-4041-b063-30e8bb42dc2c	M25.4 Epanchement articulaire		
+06185294-5cf2-442a-acb7-bd2da861e760	Q10 Malformations congenitales des paupieres de l'appareil lacrymal et de l'orbite		
+06237650-74b5-4981-a853-9469fce4ed89	I11 Cardiopathie hypertensive		
+06268e85-c16d-4b4f-b957-c0f3a8bec35b	C25 Tumeur maligne du pancreas		
+0670c25b-14b7-460a-a81f-619b5f7c5512	H55 Nystagmus et autres anomalies des mouvements oculaires		
+06bc374b-6862-48ce-9426-3b4e81ed0521	Anesthésiste		
+06bd1b7e-37ae-4b6a-9b2b-af80590a9a9d	Q43.1 Maladie de Hirschprung		
+06e2acf9-5163-41d8-a3f3-521a5cfc6b9c	A16.5 Pleuresie tuberculeuse (sans mention de confirmation bacteriologique ou histologique)		
+071a1ca1-cd35-4f93-9b74-4afc56b15de3	T00 Lesions traumatiques superficielles de plusieurs parties du corps		
+0722acc5-9c9f-4a34-80c8-31e7afcaf325	Réanimation : intubation		2 labels in the sheet, most frequent used (tie: closest to the old name)
+0740159a-f271-4393-9d32-1064a82feb7c	A15.0 Tuberculose pulmonaire confirmee par examen microscopique de l'expectoration avec ou sans culture		
+0777c7dc-b6d4-4a3b-8742-c0280f93ee76	Tabac		
+07eb4574-b134-4afc-882c-81eda442aea7	Classe IV		
+08366369-8341-4b51-8acd-a8eb364d8964	S11 Plaie ouverte du cou		
+084afad3-fb31-437e-ae7a-634dcfa53f9a	G43 Migraine		
+085bab88-5235-4e14-902d-ab1055156240	Infection urinaire		
+0875bd33-76eb-43f0-873f-5d439a3fc7e0	K65 Peritonite		
+08e0a3d0-759b-41e9-b1e5-ac805aecf3e5	N39 Autres affections de l'appareil urinaire		
+0902d5ac-0adc-4839-8480-b1a25146b762	I69 Sequelles de maladies cerebrovasculaires		
+09178e0e-33a2-4d77-8632-5fafc42894e1	O14.0 Preeclampsie moderee		
+092024b9-5de4-460c-93bc-33549a0b047f	F50.5 Vomissements associes a d'autres perturbations psychologiques		
+092c6614-721a-4574-b355-98543b8321c0	Q38 Autres malformations congenitales de la langue de la bouche et du pharynx		
+092ea4fe-382a-4354-b614-d36398b51207	D58.8 Autres anemies hemolytiques hereditaires precisees		
+0987aff6-85e3-4f97-b699-5d78567b572e	G93 Autres affections du cerveau		
+09cbdbac-6edc-47b8-8aee-6c846df3613d	H59 Affections de l'oeil et de ses annexes apres un acte a visee diagnostique ou therapeutique non classees ailleurs		
+0a0829a9-8723-4c6e-8553-29e5b20c2a7c	R56 Convulsions non classees ailleurs		
+0a59a756-fc7d-4286-a4f7-6db0c017acc7	L72 Kystes folliculaires de la peau et du tissu cellulaire sous-cutane		
+0a9c8640-852b-4bc9-a489-15572f381962	O03 Avortement spontane		
+0adef99c-b393-41f2-9053-df66700fa5c9	G52 Affections des autres nerfs craniens		
+0b1f6973-0377-49be-b1c3-7295dea5f87d	Fin de l'anesthésie		
+0b26c562-8542-4b39-abf3-f45f1a2d0a28	F91 Troubles des conduites		
+0b481e35-48fc-4ea1-9f1f-410b0bc96fb8	Résumé		2 labels in the sheet, most frequent used
+0b595254-1988-444f-82e7-ad07e1eb8b32	D45 Polyglobulie essentielle		
+0b6bf495-dec6-4fe3-b85e-e892f4d13a6b	A70 Infection a Chlamydia psittaci		
+0b804c52-a0b5-451d-893b-aae2c50dbe72	T22 Brulure et corrosion de l'epaule et du membre superieur sauf poignet et main		
+0b82f1d4-9621-4eeb-a046-d5aeff8a98f9	K40 Hernie inguinale		
+0b9ab13d-2843-4246-933c-ffcdcf0a84c3	J05 Laryngite obstructive aigue [croup] et epiglottite aigue		
+0ba78d10-ff93-4f12-989d-50730a38d5db	T84 Complications de protheses implants et greffes orthopediques internes		
+0bb5ba74-dbdd-4fce-8463-9664721f8680	Habitudes de vie et alimentaires		2 labels in the sheet, most frequent used (tie: closest to the old name)
+0bbb5ce0-1455-43bc-acae-f658a7f98b3b	S81 Plaie ouverte de la jambe		
+0bf842ce-203c-49f5-86be-68705c6bfc56	K59 Autres troubles fonctionnels de l'intestin		
+0bfee4ac-fded-4a54-abcf-f133e42d0297	N02 Hematurie recidivante et persistante		
+0c279f31-78c9-4c5c-9714-0f5bfc19fb1e	Générale		
+0c811ac5-a028-44d1-962f-f5d8159fe59a	S83.2 Dechirure recente d'un menisque		
+0ca9d17c-ebf9-480f-9443-c60fa4e8fdc9	N48.3 Priapisme		
+0cb33e21-b186-4255-983e-371cfd44f857	Tube oral		
+0ccd264a-a16c-46c8-8272-a92dffdea8aa	ECG		
+0d36a425-dd0b-454c-8d71-842d305d101a	O34 Soins maternels pour anomalie connue ou presumee des organes pelviens		
+0d5c519a-658a-4f55-9345-e83080e1cb11	F65 Troubles de la preference sexuelle		
+0dc95673-a190-4a51-bd2f-8fcea444db95	T80 Complications consecutives a une injection therapeutique une perfusion et une transfusion		
+0e304da8-2fc7-4ed5-bae1-0ede51dd8a46	R44 Autres symptomes et signes relatifs aux sensations et aux perceptions generales		
+0e34e286-03dd-40d1-a3e2-1e255ce120f5	G04 Encephalite myelite et encephalomyelite		
+0e9e645e-2296-4ebe-92d6-6677cb0aa46e	K00.0 Anodontie		
+0f058b02-27b4-4e91-9a70-1d2e4156904d	N44 Torsion du testicule		
+0f1d88bc-b9b5-4153-9747-95563f822ff6	F50.8 Autres troubles de l'alimentation		
+0f4dc3bd-adba-4d10-a8fc-e29269949952	ASA III		
+0f56d24f-1f91-460b-b2ce-e1fec93214f5	B50.0 Paludisme a Plasmodium falciparum avec complications cerebrales		
+0f5f1f58-45fc-4c1e-8d12-d09bce65f657	X09 Exposition a la fumee au feu et aux flammes sans precision		
+0f78f052-9659-4691-9d49-60a319c10370	Total entrées (ml)		
+0fbb0cc2-0583-488b-a8a3-3a9d3933377f	O48 Grossesse prolongee		
+10031e08-87e6-496d-bd8b-b23e9339317f	Drain thoracique (ml)		
+1032e5cd-a95d-46fb-af02-921d70e3ea68	B03 Variole		
+10672492-14f3-4708-9186-dfe4a357d8a0	O99 Autres maladies de la mere classees ailleurs mais compliquant la grossesse l'accouchement et la puerperalite		
+1078ba66-3f7e-40a8-9ebb-c4c451485d57	H30 Chorioretinite		
+10b5a934-39ef-40fd-b3e6-dea077b153af	D57.0 Anemie a hematies falciformes [anemie drepanocytaire]		
+10b5cbbe-97b8-4860-bd73-cf1d804dfad9	M84 Anomalies de la continuite osseuse		
+10c09518-c5b2-4605-90f2-b5de187fa3de	D16 Tumeur benigne des os et du cartilage articulaire		
+10d42ff3-86ed-4870-89e2-7e458d783c20	S61 Plaie ouverte du poignet et de la main		
+10e082bc-0b86-4122-904d-d6c71014a954	I65 Occlusion et stenose des arteres precerebrales n'entraînant pas un infarctus cerebral		
+1115AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA	Normale	Normales (colorées)	kept: shared lab result answer (labtests); three labels once each (Normales (colorées) / Normal / C : clair): no majority
+113914e1-eeb2-483f-adb9-a227430cd7ff	K72.9 Insuffisance hepatique sans precision		
+113b5b97-06f2-4f06-9d3a-4f42ca8936b4	O66 Autres dystocies		
+113e4c01-c89b-4ee6-b854-0b9d150a888b	D13 Tumeurs benignes de parties autres et mal definies de l'appareil digestif		
+11b41978-144b-454a-b4b5-6a978bcc6988	Col utérin : position		2 labels in the sheet, most frequent used (tie: closest to the old name)
+11cd65c5-0175-47fa-af4e-c7f125faeb58	Sans test		
+11dcf913-8334-4917-99d9-d332281b4a80	M30 Periarterite noueuse et affections apparentees		
+1226d842-4e1e-4adb-ba5d-2329f2fd2a1c	K00.7 Syndrome d'eruption dentaire		
+122b6408-2ba9-4ecf-952f-3f7d1c862264	J01 Sinusite aigue		
+1294588b-0efe-455e-b165-a13476b7e575	H53 Troubles de la vision		
+12ab2425-f04a-466f-adbd-8aa8b1eb99c0	Consultation menée par		
+12e310c2-8b17-45ea-8850-a916901d7333	M62.5 Atrophie et fonte musculaires non classees ailleurs		
+12feda24-3dd0-4a3a-8ea8-4ab57bd62bc9	2017-F98.5 Begaiement		
+130c94f6-a561-4092-9d84-a1c6610dc39c	C21 Tumeurs malignes de l'anus et du canal anal		
+1321ccd2-942d-4a60-b1af-354d4a218ed7	M34 Sclerose systemique		
+1354f8f2-1cd7-4d29-8d76-ee2fa23d112f	Eau (ml)		
+13675d71-d936-4e5d-8b45-3f9264ab58ae	Surveillance post-partum		
+137b0800-a9dd-49d0-ab42-1dcdc91eca74	Lunettes nasales		
+137b9409-54f4-4982-b8a5-d9d588e17c54	T45 Intox par substces systemiques et hematologiques		
+13d558c4-e7a2-4ff2-8d47-9d60163b1029	R62 Retard du developpement physiologique		
+1406894d-bc8c-4146-8a4f-1017cf1fde72	T04 Ecrasements de plusieurs parties du corps		
+141763ab-5cf2-4fad-a686-0fcc0a14677b	O67 Travail et accouchement compliques d'une hemorragie non classes ailleurs		
+14184840-6f78-46bf-a1f2-fd21a78674b7	F04 Syndrome amnesique organique non induit par l'alcool et d'autres substances psycho-actives		
+1427eb8d-04bc-4642-8cea-07567bdf10cc	P70 Anomalies transitoires du metabolisme des glucides specifiques du foetus et du nouveau-ne		
+142fad6b-bfe7-4594-a8f9-871f704318f8	T62 Effet toxique d'autres substances nocives absorbees par le biais d'aliments		
+14864b59-f7b3-4ad1-b620-c79f50370b4d	Infection		
+149432ec-4157-4619-9c07-800cb97481e2	Sortie : diarrhée (ml)		
+14a50528-98d2-4012-9b29-bcd0cfddedc2	Période de la grossesse	Periode de la grossesse	sheet spelling fixed
+14fb9149-9a12-4f16-a46c-98ba5185fdd4	J37 Laryngite et laryngo-tracheite chroniques		
+151f2934-4f10-485b-ba84-b8cc5baf4c06	G97.8 Autres affections du systeme nerveux apres un acte a visee diagnostique et therapeutique		
+1566b6e1-de6c-465e-a942-3be735fcbd6a	F80 Troubles specifiques du developpement de la parole et du langage		
+156eef4a-905f-4baf-9f9a-a34355a8d73d	F53 Troubles mentaux et du comportement associes a la puerperalite non classes ailleurs		
+1582dbcf-1e2a-46aa-adea-820bf1a95ef2	Examens déjà réalisés		
+15dcf0f9-ec60-42c7-abd8-1468272aa805	F05 Delirium non induit par l'alcool et d'autres substances psycho-actives		
+165367b3-a4d8-4ffe-806d-6f340d62a3ac	L20 Dermite atopique		
+1672ef08-a558-488e-b0b9-b8e884f1a9f1	C22.0 Carcinome hepatocellulaire		
+167d1731-ef95-4fc8-b029-8a01f87c83a1	AB+		
+168aff03-8674-450f-8fde-a2c59bb1c65b	I34 Atteintes non rhumatismales de la valvule mitrale		
+16da5d88-d067-4197-a28a-8f9af3559a0e	J02 Pharyngite aigue		
+16f8d29e-75bb-41ae-9592-ee7bf4f80523	Arrivée du médecin (heure)		sheet spelling fixed; 2 labels in the sheet, most frequent used
+1705d674-c012-427b-a769-dfeaca10a77c	A69.0 Stomatite ulcero-necrotique		
+1812b945-018a-484b-9c5b-bc663687839c	Accompagné par : nom		
+181cf87e-2842-4eed-82fb-c1a88ded38d4	H62 Affections de l'oreille externe au cours de maladies classees ailleurs		
+18265a7b-4918-4db4-b784-c456489e6067	K70 Maladie alcoolique du foie		
+182c4154-52c2-42fa-9d20-77dc2063e79d	L93 Lupus erythemateux		
+1856ed91-b946-4def-8274-d1f75d73ce98	Q45 Autres malformations congenitales de l'appareil digestif		
+186dfb2f-be92-41ca-bd3d-3997462c53f4	Pneumonie		2 labels in the sheet, most frequent used (tie: closest to the old name)
+1942a128-4cda-4fba-9b25-ef909912f059	C83 Lymphome diffus non hodgkinien		
+1953f556-019e-4c8d-a69b-47343e403f29	F40 Troubles anxieux phobiques		
+199093fd-2a46-4f8c-971e-b5e77923acea	T95 Sequelles de brulures corrosions et gelures		
+19b7d43f-a59a-45f1-84b8-bc45fa7dd04e	Autres intervenants		
+19c203ac-fb85-41c0-94b1-b084ec8058b7	Début de l'anesthésie		
+19c391f9-a358-4ce1-9bdb-96adc2338ebe	Fibrinogène		
+19c3ae10-f224-468c-9d42-26fcc16cc190	Injection de quinine		2 labels in the sheet, most frequent used (tie: closest to the old name)
+19e13439-a4d7-427c-9cee-25a429fa5f43	C23 Tumeur maligne de la vesicule biliaire		
+1a119035-6087-4e2b-866c-94015baee319	Z11 Examen special de depistage de maladies infectieuses et parasitaires		
+1a2f0239-b9c3-4409-9d73-617b2f0f9daa	T24 Brulure et corrosion de la hanche et du membre inferieur sauf cheville et pied		
+1a31ef28-32cd-45c3-bc2b-23cb580dce75	F10 Troubles mentaux et du comportement lies a l'utilisation d'alcool		
+1a373c3c-3234-4b4a-943d-f8bb63d8840d	T94 Sequelles de lesions traumatiques de parties du corps multiples et non precisees		
+1a6f7dcd-4d1d-4f6c-968f-f008bacfdb82	R19 Autres symptomes et signes relatifs a l'appareil digestif et a l'abdomen		
+1ac952ff-0812-4c5b-a667-f8f2f76233c1	O25 Malnutrition au cours de la grossesse		
+1b0103fb-9566-471e-8e75-03eb9e5746e3	K55 Troubles vasculaires de l'intestin		
+1b37fbcd-1f60-4a84-b73f-084eac0ee059	Masque Venturi		
+1b60a38b-44a3-49f3-9970-7455a8f216b2	K36 Autres formes d'appendicite		
+1b83211f-37df-42ad-a7d3-f97204deb1d6	K72 Insuffisance hepatique non classee ailleurs		
+1ba17d3c-b168-4fd7-b4b8-44a2514b820d	G83 Autres syndromes paralytiques		
+1bbe2b4b-1a9a-4153-965a-5da17b07de30	T36 Intoxication par antibiotiques systemiques		
+1be0ce4e-b174-48ab-8148-048741d3dc9a	F60 Troubles specifiques de la personnalite		
+1c05e1f1-b1f2-4d30-8d82-3bd47e036d0b	O42 Rupture prematuree des membranes		2 labels in the sheet, most frequent used (tie: closest to the old name)
+1c45a7a1-dbc6-4143-97e0-01698584a1af	2017-U81 Agents resistant a la Vancomycine et apparente		
+1c61f402-221f-4c6f-9b7f-7094bccea77f	S60 Lesion traumatique superficielle du poignet et de la main		
+1cad4ddd-f9a1-4d59-8623-019ccc3931ec	C62 Tumeur maligne du testicule		
+1cb8cdd5-2ca4-4ace-b1ff-eef6e59a7811	Intervention / acte pratiqué		
+1cec4449-a450-4e49-be3f-d057404d9950	E16.1 Autres hypoglycemie		
+1cf31ac9-1763-4f89-836b-078d0afd79a1	Référé par un autre hôpital		
+1d0a11f7-12b2-4518-9dfc-858dc738d71c	H74 Autres affections de l'oreille moyenne et de l'apophyse mastoide		
+1d13fd67-5150-4425-a698-7d7db85a251f	C81 Maladie de Hodgkin		
+1d19ac01-8f70-430e-a827-51802e368815	O44 Placenta praevia		
+1d1aaf57-9ac7-4578-ae13-994ed8f1c4b8	N72 Affections inflammatoires du col de l'uterus		
+1d50f82a-01e7-4281-af70-9650a4510b5c	Sortie : urine (ml)		2 labels in the sheet, most frequent used (tie: closest to the old name)
+1d593564-9304-4898-8009-7b15ed8507cf	N30 Cystite		
+1d66f34f-3dda-496b-881b-e38ba2cab2cc	Gynécologie-Obstétrique		
+1d73917c-3bc8-4159-af8b-ef1b4db1a07b	B77 Ascaridiase		
+1ddd7345-a0a3-4c14-9b61-747910545ce8	R04.0 Epistaxis		
+1deb77a2-9fa1-4e0f-a0a0-6f4f751f728f	Traitement actuel / Médicaments		3 labels in the sheet, most frequent used (tie: closest to the old name)
+1e01bda7-2395-4adc-8639-28449d4c1d74	K29 Gastrite et duodenite		
+1e2d457d-aaf5-4aa7-99c4-fd69e0669e77	S12 Fracture du cou		
+1e665eb3-d1ba-48fe-ab50-6c897b11f0b8	Autres actes (préciser)		
+1e7d606a-bed6-44eb-aaa7-816a317966c4	E66.9 Obesite sans precision		
+1e8c8b2d-698e-421c-bde7-94cc63bcf9c4	P15.9 Traumatisme obstetrical sans precision		
+1e91c849-5055-4d2f-9b3c-bdbf0b973eff	M99 Lesions biomecaniques non classees ailleurs		
+1eb5d88c-ee72-4970-9422-9536dbfd811a	F52 Dysfonctionnement sexuel non du a un trouble ou a une maladie organique		
+1ec6ce6a-607a-4b6a-af5d-e14911fe98c5	Femmes enceintes		2 labels in the sheet, most frequent used (tie: closest to the old name)
+1ed68638-b130-4707-9a71-0c548ed2f0cc	2017-Z58 Difficultes liees a l'environnement physique		
+1ed717be-4a2b-42ef-908e-4cb6e5085bbf	L00 Syndrome d'epidermolyse staphylococcique du nourrisson		
+1f002f85-7ac5-4116-aa26-e2b2582af66e	R10 Douleur abdominale et pelvienne		
+1f973615-964e-4dff-82f2-45edfdddcf4b	C40 Tumeur maligne des os et du cartilage articulaire des membres		
+1ffe4f1d-5cd8-481b-9882-274622711d65	D63.8 Anemie au cours d'autres maladies chroniques classees ailleurs		
+208fb851-f844-42b8-bfb2-8f2a8dc86a9f	H72 Perforation du tympan		
+20a75014-2642-442f-b406-065cc3b54ddd	P36 Infection bacterienne du nouveau-ne		
+20c8e6ef-116d-4a25-8e8d-956c8eb54949	BI12 - GOT (AST)	SGOT	kept: lab catalogue test (Test); the sheet label is the in-form abbreviation
+20cb16c0-e692-413f-b64b-d7a188e984dc	E24 Syndrome de Cushing		
+20d76b9b-44f2-4a9f-90cc-7d0e11f01b55	S37 Lesion traumatique des organes pelviens		
+21195762-7649-471d-985a-482ba97d89b6	R13 Dysphagie		
+211fdd7f-9afa-47d4-9160-14900e2668e1	N18.0 Insuffisance renale terminale		
+212f40d9-1af9-4b60-88df-325afde4e2d2	C04 Tumeur maligne du plancher de la bouche		
+217ad862-37ae-49aa-9488-2679f97d20cc	D22 Nvus a melanocytes		
+219b6489-0992-47bb-a780-b97c85d10d33	Néonatologie		
+21ac1ec7-c28f-4f51-ab00-4e137bcf221a	Protocole d'anesthésie		
+21e2bc15-2dce-4b81-8793-4e1ad1862319	D24 Tumeur benigne du sein		
+21ea3d84-c215-4c16-ae44-f07c568bb1f6	N15 Autres maladies renales tubulo-interstitielles		
+220416e1-9541-42ab-8936-d0323f1bd98b	D84.9 Deficit immunitaire sans precision		
+220d0e03-e8a9-495e-8949-d1e3d7c57882	H43 Affections du corps vitre		
+2249b43b-e759-464d-9d79-d02c15100d3b	G44.2 Cephalee dite de tension		
+22577e2c-f552-4496-a128-dc00b5b93324	O30 Grossesse multiple		
+226ffee7-36ed-4b8c-a62d-af821212b2a8	O63 Travail prolonge		
+22704541-99ae-4e19-9a60-dc0773b36039	Classe I		
+22a4d95f-95b5-4108-9143-a25c6b6cdd5e	T70 Effets de la pression atmospherique et de la pression de l'eau		
+23034411-2681-49b1-8893-8181304dc354	O24 Diabete sucre au cours de la grossesse		
+2316f309-8802-431d-92a0-fc7cfa4df5c8	IMC (kg/m²)		2 labels in the sheet, most frequent used
+2338e8f0-e616-4b88-bbbc-6dffb8b76713	P60 Coagulation intravasculaire disseminee chez le foetus et le nouveau-ne		
+237d5a2a-fd87-4c2a-b291-d813cd76c6f2	Poids		sheet spelling fixed; 3 labels in the sheet, most frequent used
+2386f386-050d-46cc-bd63-0e86b9d0d96d	S53 Luxation entorse et foulure des articulations et des ligaments du coude		
+23872ad9-11ed-45b1-b277-ff939bf80a5c	C73 Tumeur maligne de la thyroide		
+238f187c-5074-43f9-934c-a5b689d1c279	K50 Maladie de Crohn [enterite regionale]		
+23c3c794-7cf8-4afc-a935-8aea9ba69462	O32 Soins maternels pour presentation anormale connue ou presumee du foetus		
+23ce4d79-a5ef-40f5-9659-ff36f5a571f7	K57 Diverticulose de l'intestin		
+23ceec98-f1c5-42ce-8b11-60b5be1c2acf	Type de cas		2 labels in the sheet, most frequent used (tie: closest to the old name)
+2422cc5a-5fd9-4972-a5ee-796616641fcf	E12 Diabete sucre de malnutrition		
+24496f99-0f24-4f98-a941-b7aa6632268c	A33 Tetanos neonatal		
+246aba92-5692-49ce-98b2-3f3c79f8e73f	Z10 Examen general de routine d'une sous-population definie		
+24e7c709-8411-4e2e-b7fe-627807875cb9	Y62 Asepsie insuffisante au cours d'actes medicaux et chirurgicaux		
+24fbb858-8a06-4119-a92d-d4c06f4aee7e	2017-Z59 Difficultes liees au logement et aux conditions economiques		
+259fc1ec-e9b1-4a44-aaf7-dda8a4b98471	E84 Fibrose kystique		
+25e9cad7-e810-4ac4-8bdc-c5444cf53f96	H70 Mastoidite et affections apparentees		
+262254d5-c4f0-447c-b785-d719e6144f55	R53 Malaise et fatigue		
+2625e25a-29db-40b9-aeed-4c137f1d1705	A60 Infection ano-genitale par le virus de l'herpes [herpes simplex]		
+26761674-1076-4c21-8bf7-17cfaf0e39e6	2 h		
+2696bdfb-943d-4041-924e-a58d7e1ee134	K72.0 Insuffisance hepatique aigue et subaigue		
+26b6bd3f-5367-4a73-aa1d-9c3063522b2b	État général		2 labels in the sheet, most frequent used
+26d374a4-df7a-4959-ad33-7f00fbb89ad4	F98.0 Enuresie non organique		
+26d668d5-9866-4c00-8369-f85468209160	J69 Pneumopathie due a des substances solides et liquides		
+270574b0-31a7-4b9e-83bc-b613b403d9f8	Transverse		
+27332cb6-34b3-41dc-8e57-c6ceb587aa2a	S98 Amputation traumatique de la cheville et du pied		
+2754628d-e56c-4d87-b1e6-fb17893c047c	R23 Autres modifications de la peau		
+27674481-f383-4ad0-93f2-e6e8b3eb5e45	Ne réagit pas		
+276af262-8a8e-44f4-b60f-087e7a2e6201	K72.1 Insuffisance hepatique chronique		
+27e3347c-c736-4e40-bd92-27813f465345	J61 Pneumoconiose due a l'amiante et a d'autres fibres minerales		
+27ebb9bd-09a5-4146-93e1-269363735b23	O+		
+2805d3c7-90c6-4a5f-8135-abbfb2cd689a	X44 Intoxication accidentelle par d'autres medicaments et substances biologiques non precises et exposition a ces produits		
+281a22db-d8d6-4e9b-96c1-8cbfe0ecae99	H04 Affections de l'appareil lacrymal		
+2847bde8-45c6-4518-9701-14d552c2b8b3	M85 Autres anomalies de la densite de la structure osseuse		
+2888285f-a1f7-4b51-89e8-d8d0a5a4fc7c	D06 Carcinome in situ du col de l'uterus		
+28a12b69-d221-4118-9594-f2f81a7e10d6	Z91 Antecedents personnels de facteurs de risque non classes ailleurs		
+28c5f4ae-631c-4c50-90da-757f38519b63	Z43 Surveillance de stomies		
+29127e96-bdd4-4403-99f8-74396f099215	C58 Tumeur maligne du placenta		
+29301b07-6835-4a1c-89d6-d12ac01acdc1	Parité		
+29778367-63f7-47f7-a02a-d17c9643578a	Traitement		2 labels in the sheet, most frequent used
+29ff306b-5a2a-48c1-affa-8fa4620a8fda	Traitement / Médicaments		5 labels in the sheet, most frequent used
+2a2796b4-5697-452b-bbd2-e905b5bfc257	E31 Dysfonctionnement pluriglandulaire		
+2a308861-0358-4096-b1b2-5be5f56c1c4a	I20.9 Angine de poitrine sans precision		
+2b2af6ca-7a6c-4f91-b408-0d3576d15b20	A98 Autres fievres hemorragiques virales non classees ailleurs		
+2b7c43e6-b422-40e4-a05c-ccaa39e76212	F23 Troubles psychotiques aigus et transitoires		
+2bb98047-5cdf-4100-bc4a-dddc9490ac2d	P24.8 Autres syndromes neonatals d'aspiration		
+2bee5535-9ac7-4fb5-baf2-a1d8e0321c87	D55.0 Anemie due a une carence en glucose-6-phosphate deshydrogenase [G6PD]		
+2c0229bd-dc37-4268-9000-eeb39494f142	Z08 Examen de controle apres traitement d'une tumeur maligne		
+2c10adc6-9bdf-4ff8-a36e-6166ea66e2c8	Diarrhée traitée	Diarrhée traitée ?	2 labels in the sheet, most frequent used
+2c37fef6-406e-4b2c-b79f-4d1cf213c909	Infection post-acte		
+2c87c079-e5d3-49a7-a350-a10d449e3697	O46 Hemorragie precedant l'accouchement non classee ailleurs		2 labels in the sheet, most frequent used (tie: closest to the old name)
+2cd6d923-828a-4a90-9c1f-a67d024ac6f6	D39 Tumeur des organes genitaux de la femme a evolution imprevisible ou inconnue		
+2ce344ef-b701-4218-809c-826642e490e4	BI13 - Urée	Urée	kept: lab catalogue test (Test); the sheet label is the in-form abbreviation
+2cf73d01-4716-4171-8c42-101660b86cc2	OMI		
+2d55c397-46c9-4444-b73c-2b5246302d3b	S31 Plaie ouverte de l'abdomen des lombes et du bassin		
+2d6f5d35-523d-4225-a79c-ed2a953f180b	F52.0 Absence ou perte de desir sexuel		
+2d72ec06-5e0d-4298-9750-329097ca4ab3	K21 Reflux gastro-oesophagien		
+2dc316b9-4f80-4839-bbb6-18d477a18931	S84 Lesion traumatique des nerfs au niveau de la jambe		
+2de3d722-a2a4-4136-ba03-35a1e93dce3b	T05 Amputations traumatiques de plusieurs parties du corps		
+2e7c4064-5999-4a38-a916-d534a61e0b68	A09 Diarrhee et gastro-enterite d'origine presumee infectieuse		
+2e816317-73e0-4f67-89be-dc0081fd3dcc	FTI utilisé		
+2e950689-5121-4d3c-99d8-fd444e8c2a35	N10 Nephrite tubulo-interstitielle aigue		
+2ebef7dc-38ff-4474-b6e1-b0dd979ac8aa	N63 Tumefaction mammaire sans precision		
+2ed57bb0-3aba-447f-b7d9-2c7fc3c39be5	J12 Pneumopathies virales non classees ailleurs		
+2ee7f690-0ec2-4be1-ba18-556f934c1942	Hypertension artérielle	HTA	deferred: also in UVL_allergens_v1.zip (collection not re-exported in this pass)
+2eee2363-3855-4771-9348-b22228576d6d	J20 Bronchite aigue		
+2f17b2bf-8bb1-436a-b433-441a3fd3213d	L50 Urticaire		
+2f20b5d3-ce71-4b89-a3b4-388f416fc62e	Oui		
+2f24b34a-b9f6-43e9-91b2-189ab008a59b	AB-		
+2f274772-cb93-4884-b8a3-7d2cb115578e	E00 Syndrome d'insuffisance thyroidienne congenitale		
+2f4e6527-c032-4e4d-a1cf-d78cf162ed13	D34 Tumeur benigne de la thyroide		
+2f622f0a-4ef2-482b-9a98-9bd207dd9d7d	Date des dernières règles		2 labels in the sheet, most frequent used
+2fabe22a-c38c-43c1-a282-6a6e841b3699	Réponse motrice (/6)		
+301fe68d-7040-4cad-bf0e-5eb586b5014c	S08 Amputation traumatique d'une partie de la tete		
+30344fed-b645-410f-8d57-ea50d46971cf	Antécédents médicaux		
+304414e6-e706-406a-96ba-869597726cea	K27 Ulcere digestif de siege non precise		
+30469992-d33e-4cff-adbf-a32be08233bc	Impressions remarques	Situation et évolution clinique	deferred: also in UVL_ipd_v1_renamed.zip (collection not re-exported in this pass)
+30560f97-7928-49b7-a2e1-ca954299f7c7	E43 Malnutrition proteino-energetique grave sans precision		
+30796dfd-7b7d-4a2d-8e2d-13adad6957f3	G40 Epilepsie		
+307b43d4-c52a-4ce5-8767-e4da249b8ddd	N22 Calcul des voies urinaires au cours de maladies classees ailleurs		
+30e721c6-5839-4bb3-83a2-f981a305638b	Indicateurs de rapportage		
+3157daa5-93aa-4ac2-912c-5e4379116bf0	Pâles		
+31b8a2b0-1bd8-4c23-90f3-fe1561425b3c	A31 Infections dues a d'autres mycobacteries		
+31c5c5b1-d40e-40d5-9227-0eb97f920022	A37 Coqueluche		
+31c7d379-1191-4823-a970-fdf665792362	Infirmier(ère)		
+31f65327-d845-46c4-a563-946ef9ff5ddb	B37.2 Candidose de la peau et des ongles		
+3250e3a3-4c93-46e3-aa16-1d4064508191	J10 Grippe a virus grippal identifie		
+32b34a96-9abb-4465-99a6-86f6c1320328	H40 Glaucome		
+32c4ff3f-923d-407a-8ab6-e69fc88b0b4f	Spontané		
+32d88a0f-c7c5-4419-a1f6-add0d3182dbf	O35 Soins maternels pour anomalie et lesion foetales connues ou presumees		
+331be736-309d-4e28-939f-efbd317ba431	Médecin		
+33311b97-c428-42fb-ac49-0f5b053b1c2e	M22 Lesion de la rotule		
+33b7ef0e-ddff-4557-b363-6e72e859e7a2	M : méconial		
+3444fe63-35e9-4e34-9d19-4e8a45c9d934	H32 Autres affections chorioretiniennes au cours de maladies classees ailleurs		
+34523751-b025-42b7-8f5a-2393988f63f2	Fer / acide folique		
+348f7313-d111-4391-be5c-722e881b04f2	A39 Infection a meningocoques		
+34bae7d7-fb4a-4dfc-83d7-44cdd74eb622	K02 Caries dentaires		
+3526fea8-aecd-4290-9ecd-e6f6bb6855fd	O69 Travail et accouchement compliques d'anomalies du cordon ombilical		
+357bea56-af7d-4813-86a4-4e51b1c4a3a1	L23 Dermite allergique de contact		
+358e708a-1f79-4ad4-8386-179395243877	G56.0 Syndrome du canal carpien		
+35a26f39-d215-4938-b398-8ce8b887a85f	Z02 Examen medical et prise de contact a des fins administratives		
+35dc391a-8a40-4f9a-a9f3-d55414da871a	M79 Autres affections des tissus mous non classees ailleurs		
+35f1ddff-b2e4-46ed-9579-0ff39ade18f5	T51 Effet toxique de l'alcool		
+36120741-d47f-4afd-82bd-afd6c99985bb	F98 Autres troubles du comportement et troubles emotionnels apparaissant habituellement durant l'enfance et l'adolescence		
+3614f37e-8574-4ac3-88f7-37a26747bb25	Poids du placenta (g)		
+36577c7e-c94f-441a-b868-95ba42682f63	Oxytocine (U/L)		
+366102d3-c2f2-49ee-ba19-3de1924e2fca	Gémellité (nombre de fœtus)		
+367b48b8-ef82-48d7-9523-f3ee3a3c0b13	Repas pris		
+36d66041-9707-423a-9fea-5edd7dbae957	C48 Tumeur maligne du retroperitoine et du peritoine		
+36dd8582-c239-4463-adb3-ecfc8f954430	Hépatite B : sous traitement		
+37112a4c-e8e9-4df5-8259-d610e9d36566	Médecine interne		
+3730bfcd-2d08-437a-8c11-3bfb3afafeaf	Problèmes techniques		
+37513cc0-c20b-463a-a180-2ba58f00d020	H34 Occlusions vasculaires retiniennes		
+37b150f3-f90d-425d-9b85-0ed7dab7d22a	Grossesse à risque	Grossesse a haut risque	sheet spelling fixed; 2 labels in the sheet, most frequent used (tie: closest to the old name)
+37cd9e6e-1a9e-4d51-b1f3-c07c48ebdf30	D12 Tumeur benigne du colon du rectum de l'anus et du canal anal		
+37f9a1f9-96f9-4427-b51a-4c49e33ff3c9	C43 Melanome malin de la peau		
+38371e93-8eb4-4468-ac90-020fabbc4143	J12.9 Pneumopathie virale sans precision		
+383f9874-7ebe-45ce-82c4-644fed31e14c	ASA I		
+3843ff81-ebfd-48a7-840a-4ffd75e6ff1d	U89 Agents resistant a des antibiotiques autres et non precises		
+38b7593c-6fec-4726-ba2e-d1bbbf3ddbdd	I73 Autres maladies vasculaires peripheriques		
+38f41f66-3736-4b67-be2f-73f38443ffd9	F12 Troubles mentaux et du comportement lies a l'utilisation de derives du cannabis		
+3917f2a9-f9ec-4d25-b5de-cb69f6bb0301	Convulsions		
+391f4eaf-65ab-4f81-855b-6aae6907b575	O61 Echec du declenchement		
+394bda30-4631-4cd0-a815-5490f2bf5fb5	L26 Dermite exfoliatrice		
+3957d3d6-445d-4629-a870-e2ec3a6c2a62	Col utérin : longueur		2 labels in the sheet, most frequent used (tie: closest to the old name)
+395ea9ae-3b6a-4fcf-b0a6-cbf0acfba836	B38 Coccidioidomycose		
+3979a3de-eb18-4def-8eb0-fbc150cba0d2	R50 Fievre d'origine inconnue		
+39a60662-bcc1-4b26-9764-6013af93bbdb	Rayons X		3 labels in the sheet, most frequent used
+39b4ec6f-73dd-413b-83ce-985f2fd29ac2	Prévention des complications		
+39df2e82-5405-4927-aabf-8b2611789ede	N81 Prolapsus genital		
+39e137c4-7a68-4963-baed-1c6890ecde23	Périmètre crânien (cm)		sheet spelling fixed
+39ec17b9-c7c5-4e79-918a-f1d631acc583	I30.0 Pericardite idiopathique aigue non specifique		
+39f774f3-765c-4261-83de-ce5dd028186b	P07 Anomalies liees a une brievete de la gestation et un poids insuffisant a la naissance non classes ailleurs		
+3a47ae05-7840-489f-b26f-edb8fbcc5ac4	F90 Troubles hyperkinetiques		
+3a4b93e8-562d-4bfd-adc2-77961a97344a	E63 Autres carences nutritionnelles		
+3a58ff0d-3612-40a3-b32d-a19964c67bdf	N92 Menorragie polymenorrhee et metrorragie		
+3a935023-0826-4b27-95af-e66dfb1e8d07	X95 Agression par arme a feu autre et sans precision		
+3a9e7fed-b782-45a6-ab41-b2430b60c73b	K07 Anomalies dento-faciales [y compris les malocclusions]		
+3aa0e609-4c94-44a7-b119-32969dbb30b3	Q2		
+3ab2c840-865d-4c50-b157-3dda0b89b387	J21.9 Bronchiolite (aigue) sans precision		
+3ab30559-960d-4656-b42a-a0e9480c7dfe	A30 Lepre [maladie de Hansen]		
+3ad826e0-e1c3-4eae-b910-9698e65e9553	Sans déshydratation		
+3afac06d-38d2-463c-b965-b0d81968e683	R35 Polyurie		
+3b53f0e6-6439-4b6f-80eb-008fb1c4275f	L10 Pemphigus		
+3b5720ab-dcad-4fb2-8a47-aa930383f831	2017-A98.4 Maladie a virus Ebola		
+3b6c9639-0427-4d21-8560-6dff7a63dbad	S67 Ecrasement du poignet et de la main		
+3c322246-1a3c-40f5-9606-5117b43820d2	Q54 Hypospadias		
+3c36cc71-f9ca-45aa-b45f-3125ac643d69	A21 Tularemie		
+3c48028d-46eb-4620-bd4c-ccfa06836ccd	I67 Autres maladies cerebrovasculaires		
+3c4a4b7b-e0c2-489b-aef0-1f0f38cea87e	S01 Plaie ouverte de la tete		
+3c623d60-f03a-4186-8f02-8ef299e4e4dd	L85 Autres epaississements de l'epiderme		
+3c86c770-173b-43ae-820d-d709a3e2c123	L22 Dermite fessiere du nourrisson		
+3cb05e17-7b04-49f2-8177-0e9b37fc99d6	J86 Pyothorax		
+3cf64748-b581-4f01-b771-4b58e7ad43a3	Aspiration (ml)		
+3d09dac0-9bcf-4746-a2e9-4a8994bba454	M51 Atteintes d'autres disques intervertebraux		
+3de260aa-d483-407e-a77d-52c072257670	Médicaments administrés		
+3de673ae-6ee4-4fbc-bf00-6ab6d4abf549	Z41 Therapie sans raison medicale		
+3e013984-6eb1-4991-92bd-a3ce4d04b094	D10 Tumeur benigne de la bouche et du pharynx		
+3e0ae5c9-065b-47fe-9479-35d291fa8930	L55 Coup de soleil		
+3e3346ee-345b-4f1c-b73d-a167df9b5e33	Diagnostic post-opératoire		
+3e676d27-7970-40c8-9f36-6593f326d845	Mise sous ARV		
+3e687c69-8004-4d13-af18-03fad39368f5	Trimestre		
+3ed65248-6b70-48d8-a7d1-2335ae137f28	S97 Ecrasement de la cheville et du pied		
+3f105719-fea3-460a-8e09-863b6aba46d5	D61.0 Aplasie medullaire constitutionnelle		
+3f108aa3-7a75-434b-b86f-7b6355d8711d	Chimioprophylaxie anti-paludique		
+3f1116d6-24fe-467d-820e-a8e5f1e729fa	L89 Ulcere de decubitus		
+3f5ca961-9975-45b7-8b40-061a58b16d55	O40 Hydramnios		
+3f6d5e34-7438-40f2-80d5-2dcd92adf455	F50.0 Anorexie mentale		
+3f888d80-44be-4b94-8748-9a708b3a6862	L25 Dermite de contact sans precision		
+3fa54ce0-3c3d-43a9-80d1-2ad43e3a3a00	BI12 - GPT (ALT)	SGPT	kept: lab catalogue test (Test); the sheet label is the in-form abbreviation
+3fb1ab99-407d-4029-b833-65a66470196b	O45 Decollement premature du placenta [hematome retro-placentaire]		
+4026d1e7-1678-49e3-b939-06a8284bbe8c	L25.0 Dermite de contact sans precision dus aux cosmetiques		
+4049f8aa-8639-4956-8233-8cb290ad2a78	S71 Plaie ouverte de la hanche et de la cuisse		
+4056a982-6a2d-4062-9514-efcf4e66dd0a	Né vivant		
+4092e65b-fedf-482f-8d7b-59acfff210bc	A19 Tuberculose miliaire		
+40a755c5-ccd1-43bc-8b2a-680f23db96e5	S88 Amputation traumatique de la jambe		
+40ccbd7c-cdf6-4e1a-9d15-5404fa23a92d	L60.0 Ongle incarne		
+410d756e-5a53-4bba-b962-85cd488cff71	W74 Noyade et submersion sans precision		
+413f44dc-507f-448b-84c8-a96ecf6938ea	C15 Tumeur maligne de l'oesophage		
+415391c8-4a35-41e4-9c73-4d71aa110b3a	Ventrale		
+4169c767-e76c-4920-b092-dd038a6108d4	Moment		sheet spelling fixed; 2 labels in the sheet, most frequent used (tie: closest to the old name)
+417ee582-857e-44ee-b61a-aaff7b13cf43	X30 Exposition a une chaleur naturelle excessive		
+418348a0-9404-47e5-aea0-da47ebe3755f	J92 Plaque pleurale		
+41a0c49e-585e-47f6-b608-e073b730358a	G81 Hemiplegie		
+41b32b4e-92c1-4bdd-bcd8-cab4c821cda4	A82 Rage humaine		
+41c521eb-a39c-42e5-8d87-0ad505fc9774	Réagit à la voix		
+41da02a7-0879-4075-9821-7b083a42626d	D63 Anemie au cours de maladies chroniques classees ailleurs		
+41e073b9-92d5-43dc-969e-d21a16f6a3b4	S00 Lesion traumatique superficielle de la tete		
+41e20b13-4cd4-4272-9f3a-67c2658e19fb	A59.0 Trichomonase uro-genitale		
+41eae39d-389d-463f-b24b-81ecc321fc7e	Dilatation cervicale (cm)		3 labels in the sheet, most frequent used (tie: closest to the old name)
+4239ff50-cf21-4ece-a163-2893bd642859	M21 Autres deformations des membres		
+423d71a8-49f7-467c-9042-4798dc805702	C61 Tumeur maligne de la prostate		
+424e90ce-aa09-4754-932f-fd433fabad46	K31.0 Dilatation aigue de l'estomac		
+42983f28-8cf3-40f1-bb7e-5058ea4e4b7e	Infections nosocomiales suspectées		2 labels in the sheet, most frequent used
+42ba0529-d8fd-493f-92e6-e83b305e1f33	D50.9 Anemie par carence en fer sans precision		
+42ca9785-e1b0-4781-9f8b-5e8eb7b7fa91	K13 Autres maladies des levres et de la muqueuse buccale		
+42e06150-f016-45b1-82dd-a6e0d44c8ae9	J40 Bronchite non precisee comme aigue ou chronique		
+42fe6256-2a75-4560-9875-1c59c08f601c	C38 Tumeur maligne du coeur du mediastin et de la plevre		
+4348dc65-f4f7-4693-a621-9e2e33aaa96a	S90 Lesion traumatique superficielle de la cheville et du pied		
+4353aad2-6f43-4058-9ca1-865e9608cbee	P10 Dechirure et hemorragie intracraniennes dues a un traumatisme obstetrical		
+43c37413-c711-4051-8263-6674c7565af2	Contractions utérines (CU) depuis		
+44060e30-bae8-464d-b63b-ec7c83e8f980	O72 Hemorragie du postpartum		2 labels in the sheet, most frequent used (tie: closest to the old name)
+440bd5e0-dbb6-464d-a971-6245a7bfa0f9	6 h		
+440ff015-1c4f-417a-aafb-388791226a32	L63 Pelade		
+4432c463-339d-48ac-bfb7-791efa671128	N99 Affections de l'appareil genito-urinaire apres un acte a visee diagnostique ou therapeutique non classees ailleurs		
+4434233c-63e0-43ca-bafe-204dbb6c1488	H20 Iridocyclite		
+444b4099-812f-4b84-9c72-72213f1fbadf	G00.0 Meningite a Haemophilus		
+447c5b61-f846-4dd7-af47-bddba10a413f	B58 Toxoplasmose		
+44bd5af6-37d0-4e57-a6ca-2ca339ba8017	J34.0 Abces furoncle et anthrax du nez		
+44de521d-441a-4b3a-a8cd-e677822ee111	O60 Travail premature (avant terme)		
+450f217d-34fe-465b-b4dc-52bc2198b37b	Limite		
+4515e0cb-d87e-4a99-9b5d-1688adcf4e8f	Paludisme associé à la grossesse		2 labels in the sheet, most frequent used (tie: closest to the old name)
+4523374c-c654-448d-8a29-d0b5e00c9466	2017-C74 Tumeur maligne de la surrenale		
+453331e0-2cf4-46c1-a158-81722b6ebb05	2017-X76 Lesion auto-infligee par exposition a la fumee au feu et aux flammes		
+45428c4f-02d1-4563-9ef8-5c186102f32a	G97 Affections du systeme nerveux apres un acte a visee diagnostique et therapeutique non classees ailleurs		
+45436fbd-f7ae-457b-950e-fd1aa1951118	Carnet Mère-Enfant		sheet spelling fixed
+4583c749-421c-40f9-8203-219129893987	X98 Agression par la vapeur d'eau des gaz et objets brulants		
+459e2e4d-0a02-403d-bcb1-e43a6e4aba23	Avortement		2 labels in the sheet, most frequent used
+45cecef4-bfc7-4fa0-a5e6-e93bdad2a9be	O29 Complication d'une anesthesie au cours de la grossesse		
+45dc0dc4-9388-4261-9825-caa6f4bfb414	M47 Spondylarthrose		
+46091095-b138-465e-9a7d-17a243932812	Saturation en oxygène (SaO2, %)		2 labels in the sheet, most frequent used
+460f9507-6f55-4aff-9285-a4e144011d26	D61.1 Aplasie medullaire medicamenteuse		
+46122179-9250-4f06-83e4-54edd7d4cd30	T78 Effets indesirables non classes ailleurs		
+464cf108-e632-4ef7-858f-da803548ca58	A87 Meningite virale		
+46783885-70ba-4978-a407-29fe15d7c196	F30 Episode maniaque		
+4702d1eb-5012-46e3-b27e-394ac5c69082	N94.2 Vaginisme		
+4728c024-8023-4991-962a-31f7ff60241b	Drain abdominal (ml)		
+473467ac-d6ee-418c-acd0-5110eb08bfbe	Poche des eaux		
+477e6d81-13a3-456a-9874-b310be27a483	M53 Autres dorsopathies non classees ailleurs		
+47a5c010-1e4f-45c1-8b3b-b364f2c1f3d4	F38 Autres troubles de l'humeur [affectifs]		
+47bd5545-7ebf-4685-94b9-cf9011dbd997	R06 Anomalies de la respiration		
+47dcec21-55c5-4f34-a578-e849b827543e	K81 Cholecystite		
+47ede66d-e184-4ddc-8a11-2bed463fa009	Q65 Anomalies morphologiques congenitales de la hanche		
+47f36ee7-fa3f-462f-91bf-a549b9b3b9f9	I10 Hypertension essentielle (primitive)		2 labels in the sheet, most frequent used (tie: closest to the old name)
+48019afc-eea2-4f09-bc09-7e6b36133ad8	B949 Sequelles de maladie infectieuse ou parasitaire sans precision		
+480fdb45-e432-4c0a-9a0e-e67a1da68401	Classe ASA		
+481438ca-49b1-47b9-8a79-58ac815305dc	C71 Tumeurs malignes de l'encephale		
+482ac6a0-dfeb-4812-9218-26a6f847de63	J85 Abces du poumon et du mediastin		
+48308eba-b02c-4654-9995-b20e118c3559	B50 Paludisme a Plasmodium falciparum		
+483af45d-1b33-45de-a4f4-210fda3aab8f	F52.3 Dysfonctionnement orgasmique		
+484cc39e-282e-4abe-81af-368a9e2bf50b	Nouveau cas		
+487fb8c7-29c3-4954-937c-090c1a4a4ced	Trois plus	+++ : chevauchement irréductible	kept: shared lab result answer "+++" (labtests); the sheet label is the partograph moulding legend
+48b4b343-d401-49bf-8492-c2fe55bf1a06	P91 Autres affections cerebrales du nouveau-ne		
+48b8d6ea-7c0c-42a4-96ae-8a9cb534f658	M86 Osteomyelite		
+48da18c0-967a-4bd9-b5a8-914f2af63ee4	K60 Fissure et fistule des regions anale et rectale		
+496f0322-fc06-4227-9212-2fdc8f1eaf98	Q42.3 Absence atresie et stenose congenitale de l'anus sans fistules		
+497a7e30-5757-4a0a-85da-4d14520969bf	Référence intra-hospitalière (Consultation/Autre service)		
+498173bd-9980-4059-aae3-8883e5c0db1f	G30 Maladie d'Alzheimer		
+49afc4b1-8ab8-4182-a262-101859f944bb	J33 Polype nasal		
+49b64201-2057-4d75-aa0b-2fdf50f4bf1c	2017-E85 Amylose		
+49cc3fd2-08fe-46cb-ab62-86b847584ff2	Type de consultation		
+49ce3433-d1fb-408b-b297-26226a4dd092	H06 Affections de l'appareil lacrymal et de l'orbite au cours de maladies classees ailleurs		
+4a00415c-8582-46bc-880a-eed3319a0f40	T43 Intoxication par medicaments psychotropes non classes ailleurs		
+4a1dd983-5d18-45e6-a6c7-620f63462725	Z63 Autres difficultes liees a l'entourage immediat y compris la situation familiale		
+4a28da58-a3bd-4390-b76f-c654f74f178d	N75 Affection de la glande de Bartholin		
+4a51a06e-9d1d-4dec-b99b-3f9fdc37cd53	P29 Affections cardio-vasculaires survenant pendant la periode perinatale		
+4ab62eaf-5448-4079-b5ff-39e905301a3c	T38 Intox par hormones et leurs substituts synthetiques et antagonistes		
+4ac185fa-ca63-412f-a410-ff2faf854531	O92 Autres mastopathies et anomalies de la lactation associees a l'accouchement		
+4aef889e-cdc9-4bb6-b936-ba33aecad07f	L64 Alopecie androgenique		
+4b3707c1-7748-497a-ae92-aeeed086a0bf	Post-opératoire (interne)		
+4b4263f0-0e52-4c0e-91a6-578dbe9502c9	O98 Maladies infectieuses et parasitaires de la mere classees ailleurs compliquant la grossesse l'accouchement et la puerperalite		
+4b63d341-9312-4885-9219-dc7e12553b60	M42 Osteochondrite vertebrale		
+4b751ac7-1dd1-4fc1-b279-27353df4d43a	ASA II		
+4b792684-1bcd-487f-87b4-1b3c97c1176c	M54 Dorsalgies		
+4b7b1c40-f828-4ffb-869c-dfa1aaa93c4a	Z34 Surveillance d'une grossesse normale		
+4bd66441-d928-462e-bd6e-33140c456475	M06 Autres arthrites rhumatoides		
+4c5021fa-f586-411d-bcc1-9005a8b51829	Engagement de la tête (en cinquièmes, 5/5 = mobile)		
+4c9c2b2c-f5e3-46dd-a28c-f0612cc8ddf8	F44 Troubles dissociatifs [de conversion]		
+4cb961e7-7272-45f7-ae06-c798b21417fe	C50 Tumeur maligne du sein		
+4cc3eead-8c3a-40b3-98a7-aabc6fd3a254	B26 Oreillons		
+4d281a19-31a4-4d84-94b9-a96ac36313e1	Complications actuelles		
+4d93f89e-7212-4794-a1cf-8d6cd7a60f33	Z46 Mise en place et ajustement d'autres appareils		
+4d94aeac-1a13-40c4-8d68-b82bc6aa347a	D84 Autres deficits immunitaires		
+4da71f38-c92b-4525-a7fa-5c559df0bc3e	Catégorie de maladie		2 labels in the sheet, most frequent used (tie: closest to the old name)
+4da81cb2-d140-4141-b367-955994cc0cd7	F98.2 rouble de l'alimentation du nourrisson et de l'enfant		
+4dde6df7-da54-4074-8d8d-ccd26b4603bf	M65 Synovite et tenosynovite		
+4de0c44d-968a-42bc-b7a9-ce8ba87b1426	Observations césarienne		
+4de33b4d-0d5e-43f1-a08f-e15d08ea10a5	D11 Tumeur benigne des glandes salivaires principales		
+4de36920-ad0a-4501-ba18-24772442dc80	C51 Tumeur maligne de la vulve		
+4dfcbb54-7fdf-4b28-b5fd-f5af11d196b5	I98 Autres troubles de l'appareil circulatoire au cours de maladies classees ailleurs		
+4e2b2537-e6a5-4af4-899f-f78c362c229a	A46 Erysipele		
+4e34510b-4d07-493f-b3b7-11fcc71cccab	R54 Senilite		
+4e887505-0db7-40be-b375-cc19965207f6	Tension artérielle (bras droit)	TA bras droit (mmHg)	sheet spelling fixed; 3 labels in the sheet, most frequent used (tie: closest to the old name)
+4ed4f1a2-3b48-4aaf-b594-6f76ea2df6fd	P14 Lesion du systeme nerveux peripherique due a un traumatisme obstetrical		
+4f2bf7da-23d6-4477-a2f7-3d60fd9bc6a1	L29 Prurit		
+4f2ffc6b-f6eb-4fbf-928c-ccd722c27662	Diagnostic provisoire / différentiel		2 labels in the sheet, most frequent used
+4f485983-9d24-4228-b7f6-040088c6f4df	P35 Maladies virales congenitales		
+4f65cd69-3ba7-47ef-9cfe-90e8fa0f2e1d	T42 Intoxication par anti-epileptiques sedatifs hypnotiques et anti-parkinsoniens		
+4fc17e46-75f3-47d9-bfc1-2fabb068fa6e	Traitements reçus		
+505ce8f3-84ee-4936-b7f2-d0083bed8b97	Diabète		
+5086bd0c-d4b1-4fa5-bbbf-d2a1dda0fed6	Nombre de CPN		
+510edcc4-54a9-4eb4-8653-3d0ef0468fcd	Instrumentiste		
+511f16be-26d1-4ede-aafc-412e2599faca	O13 Hypertension gestationnelle (liee a la grossesse) sans proteinurie importante		
+5131d50e-c568-4319-82ab-df73ccac7bc3	I45.8 Autres troubles precises de la conduction		
+5165645a-5b3a-42ed-a8b6-44758dae53d9	Synthèse résultats CPN		
+5178ddfd-1d61-4956-a868-bcc881397aff	Ikirezi - renseignements cliniques		
+51b433fd-7907-459c-abde-55d907c1bf32	O90 Complications puerperales non classees ailleurs		
+52506e95-0ae4-4718-b622-d4226b4238dd	Deux plus	++ : chevauchement réductible	kept: shared lab result answer "++" (labtests); the sheet label is the partograph moulding legend
+52972840-9385-41e6-9c75-1229b98c2592	D30 Tumeur benigne des organes urinaires		
+52a75b79-765d-4984-a59a-ebaddda17546	R58 Hemorragie non classee ailleurs		
+52e0e95a-a8a1-4b93-9fcd-5bcfe6eb8f15	L74 Affections des glandes sudoripares exocrines		
+5302aa6f-7528-4aeb-a3e8-0dc16a39b6ce	Poids (kg)		
+530432fc-497c-4445-aa7b-f8293f5339ab	Z30 Prise en charge d'une contraception		
+531323f8-1df7-4ee2-b8a9-b45923c08094	2017-X34 Tremblement de terre		
+532cca52-de43-404c-8c80-5a07c54fb012	J93 Pneumothorax		
+537a3c6a-b57b-408a-9f8a-c982e1f583d9	R61 Hyperhidrose		
+538e7f36-2f81-4c9e-8b9f-e79efdafe17d	K51 Recto-colite hemorragique [colite ulcereuse]		
+538f354a-a3d5-4604-a209-0c0b0e065851	P00.8 Foetus et nouveau-ne affectes par d'autres affections maternelles		
+53a043b5-b346-4e4d-996f-03a095a679b7	I00 Rhumatisme articulaire aigu sans mention d'atteinte cardiaque		
+53af324a-2ddd-42bf-8211-7394df293354	1 h		
+53ba0044-b8eb-4ad3-8127-f26bd4b643b9	2017-X70 Lesion auto-infligee par pendaison strangulation et suffocation		
+53dd4960-e2aa-4666-a993-40e11d227206	O36 Soins maternels pour d'autres affections connues ou presumees du foetus		
+53e79bfb-4f62-49a4-b565-8a7d6ece6971	S79 Lesions traumatiques de la hanche et de la cuisse autres et sans precision		
+53f458fd-9caa-482f-9537-2f7cb20ad987	C64 Tumeur maligne du rein a l'exception du bassinet		
+541858ab-9845-4fa0-a269-aa916b231109	L60 Maladies des ongles		
+54289900-97ef-4292-b7d1-364db1d1985a	E11 Diabete sucre non insulino-dependant		
+545878d1-6198-4dab-9a90-952e38b8e306	Durée de l'intervention (min)		
+54db7b9f-e318-44c4-b074-252c32f8f8bd	O95 Mort d'origine obstetricale de cause non precisee		
+54eb07ef-f679-4725-8107-a10e81f0cee9	K85 Pancreatite aigue		
+54f715ec-beb3-4b0c-9a12-2a526b2071b2	N32 Autres affections de la vessie		
+55105c42-a54a-4988-961c-178c772fbec1	A32.1 Meningite et meningo-encephalite listeriennes		
+552c3605-e8ef-4e0a-b6eb-e805c8c945e3	ASA IV		
+5539c93b-100d-44ec-a713-8b04b2a395c6	C79 Tumeurs malignes secondaires d'autres sieges		
+55569645-9a99-4726-992d-d8c92d9fe1ab	H25 Cataracte senile		
+555fdc35-6e72-4b66-92d7-786442a665cf	T86 Echec et rejet d'organes et de tissus greffes		
+5577c6c7-8b12-499b-9a48-97904aa580d4	T96 Sequelles d'intoxications par medicaments et substances biologiques		
+55ac38d6-ae41-45c0-b9de-3e410563b1d9	S80 Lesion traumatique superficielle de la jambe		
+55cfde1c-f415-44c2-a9b8-104befc4625d	C00 Tumeur maligne de la levre		
+55d20bfb-6a39-4c74-ad69-78d2162ba72d	A74.0 Conjonctivite a Chlamydia		
+55e44bd4-5281-4d84-b596-1211cc940b4c	Natrémie	Na	kept: lab catalogue test (Test); the sheet label is the in-form abbreviation
+5605299a-44b1-48ba-9bde-239bd1cb6a90	G20 Maladie de Parkinson		
+562407cb-d12e-48fc-bb6e-1fa637bb7a4d	Z73 Difficultes liees a l'orientation de son mode de vie		
+569e08a9-99ba-4658-861e-3694e7ab9341	Accident de circulation		
+56a779a2-2170-4e9b-a237-c9d44ee395ce	Q05 Spina bifida		
+56b129c4-0d37-4952-b9c6-7f5c52515216	Alerte		
+56cf8135-d246-4b70-817e-69b4c842194d	F20 Schizophrenie		
+56e82b2a-e3f3-4816-b13d-32c8f6987010	Q25 Malformations congenitales des gros vaisseaux		
+56fd47e3-6f14-4ee4-8ddf-1a54d8ecd90a	Déchirure du col		
+570e9f02-3ae3-4ec6-981d-1aa1e60dedd6	H71 Cholesteatome de l'oreille moyenne		
+5768d32f-8c3f-4052-a141-2b0a82d8acf0	E28 Dysfonction ovarienne		
+5769f086-3b52-4979-a21f-c3ce46f45249	B73 Onchocercose		
+578ab087-f416-4dc2-818b-9625df68d3c7	E34 Autres troubles endocriniens		
+57bda061-2810-4a01-be6b-d861d38fb32a	T75 Effets d'autres causes externes		
+5806cc38-04e0-46af-8fbe-02308d10a8ec	C03 Tumeur maligne de la gencive		
+580b0191-7b6a-40f7-b99d-dab155f12dbf	Indication de la césarienne		
+581882c3-dc76-438a-83b0-40658360128a	L11 Autres acantholyses		
+58260c7c-fed8-462c-bd49-812cd2154016	D18 Hemangiome et lymphangiome tout siege		
+5841a760-ac78-4c75-8d31-9df9af3891ec	Diarrhée : classification	Diarrhée	qualified: sheet word 'Diarrhée' is a French synonym; tie Diarrhée / Diarrhée : classification; "Diarrhée" is allergen reaction c7eed63b; 2 labels in the sheet, most frequent used (tie: closest to the old name)
+58434f67-62fa-4bef-b77b-9a52734547da	N34 Uretrite et syndrome uretral		
+584c89ad-c02b-40a5-a2b5-9a9bc5dd5a76	F54 Facteurs psychologiques et comportementaux associes a des maladies ou des troubles classes ailleurs		
+58878e1f-45e4-4767-be42-05eb6171ae54	P74 Autres anomalies electrolytiques et metaboliques transitoires du nouveau-ne		
+58b83e5f-6048-401e-afbd-9d4286314d33	Y08 Agression par d'autres moyens precises		
+58edf9cf-49ec-4ee5-97f7-6b4827fbd808	R55 Syncope et collapsus		
+58ef36b2-a06d-4834-ae93-8fabca8844f0	E10 Diabete sucre insulino-dependant		
+5902a023-495c-45bb-ad37-7a0c64a65bec	G47 Troubles du sommeil		
+5918202d-b8bd-496c-9054-c31eab420e8a	A15 Tuberculose de l'appareil respiratoire avec confirmation bacteriologique et histologique		
+5941fff4-429c-404e-8b3e-3aeedb4f133e	Sonde nasogastrique (ml)		
+5966e904-c513-42e2-9d9b-b42e0977f2e1	K07.6 Lesions de l'articulation temporo-mandibulaire		
+59bb5013-c82b-4755-b348-4d14793e6174	Sexe		
+59bc311b-4e61-4b6a-8b96-2172ba7178c3	Taille de l'enfant	Taille (cm)	2 labels in the sheet, most frequent used (tie: closest to the old name)
+59c072eb-e253-4c85-a748-077f086158b4	Gestité		
+5a34a049-1d83-4875-9a51-bfb9723452aa	Dépistage syphilis		sheet spelling fixed
+5a5b9b3f-0c23-4b6a-9190-4a2f71beda22	Q79 Malformations congenitales du systeme osteo-articulaire et des muscles non classees ailleurs		
+5a90b139-cab8-42b2-9051-51309a256b3c	M43 Autres dorsopathies avec deformation		
+5abb6b23-cf13-4d8a-9653-729fda692c66	G80 Paralysie cerebrale infantile		
+5ac32f0a-a06f-47bc-b40e-27697dc7f30b	P80 Hypothermie du nouveau-ne		
+5b17bd45-e1a1-4a4d-b4ce-5842d948ec13	C32 Tumeur maligne du larynx		
+5b2b9b02-7edf-4ec7-853e-2610711b3482	O06 Avortement sans precision		2 labels in the sheet, most frequent used (tie: closest to the old name)
+5b4b0a50-f503-4a73-84a1-c86fa920b6ee	T23 Brulure et corrosion du poignet et de la main		
+5b8024b0-68c6-4646-9f73-db04308f9563	I15 Hypertension secondaire		
+5b9afb5b-29af-411f-9a08-351c8ae14180	B00.0 Eczema herpetique		
+5bb2a6fb-e734-4af3-b57d-e2db2aaf045c	N87 Dysplasie du col de l'uterus		
+5bcc3f65-fc7c-4738-b990-3dbcffe569c8	T92 Sequelles de lesions traumatiques du membre superieur		
+5c0e6cdd-42a2-4e92-aa2f-fa4ab142f8a0	E41 Marasme nutritionnel		
+5c525a2b-61f9-4382-9638-76491b3b42f7	Bilan liquidien total (ml)		2 labels in the sheet, most frequent used (tie: closest to the old name)
+5c5d139d-b9bc-4167-a454-639c30e8a8d3	Plaquettes		
+5c5e2b44-4300-4ab9-b1b5-419ecb648e77	T79 Certaines complications precoces des traumatismes non classees ailleurs		
+5c84b4e4-2950-4d94-ab74-765dc6eea01e	O81 Accouchement unique par forceps et ventouse		
+5c8d6240-9cc2-4bc1-b783-30eb887f950c	Négatif		
+5ca1e454-517c-49ee-96ea-55b32b7e0425	D14 Tumeur benigne de l'oreille moyenne et de l'appareil respiratoire		
+5d214371-cf09-4589-b357-de8b091b66d3	Complications éventuelles		sheet spelling fixed; 2 labels in the sheet, most frequent used (tie: closest to the old name)
+5d313565-ff6a-48ec-b80d-ef2fa21456ea	G93.3 Syndrome de fatigue post-virale		
+5d32f886-732b-439c-956c-82c0415f17c9	Perte de sang (ml)		sheet spelling fixed; 2 labels in the sheet, most frequent used (tie: closest to the old name)
+5d37ac30-f7c8-4a2d-91fa-67f25c607770	K90 Syndrome de malabsorption		
+5d50c5ba-efd0-4873-b7d4-5c2510c5f4af	D46 Syndromes myelodysplasiques		
+5d6ff4b1-f2ae-4843-a1e9-b43875886d0c	I64 Accident vasculaire cerebral non precise comme etant hemorragique ou par infarctus		
+5daf959a-ae9c-4e8a-bd2f-efb55437e686	E16.0 Hypoglycemie medicamenteuse sans coma		
+5db0f7af-9982-434d-b528-34d509b59a8a	E07 Autres affections de la thyroide		
+5deae4cb-12fe-4a66-a39d-4ecd10dd9ec7	L30 Autres dermites		
+5e26870e-6ef6-441a-bab5-9eadc72919ba	Technique de ventilation		
+5e685075-eaf9-4e22-bacf-b26e03e102f9	J05.1 Epiglottite aigue		
+5e91ef85-45e4-429b-b683-0d0b8f277e7f	Mode respiratoire		
+5e93e42a-8e56-4463-8904-da7c7ca7cf19	T14 Lesions traumatiques d'une partie du corps non precisee		
+5e99303a-c8ed-4037-8938-959f550e3c7b	B68 Infection a Taenia [teniase]		
+5ebcf822-0398-43ef-8d70-117e363541da	Positif		
+5eedb588-cf20-4b73-a2d4-37cb5ecaf3dd	Autres tests (spécifier)		4 labels in the sheet, most frequent used
+5f052e6e-2028-4426-b208-59896037be96	P50 Perte de sang fetal		
+5f065055-d626-4943-8d5d-111e646d2730	O47 Faux travail		
+5f26f51f-fd0c-416b-abd9-2533299a2f1d	X20 Contact avec des serpents et des lezards venimeux		
+5f5cee09-8097-40aa-8d1a-75de986e143c	J39 Autres maladies des voies respiratoires superieures		
+5f60e9b0-50e1-473c-b155-68a2a670559e	Décédé		2 labels in the sheet, most frequent used (tie: closest to the old name)
+5f74ff59-ced6-4bd0-8480-6f7b80bb5b18	T32 Corrosions classees selon l'etendue de la surface du corps atteinte		
+5f812f33-2e82-4dd2-92f6-55d81d1e5ffd	Albendazole	Déparasitage (albendazole)	deferred: also in UVL_drugs_20261023-1.zip (collection not re-exported in this pass)
+5f8e8cbe-82d1-4c1c-a6a9-5262a85e5d3e	S73 Luxation entorse et foulure de l'articulation et des ligaments de la hanche		
+5fa1c978-3750-4f86-af71-ec7cf1cbd140	G00.1 Meningite a Pneumocoques		
+5fac5cd6-13d3-4851-a20c-d02cb21320be	Statut / protocole PTME		2 labels in the sheet, most frequent used (tie: closest to the old name)
+5fd80c5b-e6f7-4783-b522-7d9ea75039f3	A02 Autres infections a Salmonelles		
+6043ed1f-a40a-459f-ac8e-aba80b9a152e	G54 Affections des racines et des plexus nerveux		
+604f5eb0-2a4c-4150-9911-7c085eabd79f	Coma		
+6062fc5b-2650-4a81-ab0a-55a4a7e23a12	F70 Retard mental leger		
+608b5cd6-86c0-41f1-92c6-c8bdaab7c067	L52 Erytheme noueux		
+60eb5971-6c2b-44ae-bcb8-b08bded3a393	Non référé		
+6129f2df-58da-4c9d-8a94-b886a4324dbd	M96 Affections du systeme osteo-articulaire et des muscles apres un acte a visee diagnostique et therapeutique non classees ailleurs		
+61967a86-6cc2-42aa-82b4-3e7cb39da619	Centre de Santé		
+6197ba55-0cfd-491c-8701-bcc3e28f312e	Q16 Malformations congenitales de l'oreille avec atteinte de l'audition		
+61f90263-7fe9-4836-a4ef-0739329db8a8	DPA		
+61fc541e-e09f-4e34-be2a-05b5affba028	C07 Tumeur maligne de la glande parotide		
+621ad9f7-7387-478f-9400-4acd68f8712c	G21 Syndrome parkinsonien secondaire		
+623ffefd-706b-40fd-a6ea-44c77512afcc	C46 Sarcome de Kaposi inclus le code morphologique M9140 avec code de comportement/3 non lie au VIH�		
+624ef2d4-d854-469b-ab8b-7a2b0e422172	K43 Hernie abdominale		
+62774f29-39e0-43a3-ac64-c8e9da684981	B45 Cryptococcose		
+629cd199-37ad-42a3-8247-7d7c1970b8fe	M87 Osteonecrose		
+62a00f3c-adc3-40f8-afc4-14539a7383fe	R80 Proteinurie isolee		
+634c30e8-9888-46c8-a885-4a05a63177a7	L84 Cors et callosites		
+636c7985-671c-4a32-9730-28f65afcaa68	2017-F63.1 Tendance pathologique a allumer des incendies (la pyromanie)		
+638ddd5f-dc66-469a-8497-d056addd6e02	O70 Dechirure obstetricale du perinee		2 labels in the sheet, most frequent used (tie: closest to the old name)
+63cd78f4-5a62-4a90-9efe-a1dc1fd3ab12	B25 Maladie a cytomegalovirus		
+63d5f627-504a-4384-8bfd-cd63733fc558	A80 Poliomyelite aigue		
+63f4b85c-de5a-48e9-a9a5-bf2656c10125	Mort-né		
+6443292c-1743-418f-8bb9-eb19463bf371	Modelage de la tête		
+650ea787-6597-484a-b0c3-eb6f15874d33	Quantité d'O2 (l/min)		
+6513bd97-01ed-4c1d-aad5-70327c9b152b	M25.5 Douleur articulaire		
+654cb045-bc19-4d3f-a622-bd4194c1e69d	P00 Foetus et nouveau-ne affectes par des affections maternelles eventuellement sans rapport avec la grossesse actuelle		
+6551bb19-9430-42d7-a878-73195ed256f8	Heure de l'intubation		
+6574cccd-9896-46ba-808b-c9626f75237f	Dépisté		
+65c54909-c2e8-4830-8cd5-8c79085b49ad	Y15 Intoxication par l'alcool et exposition a l'alcool intention non determinee		
+65cedc3a-502e-4380-8fe2-8b0d03801524	Rompue		
+66002261-246c-4c0a-a1de-45df9dacb72c	C26 Tumeur maligne des organes digestifs de sieges autres et mal definis		
+6627ddb9-2108-4b9f-9ec8-aee5d8dd489d	R01 Souffles et autres bruits cardiaques		
+66a68569-dfe2-4955-890c-07f7e3a28d49	A04 Autres infections intestinales bacteriennes		
+6732823c-6c7d-44d0-96c4-ce7f7ebad185	A55 Lymphogranulomatose venerienne a Chlamydia		
+673fcc0e-419d-436d-b774-9137c5392913	I26 Embolie pulmonaire		
+67407193-5dd0-4ee9-8a9b-ff0ed6fd3de4	R04 Hemorragie des voies respiratoires		
+6741d99c-ce78-4bdb-b24c-264c87ea583a	E86 Hypovolemie		
+675b5522-fa0e-4b43-a5bc-0189209f067c	VIH+ dépisté pendant la grossesse		
+676269f7-7f09-4f04-8447-2c8aed67bced	E10.6 Diabete sucre insulinodependant avec complications precisees		
+67996910-c7ad-42cd-bc62-84c87c8b8be9	Douleurs lombaires / pelviennes sous forme de contractions utérines	Présence de douleurs pelviennes / utérines sous forme de contractions	2 labels in the sheet, most frequent used (tie: closest to the old name)
+67a1b143-fe72-492b-954e-2207b084959d	Q43 Autres malformations congenitales de l'intestin		
+6844c0b2-a503-4a12-9991-cf56062cfb50	Transfert intra-hospitalier		
+686cd423-94df-408b-8f50-fd09158f2e99	I85 Varices oesophagiennes		
+687f3eb3-79c5-4fae-b76c-e867fafecb48	J17.0 Pneumopathie au cours de maladies bacteriennes classees ailleurs		
+6884a8a5-c03e-4c0e-a9b1-c64e4d04b24f	L53 Autres formes d'erytheme		
+6898151e-553d-4c42-9cae-e95004929b5d	T53 Effet toxique de derives halogenes d'hydrocarbures aliphatiques et aromatiques		
+68a9ea95-ce4b-4eec-bef2-d45bc50462db	J68 Affections respiratoires dues a l'inhalation d'agents chimiques d'emanations de fumees et de gaz		
+68b3a1fb-4cbb-48f5-b341-8a64192c9fc9	L80 Vitiligo		
+68bdf257-e599-4ccb-b209-53e46b696559	Kaliémie	K	kept: lab catalogue test (Test); the sheet label is the in-form abbreviation
+68c19b12-6a64-4b9e-9ef7-d5b6330a85c9	H60 Otite externe		
+6939d9b7-74b9-416c-afa1-01bfea6415ff	M31 Autres vasculopathies necrosantes		
+694a1d56-7c38-4a78-b6cf-1c3784788eec	K87 Atteintes de la vesicule biliaire des voies biliaires et du pancreas au cours de maladies classees ailleurs		
+695e34db-578f-44fc-9483-8319e6bcc9e5	O41 Autres anomalies du liquide amniotique et des membranes		
+696135f0-e1b5-439c-b426-20754e3a2c49	F50.1 La boulimie		
+696c3131-6e7e-4cf0-b88d-bf2d95baa6fb	Z75 Difficultes liees aux installations medicales et autres soins de sante		
+69c8d26c-cbdb-4773-9ac9-59cba7f761b5	Décès maternel		
+69ca530c-a6d6-47e6-ad15-6045041160d1	S07 Ecrasement de la tete		
+69d62ae8-fec9-4b5c-a3c7-ef7920a26a85	F51 Troubles du sommeil non organiques		
+69f2e4ba-de4d-4cc0-947f-e592d7a4f564	Total sorties (ml)		
+6a0ccf90-fb31-4aad-8ff4-1374917cc6ad	Ambulatoire		
+6a16245c-a45b-4e99-b18d-b6913a2a6bee	N80 Endometriose		
+6a553c6b-6640-49f4-94ec-8425b84c2d90	Potage / jus (ml)		
+6a79c691-1e2c-4576-a8c0-ca4ee632e4c2	B27 Mononucleose infectieuse		
+6a9d5e67-5afb-4ae5-90df-149ca74d3c8b	G51 Affections du nerf facial		
+6aa7408b-43fa-438a-9bac-994591280fa4	B : teinté de sang		
+6aaacbea-3180-4d6e-8c80-57b5ec72bf99	N15.1 Abces renal et perirenal		
+6ab3e889-6afe-423f-a213-bd54ddcef8a8	A54 Infection gonococcique		
+6af027e5-8737-4ce0-8343-79b024cd1989	Autres actes pratiqués		sheet spelling fixed; 2 labels in the sheet, most frequent used (tie: closest to the old name)
+6af22417-adc8-4d40-bc13-3a552bb131ea	Dépistage VIH du conjoint		3 labels in the sheet, most frequent used (tie: closest to the old name)
+6afaef5a-8961-4dce-9b34-283ea9a6ea37	K35 Appendicite aigue		
+6b0a4294-e90e-4c2d-99b9-3a3ce93bc840	N86 Erosion et ectropion du col de l'uterus		
+6b3e3935-0ce6-4687-b5fd-192ec9b9d4df	D69 Purpura et autres affections hemorragiques		
+6bbcf922-c9ed-443b-939a-6420b35c36ed	D23 Autres tumeurs benignes de la peau		
+6bcc3cb1-d0d3-40b4-bd12-bde637ca1cc5	N46 Sterilite chez l'homme		
+6bd6e1cc-91bf-44d1-8b47-1fc982588820	M75 Lesions de l'epaule		
+6bf9df68-7312-4847-9fe3-9d66c8defc34	Q40.0 Stenose hypertrophique du pylore		
+6bfa6da9-d9cf-4c5a-bc25-2a9c094fa5e3	B53 Autres paludismes confirmes par examen parasitologique		
+6c00b50f-4d8e-418a-b48d-9a6b51dcbd2f	Soins intensifs		
+6c31f599-302b-4516-b107-98fdccdd5155	Prémédication		
+6caf61c8-6e80-46b4-ae06-ac77863ae50d	D61 Autres aplasies medullaires		
+6cb1ed22-bdd2-4a18-985c-3bb56400a911	Avec anémie sévère		2 labels in the sheet, most frequent used (tie: closest to the old name)
+6cd2051f-2dde-434a-9c02-962cb82da894	Sortie : vomissements (ml)		
+6d0b8551-feb8-4d57-892a-d75398181b3f	Systolique (mmHg)		5 labels in the sheet, most frequent used
+6d2da46b-d2fd-4e49-94ba-9508f158c6db	Z93 Stomies		
+6d4a1b5a-d41d-4779-b441-70ba440b64de	Périmètre brachial (cm)		3 labels in the sheet, most frequent used
+6d792222-d3e8-4b1e-a1b3-7af9bd7b0f2a	BI07 - Hémoglobine	Dernier taux d'hémoglobine (g/dl)	kept: lab catalogue test (Test); the sheet label is the in-form abbreviation
+6d8007b5-5550-4892-be99-9114504ac51e	J34.1 Kyste et mucocele du nez et des sinus du nez		
+6d90ef46-4826-41e6-82dc-4938766e7b31	Z72 Difficultes liees au mode de vie		
+6e625252-c2c7-407a-8dba-406f1c2cf3c7	Locale		
+6e88f8d5-dfc2-4f2d-92b5-04bfbf7a8ca7	Z65 Difficultes liees a d'autres situations psycho-sociales		
+6e912020-166c-47ba-8ab8-89217a42f884	C05 Tumeurs malignes de la bouche parties autres et non precisees		
+6ec6c1cc-d51c-42a5-8c0c-46f116bbc9e1	T67 Effets de la chaleur et de la lumiere		
+6f2e9367-a9e4-44a5-8cfa-88aa67ed69fa	Utérotonique pour GATPA		
+6f34a44f-3137-49fa-a1e7-76aceccb0ef4	O86 Autres infections puerperales		
+6f9bb5b8-bcbe-42fd-b11e-4cf839ced4ac	M35 Autres atteintes systemiques du tissu conjonctif		
+6fb4f1ed-4c43-4797-8b53-0646eb4ad83c	M80 Osteoporose avec fracture pathologique		
+6fc6544c-2215-4696-90a9-56a243cd9265	O71 Autres traumatismes obstetricaux		
+6fe57099-5c58-44c7-ac2f-9b0c6360ba13	O11 Syndrome hypertensif preexistant avec proteinurie surajoutee		
+70203eea-328c-4858-b732-1539d5a5aa48	R26 Anomalies de la demarche et de la motilite		
+70453703-d085-445f-891a-83f744e972b7	M79.5 Corps etranger residuel dans un tissu mou		
+705e6d1f-94eb-4142-8918-22bb81be2208	Masque simple		
+706586b6-366c-438d-a757-b70b585624b6	K63 Autres maladies de l'intestin		
+707b2569-784f-4188-9392-73e611ef5364	I40 Myocardite aigue		
+707e858d-d8c4-4b01-91a2-104046cf3e08	Q3		
+70956a7e-c3a4-4172-9363-09678fc5cd9f	T74.3 Sevices psychologiques		
+70b7da6c-50e1-4f99-ae24-6ccf036cc1de	U88 Agents resistant a de multiples antibiotiques		
+7126386d-ffe7-43c3-9fa2-9fbb6609a494	K82 Autres maladies de la vesicule biliaire		
+71d3d368-8b25-47b7-9888-77c1bf4b8ede	Ouverture des yeux (/4)		
+721aea7f-5cd1-4012-8187-7f948a01458b	M05 Polyarthrite rhumatoide seropositive		
+723d9b6e-86d9-40f3-8f0c-242bf3338b54	Néphropathie		
+7254dc15-5afe-43be-8cf7-0997391ba7c9	Antécédents médicaux et chirurgicaux		
+72624ccd-6282-48ae-8349-65d5fd67b409	N64 Autres affections du sein		
+72660a6a-7695-491d-8785-40a8051e0edb	W87 Exposition au courant electrique sans precision		
+726bebe2-745c-4557-8d08-91f75ecc5978	Q90 Syndrome de Down		
+7282cff0-cd15-47e0-abfb-74789f6f5738	H11 Autres affections de la conjonctive		
+7282deba-8db9-4b83-b0a9-799b7a91f9da	Chez soi		
+728cc65c-41ea-481d-b775-8d48e1fb6e20	H33 Decollement et dechirure de la retine		
+72ad6fc1-3e78-4bd9-a7fe-0785d628d2ed	K92 Autres maladies du systeme digestif		
+72c11108-2083-4234-a3fe-3ceb113ed1ee	État du bassin		sheet spelling fixed
+72e22610-8888-48b6-b182-d235000a7600	État du patient à l'arrivée		
+7311fcfd-e745-45f8-8c32-3aa9c10a41f4	D31 Tumeur benigne de l'oeil et de ses annexes		
+731f5328-dd5c-40c3-9b83-e181fcde5b2a	Accident du travail		
+7328dd8c-2bcc-496b-a42f-2c5f97045560	N31 Dysfonctionnement neuromusculaire de la vessie		
+733b7ae2-1d0a-480b-a523-781129842750	K41 Hernie crurale		
+734f3b0d-d977-413a-bdcf-352a90e79770	X69 Auto-intoxication par des produits chimiques et substances nocives et exposition a ces produits autres et sans precision		
+736942a3-f272-43aa-ba51-e05638a30717	M95 Autres deformations du systeme osteo-articulaire des muscles et du tissu conjonctif		
+73825b93-f6a4-44bb-ab04-023c84bde65b	O02 Autres produits anormaux de la conception		
+739410d6-43bb-433f-bcd0-c00e820ebe94	Assistée		
+73b7e837-109a-4c01-8fcb-d605b8724f70	Pédiatrie		
+7441b681-e89e-470e-8f74-24bbe2b5217c	Statut inconnu		
+7465403d-96c8-44d8-bc84-70c171a302b3	T60 Effet toxique de pesticides		
+748f8d43-617a-40ba-9474-20522e73fb8a	Température (°C)		sheet spelling fixed
+74b7a18e-ecfa-4c21-997d-bd2d33f3dc0d	J94.2 Hemothorax		
+74cc5d15-a75d-4966-b924-f48b9b4589b6	T46 Intoxication par substances agissant essentiellement sur le systeme cardio-vasculaire		
+7503b434-f012-4227-83b9-6c4334e43251	L82 Keratose seborrheique		
+7521b744-7182-4247-8fef-13cf856dbfe4	2017-I26.9 Embolie pulmonaire sans mention de coeur pulmonaire aigu		
+75393d3b-de5d-4562-9e54-cc8980f7e295	N14 Atteintes tubulo-interstitielles et tubulaires dues a des medicaments et des metaux lourds		
+759f0ddf-0cc6-4401-892b-da4ac2463f8b	C02 Tumeur maligne de la langue parties autres et non precisees		
+75c44f51-217e-4b5e-8e13-d1bc9e8f501e	F25 Troubles schizo-affectifs		
+75db5d44-48c5-4091-8585-e4710f9dca76	HBV+ (Hépatite B positive)		
+7600f7f0-fe3f-433e-a29b-4b950117301f	R73 Augmentation de la glycemie		
+760f86cb-5e33-4fe0-9e6c-d2e09b162246	C54 Tumeur maligne du corps de l'uterus		
+7617c049-0dac-44ae-a5cf-bf92f06d31e2	W49 Exposition a des forces mecaniques autres et sans precision		
+76517466-92d5-4ad8-9ca1-ad7a1d9eaea6	K25 Ulcere de l'estomac		
+76729084-5d45-4183-97c2-c90f6aacb656	A34 Tetanos obstetrical (maternel)		
+76a0438d-947d-4867-b216-d3c6dc80a1f5	Q52.3 Imperforation de l'hymen		
+76a7e8a2-9138-4def-840f-7a52f1d08476	F50 Troubles de l'alimentation		
+771e3222-4ef1-40df-85c6-ee9a95185499	B08.1 Molluscum contagiosum		
+771f4641-e88b-4d08-a869-d56766b0469d	I88 Lymphadenite non specifique		
+77ad79e7-d6c9-43f4-81cc-0259e3105497	Sérum physiologique (ml)		
+77e3ad26-eb44-448d-b2f4-89171be17917	Q31 Malformations congenitales du larynx		
+7819a3e9-ecc4-415d-83db-859a53dc8844	S77 Ecrasement de la hanche et de la cuisse		
+78313547-45e1-4242-bb82-d4eded3591d0	U80 Agents resistant a la Penicilline et apparente		
+78362a4f-4a16-4ee1-9249-10a6a982bd5e	K31 Autres maladies de l'estomac et du duodenum		
+78437fb5-1c64-482b-abe8-e9e0b7d7e9b0	N41 Affections inflammatoires de la prostate		
+78467585-b794-4a66-b556-da362cb708d9	S54 Lesion traumatique de nerfs au niveau de l'avant-bras		
+785ce1d0-d5fa-4927-9252-69a913ad1d82	J11.1 Grippe avec d'autres manifestations respiratoires virus non identifie		
+78a70688-6d33-4c99-b685-f5b641f965e3	R12 Pyrosis		
+78e44658-6379-45d7-a7f0-9f8e58f2360c	N42 Autres affections de la prostate		
+78f202ff-8748-41c2-89b5-776a1b8fd33b	E44 Malnutrition proteino-energetique legere ou moderee		
+7906e56e-4729-4a54-970c-3e199f407992	Sévère confirmé		3 labels in the sheet, most frequent used (tie: closest to the old name)
+794e9672-efa9-47e5-9f1e-96c6e157a7f1	État de conscience		
+79556d7a-ec6b-43ab-9d03-a591e923e600	T66 Effets de rayonnements sans precision		
+796d9d6a-a013-46ea-9f6a-77c77bd7b623	Lunettes nasales à haut débit		
+79a559a9-c7aa-4006-98c2-02c530f6f7db	Programmée		
+7a3d56f3-d2cb-4749-8716-0d6b809f8db6	I50.9 Insuffisance cardiaque sans precision		
+7a8f27b2-7741-4bb2-be01-ee0bb521b3d2	J17.3 Pneumopathie au cours de maladies parasitaires		
+7aa184df-ed71-468b-bd8c-5f370f42d3b2	Q41 Absence atresie et stenose congenitale de l'intestin grele		
+7b7945b4-625b-4f0f-9288-2598e6602230	Déchirure utérine		
+7b7c872b-e14b-48c3-9d75-6e30238b21db	M62 Autres atteintes musculaires		
+7b8a1c41-5530-429f-bf61-0105c8424c78	G44 Autres syndromes d'algies cephaliques		
+7bcd2ec2-a142-463c-8089-ad99d93e1d9b	Masque à haute concentration		
+7bcee95a-4af5-4663-97c1-14745537d9df	F52.9 Dysfonctionnement sexuel non du a un trouble ou a une maladie organique sans precision		
+7bdd6137-9a11-448c-9e64-edda54dc3ec3	N94.3 Syndrome de tension premenstruelle		
+7bf516d2-98fd-4693-bd87-2310f950a299	H02 Autres affections des paupieres		
+7c26404f-095a-4236-8311-d68a6a6416e4	E06.1 Thyroidite subaigue		
+7c5c9030-aef0-4246-af26-695f43a84c1f	L30.1 Dyshidrose [pompholyx]		
+7c6bb501-538c-416e-a19e-0931c3f2b231	Spontanée		
+7c6d4289-f2f0-44ca-b5b5-ba7885a001af	12 h		
+7c6dd22f-1dc0-4fc4-a4c4-7e6add00194b	K05 Gingivite et maladies periodontales		
+7c74377f-1960-4f6b-b20f-4e8919879ce5	A57 Chancre mou		
+7ca2f581-8972-4561-9073-fbd3d966f495	L68 Hypertrichose		
+7cb90cea-c829-46e2-9133-6bd4a35f63c8	C52 Tumeur maligne du vagin		
+7cf83a16-0f6d-449d-b0d4-165dc0e86c8f	G44.3 Cephalee chronique post-traumatique		
+7d190ff3-ee4b-46ff-8a90-3885b9a65262	K62.5 Hemorragie de l'anus et du rectum		
+7d3b812d-9f28-4360-8063-350df49b3057	O43 Anomalies du placenta		
+7dc30a0b-f0fa-4714-a582-f3efa8798d73	Dorsale		
+7dd06052-3e8b-4721-b9a2-5c1361115a4b	Matin		
+7de554f6-bd52-4eaa-940b-4398f56cd20b	J90 Epanchement pleural non classe ailleurs		
+7e3a3684-43f9-4c2e-b58e-6bdfd214aa13	F52.8 Autres dysfonctionnements sexuels non dus a un trouble ou a une maladie organique		
+7eabf345-f407-4e91-920f-b3dd770a27ab	N04 Syndrome nephrotique		
+7eda268b-33df-4df3-99e7-6eeeb521b46c	L04 Lymphadenite aigue		
+7ef2ebf9-779e-4b2e-9ed0-381616152f44	B87 Myiase		
+7ef82061-14da-443c-ae78-a61af4114bd0	C18 Tumeur maligne du colon		
+7f1b7bd7-3de5-4f8e-9661-e4ea56ae84dc	T41 Intoxication par anesthesiques et gaz therapeutiques		
+7f2cc9cd-fd05-4521-b968-9f86fce97037	O83 Autres accouchements uniques avec assistance		
+7f58a211-207d-485b-9a57-5d63ad1c7708	Accompagné par : téléphone		
+7f5be512-274d-4848-92a8-8e440a77641b	N20 Calcul du rein et de l'uretere		
+7f5f9027-146d-4e7e-a4c9-c66a3f334607	K11 Maladies des glandes salivaires		
+7f6bdede-ee47-4d54-a25c-ea6787b58cf6	LRMV		
+7fb481a4-1af1-42ce-a7c1-472765f02114	ASA V		
+7fbf1fc5-412c-4c8b-aaa6-7cc0e6cab28f	2017-C70 Tumeur maligne des meninges		
+802334a8-632f-4b46-a5d8-5058700f9763	Coloration conjonctivale	Conjonctives	2 labels in the sheet, most frequent used (tie: closest to the old name)
+8035c753-f158-46d5-a3a9-0b2fd1a6aea3	A69 Autres infections a spirochetes		
+8081d6a1-22b3-401d-a8a1-4210542285c2	Q66 Anomalies morphologiques congenitales du pied		
+80b09c58-fb39-4fed-9ed7-90e6cd541236	R60 OEdeme non classe ailleurs		
+80e1f197-1aeb-412a-9f19-90ba564ab0ae	Post-procédure (externe)		
+80e88001-9b84-4643-90a5-c3776a15e31d	A48 Autres maladies bacteriennes non classees ailleurs		
+817dd6ab-b51f-4c79-8943-86aa1793567c	A+		
+8206f5ab-1472-4cd0-9365-40015329cc57	R95 Syndrome de la mort subite du nourrisson		
+82515303-12a6-452d-be19-37ff8fbc320d	A88 Autres infections virales du systeme nerveux central non classees ailleurs		
+82c22ea0-638a-4165-9c3f-5739f51e1082	N94.1 Dyspareunie		
+830fc087-f715-4e15-bd7e-9019924f9248	P24 Syndromes neonatals d'aspiration		
+83105052-9f3b-4c9f-a2cb-20777d5b2f85	I27.9 Affection cardiopulmonaire sans precision		
+8330abbe-a389-4b95-b0c0-8d1e4a86fe3d	Signes neurologiques		
+834c9ecb-be7a-4b8f-962c-9a5a52d3908d	Quinine comprimés	Comprimés de quinine	2 labels in the sheet, most frequent used (tie: closest to the old name)
+83541b65-2434-453e-b817-aeaef27165c9	R21 Rash et autres eruptions cutanees non specifiques		
+83a51dce-3adb-4844-860e-ebdc2a7c7dcb	I24 Autres cardiopathies ischemiques aigues		
+83f2e406-94e1-40e8-9ee3-45fe57327c9c	W51 Collision entre deux personnes		
+8485ff3c-006d-4304-9fb6-e8d4de5f28c5	B37.4 Candidose d'autres localisations uro-genitales		
+8491ffbe-4511-47d1-b6d6-b4558012dfaa	A41.3 Septicemie a Haemophilus influenzae		
+849d9689-19df-4a87-889b-e11cca7588a4	Hauteur utérine (semaines)		
+84e1184e-a6d5-40a9-b231-9f8d4268e639	E87.2 Acidose		
+850255cc-3488-4984-b65a-f6a27480dbdf	Q61 Maladies kystiques du rein		
+850393a5-970a-4143-851d-5ca668da7ef7	B85 Pediculose et phtiriase		
+8524cd55-169c-4adc-a3e3-e1b7aa547f3f	2017-T55 Effet toxique de savons et detergents		
+8537148a-357e-49e6-bcee-9774058eb085	H35 Autres affections retiniennes		
+85bdd055-670b-4a51-94be-f3bf128dd3e6	SaO2 sous O2 (%)		
+861ce5f8-a42c-483d-a91b-4384db6ee996	S72 Fracture du femur		
+86551d50-6f8f-415e-9a04-bf60b5c9b419	N94 Douleurs et autres affections des organes genitaux de la femme et du cycle menstruel		
+86612339-a0d0-4308-bd6b-bd70aed9a527	Z56 Difficultes liees a l'emploi et au chomage		
+86974058-6e5c-4671-bb2b-9a81a2683f1f	Contrôlée		
+86b0bf2e-4445-4f3f-aae9-dde28a9b0822	Consommation d'alcool		
+86e4bfca-7538-4b54-ac9f-0ac6094503eb	E30 Anomalies de la puberte non classees ailleurs		
+872e3a46-b00d-4224-a543-719673f20bc5	X71 Lesion auto-infligee par noyade et submersion		
+8784f805-f61b-4563-bed2-f18416b36e1a	K44 Hernie diaphragmatique		
+8799de67-2b9a-4a6d-be6a-e0565aaace70	X99 Agression par objet tranchant		
+87a17237-ced8-4552-9c14-d588c0c95bb8	D44 Tumeur des glandes endocrines a evolution imprevisible ou inconnue		
+87acb414-87df-46d9-9d03-5cc50c7ab136	R49 Troubles de la voix		
+87e3c233-2820-46ac-b3ef-a8dbc38133f5	D04 Carcinome in situ de la peau		
+88282a98-3be1-45e5-a208-55c94c4a56e1	R45 Symptomes et signes relatifs a l'humeur		
+88474844-acff-4ffe-bc1a-fcdcc999e2c4	Type de visite		
+890b7cc3-71c1-431e-b048-d1886bebb976	M45 Spondylarthrite ankylosante		
+89306949-31d4-473b-8f88-f7e0daefa51a	J04 Laryngite et tracheite aigues		
+89579f66-281f-4fc2-95ea-10fd5b06d7ee	A40 Septicemie a streptocoques		
+89626cd0-117c-488e-a56d-bf247d0139d6	B22.0 Maladie par VIH a l'origine d'une encephalopathie		
+89d367f3-b98f-40c0-b933-a08878383a17	D52 Anemie par carence en acide folique		
+8a0ccec6-baab-467e-a1c9-f6d31a146744	S06 Lesion traumatique intracranienne		
+8a7ac02c-79eb-4867-bff5-44fd727afc7e	C20 Tumeur maligne du rectum		
+8a86b776-fd56-429e-939b-9ba70f246e33	K80 Cholelithiase		
+8b12161f-6b5b-48cd-baec-005481b16645	N85 Autres affections non inflammatoires de l'uterus sauf le col		
+8b34dee4-a8ba-4405-a593-92f584d1142e	J43 Emphyseme		
+8b531402-184c-4775-ba7c-0ea7a7522453	D80 Deficit immunitaire avec deficit predominant de la production d'anticorps		
+8bc397f2-faf6-41b4-84f7-ea08b0012cca	Y07 Autre mauvais traitement		
+8c51e417-2ac3-4208-8ed4-4dfb1497dd0e	O85 Septicemie puerperale		
+8c63bfcc-6a45-4463-b6ef-c16b324ea85c	Q52 autres malformations congenitales des organes genitaux de la femme		
+8c72c21f-e119-4f71-9d9c-41dd5d04bf5d	BI05 - Glucose sanguin	Glycémie	kept: lab catalogue test (Test); the sheet label is the in-form abbreviation
+8c9bec59-b772-49ec-a6b6-09f6c4bd4612	I48 Fibrillation et flutter auriculaires		
+8d0dcb04-4a92-4389-abf0-afc5f5185c9d	H49 Strabisme paralytique		
+8d1c9d81-52a4-4c0f-84f1-215d3378428a	A reçu une méthode de planning familial à la sortie		
+8dc254dc-725e-4c9e-b5e2-dda138fea0c1	O20 Hemorragie du debut de la grossesse		
+8dc7d502-aa23-410c-a5d1-6a7d62181a7e	L73 Autres affections folliculaires		
+8dca2e19-dc11-4f95-89d7-e722ffa3a57e	K00 Troubles de l'odontogenese		
+8df0c74d-78f9-4eeb-b4cc-f19c98f912aa	R20 Troubles de la sensibilite cutanee		
+8df2f17c-b6f0-40ca-8f52-3d32d5d6abea	F45 Troubles somatoformes		
+8e03de94-ce96-41e9-9eb3-268bbd0d1982	F52.6 Dyspareunie non organique		
+8e2e54e6-2e7c-40bb-a763-8bab0029f387	Placenta		
+8e5f6ff4-8512-4603-80d1-bfc556b3cfee	Transfusion : volume (ml)		
+8e720b70-f76f-4e20-bf1e-0c545eab9a6e	C53 Tumeur maligne du col de l'uterus		
+8e7b8163-db36-465a-950f-93ec9454261a	I31 Autres maladies du pericarde		
+8ed69c04-13df-465d-947a-2401a0c4b170	L92 Lesions granulomateuses de la peau et du tissu cellulaire sous-cutane		
+8edea3c3-d5de-4772-9d14-abed591bf957	Simple		2 labels in the sheet, most frequent used (tie: closest to the old name)
+8ee1cf13-667a-4056-b9f3-08673ea17c31	Q67 Anomalies morphologiques congenitales de la tete de la face du rachis et du thorax		
+8eed93ae-93d4-42f6-a2d9-908e3b936f53	T54 Effet toxique de substances corrosives		
+8f13921a-5e56-4536-b96c-bb0f7c6644f2	N88 Autres affections non inflammatoires du col de l'uterus		
+8f1e008a-f0d5-45d2-b409-de672848233f	R09 Autres symptomes et signes relatifs aux appareils circulatoire et respiratoire		
+8f433b9a-af68-4530-b019-86ff1c8c27cf	Q00 Anencephalie et malformations similaires		
+8fd68058-ada9-4927-b0a0-0e4f9437fede	D50 Anemie par carence en fer		
+8ffe5eae-2d1a-45da-9581-d29e8e0231e4	B02 Zona [herpes zoster]		
+901c5277-39d1-4632-bf14-3f620721af15	Date de la dernière césarienne		
+90304f7b-2716-4b38-9acb-78cc9f7ccb29	N70 Salpingite et ovarite		
+90580a5c-e20f-4fea-88ff-1b21efa6058b	D69.6 Thrombopenie sans precision		
+90872853-e7c4-4dfc-89c1-09da93a9df4c	H01 Autres inflammations de la paupiere		
+90a3cdc3-342e-456f-8154-5e6802166584	Urgence		
+90a995d8-7a92-4d69-9565-a7952ff6a2f0	T88 Autres complications de soins chirurgicaux et medicaux non classees ailleurs		
+911905ba-93a7-4aea-88da-9a4c081f52a5	O84.1 Accouchements multiples tous par forceps et ventouse		
+9133828b-29d7-4bae-b662-c5652f5f44bb	M50 Atteintes des disques cervicaux		
+9163e594-dceb-45d5-93a7-c99615eba406	M24 Autres affections articulaires specifiques		
+91771868-aff4-4fd1-a3f7-d8a5acea2d5c	Ictériques		
+91792645-572f-436e-9d23-b99e55754919	Contractions par 10 minutes		
+919fa56c-a6f2-4e52-a349-af167e3b0209	R30 Douleur a la miction		
+91a8462b-647d-4ef0-b498-4dcf4c020617	H15 Affections de la sclerotique		
+91fe026e-2f84-419f-aca4-75dbfd2f0713	N96 Avortements a repetition		
+9252290a-63a4-4304-9f04-9ce72431fe08	VIH+ connu avant la grossesse		
+9270cf59-2a50-4c06-b119-3bcba54b12b9	Suture		
+92855f9d-177b-47c2-897b-621684b5800b	J96.9 Insuffisance respiratoire sans precision		
+92a1c1d3-5dd8-4f34-930c-fdc59f57d175	D07 Carcinome in situ d'organes genitaux autres et non precises		
+92e09a39-76d2-4ee5-9485-8fbe8afc30f3	G50.1 Algie faciale atypique		
+93184b5b-7f69-4218-bd40-78979d993868	S68 Amputation traumatique du poignet et de la main		
+937e4e80-2314-48de-9f49-c4dd86be7547	Antécédents gynéco-obstétricaux		2 labels in the sheet, most frequent used (tie: closest to the old name)
+9385d73b-7feb-4d12-b013-b099e2b4b940	M16 Coxarthrose [arthrose de la hanche]		
+93c1c161-de51-4989-817c-120e34a43d3e	D35 Tumeur benigne des glandes endocrines autres et non precisees		
+940adba3-397a-441f-9d9e-301a9e252edc	B99 Maladies infectieuses autres et non precisees		
+94b01891-427d-44a7-bbe6-8bdf0afcd175	Mode d'administration de l'O2		
+94ef6318-84c2-4932-b75a-3537786389df	H17 Cicatrices et opacites corneennes		
+94faa120-6a9d-44f9-8309-79d450cfcd48	S62 Fracture au niveau du poignet et de la main		
+94fd7bf6-d949-475f-acce-e05351a43293	T50 Intox par diuretiques et mdcments et substances biologiques autres		
+9503bc68-3aab-4484-a758-8f93632a885e	M40 Cyphose et lordose		
+955662c6-bfad-4111-9eb6-1f4f1a139597	F64 Troubles de l'identite sexuelle		
+956aa26d-6f56-40e6-84d8-f360567d520d	F95 Tics		
+95a06703-15e4-493c-bc65-9d7ff4448a4d	GO302 - Épisiotomie	Épisiotomie	deferred: also in UVL_procedures_20261001.zip (collection not re-exported in this pass)
+95ae6efc-9baa-439f-91b6-302d94595ba3	N61 Affections inflammatoires du sein		
+95b8b815-3c21-4b0d-90f7-be80251dcac3	T02 Fractures de plusieurs parties du corps		
+96437318-3637-4a83-a626-3dd987d167a1	R36 Ecoulement uretral		
+9649bbf2-9018-4692-9d1b-24805c6dd05e	Z99 Dependance envers des machines et appareils auxiliaires non classee ailleurs		
+964b6096-b375-455d-8131-aff2d6af4361	S82 Fracture de la jambe y compris la cheville		
+965109c7-f5f8-4745-8320-93ca8476866f	R03 Constatation d'une anomalie de la tension arterielle sans diagnostic		
+9665ded6-3e95-4ed9-b827-e726ddea0fbf	O99.0 Anemie compliquant la grossesse l'accouchement et la puerperalite		
+9692ddcf-09ef-45d4-ae1a-da644e387ae0	Test rapide (positif)		3 labels in the sheet, most frequent used (tie: closest to the old name)
+9693d8ca-3474-4910-92a1-c9867dd52455	N50 Autres affections des organes genitaux de l'homme		
+969db265-95e2-42a8-a1ee-b060208ef00f	B-		
+96cbc3ff-8ff8-4b3c-b341-815563df3641	Transfert vers un établissement de niveau supérieur		
+96d3506d-eb22-4716-af1b-35b720fe0043	N23 Colique nephretique sans precision		
+96d4c97b-4172-41cf-887e-c03e7eafe710	M32 Lupus erythemateux dissemine		
+96dcb8ae-6690-43f6-9671-7d6c48387d3e	C84 Lymphome peripherique et cutane a cellulesT		
+974a3938-421d-4386-b8c6-a857f903d397	Percussion		
+97a22064-5489-452d-8dbc-4ac24aec6b58	G91 Hydrocephalie		
+9803bd58-9e88-4691-b22a-4047afdfcb4a	O75 Autres complications du travail et de l'accouchement non classees ailleurs		
+981849cb-0f33-4374-aae7-709eea81556f	O14 Hypertension gestationnelle [liee a la grossesse] avec proteinurie importante		2 labels in the sheet, most frequent used (tie: closest to the old name)
+983088ee-3232-461f-b4c0-1e0f035fa62d	E11.6 Diabete sucre non insulinodependant avec complications precisees		
+98353522-adee-4bac-b3b2-e64c17433259	I62 Autres hemorragies intracraniennes non traumatiques		
+98793725-724f-456f-85eb-83e2be125195	A74 Autres infections a Chlamydia		
+98b96313-5a0f-4ee6-bca9-67dac09d0471	C82 Lymphome folliculaire non Hodgkinien		
+99178376-1d12-4dea-936c-c2d06dd303b8	L81 Autres anomalies de la pigmentation		
+9921be5f-7422-4f6d-835e-ea95a62a45e6	Service de destination		2 labels in the sheet, most frequent used (tie: closest to the old name)
+992d2a6d-fcae-47ec-94a9-8f43937fcb84	K91 Atteintes de l'appareil digestif apres un acte a visee diagnostique et therapeutique non classees ailleurs		
+993c7783-e6dd-4786-961a-e658476ea753	Loco-régionale		
+99e6c785-4aeb-4ca4-8de4-5fe90f78f790	Lésions précancéreuses		
+99f348ef-355e-4ab7-aa4d-5b8c7517fe80	O88 Embolie obstetricale		
+9a1ad424-adf5-485e-95e3-ba1fa7484a33	Enfant vivant		2 labels in the sheet, most frequent used
+9a64d35a-f767-4895-9592-eb42d32a246b	E15 Coma hypoglycemique non diabetique		
+9a7cdd65-b310-4e41-8c61-fa2a5897ae37	Glucose 5 % (ml)		
+9a8186ba-5a57-4f1b-8df8-2f5aaa913c1c	O62 Anomalies de la contraction uterine et de la dilatation du col		
+9af39f47-d3bd-418a-84e9-968863430578	Recommandations & décision		3 labels in the sheet, most frequent used (tie: closest to the old name)
+9b01093f-21cc-4723-9ea4-88edfa8fccb8	Chirurgien		
+9b4cf720-8476-403e-82f5-7a1adb6dee57	O08 Complications consecutives a un avortement une grossesse extra-uterine et molaire		
+9b83da53-8b5e-42f3-b9e4-12d702db40ae	P03 Foetus et nouveau-ne affectes par d'autres complications du travail et de l'accouchement		
+9b8b1295-51f8-43ed-b55d-c7abb2ed52e7	N84 Polype de l'appareil genital de la femme		
+9bab8469-040d-4148-b7a4-c93a4cd209b3	D53 Autres anemies nutritionnelles		
+9bb5f2c2-0629-4a85-ad69-b69fb21891d2	I13.9 Cardionephropathie hypertensive sans precision		
+9bc08804-6684-4f38-b01d-cf9db87eab31	Score de douleur (0-10)		
+9be23fa1-bd0d-4968-abe9-f96c31f4ee5e	Utérus contracté		
+9be54175-1b56-47ac-a0af-2b25d374fa5f	T30 Brulure et corrosion partie du corps non precisee		
+9c11caf8-c392-471c-92b3-bf0723cd0b1e	T91 Sequelles de lesions traumatiques du cou et du tronc		
+9c45ede0-8f70-409f-a73e-122dd84106f0	Y00 Agression par objet contondant		
+9c47dc28-a8b6-485c-84e8-6dcf816a67cf	R71 Anomalies des globules rouges		
+9c4e7be2-47a0-4838-bb24-4b2796844f21	I : membranes intactes	Intacte	2 labels in the sheet, most frequent used (tie: closest to the old name)
+9c560e5c-b840-4ce5-993f-0f64cf0ca2c0	I61.9 Hemorragie intracerebrale sans precision		
+9c67e8a4-702f-47fe-8350-92f5ed09b5a2	Allergie		
+9cc504f0-3c13-418f-8b4b-a098f2693eb9	K86 Autres maladies du pancreas		
+9cc84ff4-4a1c-479e-91e4-80391317b415	G00.9 Meningite bacterienne sans precision		
+9cd797ab-d617-4d52-ac19-c34cd9038742	F99 Trouble mental sans autre indication		
+9cd9b2fe-fc7f-410f-80e9-3d8c91d538e5	Maladie naturelle		
+9d107c46-458f-4f39-b31a-e19d5a9e12ab	Échographie	Ultrason	2 labels in the sheet, most frequent used (tie: closest to the old name)
+9d192991-3882-4c7e-9de5-333a8b62a843	E22 Hypersecretion de l'hypophyse		
+9d21c952-e93a-4306-b5e9-408de81dda41	R43 Troubles de l'odorat et du gout		
+9d240d47-85bd-4508-b17c-f98b494e609a	H90 Surdite de transmission et neurosensorielle		
+9d298454-3b53-4fea-b76e-b8ba477f77c8	R51 Cephalee		
+9d58edc8-052b-4a29-a1d3-89c07650fc57	M49 Spondylopathies au cours des maladies classees ailleurs		
+9d6312bd-b04c-40ff-bafb-3fbf77ee69cc	Réponse verbale (/5)		
+9d64bcd4-6fdb-45ec-a966-09d4a3383388	K73 Hepatite chronique non classee ailleurs		
+9d7af539-05ac-485a-82f6-473b9afdd366	O23 Infections de l'appareil genito-urinaire au cours de la grossesse		
+9d8f52ef-6b7d-4d93-aa06-3d0393297b94	E04 Autres goitres non toxiques		
+9d91bd14-10bb-4836-8d1d-6cfb33b0a0dc	C96 Tumeurs malignes des tissus lymphoide hematopoietique et apparentes autres et non precisees		
+9da2d54b-e93a-48af-84b2-fc9ba10ef410	E73 Intolerance au lactose		
+9dad3047-4fd7-4032-a47e-9e6f7e504d05	M82 Osteoporose au cours de maladies classees ailleurs		
+9db78a03-0a0d-494a-8ef9-9ff01d726ded	R15 Incontinence des matieres fecales		
+9dc2962b-bdd0-4261-b69d-55769e078be0	Observations générales	Observations intégrées	kept: five forms, five labels once each; keeps "Observations générales" (#475, one of the five)
+9dc7e5f7-2650-40fb-b22e-5cffb4fc6a29	S75 Lesion traumatique de vaisseaux sanguins au niveau de la hanche et de la cuisse		
+9de80ba8-f8a8-4279-8b81-4632e6c2fd88	I44 Bloc de branche gauche et auriculoventriculaire		
+9df9f3f2-70ce-4c2f-858d-24792021860d	K09 Kystes de la region buccale non classes ailleurs		
+9e045d87-62c6-4bc4-b72e-d856ff234f97	Transfert vers un établissement de niveau inférieur		
+9e5a019f-c57a-4cc6-8794-1804d9725962	O74 Complications de l'anesthesie au cours du travail et de l'accouchement		
+9e79bed5-110b-405f-aaf1-0fd9f3ffefee	H52 Vices de refraction et troubles de l'accommodation		
+9e93bbf2-e55b-4fe0-8ce3-2393a99d43b5	D50.0 Anemie par carence en fer secondaire a une perte de sang (chronique)		
+9ea15abf-b78a-4f5f-90b3-f70e9afa4a13	T44 Intoxication par mdcments agissant sur le SN autonome		
+9eec0f71-f69e-4dae-abb1-56a4a42ba4ea	K52 Autres gastro-enterites et colites non infectieuses		
+9f0a8b64-bc63-4721-9f61-2f0642638811	K62 Autres maladies de l'anus et du rectum		
+9f1d9154-5bcf-438a-b40a-54635619a007	R11 Nausees et vomissements		
+9f2cf762-11e2-479e-ae79-7c64e5321140	I47 Tachycardie paroxystique		
+9f44ac8c-0185-489d-b1bb-9f9d9f9ccec3	I70 Atherosclerose		
+9f45d5d0-fe6c-45bc-9220-dad1481b3423	Q40 Autres malformations congenitales des voies digestives superieures		
+9f775165-1bf3-41dd-a688-b54609eb1eaf	O94 Sequelles de complications de la grossesse de l'accouchement et de la puerperalite		
+9fcb0e5c-860c-42ce-b8f4-4f354d52b61e	Transfert interne		
+9ff60055-20a8-4d4d-9cc1-f04548965365	Ambulatoire (issue de la consultation)	Ambulatoire	qualified: sheet word 'Ambulatoire' is a French synonym; "Ambulatoire" is the arrival-state answer (6a0ccf90)
+a00dcc3e-c828-4f1f-a25e-8b538e432a0d	Particularités de la grossesse		
+a0a67e27-42b0-4502-8e7f-f4d46eae0a24	Anémie		
+a0e98f08-78b5-4b6a-be97-06d9dec4b8f6	R16 Hepatomegalie et splenomegalie non classees ailleurs		
+a0fa5502-72d1-44a2-9b69-4ad5a130424a	P61 Autres affections hematologiques de la periode perinatale		
+a19e6cc0-7fe2-4b9c-a53a-9aed4ca3adcc	Symptômes		
+a1b8b300-e04f-4cca-8102-35e5248c6f6a	I42 Myocardiopathie		
+a1f88450-ab91-4f04-9fe4-22c07fe1fa30	F52.2 Echecs de la reponse genitale		
+a203b04d-a476-4796-a08a-de6496da5696	F84 Troubles envahissants du developpement		
+a2424cc4-a9b1-456b-8fc2-39ff713910c1	D09 Carcinome in situ de sieges autres et non precises		
+a2743a12-8fdb-4641-be63-fd2353afeb90	B00 Infections par le virus de l'herpes [herpes simplex]		
+a293b2ca-3008-43cd-8fd4-51d548f72b9f	J60 Pneumoconiose des mineurs de charbon		
+a2a95896-4dee-4034-9bde-6905ab702673	R57 Choc non classe ailleurs		
+a2bfe9b7-c373-4805-96c9-16e1039eac04	Diagnostic de paludisme		2 labels in the sheet, most frequent used (tie: closest to the old name)
+a2c08f8a-e469-4e23-9c6a-d91b1e7801bc	P22 Detresse respiratoire du nouveau-ne		
+a2d40da1-2928-465d-9439-40ed29706633	K76 Autres maladies du foie		
+a305f86d-ed9d-4bff-9f1c-a4fd37c51d9f	A18.3 Tuberculose de l'intestin du peritoine et des ganglions mesenteriques		
+a3353068-8853-483b-8542-1a1f7800a114	I71 Anevrisme aortique et dissection		
+a34b6421-6664-4d70-86c9-b88d82955dab	E40 Kwashiorkor		
+a37378ba-ea0f-4b3a-bdc6-4c8a98c53d29	C69 Tumeur maligne de l'oeil et de ses annexes		
+a386abf5-871a-474c-a5a7-d118e3544e08	Q42 Absence atresie et stenose congenitale du colon		
+a391b6e8-a9a1-4fce-b386-43f9ce7da7c9	R00.8 Anomalies du rythme cardiaque autres et non precisees		
+a405d01a-661a-4060-ab92-c37e796aeef6	C83.7 C83.7 Tumeur de Burkitt		
+a426b306-3c23-4ebf-9459-50ad49560ad5	Césarienne		
+a43942dc-5ff2-4be2-8627-8bb91ae6d98b	M15 Polyarthrose		
+a4963c7b-5430-4a8b-bf49-ddec597e4a22	A01 Fievres typhoide et paratyphoide		
+a4a5921b-f924-41c9-916e-8e53fec09341	N71 Affections inflammatoires de l'uterus a l'exclusion du col		
+a4be9556-c842-42c4-aea1-558be369c8e0	D61.3 Aplasie medullaire idiopathique		
+a51412df-a25b-4ed7-9c68-411d1b3c421b	P38 Omphalite du nouveau-ne avec ou sans hemorragie legere		
+a553dcd5-6486-4411-99ef-6ff7c80e7ea5	D55 Anemie due a des anomalies enzymatiques		
+a59b07aa-e31d-4623-aaf7-a4772221d475	Début du travail		sheet spelling fixed
+a5a88a14-b52c-478e-afd9-4d71a46d6ff7	H44 Affections du globe oculaire		
+a5bfd49b-8f7f-4666-be00-dfbdce93139e	Rompue depuis le		sheet spelling fixed; 2 labels in the sheet, most frequent used (tie: closest to the old name)
+a5c7c4ea-5ea1-4923-9c5c-8e56e4ca79d3	J03 Amygdalite aigue		
+a61f7a7e-be38-4970-b841-3adc2efdb46c	C 24.1 Tumeur maligne de l'ampoule de Vater		
+a689681d-d904-4df3-b98c-3fd883bc90be	G56 Mononevrite du membre superieur		
+a6e86791-f24b-4cd9-9c6a-6e30fb3ef842	Mort-né (antécédents)	Mort ne	qualified: sheet word 'Mort-né' is a French synonym; "Mort-né" is the stillbirth answer (63f4b85c); sheet spelling fixed; 2 labels in the sheet, most frequent used
+a726ded5-8680-4fe7-b036-51b6ac048717	L41 Parapsoriasis		
+a820bef4-dd91-428e-bf0a-97eaf2bca3ee	Selles / vomissements (ml)		
+a85812ec-5e7f-4e7d-b0da-d75ec56182f7	Enfant décédé	Enfant decedee	sheet spelling fixed; 2 labels in the sheet, most frequent used
+a86c732f-534c-4b83-8595-b71ca1c2a8ec	O80 Accouchement unique et spontane		
+a8939af0-7530-405c-8142-faef8938904b	Problème neurologique		
+a8c0de4e-6776-4836-ba23-38620117b53a	S02 Fracture du crane et des os de la face		
+a8f782e5-64e5-460d-a304-e8cd4acb1388	Fin de l'intervention		
+a9343e08-1f6f-4962-8bed-a1e8efeb3bad	G06 Abces et granulome intracraniens et intrarachidiens		
+a94bc92d-c092-4036-b6e2-c1ad1fddb9c7	L91 Affections hypertrophiques de la peau		
+a979e804-321f-4cb2-b089-c6cba8259da7	T82 Complications de protheses implants et greffes cardiaques et vasculaires		
+a98e31d5-21f7-4c45-a99f-86d058e4f563	Z31 Mesures procreatives		
+a9d5aff6-8c45-4a7b-992d-533baeb29742	F52.1 Aversion sexuelle et manque de plaisir sexuel		
+a9e52d34-3dc7-46c6-84a5-0db65faefaf6	HS12 - Groupe sanguin	Groupe sanguin et rhésus	kept: lab catalogue test (Test); the sheet label is the in-form abbreviation
+aa32ae94-8abf-4a55-bcd4-b743d8c05e6a	E05 Thyreotoxicose [hyperthyroidie]		
+aa4aba23-865b-4b95-98b1-6abb86126b09	Référé par le Centre de Santé (CS)		
+aa66f546-64c3-461e-bc37-56719b9dde0a	F17 Troubles mentaux et du comportement lies a l'utilisation de tabac		
+aa6d8640-e682-475d-a25d-9257d52d8bde	Mode d'admission		
+aa765e7c-4b56-4510-b8a1-ed1a943f9d14	A71 Trachome		
+aa7ff29c-6e0f-4ec3-8995-1d519ec3f5cc	T90 Sequelles de lesions traumatiques de la tete		
+aa925cb1-44a3-48c7-acf7-4ecace510c29	W54 Morsure ou coup donne par un chien		
+aa9d69fd-9be6-432c-8d17-dcb0f35ec7f5	R83 Resultats anormaux de l'examen du liquide cephalo-rachidien		
+aac8af08-d0e6-4811-91f2-63c23f62b254	D02 Carcinome in situ de l'oreille moyenne et de l'appareil respiratoire		
+ab059213-c8d2-4f2a-9bb0-23c3027041d4	A41 Autres septicemies		
+ab2bbc3d-7f4c-41a1-a89e-d6f7a01f11e4	Y12 Intoxication par des narcotiques et psychodysleptiques		
+ab417841-9161-4887-9287-0dadee73b1fa	S36 Lesion traumatique d'organes intra-abdominaux		
+ab5b1972-ca49-40f4-81d0-5d242e8edaaf	Hauteur utérine (cm)		sheet spelling fixed; 2 labels in the sheet, most frequent used
+ab6aac99-e061-4bd9-a51a-50981989ef35	SA		3 labels in the sheet, most frequent used
+ab88b293-436c-4182-909a-24971f3b378a	2017-Z55 Difficultes liees a l'education et l'alphabetisation		
+ab9b64c4-93b8-4736-9ab3-563cbc8bb120	B08 Autres infections virales caracterisees par des lesions cutaneo-muqueuses non classees ailleurs		
+abd9eb8f-a837-4c41-85bd-916cc3d7dc6a	J00 Rhinopharyngite aigue [rhume banal]		
+ac0a6887-a5b5-4280-ae12-4f038163ce3d	Contre-référence		
+ac11ec86-844a-496f-9726-a39f0a7b47a5	Nouveau-né		
+ac72693e-351a-4058-8854-0f7ad1677ca9	M81 Osteoporose sans fracture pathologique		
+ac842cfe-9004-4bdd-b60c-918e5631f1fd	H10 Conjonctivite (collecté ds Hopitaux)		
+acea31b4-bf5b-444e-8aca-16c907afdb80	M20 Deformations des doigts et des orteils		
+ad1b3cce-c526-491e-8be9-ee3d756350ca	M08 Arthrite juvenile		
+ad1bfff3-091b-4c7f-8dbc-a0a17ae05eb1	Q30 Malformations congenitales du nez		
+ad33b801-c6ef-4ae7-8e3e-59a6473069db	GO108 - Myomectomie	Myomectomie	deferred: also in UVL_procedures_20261001.zip (collection not re-exported in this pass)
+ad8e9aaa-6ae3-4a22-90eb-69dd1e7c50fc	Z20 Sujets en contact avec et exposes a des maladies transmissibles		
+ad964687-88a8-407f-be77-17a2232b3f0d	C19 Tumeur maligne de la jonction recto-sigmoidienne		
+adb5438f-76cc-4b80-a3e5-c41537d1cb39	P24.0 Aspiration neonatale de meconium		
+adb87321-a253-418e-8fd9-24ca9d5d909d	H68 Salpyngite et obstruction de la trompe d'Eustache		
+adeaef47-8728-4e86-b83c-d6e62cd0b316	N91 Amenorrhee oligomenorrhee et hypomenorrhee		
+adfdcfe7-f2e9-4eb6-9e49-5b3c795c5870	Masculin		
+ae0bd12a-d8f7-4581-9858-8fd33c89d405	Diagnostic pré-opératoire		
+ae658382-d126-41c6-8bb1-11eff69c14dd	X59 Exposition a des facteurs sans precision		
+ae72ec8c-f936-4015-b853-404ebb3e5007	C72 Tumeurs malignes de la moelle et des nerfs craniens et d'autres parties du SNC		
+ae7b3341-a559-46f3-a9f6-a57f6c8fd67a	L97 Ulcere du membre inferieur non classe ailleurs		
+ae846c0d-ab46-4a87-9c5d-f48285f26d6e	>3 mois		
+af20c4a5-8413-4d34-aab1-95f37615c0c6	Date de l'examen		2 labels in the sheet, most frequent used (tie: closest to the old name)
+af222a75-9f9b-4447-8d66-137e7fe54c40	A20 Peste		
+af2a49ea-21c3-4f98-80b4-421a8a2461bb	F31 Trouble affectif bipolaire		
+af44918f-bbb4-4dcb-9f55-0cc609afdaaa	Dose d'adrénaline (mg)	Dosage de l'adrénaline	2 labels in the sheet, most frequent used (tie: closest to the old name)
+af56e6aa-3148-4a9b-a9c3-0000d39de2ed	N82 Fistules de l'appareil genital de la femme		2 labels in the sheet, most frequent used (tie: closest to the old name)
+af8a0f43-0c8d-44f3-aac0-c926f9fff57e	O15 Eclampsie		2 labels in the sheet, most frequent used (tie: closest to the old name)
+afc4f4b5-4f94-40de-b6d0-b78044d5c9d0	G25 Autres syndromes extrapyramidaux et troubles de la motricite		
+afdefddc-4e72-4d69-bac2-d04641a7cca1	K71 Maladie toxique du foie		
+aff05ee2-f9a8-4f31-825a-341ba8beb86a	J47 Bronchectasie		
+b013d997-b3af-4939-9d65-c48fb03e8e8e	Q40.1 Hernie hiatale congenitale		
+b04641e2-6197-4228-9374-ab2f7dcaf7ed	A05.9 Intoxication bacterienne d'origine alimentaire sans precision		
+b0716b74-ddcd-4d6e-a2b8-cf5644f60259	Q36 Fente labiale		
+b0757914-31d3-4b01-b408-8335de1eb486	N48.4 Impuissance d'origine organique		
+b0fd7754-5e99-491b-8696-df4b7f743680	F52.4 Ejaculation precoce		
+b1007c50-dcb4-4e5d-82a7-b9e2c60f7783	K42 Hernie ombilicale		
+b10b0d70-4855-407b-8c17-4e63b5e178fd	O96 Mort d'origine obstetricale survenant plus de 42 jours et moins d'un an apres l'accouchement		
+b124c703-d9c7-4bfc-8835-8fd535b4e79c	H81 Atteinte des fonctions vestibulaires		
+b173381f-34ef-432b-b3d3-79233e381809	Q03 Hydrocephalie congenitale		
+b197d73f-ae75-4808-9979-7c49493e8b11	Classe II		
+b1a1d695-7e4e-43cd-8263-f0a6ab770de4	Métrorragie		
+b1e0fef1-a10f-404d-97f4-1b045c340204	Q69 Polydactylie		
+b1ec6907-5212-457a-ac60-838a448f3a19	N17 Insuffisance renale aigue		
+b1fa6cba-2b54-4d51-9e91-323e7129224b	Date et heure de naissance		2 labels in the sheet, most frequent used (tie: closest to the old name)
+b1facf1b-c4ce-4946-ab4a-4da27b6afd0c	D65 Coagulation intravasculaire disseminee [syndrome de defibrination]		
+b29e06ab-014e-43a0-823d-69dcdddc619f	K26 Ulcere du duodenum		
+b2e6fac0-99b7-4ee6-a455-2d05c4c2c85b	H11.3 Hemorragie conjonctivale		
+b32af377-04c0-4f00-a571-d01170a16d9d	Taille (cm)		
+b34aa2f5-5dac-4769-9330-ee54086332ed	D28 Tumeur benigne des organes genitaux de la femme autres et non precise		
+b363f140-de6d-4f1b-b7b2-0525c073d0c6	M11 Autres arthropathies dues a des microcristaux		
+b37c4f7a-b172-41a8-a1b4-f61efe6eb92e	E06 Thyroidite		
+b38d0fe6-4827-4d4e-88d9-54eec14ac66b	O65 Dystocie due a une anomalie pelvienne de la mere		
+b39db318-d563-4114-bec0-31ad3d254b24	Fréquence respiratoire (/min)		2 labels in the sheet, most frequent used
+b3c0b415-288d-4adc-a68f-09bb000bba37	D59 Anemie hemolytique acquise		
+b41572ee-1b13-4804-8a1b-c7530e851588	Classe III		
+b445635a-b6d1-40a7-8100-6318cb628b04	E51 Carence en thiamine		
+b463e42f-b545-405c-b0f7-edef002ccf75	2017-Z72.0 Usage du tabac		
+b49d244c-7bc5-4f2f-8f44-9563fd9f3a25	D15 Tumeur benigne des organes intrathoraciques autres et non precises		
+b4ae0109-0132-4259-84fa-009f19932c36	Z80 Antecedents familiaux de tumeur maligne		
+b4af44f8-0efc-4fce-b55a-1d4f5cb9aab8	I21 Infarctus aigu du myocarde		
+b4d02aee-8ef5-4f4a-a7f5-d721aaf8b3d4	G45 Accidents ischemiques cerebraux transitoires et syndromes apparentes		
+b4fa073f-d52d-4da7-82e9-35ee35824e95	A65 Syphilis non venerienne		
+b501a1ac-f2ea-4e79-ace4-658c1af45bd2	Résultat		
+b535fee4-580a-4ba1-ac28-3e1283e0b2aa	Q51 Malformations de l'uterus et du col de l'uterus		
+b54be29d-8e42-4465-af5c-e88983980018	D29 Tumeur benigne des organes genitaux de l'homme		
+b5687d7c-2973-4d4b-bf75-d6c9c90ec942	Post-opératoire (externe)		
+b5c4b807-d3de-40cd-aae9-178df9b40535	Autre		2 labels in the sheet, most frequent used
+b5d92a81-f711-477c-9fa2-e4d5dacedf87	Présentation tête	Présentation têtê	sheet spelling fixed; 2 labels in the sheet, most frequent used
+b5f30fce-f71c-4a9e-9bae-d13c9d73c726	Service émetteur		
+b5f7734c-a1aa-4055-9e81-f26d486fe0d1	B37 Candidose		
+b61f0a5a-5d3e-4382-885d-b2903252a98b	F43 Reaction a un facteur de stress severe et troubles de l'adaptation		
+b6360195-6e3d-40be-ba62-998b1deb35cd	O28 Resultats anormaux constates au cours de l'examen prenatal systematique de la mere		
+b63bfb05-81ce-4b28-ad28-3b31cbdc20f5	T20 Brulure et corrosion de la tete et du cou		
+b675442b-6c8f-4233-9a89-9bf489fa1a3a	O84.0 Accouchements multiples tous spontanes		
+b719340b-9cdc-44e4-9e84-0918b4d11484	G82 Paraplegie et tetraplegie		
+b76fca68-f4f4-45b8-a0dc-74c6eb48b319	Réanimation : adrénaline		
+b7806ff4-a208-4923-b010-877ee56dfb7f	M23 Lesion interne du genou		
+b78ce196-288c-4763-a58b-a6b5b856ab94	R32 Incontinence urinaire sans precision		
+b7a1c8ad-0676-4e5c-aa3b-2acff20a63e0	I77 Autres atteintes des arteres et arterioles		
+b83f9008-37da-470c-8646-6d62b11be829	F52.7 Activite sexuelle excessive		
+b8728c13-7a18-4ddf-8c8d-a1d364ec6bd9	B881 Tungose [infestation par puce-chique]		
+b88b4fa9-3216-4531-b9fe-502713468fbe	Avec déshydratation		
+b8cbdb46-7e7b-4afe-a604-11340acf96d6	Hôpital		
+b923c9af-8e23-4e9d-b71c-78795029bdca	N40 Hyperplasie de la prostate		
+b96bd613-e8b6-41f4-94cc-e94d24dce267	P55 Maladie hemolytique du foetus et du nouveau-ne		
+b96df8bf-4462-4ec1-9ade-c3dfff9ac4c3	O84 Accouchements multiples		
+b98480a5-bca5-4baa-a29d-aaa26e203d23	Masque		
+b9de3568-8f4c-4368-898c-3a09a11074cf	T74 Syndromes dus a de mauvais traitements		
+b9f2b623-ab12-4cd3-b5e6-e10b274b0504	Antécédents (pré-opératoire)	Antécédents	qualified: sheet word 'Antécédents' is a French synonym; "Antécédents" is the history question e55584c3
+b9fbe1af-2dc2-4e97-b961-54c0eaa5ed53	Contractions utérines (CU)		
+ba193b51-7617-4186-93a5-de8657855aaa	Indication opératoire		
+ba39e9aa-4f48-45fe-a9da-c2a7795dc063	Chirurgie		
+ba42f2a1-0cce-424a-81a1-22aed0e7d294	M01 Arthrites infectieuses directes au cours de maladies infectieuses et parasitaires classees ailleurs		
+ba72d459-e378-4a75-9372-67f2de70a61b	O14.1 Preeclampsie severe		
+ba804ac7-473b-48cf-b844-c8d3e1f54eee	Cas de suivi		
+bafd2a47-8799-4df9-a544-cd11fff8cff2	H18 Autres affections de la cornee		
+bb20acea-5bfd-4f59-b7f9-c4deece081e5	I81 Thrombose de la veine porte		
+bb3bd6f0-a75c-4272-9aa7-932fe3f53b3f	Ringer lactate (ml)		
+bb662ad6-4d8d-4312-ac78-52607647d5fe	D03 Melanome in situ		
+bb72c3b4-29a8-43e0-a1bb-37bf878c4078	G03.0 Meningite a liquide clair		
+bbab6fa6-69bc-45f4-8a43-677883bee6be	HS23 - Temps de thromboplastine partielle activée (aPTT)	TCA	kept: lab catalogue test (Test); the sheet label is the in-form abbreviation
+bbbe2263-29b0-48ca-9b10-bded8b1a467b	J94 Autres affections pleurales		
+bbbf1f81-15c9-41f6-be2a-ad254923db8b	S93 Luxation entorse et foulure des articulations et des ligaments au niveau de la cheville et du pied		
+bbd42472-9025-4771-875b-8ae6eda3733a	Histoire de la maladie	Histoire de la maladie présente	2 labels in the sheet, most frequent used (tie: closest to the old name)
+bc180afd-140b-4bca-bd58-df4022028d63	Calcémie	Ca	kept: lab catalogue test (Test); the sheet label is the in-form abbreviation
+bc43f5d7-965e-4828-a6a3-38463b29c442	M77 Autres enthesopathies		
+bc54cb7c-bb45-45aa-84d6-2346748b7c93	Pouls (/min)		4 labels in the sheet, most frequent used
+bc66cbed-099f-4cb7-96e8-07963bc25fbd	C60 Tumeur maligne de la verge		
+bc67de91-e4ec-4eb0-9a9f-6326f9329546	I49 Autres arythmies cardiaques		
+bd00f0fc-35ab-4e88-8d0d-bc4c781461bb	Tour de taille (cm)		
+bd1937ad-322b-4168-ab17-d05f24f94ae3	F32 Episodes depressifs		
+bd663fad-7227-45ab-aa80-8388f1688491	E20 Hypoparathyroidie		
+bd67f2b1-6cf8-4e3a-b722-27ad183536de	R22 Autres tumefactions et masses localisees de la peau et du tissu cellulaire sous-cutane		
+bdc1ea1f-2a7d-424d-a3d0-5a3bab9f5e33	Déchirure vaginale		
+be0efe80-47a8-43e8-bbb1-0aeda72edac8	Durée des contractions (secondes)		
+be1f12b2-f841-4f36-8fce-e2c5420a3afe	F00 Demence de la maladie d'Alzheimer		
+be5c426c-b3cb-4da1-9801-74e19f230a83	L08 Autres infections localisees de la peau et du tissu cellulaire sous-cutane		
+be6b0ede-6647-4e48-97cf-14d97c1eba7a	H27 Autres affections du cristallin		
+be74f802-66f8-4fdb-ab52-721c2985a0c4	J17 Pneumopathie au cours de maladies classees ailleurs		
+bef66814-7e97-411a-824c-4acf188ba584	K20 Oesophagite		
+bf08e972-7445-4e6e-9c2c-7940e83558c5	R52 Douleur non classee ailleurs		
+bf4b4034-5331-461e-b839-fc71add06420	Artéméther-Luméfantrine (6/12/18/24 comprimés)		
+bf8d41d2-8d5a-4224-b259-ea0665bafff4	Histoire de la maladie / symptômes		
+c0391844-883d-4795-a259-cddef3553b91	Oxytocine (gouttes/min)		
+c064b182-845a-4d1e-af49-02ed5fd9ede6	R64 Cachexie		
+c0cc3749-4e88-4510-b550-193d2f7a6a11	N83 Affections non inflammatoires de l'ovaire de la trompe de Fallope et du ligament large		
+c0cd1644-3f29-425f-9caf-4237902828d1	R46 Symptomes et signes relatifs a l'apparence et au comportement		
+c110605a-e601-40bc-ae07-e1f261d317fa	Origine du patient		
+c135f74c-07dc-4663-a355-ef0aaf4c686f	H26 Autres cataractes		
+c13ebd42-e1ab-4a64-8aa2-3b653b0d745f	M10 Goutte		
+c14d15fa-838d-4af6-a802-9d53fc782669	Quinine comprimés + clindamycine comprimés	Comprimés de quinine + Clindamycine	2 labels in the sheet, most frequent used (tie: closest to the old name)
+c16d1643-0fec-41ff-9609-b0b72841f343	K90.9 Malabsorption intestinale sans precision		
+c1989c3b-e83d-4749-8967-a079aa704a0f	S64 Lesion traumatique de nerfs au niveau du poignet et de la main		
+c1abc032-80a8-4544-ba97-2b8396592a46	VIH négatif		
+c1cdda3d-f4c3-42f7-9720-50aa13f16154	H93 Autres affections de l'oreille non classees ailleurs		
+c1fc766a-bd19-4c18-bbf1-30ae5add2ff8	R02 Gangrene non classee ailleurs		
+c2162762-996e-44ff-929f-a644b5046c65	O91 Infections mammaires associees a l'accouchement		
+c234f679-c70a-4376-80ba-9538948cbf57	N94.4 Dysmenorrhee primaire		
+c27260f5-3f28-4b82-96de-f15655c895bb	D21 Autres tumeurs benignes du tissu conjonctif et des autres tissus mous		
+c272a848-c97e-4119-a1e1-544b011fa752	Céphalique		
+c2735842-6bbd-4ea4-a435-948da653ebfe	N18 Insuffisance renale chronique		
+c28f16fb-a7e1-4443-819a-ba47287a2969	N73 Autres affections inflammatoires pelviennes de la femme		
+c2a8cbfa-3eaf-4740-97d8-f2863e2b3c65	T71 Asphyxie		
+c2beea3c-8b42-4d60-9cf3-d5a6686d0c08	C30 Tumeur maligne des fosses nasales et de l'oreille moyenne		
+c33656cb-2afd-4c80-9e21-ede35c2201e1	A17.0 Meningite tuberculeuse		
+c3e5f153-0d66-45a7-ac9c-177b2110995e	N36 Autres affections de l'uretre		
+c3f6241f-f279-48d7-a339-4f8992611960	J34 Autres maladies du nez et des sinus du nez		
+c420f83c-26d5-449a-981a-d6c8cc3a6645	Y09 Agression par un moyen non precise		
+c447ae6b-5e77-47f0-bc44-3d156da9ac0e	BI11 - Protéines totales	Protides	kept: lab catalogue test (Test); the sheet label is the in-form abbreviation
+c45860f0-698f-425a-be96-8bc9e1b979bf	Z03 Mise en observation et examen medical pour suspicion de maladies		
+c46f3f0b-51b5-4c9d-a350-2083c6ecb48b	C17 Tumeur maligne de l'intestin grele		
+c46fcfdd-a785-4416-80bc-2d9e2edf5a45	Diastolique (mmHg)		5 labels in the sheet, most frequent used
+c5c3dd80-927e-4a65-a5b0-634d42bf35ca	C14.0 Pharynx sans precision		
+c5c9513e-acaa-4c25-804a-a9e48066e7c6	R07 Douleur au niveau de la gorge et du thorax		
+c6055a07-c498-48e3-b582-cd78bed0dd42	R00.0 Tachycardie sans precision		
+c60951d1-bc00-4e7a-a70c-878abe341002	Description du problème		
+c61917f2-08dd-475b-ba03-af03cbb7ae06	Statut de la femme		
+c62be10d-5b4e-44e3-a989-e0f4858ba77f	BCF (bruits du cœur fœtal, bpm)		5 labels in the sheet, most frequent used (tie: closest to the old name)
+c666ee74-0695-4e23-95c3-2e80979bb2b2	C41 Tumeur maligne de l'os et du cartilage articulaire de siege autre et non precise		
+c66dd184-e514-4883-bc1d-52ec5eb276a7	N94.0 Douleurs intermenstruelles		
+c6c1fd07-3302-4cf2-8725-a225130d025d	O07 Echec d'une tentative d'avortement		
+c6d77b65-38c0-4c6f-b9fc-007325641396	S83 Luxation entorse et foulure des articulations et des ligaments du genou		
+c6fd0a2a-e849-484c-96b9-a1e2c39bd507	Z70 Conseils relatifs aux attitudes comportement et orientation en matiere de sexualite		
+c70e5288-dc00-494a-aa12-b3cc9ed1940a	Lait (ml)		
+c733b93e-9ee3-4dd2-9dab-364b7f7193af	R14 Flatulence et troubles apparentes		
+c7384451-0bf6-44fa-822d-14dd15fe791e	S66 Lesion traumatique de muscles et de tendons au niveau du poignet et de la main		
+c7694202-686c-454b-a5ad-351c19e19ed7	C90 Myelome multiple et tumeurs malignes a plasmocytes		
+c799d069-fc31-40cd-9a37-2ee1f5876e48	O97 Mort de sequelles relevant directement d'une cause obstetricale		
+c79efc79-3aa8-4781-a683-7d13ebe13834	Antécédents gynéco-obstétricaux (chirurgicaux)	Antécédents gynéco-obstétricaux	qualified: sheet word 'Antécédents gynéco-obstétricaux' is a French synonym; same label as the gyn-obs history question 937e4e80
+c7a026fc-72c8-4184-9ed6-6f0238cc37d0	Autre formation sanitaire	Transfert	deferred: also in UVL_drug_entry_20261023-1.zip (collection not re-exported in this pass)
+c7a53a87-132d-4cc3-bb9c-8e184f063161	A75 Typhus Infections virales du systeme nerveux central		
+c7e83f96-a5bf-4870-b1a8-0ae82287370b	P92 Problemes alimentaires du nouveau-ne		
+c7f07d2f-0136-4a38-8c41-b944583f2c20	Q20 Malformations congenitales des cavites et des orifices cardiaques		
+c800042f-427a-42bf-9f0c-8a647e325d5f	Alité		
+c82c28a8-29f9-4751-a2fd-a041412d5df9	Q53 Cryptorchidie		
+c835d46b-ff21-4884-b29b-7445e88992d5	A02.1 Septicemie a Salmonella		
+c8523ef7-c18e-46fe-a760-c243fd3a3bd2	Plaintes	Raison de la consultation	4 labels in the sheet, most frequent used (tie: closest to the old name)
+c85dfce1-f3e1-4d7c-b3b1-0711c95294fa	H80 Otosclerose		
+c8a1fa0e-c6dd-4bff-b7fa-36cddce09e03	À terme		
+c8aa230d-09fd-49bd-b31a-7c10047fc6fc	C67 Tumeur maligne de la vessie		
+c8b1fb2d-962f-4d0a-8093-8c92907a0598	K91.4 Mauvais resultats fonctionnels d'une colostomie et d'une enterostomie		
+c8b229a7-25a1-44ef-b2e8-5ea7fb2ed52d	T93 Sequelles de lesions traumatiques du membre inferieur		
+c8b98458-5122-4678-a6f0-47ddc2c9605a	L60.1 Onycholyse		
+c8cf9e38-1b8c-4cf8-9c98-8e99cc0851c5	K56.4 Autres obstructions de l'intestin		
+c8ddb4a5-a685-47c6-a972-b7f761c9c2db	2017-Y35 Intervention de la force publique		
+c9402888-2c05-49a5-9aaf-b42fa9e191d4	H11.0 Pterygion		
+c94db488-2d00-4ffc-b755-8dab620be092	P59 Ictere neonatal du a des causes autres et sans precision		
+c9a5c107-6d0c-4814-9f21-e1b543622512	C16 Tumeur maligne de l'estomac		
+c9db94f7-a0d6-4aa7-b649-9abfc72dbf0f	N60 Dysplasies mammaires benignes		
+c9dbd582-d728-4290-80cc-1465df2bed6f	R40 Somnolence stupeur et coma		
+c9e26fb3-4fdf-471b-ba9a-6be61a9c50d7	P05 Retard de croissance et malnutrition du foetus		
+c9e275ab-adb4-4bd5-9f23-0b4f2198fa6a	O84.2 Accouchements multiples tous par cesarienne		
+ca280824-da77-46f3-b4fe-ffee34ebecd6	W22 Heurt contre ou par d'autres objets		
+ca4889fc-45f4-46ad-93df-1ce94e0f4e13	N94.5 Dysmenorrhee secondaire		
+ca6743a1-d9de-4b6a-bc95-e04d5b6a59de	O04 Avortement medical		
+caa77817-7440-4cef-8d94-555733f23a5a	Médecin traitant		
+cacddaa6-f749-4b1b-ad02-a290c5c550df	E01.0 Goitre diffus (endemique) lie a une carence en iode		
+caebd0e0-9533-4a4f-b049-f761daba87bf	I63 Infarctus cerebral		
+cafba4d3-fec8-4a47-a7d2-9f54f2971e4e	A85.0 Encephalite a enterovirus		
+cb43f38f-c2a7-42fd-a4e9-947519784ccc	B65 Schistosomiase [bilharziose]		
+cb533923-bee0-49f4-85e3-cad37436e7b0	M60 Myosite		
+cb601a13-3b25-489e-91dc-ffa85349c580	Transfusion ou anémie		
+cb72341f-41bd-4801-8b38-ae3a8e481bec	F34 Troubles de l'humeur [affectifs] persistants		
+cb830e25-ec0e-44ab-b073-fd8f540d4fe1	F63 Troubles des habitudes et des impulsions		
+cb891eb9-dd4f-43f0-b639-8e060b4bd56c	T15 Corps etranger dans la partie externe de l'oeil		
+cbdc2fd4-406e-4c84-a628-f597eca5195a	I74 Embolie et thrombose arterielles		
+cbf3f223-d3b9-454c-92a8-4af410db86db	Fond d'œil		
+cc10e05c-c992-4b2a-805e-70fe1cffa5b2	C77 Tumeur maligne des ganglions lymphatiques secondaire et non precisee		
+cc2b05bb-4587-4d4f-831b-1b88b3534ab3	S96 Lesion traumatique de muscles et de tendons au niveau de la cheville et du pied		
+cc52fb7f-8c35-4944-95f8-2aa99db83599	Q56 Non differenciation sexuelle et pseudo-hermaphrodisme		
+cc68076a-b109-420a-a80c-a8430f4021eb	P/T (poids / taille, z-score)		3 labels in the sheet, most frequent used (tie: closest to the old name)
+cc755364-c948-4cde-be6e-ab1ced3a9a7c	I09.8 8 Autres cardiopathies rhumatismales precisees		
+cc98f3b9-4d31-4820-a652-4d55850d0685	I61.0 Hemorragie intracerebrale hemispherique sous-corticale		
+cc99a233-64d1-44f7-a4e3-94b515c6057b	W19 Chute sans precision		
+ccba7a57-9aec-413f-b0f9-0eb1f859a818	J32 Sinusite chronique		
+ccc826d6-6b46-4330-a5d2-2d2fd6df7524	Dyspnée		
+cccddbfd-bf4c-4780-be65-8024773bf803	D27 Tumeur benigne de l'ovaire		
+cd4ae739-75b5-4c33-823c-df4ce4a28c73	R04.2 Hemoptysie		
+cd96c0b6-a08f-49eb-94ad-9a914f1612f0	État du nouveau-né	Statut	sheet spelling fixed; 2 labels in the sheet, most frequent used
+cdc82ddc-1413-4ec1-b891-b0155f8cc7fa	Usage du tabac		
+ce29830e-66e2-446e-b9d4-85ca2d49aa66	2017-T58 Effet toxique du monoxyde de carbone		
+ce39d6af-a74f-40d7-a06f-ead8cb298126	Cardiopathie	Cardiopathies	2 labels in the sheet, most frequent used (tie: closest to the old name)
+ce51f3f9-0c4f-4652-a248-05061090d995	M48 Autres spondylopathies		
+ce661d4d-b01d-4349-b015-a0637facc142	A18.8 Tuberculose d'autres organes precises		
+ced33062-8c28-4ca0-ac5d-83a833490435	Hépatite		
+ceeb5836-2c3e-4915-aafc-72579710cf48	S30 Lesion traumatique superficielle de l'abdomen des lombes et du bassin		
+cf38df5f-8036-4e53-a843-28fffe91c059	L90 Affections atrophiques de la peau		
+cf3be259-e882-4973-9265-04cb3cfb8857	P71 Anomalies transitoires du metabolisme du calcium et du magnesium du nouveau-ne		
+cf493c76-96c8-4b33-a43b-e8df1502d51d	A03 Shigellose		
+cf6b7cb3-c8cf-4b1d-8d8f-e224877349df	R39 Autres symptomes et signes relatifs a l'appareil urinaire		
+cf778145-e3a1-4cb4-aa11-5d20eb454bbd	N43 Hydrocele et spermatocele		
+cfb8f1eb-fb1e-4f2a-ab5d-fb7b2178a63d	P28 Autres affections respiratoires survenant pendant la periode perinatale		
+cfce22f3-9296-4af1-8c68-4e86cf02bf44	Œdème des membres inférieurs		
+d02e8e6e-ea82-4b73-8d30-a85fc16c9b95	K14 Maladies de la langue		
+d08a99c7-c085-4b84-8539-ef531714fbba	Z82 Antecedents familiaux de certaines incapacites et maladies chroniques conduisant a l'invalidite		
+d093cd83-0f8a-4312-8443-0d574dfdc7c5	R68 Autres symptomes et signes generaux		
+d0b9ff62-59c5-492b-a7bf-6ef6416180b5	Rétréci		
+d0cf970b-6101-4143-a153-58e055c3275e	I84 Hemorroides		
+d1039f09-7423-4b14-adbe-8f10c1f7101e	Grossesse à risque élevé détectée lors de la CPN	Grossesse à risque élevé détectée lors de l'ANC	sheet spelling fixed
+d1048a0e-ff31-4b49-b999-5101b5fec30a	Q42.2 Absence atresie et stenose congenitale de l'anus avec fistules		
+d1342a8f-6d32-4257-a4cb-f463b6cb8718	E65 Adiposite localisee		
+d1b58a28-e75e-44da-95c3-e857cc60f995	D05 Carcinome in situ du sein		
+d201d34e-31c0-468f-b8ea-5b09a9403a91	Bouillie (ml)		
+d228097e-dfe5-4c67-b370-7f92cd5f0e89	O-		
+d263d129-9004-4c2d-8773-27d2a9c6eb6f	R33 Retention d'urine		
+d2beb9ec-ca9f-48e4-93f5-a21f62f837f5	G71 Affections musculaires primitives		
+d2bee110-dd73-4ff9-8511-69a3bf81f026	R75 Mise en evidence par des examens de laboratoire du virus de l'immunodeficience humaine [VIH]		
+d2dba352-7f49-4614-a87e-0d142862ee93	T01 Plaies ouvertes de plusieurs parties du corps		
+d3273144-b5db-43b2-8f47-812c5d8dc6a8	M41 Scoliose		
+d346e0d9-44ce-4809-ae37-82a2033d5517	Intervention prévue		
+d3708ec7-c712-4f2d-b8cb-3a841964a580	N95 Troubles de la menopause et autres troubles de la perimenopause		
+d394c17c-4eec-40da-bbc8-19e1d984845f	Décès périnatal		
+d3ab21b4-ff60-424b-9924-0e4288ff0abc	R18 Ascite		
+d3d0a36f-47f3-41d4-bc63-d9b0172a26af	T74.2 Sevices sexuels		
+d42ce204-2ec8-46fa-9c47-5b202e68717a	Antécédents familiaux		
+d446f668-d8fb-40e3-b791-13a2a613fceb	Latérale		
+d44b9e98-820b-4495-a93a-49ed8a8913f5	A63 Autres maladies dont le mode de transmission est essentiellement sexuel non classees ailleurs		
+d45102a2-d9b7-40dc-a30c-8e88494e1725	Non		
+d469feb2-203f-435f-9f1a-28dba304f40e	I24.1 Syndrome de Dressler		
+d46ce70d-63fb-494a-a2b9-b7d169e36a72	J05.0 Laryngite obstructive aigue [croup]		
+d5332151-14c2-4e56-a5db-983924effc87	R47 Troubles du langage non classes ailleurs		
+d543b7fe-fa05-4254-babb-5deded8643cb	O26 Soins maternels pour d'autres affections liees principalement a la grossesse		
+d589822f-61e6-4e79-8f3a-1df58cbbb40e	C47 Tumeur maligne des nerfs peripheriques et du systeme nerveux autonome		
+d5afc6e0-44cc-4fdf-8865-a0edf3594ced	L70 Acne		
+d5ce8262-45b9-4d4a-b5a3-24fefc9440bf	F03 Demence sans precision		
+d5d86c99-dacc-478e-b2b3-21ccb98a0476	Féminin		
+d5dcfbbf-9793-4d43-9e45-6432d3dadea5	Doses VAT		3 labels in the sheet, most frequent used (tie: closest to the old name)
+d60c705a-f95a-4985-9730-a74dc8cb2214	N00 Syndrome nephritique aigu		
+d61296fa-d9c8-42fd-9f1c-060a472865a7	B00.5 Affections oculaires dues au virus de l'herpes		
+d62a87af-c8cc-4c40-b61b-34e18786728b	H95 Affections de l'oreille et de l'apophyse mastoide apres un acte a visee diagnostique et therapeutique non classees ailleurs		
+d6351fce-ed5a-42bf-a107-946b6bb62a17	H92 Otalgie et ecoulement par l'oreille		
+d6428c88-5a3b-46f5-b8be-caf391f05328	M00 Arthrites a bacteries pyogenes		
+d691b230-139d-4c2f-945a-04aba61db957	D61.2 Aplasie medullaire due a d'autres agents externes		
+d6f4920d-1e95-485c-b2b0-75d35ed235f9	D25 Leiomyome de l'uterus		
+d71976d7-3c1c-4c4d-b7f5-a61f9e7be606	X49 Intoxication accidentelle par des produits chimiques et substances nocives et exposition a ces produits autres et sans precision		
+d75e8130-3f0a-4b52-afb7-cebc4eb11818	T37 Intoxication par d'autres anti-infectieux et antiparasitaires systemiques		
+d761bdfb-0078-498e-adfc-5d90efd3168e	F41 Autres troubles anxieux		
+d78d6c91-268e-4712-8749-8befe492e636	M19 Autres arthroses		
+d7957522-11c3-484f-b7ba-e3b073144459	S03 Luxation entorse et foulure d'articulations et de ligaments de la tete		
+d7a2eaac-846d-407e-b37b-603d6a5d98aa	N45 Orchite et epididymite		
+d7a8ed6f-21ae-4305-93bd-235c2e7bd22b	Total Glasgow (/15)		
+d80a13fd-2336-450b-8559-0b37917c2ca1	S31.4 Plaie ouverte du vagin et de la vulve		
+d80eaa88-ea11-4049-8fcf-cfd613f202a7	N21 Calcul des voies urinaires inferieures		
+d86422cc-1beb-4e52-b76a-97eb1474773d	O21 Vomissements incoercibles au cours de la grossesse		
+d881a840-2010-4f9e-b686-71ead89c5454	P21 Asphyxie obstetricale		
+d8a76d4d-c110-4b5d-ae56-f52e61036aca	P20 Hypoxie intra-uterine		
+d8aca36e-01a9-4afa-bfaf-775dcb228610	N47 Hypertrophie du prepuce phimosis et paraphimosis		
+d8c658d0-63ba-412d-939f-761596570da9	Z32 Examen et test de grossesse		
+d8fc6552-1ae9-4a9a-aba0-2a24fdd6ca20	S78 Amputation traumatique de la hanche et de la cuisse		
+d9116719-0f9c-4139-afa8-724e6b1e80c5	C44 Autres tumeurs malignes de la peau		
+d91dd68a-e53c-4797-8717-2b0491c8768d	C33 Tumeur maligne de la trachee		
+d970bcb2-08c9-4b63-87a4-6165eb546a1e	Incidents prévisibles		
+d9a94f49-412b-41fe-ac47-437dbc66ffda	Dépistage VIH	Statut VIH+	sheet spelling fixed; 3 labels in the sheet, most frequent used
+d9ba390f-993e-4885-87d1-1896e50d13ab	E29 Dysfonction testiculaire		
+d9d31cd1-9f36-444f-a902-3a02c47a96dd	F09 Trouble mental organique ou symptomatique sans precision		
+da446701-d7dd-4d93-89f6-8fe338d48f62	Enceinte		
+da640d8a-8703-4bd7-aceb-2e91a6c1d806	Post-partum		
+da7e3699-9a19-4f9f-bbe5-5ab3d33a861d	Artésunate injectable	Injection d'artésunate	2 labels in the sheet, most frequent used (tie: closest to the old name)
+daafa1c4-48b6-4af4-9c55-eca5c5756de1	I33 Endocardite aigue et subaigue		
+daff3854-f542-4fe7-8df2-cc9bcf904d85	K92.1 Melaena		
+db4523a4-da7f-45db-bdc7-064a759f13d7	O31 Autres complications specifiques a une grossesse multiple		
+db7f6ff1-917d-412d-83f8-ac25d5c9a5dd	G44.1 Cephalee vasculaire non classee ailleurs		
+db935653-a4ee-435b-b052-77a9590f56d6	N62 Hypertrophie mammaire		
+db98c93f-1775-4442-9171-9560c7952790	Transfusion : type		
+dbcc96b4-c208-4b2b-a171-e35886ef2a6a	F48 Autres troubles nevrotiques		
+dbdfde0d-d0ad-43ce-86b5-e4f3443867ff	S87 Ecrasement de la jambe		
+dbfc43f2-5a41-4e77-8449-e389d0997ce9	N97 Sterilite de la femme		
+dc9adbb9-7694-4cc9-b597-aabcb37b7f3d	Référence de l'appareil d'anesthésie		
+dcfd5776-1294-4e9d-8707-8be96235728f	E78 Anomalies du metabolisme des lipoproteines et autres lipidemies		
+dd4c1f5f-5252-43fe-94cd-cd415f44e301	30 min		
+de146600-dbb3-47cf-87cf-141cc31ba7ba	O12 oedeme et proteinurie gestationnels [lies a la grossesse] sans hypertension		
+de1bb094-a800-4d98-b0d1-0a9d48f318ac	Mallampati		
+de511658-d4b1-40c7-94aa-55e19a84cc2f	G21.0 Syndrome malin des neuroleptique		
+de621ce6-104a-496a-873e-5c2745aeb469	Traitement / médicaments administrés en post-partum		
+de84cba5-7764-4690-a2ee-870ec0512001	Q18 Autres malformations congenitales de la face et du cou		
+df0c78b5-ee66-4a55-9ff5-6f22023a6390	Accès palustre		
+df195a4e-3f88-40cf-8a7d-19996fcaadf6	Destination du nouveau-né		sheet spelling fixed
+df6eb968-251a-4d9b-a52d-0995d17953cb	N49 Affections inflammatoires des organes genitaux de l'homme non classees ailleurs		
+df88f814-562a-4b84-b09d-c0874db969be	T73 Effets d'autres privations		
+df8c9356-41ab-40be-a463-de3ce270d2c2	Effets secondaires observés		
+dfd4447e-ec81-4c50-bd10-683c985727e9	T74.1 Sevices physiques		
+dfee5579-48ab-4c7c-b9b5-dc8ff70c947f	I27 Autres affections cardiopulmonaires		
+e000ba8a-f0a6-42be-b8da-b91a3887eb3f	A36 Diphterie		
+e00faa12-1d32-4fb0-9ebf-fd82514332c5	A35 Autres formes de tetanos		
+e011c1e1-7da5-45aa-87c3-ff4e7aa53111	P08 Anomalies liees a une gestation prolongee et un poids eleve a la naissance		
+e01a2924-3b34-4afd-a073-b569731f58a9	L60.8 Autres maladies des ongles		
+e051474d-a278-4417-b40f-19776a453e66	D51 Anemie par carence en vitamine B12		
+e056d097-59ba-4d0c-8de2-f00ecc7fc2dd	L43 Lichen plan		
+e0781bee-153a-45c6-be4c-95d7f3b9bca1	Q50 Malformations congenitales des ovaires des trompes de Fallope et des ligaments larges		
+e11492aa-7451-48dc-83eb-cd0b5c928926	F52.5 Vaginisme non organique		
+e12bf039-80dc-49f7-981b-c58169a64afc	Z64 Difficultes liees a certaines situations psycho-sociales		
+e13549b6-1d3b-4820-9458-9de97a036813	N76 Autres inflammations du vagin et de la vulve		
+e1510ae8-a9ad-4ff4-94b8-c40b78a715cc	Q52.0 Absence congenitale du vagin		
+e1d4f4a8-aed8-40f0-9faf-9d0087388803	N48 Autres affections de la verge		
+e1dd0df8-b280-4e87-bbe6-1537b1eba5e7	Z04 Examen et mise en observation pour d'autres raisons		
+e2209ac1-7b0a-425c-a78c-4b07a0100878	J15 Pneumopathies bacteriennes non classees ailleurs		
+e26315df-e7a9-4c52-a991-8606cfee979d	J30 Rhinite allergique et vasomotrice		
+e289dbb2-3e3a-46a7-94ad-c6659c2b3862	D00 Carcinome in situ de la cavite buccale de l'oesophage et de l'estomac		
+e29780aa-3730-4ba4-b3ba-7591e8281436	J35 Maladies chroniques des amygdales et des vegetations adenoides		
+e2a47ded-5f67-4d14-ae69-824f73d84dc0	O73 Retention du placenta et des membranes sans hemorragie		
+e2cf2a07-1c10-4e17-bf1d-45a4452a85ae	Soir		
+e34af8b9-0b04-4637-ae73-60377ebe0e45	A32 Listeriose		
+e3526865-b922-42c9-bede-f7018d488321	I95 Hypotension		
+e362b84d-8ecd-4ef5-80cd-5f2de1af47fe	A50 Syphilis congenitale		
+e39031d1-5526-4f47-bed9-49cdcf6366fa	O01 Mole hydatiforme		
+e3993615-a4f7-4e69-abcc-721957b5c2c5	N13 Uropathie obstructive et par reflux		
+e3f69f74-4ed5-4ed5-8ca5-095f23dc256e	A56 Autres infections a Chlamydia transmises par voie sexuelle		
+e41f8616-15d1-4c61-a0d9-eb6bbc4548d2	C56 Tumeur maligne de l'ovaire		
+e429568f-788c-4a35-8101-476c764e503c	L13 Autres dermatoses bulleuses		
+e457473e-3e01-4120-a09e-d94665ad1f36	D86 Sarcoidose		
+e481f50e-084c-4eb4-9d94-22b65376fe57	J18.9 Pneumopathie sans precision		
+e4b4d59e-bd46-40d7-8996-57a57e7ffde3	O68 Travail et accouchement compliques d'une detresse foetale		
+e51aef7b-e246-4503-8aaf-478a99775ca2	Régime spécial		
+e533ad46-ed8f-44e1-bde2-4b725e65a48c	Q39 Malformations congenitales de l'oesophage		
+e54caadd-667c-4bf1-8b9d-2a5f85191261	H16 Keratite		
+e55584c3-ac3d-4a43-a3e2-98602602159f	Antécédents		3 labels in the sheet, most frequent used (tie: closest to the old name)
+e56083c5-658e-4715-85ce-30cd78e0b13b	Type d'anesthésie prévu		2 labels in the sheet, most frequent used (tie: closest to the old name)
+e5aa333f-e333-4b98-8cf9-e1947c7dab65	I60 Hemorragie sous-arachnoidienne		
+e5b0895f-f128-40db-9ba7-713e5ff98e00	Siège		
+e5b889f4-7bc7-4e9c-ba22-a30a8f18d560	L21 Dermite seborrheique		
+e5da53f3-f12b-42ce-84b4-7d3099034d25	I51 Complications de cardiopathies et maladies cardiaques mal definies		
+e62be2b8-664b-4391-8871-86540fee3219	S52 Fracture de l'avant-bras		
+e686b5c9-4269-4601-a56d-63940b2ae3a9	Moulage de la tête		
+e68f1a46-ef30-4ec7-98a5-653959c8d685	A42 Actinomycose		
+e6a00a88-a2c2-46cc-aefb-aeec09b508fc	M66 Dechirure spontanee de la synoviale et du tendon		
+e6a254c9-d736-40cc-9761-1f013100908b	E87 Autres desequilibres hydro-electrolytiques et acido-basiques		
+e6b541e0-9712-40e4-8e3a-d863c3195301	M33 Dermatopolymyosite		
+e6bde938-8390-4da4-b558-20b67d21a9a3	B21.0 Maladie par VIH a l'origine d'un sarcome de Kaposi		
+e6e98414-0f16-4913-aa32-0595652fd616	S37.0 Lesion traumatique du rein		
+e71fbf0c-d361-42ba-8dfa-22ae3bed33f3	B01 Varicelle		
+e757d994-30e2-452f-9cde-98ccc023758c	Q43.0 Diverticule de Meckel		
+e77d0ca5-44eb-40a6-9589-3dbb6b567dff	S95 Lesion traumatique de vaisseaux sanguins au niveau de la cheville et du pied		
+e7c94114-9e91-4c4f-8771-8a1e7f750479	C01 Tumeur maligne de la base de la langue		
+e7ca6eff-df8a-4643-a24e-a0ee8ed67831	R29 Autres symptomes et signes relatifs aux systemes nerveux et osteo-musculaire		
+e80fdeac-b6f0-4682-b2c5-0b79c8dd2d28	B+		
+e810ef0a-480f-472c-9a0a-f8e070feaab4	2017-F55 Abus de substances n'entranant pas de dependance		
+e828f49d-d47c-4774-94bc-56c60712be88	Appel du médecin (heure)		2 labels in the sheet, most frequent used
+e86a64e2-40e4-443f-a4d3-1d8ec6baa9d8	S89 Lesions traumatiques de la jambe autres et sans precision		
+e89036e2-a677-4801-b08d-143baa9c4e48	Y34 Evenement sans precision intention non determinee		
+e89b302b-3b57-4965-b4c7-67700553a734	F63.0 Jeu pathologique		
+e8f14181-b683-48f1-9ad9-97941d678911	C80 Tumeur maligne de siege non precise		
+e94cdea7-10bf-4526-8cca-7b2f0947312f	Autre accident		
+e95950ad-5eb5-4fbd-9ad8-cc62d606309a	F71 Retard mental moyen		
+e969ebac-25ee-4c2c-a78e-07be05a8cabe	L05 Sinus pilonidal		
+e97f88cb-a37e-42b2-8830-16e75ffe2bf9	Durée de l'anesthésie (min)		
+e97fe72b-28bf-438c-951d-4e0bedea8d0e	O00 Grossesse extra-uterine		2 labels in the sheet, most frequent used (tie: closest to the old name)
+e9baa96b-9706-4560-a60a-12aa8d58a737	J44 Autres maladies pulmonaires obstructives chroniques		
+e9f6dd11-3037-4645-b9c2-bfde3f241fe9	L02 Abces cutane furoncle et anthrax		
+e9fa7532-a9dd-447d-9a32-ef2e3750385b	+	+ : os en contact	kept: shared lab result answer "+" (urine/stool tests in labtests); the sheet label is the partograph moulding legend
+ea06d837-258d-4f4c-9672-4ef749f0b4c8	M17 Gonarthrose [arthrose du genou]		
+ea455fcb-9711-458b-97a8-bf78b966f591	Q37 Fente labio-palatine		
+ea52848f-fa60-4332-8c15-e8fab25cc5e6	J15.9 Pneumopathie bacterienne sans precision		
+eabee410-8cdb-44ed-9739-9ff2d5dbf27f	T81 Complications d'actes a visee diagnostique et therapeutique non classees ailleurs		
+eacef34b-9bb1-4018-afc2-523b62373df7	T63 Effet toxique d'un contact avec un animal venimeux		
+eb44b2cc-48e7-4bbf-9f05-bb5462e8408f	Dihydroartémisinine-Pipéraquine		2 labels in the sheet, most frequent used (tie: closest to the old name)
+eb6494fa-15f2-41a4-bc3c-e2a9dfc0d0ae	K74 Fibrose et cirrhose du foie		
+eb7d7c64-aa03-4c38-8adf-4e69d14b6ebf	Auscultation		
+eb7f83f0-8a21-45d6-a2f8-3e09368f4760	I28 Autres maladies des vaisseaux pulmonaires		
+ebbb9773-ea13-436b-9b82-d3ec0f74315f	H36 Affections retiniennes au cours de maladies classees ailleurs		
+ebcb60c1-6d54-4cea-96a3-9841b1625133	Urine		2 labels in the sheet, most frequent used
+ebcd96fd-99a1-4cc1-9860-79414cbfd0a4	F42 Trouble obsessionnel-compulsif		
+ebd5529c-05f1-4c98-a31a-276dae547989	Position du patient		
+ec123fcc-1edc-4609-8702-631c737aaf04	Q68 Autres anomalies morphologiques congenitales osteo-articulaires et des muscles		
+ec366f87-7a5d-49b7-a3be-85c682f2b962	Q35 Fente palatine		
+ec440175-33e7-4cae-bbb4-a30a9f942279	Entrée : perfusion (ml)		
+ec4595f0-35b1-4eb5-b412-864eca3ac4e5	K58 Syndrome de l'intestin irritable		
+ec67e914-e74e-4831-923e-742bd49e27c7	O71.1 Rupture de l'uterus pendant le travail		
+ecbd5515-a084-4720-ad31-c234761de8b1	K56 Ileus paralytique et occlusion intestinale sans hernie		
+ecbd7b8f-7a9d-4488-bfac-73bc0f3f05b8	2017-F63.3 Tricotyromanie		
+edb0ee08-8d9a-4b92-81ee-36e997837c4a	Allergies connues		
+eddff4e1-f7c1-42b4-9e45-def53489b7cf	Q44 Malformations congenitales de la vesicule biliaire des voies billiaires et du foie		
+ee23564a-30be-4334-9f08-1721bfa012b7	H61 Autres affections de l'oreille externe		
+ee2b4370-0117-479d-a433-5f8e4adbdfd2	Consistance	Col utérin : consistance	sheet spelling fixed; 2 labels in the sheet, most frequent used (tie: closest to the old name)
+ee3bbe55-6b63-479e-8627-f44bb9b740ec	2017-D56.1 Beta-thalassemie		
+ee47af2f-438b-4bf1-b528-26ef24a5c6ea	Lieu des CPN		2 labels in the sheet, most frequent used (tie: closest to the old name)
+eedaa3e7-6468-4a43-a697-f4a0fcbf83b9	2017-Y36 Faits de guerre		
+ef11496e-7ade-4ea2-91ae-5fcc494accd0	Période		
+ef895bae-74f0-4ed0-8b4a-28de1c19aed0	O33 Soins maternels pour disproportion foeto-pelvienne connue ou presumee		
+f025dfd6-1c72-436e-a8ee-f2f8678c94b5	F11 Troubles mentaux et du comportement lies a l'utilisation d'opiaces		
+f03642ad-c396-4948-bc95-4e76880feab8	S04 Lesion traumatique des nerfs craniens		
+f049ea0a-0b92-443a-aab5-74b0a3c98124	Anémie (antécédents)	Anemie	qualified: sheet word 'Anémie' is a French synonym; "Anémie" is the admission-symptom answer (a0a67e27); sheet spelling fixed; 2 labels in the sheet, most frequent used
+f05c6e6b-fbdd-4962-9c4c-c9374bb0753c	M25 Autres affections articulaires non classees ailleurs		
+f0696ec9-a9f4-4df8-b540-68b82e14a46e	G25.0 Tremblement essentiel		
+f06c9a5a-5d3f-44c9-9312-f72655140c51	Anesthésie antérieure		
+f07178df-0149-4839-8d05-c5eb919161b4	Entrée : boisson (ml)		
+f099b5ed-41db-4469-b339-a3c71ee34ce1	S05 Lesion traumatique de l'oeil et de l'orbite		
+f09f6142-cffe-4b94-9135-69f706aac667	N35 Retrecissement uretral		
+f0a1f4eb-ae7d-42c1-a3a0-8e487a1b0629	T74.0 Delaissement et abandon		
+f0a3e139-1a7a-4c3a-a782-730005250b70	D73.2 Splenomegalie congestive chronique		
+f0b8f3cc-bf30-4b90-850e-eec5e640c8ac	Q1		
+f0efeac9-9534-437a-afcb-3890226ac37b	B45.1 Cryptococcose cerebrale		
+f0fcd0af-aebd-4bed-b24a-31cc781aa63e	G35 Sclerose en plaques		
+f1057206-bbe6-4193-bc34-3ed8a691f2ca	BI14 - Créatinine	Créatinine	kept: lab catalogue test (Test); the sheet label is the in-form abbreviation
+f12b5daa-2040-471c-b65e-93bc3bb5451a	O82 Accouchement unique par cesarienne		
+f1ae36a9-e57e-4892-a341-1a0163a44a25	B23.0 Syndrome d'infection aigue par VIH		
+f1d8cb26-eaf8-411a-819c-8f883801c1df	C92 Leucemie myeloide		
+f1f00745-fb23-4566-979e-ef48a658ff81	S91 Plaie ouverte de la cheville et du pied		
+f2135318-a960-40c3-be7d-f8efeb070795	O89 Complications de l'anesthesie au cours de la puerperalite		
+f21fec0e-5788-4de9-99ad-4cc45b9291e9	J42 Bronchite chronique sans precision		
+f2297e8b-255d-432a-9817-a889bfaf4da8	Maladie professionnelle		
+f241a086-f3cd-4223-8e55-2b4dad84ca10	J43.0 Syndrome de MacLeod		
+f27044d7-f795-4206-a4b0-0881c924e7fe	F92 Troubles mixtes des conduites et troubles emotionnels		
+f281d3ae-1a0d-4ed1-9a5e-fdf11461fb15	D75.1 Polycythemie secondaire		
+f28fe49e-e851-4872-8ffe-e4fb801ed976	J98 Autres troubles respiratoires		
+f2a5f2e2-aae7-4b7a-8775-21e34a325cf3	Z74 Difficultes liees a une dependance envers la personne qui donne les soins		
+f2dbee84-a181-4b84-87e3-9e4d77f8ea5e	S13 Luxation entorse et foulure des ligaments au niveau du cou		
+f2ea9285-3a76-49e6-b132-8bcd951c971e	O22 Complications veineuses de la grossesse		
+f30483e3-830b-4235-984b-a0bd52a91200	J96.0 Insuffisance respiratoire aigue		
+f31e7cea-2cf1-4655-8dfe-490dd4bffe92	I83 Varices des membres inferieurs		
+f3218de2-3483-49a9-87da-24da32ec69e5	V99 Accident de transport sans precision		
+f3401215-8c2f-4cf4-acab-9d524fbbf6c6	Examen physique complet		4 labels in the sheet, most frequent used
+f351ce4a-0a4d-4034-bdc7-4c48926b6b76	C45 Mesotheliome		
+f393adc5-e00b-4c2d-bca6-f2493f595ed1	D17 Tumeur lipomateuse benigne		
+f3a45058-b5b8-4502-921c-98179ed1db30	H00 Orgelet et chalazion		
+f3f7ccfc-42b7-417a-b316-5169e02bd8d3	E63.1 Desequilibre alimentaire		
+f431d361-5918-4acf-b3ee-084e34ce121e	R59 Adenopathies		
+f448385e-5c73-4b7e-b40c-7c859cf1cd24	Test de laboratoire		2 labels in the sheet, most frequent used
+f4529719-6578-4baa-8c20-458541530394	Incidents imprévisibles		
+f4e6262b-139c-4d7c-8639-4655c0e1068a	Z60 Difficultes liees a l'environnement social		
+f505811f-1bff-4155-8a06-862410ecbb5a	S70 Lesion traumatique superficielle de la hanche et de la cuisse		
+f5089a3f-6ece-4def-ac9d-443097dab81a	I50.1 Insuffisance ventriculaire gauche		
+f5180a54-3d65-4aac-9014-e29fc267040c	R42 Etourdissements et eblouissements		
+f568fb14-90ce-4820-bbac-7aa1ce65b87b	J17.8 Pneumopathie au cours d'autres maladies classees ailleurs		
+f571d5d7-34cf-4afd-b876-fa618379e561	Liquide amniotique		
+f5a922d8-5224-4ffd-b949-2599349d9ef5	L40 Psoriasis		
+f5f15fa7-a96d-465c-aedc-8f6f21ee6e73	Clinique privée		
+f62d4de5-5683-4495-96eb-beb7f3fd4350	O10 Hypertension preexistante compliquant la grossesse l'accouchement et la puerperalite		
+f648b184-0d59-429c-9faf-455f93865fb9	A63.0 Condylomes ano-genitaux (veneriens)		
+f64ba209-6736-4468-b814-9e3616fe9fcc	H54 Cecite et baisse de la vision		
+f6667c79-6ecf-4fcd-b1f6-9cf70fa316c6	A22 Charbon		
+f66c77d1-d0a0-4172-a994-fa09572f601e	H51 Autres anomalies des mouvements binoculaires		
+f6b7d315-4038-4d88-8acf-4b1c7cd33f75	Intubation difficile prévisible		
+f6cf8dc5-48ad-4c18-8dc4-c2ec9632768e	Infirmier(e) d'anesthésie		
+f6d11017-2812-48c5-b2d1-22b34c0b95db	I61 Hemorragie intracerebrale		
+f6d819ca-0922-45ab-9920-794591370a76	L51 Erytheme polymorphe		
+f70fa570-46d4-45a3-94c7-522491ce8e01	Tube nasal		
+f75fb6a1-948d-4ad1-ad69-33dabd84bfe0	D70 Agranulocytose		
+f7679dce-eb7b-4030-aebe-8809fa3342a3	L03 Phlegmon		
+f76d9a64-d4e2-47c7-80a7-4aaf1444f33c	Z00 Examen general et investigations de sujets ne se plaignant de rien ou pour lesquels aucun diagnostic n'est rapporte		
+f7768cf3-5248-48d6-9d60-780f47b414b6	H46 Nevrite optique		
+f77a04b1-5be8-4683-9aec-6277a7980c5e	S58 Amputation traumatique de l'avant-bras		
+f77bee0c-d373-42ad-bb70-ba27fb4f1fdb	D36 Tumeur benigne de sieges autres et non precises		
+f793e2ee-4e34-4d9a-8c83-a165bc74d869	Référé par le centre de santé		
+f7940053-96de-4605-9210-484b3adec6c1	H57 Autres affections de l'oeil et de ses annexes		
+f7a27b28-cc9b-4e10-b824-d7d2324dc204	24 h		
+f7a56ce1-107f-411d-8b9c-a1a03f90986a	S86 Lesion traumatique de muscles et de tendons au niveau de la jambe		
+f7e96135-986d-450f-8a6a-878e0df559f3	A00 Cholera		
+f7ec245e-e569-4c91-912b-85a6eea35ca5	B80 Oxyurose		
+f7fa09d5-cb2d-4fa7-99c3-82b740196706	R31 Hematurie sans precision		
+f820a1e2-0080-43dd-8529-58bde27e33b7	S17 Ecrasement du cou		
+f83f13c5-2d2f-4dc6-a9d6-8f528ea69704	D33 Tumeur benigne de l'encephale et autres parties du systeme nerveux central		
+f8483e24-6b3f-4291-8068-10f0371ba1e1	I80 Phlebite et thrombophlebite		
+f86e0d9d-60ba-4a2a-8af1-517c05d4bba7	Suivi réalisé par (nom du prestataire)		
+f89a2e83-ecbd-48f0-a117-75e8b19201de	H50 Autres strabismes		
+f8a121b0-b276-44ba-90c2-2982c92c9221	Post-procédure (interne)		
+f8bcceee-9377-4785-8eef-77318d6b2abf	À jeun depuis		
+f8c3c8ff-e4f3-41bd-9507-c1f6aedb4a95	Antécédents chirurgicaux		2 labels in the sheet, most frequent used (tie: closest to the old name)
+f8f6ecd2-388a-46f6-a427-dcc9a201782c	S65 Lesion traumatique de vaisseaux sanguins au niveau du poignet et de la main		
+f8f990f9-6249-4451-abc7-396733830011	TA bras gauche (mmHg)		2 labels in the sheet, most frequent used
+f8fbea1a-8579-4733-9add-59dfa2adc453	Urgences	Urgence	2 labels in the sheet, most frequent used (tie: closest to the old name)
+f9022461-c5fd-4fcb-a12f-075471cb5e8c	≤3 mois		
+f9237cf4-c54e-40d0-8310-a0c9236e7232	L95 Vascularite [angeite] limitee a la peau non classee ailleurs		
+f98520df-4d99-418c-b7ac-f33c155b6a1e	H47 Autres affections du nerf et des voies optiques		
+f9a432dd-c781-40a0-8de8-509cac27fdfe	R69 Causes inconnues et non precisees de morbidite		
+f9f090e3-d0d6-4213-ae9d-5affee80ec4e	J11.8 Grippe avec d'autres manifestations virus non identifie		
+fa9a8aac-a572-4b46-ae1e-6af8a2c53b44	L42 Pityriasis rose de Gibert		
+faa2321c-c4c3-481a-83f1-ab0b15175593	R00 Anomalies du rythme cardiaque		
+fb2a9771-4133-4e99-acd1-baf8fd69eb95	E34.3 Insuffisance staturale non classee ailleurs		
+fb3f13ce-b041-4bce-8ea4-aeb94c00a8c5	Doses TPI		2 labels in the sheet, most frequent used
+fb684dcf-7583-4821-bf51-f11b61c39732	D75 Autres maladies du sang et des organes hematopoietiques		
+fb784202-e7af-4db0-9322-374057180379	P57 Ictere nucleaire		
+fb7c352c-299e-4ea6-949e-592ad94f5119	D56 Thalassemie		
+fb8b1b45-6e51-4b4f-91dc-e2e82cd7de15	T25 Brulure et corrosion de la cheville et du pied		
+fb96b833-efbb-422d-8910-99a8efc8abc7	R94 Resultats anormaux d'explorations fonctionnelles		
+fba01855-c07e-44b5-bdfb-91b0ad4963a3	C93 Leucemie monocytaire		
+fbe78ab5-3591-4d1e-bb53-7e94857d98b3	Référé par d'autres hôpitaux		
+fc01e796-cd07-4bd6-972e-1fc888a5328d	R63 Symptomes et signes relatifs a l'absorption d'aliments et de liquides		
+fc4877d6-4976-4e2a-8dca-6e4abbb30bc9	Anomalies placentaires		
+fca0b766-0e63-459b-bae1-085935c0bbb3	R90 Resultats anormaux d'imagerie diagnostique du systeme nerveux central		
+fcd930bc-2c35-4370-8cd6-c48364a52783	Léthargie		
+fd045f3f-a76d-4397-bac6-5b3d11ee1373	K92.0 Hematemese		
+fd0fbfca-a689-425e-80e2-49d419d19edb	L01 Impetigo		
+fd251715-9c28-4d21-b217-2a6c30a59d31	G58 Autres mononevrites		
+fd386991-e4f1-41f5-9a0e-781b0cf612e0	E89 Anomalies endocriniennes et metaboliques apres un acte a visee diagnostique et therapeutique non classees ailleurs		
+fd4d6f57-4709-44cd-8b91-8ed55710fd8d	Réagit à la douleur		
+fda9fb65-e89b-46c7-87f6-99e93c6fb482	I78 Maladies des capillaires		
+fdbf5e45-85af-48bf-adf6-f9390ec9c956	T87 Complications propres a une reimplantation et une amputation		
+fdde8fc7-b854-49ab-8b01-08ba156a779e	Traité avec des antibiotiques	Traité avec des antibiotiques ?	2 labels in the sheet, most frequent used (tie: closest to the old name)
+fe6d8d18-3bb5-4705-bd87-dca2e7f77d8c	B35 Dermatophytose		
+fe9c7f24-aeb1-4388-bc6f-b76806d49249	A39.5 Cardite a meningocoques		
+fed68a32-1c52-4c2a-a446-e8cd30b440e7	J45 Asthme		2 labels in the sheet, most frequent used (tie: closest to the old name)
+feedb71a-bdce-4ecb-9a9e-82af634efa2b	O64 Dystocie due a une position et une presentation anormales du foetus		
+ff079040-2bd0-4cd8-b453-1af9335e6b28	N90 Autres affections non inflammatoires de la vulve et du perinee		
+ff42d2d6-daee-429d-a31b-49338599a793	Vaccin HBV administré dans les 24h		
+ffab6393-c016-4a35-b86a-dfef9c0c58c2	B37.3 Candidose de la vulve et du vagin		
+ffcbbf6d-b2e8-4895-95ff-d6f7bca0a540	B08.5 Pharyngite vesiculaire due a un enterovirus		
+ffd3a0b5-6f86-4129-ae36-122361700b20	S74 Lesion traumatique de nerfs au niveau de la hanche et de la cuisse		
+ffedbeac-c77c-466b-af8c-f7a4d542fe29	D32 Tumeur benigne des meninges		
+ffeefdf4-fae7-465c-9167-cbbe25f80914	I50.0 Insuffisance cardiaque congestive		
