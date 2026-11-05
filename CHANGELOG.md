@@ -507,6 +507,12 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   that would overwrite prices or a product row with an empty price. (#439)
 
 ### Fixed
+- **Midwives and nurses can open a patient chart without a 403 on program enrolments.** The
+  chart's Programs widget reads `programenrollment`, which needs `Get Patient Programs`; only
+  Doctor and the lab, pharmacy and imaging roles held it. It is now in "Register patients", which
+  Help Nurse, Nurse, Midwife, Ophtalmologist, Dentist, Anesthesist and Doctor inherit. It is read
+  only: enrolling, editing and removing stay with Doctor. The build now fails if a Keycloak role
+  that can read patients cannot read their program enrolments. (#517)
 - **Cervical dilatation is a whole number from 1 to 10 cm** in the partograph reading, the
   maternity consultation and the childbirth record, as the product owner confirmed on 4 Nov 2026.
   4.5 is refused ("Decimal values are not allowed"), as are 0 and 11. This replaces the
