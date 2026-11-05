@@ -24,7 +24,12 @@
      read-only (Carbon's TextInput drops `invalid` on a read-only input, so the save is
      refused with no message: UAT, 4 Nov 2026).
 
-  3. Every question and answer concept has a French locale-preferred name. The form's
+  3. A member of an obsGroup that has a hide rule repeats that rule in its own. The engine
+     flattens the members into copies and evaluates each one's own rule, so a member without
+     it is shown and saved while its group is hidden: a foetus 3 answer on a twin pregnancy.
+     The fixed foetus and newborn slots carry the slot rule on the group and every member
+     (#496, #512).
+  4. Every question and answer concept has a French locale-preferred name. The form's
      labels are translated, but wherever OpenMRS shows the concept itself (the encounter's
      observation list, results, summaries) a French session falls back to the English name
      when the concept has no French one (#475). The names come from the OCL exports in
@@ -114,6 +119,7 @@ List<Map> questionsOf(List questions) {
 
 int maleOnlyPages = 0
 int decimalQuestions = 0
+int groupMembersChecked = 0
 Map<String, String> noFrenchName = [:]   // concept -> first form and question that uses it
 Set<String> namedConcepts = [] as Set
 List<File> formFiles = filesIn(formsDir, '.json')
@@ -124,6 +130,16 @@ formFiles.each { File file ->
     def form = slurper.parse(file, 'UTF-8')
     form.pages?.each { page ->
         List<Map> questions = questionsOf(page.sections?.collectMany { it.questions ?: [] })
+
+        questions.findAll { it.questions && squash(it.hide?.hideWhenExpression) }.each { group ->
+            String groupRule = squash(group.hide.hideWhenExpression)
+            group.questions.findAll { !squash(it.hide?.hideWhenExpression).contains(groupRule) }.each { member ->
+                faults << ("${file.name}: ${member.id} is in ${group.id}, hidden when " +
+                        "${group.hide.hideWhenExpression}, but its own hide rule does not repeat that, so it " +
+                        "shows and saves while the group is hidden (#512)")
+            }
+            groupMembersChecked += group.questions.size()
+        }
 
         questions.each { q ->
             def options = q.questionOptions ?: [:]
@@ -173,5 +189,5 @@ if (faults) {
     throw new IllegalStateException("O3 forms check failed:\n  - " + faults.join('\n  - '))
 }
 log.info("Forms OK: ${decimalQuestions} decimal number questions on concepts that allow decimals, " +
-        "${maleOnlyPages} male-only pages that refuse to save, " +
-        "${namedConcepts.size()} question and answer concepts with a French name")
+        "${maleOnlyPages} male-only pages that refuse to save, ${groupMembersChecked} members of hidden-by-rule " +
+        "groups that repeat the group's rule, ${namedConcepts.size()} question and answer concepts with a French name")
