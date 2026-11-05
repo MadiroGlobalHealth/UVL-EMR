@@ -1,6 +1,7 @@
 {
   "uuid": "ff21ef37-ac18-4d43-9396-b7f7e4a36f32",
   "form": "UVL Contact Form",
+  "form_name_translation": "Fiche d'enregistrement d'un contact",
   "description": "Fr Translations for 'UVL Contact Form'",
   "language": "fr",
   "translations": {
