@@ -596,6 +596,17 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   uvl-vital-signs 20261104 and uvl-labtests 20261008. The new uvl-labtests export also carries
   the "+", "++" and "+++" result answers at the version the forms export already ships, so the two
   exports no longer disagree on them. (#513)
+- **Lab-test code mappings import again.** 68 mappings of the lab-test concepts to external codes
+  (SNOMED CT, AMPATH, PIH, SNOMED-MVP, IMO) had lost their code system in a May 2025 OCL import.
+  The OCL loader dropped each one ("ConceptSource.name" is null), so the lab tests had no
+  SNOMED CT or other external codes in OpenMRS. Each mapping gets back the code system CIEL gives
+  for the same code. Three codes CIEL no longer maps are retired. The "Unknown" answer of
+  "Bacteria in urine test" pointed to an MSF concept that no export carries, so it never
+  imported; it now uses the uvl-ciel "Unknown" concept. Lab results and orders are unchanged.
+  OCL: uvl-ciel 20261105-1; the uvl-labtests 20261105-2 export replaces 20261105. The build now
+  fails when an OCL export has a mapping with no target (`scripts/check-ampath-forms.groovy`).
+  The drug entry and diagnosis exports still carry 128 such mappings from the same import,
+  allowed by count until they are re-exported. (#520)
 - **A maternity form can no longer be saved for a male patient.** The seven maternity forms show
   only a "not applicable" note to a male patient, but Save still created an empty encounter that
   counted in encounter-based reports. The page now says "Ce formulaire concerne uniquement les

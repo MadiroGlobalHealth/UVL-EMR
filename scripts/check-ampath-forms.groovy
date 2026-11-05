@@ -4,7 +4,7 @@
   Run from sites/mugamba/pom.xml at prepare-package, against the assembled
   initializer_config, so it sees every layer (distro, country, site).
 
-  Five checks, each for a fault that passes every review of the form JSON and shows only
+  Six checks, each for a fault that passes every review of the form JSON and shows only
   when someone saves or reads the form:
 
   1. A number question that accepts decimals asks a concept that allows them. The form
@@ -41,6 +41,12 @@
      OCL must carry; a name edited in OCL, or an export that brings back an old version, fails
      here. The file lists the exceptions too (a qualified name where the sheet word is already
      another concept's name, a lab catalogue name kept), each with its note (#513).
+  6. Every mapping in the OCL exports says where it points: a target concept, or a target source.
+     A mapping with neither makes the OCL loader log "not-null property references a null or
+     transient value : org.openmrs.ConceptSource.name" and drop it, and nothing else fails; 68
+     lab-test mappings were dropped that way since May 2025 (#520). Exports that still carry
+     such mappings and have not been re-exported since are listed in knownMappingFaults, with
+     their count, so a new fault in them still fails.
 */
 
 import groovy.io.FileType
@@ -99,10 +105,25 @@ Map<String, Boolean> allowDecimal = [:]
 Map<String, Boolean> hasFrenchName = [:]
 Map<String, Long> frenchNameVersion = [:]
 Map<String, String> frenchName = [:]
+// Exports re-exported after #520 must have none; these older ones carry the May 2025 faults,
+// already corrected in OCL, until their next export.
+Map<String, Integer> knownMappingFaults = ['UVL_drug_entry_20261023-1.zip': 126, 'UVL_dx_v4.zip': 2]
+List<String> mappingFaults = []
+int mappingsChecked = 0
 filesIn(oclDir, '.zip').each { File zip ->
     new ZipFile(zip).withCloseable { ZipFile zf ->
         zf.entries().findAll { it.name.endsWith('.json') }.each { entry ->
             def export = slurper.parse(zf.getInputStream(entry), 'UTF-8')
+            List noTarget = (export.mappings ?: []).findAll { mapping ->
+                !isTrue(mapping.retired) && !mapping.to_concept_url && !mapping.to_source_url && !mapping.to_source_name
+            }
+            mappingsChecked += (export.mappings ?: []).size()
+            if (noTarget.size() != knownMappingFaults.getOrDefault(zip.name, 0)) {
+                mappingFaults << ("${zip.name}: ${noTarget.size()} mapping(s) with no target concept and no target " +
+                        "source (e.g. ${noTarget.take(3).collect { it.url }}), which the OCL loader drops. Give each " +
+                        "its target source in OCL (SNOMED-CT, AMPATH, ...) or retire it, and re-export (#520)" +
+                        (knownMappingFaults.containsKey(zip.name) ? "; then update knownMappingFaults" : ""))
+            }
             export.concepts?.each { concept ->
                 if (concept.datatype == 'Numeric' && concept.external_id) {
                     allowDecimal[concept.external_id] = isTrue(concept.extras?.allow_decimal)
@@ -215,10 +236,13 @@ sheetName.each { String concept, String want ->
     }
 }
 
+faults.addAll(mappingFaults)
+
 if (faults) {
     throw new IllegalStateException("O3 forms check failed:\n  - " + faults.join('\n  - '))
 }
 log.info("Forms OK: ${decimalQuestions} decimal number questions on concepts that allow decimals, " +
         "${maleOnlyPages} male-only pages that refuse to save, ${groupMembersChecked} members of hidden-by-rule " +
         "groups that repeat the group's rule, ${namedConcepts.size()} question and answer concepts with a French name, " +
-        "${sheetName.size()} French names as the requirements sheet gives them")
+        "${sheetName.size()} French names as the requirements sheet gives them, " +
+        "${mappingsChecked} OCL mappings with a target")
