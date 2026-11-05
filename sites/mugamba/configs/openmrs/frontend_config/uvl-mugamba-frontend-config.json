@@ -330,7 +330,13 @@
     },
     "daysDurationUnit": {
       "uuid": "7923cbfd-79c9-4155-8897-cbf629f4c1bc",
-      "display": "Days"
+      "display": "Jours"
+    },
+    "durationUnitsDaysMap": {
+      "7923cbfd-79c9-4155-8897-cbf629f4c1bc": 1,
+      "5f20a893-6e84-4713-a9f6-5a189e99e98f": 7,
+      "088de917-ed82-4088-869d-ea8eaa844a64": 30,
+      "ed7bb169-ea2a-4bba-86e1-00a47297e5cf": 365
     },
     "Translation overrides": {
       "en": {
@@ -458,7 +464,13 @@
       "allowModifyingPrescription": false
     },
     "Translation overrides": {
+      "en": {
+        "stockDispense": "Batch to dispense (required)",
+        "selectStockDispense": "Pick a batch to enable Dispense"
+      },
       "fr": {
+        "stockDispense": "Lot à délivrer (obligatoire)",
+        "selectStockDispense": "Choisir un lot pour pouvoir délivrer",
         "duplicatePrescriptionTitle": "Délivrance potentiellement en double détectée",
         "duplicatePrescriptionMessageNoPrevious": "Aucune délivrance précédente n'a été trouvée.",
         "duplicateDispenseError": "Erreur lors de la délivrance du médicament",
