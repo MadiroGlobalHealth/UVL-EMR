@@ -620,6 +620,20 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   gets the French synonyms "Paludisme - frottis" and "Goutte épaisse"; its displayed name and the
   Odoo catalogue name are unchanged. OCL: uvl-ciel 20261105-2, uvl-custom 20261105-1; the
   uvl-labtests 20261105-5 export replaces 20261105-2. (#532)
+- **A full OCL import is cleaner.** When OpenMRS imports every OCL export again (a fresh install, or
+  configuration checksums cleared after a migration), the drug entry and IPD exports logged 133
+  failures (127 drug-entry mappings, 5 IPD mappings and 1 IPD concept). The 126 drug-entry mappings from the May 2025 import get back their code system
+  (SNOMED CT, UCUM, FDA and HL7 routes, NCI, AMPATH, PIH), and 4 codes CIEL no longer maps are
+  retired. "Medication frequency" lists an answer, "One time STAT", that is a CIEL concept no export
+  carries, so that mapping is retired: order frequencies come from their own configuration and are
+  unchanged. The IPD "Inpatient patient disposition" question had its own copy of "Internal
+  facility transfer/referral", whose English name clashed with the concept the consultation forms
+  use. It now offers that same concept ("Transfert interne"). OCL: uvl-ciel 20261105-3, uvl-custom
+  20261105-2; `UVL_drug_entry_20261105` and `UVL_ipd_20261105-1` replace `UVL_drug_entry_20261023-1`
+  and `UVL_ipd_v1_renamed`. Still failing on a full import, because their OCL collections no longer
+  match what we ship: the procedures export (GO302 and GO108, older than the forms export), the
+  drugs export (a retired Chlorpheniramine whose name id another concept has), one immunization
+  answer, two diagnosis mappings and one mapping in the OCL demo queue export. (#533)
 - **A maternity form can no longer be saved for a male patient.** The seven maternity forms show
   only a "not applicable" note to a male patient, but Save still created an empty encounter that
   counted in encounter-based reports. The page now says "Ce formulaire concerne uniquement les
