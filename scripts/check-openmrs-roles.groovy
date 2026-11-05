@@ -50,6 +50,14 @@
      Observations`. Editing a consultation stays allowed. Note that core voids an
      encounter under `Edit Encounters`, and the patient chart shows its delete action
      to whoever may edit the encounter, so this check alone does not hide the action.
+
+  8. A Keycloak role that may open a patient chart (`Get Patients`) can also read the
+     patient's program enrolments (`Get Patient Programs`). The chart's Programs widget
+     loads GET programenrollment?patient=..., which core guards with Get Patient Programs
+     (ProgramWorkflowService.getPatientPrograms), so without it every chart load returns a
+     403 for that role (#517, Midwife on UAT 2026-11-05). Until #517 only Doctor and the
+     lab, pharmacy and imaging roles held it; Register patients, Help Nurse, Nurse, Midwife
+     and every role built on Nurse did not.
 */
 
 import groovy.json.JsonSlurper
@@ -66,6 +74,8 @@ List<String> userAdminPrivileges = ['Add Users', 'Edit Users', 'Edit User Passwo
         'Purge Users', 'Manage Roles', 'Manage Privileges', 'Assign System Developer Role']
 List<String> deletePrivileges = ['Delete Encounters', 'Purge Encounters', 'Delete Visits', 'Purge Visits',
         'Delete Observations', 'Purge Observations']
+String openChart = 'Get Patients'
+String readEnrolments = 'Get Patient Programs'
 
 File distroConfigs = new File(project.build.directory,
         "${project.artifactId}-${project.version}/distro/configs")
@@ -208,6 +218,10 @@ if (realmFile.isFile()) {
                 problems << "${definedIn[r.name]}: role '${r.name}' can delete consultations through " +
                         "${deletes.collect { "'${it}'" }.join(', ')} (directly or through an inherited role); " +
                         "only System Developer may"
+            }
+            if (privileges.contains(openChart) && !privileges.contains(readEnrolments)) {
+                problems << "${definedIn[r.name]}: role '${r.name}' has '${openChart}' but not " +
+                        "'${readEnrolments}'; the patient chart's program enrolments would return 403"
             }
         }
     }
