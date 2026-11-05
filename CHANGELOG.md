@@ -541,6 +541,15 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   that would overwrite prices or a product row with an empty price. (#439)
 
 ### Fixed
+- **The Orthanc bridge no longer piles up failed patient events.** Its database watcher sends
+  every change to `patient`, `person_name`, `person_address` and `patient_identifier` to
+  `direct:orthanc-event-listener`, which had no consumer, so each patient edit failed with "No
+  consumers available" and stayed in `openmrs_eip_mgt_orthanc.sender_retry_queue`, retried every
+  30 minutes for ever (305 rows on UAT on 2026-11-06, 576 on the old production host on
+  2026-10-23). The radiology flow polls OpenMRS and Orthanc on its own schedule and needs none of
+  these events, so the bridge now acknowledges them and logs them at DEBUG only. Bridge jar from
+  eip-openmrs-orthanc `63cfc1c` (jnsereko fork, on `11a85b6`); only the new route class differs
+  from the previous jar. Existing rows: see deploy note 17. (#460)
 - **A patient chart opened by direct link no longer stays blank for several seconds.** The page
   asked for `importmap.json` and `routes.registry.json` under the chart's own address
   (`/openmrs/spa/patient/<uuid>/chart/importmap.json`), got a 404 and paused 4–9 s before
@@ -788,6 +797,22 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
     `product_variant/uvl-drugs-issue455.csv`). Stock items now count in pack units
     (Flacon, Ampoule...) while many prescriptions are written in millilitres or milligrams: before
     stock deduction goes on (note 13), the pharmacists must know to dispense in the pack unit.
+17. **#460, Orthanc bridge retry rows:** the bridge's retry pass (2 minutes after start, then
+    every 30 minutes) now delivers the old rows and removes them itself. To clear them at once, or
+    if any are left an hour after the deploy, back up the table and delete only the rows of this
+    fault, in the `mysql` container:
+    ```sql
+    -- backup first, from the host:
+    -- docker exec <mysql> sh -c 'mysqldump -uroot -p"$MYSQL_ROOT_PASSWORD" openmrs_eip_mgt_orthanc sender_retry_queue' > sender_retry_queue-orthanc-$(date +%F).sql
+    SELECT COUNT(*) FROM openmrs_eip_mgt_orthanc.sender_retry_queue
+     WHERE destination = 'direct:orthanc-event-listener'
+       AND exception_type = 'org.apache.camel.component.direct.DirectConsumerNotAvailableException';
+    DELETE FROM openmrs_eip_mgt_orthanc.sender_retry_queue
+     WHERE destination = 'direct:orthanc-event-listener'
+       AND exception_type = 'org.apache.camel.component.direct.DirectConsumerNotAvailableException';
+    ```
+    Then check that no new `No consumers available on endpoint: direct://orthanc-event-listener`
+    appears in the `eip-openmrs-orthanc` log after a patient is edited.
 
 ### Known issues
 - **Clinical roles still see "Supprimer une consultation".** The patient chart shows the delete
