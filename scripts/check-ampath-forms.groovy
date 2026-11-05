@@ -4,8 +4,8 @@
   Run from sites/mugamba/pom.xml at prepare-package, against the assembled
   initializer_config, so it sees every layer (distro, country, site).
 
-  Two checks, each for a fault that passes every review of the form JSON and shows only
-  when someone saves:
+  Three checks, each for a fault that passes every review of the form JSON and shows only
+  when someone saves or reads the form:
 
   1. A number question that accepts decimals asks a concept that allows them. The form
      engine accepts 4.5 when the question has no disallowDecimals, but openmrs-core then
@@ -29,6 +29,11 @@
      it is shown and saved while its group is hidden: a foetus 3 answer on a twin pregnancy.
      The fixed foetus and newborn slots carry the slot rule on the group and every member
      (#496, #512).
+  4. Every question and answer concept has a French locale-preferred name. The form's
+     labels are translated, but wherever OpenMRS shows the concept itself (the encounter's
+     observation list, results, summaries) a French session falls back to the English name
+     when the concept has no French one (#475). The names come from the OCL exports in
+     ocl/; a concept that no export defines (e.g. a CIEL:nnn reference) is not checked.
 */
 
 import groovy.io.FileType
@@ -65,8 +70,26 @@ String squash(def expression) {
     return expression == null ? '' : expression.toString().replaceAll('\\s+', '').replace('"', "'")
 }
 
-// external_id -> allow_decimal of every Numeric concept in the OCL exports
+// A name OpenMRS can show as the French display name: preferred, and not a short name or index term.
+boolean isFrenchPreferred(def name) {
+    String type = (name.name_type ?: '').toString().toUpperCase().replaceAll('[\\s_-]', '')
+    return name.locale == 'fr' && isTrue(name.locale_preferred) && !(type in ['SHORT', 'INDEXTERM'])
+}
+
+// The concept version id is the last segment of version_url (.../concepts/<id>/<version>/);
+// the export's own `version` field sometimes repeats the concept id instead.
+long versionOf(def concept) {
+    List<String> parts = (concept.version_url ?: '').toString().tokenize('/')
+    String v = parts ? parts[-1] : ''
+    return v.isLong() ? v.toLong() : 0L
+}
+
+// external_id -> allow_decimal of every Numeric concept in the OCL exports, and
+// external_id -> whether the concept has a French locale-preferred name. A concept can sit in
+// two exports at different versions; the French name is judged on the newest one.
 Map<String, Boolean> allowDecimal = [:]
+Map<String, Boolean> hasFrenchName = [:]
+Map<String, Long> frenchNameVersion = [:]
 filesIn(oclDir, '.zip').each { File zip ->
     new ZipFile(zip).withCloseable { ZipFile zf ->
         zf.entries().findAll { it.name.endsWith('.json') }.each { entry ->
@@ -74,6 +97,10 @@ filesIn(oclDir, '.zip').each { File zip ->
             export.concepts?.each { concept ->
                 if (concept.datatype == 'Numeric' && concept.external_id) {
                     allowDecimal[concept.external_id] = isTrue(concept.extras?.allow_decimal)
+                }
+                if (concept.external_id && versionOf(concept) >= frenchNameVersion.getOrDefault(concept.external_id, -1L)) {
+                    frenchNameVersion[concept.external_id] = versionOf(concept)
+                    hasFrenchName[concept.external_id] = concept.names?.any { isFrenchPreferred(it) } ?: false
                 }
             }
         }
@@ -93,6 +120,8 @@ List<Map> questionsOf(List questions) {
 int maleOnlyPages = 0
 int decimalQuestions = 0
 int groupMembersChecked = 0
+Map<String, String> noFrenchName = [:]   // concept -> first form and question that uses it
+Set<String> namedConcepts = [] as Set
 List<File> formFiles = filesIn(formsDir, '.json')
 if (!formFiles) {
     throw new IllegalStateException("No form under ${formsDir}: the check would pass without checking anything")
@@ -123,6 +152,13 @@ formFiles.each { File file ->
                             "disallowDecimals, or allow decimals on the concept in OCL (#488)")
                 }
             }
+
+            ([options.concept] + (options.answers ?: []).collect { it.concept }).each { String concept ->
+                if (concept && hasFrenchName.containsKey(concept)) {
+                    namedConcepts << concept
+                    if (!hasFrenchName[concept]) noFrenchName.putIfAbsent(concept, "${file.name}: ${q.id}")
+                }
+            }
         }
 
         if (squash(page.hide?.hideWhenExpression) in ["sex!=='M'", "sex!='M'"]) {
@@ -144,9 +180,14 @@ formFiles.each { File file ->
     }
 }
 
+noFrenchName.each { String concept, String where ->
+    faults << ("${where}: concept ${concept} has no French locale-preferred name in the OCL export, so a " +
+            "French session shows it in English. Add a French name marked locale preferred in OCL (#475)")
+}
+
 if (faults) {
-    throw new IllegalStateException("O3 forms would accept a save they must refuse:\n  - " + faults.join('\n  - '))
+    throw new IllegalStateException("O3 forms check failed:\n  - " + faults.join('\n  - '))
 }
 log.info("Forms OK: ${decimalQuestions} decimal number questions on concepts that allow decimals, " +
         "${maleOnlyPages} male-only pages that refuse to save, ${groupMembersChecked} members of hidden-by-rule " +
-        "groups that repeat the group's rule")
+        "groups that repeat the group's rule, ${namedConcepts.size()} question and answer concepts with a French name")
