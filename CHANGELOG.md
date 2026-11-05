@@ -437,6 +437,12 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   in the new unit. (#455)
 
 ### Changed
+- **Doctor no longer holds `Delete Encounters`, `Delete Visits` or `Delete Observations`.** The
+  product owner's decision: only administrators delete a saved consultation; clinical roles view and
+  edit it. Initializer replaces a role's privileges from the CSV, so existing databases lose them at
+  the next start. The build now fails if a Keycloak role other than System Developer holds an
+  encounter, visit or observation delete or purge privilege. See Known issues: this alone doesn't
+  hide the chart's delete action. (#510)
 - **Gynaecology Ultrasound: presentation, amniotic fluid and placenta are asked per fetus.** For
   twins or triplets each baby can have its own presentation, sac and placenta, so the three
   questions are now in each fetus block (Fetus 1, 2, 3) and shown with it; a single pregnancy
@@ -658,6 +664,9 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
     stock deduction goes on (note 13), the pharmacists must know to dispense in the pack unit.
 
 ### Known issues
+- **Clinical roles still see "Supprimer une consultation".** The patient chart shows the delete
+  action to whoever may edit the encounter, and core voids an encounter under `Edit Encounters`;
+  neither checks `Delete Encounters`. Removing the action needs a chart or server change. (#510)
 - On the stock app's new user role scope form, `Inventory Administrator` gets a 403 from
   `GET /ws/rest/v1/role`, which needs `Manage Roles`. The form doesn't use the answer: its Role list
   shows the chosen user's own roles, so `Manage Roles` isn't granted. (#438)

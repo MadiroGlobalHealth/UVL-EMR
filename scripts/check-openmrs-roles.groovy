@@ -41,6 +41,15 @@
      `Assign System Developer Role`. Until #502 `Add Users` and `Edit Users` sat in
      "Register patients", which every clinical role inherits. Reading users (`Get Users`,
      `View Users`) stays allowed: provider and orderer names are read through it.
+
+  7. Only administrators delete a saved consultation (#510). No Keycloak role but System
+     Developer may hold, directly or through an inherited role, `Delete Encounters`,
+     `Purge Encounters`, `Delete Visits` (VisitService.voidVisit, the chart's delete
+     visit button), `Purge Visits`, `Delete Observations` or `Purge Observations`.
+     Until #510 Doctor held `Delete Encounters`, `Delete Visits` and `Delete
+     Observations`. Editing a consultation stays allowed. Note that core voids an
+     encounter under `Edit Encounters`, and the patient chart shows its delete action
+     to whoever may edit the encounter, so this check alone does not hide the action.
 */
 
 import groovy.json.JsonSlurper
@@ -55,6 +64,8 @@ List<String> dispensingPrivileges = ['Edit Medication Dispense', 'Task: dispensi
         'Task: stockmanagement.stockItems.dispense']
 List<String> userAdminPrivileges = ['Add Users', 'Edit Users', 'Edit User Passwords', 'Delete Users',
         'Purge Users', 'Manage Roles', 'Manage Privileges', 'Assign System Developer Role']
+List<String> deletePrivileges = ['Delete Encounters', 'Purge Encounters', 'Delete Visits', 'Purge Visits',
+        'Delete Observations', 'Purge Observations']
 
 File distroConfigs = new File(project.build.directory,
         "${project.artifactId}-${project.version}/distro/configs")
@@ -190,6 +201,12 @@ if (realmFile.isFile()) {
             if (userAdmin) {
                 problems << "${definedIn[r.name]}: role '${r.name}' can manage user accounts through " +
                         "${userAdmin.collect { "'${it}'" }.join(', ')} (directly or through an inherited role); " +
+                        "only System Developer may"
+            }
+            List<String> deletes = deletePrivileges.findAll { privileges.contains(it) }
+            if (deletes) {
+                problems << "${definedIn[r.name]}: role '${r.name}' can delete consultations through " +
+                        "${deletes.collect { "'${it}'" }.join(', ')} (directly or through an inherited role); " +
                         "only System Developer may"
             }
         }
