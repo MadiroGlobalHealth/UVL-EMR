@@ -1,6 +1,7 @@
 {
   "uuid": "b6b309e8-1206-4f29-b346-711fec88570e",
   "form": "UVL Discharge Summary Form",
+  "form_name_translation": "Synthèse de sortie d'hospitalisation",
   "description": "Fr Translations for 'UVL Discharge Summary Form'",
   "language": "fr",
   "translations": {
