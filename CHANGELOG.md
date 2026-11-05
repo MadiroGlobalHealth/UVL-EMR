@@ -507,6 +507,14 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   that would overwrite prices or a product row with an empty price. (#439)
 
 ### Fixed
+- **A patient chart opened by direct link no longer stays blank for several seconds.** The page
+  asked for `importmap.json` and `routes.registry.json` under the chart's own address
+  (`/openmrs/spa/patient/<uuid>/chart/importmap.json`), got a 404 and paused 4–9 s before
+  recovering. The frontend build now writes both as `$SPA_PATH/...`, as the OpenMRS reference
+  application does, and the frontend container resolves that to `/openmrs/spa/...` at start-up.
+  The distro build fails if an Ozone update changes the build command and the rewrite stops
+  applying. The slow opening of the childbirth record (~14 s) is a separate cause and stays open.
+  (#519)
 - **Midwives and nurses can open a patient chart without a 403 on program enrolments.** The
   chart's Programs widget reads `programenrollment`, which needs `Get Patient Programs`; only
   Doctor and the lab, pharmacy and imaging roles held it. It is now in "Register patients", which
