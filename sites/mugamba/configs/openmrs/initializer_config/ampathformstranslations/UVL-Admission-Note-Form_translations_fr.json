@@ -1,6 +1,7 @@
 {
   "uuid": "06be5166-c56e-4b52-9ed2-3b18f9b640dd",
   "form": "UVL Admission Note Form",
+  "form_name_translation": "Fiche d'admission en hospitalisation",
   "description": "Fr Translations for 'UVL Admission Note Form'",
   "language": "fr",
   "translations": {
