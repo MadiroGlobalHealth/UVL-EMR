@@ -541,6 +541,17 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   that would overwrite prices or a product row with an empty price. (#439)
 
 ### Fixed
+- **Form validation messages follow the session language, and a number limit says "at most".**
+  The form engine wrote "Field is mandatory", "Decimal values are not allowed for this field",
+  "Value must be lower than 3" and the text-length and future-date messages in English whatever
+  the language, and configuration could not reach them. They now go through the translations of
+  `@openmrs/esm-form-engine-app`, so the French texts come from the frontend config's
+  `Translation overrides`. A number limit is allowed, so the range messages now read "Value must
+  be at most {{max}}" / "at least {{min}}" (« La valeur doit être au plus 3 »), for every number
+  field with a `min` or `max`, not only the newborn count. `@openmrs/esm-form-engine-app` is now a
+  patched build of 13.0.2-pre.12863 (`13.0.2-pre.12863.uvl.1`, in
+  `distro/frontend/openmrs-esm-form-engine-app`), until openmrs/openmrs-esm-form-engine-lib#856
+  and openmrs/openmrs-esm-patient-chart#3860 are released. (#499, #500)
 - **A patient chart opened by direct link no longer stays blank for several seconds.** The page
   asked for `importmap.json` and `routes.registry.json` under the chart's own address
   (`/openmrs/spa/patient/<uuid>/chart/importmap.json`), got a 404 and paused 4–9 s before

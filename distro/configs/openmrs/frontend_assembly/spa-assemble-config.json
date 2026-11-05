@@ -26,7 +26,7 @@
     "@openmrs/esm-patient-notes-app": "13.0.2-pre.12863",
     "@openmrs/esm-appointments-app": "12.1.1",
     "@openmrs/esm-patient-chart-app": "13.0.2-pre.12863",
-    "@openmrs/esm-form-engine-app": "13.0.2-pre.12863",
+    "@openmrs/esm-form-engine-app": "file:openmrs-esm-form-engine-app.tgz",
     "@openmrs/esm-patient-vitals-app": "13.0.2-pre.12863",
     "@openmrs/esm-patient-tests-app": "13.0.2-pre.12863",
     "@openmrs/esm-laboratory-app": "1.6.0",
