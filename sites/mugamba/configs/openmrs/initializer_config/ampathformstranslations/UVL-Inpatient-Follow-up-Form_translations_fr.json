@@ -1,6 +1,7 @@
 {
   "uuid": "9f103347-a652-4817-bbfa-1b74830d5bbd",
   "form": "UVL Inpatient Follow-up Form",
+  "form_name_translation": "Suivi d'hospitalisation",
   "description": "Fr Translations for 'UVL Inpatient Follow-up Form'",
   "language": "fr",
   "translations": {
