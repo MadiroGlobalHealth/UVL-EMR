@@ -437,6 +437,15 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   in the new unit. (#455)
 
 ### Changed
+- **Gynaecology Ultrasound: presentation, amniotic fluid and placenta are asked per fetus.** For
+  twins or triplets each baby can have its own presentation, sac and placenta, so the three
+  questions are now in each fetus block (Fetus 1, 2, 3) and shown with it; a single pregnancy
+  records them in Fetus 1. They keep their concepts and answers, and no OCL export changes. An
+  ultrasound saved before this change keeps its per-pregnancy values: they show, locked and
+  labelled "earlier record, whole pregnancy", only on a record that has them. The build now also
+  fails on a member of a hidden-by-rule group whose own hide rule does not repeat the group's,
+  which would show and save it while the block is hidden (`scripts/check-ampath-forms.groovy`).
+  (#512)
 - **The Pharmacist can request stock from the central store and receive it** at the dispensation:
   inherits `Inventory Dispensing` and `Stock Management Base Role`, and gets
   `Task: stockmanagement.stockoperations.mutate`, `...receiveitems` and
@@ -492,12 +501,14 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   that would overwrite prices or a product row with an empty price. (#439)
 
 ### Fixed
-- **Cervical dilatation takes half centimetres (e.g. 4.5 cm)** in the partograph reading, the
-  maternity consultation and the childbirth record. The concept now allows decimals in OCL
-  (uvl-ciel 20261104; the uvl-forms 20261104-2 export replaces 20261104) and the three fields no
-  longer refuse them. The other partograph readings (fetal heart rate, contractions, duration,
-  oxytocin drops, pulse, blood pressure, descent in fifths) are counts or whole units and stay
-  whole numbers. (#488)
+- **Cervical dilatation is a whole number from 1 to 10 cm** in the partograph reading, the
+  maternity consultation and the childbirth record, as the product owner confirmed on 4 Nov 2026.
+  4.5 is refused ("Decimal values are not allowed"), as are 0 and 11. This replaces the
+  half-centimetre change of #488, which never reached production. The concept keeps allow-decimal
+  in OCL (uvl-ciel 20261104; the uvl-forms 20261104-2 export replaces 20261104), so a value saved
+  as a decimal on UAT still opens; saving that form again asks for a whole number. The partograph
+  chart is unchanged. The other partograph readings (fetal heart rate, contractions, duration,
+  oxytocin drops, pulse, blood pressure, descent in fifths) stay whole numbers. (#488, #511)
 - **A maternity form can no longer be saved for a male patient.** The seven maternity forms show
   only a "not applicable" note to a male patient, but Save still created an empty encounter that
   counted in encounter-based reports. The page now says "Ce formulaire concerne uniquement les
