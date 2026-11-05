@@ -1,6 +1,7 @@
 {
   "uuid": "d3a813b6-b0de-4bf0-8617-0c5a41f88a33",
   "form": "UVL Outpatient Consultation Form",
+  "form_name_translation": "Consultation externe",
   "description": "Fr Translations for 'UVL Outpatient Consultation Form'",
   "language": "fr",
   "translations": {
