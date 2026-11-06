@@ -1,0 +1,4 @@
+# Built output of a patched upstream module, committed: distro/pom.xml packs package.json and dist/
+# for the frontend assembly. The source lives on the fork branch named in README.md.
+!dist/
+dist/**/*.map
