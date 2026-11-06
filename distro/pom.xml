@@ -35,6 +35,9 @@
          ahead of RefApp 3.7.1's 2.8.8, to run the latest platform release. -->
     <openmrs.version>2.8.9</openmrs.version>
     <fhir2.version>4.2.0</fhir2.version>
+    <!-- overridden by distro/binaries/openmrs/modules/webservices.rest-3.5.0-uvl1.omod until upstream
+         releases saving a user's own properties without Edit Users (UVL-EMR#545,
+         openmrs/openmrs-module-webservices.rest#778) -->
     <webservices.rest.version>3.5.0</webservices.rest.version>
     <addresshierarchy.version>2.21.0</addresshierarchy.version>
     <idgen.version>5.0.4</idgen.version>

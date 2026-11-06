@@ -732,6 +732,17 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   `scripts/bundled-docker/openmrs/patch-startup-init.sh` now patches the modules line too, at image
   build. Modules added to a volume by hand, not through this repo, are removed at the next start.
   (#476)
+- **Staff can save their own language, default location and favourite orders again.** All three
+  save the signed-in user's own user properties with `POST /ws/rest/v1/user/<uuid>`, which the REST
+  module 3.5.0 saves as a whole user under `Edit Users`, and that privilege was taken off the
+  clinical roles on purpose (#502), so each one ended in a 403. The distro now ships
+  `webservices.rest-3.5.0-uvl1.omod` from `distro/binaries/openmrs/modules` (3.5.0 plus the fix,
+  jnsereko fork branch `uvl/3.5.0-own-user-properties` `d0c230c`). A user without `Edit Users`
+  who posts only `userProperties` to their own user has them saved through core's
+  `UserService.saveUserProperties`; any other field, or another user, still needs `Edit Users`.
+  Administrators are unaffected and the frontend is unchanged. It replaces the stock 3.5.0 omod at
+  build time. Upstream PR: openmrs/openmrs-module-webservices.rest#778. Once a release carries the
+  fix, delete the omod and raise `webservices.rest.version`. (#545, #524)
 
 ### Deploy notes for production
 1. Record the running image digests and take a database backup first.
@@ -808,6 +819,10 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
     `docker exec <openmrs container> sh -c 'ls /openmrs/data/modules | grep oauth2login'` must show
     only `oauth2login-1.5.0-uvl1.omod`. If `oauth2login-1.5.0.omod` is also listed, the image was
     built without the startup patch: move that file out of the volume and restart OpenMRS.
+18. **#545, REST module:** after the first start, the same check for `webservices.rest`:
+    `docker exec <openmrs container> sh -c 'ls /openmrs/data/modules | grep webservices.rest'` must
+    show only `webservices.rest-3.5.0-uvl1.omod`, and the OpenMRS log must show it started as
+    version `3.5.0-uvl1.0`.
 
 ### Known issues
 - **Clinical roles still see "Supprimer une consultation".** The patient chart shows the delete
