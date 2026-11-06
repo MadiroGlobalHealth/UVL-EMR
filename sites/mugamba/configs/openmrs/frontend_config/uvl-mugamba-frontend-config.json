@@ -505,7 +505,18 @@
         "errorLaunchingWorkspaceSubtitle": "Une erreur inattendue s'est produite lors de l'ouverture de l'espace de travail.",
         "errorMarkingAsDeceased": "Erreur lors de l'enregistrement du décès du patient",
         "personAttributesSaved": "Attribut(s) de la personne enregistré(s) avec succès",
-        "errorSavingPersonAttributes": "Erreur lors de l'enregistrement des attributs de la personne"
+        "errorSavingPersonAttributes": "Erreur lors de l'enregistrement des attributs de la personne",
+        "fieldIsMandatory": "Champ obligatoire",
+        "decimalValuesNotAllowed": "Les valeurs décimales ne sont pas autorisées pour ce champ",
+        "valueMustBeAtMost": "La valeur doit être de {{max}} au maximum",
+        "valueMustBeAtLeast": "La valeur doit être de {{min}} au minimum",
+        "lengthShouldBeAtLeast": "Le texte doit comporter au moins {{minLength}} caractères",
+        "lengthShouldNotExceed": "Le texte ne doit pas dépasser {{maxLength}} caractères",
+        "lengthShouldBeBetween": "Le texte doit comporter entre {{minLength}} et {{maxLength}} caractères",
+        "futureDatesNotAllowed": "Les dates futures ne sont pas autorisées",
+        "valueNotFoundInCodedAnswers": "Valeur absente de la liste des réponses",
+        "invalidDateValue": "Date invalide : '{{- value}}'",
+        "invalidNumericalValue": "Valeur numérique invalide : '{{- value}}'"
       }
     }
   },
@@ -575,10 +586,26 @@
         "duplicatePrescriptionMessageNoPrevious": "Aucune délivrance précédente n'a été trouvée.",
         "duplicateDispenseError": "Erreur lors de la délivrance du médicament",
         "previousDispenseDetails": "Délivrance précédente le",
-        "withQuantity": "avec la quantité"
+        "withQuantity": "avec la quantité",
+        "forDurationDays_one": "pendant {{count}} jour",
+        "forDurationDays_other": "pendant {{count}} jours",
+        "forDurationWeeks_one": "pendant {{count}} semaine",
+        "forDurationWeeks_other": "pendant {{count}} semaines",
+        "forDurationMonths_one": "pendant {{count}} mois",
+        "forDurationMonths_other": "pendant {{count}} mois",
+        "forDurationYears_one": "pendant {{count}} an",
+        "forDurationYears_other": "pendant {{count}} ans",
+        "forDurationHours_one": "pendant {{count}} heure",
+        "forDurationHours_other": "pendant {{count}} heures",
+        "forDurationMinutes_one": "pendant {{count}} minute",
+        "forDurationMinutes_other": "pendant {{count}} minutes",
+        "forDurationSeconds_one": "pendant {{count}} seconde",
+        "forDurationSeconds_other": "pendant {{count}} secondes",
+        "forDurationOther": "pendant {{duration}} {{durationUnit}}",
+        "partiallyDispensed": "Délivré partiellement {{quantityDispensed}}/{{quantityOrdered}}"
       }
     },
-    "enableStockDispense": false
+    "enableStockDispense": true
   },
   "@openmrs/esm-stock-management-app": {
     "packingUnitsUUID": "d8ec6bbb-d988-5ce5-879a-6e3068aca253",
