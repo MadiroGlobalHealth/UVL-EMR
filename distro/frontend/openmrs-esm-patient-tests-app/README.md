@@ -7,7 +7,7 @@ released upstream yet. Only the built module is here; the source is
 
 | UVL-EMR | Fix | Upstream PR |
 |---|---|---|
-| #548 | A lab test, X-ray or procedure whose concept is already active for the patient in the same order type is tagged « Déjà actif » in the order basket search, and « Ajouter à l'ordonnance » / « Prescrire » stay disabled until « Cet examen est déjà actif. Le demander à nouveau » is ticked. The active orders are filtered in the browser by order type, concept, action and stopped date, because OpenMRS ignores search parameters it does not support. | not opened yet |
+| #548 | A lab test, X-ray or procedure whose concept is already active for the patient in the same order type is tagged « Déjà actif » in the order basket search, and « Ajouter à l'ordonnance » / « Prescrire » stay disabled until « Cet examen est déjà actif. Le demander à nouveau » is ticked. The active orders are filtered in the browser by order type, concept, action and stopped date, because OpenMRS ignores search parameters it does not support. | [openmrs-esm-patient-chart 3863](https://github.com/openmrs/openmrs-esm-patient-chart/pull/3863) |
 
 The server does not check this: OpenMRS core refuses a second active order of the same concept only
 for drug orders. The other patient-chart apps stay on the npm 13.0.2-pre.12863 packages.
