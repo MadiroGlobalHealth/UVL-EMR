@@ -1,5 +1,5 @@
 #!/bin/bash
-# Tests scripts/bundled-docker/openmrs/patch-startup-init.sh (#305) against the real
+# Tests scripts/bundled-docker/openmrs/patch-startup-init.sh (#305, #476) against the real
 # openmrs-core 2.8.9 lines in startup-init-2.8.9-excerpt.sh. Run by distro/pom.xml in
 # every build; also runnable by hand: bash scripts/test/openmrs-startup-init/test.sh
 #
@@ -28,6 +28,7 @@ omrs_home() {
   echo current > "$h/distribution/openmrs_config/concepts/uvl_concepts.csv"
   echo current > "$h/distribution/openmrs_config/liquibase/ozone-uvl-mugamba/liquibase.xml"
   echo m > "$h/distribution/openmrs_modules/a.omod"
+  echo patched > "$h/distribution/openmrs_modules/oauth2login-1.5.0-uvl1.omod"
 
   mkdir -p "$h/data/configuration/concepts" "$h/data/configuration/attributetypes" \
            "$h/data/configuration/liquibase/ozone-uvl-mugamba" \
@@ -42,6 +43,11 @@ omrs_home() {
   echo sum > "$h/data/configuration_checksums/concepts/uvl_concepts.checksum"
   echo idx > "$h/data/lucene/index"
   echo obs > "$h/data/complex_obs/1.png"
+  # #476: the previous release's build of a module the image now ships under another name
+  echo stock > "$h/data/modules/oauth2login-1.5.0.omod"
+  echo old > "$h/data/modules/a.omod"
+  mkdir -p "$h/data/.openmrs-lib-cache/oauth2login"
+  echo cache > "$h/data/.openmrs-lib-cache/oauth2login/config.xml"
 }
 
 echo "patch-startup-init.sh"
@@ -51,13 +57,16 @@ h="$work/unpatched"; omrs_home "$h"
 OMRS_HOME="$h" bash "$fixture" > /dev/null
 check "unpatched 2.8.9 keeps a file deleted from the image (the defect)" \
       '[ -f "$h/data/configuration/concepts/uvl_payer.csv" ]'
+check "unpatched 2.8.9 keeps a module the image renamed (the #476 defect)" \
+      '[ -f "$h/data/modules/oauth2login-1.5.0.omod" ] && [ -f "$h/data/modules/oauth2login-1.5.0-uvl1.omod" ]'
 
 # 2. Patched: configuration/ mirrors the image, nothing beside it is touched.
 cp "$fixture" "$work/startup-init.sh"
 out="$(sh "$patcher" "$work/startup-init.sh")"
 check "patches the 2.8.9 script" '[ "$(grep -c "find \"\${OMRS_CONFIG_DIR:?}\" -xdev -mindepth 1 -delete" "$work/startup-init.sh")" = 1 ]'
-check "leaves the modules/owa/frontend lines as upstream wrote them" \
-      '[ "$(diff "$fixture" "$work/startup-init.sh" | grep -c "^[<>]")" = 2 ]'
+check "patches the modules wipe" '[ "$(grep -c "find \"\${OMRS_MODULES_DIR:?}\" -xdev -mindepth 1 -delete" "$work/startup-init.sh")" = 1 ]'
+check "leaves the owa/frontend lines as upstream wrote them" \
+      '[ "$(diff "$fixture" "$work/startup-init.sh" | grep -c "^[<>]")" = 4 ]'
 
 h="$work/patched"; omrs_home "$h"
 status=0; OMRS_HOME="$h" bash "$work/startup-init.sh" > /dev/null 2> "$work/stderr" || status=$?
@@ -71,6 +80,11 @@ check "copies the image's config" '[ "$(cat "$h/data/configuration/concepts/uvl_
 check "copies nested image config" '[ -f "$h/data/configuration/liquibase/ozone-uvl-mugamba/liquibase.xml" ]'
 check "keeps configuration_checksums/" '[ "$(cat "$h/data/configuration_checksums/concepts/uvl_concepts.checksum")" = sum ]'
 check "keeps lucene/ and complex_obs/" '[ -f "$h/data/lucene/index" ] && [ -f "$h/data/complex_obs/1.png" ]'
+check "removes the module build the image no longer ships" '[ ! -e "$h/data/modules/oauth2login-1.5.0.omod" ]'
+check "modules/ holds exactly the image's omods" \
+      '[ "$(ls "$h/data/modules" | tr "\n" " ")" = "a.omod oauth2login-1.5.0-uvl1.omod " ]'
+check "copies the image's omod over an old one of the same name" '[ "$(cat "$h/data/modules/a.omod")" = m ]'
+check "keeps .openmrs-lib-cache/" '[ -f "$h/data/.openmrs-lib-cache/oauth2login/config.xml" ]'
 
 # 3. A file that cannot be deleted must not stop OpenMRS from starting.
 if [ "$(id -u)" != 0 ]; then
@@ -91,8 +105,10 @@ status=0; sh "$patcher" "$work/startup-init.sh" > /dev/null || status=$?
 check "second run succeeds and changes nothing" '[ "$status" = 0 ] && cmp -s "$work/once.sh" "$work/startup-init.sh"'
 
 # 5. Upstream master's fix (fe4ca8a3) needs no patch.
-sed 's|^rm -fR "${OMRS_CONFIG_DIR:?}/\*"$|rm -fR "${OMRS_CONFIG_DIR:?}"\
-mkdir "${OMRS_CONFIG_DIR}"|' "$fixture" > "$work/master.sh"
+sed -e 's|^rm -fR "${OMRS_CONFIG_DIR:?}/\*"$|rm -fR "${OMRS_CONFIG_DIR:?}"\
+mkdir "${OMRS_CONFIG_DIR}"|' \
+    -e 's|^rm -fR "${OMRS_MODULES_DIR:?}/\*"$|rm -fR "${OMRS_MODULES_DIR:?}"\
+mkdir "${OMRS_MODULES_DIR}"|' "$fixture" > "$work/master.sh"
 cp "$work/master.sh" "$work/master-before.sh"
 status=0; sh "$patcher" "$work/master.sh" > /dev/null || status=$?
 check "accepts upstream master's rm + mkdir unchanged" '[ "$status" = 0 ] && cmp -s "$work/master-before.sh" "$work/master.sh"'
@@ -101,6 +117,9 @@ check "accepts upstream master's rm + mkdir unchanged" '[ "$status" = 0 ] && cmp
 sed 's|^rm -fR "${OMRS_CONFIG_DIR:?}/\*"$|rm -rf "$OMRS_CONFIG_DIR"/*|' "$fixture" > "$work/other.sh"
 status=0; sh "$patcher" "$work/other.sh" > /dev/null 2>&1 || status=$?
 check "fails on a reshaped upstream script" '[ "$status" != 0 ]'
+sed 's|^rm -fR "${OMRS_MODULES_DIR:?}/\*"$|rm -rf "$OMRS_MODULES_DIR"/*|' "$fixture" > "$work/other-modules.sh"
+status=0; sh "$patcher" "$work/other-modules.sh" > /dev/null 2>&1 || status=$?
+check "fails on a reshaped upstream modules wipe" '[ "$status" != 0 ]'
 status=0; sh "$patcher" "$work/missing.sh" > /dev/null 2>&1 || status=$?
 check "fails on a missing script" '[ "$status" != 0 ]'
 

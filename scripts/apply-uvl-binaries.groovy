@@ -10,7 +10,8 @@
     openmrs/modules/                           OpenMRS modules with nowhere to resolve
                                                from (currently orthanctoken and
                                                imagingpaymentgate), or patched builds of
-                                               inherited ones (oauth2login, #476)
+                                               inherited ones (oauth2login, #476;
+                                               webservices.rest, #545)
 
   The patched patient-attachments ESM (openmrs/frontend/openmrs-esm-patient-attachments/)
   was dropped with the move to frontend core 11 (#490): it was a core-10 build, and the
