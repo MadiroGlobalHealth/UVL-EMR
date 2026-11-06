@@ -724,6 +724,14 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   (1.5.0 plus the fix, jnsereko fork branch `uvl/1.5.0-roles-sync` `69191eb`). It replaces the
   stock 1.5.0 omod at build time. Upstream PR: openmrs/openmrs-module-oauth2login#36. Once a
   release carries the fix, delete the omod and raise `oauth2loginVersion`. (#476)
+- **OpenMRS now empties `/openmrs/data/modules` before it copies the image's modules in.** The
+  OpenMRS 2.8.x entrypoint meant to, but its `rm -fR "${OMRS_MODULES_DIR:?}/*"` quotes the glob
+  and deletes nothing, the same defect #305 fixed for `configuration/`. So an omod renamed in the
+  image stayed in the data volume beside the new one: on UAT the stock `oauth2login-1.5.0.omod`
+  from the previous release was loaded instead of `oauth2login-1.5.0-uvl1.omod`.
+  `scripts/bundled-docker/openmrs/patch-startup-init.sh` now patches the modules line too, at image
+  build. Modules added to a volume by hand, not through this repo, are removed at the next start.
+  (#476)
 
 ### Deploy notes for production
 1. Record the running image digests and take a database backup first.
@@ -795,6 +803,11 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
     `product_variant/uvl-drugs-issue455.csv`). Stock items now count in pack units
     (Flacon, Ampoule...) while many prescriptions are written in millilitres or milligrams: before
     stock deduction goes on (note 13), the pharmacists must know to dispense in the pack unit.
+17. **#476, oauth2login:** after the first start, check that the patched module replaced the stock
+    one in the data volume:
+    `docker exec <openmrs container> sh -c 'ls /openmrs/data/modules | grep oauth2login'` must show
+    only `oauth2login-1.5.0-uvl1.omod`. If `oauth2login-1.5.0.omod` is also listed, the image was
+    built without the startup patch: move that file out of the volume and restart OpenMRS.
 
 ### Known issues
 - **Clinical roles still see "Supprimer une consultation".** The patient chart shows the delete

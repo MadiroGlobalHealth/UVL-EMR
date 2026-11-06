@@ -464,7 +464,7 @@
         <executions>
           <execution>
             <!--
-              Tests the OpenMRS entrypoint patch (#305) against the real openmrs-core
+              Tests the OpenMRS entrypoint patch (#305, #476) against the real openmrs-core
               lines it edits, in every build, so it does not wait for an image build
               to be exercised. The bundled-docker profile below wires the patch into
               the Dockerfile; see scripts/bundled-docker/openmrs/patch-startup-init.sh.
@@ -858,7 +858,7 @@
                       The script reaches bundled-docker/openmrs/ through
                       "Add UVL bundled docker files".
                     -->
-                    <echo level="info" message="Patching the OpenMRS entrypoint to mirror the image's configuration"/>
+                    <echo level="info" message="Patching the OpenMRS entrypoint to mirror the image's configuration and modules"/>
                     <replaceregexp file="${project.build.directory}/bundled-docker-tmp/bundled-docker/openmrs/Dockerfile"
                                             match="[\r\n]+[^\r\n]*patch-startup-init\.sh[^\r\n]*"
                                             replace=""
@@ -894,7 +894,7 @@
                     </fail>
                     <echo level="info" message="Verified: openmrs Dockerfile pins openmrs-core:${openmrs.version}"/>
                     <!-- Same for the entrypoint patch: without it the build succeeds and deleted config keeps loading (#305). -->
-                    <fail message="The OpenMRS Dockerfile does not run patch-startup-init.sh, so the image would never remove configuration deleted from the repo (#305). Dockerfile contents:${line.separator}${openmrs.dockerfile.contents}">
+                    <fail message="The OpenMRS Dockerfile does not run patch-startup-init.sh, so the image would never remove configuration or modules deleted from the repo (#305, #476). Dockerfile contents:${line.separator}${openmrs.dockerfile.contents}">
                       <condition>
                         <not>
                           <contains string="${openmrs.dockerfile.contents}"

@@ -120,9 +120,9 @@ Four things that are not obvious and have each cost us time:
   `modules/` before refilling them from the image. It never did, because the glob
   is inside the quotes: `rm -fR "${OMRS_CONFIG_DIR:?}/*"` deletes a file literally
   named `*`. We patch that line when the image is built
-  (`scripts/bundled-docker/openmrs/patch-startup-init.sh`, #341). The flip side is
-  that anything added to an environment's volume by hand, rather than through this
-  repo, disappears on the next start. `P6` in the pre-flight suite below checks the
+  (`scripts/bundled-docker/openmrs/patch-startup-init.sh`, #341; `modules/` since
+  #476). The flip side is that anything added to an environment's volume by hand,
+  rather than through this repo, disappears on the next start. `P6` in the pre-flight suite below checks the
   volume against the image.
 
 - **Finance owns Odoo prices; the configuration does not set them** (#439). The
