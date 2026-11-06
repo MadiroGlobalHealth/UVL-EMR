@@ -112,6 +112,15 @@
     "Work Accident": "Work Accident",
     "X-ray": "X-ray",
     "Yes": "Yes",
-    "death": "death"
+    "death": "death",
+    "Grossesse à risque élevé détectée lors de l'ANC": "High-risk pregnancy detected during ANC",
+    "Transfert interne": "Internal transfer",
+    "≤3 mois": "<=3 months",
+    "Traité": "Treated",
+    "Comprimés de quinine + Clindamycine": "Quinine Tablets + Clindamycin",
+    "Comprimés de quinine": "Quinine Tablets",
+    "Injection d'artésunate": "Artesunate Injection",
+    "Ambulatoire": "Outpatient",
+    "décès": "death"
   }
 }

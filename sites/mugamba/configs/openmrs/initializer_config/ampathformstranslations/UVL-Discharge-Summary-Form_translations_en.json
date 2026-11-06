@@ -51,6 +51,22 @@
     "With Dehydration": "With Dehydration",
     "Without Dehydration": "Without Dehydration",
     "Without Test": "Without Test",
-    "Yes": "Yes"
+    "Yes": "Yes",
+    "Décès maternel": "Maternal Death",
+    "Décès périnatal": "Perinatal Death",
+    "Transfusion ou anémie": "Transfusion or Anaemia",
+    "TDR positif": "Positive RDT",
+    "Infection post-acte": "Post-Procedure Infection",
+    "Post-acte dans la FOSA": "Post-Procedure (In-Facility)",
+    "Post-acte venu d'ailleurs": "Post-Procedure (External)",
+    "Post-opératoire dans la FOSA": "Post-Operative (In-Facility)",
+    "Post-opératoire venu d'ailleurs": "Post-Operative (External)",
+    "≤3 mois": "<=3 months",
+    "Simple": "Uncomplicated",
+    "Testé positif": "Tested Positive",
+    "Grave": "Severe",
+    "Confirmé avec anémie sévère": "Confirmed with Severe Anaemia",
+    "Dihydroartémisinine + Pipéraquine comprimés": "Dihydroartemisinin-Piperaquine",
+    "Quinine injectable": "Quinine Injection"
   }
 }

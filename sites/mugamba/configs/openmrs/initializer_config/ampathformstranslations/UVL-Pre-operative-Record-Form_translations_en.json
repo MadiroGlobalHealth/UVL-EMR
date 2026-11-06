@@ -77,6 +77,24 @@
     "Treatment & Conclusion": "Treatment & Conclusion",
     "Urea": "Urea",
     "Yes": "Yes",
-    "aPTT": "aPTT"
+    "aPTT": "aPTT",
+    "Urgence": "Emergency",
+    "Programmée": "Elective",
+    "Tabac": "Tobacco",
+    "Asthme": "Asthma",
+    "Diabète": "Diabetes",
+    "Allergie": "Allergy",
+    "Cardiopathie": "Heart Disease",
+    "HTA": "Hypertension",
+    "Autres": "Other",
+    "Pâle": "Pale",
+    "Ictérique": "Icteric",
+    "Classe I": "Class I",
+    "Classe II": "Class II",
+    "Classe III": "Class III",
+    "Classe IV": "Class IV",
+    "Générale": "General",
+    "Loco-régionale": "Loco-regional",
+    "Locale": "Local"
   }
 }

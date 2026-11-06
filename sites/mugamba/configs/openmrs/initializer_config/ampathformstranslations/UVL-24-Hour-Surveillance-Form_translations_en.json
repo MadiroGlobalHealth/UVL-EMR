@@ -71,6 +71,18 @@
     "Uterine Rupture": "Uterine Rupture",
     "Vaginal Tear": "Vaginal Tear",
     "Well coloured": "Well coloured",
-    "Yes": "Yes"
+    "Yes": "Yes",
+    "Né vivant": "Born alive",
+    "Né vivant, décédé avant 24 h": "Born alive, died within 24 hours",
+    "À terme, 2,5 kg ou plus": "Term, 2.5 kg or more",
+    "À terme, moins de 2,5 kg": "Term, under 2.5 kg",
+    "Prématuré": "Premature",
+    "Masculin": "Male",
+    "Féminin": "Female",
+    "Propre": "Clean",
+    "Infecté": "Infected",
+    "Pâle": "Pale",
+    "Bien coloré": "Well coloured",
+    "Ictérique": "Jaundiced (icterus)"
   }
 }

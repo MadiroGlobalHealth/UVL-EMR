@@ -441,19 +441,19 @@
                 "answers": [
                   {
                     "concept": "f8a121b0-b276-44ba-90c2-2982c92c9221",
-                    "label": "Post-Procedure (In-Facility)"
+                    "label": "Post-acte dans la FOSA"
                   },
                   {
                     "concept": "80e1f197-1aeb-412a-9f19-90ba564ab0ae",
-                    "label": "Post-Procedure (External)"
+                    "label": "Post-acte venu d'ailleurs"
                   },
                   {
                     "concept": "4b3707c1-7748-497a-ae92-aeeed086a0bf",
-                    "label": "Post-Operative (In-Facility)"
+                    "label": "Post-opératoire dans la FOSA"
                   },
                   {
                     "concept": "b5687d7c-2973-4d4b-bf75-d6c9c90ec942",
-                    "label": "Post-Operative (External)"
+                    "label": "Post-opératoire venu d'ailleurs"
                   }
                 ]
               }

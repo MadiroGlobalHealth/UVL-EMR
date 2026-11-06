@@ -27,11 +27,11 @@
                 "answers": [
                   {
                     "concept": "90a3cdc3-342e-456f-8154-5e6802166584",
-                    "label": "Emergency"
+                    "label": "Urgence"
                   },
                   {
                     "concept": "79a559a9-c7aa-4006-98c2-02c530f6f7db",
-                    "label": "Elective"
+                    "label": "Programmée"
                   }
                 ]
               }
@@ -61,35 +61,34 @@
                 "answers": [
                   {
                     "concept": "0777c7dc-b6d4-4a3b-8742-c0280f93ee76",
-                    "label": "Tobacco"
+                    "label": "Tabac"
                   },
                   {
                     "concept": "fed68a32-1c52-4c2a-a446-e8cd30b440e7",
-                    "label": "Asthma"
+                    "label": "Asthme"
                   },
                   {
                     "concept": "505ce8f3-84ee-4936-b7f2-d0083bed8b97",
-                    "label": "Diabetes"
+                    "label": "Diabète"
                   },
                   {
-                    "concept": "ced33062-8c28-4ca0-ac5d-83a833490435",
-                    "label": "Hepatitis"
+                    "concept": "ced33062-8c28-4ca0-ac5d-83a833490435"
                   },
                   {
                     "concept": "9c67e8a4-702f-47fe-8350-92f5ed09b5a2",
-                    "label": "Allergy"
+                    "label": "Allergie"
                   },
                   {
                     "concept": "ce39d6af-a74f-40d7-a06f-ead8cb298126",
-                    "label": "Heart Disease"
+                    "label": "Cardiopathie"
                   },
                   {
                     "concept": "47f36ee7-fa3f-462f-91bf-a549b9b3b9f9",
-                    "label": "Hypertension"
+                    "label": "HTA"
                   },
                   {
                     "concept": "b5c4b807-d3de-40cd-aae9-178df9b40535",
-                    "label": "Other"
+                    "label": "Autres"
                   }
                 ]
               }
@@ -145,16 +144,15 @@
                 "concept": "802334a8-632f-4b46-a5d8-5058700f9763",
                 "answers": [
                   {
-                    "concept": "1115AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-                    "label": "Normal"
+                    "concept": "1115AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
                   },
                   {
                     "concept": "3157daa5-93aa-4ac2-912c-5e4379116bf0",
-                    "label": "Pale"
+                    "label": "Pâle"
                   },
                   {
                     "concept": "91771868-aff4-4fd1-a3f7-d8a5acea2d5c",
-                    "label": "Icteric"
+                    "label": "Ictérique"
                   }
                 ]
               }
@@ -230,12 +228,10 @@
                 "concept": "cfce22f3-9296-4af1-8c68-4e86cf02bf44",
                 "answers": [
                   {
-                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e",
-                    "label": "Yes"
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e"
                   },
                   {
-                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725",
-                    "label": "No"
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725"
                   }
                 ]
               }
@@ -249,12 +245,10 @@
                 "concept": "ccc826d6-6b46-4330-a5d2-2d2fd6df7524",
                 "answers": [
                   {
-                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e",
-                    "label": "Yes"
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e"
                   },
                   {
-                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725",
-                    "label": "No"
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725"
                   }
                 ]
               }
@@ -443,12 +437,10 @@
                 "concept": "f6b7d315-4038-4d88-8acf-4b1c7cd33f75",
                 "answers": [
                   {
-                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e",
-                    "label": "Yes"
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e"
                   },
                   {
-                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725",
-                    "label": "No"
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725"
                   }
                 ]
               }
@@ -463,19 +455,19 @@
                 "answers": [
                   {
                     "concept": "22704541-99ae-4e19-9a60-dc0773b36039",
-                    "label": "Class I"
+                    "label": "Classe I"
                   },
                   {
                     "concept": "b197d73f-ae75-4808-9979-7c49493e8b11",
-                    "label": "Class II"
+                    "label": "Classe II"
                   },
                   {
                     "concept": "b41572ee-1b13-4804-8a1b-c7530e851588",
-                    "label": "Class III"
+                    "label": "Classe III"
                   },
                   {
                     "concept": "07eb4574-b134-4afc-882c-81eda442aea7",
-                    "label": "Class IV"
+                    "label": "Classe IV"
                   }
                 ]
               }
@@ -548,15 +540,15 @@
                 "answers": [
                   {
                     "concept": "0c279f31-78c9-4c5c-9714-0f5bfc19fb1e",
-                    "label": "General"
+                    "label": "Générale"
                   },
                   {
                     "concept": "993c7783-e6dd-4786-961a-e658476ea753",
-                    "label": "Loco-regional"
+                    "label": "Loco-régionale"
                   },
                   {
                     "concept": "6e625252-c2c7-407a-8dba-406f1c2cf3c7",
-                    "label": "Local"
+                    "label": "Locale"
                   }
                 ]
               }

@@ -51,6 +51,10 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   (21:59:59 UTC). (#350)
 - **"No" answers read « Non » in French, not « Faux ».** This includes answers already saved,
   because an answer stores the concept, not its wording. (#528)
+- **A saved form shows its answers in French.** Opening an encounter under Visits showed the
+  answers in English ("No", "Yes", "Male", "Cephalic"...) though the form had been filled in
+  French. It now shows the words the form showed, « Non », « Oui », « Céphalique », on every
+  form, old encounters included. (#528)
 - **The Change language dialog says how to change language for the session.** Its checkbox is
   ticked every time the dialog opens; ticked, it saves the language as the account's default,
   which only the administrator may do (`Edit Users`, removed from clinical roles in #502), so
@@ -563,6 +567,17 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   nothing once the names match. "Other non-coded" (`b5c4b807-…`) also has no French fully
   specified name, but OCL has none either and its preferred French name is already « Autre »,
   so it is unchanged. (#528, last item of #475)
+- **The saved-encounter view shows answers in French.** The form engine's embedded view (Visits,
+  expanded encounter) shows an answer's `label` from the form JSON untranslated, while the entry
+  form translates it, so French entries read back as "No", "Yes" and so on. In the 15 forms that
+  had them, the 705 answer labels the French translations turned into other words are changed:
+  321 are removed where the concept's preferred names already read as the form did, in both
+  French and English, so the engine shows the concept's own name in the session's language; the
+  other 384 become the French text, and each form's English translations map that text back to
+  the English one, so an English session still enters in English. The 103 labels that have no
+  French translation are unchanged. `scripts/check-ampath-forms.groovy` gains check 8: an answer
+  label the form's French translations turn into other words fails the build. The Initializer
+  reloads the changed forms and English translations on their new checksums. (#528)
 - **A patient chart opened by direct link no longer stays blank for several seconds.** The page
   asked for `importmap.json` and `routes.registry.json` under the chart's own address
   (`/openmrs/spa/patient/<uuid>/chart/importmap.json`), got a 404 and paused 4–9 s before

@@ -4,7 +4,7 @@
   Run from sites/mugamba/pom.xml at prepare-package, against the assembled
   initializer_config, so it sees every layer (distro, country, site).
 
-  Seven checks, each for a fault that passes every review of the form JSON and shows only
+  Eight checks, each for a fault that passes every review of the form JSON and shows only
   when someone saves or reads the form:
 
   1. A number question that accepts decimals asks a concept that allows them. The form
@@ -51,6 +51,13 @@
      name, as check 4 asks of the form concepts. The lab technician picks the results and the
      doctor reads them, so a lab answer with no French name shows in English ("Positive for
      Plasmodium falciparum", #531).
+  8. No answer label is one the form's French translations turn into other words. The entry form
+     translates answer labels, but the saved-encounter view (Visits, expanded encounter, the form
+     engine's embedded view) shows an answer's label as it is in the form JSON: a "No" answer
+     labelled "No" and translated to "Non" was entered as « Non » and read back as "No" (#528).
+     An answer either has no label, and the engine shows the concept's own name in the session's
+     language, or a French label; the English session gets English from the form's English
+     translations, keyed by the French label.
 */
 
 import groovy.io.FileType
@@ -62,6 +69,7 @@ File configDir = new File(project.build.directory,
 File formsDir = new File(configDir, 'ampathforms')
 File oclDir = new File(configDir, 'ocl')
 File sheetNamesFile = new File(project.basedir, 'requirements/form-concept-names-fr.tsv')
+File translationsDir = new File(configDir, 'ampathformstranslations')
 
 if (!formsDir.isDirectory()) {
     log.info("No initializer_config/ampathforms in the build output, nothing to check")
@@ -168,12 +176,16 @@ int decimalQuestions = 0
 int groupMembersChecked = 0
 Map<String, String> noFrenchName = [:]   // concept -> first form and question that uses it
 Set<String> namedConcepts = [] as Set
+int answerLabelsChecked = 0
 List<File> formFiles = filesIn(formsDir, '.json')
 if (!formFiles) {
     throw new IllegalStateException("No form under ${formsDir}: the check would pass without checking anything")
 }
+Map<String, File> frenchTranslationFiles = filesIn(translationsDir, '_translations_fr.json').collectEntries { [(it.name): it] }
 formFiles.each { File file ->
     def form = slurper.parse(file, 'UTF-8')
+    File frenchFile = frenchTranslationFiles[file.name.replaceAll(/\.json$/, '_translations_fr.json')]
+    Map french = frenchFile ? (slurper.parse(frenchFile, 'UTF-8').translations ?: [:]) : [:]
     form.pages?.each { page ->
         List<Map> questions = questionsOf(page.sections?.collectMany { it.questions ?: [] })
 
@@ -196,6 +208,17 @@ formFiles.each { File file ->
                     faults << ("${file.name}: ${q.id} accepts decimals but concept ${options.concept} has " +
                             "allow_decimal false in the OCL export, so the server rejects the save. Set " +
                             "disallowDecimals, or allow decimals on the concept in OCL (#488)")
+                }
+            }
+
+            (options.answers ?: []).findAll { it.label }.each { answer ->
+                answerLabelsChecked++
+                String translated = french[answer.label]
+                if (translated && translated != answer.label) {
+                    faults << ("${file.name}: ${q.id} has an answer labelled '${answer.label}', which the French " +
+                            "translations turn into '${translated}', but the saved-encounter view shows the label " +
+                            "untranslated. Remove the label so the concept's name shows, or label it " +
+                            "'${translated}' and translate that in the English file (#528)")
                 }
             }
 
@@ -260,4 +283,5 @@ log.info("Forms OK: ${decimalQuestions} decimal number questions on concepts tha
         "${maleOnlyPages} male-only pages that refuse to save, ${groupMembersChecked} members of hidden-by-rule " +
         "groups that repeat the group's rule, ${namedConcepts.size()} question and answer concepts with a French name, " +
         "${sheetName.size()} French names as the requirements sheet gives them, " +
-        "${mappingsChecked} OCL mappings with a target, ${labConceptsChecked} lab concepts with a French name")
+        "${mappingsChecked} OCL mappings with a target, ${labConceptsChecked} lab concepts with a French name, " +
+        "${answerLabelsChecked} answer labels the saved-encounter view shows as the entry form does")
