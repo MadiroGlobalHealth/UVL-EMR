@@ -453,6 +453,11 @@
       "privileges": ["Get Patient Cohorts"]
     }
   },
+  "@openmrs/esm-system-admin-app": {
+    "Display conditions": {
+      "privileges": ["View Administration Functions"]
+    }
+  },
   "@openmrs/esm-home-app": {
     "defaultDashboardPerRole": {
       "Lab Technician": "laboratory"

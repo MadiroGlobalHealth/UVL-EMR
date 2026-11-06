@@ -65,9 +65,11 @@
        Settings`, because the medications widget filters GET order?patient=... by care
        setting and core resolves it through OrderService.getCareSettingByUuid) and patient
        lists (`View Cohorts In Cohort Module`, which the cohort module's services require
-       for GET cohortm/cohort and cohortm/cohortmember). Until #508 Help Nurse had neither,
-       its patient summary looped on the drug orders call, and no clinical role could read a
-       patient list (UAT 2026-11-04).
+       for GET cohortm/cohort and cohortm/cohortmember, and `Get Patient Cohorts`, the
+       display condition the site frontend config puts on the two patient-list apps, so
+       without it the Patient Lists link and the chart widget stay hidden). Until #508 Help
+       Nurse had neither, its patient summary looped on the drug orders call, and no
+       clinical role could read a patient list (UAT 2026-11-04).
      - Pharmacist and Central Pharmacist open Stock -> Reports (#438): `App:
        stockmanagement.reports`, `Task: stockmanagement.reports.mutate` to request a report,
        and `Manage Scheduler`, because the stock module queues the report with
@@ -76,6 +78,13 @@
      - Pharmacist and Doctor read the order basket's price and stock lookups, FHIR
        ChargeItemDefinition and InventoryItem (`Get ChargeItemDefinition`, `Get
        InventoryItem`). Until #351 the Pharmacist did not.
+
+ 10. Only administrators see System Administration. The site frontend config shows
+     `@openmrs/esm-system-admin-app` (the « Administration du système » app menu entry) only
+     to users with `View Administration Functions`; the app itself ties the entry to no
+     privilege, so until this condition every signed-in user, the pharmacists included, saw
+     it (UAT 2026-11-06). No Keycloak role but System Developer may hold it, directly or
+     through an inherited role, or the entry comes back for that role.
 */
 
 import groovy.json.JsonSlurper
@@ -92,10 +101,11 @@ List<String> userAdminPrivileges = ['Add Users', 'Edit Users', 'Edit User Passwo
         'Purge Users', 'Manage Roles', 'Manage Privileges', 'Assign System Developer Role']
 List<String> deletePrivileges = ['Delete Encounters', 'Purge Encounters', 'Delete Visits', 'Purge Visits',
         'Delete Observations', 'Purge Observations']
+String viewAdmin = 'View Administration Functions'
 String openChart = 'Get Patients'
 String readEnrolments = 'Get Patient Programs'
 List<String> readDrugOrders = ['Get Orders', 'Get Care Settings']
-List<String> readPatientLists = ['View Cohorts In Cohort Module']
+List<String> readPatientLists = ['View Cohorts In Cohort Module', 'Get Patient Cohorts']
 List<String> stockReports = ['App: stockmanagement.reports', 'Task: stockmanagement.reports.mutate', 'Manage Scheduler']
 List<String> basketLookups = ['Get ChargeItemDefinition', 'Get InventoryItem']
 Map<String, List<String>> requiredOf = [
@@ -261,6 +271,10 @@ if (realmFile.isFile()) {
                 problems << "${definedIn[r.name]}: role '${r.name}' can delete consultations through " +
                         "${deletes.collect { "'${it}'" }.join(', ')} (directly or through an inherited role); " +
                         "only System Developer may"
+            }
+            if (privileges.contains(viewAdmin)) {
+                problems << "${definedIn[r.name]}: role '${r.name}' holds '${viewAdmin}' (directly or through " +
+                        "an inherited role), so the System Administration menu shows for it; only System Developer may"
             }
             if (privileges.contains(openChart) && !privileges.contains(readEnrolments)) {
                 problems << "${definedIn[r.name]}: role '${r.name}' has '${openChart}' but not " +
