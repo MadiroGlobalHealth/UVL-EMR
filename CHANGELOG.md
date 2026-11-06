@@ -861,6 +861,13 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
     opened a new one holding the drugs again. A drug already on a confirmed sale order of the visit
     now gets no new line; a new prescription of the same drug is still billed. Jar from jnsereko
     fork `5ec0e3b`, on top of `0001068`. (#434, #435)
+- **A role changed in Keycloak applies at the next sign-in, not the one after.** oauth2login 1.5.0
+  saved the token's roles in a background thread and opened the session with the user it had
+  loaded before that, so the first sign-in after a role change kept the old role's privileges.
+  The distro now ships `oauth2login-1.5.0-uvl1.omod` from `distro/binaries/openmrs/modules`
+  (1.5.0 plus the fix, jnsereko fork branch `uvl/1.5.0-roles-sync` `69191eb`). It replaces the
+  stock 1.5.0 omod at build time. Upstream PR: openmrs/openmrs-module-oauth2login#36. Once a
+  release carries the fix, delete the omod and raise `oauth2loginVersion`. (#476)
 
 ### Deploy notes for production
 1. Record the running image digests and take a database backup first.
