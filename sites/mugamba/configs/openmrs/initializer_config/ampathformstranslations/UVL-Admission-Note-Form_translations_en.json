@@ -56,6 +56,10 @@
     "Waist Circumference (cm)": "Waist Circumference (cm)",
     "Weight (kg)": "Weight (kg)",
     "Weight-for-Height (W/H, z-score)": "Weight-for-Height (W/H, z-score)",
-    "X-ray": "X-ray"
+    "X-ray": "X-ray",
+    "Post-acte dans la FOSA": "Post-Procedure (In-Facility)",
+    "Post-acte venu d'ailleurs": "Post-Procedure (External)",
+    "Post-opératoire dans la FOSA": "Post-Operative (In-Facility)",
+    "Post-opératoire venu d'ailleurs": "Post-Operative (External)"
   }
 }

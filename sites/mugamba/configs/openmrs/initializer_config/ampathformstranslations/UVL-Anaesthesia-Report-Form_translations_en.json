@@ -64,6 +64,20 @@
     "Type of Anaesthesia": "Type of Anaesthesia",
     "Unforeseeable Incidents": "Unforeseeable Incidents",
     "Ventral (prone)": "Ventral (prone)",
-    "Yes": "Yes"
+    "Yes": "Yes",
+    "Urgences": "Emergency",
+    "Soins intensifs": "Intensive Care",
+    "Générale": "General",
+    "Loco-régionale": "Loco-regional",
+    "Locale": "Local",
+    "Dorsale": "Dorsal (supine)",
+    "Ventrale": "Ventral (prone)",
+    "Latérale": "Lateral",
+    "Masque": "Mask",
+    "Tube oral": "Oral Tube",
+    "Tube nasal": "Nasal Tube",
+    "Spontanée": "Spontaneous",
+    "Assistée": "Assisted",
+    "Contrôlée": "Controlled"
   }
 }

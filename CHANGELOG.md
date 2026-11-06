@@ -41,9 +41,54 @@ MSF-OCG/LIME-EMR-Tooling.
 
 ## [Unreleased] — `UAT` · `main` `75a339a`
 
+- Dispensing: stock deduction at dispensing is switched on (`enableStockDispense: true`); dispensing takes the quantity off the chosen batch. Reaches production with the M5 release, after opening stock and pharmacist stock roles are in place (#457, supersedes PR #482).
+- Dispensing: French texts for the translated prescription duration (« pendant 5 jours ») and partial dispense (« Délivré partiellement 2/5 ») (#541, #394).
+
 Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
 
 ### Staff will notice
+- **Open visits now close at midnight Burundi time, not at 02:00.** The nightly auto-close ran
+  at 23:59:59 UTC, which is 01:59:59 in Burundi: a visit started after midnight could be closed
+  minutes later, the chart kept showing it active, and the next save failed with
+  `Encounter.datetimeShouldBeInVisitDatesRange`. It now runs at 23:59:59 Burundi time
+  (21:59:59 UTC). (#350)
+- **"No" answers read « Non » in French, not « Faux ».** This includes answers already saved,
+  because an answer stores the concept, not its wording. (#528)
+- **Se déconnecter now really signs you out.** The user menu's logout entry is « Se déconnecter »
+  and goes to `/openmrs/oauth2logout`, which ends the OpenMRS session and the Keycloak session in
+  one request, then shows the Keycloak sign-in form. Before, Logout ended only the OpenMRS session,
+  so on a shared ward workstation the next person was signed back in as the previous user.
+  `@openmrs/esm-login-app` 11.0.0 ignores `provider.logoutUrl` in `oauth2` mode; the stock Logout
+  button is replaced by primary navigation's generic link. The label is French in both languages
+  (the generic link is not translated). (#323, replaces draft PR #411)
+- **The clinical forms list is grouped by service:** « Consultation externe », « Hospitalisation »,
+  « Maternité », « Bloc opératoire » and « Autres » (English: Outpatient, Inpatient, Maternity,
+  Theatre, Other). Every form is still listed, so the outpatient consultation form still appears on
+  an inpatient visit, under its own heading. Filtering forms by visit type needs a change in the
+  forms app; this grouping is the interim. Each section has its own search box. (#518)
+- **More of the interface is in French:** registration (« Informations supplémentaires », « Pays »,
+  « Détail de l'adresse », « Numéro de téléphone », « État civil », « Profession »), the queues
+  « Changer » button, the order basket (« Retirer de l'ordonnance » everywhere, « Retour à
+  l'ordonnance », « Traitements à venir »), order status tags (« En cours », « Terminé »…), the
+  laboratory (« Ajouter une demande d'examen », « Urgence », « Motif de la demande : »), dispensing
+  (« Dosage libre », « Voie d'administration ») and vitals (« Voir les valeurs normales »). The
+  three registration field labels are written in French in the config, because the registration
+  app does not translate field labels; English sessions see them in French too. Still in English,
+  because they don't go through translation: the list pagination (« Items per page », « of 1
+  page ») and the encounter and visit names built by the server (e.g. « Inpatient visit @ … »).
+  (#529)
+- **An X-ray or ultrasound result can't be saved until the exam is paid.** "Entrer des résultats"
+  from the chart's Orders, the Laboratory app and the API all refuse it with « Résultats refusés :
+  le paiement de la commande d'imagerie ORD-… n'est pas confirmé. Faites régler la facture à la
+  caisse, puis réessayez. » (English: "Results refused: payment for imaging order ORD-… is not
+  confirmed. Have the invoice paid at the cashier, then try again."). The order can't be marked
+  Completed either. Once the cashier takes payment, the bridge accepts the order's payment Task
+  within about a minute and the same result saves. Other results (lab, procedures) are unchanged.
+  An administrator can still save in an emergency; that is logged. (#322)
+- **A saved form shows its answers in French.** Opening an encounter under Visits showed the
+  answers in English ("No", "Yes", "Male", "Cephalic"...) though the form had been filled in
+  French. It now shows the words the form showed, « Non », « Oui », « Céphalique », on every
+  form, old encounters included. (#528)
 - **The Change language dialog says how to change language for the session.** Its checkbox is
   ticked every time the dialog opens; ticked, it saves the language as the account's default,
   which only the administrator may do (`Edit Users`, removed from clinical roles in #502), so
@@ -362,6 +407,29 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   database are unchanged, so reports and the Odoo bridge are not affected. (#499)
 
 ### Added
+- Inpatient ward locations for the services in the product owner's 3 Sep 2026 service list:
+  « Médecine interne », « Pédiatrie » (including severe acute malnutrition), « Chirurgie » and
+  « Soins intensifs », children of « Hospitalisation (IPD) » like the maternity and neonatal
+  wards, tagged `Login Location`, `Admission Location` and `Transfer Location`. Emergency is the
+  existing « Salle d'urgence (ER) », which now also carries `Admission Location` and
+  `Transfer Location` rather than a second emergency location. The new wards appear in the admit
+  and transfer pickers and can be opened as a ward in the Ward app. No beds: the bed count per
+  ward is not known yet, Initializer 2.12.0 and bedmanagement 6.2.0 have no bed domain, and
+  `bedmanagement.mandatory` is false, so patients are admitted without a bed (the Ward app shows
+  « Aucun lit configuré »). Room-class rates and inpatient billing wait on the fee schedule.
+  (#246)
+- **OpenMRS module `imagingpaymentgate` 1.0.0-SNAPSHOT** (`distro/binaries/openmrs/modules`,
+  source `openmrs-module-imagingpaymentgate`), the server-side imaging payment gate. A new or
+  changed obs that references a gated order, and marking that order COMPLETED, are refused with
+  HTTP 402 unless the order's payment Task (eip-odoo-openmrs) is `accepted`. Payment is looked up
+  in SQL by the order's own uuid, not through a FHIR search, so an ignored search filter can't let
+  one paid invoice authorise other orders. Hooks: before-advice on `ObsService`,
+  `EncounterService` and `OrderService`, plus a Hibernate interceptor on Obs inserts for writes
+  that bypass them (FHIR Observation). Gated orders are the members of the "Imaging procedures"
+  concept set (`imagingpaymentgate.conceptSetUuids`, new site file
+  `globalproperties/imaging-payment-gate.xml`); `imagingpaymentgate.enabled=false` turns it off.
+  New privilege `Bypass Imaging Payment Gate`, held by no role (superusers have it implicitly);
+  every bypass is logged at WARN. A failed payment lookup refuses. (#322)
 - UVL frontend module `@madiro/esm-uvl-partograph-app` 1.0.1 (`distro/frontend/esm-uvl-partograph-app`,
   `dist/` committed), packed by `distro/pom.xml` and pinned in `spa-assemble-config.json` as
   `file:madiro-esm-uvl-partograph-app.tgz`, like the imaging module. Extension
@@ -541,6 +609,52 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   that would overwrite prices or a product row with an empty price. (#439)
 
 ### Fixed
+- **The Orthanc bridge no longer piles up failed patient events.** Its database watcher sends
+  every change to `patient`, `person_name`, `person_address` and `patient_identifier` to
+  `direct:orthanc-event-listener`, which had no consumer, so each patient edit failed with "No
+  consumers available" and stayed in `openmrs_eip_mgt_orthanc.sender_retry_queue`, retried every
+  30 minutes for ever (305 rows on UAT on 2026-11-06, 576 on the old production host on
+  2026-10-23). The radiology flow polls OpenMRS and Orthanc on its own schedule and needs none of
+  these events, so the bridge now acknowledges them and logs them at DEBUG only. Bridge jar from
+  eip-openmrs-orthanc `63cfc1c` (jnsereko fork, on `11a85b6`); only the new route class differs
+  from the previous jar. Existing rows: see deploy note 17. (#460)
+- **The Auto Close Visits Task starts at 21:59:59 UTC.** Core's task starts at 23:59:59 and the
+  database and containers run on UTC, so visits closed at 01:59:59 CAT. Liquibase changeset
+  `auto_close_visits_task_cat_midnight-20261106` moves the time of day of `scheduler_task_config`
+  "Auto Close Visits Task" (`AutoCloseVisitsTask`) to 21:59:59, only while it is still core's
+  23:59:59. The scheduler reads it at OpenMRS start, after the Initializer, so the start that
+  runs the changeset applies it. The containers' TZ is left on UTC on purpose. (#350)
+- **Concept No (`d45102a2-d9b7-40dc-a30c-8e88494e1725`) has OCL's French names.** OpenMRS had
+  « Faux » as the preferred French name and « Non » as an index term, with no French fully
+  specified name; OCL (`uvl-ciel` 8918106) has « Non » fully specified and preferred, but the
+  OCL import skips a concept already loaded at the same version. Changeset
+  `concept_no_french_name_non-20261106` makes « Faux » a plain synonym and « Non » the fully
+  specified, preferred name, by concept uuid and name text; it runs on every start and changes
+  nothing once the names match. "Other non-coded" (`b5c4b807-…`) also has no French fully
+  specified name, but OCL has none either and its preferred French name is already « Autre »,
+  so it is unchanged. (#528, last item of #475)
+- **Form validation messages follow the session language, and a number limit says "at most".**
+  The form engine wrote "Field is mandatory", "Decimal values are not allowed for this field",
+  "Value must be lower than 3" and the text-length and future-date messages in English whatever
+  the language, and configuration could not reach them. They now go through the translations of
+  `@openmrs/esm-form-engine-app`, so the French texts come from the frontend config's
+  `Translation overrides`. A number limit is allowed, so the range messages now read "Value must
+  be at most {{max}}" / "at least {{min}}" (« La valeur doit être au plus 3 »), for every number
+  field with a `min` or `max`, not only the newborn count. `@openmrs/esm-form-engine-app` is now a
+  patched build of 13.0.2-pre.12863 (`13.0.2-pre.12863.uvl.1`, in
+  `distro/frontend/openmrs-esm-form-engine-app`), until openmrs/openmrs-esm-form-engine-lib#856
+  and openmrs/openmrs-esm-patient-chart#3860 are released. (#499, #500)
+- **The saved-encounter view shows answers in French.** The form engine's embedded view (Visits,
+  expanded encounter) shows an answer's `label` from the form JSON untranslated, while the entry
+  form translates it, so French entries read back as "No", "Yes" and so on. In the 15 forms that
+  had them, the 705 answer labels the French translations turned into other words are changed:
+  321 are removed where the concept's preferred names already read as the form did, in both
+  French and English, so the engine shows the concept's own name in the session's language; the
+  other 384 become the French text, and each form's English translations map that text back to
+  the English one, so an English session still enters in English. The 103 labels that have no
+  French translation are unchanged. `scripts/check-ampath-forms.groovy` gains check 8: an answer
+  label the form's French translations turn into other words fails the build. The Initializer
+  reloads the changed forms and English translations on their new checksums. (#528)
 - **A patient chart opened by direct link no longer stays blank for several seconds.** The page
   asked for `importmap.json` and `routes.registry.json` under the chart's own address
   (`/openmrs/spa/patient/<uuid>/chart/importmap.json`), got a 404 and paused 4–9 s before
@@ -555,6 +669,37 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   Help Nurse, Nurse, Midwife, Ophtalmologist, Dentist, Anesthesist and Doctor inherit. It is read
   only: enrolling, editing and removing stay with Doctor. The build now fails if a Keycloak role
   that can read patients cannot read their program enrolments. (#517)
+- **Pharmacists can open Stock → Reports.** The page answered 403 for Pharmacist and Central
+  Pharmacist. Both now inherit the stock module's `Inventory Reporting` role, which brings
+  `App: stockmanagement.reports`, `Task: stockmanagement.reports.mutate` and `Manage
+  Scheduler`; the last is needed because the stock module queues each report through the
+  OpenMRS scheduler in the requesting user's session. The item, source, role-scope and settings
+  pages of the stock app (3.3.1) are not tied to any privilege in the app, so a dispensing
+  pharmacist still sees them; saving there stays refused, as Pharmacist has no
+  `Task: stockmanagement.stockItems.mutate`. Hiding them would be a frontend display condition,
+  not a role change. (#438)
+- **The Help Nurse's patient summary no longer loops on drug orders, and clinical staff can read
+  patient lists.** Help Nurse now has `Get Orders` and `Get Care Settings`: the medications
+  widget filters orders by care setting, and without either it retried the 403 more than 100
+  times a minute. Help Nurse also has `View Cohorts In Cohort Module`, which the Patient Lists
+  page and the chart's patient-lists widget need to read `cohortm/cohort` and
+  `cohortm/cohortmember`, and `Get Patient Cohorts`, the display condition the frontend config
+  puts on the Patient Lists link and the chart's patient-lists widget. Nurse, Midwife, Doctor and
+  the clinical roles built on Nurse inherit all of them through Help Nurse. Creating or changing a list still needs `Edit Cohorts In Cohort
+  Module`, which no clinical role has. (#508)
+- **The Pharmacist's order basket price and stock lookups no longer fail.** Pharmacist now has
+  `Get ChargeItemDefinition` and `Get InventoryItem`, as Doctor already had. (#351, pharmacist
+  part; the queue 403 was fixed earlier.)
+- **« Administration du système » is no longer in the app menu of pharmacists and clinical
+  staff.** `@openmrs/esm-system-admin-app` 4.6.1 ties its menu entry to no privilege, so every
+  signed-in user saw it. The frontend config now shows it only with `View Administration
+  Functions`, which only the administrator (System Developer) has; stock management keeps its own
+  app-menu entry. The build fails if a Keycloak role other than System Developer is given that
+  privilege.
+- The build now fails if Help Nurse, Nurse, Midwife or Doctor cannot read drug orders and patient
+  lists, if Pharmacist or Central Pharmacist cannot open stock reports, or if Pharmacist or
+  Doctor cannot read the order basket lookups (`scripts/check-openmrs-roles.groovy`, check 9).
+  Signed-in users get the new privileges at their next sign-in. (#438, #508, #351)
 - **Cervical dilatation is a whole number from 1 to 10 cm** in the partograph reading, the
   maternity consultation and the childbirth record, as the product owner confirmed on 4 Nov 2026.
   4.5 is refused ("Decimal values are not allowed"), as are 0 and 11. This replaces the
@@ -654,6 +799,49 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   `ODOO_DURATION_UNIT_LABELS` (set for UVL in LIME-EMR-Tooling's `docker-compose-odoo-sso-uvl.yml`
   and in `scripts/docker/docker-compose-override.yml`). Lines already on a quotation keep their
   text. Bridge: jnsereko/eip-odoo-openmrs `fix/539-duration-labels` e420457, on 06151ac. (#539)
+- **A second prescription of the same drug on one visit is billed.** Paracetamol prescribed and 10
+  dispensed, then discontinued and prescribed again with 10 more dispensed, left one line of 10 on the
+  quotation: the bridge kept one line per drug and skipped the repeat, and the discontinue removed the
+  line even though the tablets had been given. The drug's line now bills every prescription of that
+  drug in the visit: an active one its quantity to dispense (as before), a discontinued or revised one
+  what was dispensed against it, nothing if nothing was. A prescription closed or paused with nothing
+  dispensed is still not billed (#393), a syrup or cream is still one container per prescription
+  (#385), and what a confirmed quotation of the visit already bills is not billed again (#434). A
+  quantity the cashier raised by hand is not lowered by the next dispense. Bridge:
+  jnsereko/eip-odoo-openmrs `fix/544-repeat-drug-billing` 8664102, on e420457. (#544)
+- **The pharmacy shows the duration in French** ("pendant 5 jours", not "for 5 d"), on the
+  prescription and the printout. (#541)
+- **A second dispense suggests what is left, and a partial dispense says so.** Prescribed 5,
+  dispensed 2: the next Dispense form pre-fills 3, not 5, and the prescription reads
+  "Délivré partiellement 2/5" instead of "Délivré". (#394)
+- **Vitals land in the visit they were recorded in, with their provider.** Vitals entered while
+  logged in at another department than the visit's, or against a past visit chosen in the chart,
+  were saved in no visit, and no vitals had a provider. They now carry the visit, a time inside it
+  for a past visit, and the logged-in provider (Clinician role). Vitals saved before are not
+  changed. (#347)
+- These three come from patched builds of two upstream apps, kept in `distro/frontend` until
+  OpenMRS releases the fixes: `@openmrs/esm-dispensing-app` 1.11.2-uvl.1 (1.11.2 plus
+  openmrs/openmrs-esm-dispensing-app#954 and #955) and `@openmrs/esm-patient-vitals-app`
+  13.0.2-pre.12863.uvl.1 (13.0.2-pre.12863 plus openmrs/openmrs-esm-patient-chart#3859).
+- **Every X-ray takes a result.** The 22 body-part X-rays (« Radiographie du/de la … », #212) had
+  datatype N/A, so they could be ordered and paid but the lab app refused their result with
+  « Configuration d'analyse invalide ». Only RX01–RX07 and EC01–EC02 took one. The 22 now have
+  datatype Text, like RX01, and the result is free text. Liquibase `xray_procedures_text_datatype-20261106`
+  makes the same change, because the OCL import skips a datatype change on a concept that already
+  has observations. OCL: uvl-custom 20261106; `UVL_procedures_20261106` replaces
+  `UVL_procedures_20261001`. That export also brings the French names of GO302 « Épisiotomie » and
+  GO108 « Myomectomie » (#475), which the full import reported as failing (#533). The "Imaging
+  procedures" set stays in `concepts/imaging_procedures.csv`, and the d0b5d4a0 ultrasound, CT and
+  echo concepts stay active, as in 20261001. The build now fails when a member of that set has
+  datatype N/A in the OCL exports (`scripts/check-ampath-forms.groovy`). (#546)
+- **The « Admission en service » form reads in French.** Its question names came from the concepts,
+  which had English names only. New French names: « Décision d'hospitalisation » (Inpatient
+  disposition construct), « Orientation du patient » (Inpatient patient disposition), « Admettre à
+  l'hôpital », « Sortie de l'hôpital », « Admis au service », « Service de transfert interne » and
+  « Décision d'admission » (the ward app's admission decision). English names are unchanged. OCL:
+  uvl-ciel 20261106; `UVL_ipd_20261106` replaces `UVL_ipd_20261105-1`. The build's French-name check
+  now also covers form questions given as `CIEL:nnn`, through the export concept mapped SAME-AS to
+  that code. (#546)
 - **A maternity form can no longer be saved for a male patient.** The seven maternity forms show
   only a "not applicable" note to a male patient, but Save still created an empty encounter that
   counted in encounter-based reports. The page now says "Ce formulaire concerne uniquement les
@@ -717,6 +905,32 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
     opened a new one holding the drugs again. A drug already on a confirmed sale order of the visit
     now gets no new line; a new prescription of the same drug is still billed. Jar from jnsereko
     fork `5ec0e3b`, on top of `0001068`. (#434, #435)
+- **A role changed in Keycloak applies at the next sign-in, not the one after.** oauth2login 1.5.0
+  saved the token's roles in a background thread and opened the session with the user it had
+  loaded before that, so the first sign-in after a role change kept the old role's privileges.
+  The distro now ships `oauth2login-1.5.0-uvl1.omod` from `distro/binaries/openmrs/modules`
+  (1.5.0 plus the fix, jnsereko fork branch `uvl/1.5.0-roles-sync` `69191eb`). It replaces the
+  stock 1.5.0 omod at build time. Upstream PR: openmrs/openmrs-module-oauth2login#36. Once a
+  release carries the fix, delete the omod and raise `oauth2loginVersion`. (#476)
+- **OpenMRS now empties `/openmrs/data/modules` before it copies the image's modules in.** The
+  OpenMRS 2.8.x entrypoint meant to, but its `rm -fR "${OMRS_MODULES_DIR:?}/*"` quotes the glob
+  and deletes nothing, the same defect #305 fixed for `configuration/`. So an omod renamed in the
+  image stayed in the data volume beside the new one: on UAT the stock `oauth2login-1.5.0.omod`
+  from the previous release was loaded instead of `oauth2login-1.5.0-uvl1.omod`.
+  `scripts/bundled-docker/openmrs/patch-startup-init.sh` now patches the modules line too, at image
+  build. Modules added to a volume by hand, not through this repo, are removed at the next start.
+  (#476)
+- **Staff can save their own language, default location and favourite orders again.** All three
+  save the signed-in user's own user properties with `POST /ws/rest/v1/user/<uuid>`, which the REST
+  module 3.5.0 saves as a whole user under `Edit Users`, and that privilege was taken off the
+  clinical roles on purpose (#502), so each one ended in a 403. The distro now ships
+  `webservices.rest-3.5.0-uvl1.omod` from `distro/binaries/openmrs/modules` (3.5.0 plus the fix,
+  jnsereko fork branch `uvl/3.5.0-own-user-properties` `d0c230c`). A user without `Edit Users`
+  who posts only `userProperties` to their own user has them saved through core's
+  `UserService.saveUserProperties`; any other field, or another user, still needs `Edit Users`.
+  Administrators are unaffected and the frontend is unchanged. It replaces the stock 3.5.0 omod at
+  build time. Upstream PR: openmrs/openmrs-module-webservices.rest#778. Once a release carries the
+  fix, delete the omod and raise `webservices.rest.version`. (#545, #524)
 
 ### Deploy notes for production
 1. Record the running image digests and take a database backup first.
@@ -788,11 +1002,49 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
     `product_variant/uvl-drugs-issue455.csv`). Stock items now count in pack units
     (Flacon, Ampoule...) while many prescriptions are written in millilitres or milligrams: before
     stock deduction goes on (note 13), the pharmacists must know to dispense in the pack unit.
+17. **#460, Orthanc bridge retry rows:** the bridge's retry pass (2 minutes after start, then
+    every 30 minutes) now delivers the old rows and removes them itself. To clear them at once, or
+    if any are left an hour after the deploy, back up the table and delete only the rows of this
+    fault, in the `mysql` container:
+    ```sql
+    -- backup first, from the host:
+    -- docker exec <mysql> sh -c 'mysqldump -uroot -p"$MYSQL_ROOT_PASSWORD" openmrs_eip_mgt_orthanc sender_retry_queue' > sender_retry_queue-orthanc-$(date +%F).sql
+    SELECT COUNT(*) FROM openmrs_eip_mgt_orthanc.sender_retry_queue
+     WHERE destination = 'direct:orthanc-event-listener'
+       AND exception_type = 'org.apache.camel.component.direct.DirectConsumerNotAvailableException';
+    DELETE FROM openmrs_eip_mgt_orthanc.sender_retry_queue
+     WHERE destination = 'direct:orthanc-event-listener'
+       AND exception_type = 'org.apache.camel.component.direct.DirectConsumerNotAvailableException';
+    ```
+    Then check that no new `No consumers available on endpoint: direct://orthanc-event-listener`
+    appears in the `eip-openmrs-orthanc` log after a patient is edited.
+18. **#350, #528:** once it's live, check that `auto_close_visits_task_cat_midnight-20261106` is
+    `EXECUTED` and the Auto Close Visits Task's `start_time` ends in `21:59:59`, and that concept
+    No's French preferred, fully specified name is « Non ». Production stores the same core
+    default and, being built from the same history, very likely the same concept drift.
+19. **#476, oauth2login:** after the first start, check that the patched module replaced the stock
+    one in the data volume:
+    `docker exec <openmrs container> sh -c 'ls /openmrs/data/modules | grep oauth2login'` must show
+    only `oauth2login-1.5.0-uvl1.omod`. If `oauth2login-1.5.0.omod` is also listed, the image was
+    built without the startup patch: move that file out of the volume and restart OpenMRS.
+20. **#545, REST module:** after the first start, the same check for `webservices.rest`:
+    `docker exec <openmrs container> sh -c 'ls /openmrs/data/modules | grep webservices.rest'` must
+    show only `webservices.rest-3.5.0-uvl1.omod`, and the OpenMRS log must show it started as
+    version `3.5.0-uvl1.0`.
 
 ### Known issues
 - **Clinical roles still see "Supprimer une consultation".** The patient chart shows the delete
   action to whoever may edit the encounter, and core voids an encounter under `Edit Encounters`;
   neither checks `Delete Encounters`. Removing the action needs a chart or server change. (#510)
+- **Changing location shows a red "Privileges required: Edit Users" error for clinical staff
+  whose account has a default location.** The location picker pre-ticks « Remember my location
+  for future logins » for them. Unticking it removes the default and ticking it with another
+  location saves a new one; both go through `POST /ws/rest/v1/user/<uuid>`, which saves the
+  whole user and needs `Edit Users`, kept for the administrator since #502. Core has a
+  no-privilege call for the user's own properties (`UserService.saveUserProperties`), but
+  webservices.rest 3.5.0 doesn't expose it, so no smaller privilege helps. The session location
+  still changes; only the remembered default fails. Fixing it needs either no administrator-set
+  default location on clinical accounts, or a login-app or REST change.
 - On the stock app's new user role scope form, `Inventory Administrator` gets a 403 from
   `GET /ws/rest/v1/role`, which needs `Manage Roles`. The form doesn't use the answer: its Role list
   shows the chosen user's own roles, so `Manage Roles` isn't granted. (#438)

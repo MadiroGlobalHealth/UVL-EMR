@@ -40,6 +40,14 @@
     "Temperature (°C)": "Temperature (°C)",
     "Not applicable": "Not applicable",
     "This form is for female patients only.": "This form is for female patients only.",
-    "Ce formulaire concerne uniquement les patientes : ne pas enregistrer. / This form is for female patients only: do not save.": "Ce formulaire concerne uniquement les patientes : ne pas enregistrer. / This form is for female patients only: do not save."
+    "Ce formulaire concerne uniquement les patientes : ne pas enregistrer. / This form is for female patients only: do not save.": "Ce formulaire concerne uniquement les patientes : ne pas enregistrer. / This form is for female patients only: do not save.",
+    "I : membranes intactes": "I: Membranes intact",
+    "C : clair": "C: Clear",
+    "M : méconial": "M: Meconium-stained",
+    "B : teinté de sang": "B: Blood-stained",
+    "0 : aucun": "0: None",
+    "+ : os en contact": "+: Bones touching",
+    "++ : chevauchement réductible": "++: Bones overlapping, reducible",
+    "+++ : chevauchement irréductible": "+++: Bones overlapping, not reducible"
   }
 }

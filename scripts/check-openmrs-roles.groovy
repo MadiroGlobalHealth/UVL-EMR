@@ -58,6 +58,33 @@
      403 for that role (#517, Midwife on UAT 2026-11-05). Until #517 only Doctor and the
      lab, pharmacy and imaging roles held it; Register patients, Help Nurse, Nurse, Midwife
      and every role built on Nurse did not.
+
+  9. Each role below holds, directly or through an inherited role, the read privileges its
+     screens call. Without them the call returns a 403, and some screens retry it for ever.
+     - Help Nurse, Nurse, Midwife and Doctor read drug orders (`Get Orders`, and `Get Care
+       Settings`, because the medications widget filters GET order?patient=... by care
+       setting and core resolves it through OrderService.getCareSettingByUuid) and patient
+       lists (`View Cohorts In Cohort Module`, which the cohort module's services require
+       for GET cohortm/cohort and cohortm/cohortmember, and `Get Patient Cohorts`, the
+       display condition the site frontend config puts on the two patient-list apps, so
+       without it the Patient Lists link and the chart widget stay hidden). Until #508 Help
+       Nurse had neither, its patient summary looped on the drug orders call, and no
+       clinical role could read a patient list (UAT 2026-11-04).
+     - Pharmacist and Central Pharmacist open Stock -> Reports (#438): `App:
+       stockmanagement.reports`, `Task: stockmanagement.reports.mutate` to request a report,
+       and `Manage Scheduler`, because the stock module queues the report with
+       SchedulerService.scheduleIfNotRunning in the requesting user's session. The three come
+       with the stock module's own `Inventory Reporting` role.
+     - Pharmacist and Doctor read the order basket's price and stock lookups, FHIR
+       ChargeItemDefinition and InventoryItem (`Get ChargeItemDefinition`, `Get
+       InventoryItem`). Until #351 the Pharmacist did not.
+
+ 10. Only administrators see System Administration. The site frontend config shows
+     `@openmrs/esm-system-admin-app` (the « Administration du système » app menu entry) only
+     to users with `View Administration Functions`; the app itself ties the entry to no
+     privilege, so until this condition every signed-in user, the pharmacists included, saw
+     it (UAT 2026-11-06). No Keycloak role but System Developer may hold it, directly or
+     through an inherited role, or the entry comes back for that role.
 */
 
 import groovy.json.JsonSlurper
@@ -74,8 +101,21 @@ List<String> userAdminPrivileges = ['Add Users', 'Edit Users', 'Edit User Passwo
         'Purge Users', 'Manage Roles', 'Manage Privileges', 'Assign System Developer Role']
 List<String> deletePrivileges = ['Delete Encounters', 'Purge Encounters', 'Delete Visits', 'Purge Visits',
         'Delete Observations', 'Purge Observations']
+String viewAdmin = 'View Administration Functions'
 String openChart = 'Get Patients'
 String readEnrolments = 'Get Patient Programs'
+List<String> readDrugOrders = ['Get Orders', 'Get Care Settings']
+List<String> readPatientLists = ['View Cohorts In Cohort Module', 'Get Patient Cohorts']
+List<String> stockReports = ['App: stockmanagement.reports', 'Task: stockmanagement.reports.mutate', 'Manage Scheduler']
+List<String> basketLookups = ['Get ChargeItemDefinition', 'Get InventoryItem']
+Map<String, List<String>> requiredOf = [
+        'Help Nurse'        : readDrugOrders + readPatientLists,
+        'Nurse'             : readDrugOrders + readPatientLists,
+        'Midwife'           : readDrugOrders + readPatientLists,
+        'Doctor'            : readDrugOrders + readPatientLists + basketLookups,
+        'Pharmacist'        : stockReports + basketLookups,
+        'Central Pharmacist': stockReports,
+]
 
 File distroConfigs = new File(project.build.directory,
         "${project.artifactId}-${project.version}/distro/configs")
@@ -194,6 +234,19 @@ nonDispensingRoles.each { name ->
     }
 }
 
+requiredOf.each { name, required ->
+    if (!definedIn.containsKey(name)) {
+        problems << "role '${name}' is not defined in any roles CSV; cannot check the privileges its screens need"
+        return
+    }
+    Set<String> privileges = effectivePrivileges(name, privilegesOf, inheritances)
+    List<String> missing = required.findAll { !privileges.contains(it) }
+    if (missing) {
+        problems << "${definedIn[name]}: role '${name}' lacks ${missing.collect { "'${it}'" }.join(', ')}" +
+                " (directly or through an inherited role); its screens would get a 403"
+    }
+}
+
 if (realmFile.isFile()) {
     def realm = new JsonSlurper().parse(realmFile, 'UTF-8')
     List clientRoles = realm?.roles?.client?.openmrs ?: []
@@ -218,6 +271,10 @@ if (realmFile.isFile()) {
                 problems << "${definedIn[r.name]}: role '${r.name}' can delete consultations through " +
                         "${deletes.collect { "'${it}'" }.join(', ')} (directly or through an inherited role); " +
                         "only System Developer may"
+            }
+            if (privileges.contains(viewAdmin)) {
+                problems << "${definedIn[r.name]}: role '${r.name}' holds '${viewAdmin}' (directly or through " +
+                        "an inherited role), so the System Administration menu shows for it; only System Developer may"
             }
             if (privileges.contains(openChart) && !privileges.contains(readEnrolments)) {
                 problems << "${definedIn[r.name]}: role '${r.name}' has '${openChart}' but not " +

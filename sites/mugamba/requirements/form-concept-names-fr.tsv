@@ -938,7 +938,7 @@ concept_uuid	fr_name	sheet_label	note
 9503bc68-3aab-4484-a758-8f93632a885e	M40 Cyphose et lordose		
 955662c6-bfad-4111-9eb6-1f4f1a139597	F64 Troubles de l'identite sexuelle		
 956aa26d-6f56-40e6-84d8-f360567d520d	F95 Tics		
-95a06703-15e4-493c-bc65-9d7ff4448a4d	GO302 - Épisiotomie	Épisiotomie	deferred: also in UVL_procedures_20261001.zip (collection not re-exported in this pass)
+95a06703-15e4-493c-bc65-9d7ff4448a4d	GO302 - Épisiotomie	Épisiotomie	also in UVL_procedures_20261106.zip (#546)
 95ae6efc-9baa-439f-91b6-302d94595ba3	N61 Affections inflammatoires du sein		
 95b8b815-3c21-4b0d-90f7-be80251dcac3	T02 Fractures de plusieurs parties du corps		
 96437318-3637-4a83-a626-3dd987d167a1	R36 Ecoulement uretral		
@@ -1096,7 +1096,7 @@ ac842cfe-9004-4bdd-b60c-918e5631f1fd	H10 Conjonctivite (collecté ds Hopitaux)
 acea31b4-bf5b-444e-8aca-16c907afdb80	M20 Deformations des doigts et des orteils		
 ad1b3cce-c526-491e-8be9-ee3d756350ca	M08 Arthrite juvenile		
 ad1bfff3-091b-4c7f-8dbc-a0a17ae05eb1	Q30 Malformations congenitales du nez		
-ad33b801-c6ef-4ae7-8e3e-59a6473069db	GO108 - Myomectomie	Myomectomie	deferred: also in UVL_procedures_20261001.zip (collection not re-exported in this pass)
+ad33b801-c6ef-4ae7-8e3e-59a6473069db	GO108 - Myomectomie	Myomectomie	also in UVL_procedures_20261106.zip (#546)
 ad8e9aaa-6ae3-4a22-90eb-69dd1e7c50fc	Z20 Sujets en contact avec et exposes a des maladies transmissibles		
 ad964687-88a8-407f-be77-17a2232b3f0d	C19 Tumeur maligne de la jonction recto-sigmoidienne		
 adb5438f-76cc-4b80-a3e5-c41537d1cb39	P24.0 Aspiration neonatale de meconium		

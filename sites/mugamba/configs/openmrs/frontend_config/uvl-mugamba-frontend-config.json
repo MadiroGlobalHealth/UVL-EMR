@@ -1,4 +1,27 @@
 {
+  "core": {
+    "Translation overrides": {
+      "fr": {
+        "paginationItemsCount": "{{pageItemsCount}} / {{totalItems}} éléments",
+        "paginationOfPages": "sur {{count}} pages",
+        "discardUnsavedChangesPromptTitle": "Abandonner les modifications non enregistrées ?",
+        "discardUnsavedChangesPromptBodySingle": "<strong>{{workspaceTitle}}</strong> contient des modifications non enregistrées. Le fermer les abandonnera.",
+        "discardUnsavedChangesPromptBodyMultiple": "{{count}} espaces de travail contiennent des modifications non enregistrées. Les fermer abandonnera ces modifications :",
+        "keepEditing": "Continuer la saisie",
+        "emptyStateText": "Aucun(e) {{displayText}} à afficher",
+        "recordNewEntry": "Enregistrer {{displayText}}",
+        "seeAll": "Tout voir",
+        "noResultsToDisplay": "Aucun résultat à afficher",
+        "selectAll": "Tout sélectionner",
+        "notAvailable": "Non disponible",
+        "abnormalValue": "Valeur anormale",
+        "reload": "Recharger",
+        "somethingWentWrongTryReloading": "Une erreur s'est produite. Rechargez la page.",
+        "yearAbbreviation": "an",
+        "yearsAbbreviation": "ans"
+      }
+    }
+  },
   "@openmrs/esm-app-shell": {
     "Enabled feature flags": ["enable-embedded-form-view", "rde"]
   },
@@ -93,7 +116,9 @@
         "expandEncounter": "Développer la consultation",
         "printEncounter": "Imprimer cette consultation",
         "printSelected": "Imprimer la sélection",
-        "recordedVia": "Enregistré via {{formName}}"
+        "recordedVia": "Enregistré via {{formName}}",
+        "paginationPageText_one": "sur {{count}} page",
+        "paginationPageText_other": "sur {{count}} pages"
       }
     }
   },
@@ -132,16 +157,21 @@
             }
           }
         }
+      },
+      "user-panel-bottom-slot": {
+        "remove": ["logout-button"],
+        "add": ["link#oauth2-logout"],
+        "configure": {
+          "link#oauth2-logout": {
+            "title": "Se déconnecter",
+            "target": "/openmrs/oauth2logout"
+          }
+        }
       }
     },
     "Translation overrides": {
       "fr": {
-        "changeDefaultLocale": "Enregistrer comme langue par défaut (administrateur uniquement)",
-        "changeDefaultLocaleExplanation": "Décochez cette case pour changer la langue de cette session."
-      },
-      "en": {
-        "changeDefaultLocale": "Save as my default language (administrator only)",
-        "changeDefaultLocaleExplanation": "Untick this box to change the language for this session."
+        "changeDefaultLocaleExplanation": "Laissez cette case décochée pour changer la langue de cette session uniquement."
       }
     }
   },
@@ -163,6 +193,50 @@
       "order-item-additional-info-slot": {
         "remove": ["order-price-details", "order-stock-details"]
       }
+    },
+    "Translation overrides": {
+      "fr": {
+        "removeFromBasket": "Retirer de l'ordonnance",
+        "COMPLETED": "Terminé",
+        "DECLINED": "Refusé",
+        "DISCONTINUED": "Arrêté",
+        "EXCEPTION": "Exception",
+        "IN_PROGRESS": "En cours",
+        "ON_HOLD": "En attente",
+        "RECEIVED": "Reçu",
+        "STAT": "Urgent",
+        "ROUTINE": "Routine",
+        "ON_SCHEDULED_DATE": "À la date prévue",
+        "testOrders": "demandes d'examen",
+        "ordersPlaced": "Prescriptions enregistrées",
+        "addToPinnedOrders": "Ajouter à mes prescriptions favorites",
+        "removeFromPinnedOrders": "Retirer de mes prescriptions favorites",
+        "myPinnedDrugOrders": "Mes prescriptions favorites",
+        "collapsePinnedOrders": "Réduire les prescriptions favorites",
+        "expandPinnedOrders": "Développer les prescriptions favorites",
+        "orderPinnedSubtitle": "{{drugName}} ajouté à vos prescriptions favorites",
+        "orderUnpinnedSubtitle": "{{drugName}} retiré de vos prescriptions favorites",
+        "ordersUnpinnedSubtitle_one": "{{count}} prescription retirée de vos favorites",
+        "ordersUnpinnedSubtitle_other": "{{count}} prescriptions retirées de vos favorites",
+        "maxPinnedOrdersReached": "Nombre maximal de prescriptions favorites atteint",
+        "maxPinnedOrdersSubtitle": "Vous pouvez avoir au plus {{max}} prescriptions favorites",
+        "errorLoadingFavorites": "Erreur lors du chargement des prescriptions favorites",
+        "pinOrder": "Épingler la prescription",
+        "orderPinned": "Prescription épinglée",
+        "orderUnpinned": "Prescription désépinglée",
+        "ordersUnpinned": "Prescriptions désépinglées",
+        "drugAlreadyPrescribed": "Déjà prescrit",
+        "unpinOrder": "Désépingler la prescription",
+        "orderPlaced": "Prescription enregistrée",
+        "orderUpdated": "Prescription mise à jour",
+        "ordersUpdated": "Prescriptions mises à jour",
+        "orderDiscontinued": "Prescription arrêtée",
+        "ordersDiscontinued": "Prescriptions arrêtées",
+        "ordersCompleted": "Prescriptions terminées",
+        "orderedFor": "Prescription enregistrée pour",
+        "updated": "Mis à jour",
+        "discontinued": "Arrêté"
+      }
     }
   },
   "@openmrs/esm-patient-registration-app": {
@@ -180,7 +254,7 @@
         "id": "telephoneNumber",
         "type": "person attribute",
         "uuid": "14d4f066-15f5-102d-96e4-000c29c2a5d7",
-        "label": "Telephone Number",
+        "label": "Numéro de téléphone",
         "validation": {
           "required": false,
           "matches": "^\\+?(\\d{1,3})?[-.\\s]?(\\(?\\d{1,4}?\\)?)?[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,9}$"
@@ -190,7 +264,7 @@
         "id": "maritalStatus",
         "type": "person attribute",
         "uuid": "c65ebb91-0de1-4622-9af4-bf9e19ea569b",
-        "label": "Marital status",
+        "label": "État civil",
         "validation": {
           "required": false
         },
@@ -200,7 +274,7 @@
         "id": "occupation",
         "type": "person attribute",
         "uuid": "96a9f1a6-7bd4-4147-a5b3-98b1f6137340",
-        "label": "Occupation",
+        "label": "Profession",
         "validation": {
           "required": false
         },
@@ -210,7 +284,7 @@
         "id": "chefDeMenage",
         "type": "person attribute",
         "uuid": "c108c6bc-5f23-4e4a-ad34-8c788b86f288",
-        "label": "Chef de ménage (Head of household)",
+        "label": "Chef de ménage",
         "validation": {
           "required": false
         }
@@ -256,14 +330,12 @@
     },
     "Translation overrides": {
       "en": {
-        "Additional Information": "Additional Information",
-        "Occupation": "Occupation",
-        "Marital Status": "Marital Status"
+        "additionalInformationSection": "Additional Information"
       },
       "fr": {
-        "Additional Information": "Informations supplémentaires",
-        "Occupation": "Profession",
-        "Marital Status": "Statut matrimonial"
+        "additionalInformationSection": "Informations supplémentaires",
+        "Country": "Pays",
+        "Address Detail": "Détail de l'adresse"
       }
     }
   },
@@ -291,7 +363,8 @@
       {
         "orderTypeUuid": "67a92e56-0f88-11ea-8d71-362b9e155667",
         "orderableConceptSets": ["46c8be89-db86-4476-9609-58d184f452c3"],
-        "icon": "omrs-pict-procedure-order"
+        "icon": "omrs-pict-procedure-order",
+        "label": "procedureOrders"
       }
     ],
     "resultsViewerConcepts": [
@@ -303,7 +376,28 @@
         "conceptUuid": "46c8be89-db86-4476-9609-58d184f452c3",
         "defaultOpen": false
       }
-    ]
+    ],
+    "Translation overrides": {
+      "fr": {
+        "removeFromBasket": "Retirer de l'ordonnance",
+        "backToOrderBasket": "Retour à l'ordonnance",
+        "returnToOrderBasket": "Retour à l'ordonnance",
+        "ordersPlaced": "Prescriptions enregistrées",
+        "procedureOrders": "Actes",
+        "orderPlaced": "Prescription enregistrée",
+        "orderUpdated": "Prescription mise à jour",
+        "ordersUpdated": "Prescriptions mises à jour",
+        "orderDiscontinued": "Prescription arrêtée",
+        "ordersDiscontinued": "Prescriptions arrêtées",
+        "ordersCompleted": "Prescriptions terminées",
+        "orderedFor": "Prescription enregistrée pour",
+        "updated": "Mis à jour",
+        "discontinued": "Arrêté"
+      },
+      "en": {
+        "procedureOrders": "Procedures"
+      }
+    }
   },
   "@openmrs/esm-patient-vitals-app": {
     "Display conditions": {
@@ -322,6 +416,12 @@
       "generalPatientNoteUuid": "9dc2962b-bdd0-4261-b69d-55769e078be0",
       "midUpperArmCircumferenceUuid": "6d4a1b5a-d41d-4779-b441-70ba440b64de",
       "vitalSignsConceptSetUuid": "7f0b11e7-7446-4cfe-9011-83ba4b694e25"
+    },
+    "Translation overrides": {
+      "fr": {
+        "viewNormalRanges": "Voir les valeurs normales",
+        "normalRanges": "Valeurs normales"
+      }
     }
   },
   "@openmrs/esm-patient-medications-app": {
@@ -343,7 +443,22 @@
         "drugAlreadyPrescribed": "Already active - use Modify"
       },
       "fr": {
-        "drugAlreadyPrescribed": "Déjà actif - utiliser Modifier"
+        "drugAlreadyPrescribed": "Déjà actif - utiliser Modifier",
+        "futureMedicationsDisplayText": "traitements à venir",
+        "futureMedicationsHeaderTitle": "Traitements à venir",
+        "futureMedicationsTableTitle": "Traitements à venir",
+        "launchOrderBasket": "Accéder à l'ordonnance",
+        "ordersPlaced": "Prescriptions enregistrées",
+        "quantityAutoCalculated": "Calculée automatiquement",
+        "orderPlaced": "Prescription enregistrée",
+        "orderUpdated": "Prescription mise à jour",
+        "ordersUpdated": "Prescriptions mises à jour",
+        "orderDiscontinued": "Prescription arrêtée",
+        "ordersDiscontinued": "Prescriptions arrêtées",
+        "ordersCompleted": "Prescriptions terminées",
+        "orderedFor": "Prescription enregistrée pour",
+        "updated": "Mis à jour",
+        "discontinued": "Arrêté"
       }
     }
   },
@@ -392,9 +507,58 @@
     "Display conditions": {
       "privileges": ["Get Forms"]
     },
+    "formSections": [
+      {
+        "name": "Consultation externe",
+        "forms": ["UVL Outpatient Consultation Form"]
+      },
+      {
+        "name": "Hospitalisation",
+        "forms": [
+          "Ward Admission",
+          "UVL Admission Note Form",
+          "UVL Inpatient Consultation Form",
+          "UVL Inpatient Follow-up Form",
+          "UVL IPD Monitoring Form",
+          "UVL 24-Hour Surveillance Form",
+          "UVL Discharge Summary Form"
+        ]
+      },
+      {
+        "name": "Maternité",
+        "forms": [
+          "UVL ANC Consultation Form",
+          "UVL Maternity Consultation Form",
+          "UVL Gynaecology Ultrasound Form",
+          "UVL Delivery Registration Form",
+          "UVL Partograph Reading Form",
+          "UVL Childbirth Record Form"
+        ]
+      },
+      {
+        "name": "Bloc opératoire",
+        "forms": ["UVL Pre-operative Record Form", "UVL Anaesthesia Report Form"]
+      },
+      {
+        "name": "Autres",
+        "forms": ["UVL Contact Form"]
+      }
+    ],
     "Translation overrides": {
       "fr": {
-        "backToClinicalForms": "Retour aux formulaires cliniques"
+        "backToClinicalForms": "Retour aux formulaires cliniques",
+        "Consultation externe": "Consultation externe",
+        "Hospitalisation": "Hospitalisation",
+        "Maternité": "Maternité",
+        "Bloc opératoire": "Bloc opératoire",
+        "Autres": "Autres"
+      },
+      "en": {
+        "Consultation externe": "Outpatient",
+        "Hospitalisation": "Inpatient",
+        "Maternité": "Maternity",
+        "Bloc opératoire": "Theatre",
+        "Autres": "Other"
       }
     }
   },
@@ -419,13 +583,42 @@
         "errorLaunchingWorkspaceSubtitle": "Une erreur inattendue s'est produite lors de l'ouverture de l'espace de travail.",
         "errorMarkingAsDeceased": "Erreur lors de l'enregistrement du décès du patient",
         "personAttributesSaved": "Attribut(s) de la personne enregistré(s) avec succès",
-        "errorSavingPersonAttributes": "Erreur lors de l'enregistrement des attributs de la personne"
+        "errorSavingPersonAttributes": "Erreur lors de l'enregistrement des attributs de la personne",
+        "fieldIsMandatory": "Champ obligatoire",
+        "decimalValuesNotAllowed": "Les valeurs décimales ne sont pas autorisées pour ce champ",
+        "valueMustBeAtMost": "La valeur doit être de {{max}} au maximum",
+        "valueMustBeAtLeast": "La valeur doit être de {{min}} au minimum",
+        "lengthShouldBeAtLeast": "Le texte doit comporter au moins {{minLength}} caractères",
+        "lengthShouldNotExceed": "Le texte ne doit pas dépasser {{maxLength}} caractères",
+        "lengthShouldBeBetween": "Le texte doit comporter entre {{minLength}} et {{maxLength}} caractères",
+        "futureDatesNotAllowed": "Les dates futures ne sont pas autorisées",
+        "valueNotFoundInCodedAnswers": "Valeur absente de la liste des réponses",
+        "invalidDateValue": "Date invalide : '{{- value}}'",
+        "invalidNumericalValue": "Valeur numérique invalide : '{{- value}}'"
       }
     }
   },
   "@openmrs/esm-patient-notes-app": {
     "Display conditions": {
       "privileges": ["Get Notes"]
+    },
+    "Translation overrides": {
+      "fr": {
+        "stickyNote": "Pense-bête",
+        "stickyNoteCreated": "Pense-bête créé",
+        "stickyNoteUpdated": "Pense-bête mis à jour",
+        "stickyNoteDeleted": "Pense-bête supprimé",
+        "stickyNoteDeletedSuccessfully": "Le pense-bête a été supprimé",
+        "editStickyNote": "Modifier le pense-bête",
+        "deleteStickyNote": "Supprimer le pense-bête",
+        "confirmDeleteStickyNote": "Confirmer la suppression du pense-bête",
+        "confirmDeleteStickyNoteMessage": "Voulez-vous vraiment supprimer ce pense-bête ?",
+        "enterNotePlaceholder": "Saisissez votre pense-bête ici...",
+        "errorSavingStickyNote": "Erreur lors de l'enregistrement du pense-bête",
+        "errorLoadingStickyNote": "Impossible de charger le pense-bête.",
+        "errorDeletingStickyNote": "Erreur lors de la suppression du pense-bête",
+        "errorDeletingStickyNoteMessage": "Une erreur s'est produite lors de la suppression du pense-bête"
+      }
     }
   },
   "@openmrs/esm-appointments-app": {
@@ -441,16 +634,52 @@
   "@openmrs/esm-service-queues-app": {
     "Display conditions": {
       "privileges": ["Get Queues"]
+    },
+    "Translation overrides": {
+      "fr": {
+        "change": "Changer",
+        "changeQueueLocation": "Changer de lieu de file d'attente",
+        "avgWaitTime": "Attente moyenne",
+        "averageWait": "Attente moyenne",
+        "longestWait": "Attente la plus longue",
+        "waiting": "En attente",
+        "waitingList": "Liste d'attente",
+        "waitingListWithCount_one": "Liste d'attente ({{count}})",
+        "waitingListWithCount_other": "Liste d'attente ({{count}})",
+        "addAPatientToThisList": "Ajouter un patient à cette liste",
+        "noOneBeingAttended": "Aucun patient n'est en cours de prise en charge",
+        "noActiveVisit": "Aucune visite en cours"
+      }
     }
   },
   "@openmrs/esm-laboratory-app": {
     "Display conditions": {
       "privileges": ["Manage Laboratory"]
+    },
+    "Translation overrides": {
+      "fr": {
+        "addTestOrder": "Ajouter une demande d'examen",
+        "urgency": "Urgence",
+        "orderReason": "Motif de la demande :",
+        "worklist": "Liste des tâches",
+        "stat": "Urgent",
+        "scheduled": "Programmé"
+      }
     }
   },
   "@openmrs/esm-patient-list-management-app": {
     "Display conditions": {
       "privileges": ["Get Patient Cohorts"]
+    },
+    "Translation overrides": {
+      "fr": {
+        "emptyStateText": "Aucune liste de patients {{listType}} à afficher"
+      }
+    }
+  },
+  "@openmrs/esm-system-admin-app": {
+    "Display conditions": {
+      "privileges": ["View Administration Functions"]
     }
   },
   "@openmrs/esm-home-app": {
@@ -469,16 +698,37 @@
         "selectStockDispense": "Pick a batch to enable Dispense"
       },
       "fr": {
+        "medicationDispensed": "Médicament délivré.",
+        "medicationDispenseUpdated": "Délivrance du médicament mise à jour.",
+        "orderedMedication": "a prescrit le médicament",
         "stockDispense": "Lot à délivrer (obligatoire)",
         "selectStockDispense": "Choisir un lot pour pouvoir délivrer",
+        "freeTextDosage": "Dosage libre",
+        "route": "Voie d'administration",
         "duplicatePrescriptionTitle": "Délivrance potentiellement en double détectée",
         "duplicatePrescriptionMessageNoPrevious": "Aucune délivrance précédente n'a été trouvée.",
         "duplicateDispenseError": "Erreur lors de la délivrance du médicament",
         "previousDispenseDetails": "Délivrance précédente le",
-        "withQuantity": "avec la quantité"
+        "withQuantity": "avec la quantité",
+        "forDurationDays_one": "pendant {{count}} jour",
+        "forDurationDays_other": "pendant {{count}} jours",
+        "forDurationWeeks_one": "pendant {{count}} semaine",
+        "forDurationWeeks_other": "pendant {{count}} semaines",
+        "forDurationMonths_one": "pendant {{count}} mois",
+        "forDurationMonths_other": "pendant {{count}} mois",
+        "forDurationYears_one": "pendant {{count}} an",
+        "forDurationYears_other": "pendant {{count}} ans",
+        "forDurationHours_one": "pendant {{count}} heure",
+        "forDurationHours_other": "pendant {{count}} heures",
+        "forDurationMinutes_one": "pendant {{count}} minute",
+        "forDurationMinutes_other": "pendant {{count}} minutes",
+        "forDurationSeconds_one": "pendant {{count}} seconde",
+        "forDurationSeconds_other": "pendant {{count}} secondes",
+        "forDurationOther": "pendant {{duration}} {{durationUnit}}",
+        "partiallyDispensed": "Délivré partiellement {{quantityDispensed}}/{{quantityOrdered}}"
       }
     },
-    "enableStockDispense": false
+    "enableStockDispense": true
   },
   "@openmrs/esm-stock-management-app": {
     "packingUnitsUUID": "d8ec6bbb-d988-5ce5-879a-6e3068aca253",
@@ -518,5 +768,31 @@
       { "concept": "52506e95-0ae4-4718-b622-d4226b4238dd", "code": "++" },
       { "concept": "487fb8c7-29c3-4954-937c-090c1a4a4ced", "code": "+++" }
     ]
+  },
+  "@openmrs/esm-ward-app": {
+    "restrictTransferLocationsToVisitLocation": false,
+    "Translation overrides": {
+      "fr": {
+        "totalBeds": "Total des lits",
+        "wardPatient": "Patient du service",
+        "activeVisit": "Visite en cours",
+        "startedDatetime": "Début : {{datetime}}",
+        "patientAdmittedToLocation": "{{patientName}} admis(e) à {{location}}",
+        "patientAdmittedWoBed": "{{patientName}} admis(e) à {{location}}",
+        "patientAdmittedButBedNotAssigned": "{{patientName}} admis(e), mais le lit n'a pas pu être attribué",
+        "patientAdmitRequestCreatedForPatient": "Demande d'admission créée pour {{patientName}}",
+        "admissionRequestCancelledForPatient": "Demande d'admission annulée pour {{patientName}}",
+        "patientTransferRequestCreatedForPatient": "Demande de transfert créée pour {{patientName}}",
+        "patientTransferredSuccessfully": "Patient transféré",
+        "patientTransferredToLocation": "{{patientName}} transféré(e) à {{location}}",
+        "errorAdmittingPatient": "Échec de l'admission de {{patientName}}",
+        "errorTransferringPatient": "Échec du transfert de {{patientName}}",
+        "visitRequiredToAdmitPatient": "Une visite est nécessaire pour admettre ce patient dans le service",
+        "noBedsConfiguredForLocation": "Aucun lit configuré pour {{location}} : le patient est admis sans lit.",
+        "orderBasket": "Ordonnance",
+        "Labs": "Examens",
+        "pendingDischarge": "En attente de sortie"
+      }
+    }
   }
 }

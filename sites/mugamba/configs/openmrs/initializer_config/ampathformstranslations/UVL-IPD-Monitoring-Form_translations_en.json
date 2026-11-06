@@ -63,6 +63,11 @@
     "Verbal Response (/5)": "Verbal Response (/5)",
     "Water (ml)": "Water (ml)",
     "Weight (kg)": "Weight (kg)",
-    "Weight-for-Height (z-score)": "Weight-for-Height (z-score)"
+    "Weight-for-Height (z-score)": "Weight-for-Height (z-score)",
+    "Lunettes nasales": "Nasal Cannula",
+    "Masque simple": "Simple Mask",
+    "Masque à haute concentration": "Non-rebreather Mask",
+    "Masque Venturi": "Venturi Mask",
+    "Lunettes nasales à haut débit": "High-flow Nasal Cannula"
   }
 }

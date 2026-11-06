@@ -53,6 +53,20 @@
     "Weeks of Amenorrhoea": "Weeks of Amenorrhoea",
     "Head Presentation (earlier record, whole pregnancy)": "Head Presentation (earlier record, whole pregnancy)",
     "Amniotic Fluid (earlier record, whole pregnancy)": "Amniotic Fluid (earlier record, whole pregnancy)",
-    "Placenta (earlier record, whole pregnancy)": "Placenta (earlier record, whole pregnancy)"
+    "Placenta (earlier record, whole pregnancy)": "Placenta (earlier record, whole pregnancy)",
+    "Trimestre 1": "Trimester 1",
+    "Trimestre 2": "Trimester 2",
+    "Trimestre 3": "Trimester 3",
+    "Unique": "Singleton",
+    "Vivant": "Alive",
+    "Actif": "Active",
+    "Mort fœtale in utero (MFIU)": "Intrauterine fetal death (IUFD)",
+    "Masculin": "Male",
+    "Féminin": "Female",
+    "Céphalique": "Cephalic",
+    "Siège": "Breech",
+    "Antérieur": "Anterior",
+    "Postérieur": "Posterior",
+    "Recouvrant (placenta prævia)": "Covering (placenta praevia)"
   }
 }
