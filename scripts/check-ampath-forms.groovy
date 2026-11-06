@@ -33,7 +33,9 @@
      labels are translated, but wherever OpenMRS shows the concept itself (the encounter's
      observation list, results, summaries) a French session falls back to the English name
      when the concept has no French one (#475). The names come from the OCL exports in
-     ocl/; a concept that no export defines (e.g. a CIEL:nnn reference) is not checked.
+     ocl/. A CIEL:nnn reference is checked through the export concept that maps SAME-AS to
+     that CIEL code: the ward admission form asks its questions that way, and was entirely
+     in English (#546). A concept that no export defines is not checked.
   5. That French name is the one the requirements sheet gives. The forms requirements sheet is
      the source of truth for concept names: staff should read in Results the word they picked in
      the form (Céphalique, not présentation vertex). requirements/form-concept-names-fr.tsv in the
@@ -58,6 +60,10 @@
      An answer either has no label, and the engine shows the concept's own name in the session's
      language, or a French label; the English session gets English from the form's English
      translations, keyed by the French label.
+  9. Every member of the "Imaging procedures" set (concepts/imaging_procedures.csv) has a datatype
+     that can hold a result in the OCL exports. 22 body-part X-rays were N/A, so they could be
+     ordered and paid but the lab app refused their result: "Configuration d'analyse invalide"
+     (#546).
 */
 
 import groovy.io.FileType
@@ -70,6 +76,7 @@ File formsDir = new File(configDir, 'ampathforms')
 File oclDir = new File(configDir, 'ocl')
 File sheetNamesFile = new File(project.basedir, 'requirements/form-concept-names-fr.tsv')
 File translationsDir = new File(configDir, 'ampathformstranslations')
+File imagingSetFile = new File(configDir, 'concepts')
 
 if (!formsDir.isDirectory()) {
     log.info("No initializer_config/ampathforms in the build output, nothing to check")
@@ -117,6 +124,8 @@ Map<String, Boolean> allowDecimal = [:]
 Map<String, Boolean> hasFrenchName = [:]
 Map<String, Long> frenchNameVersion = [:]
 Map<String, String> frenchName = [:]
+Map<String, String> datatypeOf = [:]       // external_id -> datatype of the newest version
+Map<String, String> cielConcept = [:]      // 'CIEL:<code>' -> external_id of the concept mapped SAME-AS to it
 // Exports re-exported after #520 must have none. uvl-dx carries 2 from the May 2025 import
 // (retired in OCL); its collection can't be re-exported as is, it would drop 154 concepts (#533).
 Map<String, Integer> knownMappingFaults = ['UVL_dx_v4.zip': 2]
@@ -147,6 +156,13 @@ filesIn(oclDir, '.zip').each { File zip ->
                         "its target source in OCL (SNOMED-CT, AMPATH, ...) or retire it, and re-export (#520)" +
                         (knownMappingFaults.containsKey(zip.name) ? "; then update knownMappingFaults" : ""))
             }
+            Map<String, String> idByUrl = [:]
+            export.concepts?.each { if (it.external_id) idByUrl[it.url?.toString()] = it.external_id }
+            (export.mappings ?: []).findAll { !isTrue(it.retired) && it.to_source_name == 'CIEL' && it.to_concept_code &&
+                    it.map_type?.toString()?.toUpperCase()?.replaceAll('[\\s_-]', '') == 'SAMEAS' }.each { mapping ->
+                String id = idByUrl[mapping.from_concept_url?.toString()]
+                if (id) cielConcept.putIfAbsent("CIEL:${mapping.to_concept_code}".toString(), id)
+            }
             export.concepts?.each { concept ->
                 if (concept.datatype == 'Numeric' && concept.external_id) {
                     allowDecimal[concept.external_id] = isTrue(concept.extras?.allow_decimal)
@@ -155,6 +171,7 @@ filesIn(oclDir, '.zip').each { File zip ->
                     frenchNameVersion[concept.external_id] = versionOf(concept)
                     hasFrenchName[concept.external_id] = concept.names?.any { isFrenchPreferred(it) } ?: false
                     frenchName[concept.external_id] = concept.names?.find { isFrenchPreferred(it) }?.name
+                    datatypeOf[concept.external_id] = concept.datatype?.toString()
                 }
             }
         }
@@ -222,7 +239,8 @@ formFiles.each { File file ->
                 }
             }
 
-            ([options.concept] + (options.answers ?: []).collect { it.concept }).each { String concept ->
+            ([options.concept] + (options.answers ?: []).collect { it.concept }).each { String ref ->
+                String concept = cielConcept.getOrDefault(ref, ref)
                 if (concept && hasFrenchName.containsKey(concept)) {
                     namedConcepts << concept
                     if (!hasFrenchName[concept]) noFrenchName.putIfAbsent(concept, "${file.name}: ${q.id}")
@@ -274,6 +292,28 @@ sheetName.each { String concept, String want ->
     }
 }
 
+// Members of the "Imaging procedures" set: Members column of concepts/imaging_procedures.csv.
+int imagingChecked = 0
+filesIn(imagingSetFile, 'imaging_procedures.csv').each { File csv ->
+    List<String> lines = csv.readLines('UTF-8')
+    List<String> header = lines[0].split(',') as List
+    int membersCol = header.indexOf('Members')
+    lines.drop(1).findAll { it.trim() }.each { String line ->
+        // the Description column is quoted and may hold commas; Members is uuids joined by ';'
+        String members = (line =~ /(?:[0-9a-f-]{36};)+[0-9a-f-]{36}/).with { it.find() ? it.group() : '' }
+        if (membersCol < 0 || !members) return
+        members.split(';').each { String member ->
+            if (!datatypeOf.containsKey(member)) return
+            imagingChecked++
+            if (datatypeOf[member] in ['N/A', 'None', null]) {
+                faults << ("${csv.name}: imaging procedure ${member} has datatype ${datatypeOf[member]} in the OCL " +
+                        "export, so it can be ordered but its result is refused (\"Configuration d'analyse invalide\"). " +
+                        "Give it datatype Text in OCL, like RX01, and re-export (#546)")
+            }
+        }
+    }
+}
+
 faults.addAll(mappingFaults)
 
 if (faults) {
@@ -284,4 +324,5 @@ log.info("Forms OK: ${decimalQuestions} decimal number questions on concepts tha
         "groups that repeat the group's rule, ${namedConcepts.size()} question and answer concepts with a French name, " +
         "${sheetName.size()} French names as the requirements sheet gives them, " +
         "${mappingsChecked} OCL mappings with a target, ${labConceptsChecked} lab concepts with a French name, " +
-        "${answerLabelsChecked} answer labels the saved-encounter view shows as the entry form does")
+        "${answerLabelsChecked} answer labels the saved-encounter view shows as the entry form does, " +
+        "${imagingChecked} imaging procedures that take a result")

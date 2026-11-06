@@ -823,6 +823,25 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   OpenMRS releases the fixes: `@openmrs/esm-dispensing-app` 1.11.2-uvl.1 (1.11.2 plus
   openmrs/openmrs-esm-dispensing-app#954 and #955) and `@openmrs/esm-patient-vitals-app`
   13.0.2-pre.12863.uvl.1 (13.0.2-pre.12863 plus openmrs/openmrs-esm-patient-chart#3859).
+- **Every X-ray takes a result.** The 22 body-part X-rays (« Radiographie du/de la … », #212) had
+  datatype N/A, so they could be ordered and paid but the lab app refused their result with
+  « Configuration d'analyse invalide ». Only RX01–RX07 and EC01–EC02 took one. The 22 now have
+  datatype Text, like RX01, and the result is free text. Liquibase `xray_procedures_text_datatype-20261106`
+  makes the same change, because the OCL import skips a datatype change on a concept that already
+  has observations. OCL: uvl-custom 20261106; `UVL_procedures_20261106` replaces
+  `UVL_procedures_20261001`. That export also brings the French names of GO302 « Épisiotomie » and
+  GO108 « Myomectomie » (#475), which the full import reported as failing (#533). The "Imaging
+  procedures" set stays in `concepts/imaging_procedures.csv`, and the d0b5d4a0 ultrasound, CT and
+  echo concepts stay active, as in 20261001. The build now fails when a member of that set has
+  datatype N/A in the OCL exports (`scripts/check-ampath-forms.groovy`). (#546)
+- **The « Admission en service » form reads in French.** Its question names came from the concepts,
+  which had English names only. New French names: « Décision d'hospitalisation » (Inpatient
+  disposition construct), « Orientation du patient » (Inpatient patient disposition), « Admettre à
+  l'hôpital », « Sortie de l'hôpital », « Admis au service », « Service de transfert interne » and
+  « Décision d'admission » (the ward app's admission decision). English names are unchanged. OCL:
+  uvl-ciel 20261106; `UVL_ipd_20261106` replaces `UVL_ipd_20261105-1`. The build's French-name check
+  now also covers form questions given as `CIEL:nnn`, through the export concept mapped SAME-AS to
+  that code. (#546)
 - **A maternity form can no longer be saved for a male patient.** The seven maternity forms show
   only a "not applicable" note to a male patient, but Save still created an empty encounter that
   counted in encounter-based reports. The page now says "Ce formulaire concerne uniquement les
