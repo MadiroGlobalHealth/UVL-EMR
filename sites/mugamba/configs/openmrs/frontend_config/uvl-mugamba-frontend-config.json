@@ -116,7 +116,9 @@
         "expandEncounter": "Développer la consultation",
         "printEncounter": "Imprimer cette consultation",
         "printSelected": "Imprimer la sélection",
-        "recordedVia": "Enregistré via {{formName}}"
+        "recordedVia": "Enregistré via {{formName}}",
+        "paginationPageText_one": "sur {{count}} page",
+        "paginationPageText_other": "sur {{count}} pages"
       }
     }
   },
@@ -165,6 +167,11 @@
             "target": "/openmrs/oauth2logout"
           }
         }
+      }
+    },
+    "Translation overrides": {
+      "fr": {
+        "changeDefaultLocaleExplanation": "Laissez cette case décochée pour changer la langue de cette session uniquement."
       }
     }
   },
@@ -215,6 +222,10 @@
         "maxPinnedOrdersSubtitle": "Vous pouvez avoir au plus {{max}} prescriptions favorites",
         "errorLoadingFavorites": "Erreur lors du chargement des prescriptions favorites",
         "pinOrder": "Épingler la prescription",
+        "orderPinned": "Prescription épinglée",
+        "orderUnpinned": "Prescription désépinglée",
+        "ordersUnpinned": "Prescriptions désépinglées",
+        "drugAlreadyPrescribed": "Déjà prescrit",
         "unpinOrder": "Désépingler la prescription",
         "orderPlaced": "Prescription enregistrée",
         "orderUpdated": "Prescription mise à jour",
@@ -659,6 +670,11 @@
   "@openmrs/esm-patient-list-management-app": {
     "Display conditions": {
       "privileges": ["Get Patient Cohorts"]
+    },
+    "Translation overrides": {
+      "fr": {
+        "emptyStateText": "Aucune liste de patients {{listType}} à afficher"
+      }
     }
   },
   "@openmrs/esm-system-admin-app": {
@@ -772,7 +788,10 @@
         "errorAdmittingPatient": "Échec de l'admission de {{patientName}}",
         "errorTransferringPatient": "Échec du transfert de {{patientName}}",
         "visitRequiredToAdmitPatient": "Une visite est nécessaire pour admettre ce patient dans le service",
-        "noBedsConfiguredForLocation": "Aucun lit configuré pour {{location}} : le patient est admis sans lit."
+        "noBedsConfiguredForLocation": "Aucun lit configuré pour {{location}} : le patient est admis sans lit.",
+        "orderBasket": "Ordonnance",
+        "Labs": "Examens",
+        "pendingDischarge": "En attente de sortie"
       }
     }
   }
