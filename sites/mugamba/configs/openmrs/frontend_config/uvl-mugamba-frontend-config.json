@@ -676,6 +676,7 @@
     ]
   },
   "@openmrs/esm-ward-app": {
+    "restrictTransferLocationsToVisitLocation": false,
     "Translation overrides": {
       "fr": {
         "totalBeds": "Total des lits",
