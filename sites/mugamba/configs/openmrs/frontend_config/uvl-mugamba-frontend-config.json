@@ -1,4 +1,27 @@
 {
+  "core": {
+    "Translation overrides": {
+      "fr": {
+        "paginationItemsCount": "{{pageItemsCount}} / {{totalItems}} éléments",
+        "paginationOfPages": "sur {{count}} pages",
+        "discardUnsavedChangesPromptTitle": "Abandonner les modifications non enregistrées ?",
+        "discardUnsavedChangesPromptBodySingle": "<strong>{{workspaceTitle}}</strong> contient des modifications non enregistrées. Le fermer les abandonnera.",
+        "discardUnsavedChangesPromptBodyMultiple": "{{count}} espaces de travail contiennent des modifications non enregistrées. Les fermer abandonnera ces modifications :",
+        "keepEditing": "Continuer la saisie",
+        "emptyStateText": "Aucun(e) {{displayText}} à afficher",
+        "recordNewEntry": "Enregistrer {{displayText}}",
+        "seeAll": "Tout voir",
+        "noResultsToDisplay": "Aucun résultat à afficher",
+        "selectAll": "Tout sélectionner",
+        "notAvailable": "Non disponible",
+        "abnormalValue": "Valeur anormale",
+        "reload": "Recharger",
+        "somethingWentWrongTryReloading": "Une erreur s'est produite. Rechargez la page.",
+        "yearAbbreviation": "an",
+        "yearsAbbreviation": "ans"
+      }
+    }
+  },
   "@openmrs/esm-app-shell": {
     "Enabled feature flags": ["enable-embedded-form-view", "rde"]
   },
@@ -143,16 +166,6 @@
           }
         }
       }
-    },
-    "Translation overrides": {
-      "fr": {
-        "changeDefaultLocale": "Enregistrer comme langue par défaut (administrateur uniquement)",
-        "changeDefaultLocaleExplanation": "Décochez cette case pour changer la langue de cette session."
-      },
-      "en": {
-        "changeDefaultLocale": "Save as my default language (administrator only)",
-        "changeDefaultLocaleExplanation": "Untick this box to change the language for this session."
-      }
     }
   },
   "@openmrs/esm-active-visits-app": {
@@ -200,7 +213,18 @@
         "ordersUnpinnedSubtitle_other": "{{count}} prescriptions retirées de vos favorites",
         "maxPinnedOrdersReached": "Nombre maximal de prescriptions favorites atteint",
         "maxPinnedOrdersSubtitle": "Vous pouvez avoir au plus {{max}} prescriptions favorites",
-        "errorLoadingFavorites": "Erreur lors du chargement des prescriptions favorites"
+        "errorLoadingFavorites": "Erreur lors du chargement des prescriptions favorites",
+        "pinOrder": "Épingler la prescription",
+        "unpinOrder": "Désépingler la prescription",
+        "orderPlaced": "Prescription enregistrée",
+        "orderUpdated": "Prescription mise à jour",
+        "ordersUpdated": "Prescriptions mises à jour",
+        "orderDiscontinued": "Prescription arrêtée",
+        "ordersDiscontinued": "Prescriptions arrêtées",
+        "ordersCompleted": "Prescriptions terminées",
+        "orderedFor": "Prescription enregistrée pour",
+        "updated": "Mis à jour",
+        "discontinued": "Arrêté"
       }
     }
   },
@@ -348,7 +372,16 @@
         "backToOrderBasket": "Retour à l'ordonnance",
         "returnToOrderBasket": "Retour à l'ordonnance",
         "ordersPlaced": "Prescriptions enregistrées",
-        "procedureOrders": "Actes"
+        "procedureOrders": "Actes",
+        "orderPlaced": "Prescription enregistrée",
+        "orderUpdated": "Prescription mise à jour",
+        "ordersUpdated": "Prescriptions mises à jour",
+        "orderDiscontinued": "Prescription arrêtée",
+        "ordersDiscontinued": "Prescriptions arrêtées",
+        "ordersCompleted": "Prescriptions terminées",
+        "orderedFor": "Prescription enregistrée pour",
+        "updated": "Mis à jour",
+        "discontinued": "Arrêté"
       },
       "en": {
         "procedureOrders": "Procedures"
@@ -404,7 +437,17 @@
         "futureMedicationsHeaderTitle": "Traitements à venir",
         "futureMedicationsTableTitle": "Traitements à venir",
         "launchOrderBasket": "Accéder à l'ordonnance",
-        "ordersPlaced": "Prescriptions enregistrées"
+        "ordersPlaced": "Prescriptions enregistrées",
+        "quantityAutoCalculated": "Calculée automatiquement",
+        "orderPlaced": "Prescription enregistrée",
+        "orderUpdated": "Prescription mise à jour",
+        "ordersUpdated": "Prescriptions mises à jour",
+        "orderDiscontinued": "Prescription arrêtée",
+        "ordersDiscontinued": "Prescriptions arrêtées",
+        "ordersCompleted": "Prescriptions terminées",
+        "orderedFor": "Prescription enregistrée pour",
+        "updated": "Mis à jour",
+        "discontinued": "Arrêté"
       }
     }
   },
@@ -639,6 +682,9 @@
         "selectStockDispense": "Pick a batch to enable Dispense"
       },
       "fr": {
+        "medicationDispensed": "Médicament délivré.",
+        "medicationDispenseUpdated": "Délivrance du médicament mise à jour.",
+        "orderedMedication": "a prescrit le médicament",
         "stockDispense": "Lot à délivrer (obligatoire)",
         "selectStockDispense": "Choisir un lot pour pouvoir délivrer",
         "freeTextDosage": "Dosage libre",
@@ -708,12 +754,13 @@
     ]
   },
   "@openmrs/esm-ward-app": {
+    "restrictTransferLocationsToVisitLocation": false,
     "Translation overrides": {
       "fr": {
         "totalBeds": "Total des lits",
         "wardPatient": "Patient du service",
         "activeVisit": "Visite en cours",
-        "startedDatetime": "Débutée le {{datetime}}",
+        "startedDatetime": "Début : {{datetime}}",
         "patientAdmittedToLocation": "{{patientName}} admis(e) à {{location}}",
         "patientAdmittedWoBed": "{{patientName}} admis(e) à {{location}}",
         "patientAdmittedButBedNotAssigned": "{{patientName}} admis(e), mais le lit n'a pas pu être attribué",
