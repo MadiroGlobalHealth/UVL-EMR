@@ -1,0 +1,25 @@
+<config>
+    <globalProperties>
+        <!--
+          #322. Results on an imaging order are refused until it is paid (imagingpaymentgate
+          module, distro/binaries/openmrs/modules). "Paid" is the payment Task the Odoo bridge
+          sets to accepted.
+
+          The gated orders are the members of the "Imaging procedures" concept set
+          (concepts/imaging_procedures.csv), the set the EIP bridges are moving to (#340). Every
+          member is in the bridges' radiology list, so each gated order gets a payment Task that
+          a payment can accept. A concept added to the set must also be in the bridges' list.
+
+          RX and EC orders are order type Procedure, like the consultation charge, so the order
+          type cannot be the criterion; imagingpaymentgate.orderTypeUuids stays empty.
+        -->
+        <globalProperty>
+            <property>imagingpaymentgate.enabled</property>
+            <value>true</value>
+        </globalProperty>
+        <globalProperty>
+            <property>imagingpaymentgate.conceptSetUuids</property>
+            <value>b5ec1461-30af-4b01-b656-4e13dc2ba056</value>
+        </globalProperty>
+    </globalProperties>
+</config>

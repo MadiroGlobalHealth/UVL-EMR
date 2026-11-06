@@ -74,6 +74,14 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   because they don't go through translation: the list pagination (« Items per page », « of 1
   page ») and the encounter and visit names built by the server (e.g. « Inpatient visit @ … »).
   (#529)
+- **An X-ray or ultrasound result can't be saved until the exam is paid.** "Entrer des résultats"
+  from the chart's Orders, the Laboratory app and the API all refuse it with « Résultats refusés :
+  le paiement de la commande d'imagerie ORD-… n'est pas confirmé. Faites régler la facture à la
+  caisse, puis réessayez. » (English: "Results refused: payment for imaging order ORD-… is not
+  confirmed. Have the invoice paid at the cashier, then try again."). The order can't be marked
+  Completed either. Once the cashier takes payment, the bridge accepts the order's payment Task
+  within about a minute and the same result saves. Other results (lab, procedures) are unchanged.
+  An administrator can still save in an emergency; that is logged. (#322)
 - **The Change language dialog says how to change language for the session.** Its checkbox is
   ticked every time the dialog opens; ticked, it saves the language as the account's default,
   which only the administrator may do (`Edit Users`, removed from clinical roles in #502), so
@@ -403,6 +411,18 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   `bedmanagement.mandatory` is false, so patients are admitted without a bed (the Ward app shows
   « Aucun lit configuré »). Room-class rates and inpatient billing wait on the fee schedule.
   (#246)
+- **OpenMRS module `imagingpaymentgate` 1.0.0-SNAPSHOT** (`distro/binaries/openmrs/modules`,
+  source `openmrs-module-imagingpaymentgate`), the server-side imaging payment gate. A new or
+  changed obs that references a gated order, and marking that order COMPLETED, are refused with
+  HTTP 402 unless the order's payment Task (eip-odoo-openmrs) is `accepted`. Payment is looked up
+  in SQL by the order's own uuid, not through a FHIR search, so an ignored search filter can't let
+  one paid invoice authorise other orders. Hooks: before-advice on `ObsService`,
+  `EncounterService` and `OrderService`, plus a Hibernate interceptor on Obs inserts for writes
+  that bypass them (FHIR Observation). Gated orders are the members of the "Imaging procedures"
+  concept set (`imagingpaymentgate.conceptSetUuids`, new site file
+  `globalproperties/imaging-payment-gate.xml`); `imagingpaymentgate.enabled=false` turns it off.
+  New privilege `Bypass Imaging Payment Gate`, held by no role (superusers have it implicitly);
+  every bypass is logged at WARN. A failed payment lookup refuses. (#322)
 - UVL frontend module `@madiro/esm-uvl-partograph-app` 1.0.1 (`distro/frontend/esm-uvl-partograph-app`,
   `dist/` committed), packed by `distro/pom.xml` and pinned in `spa-assemble-config.json` as
   `file:madiro-esm-uvl-partograph-app.tgz`, like the imaging module. Extension
