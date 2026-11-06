@@ -743,6 +743,16 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   `ODOO_DURATION_UNIT_LABELS` (set for UVL in LIME-EMR-Tooling's `docker-compose-odoo-sso-uvl.yml`
   and in `scripts/docker/docker-compose-override.yml`). Lines already on a quotation keep their
   text. Bridge: jnsereko/eip-odoo-openmrs `fix/539-duration-labels` e420457, on 06151ac. (#539)
+- **A second prescription of the same drug on one visit is billed.** Paracetamol prescribed and 10
+  dispensed, then discontinued and prescribed again with 10 more dispensed, left one line of 10 on the
+  quotation: the bridge kept one line per drug and skipped the repeat, and the discontinue removed the
+  line even though the tablets had been given. The drug's line now bills every prescription of that
+  drug in the visit: an active one its quantity to dispense (as before), a discontinued or revised one
+  what was dispensed against it, nothing if nothing was. A prescription closed or paused with nothing
+  dispensed is still not billed (#393), a syrup or cream is still one container per prescription
+  (#385), and what a confirmed quotation of the visit already bills is not billed again (#434). A
+  quantity the cashier raised by hand is not lowered by the next dispense. Bridge:
+  jnsereko/eip-odoo-openmrs `fix/544-repeat-drug-billing` 8664102, on e420457. (#544)
 - **A maternity form can no longer be saved for a male patient.** The seven maternity forms show
   only a "not applicable" note to a male patient, but Save still created an empty encounter that
   counted in encounter-based reports. The page now says "Ce formulaire concerne uniquement les
