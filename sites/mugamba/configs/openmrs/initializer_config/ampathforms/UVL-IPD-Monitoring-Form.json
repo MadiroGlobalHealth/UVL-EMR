@@ -126,27 +126,26 @@
                 "answers": [
                   {
                     "concept": "137b0800-a9dd-49d0-ab42-1dcdc91eca74",
-                    "label": "Nasal Cannula"
+                    "label": "Lunettes nasales"
                   },
                   {
                     "concept": "705e6d1f-94eb-4142-8918-22bb81be2208",
-                    "label": "Simple Mask"
+                    "label": "Masque simple"
                   },
                   {
                     "concept": "7bcd2ec2-a142-463c-8089-ad99d93e1d9b",
-                    "label": "Non-rebreather Mask"
+                    "label": "Masque à haute concentration"
                   },
                   {
                     "concept": "1b37fbcd-1f60-4a84-b73f-084eac0ee059",
-                    "label": "Venturi Mask"
+                    "label": "Masque Venturi"
                   },
                   {
                     "concept": "796d9d6a-a013-46ea-9f6a-77c77bd7b623",
-                    "label": "High-flow Nasal Cannula"
+                    "label": "Lunettes nasales à haut débit"
                   },
                   {
-                    "concept": "b5c4b807-d3de-40cd-aae9-178df9b40535",
-                    "label": "Other"
+                    "concept": "b5c4b807-d3de-40cd-aae9-178df9b40535"
                   }
                 ]
               }
@@ -437,16 +436,13 @@
                 "concept": "367b48b8-ef82-48d7-9523-f3ee3a3c0b13",
                 "answers": [
                   {
-                    "concept": "7dd06052-3e8b-4721-b9a2-5c1361115a4b",
-                    "label": "Morning"
+                    "concept": "7dd06052-3e8b-4721-b9a2-5c1361115a4b"
                   },
                   {
-                    "concept": "034dea03-6741-4f65-bc22-838085ea377a",
-                    "label": "Midday"
+                    "concept": "034dea03-6741-4f65-bc22-838085ea377a"
                   },
                   {
-                    "concept": "e2cf2a07-1c10-4e17-bf1d-45a4452a85ae",
-                    "label": "Evening"
+                    "concept": "e2cf2a07-1c10-4e17-bf1d-45a4452a85ae"
                   }
                 ]
               }

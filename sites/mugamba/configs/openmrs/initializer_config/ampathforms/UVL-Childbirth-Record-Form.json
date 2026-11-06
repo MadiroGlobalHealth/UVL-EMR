@@ -70,19 +70,18 @@
                 "answers": [
                   {
                     "concept": "f8fbea1a-8579-4733-9add-59dfa2adc453",
-                    "label": "Emergency"
+                    "label": "Urgence"
                   },
                   {
                     "concept": "c7a026fc-72c8-4184-9ed6-6f0238cc37d0",
-                    "label": "Transfer"
+                    "label": "Transfert"
                   },
                   {
                     "concept": "32c4ff3f-923d-407a-8ab6-e69fc88b0b4f",
-                    "label": "Spontaneous"
+                    "label": "Spontané"
                   },
                   {
-                    "concept": "b5c4b807-d3de-40cd-aae9-178df9b40535",
-                    "label": "Other"
+                    "concept": "b5c4b807-d3de-40cd-aae9-178df9b40535"
                   }
                 ]
               }
@@ -96,12 +95,10 @@
                 "concept": "45436fbd-f7ae-457b-950e-fd1aa1951118",
                 "answers": [
                   {
-                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e",
-                    "label": "Yes"
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e"
                   },
                   {
-                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725",
-                    "label": "No"
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725"
                   }
                 ]
               }
@@ -163,12 +160,10 @@
                 "concept": "f049ea0a-0b92-443a-aab5-74b0a3c98124",
                 "answers": [
                   {
-                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e",
-                    "label": "Yes"
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e"
                   },
                   {
-                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725",
-                    "label": "No"
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725"
                   }
                 ]
               }
@@ -233,19 +228,19 @@
                 "answers": [
                   {
                     "concept": "67996910-c7ad-42cd-bc62-84c87c8b8be9",
-                    "label": "Pelvic / uterine pain as contractions"
+                    "label": "Présence de douleurs pelviennes / utérines sous forme de contractions"
                   },
                   {
                     "concept": "981849cb-0f33-4374-aae7-709eea81556f",
-                    "label": "Pre-eclampsia suspected or confirmed"
+                    "label": "Pré-éclampsie suspectée ou confirmée"
                   },
                   {
                     "concept": "4515e0cb-d87e-4a99-9b5d-1688adcf4e8f",
-                    "label": "Malaria in pregnancy"
+                    "label": "Paludisme associé à la grossesse"
                   },
                   {
                     "concept": "75db5d44-48c5-4091-8585-e4710f9dca76",
-                    "label": "HBV+ (Hepatitis B positive)"
+                    "label": "HBV+ (Hépatite B positive)"
                   }
                 ]
               }
@@ -260,11 +255,11 @@
                 "answers": [
                   {
                     "concept": "8edea3c3-d5de-4772-9d14-abed591bf957",
-                    "label": "Uncomplicated"
+                    "label": "Accès simple"
                   },
                   {
                     "concept": "7906e56e-4729-4a54-970c-3e199f407992",
-                    "label": "Severe"
+                    "label": "Accès grave"
                   }
                 ]
               },
@@ -281,12 +276,10 @@
                 "concept": "36dd8582-c239-4463-adb3-ecfc8f954430",
                 "answers": [
                   {
-                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e",
-                    "label": "Yes"
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e"
                   },
                   {
-                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725",
-                    "label": "No"
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725"
                   }
                 ]
               },
@@ -385,12 +378,10 @@
                 "concept": "c8a1fa0e-c6dd-4bff-b7fa-36cddce09e03",
                 "answers": [
                   {
-                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e",
-                    "label": "Yes"
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e"
                   },
                   {
-                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725",
-                    "label": "No"
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725"
                   }
                 ]
               }
@@ -453,15 +444,15 @@
                 "answers": [
                   {
                     "concept": "a426b306-3c23-4ebf-9459-50ad49560ad5",
-                    "label": "Caesarean section"
+                    "label": "Césarienne"
                   },
                   {
                     "concept": "ad33b801-c6ef-4ae7-8e3e-59a6473069db",
-                    "label": "Myomectomy"
+                    "label": "Myomectomie"
                   },
                   {
                     "concept": "e97fe72b-28bf-438c-951d-4e0bedea8d0e",
-                    "label": "Ectopic pregnancy"
+                    "label": "Grossesse extra-utérine"
                   }
                 ]
               }
@@ -497,19 +488,19 @@
                 "answers": [
                   {
                     "concept": "2ee7f690-0ec2-4be1-ba18-556f934c1942",
-                    "label": "Hypertension"
+                    "label": "HTA"
                   },
                   {
                     "concept": "505ce8f3-84ee-4936-b7f2-d0083bed8b97",
-                    "label": "Diabetes"
+                    "label": "Diabète"
                   },
                   {
                     "concept": "723d9b6e-86d9-40f3-8f0c-242bf3338b54",
-                    "label": "Nephropathy"
+                    "label": "Néphropathie"
                   },
                   {
                     "concept": "ce39d6af-a74f-40d7-a06f-ead8cb298126",
-                    "label": "Heart disease"
+                    "label": "Cardiopathies"
                   }
                 ]
               }
@@ -535,16 +526,15 @@
                 "concept": "ee47af2f-438b-4bf1-b528-26ef24a5c6ea",
                 "answers": [
                   {
-                    "concept": "b8cbdb46-7e7b-4afe-a604-11340acf96d6",
-                    "label": "Hospital"
+                    "concept": "b8cbdb46-7e7b-4afe-a604-11340acf96d6"
                   },
                   {
                     "concept": "61967a86-6cc2-42aa-82b4-3e7cb39da619",
-                    "label": "Health Centre"
+                    "label": "Centre de Santé"
                   },
                   {
                     "concept": "f5f15fa7-a96d-465c-aedc-8f6f21ee6e73",
-                    "label": "Private Clinic"
+                    "label": "Clinique privée"
                   }
                 ]
               }
@@ -579,12 +569,10 @@
                 "concept": "2e816317-73e0-4f67-89be-dc0081fd3dcc",
                 "answers": [
                   {
-                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e",
-                    "label": "Yes"
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e"
                   },
                   {
-                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725",
-                    "label": "No"
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725"
                   }
                 ]
               }
@@ -650,24 +638,22 @@
                 "concept": "bf8d41d2-8d5a-4224-b259-ea0665bafff4",
                 "answers": [
                   {
-                    "concept": "b1a1d695-7e4e-43cd-8263-f0a6ab770de4",
-                    "label": "Metrorrhagia"
+                    "concept": "b1a1d695-7e4e-43cd-8263-f0a6ab770de4"
                   },
                   {
                     "concept": "1c05e1f1-b1f2-4d30-8d82-3bd47e036d0b",
-                    "label": "Intravaginal fluid leak (premature rupture of membranes)"
+                    "label": "Écoulement liquidien intra-vaginal (rupture prématurée des membranes)"
                   },
                   {
                     "concept": "67996910-c7ad-42cd-bc62-84c87c8b8be9",
-                    "label": "Lumbar / pelvic pain as uterine contractions"
+                    "label": "Douleurs lombaires / pelviennes sous forme de contractions utérines"
                   },
                   {
-                    "concept": "a0a67e27-42b0-4502-8e7f-f4d46eae0a24",
-                    "label": "Anaemia"
+                    "concept": "a0a67e27-42b0-4502-8e7f-f4d46eae0a24"
                   },
                   {
                     "concept": "2cf73d01-4716-4171-8c42-101660b86cc2",
-                    "label": "Lower limb oedema (OMI)"
+                    "label": "OMI"
                   }
                 ]
               }
@@ -682,19 +668,18 @@
                 "answers": [
                   {
                     "concept": "2ee7f690-0ec2-4be1-ba18-556f934c1942",
-                    "label": "Hypertension"
+                    "label": "HTA"
                   },
                   {
                     "concept": "505ce8f3-84ee-4936-b7f2-d0083bed8b97",
-                    "label": "Diabetes"
+                    "label": "Diabète"
                   },
                   {
                     "concept": "4515e0cb-d87e-4a99-9b5d-1688adcf4e8f",
-                    "label": "Malaria"
+                    "label": "Paludisme"
                   },
                   {
-                    "concept": "085bab88-5235-4e14-902d-ab1055156240",
-                    "label": "Urinary tract infection"
+                    "concept": "085bab88-5235-4e14-902d-ab1055156240"
                   }
                 ]
               }
@@ -709,19 +694,19 @@
                 "answers": [
                   {
                     "concept": "3f108aa3-7a75-434b-b86f-7b6355d8711d",
-                    "label": "Antimalarial chemoprophylaxis"
+                    "label": "Chimioprophylaxie anti-paludique"
                   },
                   {
                     "concept": "34523751-b025-42b7-8f5a-2393988f63f2",
-                    "label": "Iron / folic acid"
+                    "label": "Fer / acide folique"
                   },
                   {
                     "concept": "5f812f33-2e82-4dd2-92f6-55d81d1e5ffd",
-                    "label": "Deworming (albendazole)"
+                    "label": "Déparasitage (albendazole)"
                   },
                   {
                     "concept": "6f2e9367-a9e4-44a5-8cfa-88aa67ed69fa",
-                    "label": "Uterotonic for AMTSL"
+                    "label": "Utérotonique pour GATPA"
                   }
                 ]
               }
@@ -747,12 +732,10 @@
                 "concept": "5a34a049-1d83-4875-9a51-bfb9723452aa",
                 "answers": [
                   {
-                    "concept": "5ebcf822-0398-43ef-8d70-117e363541da",
-                    "label": "Positive"
+                    "concept": "5ebcf822-0398-43ef-8d70-117e363541da"
                   },
                   {
-                    "concept": "5c8d6240-9cc2-4bc1-b783-30eb887f950c",
-                    "label": "Negative"
+                    "concept": "5c8d6240-9cc2-4bc1-b783-30eb887f950c"
                   }
                 ]
               }
@@ -766,12 +749,10 @@
                 "concept": "d9a94f49-412b-41fe-ac47-437dbc66ffda",
                 "answers": [
                   {
-                    "concept": "5ebcf822-0398-43ef-8d70-117e363541da",
-                    "label": "Positive"
+                    "concept": "5ebcf822-0398-43ef-8d70-117e363541da"
                   },
                   {
-                    "concept": "5c8d6240-9cc2-4bc1-b783-30eb887f950c",
-                    "label": "Negative"
+                    "concept": "5c8d6240-9cc2-4bc1-b783-30eb887f950c"
                   }
                 ]
               }
@@ -785,12 +766,10 @@
                 "concept": "6af22417-adc8-4d40-bc13-3a552bb131ea",
                 "answers": [
                   {
-                    "concept": "5ebcf822-0398-43ef-8d70-117e363541da",
-                    "label": "Positive"
+                    "concept": "5ebcf822-0398-43ef-8d70-117e363541da"
                   },
                   {
-                    "concept": "5c8d6240-9cc2-4bc1-b783-30eb887f950c",
-                    "label": "Negative"
+                    "concept": "5c8d6240-9cc2-4bc1-b783-30eb887f950c"
                   }
                 ]
               }
@@ -828,20 +807,19 @@
                 "concept": "5fac5cd6-13d3-4851-a20c-d02cb21320be",
                 "answers": [
                   {
-                    "concept": "9252290a-63a4-4304-9f04-9ce72431fe08",
-                    "label": "Known HIV positive before pregnancy"
+                    "concept": "9252290a-63a4-4304-9f04-9ce72431fe08"
                   },
                   {
                     "concept": "675b5522-fa0e-4b43-a5bc-0189209f067c",
-                    "label": "HIV positive, diagnosed in this pregnancy"
+                    "label": "VIH+ dépisté pendant la grossesse"
                   },
                   {
                     "concept": "c1abc032-80a8-4544-ba97-2b8396592a46",
-                    "label": "HIV negative"
+                    "label": "VIH négatif"
                   },
                   {
                     "concept": "7441b681-e89e-470e-8f74-24bbe2b5217c",
-                    "label": "Status unknown"
+                    "label": "Statut inconnu"
                   }
                 ]
               }
@@ -855,12 +833,10 @@
                 "concept": "3e676d27-7970-40c8-9f36-6593f326d845",
                 "answers": [
                   {
-                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e",
-                    "label": "Yes"
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e"
                   },
                   {
-                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725",
-                    "label": "No"
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725"
                   }
                 ]
               }
@@ -933,19 +909,18 @@
                 "answers": [
                   {
                     "concept": "c272a848-c97e-4119-a1e1-544b011fa752",
-                    "label": "Cephalic"
+                    "label": "Céphalique"
                   },
                   {
                     "concept": "e5b0895f-f128-40db-9ba7-713e5ff98e00",
-                    "label": "Breech"
+                    "label": "Siège"
                   },
                   {
                     "concept": "270574b0-31a7-4b9e-83bc-b613b403d9f8",
                     "label": "Transverse"
                   },
                   {
-                    "concept": "b5c4b807-d3de-40cd-aae9-178df9b40535",
-                    "label": "Other"
+                    "concept": "b5c4b807-d3de-40cd-aae9-178df9b40535"
                   }
                 ]
               }
@@ -1079,15 +1054,15 @@
                 "answers": [
                   {
                     "concept": "1115AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-                    "label": "Normal (pink)"
+                    "label": "Normales (colorées)"
                   },
                   {
                     "concept": "3157daa5-93aa-4ac2-912c-5e4379116bf0",
-                    "label": "Pale"
+                    "label": "Pâles"
                   },
                   {
                     "concept": "91771868-aff4-4fd1-a3f7-d8a5acea2d5c",
-                    "label": "Icteric"
+                    "label": "Ictériques"
                   }
                 ]
               }
@@ -1102,19 +1077,17 @@
                 "answers": [
                   {
                     "concept": "56b129c4-0d37-4952-b9c6-7f5c52515216",
-                    "label": "Alert"
+                    "label": "Alerte"
                   },
                   {
-                    "concept": "41c521eb-a39c-42e5-8d87-0ad505fc9774",
-                    "label": "Responds to voice"
+                    "concept": "41c521eb-a39c-42e5-8d87-0ad505fc9774"
                   },
                   {
-                    "concept": "fd4d6f57-4709-44cd-8b91-8ed55710fd8d",
-                    "label": "Responds to pain"
+                    "concept": "fd4d6f57-4709-44cd-8b91-8ed55710fd8d"
                   },
                   {
                     "concept": "27674481-f383-4ad0-93f2-e6e8b3eb5e45",
-                    "label": "Unresponsive"
+                    "label": "Ne réagit pas"
                   }
                 ]
               }
@@ -1154,11 +1127,11 @@
                   },
                   {
                     "concept": "450f217d-34fe-465b-b4dc-52bc2198b37b",
-                    "label": "Borderline"
+                    "label": "Limite"
                   },
                   {
                     "concept": "d0b9ff62-59c5-492b-a7bf-6ef6416180b5",
-                    "label": "Contracted"
+                    "label": "Rétréci"
                   }
                 ]
               }
@@ -1209,11 +1182,11 @@
                 "answers": [
                   {
                     "concept": "9c4e7be2-47a0-4838-bb24-4b2796844f21",
-                    "label": "Intact"
+                    "label": "Intacte"
                   },
                   {
                     "concept": "65cedc3a-502e-4380-8fe2-8b0d03801524",
-                    "label": "Ruptured"
+                    "label": "Rompue"
                   }
                 ]
               }
@@ -1325,7 +1298,7 @@
                 "answers": [
                   {
                     "concept": "95a06703-15e4-493c-bc65-9d7ff4448a4d",
-                    "label": "Episiotomy"
+                    "label": "Épisiotomie"
                   },
                   {
                     "concept": "9270cf59-2a50-4c06-b119-3bcba54b12b9",
@@ -1353,31 +1326,31 @@
                 "answers": [
                   {
                     "concept": "638ddd5f-dc66-469a-8497-d056addd6e02",
-                    "label": "Perineal tear"
+                    "label": "Déchirure périnéale"
                   },
                   {
                     "concept": "bdc1ea1f-2a7d-424d-a3d0-5a3bab9f5e33",
-                    "label": "Vaginal tear"
+                    "label": "Déchirure vaginale"
                   },
                   {
                     "concept": "56fd47e3-6f14-4ee4-8ddf-1a54d8ecd90a",
-                    "label": "Cervical tear"
+                    "label": "Déchirure du col"
                   },
                   {
                     "concept": "7b7945b4-625b-4f0f-9288-2598e6602230",
-                    "label": "Uterine rupture"
+                    "label": "Déchirure utérine"
                   },
                   {
                     "concept": "af56e6aa-3148-4a9b-a9c3-0000d39de2ed",
-                    "label": "Fistula"
+                    "label": "Fistule"
                   },
                   {
                     "concept": "2c87c079-e5d3-49a7-a350-a10d449e3697",
-                    "label": "Antepartum haemorrhage"
+                    "label": "Hémorragie antepartum"
                   },
                   {
                     "concept": "44060e30-bae8-464d-b63b-ec7c83e8f980",
-                    "label": "Postpartum haemorrhage"
+                    "label": "Hémorragie postpartum"
                   },
                   {
                     "concept": "14864b59-f7b3-4ad1-b620-c79f50370b4d",
@@ -1385,19 +1358,18 @@
                   },
                   {
                     "concept": "af8a0f43-0c8d-44f3-aac0-c926f9fff57e",
-                    "label": "Eclampsia"
+                    "label": "Éclampsie"
                   },
                   {
                     "concept": "5b2b9b02-7edf-4ec7-853e-2610711b3482",
-                    "label": "Abortion"
+                    "label": "Avortement"
                   },
                   {
                     "concept": "059d5f70-20d1-4b5c-a7bf-b26b605e5d11",
-                    "label": "Prematurity"
+                    "label": "Prématurité"
                   },
                   {
-                    "concept": "69c8d26c-cbdb-4773-9ac9-59cba7f761b5",
-                    "label": "Maternal death"
+                    "concept": "69c8d26c-cbdb-4773-9ac9-59cba7f761b5"
                   }
                 ]
               }
@@ -1502,12 +1474,10 @@
                     "concept": "9be23fa1-bd0d-4968-abe9-f96c31f4ee5e",
                     "answers": [
                       {
-                        "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e",
-                        "label": "Yes"
+                        "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e"
                       },
                       {
-                        "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725",
-                        "label": "No"
+                        "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725"
                       }
                     ]
                   }
@@ -1609,12 +1579,10 @@
                 "concept": "8d1c9d81-52a4-4c0f-84f1-215d3378428a",
                 "answers": [
                   {
-                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e",
-                    "label": "Yes"
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e"
                   },
                   {
-                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725",
-                    "label": "No"
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725"
                   }
                 ]
               }
@@ -1653,11 +1621,11 @@
                     "answers": [
                       {
                         "concept": "adfdcfe7-f2e9-4eb6-9e49-5b3c795c5870",
-                        "label": "Male"
+                        "label": "Masculin"
                       },
                       {
                         "concept": "d5d86c99-dacc-478e-b2b3-21ccb98a0476",
-                        "label": "Female"
+                        "label": "Féminin"
                       }
                     ]
                   }
@@ -1672,11 +1640,10 @@
                     "answers": [
                       {
                         "concept": "4056a982-6a2d-4062-9514-efcf4e66dd0a",
-                        "label": "Live birth"
+                        "label": "Né vivant"
                       },
                       {
-                        "concept": "63f4b85c-de5a-48e9-a9a5-bf2656c10125",
-                        "label": "Stillbirth"
+                        "concept": "63f4b85c-de5a-48e9-a9a5-bf2656c10125"
                       }
                     ]
                   }
@@ -1724,12 +1691,10 @@
                     "concept": "ff42d2d6-daee-429d-a31b-49338599a793",
                     "answers": [
                       {
-                        "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e",
-                        "label": "Yes"
+                        "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e"
                       },
                       {
-                        "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725",
-                        "label": "No"
+                        "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725"
                       }
                     ]
                   }
@@ -1752,12 +1717,10 @@
                     "concept": "0722acc5-9c9f-4a34-80c8-31e7afcaf325",
                     "answers": [
                       {
-                        "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e",
-                        "label": "Yes"
+                        "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e"
                       },
                       {
-                        "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725",
-                        "label": "No"
+                        "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725"
                       }
                     ]
                   }
@@ -1783,12 +1746,10 @@
                     "concept": "b76fca68-f4f4-45b8-a0dc-74c6eb48b319",
                     "answers": [
                       {
-                        "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e",
-                        "label": "Yes"
+                        "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e"
                       },
                       {
-                        "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725",
-                        "label": "No"
+                        "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725"
                       }
                     ]
                   }

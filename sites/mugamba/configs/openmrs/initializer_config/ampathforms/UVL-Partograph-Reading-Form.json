@@ -119,19 +119,19 @@
                 "answers": [
                   {
                     "concept": "9c4e7be2-47a0-4838-bb24-4b2796844f21",
-                    "label": "I: Membranes intact"
+                    "label": "I : membranes intactes"
                   },
                   {
                     "concept": "1115AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-                    "label": "C: Clear"
+                    "label": "C : clair"
                   },
                   {
                     "concept": "33b7ef0e-ddff-4557-b363-6e72e859e7a2",
-                    "label": "M: Meconium-stained"
+                    "label": "M : méconial"
                   },
                   {
                     "concept": "6aa7408b-43fa-438a-9bac-994591280fa4",
-                    "label": "B: Blood-stained"
+                    "label": "B : teinté de sang"
                   }
                 ]
               }
@@ -146,19 +146,19 @@
                 "answers": [
                   {
                     "concept": "01ff87e9-f0b0-4997-b402-7b12862d1784",
-                    "label": "0: None"
+                    "label": "0 : aucun"
                   },
                   {
                     "concept": "e9fa7532-a9dd-447d-9a32-ef2e3750385b",
-                    "label": "+: Bones touching"
+                    "label": "+ : os en contact"
                   },
                   {
                     "concept": "52506e95-0ae4-4718-b622-d4226b4238dd",
-                    "label": "++: Bones overlapping, reducible"
+                    "label": "++ : chevauchement réductible"
                   },
                   {
                     "concept": "487fb8c7-29c3-4954-937c-090c1a4a4ced",
-                    "label": "+++: Bones overlapping, not reducible"
+                    "label": "+++ : chevauchement irréductible"
                   }
                 ]
               }
