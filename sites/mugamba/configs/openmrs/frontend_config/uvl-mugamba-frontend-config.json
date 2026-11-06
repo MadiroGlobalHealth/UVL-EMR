@@ -183,7 +183,24 @@
         "EXCEPTION": "Exception",
         "IN_PROGRESS": "En cours",
         "ON_HOLD": "En attente",
-        "RECEIVED": "Reçu"
+        "RECEIVED": "Reçu",
+        "STAT": "Urgent",
+        "ROUTINE": "Routine",
+        "ON_SCHEDULED_DATE": "À la date prévue",
+        "testOrders": "demandes d'examen",
+        "ordersPlaced": "Prescriptions enregistrées",
+        "addToPinnedOrders": "Ajouter à mes prescriptions favorites",
+        "removeFromPinnedOrders": "Retirer de mes prescriptions favorites",
+        "myPinnedDrugOrders": "Mes prescriptions favorites",
+        "collapsePinnedOrders": "Réduire les prescriptions favorites",
+        "expandPinnedOrders": "Développer les prescriptions favorites",
+        "orderPinnedSubtitle": "{{drugName}} ajouté à vos prescriptions favorites",
+        "orderUnpinnedSubtitle": "{{drugName}} retiré de vos prescriptions favorites",
+        "ordersUnpinnedSubtitle_one": "{{count}} prescription retirée de vos favorites",
+        "ordersUnpinnedSubtitle_other": "{{count}} prescriptions retirées de vos favorites",
+        "maxPinnedOrdersReached": "Nombre maximal de prescriptions favorites atteint",
+        "maxPinnedOrdersSubtitle": "Vous pouvez avoir au plus {{max}} prescriptions favorites",
+        "errorLoadingFavorites": "Erreur lors du chargement des prescriptions favorites"
       }
     }
   },
@@ -232,7 +249,7 @@
         "id": "chefDeMenage",
         "type": "person attribute",
         "uuid": "c108c6bc-5f23-4e4a-ad34-8c788b86f288",
-        "label": "Chef de ménage (Head of household)",
+        "label": "Chef de ménage",
         "validation": {
           "required": false
         }
@@ -311,7 +328,8 @@
       {
         "orderTypeUuid": "67a92e56-0f88-11ea-8d71-362b9e155667",
         "orderableConceptSets": ["46c8be89-db86-4476-9609-58d184f452c3"],
-        "icon": "omrs-pict-procedure-order"
+        "icon": "omrs-pict-procedure-order",
+        "label": "procedureOrders"
       }
     ],
     "resultsViewerConcepts": [
@@ -328,7 +346,12 @@
       "fr": {
         "removeFromBasket": "Retirer de l'ordonnance",
         "backToOrderBasket": "Retour à l'ordonnance",
-        "returnToOrderBasket": "Retour à l'ordonnance"
+        "returnToOrderBasket": "Retour à l'ordonnance",
+        "ordersPlaced": "Prescriptions enregistrées",
+        "procedureOrders": "Actes"
+      },
+      "en": {
+        "procedureOrders": "Procedures"
       }
     }
   },
@@ -380,7 +403,8 @@
         "futureMedicationsDisplayText": "traitements à venir",
         "futureMedicationsHeaderTitle": "Traitements à venir",
         "futureMedicationsTableTitle": "Traitements à venir",
-        "launchOrderBasket": "Accéder à l'ordonnance"
+        "launchOrderBasket": "Accéder à l'ordonnance",
+        "ordersPlaced": "Prescriptions enregistrées"
       }
     }
   },
@@ -523,6 +547,24 @@
   "@openmrs/esm-patient-notes-app": {
     "Display conditions": {
       "privileges": ["Get Notes"]
+    },
+    "Translation overrides": {
+      "fr": {
+        "stickyNote": "Pense-bête",
+        "stickyNoteCreated": "Pense-bête créé",
+        "stickyNoteUpdated": "Pense-bête mis à jour",
+        "stickyNoteDeleted": "Pense-bête supprimé",
+        "stickyNoteDeletedSuccessfully": "Le pense-bête a été supprimé",
+        "editStickyNote": "Modifier le pense-bête",
+        "deleteStickyNote": "Supprimer le pense-bête",
+        "confirmDeleteStickyNote": "Confirmer la suppression du pense-bête",
+        "confirmDeleteStickyNoteMessage": "Voulez-vous vraiment supprimer ce pense-bête ?",
+        "enterNotePlaceholder": "Saisissez votre pense-bête ici...",
+        "errorSavingStickyNote": "Erreur lors de l'enregistrement du pense-bête",
+        "errorLoadingStickyNote": "Impossible de charger le pense-bête.",
+        "errorDeletingStickyNote": "Erreur lors de la suppression du pense-bête",
+        "errorDeletingStickyNoteMessage": "Une erreur s'est produite lors de la suppression du pense-bête"
+      }
     }
   },
   "@openmrs/esm-appointments-app": {
@@ -541,7 +583,18 @@
     },
     "Translation overrides": {
       "fr": {
-        "change": "Changer"
+        "change": "Changer",
+        "changeQueueLocation": "Changer de lieu de file d'attente",
+        "avgWaitTime": "Attente moyenne",
+        "averageWait": "Attente moyenne",
+        "longestWait": "Attente la plus longue",
+        "waiting": "En attente",
+        "waitingList": "Liste d'attente",
+        "waitingListWithCount_one": "Liste d'attente ({{count}})",
+        "waitingListWithCount_other": "Liste d'attente ({{count}})",
+        "addAPatientToThisList": "Ajouter un patient à cette liste",
+        "noOneBeingAttended": "Aucun patient n'est en cours de prise en charge",
+        "noActiveVisit": "Aucune visite en cours"
       }
     }
   },
@@ -553,7 +606,10 @@
       "fr": {
         "addTestOrder": "Ajouter une demande d'examen",
         "urgency": "Urgence",
-        "orderReason": "Motif de la demande :"
+        "orderReason": "Motif de la demande :",
+        "worklist": "Liste des tâches",
+        "stat": "Urgent",
+        "scheduled": "Programmé"
       }
     }
   },
@@ -645,5 +701,27 @@
       { "concept": "52506e95-0ae4-4718-b622-d4226b4238dd", "code": "++" },
       { "concept": "487fb8c7-29c3-4954-937c-090c1a4a4ced", "code": "+++" }
     ]
+  },
+  "@openmrs/esm-ward-app": {
+    "Translation overrides": {
+      "fr": {
+        "totalBeds": "Total des lits",
+        "wardPatient": "Patient du service",
+        "activeVisit": "Visite en cours",
+        "startedDatetime": "Débutée le {{datetime}}",
+        "patientAdmittedToLocation": "{{patientName}} admis(e) à {{location}}",
+        "patientAdmittedWoBed": "{{patientName}} admis(e) à {{location}}",
+        "patientAdmittedButBedNotAssigned": "{{patientName}} admis(e), mais le lit n'a pas pu être attribué",
+        "patientAdmitRequestCreatedForPatient": "Demande d'admission créée pour {{patientName}}",
+        "admissionRequestCancelledForPatient": "Demande d'admission annulée pour {{patientName}}",
+        "patientTransferRequestCreatedForPatient": "Demande de transfert créée pour {{patientName}}",
+        "patientTransferredSuccessfully": "Patient transféré",
+        "patientTransferredToLocation": "{{patientName}} transféré(e) à {{location}}",
+        "errorAdmittingPatient": "Échec de l'admission de {{patientName}}",
+        "errorTransferringPatient": "Échec du transfert de {{patientName}}",
+        "visitRequiredToAdmitPatient": "Une visite est nécessaire pour admettre ce patient dans le service",
+        "noBedsConfiguredForLocation": "Aucun lit configuré pour {{location}} : le patient est admis sans lit."
+      }
+    }
   }
 }
