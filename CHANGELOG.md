@@ -773,6 +773,20 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   (#385), and what a confirmed quotation of the visit already bills is not billed again (#434). A
   quantity the cashier raised by hand is not lowered by the next dispense. Bridge:
   jnsereko/eip-odoo-openmrs `fix/544-repeat-drug-billing` 8664102, on e420457. (#544)
+- **The pharmacy shows the duration in French** ("pendant 5 jours", not "for 5 d"), on the
+  prescription and the printout. (#541)
+- **A second dispense suggests what is left, and a partial dispense says so.** Prescribed 5,
+  dispensed 2: the next Dispense form pre-fills 3, not 5, and the prescription reads
+  "Délivré partiellement 2/5" instead of "Délivré". (#394)
+- **Vitals land in the visit they were recorded in, with their provider.** Vitals entered while
+  logged in at another department than the visit's, or against a past visit chosen in the chart,
+  were saved in no visit, and no vitals had a provider. They now carry the visit, a time inside it
+  for a past visit, and the logged-in provider (Clinician role). Vitals saved before are not
+  changed. (#347)
+- These three come from patched builds of two upstream apps, kept in `distro/frontend` until
+  OpenMRS releases the fixes: `@openmrs/esm-dispensing-app` 1.11.2-uvl.1 (1.11.2 plus
+  openmrs/openmrs-esm-dispensing-app#954 and #955) and `@openmrs/esm-patient-vitals-app`
+  13.0.2-pre.12863.uvl.1 (13.0.2-pre.12863 plus openmrs/openmrs-esm-patient-chart#3859).
 - **A maternity form can no longer be saved for a male patient.** The seven maternity forms show
   only a "not applicable" note to a male patient, but Save still created an empty encounter that
   counted in encounter-based reports. The page now says "Ce formulaire concerne uniquement les
