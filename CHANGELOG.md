@@ -683,12 +683,19 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   widget filters orders by care setting, and without either it retried the 403 more than 100
   times a minute. Help Nurse also has `View Cohorts In Cohort Module`, which the Patient Lists
   page and the chart's patient-lists widget need to read `cohortm/cohort` and
-  `cohortm/cohortmember`. Nurse, Midwife, Doctor and the clinical roles built on Nurse inherit
-  both through Help Nurse. Creating or changing a list still needs `Edit Cohorts In Cohort
+  `cohortm/cohortmember`, and `Get Patient Cohorts`, the display condition the frontend config
+  puts on the Patient Lists link and the chart's patient-lists widget. Nurse, Midwife, Doctor and
+  the clinical roles built on Nurse inherit all of them through Help Nurse. Creating or changing a list still needs `Edit Cohorts In Cohort
   Module`, which no clinical role has. (#508)
 - **The Pharmacist's order basket price and stock lookups no longer fail.** Pharmacist now has
   `Get ChargeItemDefinition` and `Get InventoryItem`, as Doctor already had. (#351, pharmacist
   part; the queue 403 was fixed earlier.)
+- **« Administration du système » is no longer in the app menu of pharmacists and clinical
+  staff.** `@openmrs/esm-system-admin-app` 4.6.1 ties its menu entry to no privilege, so every
+  signed-in user saw it. The frontend config now shows it only with `View Administration
+  Functions`, which only the administrator (System Developer) has; stock management keeps its own
+  app-menu entry. The build fails if a Keycloak role other than System Developer is given that
+  privilege.
 - The build now fails if Help Nurse, Nurse, Midwife or Doctor cannot read drug orders and patient
   lists, if Pharmacist or Central Pharmacist cannot open stock reports, or if Pharmacist or
   Doctor cannot read the order basket lookups (`scripts/check-openmrs-roles.groovy`, check 9).
@@ -982,6 +989,15 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
 - **Clinical roles still see "Supprimer une consultation".** The patient chart shows the delete
   action to whoever may edit the encounter, and core voids an encounter under `Edit Encounters`;
   neither checks `Delete Encounters`. Removing the action needs a chart or server change. (#510)
+- **Changing location shows a red "Privileges required: Edit Users" error for clinical staff
+  whose account has a default location.** The location picker pre-ticks « Remember my location
+  for future logins » for them. Unticking it removes the default and ticking it with another
+  location saves a new one; both go through `POST /ws/rest/v1/user/<uuid>`, which saves the
+  whole user and needs `Edit Users`, kept for the administrator since #502. Core has a
+  no-privilege call for the user's own properties (`UserService.saveUserProperties`), but
+  webservices.rest 3.5.0 doesn't expose it, so no smaller privilege helps. The session location
+  still changes; only the remembered default fails. Fixing it needs either no administrator-set
+  default location on clinical accounts, or a login-app or REST change.
 - On the stock app's new user role scope form, `Inventory Administrator` gets a 403 from
   `GET /ws/rest/v1/role`, which needs `Manage Roles`. The form doesn't use the answer: its Role list
   shows the chosen user's own roles, so `Manage Roles` isn't granted. (#438)
