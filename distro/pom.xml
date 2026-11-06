@@ -695,6 +695,14 @@
               <target>
                 <property name="uvl.frontend.modules" value="${project.build.directory}/uvl-frontend-modules" />
                 <mkdir dir="${uvl.frontend.modules}" />
+                <!-- Patched build of an upstream module (#499, #500); see distro/frontend/openmrs-esm-form-engine-app/README.md -->
+                <tar destfile="${uvl.frontend.modules}/openmrs-esm-form-engine-app.tgz" compression="gzip" longfile="posix">
+                  <tarfileset dir="${project.basedir}/frontend/openmrs-esm-form-engine-app" prefix="package">
+                    <include name="package.json" />
+                    <include name="dist/**" />
+                    <exclude name="dist/**/*.map" />
+                  </tarfileset>
+                </tar>
                 <tar destfile="${uvl.frontend.modules}/madiro-esm-uvl-imaging-app.tgz" compression="gzip" longfile="posix">
                   <tarfileset dir="${project.basedir}/frontend/esm-uvl-imaging-app" prefix="package">
                     <include name="package.json" />
