@@ -58,10 +58,13 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
 - **A new « Assurance complémentaire » field when starting a visit**, after Payeur. Its one
   answer, PNB, pays a flat 20% of each line on top of the payer: MFP + PNB leaves the patient
   nothing; MSU 60% + PNB leaves the patient 20%. (#189)
-- **A payer with no plan stops the quotation instead of billing the wrong party.** « Assurance
-  privée » and the old « Assurance complémentaire » answer of the Payer list have no plan, so a
-  visit started with them gets no quotation, and the bridge log says why. Pick a listed payer.
-  (#219)
+- **A payer with no plan bills the patient, and the quotation says so.** « Assurance privée » and
+  the old « Assurance complémentaire » answer of the Payer list have no plan. A visit started with
+  them still gets its quotation, with no insurance plan (the patient pays, as with Cash), and one
+  note in the quotation's chatter: « Le payeur de la visite (…) n'a pas de plan d'assurance dans
+  Odoo : le devis est au nom du patient. Corrigez l'assurance du devis si nécessaire. » The note is
+  written once, not on every order. The same happens if two plans claim the same field or the
+  visit's payer cannot be read. The order is never held back for it. (#219)
 - **Changing the Payer after the first order is noted on the quotation**, in its chatter: the
   quotation keeps the plan it was created with, and the note says which plan the visit now names,
   so the cashier can correct it. Invoices already made never change. (#219)
@@ -1054,8 +1057,8 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
     version `3.5.0-uvl1.0`.
 21. **#189, #219, #184, insurance plans.** In this order:
     1. The image must carry `insurance_coverage` **17.0.1.2.0** (UVL-Odoo-Addons, with the plan
-       propagation and the flat supplement). An older addon has no `insurance_payer_code`, and the
-       bridge then refuses every new quotation.
+       propagation and the flat supplement). An older addon has no `insurance_payer_code`: the
+       bridge then bills every new quotation to the patient, with a note on each one.
     2. LIME-EMR-Tooling with `insurance_coverage` in the UVL `ADDONS` and the bridge's
        `ODOO_INSURANCE_*` settings. After the deploy, upgrade the module once if Odoo did not
        (`insurance_complementary_basis` must exist on `res.partner`).
@@ -1063,10 +1066,15 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
        basis (PNB: « Of the full line »). If `partner/insurance_plans.csv` loaded before the addon
        was installed, its checksum was recorded anyway: delete its checksum and restart Odoo.
     4. The bridge jar in this release is jnsereko/eip-odoo-openmrs `feat/219-visit-payer-plans`
-       3c83e17, on `fix/544-repeat-drug-billing` 8664102.
-    5. OCL `UVL_registration_20261008.zip` replaces `20261007`: 5 new Payer/PNB answers and the
+       140e767, on `fix/544-repeat-drug-billing` 8664102. Before 140e767, a payer with no plan
+       made the bridge retry the order about once a second, forever (found on UAT 7 Nov 2026).
+    5. After the deploy, start a visit with Payer « Assurance privée » and order one item: the
+       quotation is created with no insurance plan and one French note; the eip-odoo-openmrs log
+       has one WARN for that order and no repeating ERROR; `sender_retry_queue` stays empty and the
+       patient's Odoo contact is not rewritten every second.
+    6. OCL `UVL_registration_20261008.zip` replaces `20261007`: 5 new Payer/PNB answers and the
        « Payeur complémentaire » question. Check that Payer lists 12 answers.
-    6. Patients whose Odoo record still has a discount pricelist keep it for self-paid visits;
+    7. Patients whose Odoo record still has a discount pricelist keep it for self-paid visits;
        insured visits drop it automatically.
 
 ### Known issues
@@ -1075,8 +1083,8 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   value it holds). Per-product coverage (Didier's 70/30 product list) is still owed, so every plan
   pays its default rate on every product. (#184, #189)
 - **« Assurance privée » and the old « Assurance complémentaire » are still on the Payer list**
-  but have no plan, so they block the quotation. Retiring them needs an OCL release once the
-  product owner confirms. (#189)
+  but have no plan, so their visits are billed to the patient with a note on the quotation.
+  Retiring them needs an OCL release once the product owner confirms. (#189)
 - **Clinical roles still see "Supprimer une consultation".** The patient chart shows the delete
   action to whoever may edit the encounter, and core voids an encounter under `Edit Encounters`;
   neither checks `Delete Encounters`. Removing the action needs a chart or server change. (#510)
