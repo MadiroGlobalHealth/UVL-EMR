@@ -68,6 +68,15 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
 - **An insured quotation drops the patient's discount pricelist** (Insurance 50%..90%) and is
   priced in full; the plan pays its share of the full price. The removal is noted in the
   quotation's chatter. A self-paid quotation keeps the pricelist. (#184)
+- **An admitted patient's visit stays open overnight, and each night is billed.** The nightly
+  auto-close used to close General and Outpatient visits whatever happened in them, so a patient
+  admitted on one lost the visit the same night, with no discharge. A visit whose latest
+  Admission or Discharge is an Admission is now left open until the patient is discharged; other
+  visits still close at midnight. Every hour, each night of a stay (a midnight in Bujumbura) is
+  put on the visit's quotation: « Lit simple / Standard Bed », or « Lit VIP » for a night spent in
+  a ward tagged « Chambre privée ». A stay shorter than one midnight counts one night. A
+  transfer changes the class from the next midnight; the discharge stops the count. Prices are
+  the ones set in Odoo. (#246)
 - **Open visits now close at midnight Burundi time, not at 02:00.** The nightly auto-close ran
   at 23:59:59 UTC, which is 01:59:59 in Burundi: a visit started after midnight could be closed
   minutes later, the chart kept showing it active, and the next save failed with
@@ -439,6 +448,31 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   `bedmanagement.mandatory` is false, so patients are admitted without a bed (the Ward app shows
   « Aucun lit configuré »). Room-class rates and inpatient billing wait on the fee schedule.
   (#246)
+- **Inpatient stay billing** (#246). eip-odoo-openmrs gains an hourly route
+  (`InpatientStayRouting`) that recounts every visit with a non-voided Admission, open or ended in
+  the last 7 days, from its Admission, Transfer and Discharge encounters (SQL on the OpenMRS
+  database; the types are emrapi's `emr.admissionEncounterType`,
+  `emr.transferWithinHospitalEncounterType` and `emr.exitFromInpatientEncounterType` mappings). A
+  night is a midnight in `Africa/Bujumbura` between the admission and the discharge (else the end
+  of the visit, else now), billed to the class of the ward occupied at that midnight; minimum one
+  night, at the admitting ward's class. Each class product's line on the visit's draft quotation
+  is set to its nights less what the visit's other sale orders already bill; a confirmed sale
+  order is never changed (WARN when it bills more). A stay with no quotation gets one. Settings:
+  `EIP_INPATIENT_STAY_*` on the `eip-odoo-openmrs` service (`scripts/docker/docker-compose-override.yml`
+  here, `Scripts/Bundled-Docker/docker-compose-odoo-sso-uvl.yml` in LIME-EMR-Tooling for the
+  bundled deploy). Class: new location tag « Chambre privée » (`locationtags/locationtags.csv`,
+  uuid `3775fe54-7794-4fcb-99b2-d6bf8592d685`); no ward carries it yet, so every night is
+  « Lit simple » until a private room is tagged. Semi-private rooms are billed as « Lit simple »
+  for now.
+- **Admitted patients' visits survive the nightly auto-close** (#246). `imagingpaymentgate`
+  1.0.0-SNAPSHOT (`distro/binaries/openmrs/modules`, source jnsereko/openmrs-module-imagingpaymentgate
+  `592973e`) adds an around-advice on `VisitService.stopVisits(Date)`, the call behind core's
+  Auto Close Visits Task: the same loop as core's (`VisitDAO.getNextVisit`/`saveVisit`, one stop
+  time per run) that skips a visit whose latest non-voided Admission or Discharge encounter is an
+  Admission. The task, its class and its 21:59:59 UTC start (#350) are untouched; visits without
+  an admission close exactly as before. emrapi 3.4.0's `CloseStaleVisitsTask` was not used: it
+  stamps the last encounter's time as the stop time, closes every visit type and only visits at a
+  `Visit Location`. `imagingpaymentgate.keepAdmittedVisitsOpen=false` gives core's behaviour back.
 - **OpenMRS module `imagingpaymentgate` 1.0.0-SNAPSHOT** (`distro/binaries/openmrs/modules`,
   source `openmrs-module-imagingpaymentgate`), the server-side imaging payment gate. A new or
   changed obs that references a gated order, and marking that order COMPLETED, are refused with
@@ -1068,6 +1102,13 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
        « Payeur complémentaire » question. Check that Payer lists 12 answers.
     6. Patients whose Odoo record still has a discount pricelist keep it for self-paid visits;
        insured visits drop it automatically.
+22. **#246, stay billing:** the `eip-odoo-openmrs` container must have
+    `EIP_INPATIENT_STAY_ENABLED=true`, `EIP_INPATIENT_STAY_TIMEZONE=Africa/Bujumbura`,
+    `EIP_INPATIENT_STAY_DEFAULT_PRODUCT` and `EIP_INPATIENT_STAY_LOCATION_TAG_PRODUCTS` (LIME-EMR-Tooling
+    bundled overlay), and its log must show "Inpatient stays: N visit(s) checked" within the hour.
+    The first run bills every admitted visit open or ended in the last 7 days, including stays
+    admitted before this release: check those quotations before they are invoiced. The OpenMRS log
+    must show "Auto close visits: N closed, M left open for admitted patients" after 23:59:59 CAT.
 
 ### Known issues
 - **CAM's coverage rate is a placeholder (0%).** No rate was given; finance sets it on the CAM

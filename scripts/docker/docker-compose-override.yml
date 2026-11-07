@@ -177,6 +177,14 @@ services:
       # French duration unit in the drug line's text on the Odoo quotation ("5 jours", not FHIR's fixed
       # English "5 day"), keyed by FHIR unit code, singular|plural (#539).
       - "ODOO_DURATION_UNIT_LABELS=s=seconde|secondes,min=minute|minutes,h=heure|heures,d=jour|jours,wk=semaine|semaines,mo=mois|mois,a=an|ans"
+      # Inpatient stay billing (#246): every hour, each night (a midnight in Bujumbura) of a stay is
+      # billed on the visit's quotation as « Lit simple / Standard Bed », or as « Lit VIP » for a
+      # midnight spent in a ward tagged « Chambre privée » (tag uuid below) or under one. At least
+      # one night per stay. Prices are set in Odoo, not here.
+      - EIP_INPATIENT_STAY_ENABLED=true
+      - EIP_INPATIENT_STAY_TIMEZONE=Africa/Bujumbura
+      - EIP_INPATIENT_STAY_DEFAULT_PRODUCT=4913bd15-ea95-4109-bb1b-74f36ad197f7
+      - EIP_INPATIENT_STAY_LOCATION_TAG_PRODUCTS=3775fe54-7794-4fcb-99b2-d6bf8592d685=56744335-40ae-4231-9bfa-01d9c68dd588
 
   mysql:
     image: mariadb:10.11.13
