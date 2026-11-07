@@ -47,6 +47,39 @@ MSF-OCG/LIME-EMR-Tooling.
 Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
 
 ### Staff will notice
+- **The visit's Payer now decides who pays the bill, and a 100% payer pays 100%.** Before, Odoo
+  was never told the payer, so a scheme was patched onto the patient as a discount pricelist by
+  hand, and a 100% payer came out at 50%. Now each insured Payer answer is an Odoo insurance plan,
+  and the visit's quotation names it. On the invoice, « Generate Payer Invoices » raises one
+  invoice per payer: Gratuité and DGAC 100%, MFP and Santé Assuré 80%, MSU 70% and MSU 60% (one
+  answer per category), CAM 0% for now (its plan is marked **PLACEHOLDER**: no rate was given, so
+  the patient pays until finance sets it). Cash, Mobile Money and Autre assurance are self-paid:
+  no plan, the patient pays everything. (#189, #219, #184)
+- **A new « Assurance complémentaire » field when starting a visit**, after Payeur. Its one
+  answer, PNB, pays a flat 20% of each line on top of the payer: MFP + PNB leaves the patient
+  nothing; MSU 60% + PNB leaves the patient 20%. (#189)
+- **A payer with no plan bills the patient, and the quotation says so.** « Assurance privée » and
+  the old « Assurance complémentaire » answer of the Payer list have no plan. A visit started with
+  them still gets its quotation, with no insurance plan (the patient pays, as with Cash), and one
+  note in the quotation's chatter: « Le payeur de la visite (…) n'a pas de plan d'assurance dans
+  Odoo : le devis est au nom du patient. Corrigez l'assurance du devis si nécessaire. » The note is
+  written once, not on every order. The same happens if two plans claim the same field or the
+  visit's payer cannot be read. The order is never held back for it. (#219)
+- **Changing the Payer after the first order is noted on the quotation**, in its chatter: the
+  quotation keeps the plan it was created with, and the note says which plan the visit now names,
+  so the cashier can correct it. Invoices already made never change. (#219)
+- **An insured quotation drops the patient's discount pricelist** (Insurance 50%..90%) and is
+  priced in full; the plan pays its share of the full price. The removal is noted in the
+  quotation's chatter. A self-paid quotation keeps the pricelist. (#184)
+- **An admitted patient's visit stays open overnight, and each night is billed.** The nightly
+  auto-close used to close General and Outpatient visits whatever happened in them, so a patient
+  admitted on one lost the visit the same night, with no discharge. A visit whose latest
+  Admission or Discharge is an Admission is now left open until the patient is discharged; other
+  visits still close at midnight. Every hour, each night of a stay (a midnight in Bujumbura) is
+  put on the visit's quotation: « Lit simple / Standard Bed », or « Lit VIP » for a night spent in
+  a ward tagged « Chambre privée ». A stay shorter than one midnight counts one night. A
+  transfer changes the class from the next midnight; the discharge stops the count. Prices are
+  the ones set in Odoo. (#246)
 - **Open visits now close at midnight Burundi time, not at 02:00.** The nightly auto-close ran
   at 23:59:59 UTC, which is 01:59:59 in Burundi: a visit started after midnight could be closed
   minutes later, the chart kept showing it active, and the next save failed with
@@ -418,6 +451,31 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   `bedmanagement.mandatory` is false, so patients are admitted without a bed (the Ward app shows
   « Aucun lit configuré »). Room-class rates and inpatient billing wait on the fee schedule.
   (#246)
+- **Inpatient stay billing** (#246). eip-odoo-openmrs gains an hourly route
+  (`InpatientStayRouting`) that recounts every visit with a non-voided Admission, open or ended in
+  the last 7 days, from its Admission, Transfer and Discharge encounters (SQL on the OpenMRS
+  database; the types are emrapi's `emr.admissionEncounterType`,
+  `emr.transferWithinHospitalEncounterType` and `emr.exitFromInpatientEncounterType` mappings). A
+  night is a midnight in `Africa/Bujumbura` between the admission and the discharge (else the end
+  of the visit, else now), billed to the class of the ward occupied at that midnight; minimum one
+  night, at the admitting ward's class. Each class product's line on the visit's draft quotation
+  is set to its nights less what the visit's other sale orders already bill; a confirmed sale
+  order is never changed (WARN when it bills more). A stay with no quotation gets one. Settings:
+  `EIP_INPATIENT_STAY_*` on the `eip-odoo-openmrs` service (`scripts/docker/docker-compose-override.yml`
+  here, `Scripts/Bundled-Docker/docker-compose-odoo-sso-uvl.yml` in LIME-EMR-Tooling for the
+  bundled deploy). Class: new location tag « Chambre privée » (`locationtags/locationtags.csv`,
+  uuid `3775fe54-7794-4fcb-99b2-d6bf8592d685`); no ward carries it yet, so every night is
+  « Lit simple » until a private room is tagged. Semi-private rooms are billed as « Lit simple »
+  for now.
+- **Admitted patients' visits survive the nightly auto-close** (#246). `imagingpaymentgate`
+  1.0.0-SNAPSHOT (`distro/binaries/openmrs/modules`, source jnsereko/openmrs-module-imagingpaymentgate
+  `592973e`) adds an around-advice on `VisitService.stopVisits(Date)`, the call behind core's
+  Auto Close Visits Task: the same loop as core's (`VisitDAO.getNextVisit`/`saveVisit`, one stop
+  time per run) that skips a visit whose latest non-voided Admission or Discharge encounter is an
+  Admission. The task, its class and its 21:59:59 UTC start (#350) are untouched; visits without
+  an admission close exactly as before. emrapi 3.4.0's `CloseStaleVisitsTask` was not used: it
+  stamps the last encounter's time as the stop time, closes every visit type and only visits at a
+  `Visit Location`. `imagingpaymentgate.keepAdmittedVisitsOpen=false` gives core's behaviour back.
 - **OpenMRS module `imagingpaymentgate` 1.0.0-SNAPSHOT** (`distro/binaries/openmrs/modules`,
   source `openmrs-module-imagingpaymentgate`), the server-side imaging payment gate. A new or
   changed obs that references a gated order, and marking that order COMPLETED, are refused with
@@ -1031,8 +1089,44 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
     `docker exec <openmrs container> sh -c 'ls /openmrs/data/modules | grep webservices.rest'` must
     show only `webservices.rest-3.5.0-uvl1.omod`, and the OpenMRS log must show it started as
     version `3.5.0-uvl1.0`.
+21. **#189, #219, #184, insurance plans.** In this order:
+    1. The image must carry `insurance_coverage` **17.0.1.2.0** (UVL-Odoo-Addons, with the plan
+       propagation and the flat supplement). An older addon has no `insurance_payer_code`: the
+       bridge then bills every new quotation to the patient, with a note on each one.
+    2. LIME-EMR-Tooling with `insurance_coverage` in the UVL `ADDONS` and the bridge's
+       `ODOO_INSURANCE_*` settings. After the deploy, upgrade the module once if Odoo did not
+       (`insurance_complementary_basis` must exist on `res.partner`).
+    3. Check in Odoo, Contacts, that the 8 plans exist with their payer code, default coverage and
+       basis (PNB: « Of the full line »). If `partner/insurance_plans.csv` loaded before the addon
+       was installed, its checksum was recorded anyway: delete its checksum and restart Odoo.
+    4. The bridge jar in this release is jnsereko/eip-odoo-openmrs `integration/m5-20261107`
+       f297cfa: `feat/219-visit-payer-plans` 140e767 merged with `feat/246-inpatient-stay` 4d8855a,
+       both on `fix/544-repeat-drug-billing` 8664102. Before 140e767, a payer with no plan made the
+       bridge retry the order about once a second, forever (found on UAT 7 Nov 2026).
+    5. After the deploy, start a visit with Payer « Assurance privée » and order one item: the
+       quotation is created with no insurance plan and one French note; the eip-odoo-openmrs log
+       has one WARN for that order and no repeating ERROR; `sender_retry_queue` stays empty and the
+       patient's Odoo contact is not rewritten every second.
+    6. OCL `UVL_registration_20261008.zip` replaces `20261007`: 5 new Payer/PNB answers and the
+       « Payeur complémentaire » question. Check that Payer lists 12 answers.
+    7. Patients whose Odoo record still has a discount pricelist keep it for self-paid visits;
+       insured visits drop it automatically.
+22. **#246, stay billing:** the `eip-odoo-openmrs` container must have
+    `EIP_INPATIENT_STAY_ENABLED=true`, `EIP_INPATIENT_STAY_TIMEZONE=Africa/Bujumbura`,
+    `EIP_INPATIENT_STAY_DEFAULT_PRODUCT` and `EIP_INPATIENT_STAY_LOCATION_TAG_PRODUCTS` (LIME-EMR-Tooling
+    bundled overlay), and its log must show "Inpatient stays: N visit(s) checked" within the hour.
+    The first run bills every admitted visit open or ended in the last 7 days, including stays
+    admitted before this release: check those quotations before they are invoiced. The OpenMRS log
+    must show "Auto close visits: N closed, M left open for admitted patients" after 23:59:59 CAT.
 
 ### Known issues
+- **CAM's coverage rate is a placeholder (0%).** No rate was given; finance sets it on the CAM
+  plan in Odoo and in `partner/insurance_plans.csv` (a changed CSV reloads and would put back the
+  value it holds). Per-product coverage (Didier's 70/30 product list) is still owed, so every plan
+  pays its default rate on every product. (#184, #189)
+- **« Assurance privée » and the old « Assurance complémentaire » are still on the Payer list**
+  but have no plan, so their visits are billed to the patient with a note on the quotation.
+  Retiring them needs an OCL release once the product owner confirms. (#189)
 - **Clinical roles still see "Supprimer une consultation".** The patient chart shows the delete
   action to whoever may edit the encounter, and core voids an encounter under `Edit Encounters`;
   neither checks `Delete Encounters`. Removing the action needs a chart or server change. (#510)
