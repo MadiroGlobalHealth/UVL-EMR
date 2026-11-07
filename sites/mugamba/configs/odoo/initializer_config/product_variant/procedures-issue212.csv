@@ -11,8 +11,8 @@ id,name,categ_id/id,type,purchase_ok,sale_ok,invoice_policy
 "init.4c554b15-3072-467f-b270-0211e35b0cbb","Aspiration",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
 "init.7c914c11-cd98-4fd5-bbe1-a74d902c3e35","Death Certificate",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
 "init.036a3e47-1e28-448c-a928-a267fe04e42d","Lumbar Puncture",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-"init.4913bd15-ea95-4109-bb1b-74f36ad197f7","Standard Bed",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-"init.56744335-40ae-4231-9bfa-01d9c68dd588","VIP Bed",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.4913bd15-ea95-4109-bb1b-74f36ad197f7","Lit simple (par nuit)",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.56744335-40ae-4231-9bfa-01d9c68dd588","Lit VIP (par nuit)",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
 "init.00029888-c382-4d30-8c92-9105e9014cda","Medical Expertise",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
 "init.67fce2a8-6d11-4355-b413-f109041ac4ae","Medical Rest Certificate",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
 "init.97ab2203-63e4-42b9-bd36-5137fc68ef21","Nurse Visit",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
