@@ -1096,8 +1096,9 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
     3. Check in Odoo, Contacts, that the 8 plans exist with their payer code, default coverage and
        basis (PNB: « Of the full line »). If `partner/insurance_plans.csv` loaded before the addon
        was installed, its checksum was recorded anyway: delete its checksum and restart Odoo.
-    4. The bridge jar in this release is jnsereko/eip-odoo-openmrs `feat/219-visit-payer-plans`
-       3c83e17, on `fix/544-repeat-drug-billing` 8664102.
+    4. The bridge jar in this release is jnsereko/eip-odoo-openmrs `integration/m5-20261107`
+       3182447: `feat/219-visit-payer-plans` 3c83e17 merged with `feat/246-inpatient-stay` 4d8855a,
+       both on `fix/544-repeat-drug-billing` 8664102.
     5. OCL `UVL_registration_20261008.zip` replaces `20261007`: 5 new Payer/PNB answers and the
        « Payeur complémentaire » question. Check that Payer lists 12 answers.
     6. Patients whose Odoo record still has a discount pricelist keep it for self-paid visits;
