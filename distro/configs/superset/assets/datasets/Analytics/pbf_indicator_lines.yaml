@@ -1,0 +1,328 @@
+table_name: pbf_indicator_lines
+main_dttm_col: event_datetime
+description: One row per unit counted in a PBF indicator, for monthly verification (UVL-EMR#241)
+default_endpoint: null
+offset: 0
+cache_timeout: null
+schema: public
+sql: |-
+  -- PBF / FBP indicator events (UVL-EMR#240, #241).
+  --
+  -- PROVISIONAL INDICATOR LIST. The source template (PBF_Template_Translated.xlsx,
+  -- sent by Didier on 6 Aug 2026) could not be retrieved when this was written. The
+  -- list below is the FBP District Hospital Package as described in the issues and
+  -- the contract (Contrat MSP/HD/S/027/2026-2027: Art. 4 verifiable data, Art. 6
+  -- payment on monthly-verified volume). Every indicator and rule is TO CONFIRM
+  -- WITH DIDIER before the figures are submitted.
+  --
+  -- status:  computed      the EMR records what the rule needs today
+  --          partial       computed, but the rule is an approximation (see gap)
+  --          not captured  the EMR does not record it yet; value stays empty
+  --
+  -- One event per counted unit; `quantity` is 1 except for bed-days. The same
+  -- events feed the monthly totals (pbf_indicators_monthly) and the line list
+  -- verifiers check against (pbf_indicator_lines), so the two always agree.
+  WITH catalogue (indicator_code, indicator, unit, status, rule, gap) AS (
+      VALUES
+          ('PBF-01', 'Consultations médicales externes', 'visites', 'computed',
+           'Visites avec au moins une rencontre Outpatient Consultation',
+           'Lieu = lieu de la consultation (#222). Médecin/infirmier non distingués : à confirmer'),
+          ('PBF-02', 'Consultations médicales externes — nouveaux cas', 'visites', 'partial',
+           'PBF-01 dont l''attribut de visite Type de cas indique un nouveau cas',
+           'Dépend de la saisie de Type de cas, retiré du formulaire de consultation (#211)'),
+          ('PBF-03', 'Références reçues', 'visites', 'partial',
+           'Visites dont l''attribut Origine indique une référence',
+           'Valeurs de la liste Origine à confirmer'),
+          ('PBF-04', 'Admissions en hospitalisation', 'admissions', 'partial',
+           'Rencontres Admission',
+           'Hospitalisation pas encore en production (M3, #246)'),
+          ('PBF-05', 'Journées d''hospitalisation', 'journées', 'partial',
+           'Jours entre l''admission et la sortie (ou la fin de la visite, ou aujourd''hui), minimum 1',
+           'Hospitalisation pas encore en production (M3, #246); règle de décompte à confirmer'),
+          ('PBF-06', 'Examens de laboratoire réalisés', 'examens', 'partial',
+           'Nouvelles demandes d''examen (Test Order) non annulées',
+           'Compte les demandes, pas les résultats validés'),
+          ('PBF-07', 'Radiographies', 'examens', 'partial',
+           'Demandes d''imagerie dont le nom contient radio / x-ray',
+           'Liste des actes radiologiques à confirmer'),
+          ('PBF-08', 'Échographies', 'examens', 'partial',
+           'Demandes dont le nom contient échographie / ultrason',
+           'Liste des actes à confirmer'),
+          ('PBF-09', 'Césariennes', 'interventions', 'partial',
+           'Demandes de procédure dont le nom contient césarienne',
+           'Bloc et maternité pas encore en production (M4, M5)'),
+          ('PBF-10', 'Malnutrition aiguë sévère prise en charge', 'visites', 'partial',
+           'Visites avec un diagnostic confirmé contenant malnutrition',
+           'Sévère/modérée et avec/sans complications non distingués'),
+          ('PBF-11', 'Accouchements eutociques', 'accouchements', 'not captured',
+           'Issue d''accouchement du dossier d''accouchement',
+           'Dossier d''accouchement pas encore construit (M4)'),
+          ('PBF-12', 'Interventions chirurgicales majeures', 'interventions', 'not captured',
+           'Actes de bloc classés majeurs',
+           'Classification majeure/mineure des actes absente; bloc M5'),
+          ('PBF-13', 'Petite chirurgie', 'interventions', 'not captured',
+           'Actes classés petite chirurgie',
+           'Classification des actes absente'),
+          ('PBF-14', 'Transfusions sanguines', 'poches', 'not captured',
+           'Poches transfusées',
+           'Banque de sang pas encore en production'),
+          ('PBF-15', 'Planification familiale — méthodes de longue durée', 'clientes', 'not captured',
+           'Implants et DIU posés',
+           'Service PF pas encore en production'),
+          ('PBF-16', 'Contre-références envoyées', 'patients', 'not captured',
+           'Patients contre-référés vers le CDS',
+           'Pas de champ de contre-référence')
+  ),
+  visit_base AS (
+      SELECT v.visit_id,
+             v.visit_uuid,
+             v.patient_uuid,
+             v.date_started,
+             v.date_stopped,
+             v.visit_attributes
+      FROM visits v
+      LEFT JOIN patients p ON p.patient_uuid = v.patient_uuid
+      WHERE COALESCE(v.visit_voided, false) = false
+        AND COALESCE(p.person_voided, false) = false
+  ),
+  visit_attribute AS (
+      SELECT vb.visit_id,
+             LOWER(SPLIT_PART(part, ': ', 1))                 AS name,
+             SUBSTRING(part FROM POSITION(': ' IN part) + 2)  AS value
+      FROM visit_base vb
+      CROSS JOIN LATERAL UNNEST(STRING_TO_ARRAY(vb.visit_attributes, ' / ')) AS part
+      WHERE POSITION(': ' IN part) > 0
+  ),
+  live_encounters AS (
+      SELECT e.*
+      FROM encounters e
+      JOIN visit_base vb ON vb.visit_uuid = e.visit_uuid
+      WHERE COALESCE(e.encounter_voided, false) = false
+  ),
+  new_orders AS (
+      SELECT o.order_id, o.order_type_name, COALESCE(o.order_name, o.drug_name) AS order_name,
+             COALESCE(o.date_activated, o.date_created, e.encounter_datetime) AS order_datetime,
+             e.visit_uuid, e.location
+      FROM orders o
+      JOIN live_encounters e ON e.encounter_uuid = o.encounter_uuid
+      WHERE COALESCE(o.voided, false) = false
+        AND COALESCE(o.order_action, 'NEW') = 'NEW'
+  ),
+  consultations AS (
+      SELECT vb.visit_id, vb.visit_uuid, vb.patient_uuid,
+             MIN(e.encounter_datetime) AS first_consultation
+      FROM visit_base vb
+      JOIN live_encounters e
+        ON e.visit_uuid = vb.visit_uuid
+       AND e.encounter_type = 'Outpatient Consultation'
+      GROUP BY vb.visit_id, vb.visit_uuid, vb.patient_uuid
+  ),
+  admissions AS (
+      SELECT e.encounter_id, e.encounter_datetime AS admitted, e.location, vb.visit_id, vb.patient_uuid,
+             (SELECT MIN(d.encounter_datetime) FROM live_encounters d
+               WHERE d.visit_uuid = e.visit_uuid AND d.encounter_type = 'Discharge'
+                 AND d.encounter_datetime >= e.encounter_datetime) AS discharged,
+             vb.date_stopped
+      FROM live_encounters e
+      JOIN visit_base vb ON vb.visit_uuid = e.visit_uuid
+      WHERE e.encounter_type = 'Admission'
+  ),
+  confirmed_diagnoses AS (
+      SELECT DISTINCT e.visit_uuid, e.encounter_datetime,
+             COALESCE(c.name, ed.diagnosis_non_coded) AS diagnosis
+      FROM encounter_diagnoses ed
+      JOIN live_encounters e ON e.encounter_id = ed.encounter_id
+      LEFT JOIN concepts c ON c.concept_id = ed.diagnosis_coded AND c.locale = 'en'
+      WHERE COALESCE(ed.voided, false) = false
+        AND UPPER(ed.certainty) = 'CONFIRMED'
+  ),
+  events (indicator_code, event_datetime, visit_id, patient_uuid, quantity, detail) AS (
+      SELECT 'PBF-01', c.first_consultation, c.visit_id, c.patient_uuid, 1, NULL
+      FROM consultations c
+      UNION ALL
+      SELECT 'PBF-02', c.first_consultation, c.visit_id, c.patient_uuid, 1, va.value
+      FROM consultations c
+      JOIN visit_attribute va ON va.visit_id = c.visit_id AND va.name = 'case type'
+      WHERE va.value ILIKE 'new%' OR va.value ILIKE '%nouveau%'
+      UNION ALL
+      SELECT 'PBF-03', vb.date_started, vb.visit_id, vb.patient_uuid, 1, va.value
+      FROM visit_base vb
+      JOIN visit_attribute va ON va.visit_id = vb.visit_id AND va.name = 'origin'
+      WHERE va.value ILIKE '%refer%' OR va.value ILIKE '%référ%'
+      UNION ALL
+      SELECT 'PBF-04', a.admitted, a.visit_id, a.patient_uuid, 1, a.location
+      FROM admissions a
+      UNION ALL
+      SELECT 'PBF-05', a.admitted, a.visit_id, a.patient_uuid,
+             GREATEST(1, CAST(COALESCE(a.discharged, a.date_stopped, CURRENT_TIMESTAMP) AS DATE)
+                         - CAST(a.admitted AS DATE)),
+             a.location
+      FROM admissions a
+      UNION ALL
+      SELECT 'PBF-06', o.order_datetime, vb.visit_id, vb.patient_uuid, 1, o.order_name
+      FROM new_orders o JOIN visit_base vb ON vb.visit_uuid = o.visit_uuid
+      WHERE o.order_type_name ILIKE '%test%'
+      UNION ALL
+      SELECT 'PBF-07', o.order_datetime, vb.visit_id, vb.patient_uuid, 1, o.order_name
+      FROM new_orders o JOIN visit_base vb ON vb.visit_uuid = o.visit_uuid
+      WHERE o.order_name ILIKE '%x-ray%' OR o.order_name ILIKE '%xray%' OR o.order_name ILIKE '%radiograph%'
+      UNION ALL
+      SELECT 'PBF-08', o.order_datetime, vb.visit_id, vb.patient_uuid, 1, o.order_name
+      FROM new_orders o JOIN visit_base vb ON vb.visit_uuid = o.visit_uuid
+      WHERE o.order_name ILIKE '%chograph%' OR o.order_name ILIKE '%ultraso%' OR o.order_name ILIKE '%ultrasound%'
+      UNION ALL
+      SELECT 'PBF-09', o.order_datetime, vb.visit_id, vb.patient_uuid, 1, o.order_name
+      FROM new_orders o JOIN visit_base vb ON vb.visit_uuid = o.visit_uuid
+      WHERE o.order_type_name ILIKE '%procedure%'
+        AND (o.order_name ILIKE '%césar%' OR o.order_name ILIKE '%cesar%' OR o.order_name ILIKE '%caesar%')
+      UNION ALL
+      SELECT 'PBF-10', MIN(d.encounter_datetime), vb.visit_id, vb.patient_uuid, 1, MIN(d.diagnosis)
+      FROM confirmed_diagnoses d JOIN visit_base vb ON vb.visit_uuid = d.visit_uuid
+      WHERE d.diagnosis ILIKE '%malnutrition%'
+      GROUP BY vb.visit_id, vb.patient_uuid
+  )
+  -- One row per counted unit, for monthly verification (contract Art. 4 and 6):
+  -- each total in pbf_indicators_monthly is the sum of `quantity` here.
+  SELECT c.indicator_code,
+         c.indicator_code || ' ' || c.indicator AS indicator,
+         CAST(DATE_TRUNC('month', ev.event_datetime) AS DATE) AS period_start,
+         ev.event_datetime,
+         ev.visit_id,
+         REGEXP_REPLACE(
+          COALESCE(
+              (SELECT SUBSTRING(part FROM POSITION(': ' IN part) + 2)
+                 FROM UNNEST(STRING_TO_ARRAY(p.identifiers, ', ')) AS part
+                WHERE LOWER(SPLIT_PART(part, ': ', 1)) = 'uvl id' LIMIT 1),
+              '-'),
+          '([A-Za-z])([0-9])', '\1-\2') AS uvl_id,
+         ev.quantity,
+         ev.detail
+  FROM events ev
+  JOIN catalogue c ON c.indicator_code = ev.indicator_code
+  LEFT JOIN patients p ON p.patient_uuid = ev.patient_uuid
+params: null
+template_params: null
+filter_select_enabled: true
+fetch_values_predicate: null
+extra: null
+normalize_columns: false
+always_filter_main_dttm: false
+uuid: 7c1a9b62-3d4f-4e8b-8f26-1b5a8d3e0c72
+metrics:
+- metric_name: count
+  verbose_name: COUNT(*)
+  metric_type: null
+  expression: COUNT(*)
+  description: null
+  d3format: null
+  currency: null
+  extra: null
+  warning_text: null
+- metric_name: total
+  verbose_name: Valeur
+  metric_type: null
+  expression: SUM(quantity)
+  description: null
+  d3format: null
+  currency: null
+  extra: null
+  warning_text: null
+columns:
+- column_name: indicator_code
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: indicator
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: period_start
+  verbose_name: null
+  is_dttm: true
+  is_active: true
+  type: DATE
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: event_datetime
+  verbose_name: null
+  is_dttm: true
+  is_active: true
+  type: TIMESTAMP WITHOUT TIME ZONE
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: visit_id
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: uvl_id
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: quantity
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: detail
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+version: 1.0.0
+database_uuid: 4e5f4045-a62d-4964-b719-58229a60e7fe

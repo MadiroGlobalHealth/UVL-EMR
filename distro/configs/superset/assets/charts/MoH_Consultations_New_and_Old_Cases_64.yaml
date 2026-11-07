@@ -1,0 +1,40 @@
+slice_name: MSP – Nouveaux et anciens cas par âge
+description: null
+certified_by: null
+certification_details: null
+viz_type: pivot_table_v2
+params:
+  datasource: 62__table
+  viz_type: pivot_table_v2
+  groupbyRows:
+  - age_band
+  groupbyColumns:
+  - case_type
+  - sex
+  metrics:
+  - consultations
+  metricsLayout: COLUMNS
+  adhoc_filters:
+  - clause: WHERE
+    subject: consultation_datetime
+    operator: TEMPORAL_RANGE
+    comparator: No filter
+    expressionType: SIMPLE
+  row_limit: 10000
+  order_desc: true
+  aggregateFunction: Sum
+  valueFormat: SMART_NUMBER
+  date_format: '%Y-%m'
+  rowOrder: key_a_to_z
+  colOrder: key_a_to_z
+  rowTotals: true
+  colTotals: true
+  rowSubTotals: false
+  colSubTotals: false
+  transposePivot: false
+  combineMetric: false
+query_context: null
+cache_timeout: null
+uuid: e581a2d9-aeb6-4f52-909d-8c2bf4a57de9
+version: 1.0.0
+dataset_uuid: 8d2bac73-4e50-4f9c-9a37-2c6b9e4f1d83
