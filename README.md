@@ -2,9 +2,7 @@
 
 <img width="1407" alt="Screenshot 2024-08-06 at 4 22 22 PM" src="https://github.com/user-attachments/assets/1e82f482-3289-4097-a020-61f2c1e37034">
 
-This project is part of **Madiro's HealthTech Challenge 2024** connecting passionate people willing to engage in **Global Goods for Digital Health** with real-life needs and impactful opportunities.
-
-This repository contains a distribution of **OpenMRS 3** that will support UVL in its digitalization of clinical operations (patient registration, consultations, laboratory, pharmacy, reporting, billing, etc.). Implementing a Digital Public Good such as OpenMRS in a rural hospital in Burundi is key for improving patient care through better record-keeping and streamlined medical data management such as laboratory test results or drug prescriptions, ensuring that healthcare providers have accurate and up-to-date information.
+This repository contains the distribution of **OpenMRS 3** that Ubuntu Medical Clinic (UVL) uses every day at Mugamba, Burundi, for its clinical operations (patient registration, consultations, laboratory, pharmacy, reporting, billing, etc.). It is maintained by [Madiro](https://github.com/MadiroGlobalHealth) with volunteers; it started as Madiro's HealthTech Challenge 2024. Implementing a Digital Public Good such as OpenMRS in a rural hospital in Burundi is key for improving patient care through better record-keeping and streamlined medical data management such as laboratory test results or drug prescriptions, ensuring that healthcare providers have accurate and up-to-date information.
 
 Additionally, it facilitates efficient tracking of public health trends and resource allocation, which is essential for addressing the unique healthcare challenges in rural settings. For example, the financial support from the government for child care and maternal care is conditional to digitalization - contributing to the long-term **viability and independence** of the hospital.
 
@@ -18,6 +16,8 @@ Read **[ONBOARDING.md](ONBOARDING.md)** first. It takes you in order through:
 5. picking up your first issue.
 
 Then see [CONTRIBUTING.md](CONTRIBUTING.md) for how we work, and the [CHANGELOG](CHANGELOG.md) for what has changed recently.
+
+**Looking for a first issue?** Volunteers are currently building clinical forms: see the [`Forms` + `Help wanted` issues](https://github.com/MadiroGlobalHealth/UVL-EMR/issues?q=is%3Aopen+label%3AForms+label%3A%22Help+wanted%22) and [Building a form](CONTRIBUTING.md#building-a-form).
 
 ### Users and teams
 
@@ -62,17 +62,24 @@ Open the cloned folder
 cd UVL-EMR
 ```
 
-Add your GitHub credentials to `~/.m2/settings.xml` settings file. See [how to create a git github token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-fine-grained-personal-access-token)
+The build downloads UVL artifacts from GitHub Packages, which needs a GitHub token even though the repository is public.
+
+1. Create a **classic** personal access token with only the `read:packages` scope: GitHub → Settings → Developer settings → Personal access tokens → **Tokens (classic)** ([how](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic)). A fine-grained token does not work for GitHub Packages' Maven registry, and your GitHub password is not accepted.
+2. Add it to `~/.m2/settings.xml` (create the file if it does not exist). The `<id>` must be exactly `madiro-global-health-github-uvl-emr`, the id the pom uses:
 
 ```xml
-<servers>
-  <server>
-    <id>madiro-global-health-github-uvl-emr</id>
-    <username>your_github_username</username>
-    <password>your_github_token</password>
-  </server>
-</servers>
+<settings>
+  <servers>
+    <server>
+      <id>madiro-global-health-github-uvl-emr</id>
+      <username>YOUR_GITHUB_USERNAME</username>
+      <password>YOUR_CLASSIC_TOKEN_WITH_READ_PACKAGES</password>
+    </server>
+  </servers>
+</settings>
 ```
+
+If the build stops with `401 Unauthorized` or `Could not transfer artifact ... maven.pkg.github.com`, the token is missing, expired, fine-grained, or under a different `<id>`.
 
 Build UVL distro/version of OpenMRS 3
 
@@ -134,25 +141,6 @@ For SSO, use the following credentials:
 - **Username:** `jdoe`
 - **Password:** `password`
 
-### Maven configuration
-
-Sometimes, you might need to customize your Maven configuration file to build the project.
-
-On Mac, you can edit those settings using:
-`vi ~/.m2/settings.xml`
-
-Add the Maven Server config and API key in your Maven settings on your laptop:
-
-```bash
-  <servers>
-    <server>
-      <id>madiro-global-health-github-uvl-emr</id>
-      <username>YOUR_GITHUB_USERNAME</username>
-      <password>YOUR_GITHUB_TOKEN</password>
-    </server>
-  </servers>
-```
-
 ## Configuration hierarchy and inheritance
 
 #### Hierarchy overview
@@ -202,19 +190,15 @@ Official [Github](https://github.com/openmrs) repositories for OpenMRS
 
 **Demo** to checkout and run locally [here](https://github.com/openmrs/openmrs-distro-referenceapplication)
 
-### UVL Burundi Challenge resources
+### UVL resources
 
-[Slack Channel](https://join.slack.com/share/enQtNzUwNTI4NTczNzE3My01YzVhY2ZkZWNlNDQ5MzI1YjViYWEwZDYyMzg3ZGQyNGI0MWYwMGU4MmQwNThhMDVlMGE2NjMyNzdhY2IwZWRi) for all participants to discuss the project
+[Issues](https://github.com/MadiroGlobalHealth/UVL-EMR/issues) and the [project board](https://github.com/orgs/MadiroGlobalHealth/projects/9): all current work. Work is tracked on GitHub; the 2024 Jira board is no longer used.
 
-[JIRA project](https://madiroglobalhealth.atlassian.net/jira/software/projects/UVL/boards/1/backlog) to pick up and accomplish tasks
+`#o3-burundi` on the [OpenMRS Slack](https://slack.openmrs.org/) for discussion.
 
 ## Contact
 
-For any questions, please contact [Michael Bontyes](https://github.com/michaelbontyes) or reach out on the [OpenMRS Slack](https://slack.openmrs.org/).
-
-## Sign up for the challenge
-
-The 2024 HealthTech Challenge enrolment closed on 1 September 2024. To volunteer now, start with [ONBOARDING.md](ONBOARDING.md) and say hello on an issue.
+Ask on the issue you are working on and tag [@jnsereko](https://github.com/jnsereko). For questions about the project itself, contact [Michael Bontyes](https://github.com/michaelbontyes).
 
 ### Sprint Check-in
 
@@ -222,9 +206,9 @@ The 2024 HealthTech Challenge enrolment closed on 1 September 2024. To volunteer
 
 📅 **Every Monday and Thursday 3:30 PM TO 4:00 PM EAT | 7:30 AM TO 8:00 AM UTC**
 
-### 🏆 Key Achievements and Contributors
+### 🏆 HealthTech Challenge 2024: key achievements and contributors
 
-We extend our heartfelt thanks to everyone who contributed to making these milestones possible! Below are the key goals achieved, along with the contributors who made them happen:
+UVL-EMR started as Madiro's HealthTech Challenge 2024 (enrolment closed on 1 September 2024). We thank everyone who made these first milestones possible:
 
 | 🎯 **Goal**                                                   | **Date**   | **Contributors** | **Relevant Links**                                                  |
 | ------------------------------------------------------------- | ---------- | ---------------- | ------------------------------------------------------------------- |
@@ -241,4 +225,4 @@ We extend our heartfelt thanks to everyone who contributed to making these miles
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more information.
+This project is licensed under the MIT License.

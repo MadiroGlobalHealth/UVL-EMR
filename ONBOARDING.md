@@ -104,11 +104,13 @@ good map of where help is needed.
 
 ## Step 5: Pick up your first issue
 
-1. Browse the [issues](https://github.com/MadiroGlobalHealth/UVL-EMR/issues) or the
-   [project board](https://github.com/orgs/MadiroGlobalHealth/projects/9). Configuration work such
-   as forms, translations and roles is a good first contribution.
+1. Volunteers are currently building **clinical forms**. Pick one of the open
+   [`Forms` + `Help wanted` issues](https://github.com/MadiroGlobalHealth/UVL-EMR/issues?q=is%3Aopen+label%3AForms+label%3A%22Help+wanted%22),
+   starting with one marked **easy**. Other areas stay with the maintainers for now.
 2. Comment on the issue to say you're taking it, so two people don't build the same thing.
-3. Follow [CONTRIBUTING.md](CONTRIBUTING.md) for branch names, commits and pull requests.
+3. Follow [Building a form](CONTRIBUTING.md#building-a-form): the concept mapping table comes
+   before any JSON. Then [CONTRIBUTING.md](CONTRIBUTING.md) for branch names, commits and pull
+   requests.
 4. Test your change on your local stack, signed in as a user with the role the change affects,
    not as `admin`. Most of the faults we've shipped were invisible to an administrator.
 
