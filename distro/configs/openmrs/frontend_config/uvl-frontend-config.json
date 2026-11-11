@@ -2,9 +2,6 @@
   "@openmrs/esm-patient-chart-app": {
     "logo": {
       "src": "configs/header-logo.png"
-    },
-    "Display conditions": {
-      "roles": ["Organizational: Nurse"]
     }
   },
   "@openmrs/esm-login-app": {

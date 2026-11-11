@@ -505,9 +505,7 @@
     "Display conditions": {
       "privileges": ["Manage Immunization Summary"]
     },
-    "immunizationsConfig": {
-      "immunizationConceptSet": "5d2ca206-2b83-4965-aa55-b6e27a37c590"
-    }
+    "immunizationConceptSet": "5d2ca206-2b83-4965-aa55-b6e27a37c590"
   },
   "@openmrs/esm-patient-search-app": {
     "Display conditions": {
@@ -617,7 +615,10 @@
         "futureDatesNotAllowed": "Les dates futures ne sont pas autorisées",
         "valueNotFoundInCodedAnswers": "Valeur absente de la liste des réponses",
         "invalidDateValue": "Date invalide : '{{- value}}'",
-        "invalidNumericalValue": "Valeur numérique invalide : '{{- value}}'"
+        "invalidNumericalValue": "Valeur numérique invalide : '{{- value}}'",
+        "formHasInvalidFields": "Certains champs sont à compléter ou à corriger",
+        "invalidFieldsSummary": "Champs à compléter ou à corriger : {{count}}. Premier : {{- label}}",
+        "time": "Heure"
       }
     }
   },
@@ -640,7 +641,18 @@
         "errorSavingStickyNote": "Erreur lors de l'enregistrement du pense-bête",
         "errorLoadingStickyNote": "Impossible de charger le pense-bête.",
         "errorDeletingStickyNote": "Erreur lors de la suppression du pense-bête",
-        "errorDeletingStickyNoteMessage": "Une erreur s'est produite lors de la suppression du pense-bête"
+        "errorDeletingStickyNoteMessage": "Une erreur s'est produite lors de la suppression du pense-bête",
+        "addVisitNote": "Ajouter une note de visite",
+        "editVisitNote": "Modifier la note de visite",
+        "diagnosis": "Diagnostic",
+        "searchForDiagnosis": "Rechercher un diagnostic à ajouter",
+        "diagnosisInputPlaceholder": "Rechercher un diagnostic",
+        "primary": "Principal",
+        "provisional": "Provisoire",
+        "markAsConfirmed": "Marquer comme confirmé",
+        "markAsProvisional": "Marquer comme provisoire",
+        "diagnosisCertaintyHelperText": "Les diagnostics sont enregistrés comme confirmés, sauf s'ils sont marqués provisoires.",
+        "atLeastOnePrimaryDiagnosis": "Au moins un diagnostic doit être marqué comme principal"
       }
     }
   },
@@ -859,7 +871,10 @@
         "noBedsConfiguredForLocation": "Aucun lit configuré pour {{location}} : le patient est admis sans lit.",
         "orderBasket": "Ordonnance",
         "Labs": "Examens",
-        "pendingDischarge": "En attente de sortie"
+        "pendingDischarge": "En attente de sortie",
+        "dischargeNote": "Note de sortie (facultative)",
+        "dischargeNotePlaceholder": "Saisissez vos notes ici",
+        "confirmDischarge": "Confirmer la sortie"
       }
     }
   }

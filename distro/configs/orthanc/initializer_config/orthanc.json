@@ -23,7 +23,14 @@
   "DicomPort": 4242,
   "DicomAlwaysAllowStore": false,
   "DicomAlwaysAllowEcho": true,
-  "StoneWebViewer": {},
+  "StoneWebViewer": {
+    "SkipSeriesFromModalities": [
+      "SEG",
+      "PR",
+      "SR",
+      "KO"
+    ]
+  },
   "OverwriteInstances": true,
   "SaveJobs": true,
   "ConcurrentJobs": 2,

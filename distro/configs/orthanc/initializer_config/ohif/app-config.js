@@ -165,6 +165,15 @@ window.config = {
     thumbnail: 75,
     prefetch: 25,
   },
+  // No guided tour (UVL-EMR#578). The default extension registers a 12-step "basicViewerTour"
+  // as the "ohif.tours" customization, and it covers the image until « Tout passer » is
+  // clicked. "Seen" is only remembered per browser (localStorage "shownTours"), so every new
+  // browser or cleared profile gets it again. A global customization outranks the extension
+  // default, and an empty list makes the Onboarding component return before it starts.
+  // Checked against the OHIF build in orthancteam/orthanc:26.7.0-full (the UAT base image).
+  customizationService: {
+    "ohif.tours": { $set: [] },
+  },
   // NO oidc block. It looks like the obvious way to put Keycloak in front of the
   // viewer, but Orthanc's OHIF plugin cannot complete the flow: it serves exactly
   // four paths — /ohif/, index.html, app-config.js and a hardcoded "viewer" — and

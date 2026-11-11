@@ -1,7 +1,7 @@
 #!/usr/bin/env groovy
 /*
-  Fails the build when a UVL encounter type, visit type, visit attribute type or form lacks its
-  French or its English name. Run from sites/mugamba/pom.xml at prepare-package, against the
+  Fails the build when a UVL encounter type, visit type, visit attribute type, order type or
+  form lacks its French or its English name. Run from sites/mugamba/pom.xml at prepare-package, against the
   site's own initializer_config: the Ozone metadata it inherits is not UVL's to translate.
 
   The interface is French and English (#499). Each of these shows the wrong language without a
@@ -29,7 +29,9 @@
 
 import groovy.json.JsonSlurper
 
-List<String> metadataDomains = ['encountertypes', 'visittypes', 'attributetypes']
+// Order types: the test and procedure order panels are titled with the order type's `display`
+// (« procedure », « test order » in a French session until #529).
+List<String> metadataDomains = ['encountertypes', 'visittypes', 'attributetypes', 'ordertypes']
 List<String> locales = ['fr', 'en']
 
 File configDir = new File(project.basedir, 'configs/openmrs/initializer_config')
