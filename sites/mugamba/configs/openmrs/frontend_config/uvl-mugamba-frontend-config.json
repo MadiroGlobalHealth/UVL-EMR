@@ -618,6 +618,8 @@
         "valueNotFoundInCodedAnswers": "Valeur absente de la liste des réponses",
         "invalidDateValue": "Date invalide : '{{- value}}'",
         "invalidNumericalValue": "Valeur numérique invalide : '{{- value}}'",
+        "formHasInvalidFields": "Certains champs sont à compléter ou à corriger",
+        "invalidFieldsSummary": "Champs à compléter ou à corriger : {{count}}. Premier : {{- label}}",
         "time": "Heure"
       }
     }
