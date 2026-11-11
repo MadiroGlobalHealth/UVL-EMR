@@ -1,10 +1,10 @@
 import React from 'react';
 import { describe, expect, it, vi } from 'vitest';
-import { render, screen, within } from '@testing-library/react';
+import { act, render, screen, within } from '@testing-library/react';
 import { useConfig, useOpenmrsFetchAll } from '@openmrs/esm-framework';
 import type { PartographConfig } from '../config-schema';
 import PartographChart from './partograph-chart.component';
-import { partographUrl, toReadings, type PartographEncounter } from './partograph.resource';
+import { notifyPartographSaved, partographUrl, toReadings, type PartographEncounter } from './partograph.resource';
 
 const mockUseConfig = vi.mocked(useConfig);
 const mockUseOpenmrsFetchAll = vi.mocked(useOpenmrsFetchAll);
@@ -39,6 +39,15 @@ const config: PartographConfig = {
     { concept: 'moulding-none', code: '0' },
     { concept: 'moulding-reducible', code: '++' },
   ],
+  readingFormUuid: '',
+  surveillance: {
+    encounterTypeUuid: '',
+    timePointConcept: '',
+    newbornGroupConcept: '',
+    motherConcepts: [],
+    newbornConcepts: [],
+    gapHours: 48,
+  },
 };
 
 const obs = (concept: string, value: unknown) => ({ concept: { uuid: concept }, value });
@@ -328,4 +337,19 @@ describe('PartographChart', () => {
     expect(within(row).getByText('5')).toBeInTheDocument();
     expect(within(row).getByText('15')).toBeInTheDocument();
 });
+});
+
+describe('PartographChart after a reading is saved from the side panel', () => {
+  it('reloads the readings of this patient only', () => {
+    const mutate = vi.fn();
+    mockUseConfig.mockReturnValue(config);
+    mockUseOpenmrsFetchAll.mockReturnValue({ data: encounters, error: undefined, isLoading: false, mutate } as any);
+
+    render(<PartographChart patientUuid="patient-uuid" />);
+    act(() => notifyPartographSaved('another-patient'));
+    expect(mutate).not.toHaveBeenCalled();
+
+    act(() => notifyPartographSaved('patient-uuid'));
+    expect(mutate).toHaveBeenCalledTimes(1);
+  });
 });

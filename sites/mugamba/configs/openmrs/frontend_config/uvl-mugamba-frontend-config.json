@@ -67,12 +67,27 @@
           }
         }
       },
+      "patient-chart": {
+        "configure": {
+          "uvl-partograph-reading": {
+            "Display conditions": {
+              "privileges": ["Edit Partograph Reading"],
+              "expression": "groupProps?.patient?.gender === 'female'"
+            }
+          }
+        }
+      },
       "patient-chart-summary-dashboard-slot": {
-        "add": ["uvl-partograph-chart-widget"],
+        "add": ["uvl-partograph-chart-widget", "uvl-24h-surveillance-widget"],
         "configure": {
           "uvl-partograph-chart-widget": {
             "Display conditions": {
               "privileges": ["View Partograph Reading"]
+            }
+          },
+          "uvl-24h-surveillance-widget": {
+            "Display conditions": {
+              "privileges": ["View 24-Hour Surveillance"]
             }
           }
         }
@@ -536,7 +551,6 @@
           "UVL Maternity Consultation Form",
           "UVL Gynaecology Ultrasound Form",
           "UVL Delivery Registration Form",
-          "UVL Partograph Reading Form",
           "UVL Childbirth Record Form"
         ]
       },
@@ -772,7 +786,52 @@
       { "concept": "e9fa7532-a9dd-447d-9a32-ef2e3750385b", "code": "+" },
       { "concept": "52506e95-0ae4-4718-b622-d4226b4238dd", "code": "++" },
       { "concept": "487fb8c7-29c3-4954-937c-090c1a4a4ced", "code": "+++" }
-    ]
+    ],
+    "readingFormUuid": "b6372bdc-3842-4b0b-a9ef-9f797406cf10",
+    "surveillance": {
+      "encounterTypeUuid": "79f5e229-1a46-471d-9c14-0092959a7650",
+      "timePointConcept": "4169c767-e76c-4920-b092-dd038a6108d4",
+      "newbornGroupConcept": "776c8759-ab5d-414a-a9f4-4d7b26c5b665",
+      "motherConcepts": [
+        "5d32f886-732b-439c-956c-82c0415f17c9",
+        "9be23fa1-bd0d-4968-abe9-f96c31f4ee5e",
+        "b39db318-d563-4114-bec0-31ad3d254b24",
+        "bc54cb7c-bb45-45aa-84d6-2346748b7c93",
+        "6d0b8551-feb8-4d57-892a-d75398181b3f",
+        "c46fcfdd-a785-4416-80bc-2d9e2edf5a45",
+        "748f8d43-617a-40ba-9474-20522e73fb8a",
+        "2161c5cf-5f57-4d9f-b554-4048755da00a",
+        "e5d80ce0-865e-4907-ba1c-65bcee2a1400",
+        "deffdedd-7a2a-41df-ab05-fbf5477bd728",
+        "c02c01c1-ee00-440c-8dc4-af6cce260465",
+        "ec6486ba-f703-4d63-83f3-12cd639f29ff",
+        "c06ba8f8-e6ab-441c-ae3a-bad6d2c77f09",
+        "7540aa6b-d329-4c40-8412-3c855bcbbff9",
+        "99f5b154-e599-49ca-b4a0-f0aafbbb6b1d",
+        "c4d299ab-4837-4104-8fbf-c2a6ed915bca",
+        "a9907510-cc0a-4c11-b18d-03ee15ca73b4",
+        "711aa5b1-8597-4bb4-a9fa-2442ec981aa3",
+        "29ff306b-5a2a-48c1-affa-8fa4620a8fda"
+      ],
+      "newbornConcepts": [
+        "238652d6-4aca-451a-9c8e-8336cea6fff4",
+        "2a8c001c-a278-46b9-9eb1-864c85d50bcd",
+        "59bb5013-c82b-4755-b348-4d14793e6174",
+        "237d5a2a-fd87-4c2a-b291-d813cd76c6f2",
+        "59bc311b-4e61-4b6a-8b96-2172ba7178c3",
+        "e822ff27-b1b5-4793-a8fc-9beb9f73bc11",
+        "5f0b0e37-d169-4ba5-a49c-bbf8bb7d5b61",
+        "b39db318-d563-4114-bec0-31ad3d254b24",
+        "bc54cb7c-bb45-45aa-84d6-2346748b7c93",
+        "748f8d43-617a-40ba-9474-20522e73fb8a",
+        "05cbda6b-9a32-4d6d-9821-38219e96630f",
+        "37f0d251-0e5f-4f83-b624-a69bbfe988c1",
+        "e0c25e2a-b3b6-4fbc-8a06-aaa10d7aa46b",
+        "b45bf86a-91be-4848-a1cd-177b70aaab10",
+        "85d82933-9f43-49be-8633-7491fef5447d",
+        "efea48f6-3d58-4caf-bbc3-0d54ee851c0a"
+      ]
+    }
   },
   "@openmrs/esm-ward-app": {
     "restrictTransferLocationsToVisitLocation": false,

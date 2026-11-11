@@ -15,3 +15,10 @@ export function startupApp() {
 }
 
 export const partographChart = getAsyncLifecycle(() => import('./partograph/partograph-chart.component'), options);
+
+export const partographActionButton = getAsyncLifecycle(
+  () => import('./partograph/partograph-action-button.component'),
+  options,
+);
+
+export const surveillanceTable = getAsyncLifecycle(() => import('./surveillance/surveillance-table.component'), options);
