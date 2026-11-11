@@ -245,7 +245,7 @@
                   "id": "nbRespiratoryRate",
                   "questionOptions": {
                     "rendering": "number",
-                    "concept": "b39db318-d563-4114-bec0-31ad3d254b24",
+                    "concept": "e2b25370-77fb-4c57-bbef-76dc5327dec7",
                     "min": "0",
                     "max": "150",
                     "disallowDecimals": true
@@ -257,7 +257,7 @@
                   "id": "nbPulse",
                   "questionOptions": {
                     "rendering": "number",
-                    "concept": "bc54cb7c-bb45-45aa-84d6-2346748b7c93",
+                    "concept": "0d3f2880-c504-48f1-b5db-5722c3d43331",
                     "min": "0",
                     "max": "300",
                     "disallowDecimals": true
@@ -269,7 +269,7 @@
                   "id": "nbTemperature",
                   "questionOptions": {
                     "rendering": "number",
-                    "concept": "748f8d43-617a-40ba-9474-20522e73fb8a",
+                    "concept": "39c996ee-bf24-4341-a25e-35a368142556",
                     "min": "25",
                     "max": "45"
                   }
@@ -538,7 +538,7 @@
                   "id": "nbRespiratoryRate_1",
                   "questionOptions": {
                     "rendering": "number",
-                    "concept": "b39db318-d563-4114-bec0-31ad3d254b24",
+                    "concept": "e2b25370-77fb-4c57-bbef-76dc5327dec7",
                     "min": "0",
                     "max": "150",
                     "disallowDecimals": true
@@ -553,7 +553,7 @@
                   "id": "nbPulse_1",
                   "questionOptions": {
                     "rendering": "number",
-                    "concept": "bc54cb7c-bb45-45aa-84d6-2346748b7c93",
+                    "concept": "0d3f2880-c504-48f1-b5db-5722c3d43331",
                     "min": "0",
                     "max": "300",
                     "disallowDecimals": true
@@ -568,7 +568,7 @@
                   "id": "nbTemperature_1",
                   "questionOptions": {
                     "rendering": "number",
-                    "concept": "748f8d43-617a-40ba-9474-20522e73fb8a",
+                    "concept": "39c996ee-bf24-4341-a25e-35a368142556",
                     "min": "25",
                     "max": "45"
                   },
@@ -861,7 +861,7 @@
                   "id": "nbRespiratoryRate_2",
                   "questionOptions": {
                     "rendering": "number",
-                    "concept": "b39db318-d563-4114-bec0-31ad3d254b24",
+                    "concept": "e2b25370-77fb-4c57-bbef-76dc5327dec7",
                     "min": "0",
                     "max": "150",
                     "disallowDecimals": true
@@ -876,7 +876,7 @@
                   "id": "nbPulse_2",
                   "questionOptions": {
                     "rendering": "number",
-                    "concept": "bc54cb7c-bb45-45aa-84d6-2346748b7c93",
+                    "concept": "0d3f2880-c504-48f1-b5db-5722c3d43331",
                     "min": "0",
                     "max": "300",
                     "disallowDecimals": true
@@ -891,7 +891,7 @@
                   "id": "nbTemperature_2",
                   "questionOptions": {
                     "rendering": "number",
-                    "concept": "748f8d43-617a-40ba-9474-20522e73fb8a",
+                    "concept": "39c996ee-bf24-4341-a25e-35a368142556",
                     "min": "25",
                     "max": "45"
                   },

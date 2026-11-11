@@ -179,9 +179,10 @@ The extension **`uvl-24h-surveillance-widget`** (no default slot) is a table of 
 (30 min … 24 h) and its date and time. Rows: the mother, then « Nouveau-né 1 », « Nouveau-né 2 »…
 
 **Why not the generic `obs-table-horizontal-widget`.** It keys each column's values by concept
-alone. In F17 the mother and each newborn share the concepts for pulse, breathing and temperature,
-so one cell would show whichever of the mother's or a newborn's value came last, under the
-mother's label. It also renders an empty card for every patient, which is why #498 removed the
+alone. Until #562 the mother and each newborn shared the concepts for pulse, breathing and
+temperature in F17, so one cell would show whichever of the mother's or a newborn's value came
+last, under the mother's label; the newborn has its own concepts now, but forms saved before
+still hold those values. It also renders an empty card for every patient, which is why #498 removed the
 generic partograph table. This table places each value by where it sits in the encounter.
 
 - **Data:** `GET /ws/rest/v1/encounter?patient=…&encounterType=…&v=custom:(uuid,encounterDatetime,encounterType:(uuid),obs:(uuid,concept:(uuid,display),value,formFieldPath,groupMembers:(…)))`,

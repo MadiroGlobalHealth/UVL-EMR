@@ -81,8 +81,9 @@ function rowsFor(
  * first, headed by its time point; the mother's values (the top-level obs) and each newborn's (the
  * members of one newborn group) as rows.
  *
- * The mother and the newborns share concepts (pulse, breathing, temperature), so a value is placed
- * by where it sits in the encounter, never by its concept alone.
+ * A value is placed by where it sits in the encounter, never by its concept alone: forms saved
+ * before #562 hold each newborn's pulse, breathing and temperature under the mother's concepts.
+ * Since then the newborn has its own (newbornConcepts).
  *
  * Only the current delivery is kept: readings before a gap longer than `gapHours`. Encounters of
  * another type are dropped too, since OpenMRS ignores a search filter it does not support.
