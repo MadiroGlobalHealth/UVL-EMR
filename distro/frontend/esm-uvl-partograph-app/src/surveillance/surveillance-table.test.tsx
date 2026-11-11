@@ -84,6 +84,28 @@ describe('toSurveillanceTable', () => {
     expect(table.columns[1].newborns[0].status).toBe('Born alive');
   });
 
+  it("reads each newborn's own concepts, and never puts them in the mother's rows (#562)", () => {
+    const table = toSurveillanceTable(
+      [
+        {
+          uuid: 'own-concepts',
+          encounterDatetime: '2026-11-05T09:00:00.000+0000',
+          encounterType: { uuid: 'surveillance-type' },
+          obs: [
+            obs('pulse', 'Pulse', 88),
+            newborn('rfe-forms-newbornMonitoring', [obs('newborn-pulse', 'Newborn pulse', 140)]),
+          ],
+        },
+      ],
+      { ...surveillance, newbornConcepts: ['status', 'newborn-pulse', 'apgar'] },
+    );
+
+    expect(table.columns[0].mother).toEqual({ pulse: '88' });
+    expect(table.columns[0].newborns).toEqual([{ 'newborn-pulse': '140' }]);
+    expect(table.motherRows.map((row) => row.concept)).toEqual(['pulse']);
+    expect(table.newbornRows).toEqual([[{ concept: 'newborn-pulse', label: 'Newborn pulse' }]]);
+  });
+
   it('lists rows in the configured order, only for values recorded at some time point', () => {
     const table = toSurveillanceTable(encounters, surveillance);
 

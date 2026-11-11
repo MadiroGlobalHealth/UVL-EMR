@@ -442,10 +442,16 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
     headed by its time point (30 min, 1 h, 2 h, 6 h, 12 h, 24 h) and its time. The rows show
     the mother's values first (blood loss, uterus, breathing, pulse, blood pressure,
     temperature, urine, complications, treatment), then each newborn's under « Nouveau-né 1 »,
-    « Nouveau-né 2 »… The mother and the newborns share the pulse, breathing and temperature
-    questions, and each value stays in its own row. The table shows only the current
+    « Nouveau-né 2 »… Each value stays in its own row. The table shows only the current
     delivery, and only for staff with "View 24-Hour Surveillance". It is not shown for a
     patient without such a form.
+- **A newborn's pulse, breathing and temperature in the 24-hour surveillance no longer show as
+  the mother's vital signs.** The form saved them under the mother's concepts, so her « Signes
+  vitaux » and the chart header read her newborn's values (pulse 140, respiratory rate 45) and
+  flagged them abnormal. The newborn now has its own « Pouls du nouveau-né », « Fréquence
+  respiratoire du nouveau-né » and « Température du nouveau-né », with newborn normal ranges
+  (120–160 /min, 30–60 /min, 36.5–37.5 °C). Forms saved before keep their values as they were.
+  (#562)
 - **Antenatal care (CPN) has its own place, "Consultations prénatales (CPN)".** Pregnancy
   follow-up is outpatient care, so it is a service of its own, not under Hospitalisation (IPD).
   Staff can choose it at sign-in and as the visit location, book appointments there and queue

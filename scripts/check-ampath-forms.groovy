@@ -4,7 +4,7 @@
   Run from sites/mugamba/pom.xml at prepare-package, against the assembled
   initializer_config, so it sees every layer (distro, country, site).
 
-  Eight checks, each for a fault that passes every review of the form JSON and shows only
+  Eleven checks, each for a fault that passes every review of the form JSON and shows only
   when someone saves or reads the form:
 
   1. A number question that accepts decimals asks a concept that allows them. The form
@@ -72,6 +72,13 @@
      out of the normal range (#562). Without a message the engine shows its English "Invalid value" or
      "Field has warnings"; the engine does not translate validator messages, so they carry the French
      and the English text, like the male-patient save block.
+ 11. No question inside a newborn's obs group asks a concept of the vital-signs export
+     (UVL_vital_signs_*.zip). The patient chart's vital signs and header read those concepts whatever
+     obs group they sit in, so a newborn's value saved under one shows as the mother's: the 24-hour
+     surveillance saved each newborn's pulse, breathing and temperature under the mother's concepts,
+     and her vital signs read pulse 140 and respiratory rate 45, flagged abnormal (#562). A group is a
+     newborn's when its id, label or concept name says newborn, nouveau-né, baby or bébé; the newborn
+     gets its own concepts (Newborn pulse, ...).
 */
 
 import groovy.io.FileType
@@ -134,6 +141,8 @@ Map<String, Long> frenchNameVersion = [:]
 Map<String, String> frenchName = [:]
 Map<String, String> datatypeOf = [:]       // external_id -> datatype of the newest version
 Map<String, String> cielConcept = [:]      // 'CIEL:<code>' -> external_id of the concept mapped SAME-AS to it
+Map<String, String> vitalSign = [:]        // external_id -> name of every concept of the vital-signs export
+Map<String, String> englishName = [:]      // external_id -> display name, to tell a newborn's obs group
 // Exports re-exported after #520 must have none. uvl-dx carries 2 from the May 2025 import
 // (retired in OCL); its collection can't be re-exported as is, it would drop 154 concepts (#533).
 Map<String, Integer> knownMappingFaults = ['UVL_dx_v4.zip': 2]
@@ -158,6 +167,10 @@ filesIn(oclDir, '.zip').each { File zip ->
                     }
                 }
             }
+            if (zip.name.startsWith('UVL_vital_signs_')) {
+                export.concepts?.findAll { it.external_id }?.each { vitalSign[it.external_id] = it.display_name?.toString() }
+            }
+            export.concepts?.each { if (it.external_id) englishName.putIfAbsent(it.external_id, it.display_name?.toString() ?: '') }
             if (noTarget.size() != knownMappingFaults.getOrDefault(zip.name, 0)) {
                 mappingFaults << ("${zip.name}: ${noTarget.size()} mapping(s) with no target concept and no target " +
                         "source (e.g. ${noTarget.take(3).collect { it.url }}), which the OCL loader drops. Give each " +
@@ -203,6 +216,12 @@ Map<String, String> noFrenchName = [:]   // concept -> first form and question t
 Set<String> namedConcepts = [] as Set
 int answerLabelsChecked = 0
 int expressionValidators = 0
+int newbornMembersChecked = 0
+// A newborn's obs group, by its id (newbornMonitoring, nb...), label or concept name.
+boolean isNewbornGroup(Map group, Map<String, String> names) {
+    String text = [group.id, group.label, names[group.questionOptions?.concept]].findAll().join(' ')
+    return text =~ /(?i)newborn|nouveau-n|\bbaby\b|\bb[ée]b[ée]\b/
+}
 List<File> formFiles = filesIn(formsDir, '.json')
 if (!formFiles) {
     throw new IllegalStateException("No form under ${formsDir}: the check would pass without checking anything")
@@ -223,6 +242,18 @@ formFiles.each { File file ->
                         "shows and saves while the group is hidden (#512)")
             }
             groupMembersChecked += group.questions.size()
+        }
+
+        questions.findAll { it.questions && isNewbornGroup(it, englishName) }.each { group ->
+            questionsOf(group.questions).findAll { it.questionOptions?.concept }.each { member ->
+                newbornMembersChecked++
+                String concept = member.questionOptions.concept
+                if (vitalSign.containsKey(concept)) {
+                    faults << ("${file.name}: ${member.id} in newborn group ${group.id} asks ${concept} " +
+                            "'${vitalSign[concept]}', a vital-signs concept, so the newborn's value shows as the " +
+                            "mother's vital sign in her chart. Give the newborn its own concept in OCL (#562)")
+                }
+            }
         }
 
         questions.each { q ->
@@ -347,4 +378,5 @@ log.info("Forms OK: ${decimalQuestions} decimal number questions on concepts tha
         "${mappingsChecked} OCL mappings with a target, ${labConceptsChecked} lab concepts with a French name, " +
         "${answerLabelsChecked} answer labels the saved-encounter view shows as the entry form does, " +
         "${imagingChecked} imaging procedures that take a result, " +
-        "${expressionValidators} js_expression validators with a condition and a message")
+        "${expressionValidators} js_expression validators with a condition and a message, " +
+        "${newbornMembersChecked} newborn group members on concepts of their own, not the vital signs'")

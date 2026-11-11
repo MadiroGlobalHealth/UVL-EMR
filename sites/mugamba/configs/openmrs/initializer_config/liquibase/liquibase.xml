@@ -2488,4 +2488,30 @@
         <rollback/>
     </changeSet>
 
+    <!--
+        #562 - the 24-hour surveillance (F17) saved each newborn's pulse, respiratory rate and
+        temperature under the mother's vital-sign concepts. The patient chart's vital signs read
+        those concepts whatever obs group they sit in, so the mother's showed her newborn's
+        values (pulse 140, respiratory rate 45, flagged as abnormal). uvl-forms 20261111-1 gives
+        the newborn its own three concepts and makes them the members of "Postpartum newborn
+        monitoring" (776c8759-...) instead. The import adds the new members but does not remove
+        the old ones, so this removes them by the OCL mapping UUID they were imported with.
+        Observations already saved are left as they are.
+    -->
+    <changeSet id="newborn_monitoring_without_maternal_vitals-20261111" author="Joshua">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT CASE WHEN COUNT(*) &gt; 0 THEN 1 ELSE 0 END FROM concept_set
+                WHERE uuid IN ('0e6206ab-76d8-40e4-9200-a8373a04e5b2', '8e950595-bf2d-494f-a646-500949eca6fc', '263856fe-a21e-4d55-bb0a-03b9da2e2367')
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            Remove the maternal respiratory rate, pulse and temperature from Postpartum newborn monitoring (#562).
+        </comment>
+        <sql>
+            DELETE FROM concept_set
+             WHERE uuid IN ('0e6206ab-76d8-40e4-9200-a8373a04e5b2', '8e950595-bf2d-494f-a646-500949eca6fc', '263856fe-a21e-4d55-bb0a-03b9da2e2367');
+        </sql>
+    </changeSet>
+
 </databaseChangeLog>
