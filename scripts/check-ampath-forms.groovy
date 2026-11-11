@@ -64,6 +64,13 @@
      that can hold a result in the OCL exports. 22 body-part X-rays were N/A, so they could be
      ordered and paid but the lab app refused their result: "Configuration d'analyse invalide"
      (#546).
+ 10. Every js_expression validator has a failsWhenExpression or a warnsWhenExpression, and a message.
+     The engine reads only those two keys and ignores any other, so a misspelled one (warnWhenExpression,
+     warningExpression) never fires and nothing tells anyone. A warnsWhenExpression shows its message
+     under the field and does not stop the save: the 24-hour surveillance vital signs use it for values
+     out of the normal range (#562). Without a message the engine shows its English "Invalid value" or
+     "Field has warnings"; the engine does not translate validator messages, so they carry the French
+     and the English text, like the male-patient save block.
 */
 
 import groovy.io.FileType
@@ -194,6 +201,7 @@ int groupMembersChecked = 0
 Map<String, String> noFrenchName = [:]   // concept -> first form and question that uses it
 Set<String> namedConcepts = [] as Set
 int answerLabelsChecked = 0
+int expressionValidators = 0
 List<File> formFiles = filesIn(formsDir, '.json')
 if (!formFiles) {
     throw new IllegalStateException("No form under ${formsDir}: the check would pass without checking anything")
@@ -236,6 +244,18 @@ formFiles.each { File file ->
                             "translations turn into '${translated}', but the saved-encounter view shows the label " +
                             "untranslated. Remove the label so the concept's name shows, or label it " +
                             "'${translated}' and translate that in the English file (#528)")
+                }
+            }
+
+            (q.validators ?: []).findAll { it.type == 'js_expression' }.each { v ->
+                expressionValidators++
+                if (!squash(v.failsWhenExpression) && !squash(v.warnsWhenExpression)) {
+                    faults << ("${file.name}: ${q.id} has a js_expression validator with neither failsWhenExpression " +
+                            "nor warnsWhenExpression (keys ${v.keySet()}), so it never fires (#562)")
+                }
+                if (!v.message?.toString()?.trim()) {
+                    faults << ("${file.name}: ${q.id} has a js_expression validator with no message, so the engine " +
+                            "shows its English default. Give it a 'French / English' message (#562)")
                 }
             }
 
@@ -325,4 +345,5 @@ log.info("Forms OK: ${decimalQuestions} decimal number questions on concepts tha
         "${sheetName.size()} French names as the requirements sheet gives them, " +
         "${mappingsChecked} OCL mappings with a target, ${labConceptsChecked} lab concepts with a French name, " +
         "${answerLabelsChecked} answer labels the saved-encounter view shows as the entry form does, " +
-        "${imagingChecked} imaging procedures that take a result")
+        "${imagingChecked} imaging procedures that take a result, " +
+        "${expressionValidators} js_expression validators with a condition and a message")

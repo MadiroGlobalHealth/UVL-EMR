@@ -1265,7 +1265,14 @@
                 "min": "0",
                 "max": "250",
                 "disallowDecimals": true
-              }
+              },
+              "validators": [
+                {
+                  "type": "js_expression",
+                  "warnsWhenExpression": "!isEmpty(myValue) && (myValue < 60 || myValue > 90)",
+                  "message": "Pouls hors de la normale (60–90 /min) / Pulse outside the normal range (60–90 /min)"
+                }
+              ]
             },
             {
               "label": "Blood Pressure: Systolic (mmHg)",
@@ -1277,7 +1284,14 @@
                 "min": "0",
                 "max": "300",
                 "disallowDecimals": true
-              }
+              },
+              "validators": [
+                {
+                  "type": "js_expression",
+                  "warnsWhenExpression": "!isEmpty(myValue) && myValue >= 120",
+                  "message": "Systolique au-dessus de la normale (< 120 mmHg) / Systolic above the normal range (< 120 mmHg)"
+                }
+              ]
             },
             {
               "label": "Blood Pressure: Diastolic (mmHg)",
@@ -1289,7 +1303,14 @@
                 "min": "0",
                 "max": "200",
                 "disallowDecimals": true
-              }
+              },
+              "validators": [
+                {
+                  "type": "js_expression",
+                  "warnsWhenExpression": "!isEmpty(myValue) && myValue >= 80",
+                  "message": "Diastolique au-dessus de la normale (< 80 mmHg) / Diastolic above the normal range (< 80 mmHg)"
+                }
+              ]
             },
             {
               "label": "Temperature (°C)",
@@ -1300,7 +1321,14 @@
                 "concept": "748f8d43-617a-40ba-9474-20522e73fb8a",
                 "min": "25",
                 "max": "45"
-              }
+              },
+              "validators": [
+                {
+                  "type": "js_expression",
+                  "warnsWhenExpression": "!isEmpty(myValue) && (myValue < 36.5 || myValue > 37.5)",
+                  "message": "Température hors de la normale (36,5–37,5 °C) / Temperature outside the normal range (36.5–37.5 °C)"
+                }
+              ]
             },
             {
               "label": "Urine (mL)",
