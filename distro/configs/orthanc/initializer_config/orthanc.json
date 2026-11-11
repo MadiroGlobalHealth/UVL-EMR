@@ -29,7 +29,8 @@
       "PR",
       "SR",
       "KO"
-    ]
+    ],
+    "ShowInfoPanelAtStartup": "Never"
   },
   "OverwriteInstances": true,
   "SaveJobs": true,
