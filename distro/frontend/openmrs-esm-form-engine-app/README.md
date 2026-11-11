@@ -2,7 +2,7 @@
 
 The pinned pre-release 13.0.2-pre.12863 (built from openmrs-esm-patient-chart `2eeffea`, the
 commit CI run 12863 published), with the form engine library it bundles,
-`@openmrs/esm-form-engine-lib` 5.0.1-pre.2754 (source `88459d3`), patched with one fix that is
+`@openmrs/esm-form-engine-lib` 5.0.1-pre.2754 (source `88459d3`), patched with fixes that are
 not released upstream yet. Only the built module is here; the sources are:
 
 - library: `jnsereko/openmrs-esm-form-engine-lib`, branch `uvl/5.0.1-pre.2754-i18n`;
@@ -13,6 +13,7 @@ not released upstream yet. Only the built module is here; the sources are:
 |---|---|---|
 | #499 | The field validation messages ("Field is mandatory", decimals, number range, text length, future dates) go through the translations of `@openmrs/esm-form-engine-app`, so a French session can show them in French (fr `Translation overrides` in the frontend config) | openmrs/openmrs-esm-form-engine-lib#856, openmrs/openmrs-esm-patient-chart#3860 |
 | #500 | A number limit reads "Value must be at most {{max}}" / "at least {{min}}" (keys `valueMustBeAtMost`, `valueMustBeAtLeast`): the limit itself is allowed, which "lower than" / "greater than" contradicted | same |
+| #571 | Switching a radio from one answer to another shows the new answer as selected. The click handler cancelled the click and the browser restored the old radio, while the field kept the new value | to open |
 
 The other patient-chart apps stay on the npm 13.0.2-pre.12863 packages.
 
