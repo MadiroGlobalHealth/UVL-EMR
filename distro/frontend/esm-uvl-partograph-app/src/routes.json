@@ -7,6 +7,27 @@
     {
       "name": "uvl-partograph-chart-widget",
       "component": "partographChart"
+    },
+    {
+      "name": "uvl-24h-surveillance-widget",
+      "component": "surveillanceTable"
+    }
+  ],
+  "workspaces2": [
+    {
+      "name": "uvl-partograph-reading-workspace",
+      "component": "@openmrs/esm-patient-forms-app#exportedPatientFormEntryWorkspace",
+      "window": "uvl-partograph-reading"
+    }
+  ],
+  "workspaceWindows2": [
+    {
+      "name": "uvl-partograph-reading",
+      "icon": "partographActionButton",
+      "order": 3,
+      "width": "extra-wide",
+      "group": "patient-chart",
+      "canMaximize": true
     }
   ],
   "pages": []

@@ -6,6 +6,13 @@ UVL's partograph chart on the patient summary dashboard
 [#498](https://github.com/MadiroGlobalHealth/UVL-EMR/issues/498), resolving the configure-or-build
 spike [#264](https://github.com/MadiroGlobalHealth/UVL-EMR/issues/264) as "build".
 
+Since [#565](https://github.com/MadiroGlobalHealth/UVL-EMR/issues/565) it also has:
+
+- a **Partogramme** button in the patient chart's side panel that opens the Partograph Reading
+  form (see [Side-panel button](#side-panel-button));
+- the **Surveillance des 24 heures** table on the patient summary, from the saved 24-Hour
+  Surveillance forms (F17) (see [24-hour surveillance table](#24-hour-surveillance-table)).
+
 ## Why it exists
 
 The generic `obs-by-encounter-widget` cannot draw a partograph: every point reads "Aujourd'hui"
@@ -109,6 +116,13 @@ Without `encounterTypeUuid` the card renders nothing.
 | `labourGapHours` | 24 | A longer gap between readings starts a new labour |
 | `minimumHours` | 12 | The axis runs at least from 00 to this hour (MSPLS sheet: 12) |
 | `showWhenEmpty` | false | `false`: no card for a patient without readings. `true`: a card saying "Aucune lecture du partogramme pour cette patiente" |
+| `readingFormUuid` | `''` | Form the side-panel button opens. Without it the button renders nothing |
+| `surveillance.encounterTypeUuid` | `''` | Encounter type of the 24-Hour Surveillance form. Without it the table renders nothing |
+| `surveillance.timePointConcept` | `''` | Time point question; its answer heads each column |
+| `surveillance.newbornGroupConcept` | `''` | Obs group of one newborn |
+| `surveillance.motherConcepts` | `[]` | Mother's rows, in order (top-level obs). Empty: every top-level value |
+| `surveillance.newbornConcepts` | `[]` | Each newborn's rows, in order (group members). Empty: every member |
+| `surveillance.gapHours` | 48 | A longer gap between forms starts a new delivery |
 
 **Why `@madiro/uvl-partograph` and not the module name.** In core 11 an extension's configuration
 is computed as soon as its slot renders it, but the module, and so `startupApp()` and its
@@ -129,6 +143,60 @@ it is the encounter type's view privilege.
 **Data:** `GET /ws/rest/v1/encounter?patient=…&encounterType=…&v=custom:(uuid,encounterDatetime,encounterType:(uuid),obs:(uuid,concept:(uuid),value))`.
 It follows every page (`useOpenmrsFetchAll`). Encounters of another type are dropped on the client
 too, because OpenMRS ignores a search filter it does not support.
+
+## Side-panel button
+
+The partograph is filled in every 30 minutes to an hour during labour, so the form opens from the
+patient chart's right-hand panel, like the Visit Note, instead of from the clinical forms list (#565).
+
+- `routes.json` declares the workspace window **`uvl-partograph-reading`** in the `patient-chart`
+  group, with the icon component `partographActionButton`. Core registers that icon as an
+  extension of the same name in the slot `patient-chart`. So the site config sets its display
+  conditions under `@openmrs/esm-patient-chart-app` → `extensionSlots` → `patient-chart` →
+  `configure` → `uvl-partograph-reading`. UVL shows it to `Edit Partograph Reading` and only for
+  a female patient: `"expression": "groupProps?.patient?.gender === 'female'"`. The action menu
+  renders its slot with the state `{ groupProps }`, and `groupProps.patient` is the FHIR patient.
+- The window's only workspace, `uvl-partograph-reading-workspace`, is the patient forms app's
+  own form entry workspace (`@openmrs/esm-patient-forms-app#exportedPatientFormEntryWorkspace`).
+  The form therefore opens in the form engine exactly as it does from the forms list.
+- The button uses `useActionMenuButtonLaunchProps` from `@openmrs/esm-patient-common-lib`, as the
+  clinical forms button does: with no active visit it asks to start one first. That library is
+  published as TypeScript source, so `rspack.config.js` lets swc compile it from `node_modules`.
+  Its patient chart store is a named global store, so this module shares the chart's.
+- The form is removed from the `formSections` of `@openmrs/esm-patient-forms-app` in the site
+  config. With sections configured, the clinical forms list shows only the forms they name.
+- **Refresh.** After a save the form engine calls the workspace's `handlePostResponse`. The button
+  passes one that sends `uvl-partograph-reading-saved`, and the chart reloads its readings for that
+  patient. The form entry workspace's own revalidation filters SWR keys by URL, and SWR skips
+  `useSWRInfinite` keys (those of `useOpenmrsFetchAll`) in such filters. Without the event, the chart
+  kept its old readings until the page was reloaded. A reading saved from elsewhere (editing an
+  encounter) shows the next time the summary is opened.
+
+## 24-hour surveillance table
+
+The extension **`uvl-24h-surveillance-widget`** (no default slot) is a table of the current delivery's
+24-Hour Surveillance forms (F17): one column per form, oldest first, headed by its time point answer
+(30 min … 24 h) and its date and time. Rows: the mother, then « Nouveau-né 1 », « Nouveau-né 2 »…
+
+**Why not the generic `obs-table-horizontal-widget`.** It keys each column's values by concept
+alone. In F17 the mother and each newborn share the concepts for pulse, breathing and temperature,
+so one cell would show whichever of the mother's or a newborn's value came last, under the
+mother's label. It also renders an empty card for every patient, which is why #498 removed the
+generic partograph table. This table places each value by where it sits in the encounter.
+
+- **Data:** `GET /ws/rest/v1/encounter?patient=…&encounterType=…&v=custom:(uuid,encounterDatetime,encounterType:(uuid),obs:(uuid,concept:(uuid,display),value,formFieldPath,groupMembers:(…)))`,
+  every page. `encounter.obs` holds only the top-level obs: those are the mother's. Each newborn is
+  one `newbornGroupConcept` group, and its values are the group's `groupMembers`.
+- **Newborn order:** the REST API does not keep the form's order, so the groups are sorted by
+  `formFieldPath` (`rfe-forms-newbornMonitoring`, `…_1`, `…_2`: newborn 1, 2, 3).
+- **Rows:** the order of `motherConcepts` / `newbornConcepts`, keeping only the values recorded at
+  some time point. The label is the concept's name in the user's locale, and a coded answer shows
+  its name.
+- **Current delivery:** forms before a gap longer than `surveillance.gapHours` (48 h) are left
+  out, and the card says how many.
+- No card while loading, without `encounterTypeUuid`, or for a patient without a form. The site
+  config adds it to `patient-chart-summary-dashboard-slot` with `privileges: ["View 24-Hour
+  Surveillance"]`, the encounter type's view privilege.
 
 ## Build and ship
 

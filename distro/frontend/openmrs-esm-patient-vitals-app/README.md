@@ -1,13 +1,14 @@
 # @openmrs/esm-patient-vitals-app 13.0.2-pre.12863, patched for UVL
 
 The pinned pre-release 13.0.2-pre.12863 (built from openmrs-esm-patient-chart `2eeffea`, the
-commit CI run 12863 published; its source is identical to the npm package) with one fix that is not
+commit CI run 12863 published; its source is identical to the npm package) with fixes that are not
 released upstream yet. Only the built module is here; the source is
 `jnsereko/openmrs-esm-patient-chart`, branch `uvl/vitals-13.0.2-pre.12863-patched`.
 
 | UVL-EMR | Fix | Upstream PR |
 |---|---|---|
 | #347 | A new vitals encounter is saved with the visit in context, an `encounterDatetime` inside that visit when the visit is closed, and the logged-in provider (`vitals.clinicianEncounterRole`, default the Clinician role) | openmrs/openmrs-esm-patient-chart#3859 |
+| #564 | The vitals form shows each vital's normal range under its input ("Normal: 60–100"; blood pressure as systolic / diastolic), from the concept's reference range for the patient. Values outside it are still flagged and still saved; only the absolute limits block saving | none yet |
 
 The other patient-chart apps stay on the npm 13.0.2-pre.12863 packages.
 

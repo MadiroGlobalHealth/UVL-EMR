@@ -1,5 +1,5 @@
 import { parseDate, restBaseUrl, useOpenmrsFetchAll } from '@openmrs/esm-framework';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import type { PartographConcepts, PartographConfig } from '../config-schema';
 import type { CodedValue } from './partograph-math';
 
@@ -57,10 +57,32 @@ export function toReadings(
     .sort((a, b) => a.time.getTime() - b.time.getTime());
 }
 
+/**
+ * Sent when the side-panel button's form saves a reading. The form engine only revalidates SWR keys
+ * that are plain strings, and `useOpenmrsFetchAll` keys are `useSWRInfinite` keys, which SWR's
+ * key filters skip: without this the chart kept its old readings until the page was reloaded.
+ */
+export const partographSavedEvent = 'uvl-partograph-reading-saved';
+
+export function notifyPartographSaved(patientUuid: string) {
+  window.dispatchEvent(new CustomEvent(partographSavedEvent, { detail: { patientUuid } }));
+}
+
 export function usePartographReadings(patientUuid: string, config: PartographConfig) {
-  const { data, error, isLoading } = useOpenmrsFetchAll<PartographEncounter>(
+  const { data, error, isLoading, mutate } = useOpenmrsFetchAll<PartographEncounter>(
     partographUrl(patientUuid, config.encounterTypeUuid),
   );
+
+  useEffect(() => {
+    const refresh = (event: Event) => {
+      if ((event as CustomEvent<{ patientUuid: string }>).detail?.patientUuid === patientUuid) {
+        mutate();
+      }
+    };
+    window.addEventListener(partographSavedEvent, refresh);
+    return () => window.removeEventListener(partographSavedEvent, refresh);
+  }, [patientUuid, mutate]);
+
   const readings = useMemo(() => (data ? toReadings(data, config) : undefined), [data, config]);
   return { readings, error, isLoading };
 }

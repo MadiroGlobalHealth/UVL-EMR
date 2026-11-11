@@ -58,6 +58,13 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
 - **A new « Assurance complémentaire » field when starting a visit**, after Payeur. Its one
   answer, PNB, pays a flat 20% of each line on top of the payer: MFP + PNB leaves the patient
   nothing; MSU 60% + PNB leaves the patient 20%. (#189)
+- **The vitals form shows each vital's normal range under its input** (« Normale : 60–100 »;
+  blood pressure as systolic / diastolic), taken from the concept's reference range for the
+  patient. A value outside it is flagged on the field and still saves; only an impossible value
+  (outside the absolute limits) blocks saving. The ranges are the ones already on the concepts
+  (`UVL_vital_signs_20261105.zip`): temperature 35–37.7 °C, pulse 60–100, respiratory rate
+  12–18, systolic 100–140, diastolic 60–90 mmHg, SpO2 ≥ 95 %. Weight, height and MUAC have no
+  normal range on their concepts, so none is shown. (#564)
 - **A payer with no plan bills the patient, and the quotation says so.** « Assurance privée » and
   the old « Assurance complémentaire » answer of the Payer list have no plan. A visit started with
   them still gets its quotation, with no insurance plan (the patient pays, as with Cash), and one
@@ -421,6 +428,24 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   - The generic partograph table ("Partogramme : liquide amniotique, modelage, contractions,
     médicaments") is removed. It showed even for patients without readings, and the chart now
     shows what it did. (#498, #264)
+- **The partograph opens from the side panel, and the 24-hour surveillance has its own table.**
+  (#565)
+  - A **Partogramme** button in the patient chart's right-hand panel, under the Visit Note and
+    the clinical forms, opens the Partograph Reading form (F09). It shows only for a female
+    patient and for staff who may record a reading ("Edit Partograph Reading"). As with the
+    clinical forms, it asks to start a visit when the patient has none.
+  - The form is no longer in the "Maternité" list of the clinical forms. Earlier readings are
+    still opened from the patient's encounters.
+  - The partograph on the patient summary redraws as soon as a reading is saved from that
+    button.
+  - **Surveillance des 24 heures** (F17) on the patient summary: one column per saved form,
+    headed by its time point (30 min, 1 h, 2 h, 6 h, 12 h, 24 h) and its time. The rows show
+    the mother's values first (blood loss, uterus, breathing, pulse, blood pressure,
+    temperature, urine, complications, treatment), then each newborn's under « Nouveau-né 1 »,
+    « Nouveau-né 2 »… The mother and the newborns share the pulse, breathing and temperature
+    questions, and each value stays in its own row. The table shows only the current
+    delivery, and only for staff with "View 24-Hour Surveillance". It is not shown for a
+    patient without such a form.
 - **Antenatal care (CPN) has its own place, "Consultations prénatales (CPN)".** Pregnancy
   follow-up is outpatient care, so it is a service of its own, not under Hospitalisation (IPD).
   Staff can choose it at sign-in and as the visit location, book appointments there and queue
@@ -667,6 +692,14 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   that would overwrite prices or a product row with an empty price. (#439)
 
 ### Fixed
+- **Doctors can open the PACS (« Orthanc PACS » in the app menu) to view images.** Orthanc's
+  authorization service grants PACS permissions only to the realm roles in
+  `distro/configs/orthanc/permissions.json`, and doctors held only the `openmrs` client role
+  `Doctor`, so Orthanc Explorer 2 refused them with a 403. `permissions.json` gains a `clinician`
+  role with `view` only, and in Keycloak the `Doctor` role includes `clinician` (LIME-EMR-Tooling
+  realm file and `keycloak-pacs-clinician-role.sh`; deploy note 23). Doctors can look at studies;
+  they cannot download, modify, upload or reach the worklists. The chart's Imagerie card was not
+  affected. (#563)
 - **The Orthanc bridge no longer piles up failed patient events.** Its database watcher sends
   every change to `patient`, `person_name`, `person_address` and `patient_identifier` to
   `direct:orthanc-event-listener`, which had no consumer, so each patient edit failed with "No
@@ -1118,6 +1151,12 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
     The first run bills every admitted visit open or ended in the last 7 days, including stays
     admitted before this release: check those quotations before they are invoiced. The OpenMRS log
     must show "Auto close visits: N closed, M left open for admitted patients" after 23:59:59 CAT.
+23. **#563, doctors' PACS access:** the realm file is only read on a first install, so on
+    production run LIME-EMR-Tooling `Scripts/Bundled-Docker/scripts/keycloak-pacs-clinician-role.sh`
+    (`PROJECT_NAME` set as for the other Keycloak scripts; `--dry-run` first). It creates the realm
+    role `clinician` and makes the `openmrs` client role `Doctor` include it; it changes nothing on
+    a second run. The role grants something only with this release's `orthanc-auth-service` image.
+    Then a doctor's `/pacs/auth/user/profile` must list `"permissions": ["view"]`.
 
 ### Known issues
 - **CAM's coverage rate is a placeholder (0%).** No rate was given; finance sets it on the CAM

@@ -11,6 +11,10 @@
     "xray_technician": {
       "authorized-labels": ["*"],
       "permissions": ["view", "worklists", "q-r-remote-modalities"]
+    },
+    "clinician": {
+      "authorized-labels": ["*"],
+      "permissions": ["view"]
     }
   }
 }
