@@ -352,4 +352,21 @@ describe('PartographChart after a reading is saved from the side panel', () => {
     act(() => notifyPartographSaved('patient-uuid'));
     expect(mutate).toHaveBeenCalledTimes(1);
   });
+
+  // #572: the summary showed a request repeated dozens of times. It is the sticky note's
+  // `/obs?concept=…` request, not this card's: the card asks for one URL and reloads only on a save.
+  it('asks for the same URL on every render and does not reload on its own', () => {
+    const mutate = vi.fn();
+    mockUseConfig.mockReturnValue(config);
+    mockUseOpenmrsFetchAll.mockReturnValue({ data: encounters, error: undefined, isLoading: false, mutate } as any);
+
+    const { rerender } = render(<PartographChart patientUuid="patient-uuid" />);
+    for (let i = 0; i < 5; i++) {
+      rerender(<PartographChart patientUuid="patient-uuid" />);
+    }
+
+    const keys = new Set(mockUseOpenmrsFetchAll.mock.calls.map(([url]) => url));
+    expect([...keys]).toEqual([partographUrl('patient-uuid', 'partograph-type')]);
+    expect(mutate).not.toHaveBeenCalled();
+  });
 });
