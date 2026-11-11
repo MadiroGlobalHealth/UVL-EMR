@@ -85,6 +85,15 @@
      privilege, so until this condition every signed-in user, the pharmacists included, saw
      it (UAT 2026-11-06). No Keycloak role but System Developer may hold it, directly or
      through an inherited role, or the entry comes back for that role.
+
+ 11. Only pharmacists see Dispensation and Stock Management in the app menu. Neither app ties
+     its menu entry (`dispensing-link`, `stock-management-app-menu-item`) to a privilege, so
+     until #603 every signed-in user, the doctors included, saw both (UAT 2026-11-11). The site
+     frontend config gives each entry a `Display conditions` privilege in the primary
+     navigation's `app-menu-slot`. Each entry must have one, the roles that use the app must
+     hold it (Dispensation: Pharmacist; Stock Management: Pharmacist and Central Pharmacist),
+     and no clinical role may, directly or through an inherited role, or the entry comes back
+     for that role.
 */
 
 import groovy.json.JsonSlurper
@@ -108,6 +117,12 @@ List<String> readDrugOrders = ['Get Orders', 'Get Care Settings']
 List<String> readPatientLists = ['View Cohorts In Cohort Module', 'Get Patient Cohorts']
 List<String> stockReports = ['App: stockmanagement.reports', 'Task: stockmanagement.reports.mutate', 'Manage Scheduler']
 List<String> basketLookups = ['Get ChargeItemDefinition', 'Get InventoryItem']
+List<String> clinicalRoles = ['Help Nurse', 'Nurse', 'Midwife', 'Doctor', 'Ophtalmologist', 'Dentist',
+        'Anesthesist', 'Lab Technician', 'X-Ray Technician']
+Map<String, List<String>> appMenuUsers = [
+        'dispensing-link'               : ['Pharmacist'],
+        'stock-management-app-menu-item': ['Pharmacist', 'Central Pharmacist'],
+]
 Map<String, List<String>> requiredOf = [
         'Help Nurse'        : readDrugOrders + readPatientLists,
         'Nurse'             : readDrugOrders + readPatientLists,
@@ -121,6 +136,7 @@ File distroConfigs = new File(project.build.directory,
         "${project.artifactId}-${project.version}/distro/configs")
 File rolesDir = new File(distroConfigs, 'openmrs/initializer_config/roles')
 File realmFile = new File(distroConfigs, 'keycloak/realms/ozone-realm.json')
+File siteFrontendConfigDir = new File(project.basedir, 'configs/openmrs/frontend_config')
 
 if (!rolesDir.isDirectory()) {
     log.info("No initializer_config/roles in the build output, nothing to check")
@@ -244,6 +260,42 @@ requiredOf.each { name, required ->
     if (missing) {
         problems << "${definedIn[name]}: role '${name}' lacks ${missing.collect { "'${it}'" }.join(', ')}" +
                 " (directly or through an inherited role); its screens would get a 403"
+    }
+}
+
+// The privilege each app menu entry requires, from the site frontend config.
+Map<String, List<String>> appMenuPrivileges = [:]
+(siteFrontendConfigDir.listFiles({ File f -> f.name.endsWith('.json') } as FileFilter) ?: []).each { File f ->
+    def configure = new JsonSlurper().parse(f, 'UTF-8')?.get('@openmrs/esm-primary-navigation-app')
+            ?.extensionSlots?.get('app-menu-slot')?.configure ?: [:]
+    configure.each { String extension, conf ->
+        def privileges = conf?.get('Display conditions')?.privileges
+        if (privileges) {
+            appMenuPrivileges[extension] = (privileges instanceof List ? privileges : [privileges]) as List<String>
+        }
+    }
+}
+appMenuUsers.each { extension, users ->
+    List<String> required = appMenuPrivileges[extension]
+    if (!required) {
+        problems << "site frontend config: app menu entry '${extension}' has no Display conditions privilege " +
+                "in @openmrs/esm-primary-navigation-app app-menu-slot, so every signed-in user sees it"
+        return
+    }
+    users.findAll { definedIn.containsKey(it) }.each { name ->
+        Set<String> privileges = effectivePrivileges(name, privilegesOf, inheritances)
+        List<String> missing = required.findAll { !privileges.contains(it) }
+        if (missing) {
+            problems << "${definedIn[name]}: role '${name}' lacks ${missing.collect { "'${it}'" }.join(', ')}, " +
+                    "so the app menu hides '${extension}' from it"
+        }
+    }
+    clinicalRoles.findAll { definedIn.containsKey(it) }.each { name ->
+        Set<String> privileges = effectivePrivileges(name, privilegesOf, inheritances)
+        if (required.every { privileges.contains(it) }) {
+            problems << "${definedIn[name]}: role '${name}' holds ${required.collect { "'${it}'" }.join(', ')} " +
+                    "(directly or through an inherited role), so the app menu shows '${extension}' to it"
+        }
     }
 }
 

@@ -53,7 +53,7 @@ const ImagingStudies: React.FC<ImagingStudiesProps> = ({ patientUuid }) => {
 
   const rows = studies.map((study) => ({
     id: study.uuid,
-    date: study.dateTime ? formatDate(parseDate(study.dateTime), { mode: 'wide' }) : '--',
+    date: study.dateTime ? formatDate(parseDate(study.dateTime)) : '--',
     description: t('radiologyStudy', 'Radiology study'),
   }));
 

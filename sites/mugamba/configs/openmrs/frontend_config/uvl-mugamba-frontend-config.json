@@ -170,7 +170,19 @@
     ],
     "extensionSlots": {
       "app-menu-slot": {
-        "add": ["stock-management-app-menu-item"]
+        "add": ["stock-management-app-menu-item"],
+        "configure": {
+          "dispensing-link": {
+            "Display conditions": {
+              "privileges": ["Task: dispensing.create.dispense"]
+            }
+          },
+          "stock-management-app-menu-item": {
+            "Display conditions": {
+              "privileges": ["Task: stockmanagement.stockoperations.mutate"]
+            }
+          }
+        }
       },
       "home-dashboard-slot": {
         "configure": {
@@ -407,6 +419,8 @@
         "returnToOrderBasket": "Retour à l'ordonnance",
         "ordersPlaced": "Prescriptions enregistrées",
         "procedureOrders": "Actes",
+        "addOrderableForOrderType": "Ajouter : {{orderTypeDisplay}}",
+        "editOrderableForOrderType": "Modifier : {{orderTypeDisplay}}",
         "orderPlaced": "Prescription enregistrée",
         "orderUpdated": "Prescription mise à jour",
         "ordersUpdated": "Prescriptions mises à jour",
@@ -647,6 +661,9 @@
         "diagnosis": "Diagnostic",
         "searchForDiagnosis": "Rechercher un diagnostic à ajouter",
         "diagnosisInputPlaceholder": "Rechercher un diagnostic",
+        "diagnosisSearchResults": "Résultats de la recherche de diagnostic",
+        "diagnosisActions": "Actions pour {{diagnosis}}",
+        "removeDiagnosisNamed": "Retirer {{diagnosis}}",
         "primary": "Principal",
         "provisional": "Provisoire",
         "markAsConfirmed": "Marquer comme confirmé",
