@@ -424,6 +424,7 @@
     "Translation overrides": {
       "fr": {
         "viewNormalRanges": "Voir les valeurs normales",
+        "normalRangeHint": "Normale : {{range}}",
         "normalRanges": "Valeurs normales"
       }
     }
