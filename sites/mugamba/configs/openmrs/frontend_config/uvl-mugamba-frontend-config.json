@@ -505,9 +505,7 @@
     "Display conditions": {
       "privileges": ["Manage Immunization Summary"]
     },
-    "immunizationsConfig": {
-      "immunizationConceptSet": "5d2ca206-2b83-4965-aa55-b6e27a37c590"
-    }
+    "immunizationConceptSet": "5d2ca206-2b83-4965-aa55-b6e27a37c590"
   },
   "@openmrs/esm-patient-search-app": {
     "Display conditions": {
