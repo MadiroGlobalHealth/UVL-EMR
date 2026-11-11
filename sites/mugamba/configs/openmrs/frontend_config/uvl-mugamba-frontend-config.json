@@ -617,7 +617,8 @@
         "futureDatesNotAllowed": "Les dates futures ne sont pas autorisées",
         "valueNotFoundInCodedAnswers": "Valeur absente de la liste des réponses",
         "invalidDateValue": "Date invalide : '{{- value}}'",
-        "invalidNumericalValue": "Valeur numérique invalide : '{{- value}}'"
+        "invalidNumericalValue": "Valeur numérique invalide : '{{- value}}'",
+        "time": "Heure"
       }
     }
   },

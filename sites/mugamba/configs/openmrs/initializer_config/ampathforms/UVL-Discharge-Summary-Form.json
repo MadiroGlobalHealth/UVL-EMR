@@ -364,6 +364,7 @@
               "label": "Date and Time of Death",
               "type": "obs",
               "id": "deathDateTime",
+              "required": true,
               "questionOptions": {
                 "rendering": "datetime",
                 "concept": "533c19af-9bb5-4981-9876-5d638bb39e14"
@@ -373,14 +374,7 @@
               },
               "validators": [
                 {
-                  "type": "js_expression",
-                  "failsWhenExpression": "dischargeOutcome === '5f60e9b0-50e1-473c-b155-68a2a670559e' && isEmpty(myValue)",
-                  "message": "Indiquez la date et l'heure du décès / Enter the date and time of death"
-                },
-                {
-                  "type": "js_expression",
-                  "failsWhenExpression": "!isEmpty(myValue) && new Date(myValue) - new Date() > 0",
-                  "message": "La date et l'heure du décès ne peuvent pas être dans le futur / The date and time of death cannot be in the future"
+                  "type": "date"
                 }
               ]
             },
@@ -388,6 +382,7 @@
               "label": "Death Audit Done?",
               "type": "obs",
               "id": "deathAuditDone",
+              "required": true,
               "questionOptions": {
                 "rendering": "radio",
                 "concept": "8abb3dbe-f19f-4f9b-9ab4-dc48db8f37f3",
@@ -402,14 +397,7 @@
               },
               "hide": {
                 "hideWhenExpression": "dischargeOutcome !== '5f60e9b0-50e1-473c-b155-68a2a670559e'"
-              },
-              "validators": [
-                {
-                  "type": "js_expression",
-                  "failsWhenExpression": "dischargeOutcome === '5f60e9b0-50e1-473c-b155-68a2a670559e' && isEmpty(myValue)",
-                  "message": "Indiquez si l'audit du décès a été réalisé / Say whether the death audit was done"
-                }
-              ]
+              }
             }
           ]
         },
