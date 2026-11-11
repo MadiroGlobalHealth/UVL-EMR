@@ -138,10 +138,14 @@ concept_uuid	fr_name	sheet_label	note
 156eef4a-905f-4baf-9f9a-a34355a8d73d	F53 Troubles mentaux et du comportement associes a la puerperalite non classes ailleurs		
 1582dbcf-1e2a-46aa-adea-820bf1a95ef2	Examens déjà réalisés		
 15dcf0f9-ec60-42c7-abd8-1468272aa805	F05 Delirium non induit par l'alcool et d'autres substances psycho-actives		
+160431AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA	Évadé		F07 outcome, Ministry list (#583)
+160433AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA	Évolution à la sortie		F07, Ministry outcome list; not in the forms sheet yet (#583)
+162677AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA	Amélioré		F07 outcome, Ministry list (#583)
 165367b3-a4d8-4ffe-806d-6f340d62a3ac	L20 Dermite atopique		
 1672ef08-a558-488e-b0b9-b8e884f1a9f1	C22.0 Carcinome hepatocellulaire		
 167d1731-ef95-4fc8-b029-8a01f87c83a1	AB+		
 168aff03-8674-450f-8fde-a2c59bb1c65b	I34 Atteintes non rhumatismales de la valvule mitrale		
+1694AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA	Sortie contre avis médical (décharge)		F07 outcome, Ministry list (#583)
 16da5d88-d067-4197-a28a-8f9af3559a0e	J02 Pharyngite aigue		
 16f8d29e-75bb-41ae-9592-ee7bf4f80523	Arrivée du médecin (heure)		sheet spelling fixed; 2 labels in the sheet, most frequent used
 1705d674-c012-427b-a769-dfeaca10a77c	A69.0 Stomatite ulcero-necrotique		
@@ -481,6 +485,7 @@ concept_uuid	fr_name	sheet_label	note
 4a51a06e-9d1d-4dec-b99b-3f9fdc37cd53	P29 Affections cardio-vasculaires survenant pendant la periode perinatale		
 4ab62eaf-5448-4079-b5ff-39e905301a3c	T38 Intox par hormones et leurs substituts synthetiques et antagonistes		
 4ac185fa-ca63-412f-a410-ff2faf854531	O92 Autres mastopathies et anomalies de la lactation associees a l'accouchement		
+4ae2adeb-1e81-410d-9b08-2fcbba6397a2	Référence vers un établissement de même niveau		F07 outcome, Ministry list: référence même niveau (#583)
 4aef889e-cdc9-4bb6-b936-ba33aecad07f	L64 Alopecie androgenique		
 4b3707c1-7748-497a-ae92-aeeed086a0bf	Post-opératoire (interne)		
 4b4263f0-0e52-4c0e-91a6-578dbe9502c9	O98 Maladies infectieuses et parasitaires de la mere classees ailleurs compliquant la grossesse l'accouchement et la puerperalite		
@@ -528,6 +533,7 @@ concept_uuid	fr_name	sheet_label	note
 530432fc-497c-4445-aa7b-f8293f5339ab	Z30 Prise en charge d'une contraception		
 531323f8-1df7-4ee2-b8a9-b45923c08094	2017-X34 Tremblement de terre		
 532cca52-de43-404c-8c80-5a07c54fb012	J93 Pneumothorax		
+533c19af-9bb5-4981-9876-5d638bb39e14	Date et heure du décès		F07, shown when the outcome is Décédé (#583)
 537a3c6a-b57b-408a-9f8a-c982e1f583d9	R61 Hyperhidrose		
 538e7f36-2f81-4c9e-8b9f-e79efdafe17d	K51 Recto-colite hemorragique [colite ulcereuse]		
 538f354a-a3d5-4604-a209-0c0b0e065851	P00.8 Foetus et nouveau-ne affectes par d'autres affections maternelles		
@@ -553,6 +559,7 @@ concept_uuid	fr_name	sheet_label	note
 55cfde1c-f415-44c2-a9b8-104befc4625d	C00 Tumeur maligne de la levre		
 55d20bfb-6a39-4c74-ad69-78d2162ba72d	A74.0 Conjonctivite a Chlamydia		
 55e44bd4-5281-4d84-b596-1211cc940b4c	Natrémie	Na	kept: lab catalogue test (Test); the sheet label is the in-form abbreviation
+55fd8787-27f2-456b-9f6b-acfc8d4ca8de	Guéri		F07 outcome, Ministry list (#583)
 5605299a-44b1-48ba-9bde-239bd1cb6a90	G20 Maladie de Parkinson		
 562407cb-d12e-48fc-bb6e-1fa637bb7a4d	Z73 Difficultes liees a l'orientation de son mode de vie		
 569e08a9-99ba-4658-861e-3694e7ab9341	Accident de circulation		
@@ -880,6 +887,7 @@ concept_uuid	fr_name	sheet_label	note
 8a0ccec6-baab-467e-a1c9-f6d31a146744	S06 Lesion traumatique intracranienne		
 8a7ac02c-79eb-4867-bff5-44fd727afc7e	C20 Tumeur maligne du rectum		
 8a86b776-fd56-429e-939b-9ba70f246e33	K80 Cholelithiase		
+8abb3dbe-f19f-4f9b-9ab4-dc48db8f37f3	Audit du décès réalisé		F07, shown when the outcome is Décédé (#583)
 8b12161f-6b5b-48cd-baec-005481b16645	N85 Autres affections non inflammatoires de l'uterus sauf le col		
 8b34dee4-a8ba-4405-a593-92f584d1142e	J43 Emphyseme		
 8b531402-184c-4775-ba7c-0ea7a7522453	D80 Deficit immunitaire avec deficit predominant de la production d'anticorps		

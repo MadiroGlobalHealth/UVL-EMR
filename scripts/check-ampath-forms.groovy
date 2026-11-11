@@ -4,7 +4,7 @@
   Run from sites/mugamba/pom.xml at prepare-package, against the assembled
   initializer_config, so it sees every layer (distro, country, site).
 
-  Eleven checks, each for a fault that passes every review of the form JSON and shows only
+  Twelve checks, each for a fault that passes every review of the form JSON and shows only
   when someone saves or reads the form:
 
   1. A number question that accepts decimals asks a concept that allows them. The form
@@ -79,6 +79,11 @@
      and her vital signs read pulse 140 and respiratory rate 45, flagged abnormal (#562). A group is a
      newborn's when its id, label or concept name says newborn, nouveau-né, baby or bébé; the newborn
      gets its own concepts (Newborn pulse, ...).
+ 12. Every diagnosis concept of the diagnoses export (UVL_dx_*.zip) has an ICD-10 code: a SAME-AS
+     mapping to ICD-10-WHO in the export, or a row of liquibase/sql/diagnosis_icd10_maps.sql (generated
+     by scripts/diagnosis-icd10-maps.py). uvl-dx carried its codes only in the concept names, so no
+     diagnosis had a code in OpenMRS: the diagnosis search could not find one by code and reports had
+     no code to read (#584). The codes WHO ICD-10 no longer has are listed in diagnosisWithoutIcd10.
 */
 
 import groovy.io.FileType
@@ -147,6 +152,20 @@ Map<String, String> englishName = [:]      // external_id -> display name, to te
 // (retired in OCL); its collection can't be re-exported as is, it would drop 154 concepts (#533).
 Map<String, Integer> knownMappingFaults = ['UVL_dx_v4.zip': 2]
 List<String> mappingFaults = []
+// #584: the uvl-dx concepts whose name carries a code WHO ICD-10 no longer has (I84, N18.0, U80,
+// U81, U88, U89), by external_id; scripts/diagnosis-icd10-maps.py NOT_IN_ICD10_WHO.
+Set<String> diagnosisWithoutIcd10 = [
+        'd0cf970b-6101-4143-a153-58e055c3275e',   // I84 Hemorrhoids
+        '211fdd7f-9afa-47d4-9160-14900e2668e1',   // N18.0 End-stage renal failure
+        '78313547-45e1-4242-bb82-d4eded3591d0',   // U80 Agents resistant to penicillin and related
+        '1c45a7a1-dbc6-4143-97e0-01698584a1af',   // 2017-U81 Agents resistant to vancomycin and related
+        '70b7da6c-50e1-4f99-ae24-6ccf036cc1de',   // U88 Agents resistant to multiple antibiotics
+        '3843ff81-ebfd-48a7-840a-4ffd75e6ff1d',   // U89 Agents resistant to other and unspecified antibiotics
+] as Set
+Set<String> diagnosisIcd10Seeded = filesIn(new File(configDir, 'liquibase'), 'diagnosis_icd10_maps.sql').findAll { it.name == 'diagnosis_icd10_maps.sql' }.collectMany { File sql ->
+    (sql.text =~ /(?m)^\s*\('([0-9a-f-]{36})', '[^']+', '[0-9a-f-]{36}', '[0-9a-f-]{36}'\)/).collect { it[1] }
+} as Set
+int diagnosesChecked = 0
 int mappingsChecked = 0
 int labConceptsChecked = 0
 filesIn(oclDir, '.zip').each { File zip ->
@@ -164,6 +183,22 @@ filesIn(oclDir, '.zip').each { File zip ->
                         mappingFaults << ("${zip.name}: lab concept ${concept.url} '${concept.display_name}' has no " +
                                 "French locale-preferred name, so a French session shows it in English. Add one in " +
                                 "OCL and re-export (#531)")
+                    }
+                }
+            }
+            if (zip.name.startsWith('UVL_dx_')) {
+                Set<String> icd10Mapped = (export.mappings ?: []).findAll { !isTrue(it.retired) &&
+                        it.to_source_name == 'ICD-10-WHO' && it.to_concept_code &&
+                        it.map_type?.toString()?.toUpperCase()?.replaceAll('[\\s_-]', '') == 'SAMEAS' }
+                        .collect { it.from_concept_url?.toString() } as Set
+                export.concepts?.findAll { !isTrue(it.retired) && it.concept_class == 'Diagnosis' }?.each { concept ->
+                    if (concept.url?.toString() in icd10Mapped || concept.external_id in diagnosisIcd10Seeded) {
+                        diagnosesChecked++
+                    } else if (!(concept.external_id in diagnosisWithoutIcd10)) {
+                        mappingFaults << ("${zip.name}: diagnosis ${concept.url} '${concept.display_name}' has no ICD-10 " +
+                                "code: no SAME-AS mapping to ICD-10-WHO and no row in liquibase/sql/diagnosis_icd10_maps.sql, " +
+                                "so the diagnosis search cannot find it by code and reports have none. Map it in OCL " +
+                                "(scripts/diagnosis-icd10-maps.py) and re-export (#584)")
                     }
                 }
             }
@@ -376,6 +411,7 @@ log.info("Forms OK: ${decimalQuestions} decimal number questions on concepts tha
         "groups that repeat the group's rule, ${namedConcepts.size()} question and answer concepts with a French name, " +
         "${sheetName.size()} French names as the requirements sheet gives them, " +
         "${mappingsChecked} OCL mappings with a target, ${labConceptsChecked} lab concepts with a French name, " +
+        "${diagnosesChecked} diagnoses with an ICD-10 code, " +
         "${answerLabelsChecked} answer labels the saved-encounter view shows as the entry form does, " +
         "${imagingChecked} imaging procedures that take a result, " +
         "${expressionValidators} js_expression validators with a condition and a message, " +
