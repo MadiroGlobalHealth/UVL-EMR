@@ -572,6 +572,77 @@
                 </fail>
                 <echo level="info" message="Verified: openmrs build loads importmap.json and routes.registry.json from $SPA_PATH"/>
 
+                <!--
+                  Pin the OpenMRS frontend build.
+
+                  Ozone's script runs `npx openmrs@<coreVersion>`, which installs the CLI
+                  and @openmrs/esm-app-shell into a fresh npx cache with no lockfile. The
+                  app shell takes ranges (@carbon/react ^1.92.1, i18next ^25, ...) and
+                  shares them as singletons with every ESM, so the same coreVersion built
+                  on two days can serve different libraries. On 2026-11-11 CI resolved
+                  @carbon/react 1.120.0 (published 2026-11-04), whose styles broke the
+                  core 11.0.0 modules (location picker, patient-chart left nav), while a
+                  build from an older npx cache shared 1.119.0 and looked right.
+
+                  The CLI is installed instead from distro/frontend/openmrs-cli with
+                  `npm ci`: its lockfile is the tree that built the working UAT shell, and
+                  its overrides pin the shared singletons, so a regenerated lockfile keeps
+                  them. Both of Ozone's commands are pointed at that install. The checks
+                  fail the build if the rewrite stops matching, or if coreVersion moves
+                  without the CLI pin (bump "openmrs" in package.json and regenerate the
+                  lockfile with npm install and legacy peer deps). The built shell is
+                  checked by scripts/check-frontend-shared-versions.groovy.
+                -->
+                <loadfile property="frontend.core.version" srcFile="${project.basedir}/configs/openmrs/frontend_assembly/spa-assemble-config.json">
+                  <filterchain>
+                    <tokenfilter>
+                      <containsregex pattern='.*"coreVersion"\s*:\s*"([^"]+)".*' replace="\1"/>
+                    </tokenfilter>
+                    <striplinebreaks/>
+                  </filterchain>
+                </loadfile>
+                <loadfile property="frontend.cli.version" srcFile="${project.basedir}/frontend/openmrs-cli/package.json">
+                  <filterchain>
+                    <tokenfilter>
+                      <containsregex pattern='.*"openmrs"\s*:\s*"([^"]+)".*' replace="\1"/>
+                    </tokenfilter>
+                    <striplinebreaks/>
+                  </filterchain>
+                </loadfile>
+                <fail message="spa-assemble-config.json asks for frontend core ${frontend.core.version} but distro/frontend/openmrs-cli/package.json pins openmrs ${frontend.cli.version}. Set &quot;openmrs&quot; to ${frontend.core.version} there and regenerate its package-lock.json.">
+                  <condition>
+                    <not>
+                      <equals arg1="${frontend.core.version}" arg2="${frontend.cli.version}"/>
+                    </not>
+                  </condition>
+                </fail>
+                <copy todir="${project.build.directory}/openmrs_cli" overwrite="true">
+                  <fileset dir="${project.basedir}/frontend/openmrs-cli">
+                    <include name="package.json"/>
+                    <include name="package-lock.json"/>
+                  </fileset>
+                </copy>
+                <exec executable="npm" dir="${project.build.directory}/openmrs_cli" failonerror="true">
+                  <arg line="ci --legacy-peer-deps --no-audit --no-fund"/>
+                </exec>
+                <replaceregexp file="${project.build.directory}/openmrs/frontend_assembly/build-openmrs-frontend.groovy"
+                              match="npx --legacy-peer-deps openmrs@\$\{openmrsVersion\}"
+                              replace="${project.build.directory}/openmrs_cli/node_modules/.bin/openmrs"
+                              flags="g"/>
+                <loadfile property="frontend.build.script.pinned"
+                          srcFile="${project.build.directory}/openmrs/frontend_assembly/build-openmrs-frontend.groovy" />
+                <fail message="build-openmrs-frontend.groovy still runs openmrs through npx; the rewrite that pins the frontend build did not match, so the app shell would share whatever @carbon/react is newest. Script contents:${line.separator}${frontend.build.script.pinned}">
+                  <condition>
+                    <or>
+                      <contains string="${frontend.build.script.pinned}" substring="npx "/>
+                      <not>
+                        <contains string="${frontend.build.script.pinned}" substring="openmrs_cli/node_modules/.bin/openmrs build --importmap"/>
+                      </not>
+                    </or>
+                  </condition>
+                </fail>
+                <echo level="info" message="Verified: the frontend is built with the pinned openmrs ${frontend.cli.version} CLI from distro/frontend/openmrs-cli"/>
+
                 <echo level="info" message="Adding UVL project Name to ozone" />
                 <replace
                   dir="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/scripts"
@@ -777,6 +848,23 @@
             <configuration>
               <scripts>
                 <script>file://${project.basedir}/../scripts/apply-uvl-binaries.groovy</script>
+              </scripts>
+            </configuration>
+          </execution>
+          <execution>
+            <!--
+              Checks that the built app shell shares the library versions pinned in
+              distro/frontend/openmrs-cli/package.json. Runs after the frontend is built
+              (process-resources); see 'Pin the OpenMRS frontend build' above.
+            -->
+            <id>Check the libraries the app shell shares</id>
+            <goals>
+              <goal>execute</goal>
+            </goals>
+            <phase>compile</phase>
+            <configuration>
+              <scripts>
+                <script>file://${project.basedir}/../scripts/check-frontend-shared-versions.groovy</script>
               </scripts>
             </configuration>
           </execution>
