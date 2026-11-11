@@ -32,6 +32,17 @@ describe('ImagingStudies', () => {
     expect(screen.queryByRole('button', { name: /open in viewer/i })).not.toBeInTheDocument();
   });
 
+  it('dates each study in the standard format, not the wide one with dashes', () => {
+    withAttachments([
+      { uuid: 'study-preview', comment: caption, dateTime: '2026-10-30T09:00:00.000+0000', filename: 'radiology-image.png' },
+    ]);
+
+    render(<ImagingStudies patientUuid="patient-uuid" />);
+
+    expect(screen.getByText('30-Oct-2026')).toBeInTheDocument();
+    expect(screen.queryByText(/—/)).not.toBeInTheDocument();
+  });
+
   it('lists each study and opens it in the viewer', async () => {
     withAttachments([
       { uuid: 'study-preview', comment: caption, dateTime: '2026-10-30T09:00:00.000+0000', filename: 'radiology-image.png' },
