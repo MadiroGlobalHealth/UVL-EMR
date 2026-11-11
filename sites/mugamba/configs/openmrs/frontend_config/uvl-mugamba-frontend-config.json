@@ -170,7 +170,19 @@
     ],
     "extensionSlots": {
       "app-menu-slot": {
-        "add": ["stock-management-app-menu-item"]
+        "add": ["stock-management-app-menu-item"],
+        "configure": {
+          "dispensing-link": {
+            "Display conditions": {
+              "privileges": ["Task: dispensing.create.dispense"]
+            }
+          },
+          "stock-management-app-menu-item": {
+            "Display conditions": {
+              "privileges": ["Task: stockmanagement.stockoperations.mutate"]
+            }
+          }
+        }
       },
       "home-dashboard-slot": {
         "configure": {
