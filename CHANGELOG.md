@@ -1173,6 +1173,14 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
     Then a doctor's `/pacs/auth/user/profile` must list `"permissions": ["view"]`.
 
 ### Known issues
+- **The location picker greets the user by username (« Bienvenue Pacifique.Gahungu »).** The
+  login app 11.0.0 writes `t('welcome')` followed by the session user's REST `display`, which
+  webservices.rest builds from the username only; the name is outside the translated string, so no
+  translation override or setting can change it. Showing the person's name needs a login-app
+  change (`user.person.display`). (#603)
+- **The Attachments card dates files « 03 — nov. — 2026 ».** The stock patient-attachments app
+  formats with core `formatDate(..., { mode: 'wide' })`, which joins the parts with « — », and has
+  no setting for it. The Imagerie card beside it is fixed. (#603)
 - **CAM's coverage rate is a placeholder (0%).** No rate was given; finance sets it on the CAM
   plan in Odoo and in `partner/insurance_plans.csv` (a changed CSV reloads and would put back the
   value it holds). Per-product coverage (Didier's 70/30 product list) is still owed, so every plan
