@@ -82,6 +82,7 @@ concept_uuid	fr_name	sheet_label	note
 0cb33e21-b186-4255-983e-371cfd44f857	Tube oral		
 0ccd264a-a16c-46c8-8272-a92dffdea8aa	ECG		
 0d36a425-dd0b-454c-8d71-842d305d101a	O34 Soins maternels pour anomalie connue ou presumee des organes pelviens		
+0d3f2880-c504-48f1-b5db-5722c3d43331	Pouls du nouveau-né (/min)	Pouls (/min)	qualified: the newborn's own pulse; "Pouls (/min)" is the mother's vital sign bc54cb7c (#562)
 0d5c519a-658a-4f55-9345-e83080e1cb11	F65 Troubles de la preference sexuelle		
 0dc95673-a190-4a51-bd2f-8fcea444db95	T80 Complications consecutives a une injection therapeutique une perfusion et une transfusion		
 0e304da8-2fc7-4ed5-bae1-0ede51dd8a46	R44 Autres symptomes et signes relatifs aux sensations et aux perceptions generales		
@@ -350,6 +351,7 @@ concept_uuid	fr_name	sheet_label	note
 3979a3de-eb18-4def-8eb0-fbc150cba0d2	R50 Fievre d'origine inconnue		
 39a60662-bcc1-4b26-9764-6013af93bbdb	Rayons X		3 labels in the sheet, most frequent used
 39b4ec6f-73dd-413b-83ce-985f2fd29ac2	Prévention des complications		
+39c996ee-bf24-4341-a25e-35a368142556	Température du nouveau-né (°C)	Température (°C)	qualified: the newborn's own temperature; "Température (°C)" is the mother's vital sign 748f8d43 (#562)
 39df2e82-5405-4927-aabf-8b2611789ede	N81 Prolapsus genital		
 39e137c4-7a68-4963-baed-1c6890ecde23	Périmètre crânien (cm)		sheet spelling fixed
 39ec17b9-c7c5-4e79-918a-f1d631acc583	I30.0 Pericardite idiopathique aigue non specifique		
@@ -1427,6 +1429,7 @@ e26315df-e7a9-4c52-a991-8606cfee979d	J30 Rhinite allergique et vasomotrice
 e289dbb2-3e3a-46a7-94ad-c6659c2b3862	D00 Carcinome in situ de la cavite buccale de l'oesophage et de l'estomac		
 e29780aa-3730-4ba4-b3ba-7591e8281436	J35 Maladies chroniques des amygdales et des vegetations adenoides		
 e2a47ded-5f67-4d14-ae69-824f73d84dc0	O73 Retention du placenta et des membranes sans hemorragie		
+e2b25370-77fb-4c57-bbef-76dc5327dec7	Fréquence respiratoire du nouveau-né (/min)	Respiration (/min)	qualified: the newborn's own respiratory rate; "Fréquence respiratoire (/min)" is the mother's vital sign b39db318 (#562)
 e2cf2a07-1c10-4e17-bf1d-45a4452a85ae	Soir		
 e34af8b9-0b04-4637-ae73-60377ebe0e45	A32 Listeriose		
 e3526865-b922-42c9-bede-f7018d488321	I95 Hypotension		
