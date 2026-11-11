@@ -209,6 +209,10 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   no quantities yet, so the pharmacy can count and move stock. A Receipt goes into Pharmacie (Rx),
   and the stock module's own demo locations, "Main Store" and "Main Pharmacy", are no longer
   offered. **Dispensing does not deduct stock yet** and works as before. (#437)
+- **"Complete dispatch" now shows for the receiving pharmacist** as soon as a Stock Issue is
+  dispatched, and the approved requisition's "Issue stock" action as soon as it is approved, without
+  an OpenMRS restart. A stock role or scope changed by an administrator applies at the next refresh
+  of the operations list. (#447)
 - **Each dispensing pharmacist has their own stock box.** Pharmacie - Dispensation Box 1, 2 and 3
   (Rx-DISP-1 to -3) sit under Pharmacie - Dispensation. A pharmacist signs in at their box; once
   deduction is on, a dispense takes from that box. The central pharmacy issues to the boxes, and a
@@ -1032,6 +1036,19 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   Administrators are unaffected and the frontend is unchanged. It replaces the stock 3.5.0 omod at
   build time. Upstream PR: openmrs/openmrs-module-webservices.rest#778. Once a release carries the
   fix, delete the omod and raise `webservices.rest.version`. (#545, #524)
+- **Stock operation buttons are computed on every request.** stockmanagement 2.1.2 kept each
+  operation's permission flags (`canEdit`, `canApprove`, `canReceiveItems`,
+  `isRequisitionAndCanIssueStock`, ...) in a per-thread map keyed by the operation uuid that was never
+  cleared. A server thread that had seen an operation once answered every later request for it the
+  same way, for any user and whatever its status had become, so the receiver of a dispatched Stock
+  Issue lost "Complete dispatch" until OpenMRS restarted. The distro now ships
+  `stockmanagement-2.1.2-uvl1.omod` from `distro/binaries/openmrs/modules`: the published 2.1.2 omod
+  with `StockOperationResource` rebuilt without the cache, and `config.xml` at `2.1.2-uvl1`. Every
+  other file is the published 2.1.2 (jnsereko fork branch `uvl/2.1.2-permission-cache` `3853e7f`; the
+  2.1.x source isn't public, so the class was decompiled and only the cache removed, see the
+  branch's `uvl/2.1.2-uvl1/README.md`). It replaces the stock 2.1.2 omod at build time. Upstream
+  `master` has the same cache, removed by O3-6248 (openmrs/openmrs-module-stockmanagement#57). Once
+  UVL takes a stockmanagement release without it, delete the omod. (#447)
 
 ### Deploy notes for production
 1. Record the running image digests and take a database backup first.
@@ -1167,6 +1184,10 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
     role `clinician` and makes the `openmrs` client role `Doctor` include it; it changes nothing on
     a second run. The role grants something only with this release's `orthanc-auth-service` image.
     Then a doctor's `/pacs/auth/user/profile` must list `"permissions": ["view"]`.
+24. **#447, stock module:** after the first start, the same check for `stockmanagement`:
+    `docker exec <openmrs container> sh -c 'ls /openmrs/data/modules | grep stockmanagement'` must
+    show only `stockmanagement-2.1.2-uvl1.omod`, and the OpenMRS log must show it started as version
+    `2.1.2-uvl1`. Billing must still start (it needs stockmanagement >= 1.4.0).
 
 ### Known issues
 - **CAM's coverage rate is a placeholder (0%).** No rate was given; finance sets it on the CAM
@@ -1229,13 +1250,6 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   `validateBatch` (default `true`) is the only filter: it hides zero-quantity batches, but also
   every batch when the prescription has no duration, or the item no expiry date (the 38
   consumables until #454 turned expiry on for them). (#437)
-- **Stock app, the receiver's "Complete dispatch" may not show** for a dispatched Stock Issue. The
-  operations list takes each operation's buttons from a permission cache in stockmanagement 2.1.2
-  that is kept per server thread, keyed by the operation only, and never cleared. A thread that saw
-  the issue before it was dispatched, or for another user, keeps those buttons. Opening the issue
-  on its own gets fresh values. The approved requisition's "Issue stock" action is hidden the same
-  way, so Rx issues without a requisition (above). No role or scope changes it; it needs a module
-  fix. (#437)
 - **The server doesn't enforce stock scopes or self-approval**: on UAT on 2026-10-20 a pharmacist
   created an Opening Stock at Rx, outside her scope. Upstream. (#437)
 - **Expiry dates are saved one day early** in browsers east of UTC (31/12 becomes 30/12): upstream
