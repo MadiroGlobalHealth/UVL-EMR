@@ -638,7 +638,18 @@
         "errorSavingStickyNote": "Erreur lors de l'enregistrement du pense-bête",
         "errorLoadingStickyNote": "Impossible de charger le pense-bête.",
         "errorDeletingStickyNote": "Erreur lors de la suppression du pense-bête",
-        "errorDeletingStickyNoteMessage": "Une erreur s'est produite lors de la suppression du pense-bête"
+        "errorDeletingStickyNoteMessage": "Une erreur s'est produite lors de la suppression du pense-bête",
+        "addVisitNote": "Ajouter une note de visite",
+        "editVisitNote": "Modifier la note de visite",
+        "diagnosis": "Diagnostic",
+        "searchForDiagnosis": "Rechercher un diagnostic à ajouter",
+        "diagnosisInputPlaceholder": "Rechercher un diagnostic",
+        "primary": "Principal",
+        "provisional": "Provisoire",
+        "markAsConfirmed": "Marquer comme confirmé",
+        "markAsProvisional": "Marquer comme provisoire",
+        "diagnosisCertaintyHelperText": "Les diagnostics sont enregistrés comme confirmés, sauf s'ils sont marqués provisoires.",
+        "atLeastOnePrimaryDiagnosis": "Au moins un diagnostic doit être marqué comme principal"
       }
     }
   },
@@ -857,7 +868,10 @@
         "noBedsConfiguredForLocation": "Aucun lit configuré pour {{location}} : le patient est admis sans lit.",
         "orderBasket": "Ordonnance",
         "Labs": "Examens",
-        "pendingDischarge": "En attente de sortie"
+        "pendingDischarge": "En attente de sortie",
+        "dischargeNote": "Note de sortie (facultative)",
+        "dischargeNotePlaceholder": "Saisissez vos notes ici",
+        "confirmDischarge": "Confirmer la sortie"
       }
     }
   }
