@@ -248,9 +248,13 @@ def run_ocl(rows, apply, release):
     print(f'created {created} of {len(todo)}', file=sys.stderr)
 
     if release:
-        ocl('POST', f'{SOURCE_URL}versions/', token,
-            {'id': release, 'released': True,
-             'description': 'ICD-10-WHO SAME-AS mappings for the diagnosis concepts (UVL-EMR#584)'})
+        try:
+            ocl('POST', f'{SOURCE_URL}versions/', token,
+                {'id': release, 'released': True,
+                 'description': 'UVL-EMR#584: ICD-10-WHO SAME-AS mappings for the diagnosis concepts'})
+        except urllib.error.HTTPError as e:
+            # 409: the version id is taken, often by another release the same day.
+            sys.exit(f'release {release} failed: {e.code} {e.read()[:300]}; choose another version id')
         print(f'released {SOURCE_URL}versions/{release}/', file=sys.stderr)
 
 
