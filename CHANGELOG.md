@@ -421,6 +421,24 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   - The generic partograph table ("Partogramme : liquide amniotique, modelage, contractions,
     médicaments") is removed. It showed even for patients without readings, and the chart now
     shows what it did. (#498, #264)
+- **The partograph opens from the side panel, and the 24-hour surveillance has its own table.**
+  (#565)
+  - A **Partogramme** button in the patient chart's right-hand panel, under the Visit Note and
+    the clinical forms, opens the Partograph Reading form (F09). It shows only for a female
+    patient and for staff who may record a reading ("Edit Partograph Reading"). As with the
+    clinical forms, it asks to start a visit when the patient has none.
+  - The form is no longer in the "Maternité" list of the clinical forms. Earlier readings are
+    still opened from the patient's encounters.
+  - The partograph on the patient summary redraws as soon as a reading is saved from that
+    button.
+  - **Surveillance des 24 heures** (F17) on the patient summary: one column per saved form,
+    headed by its time point (30 min, 1 h, 2 h, 6 h, 12 h, 24 h) and its time. The rows show
+    the mother's values first (blood loss, uterus, breathing, pulse, blood pressure,
+    temperature, urine, complications, treatment), then each newborn's under « Nouveau-né 1 »,
+    « Nouveau-né 2 »… The mother and the newborns share the pulse, breathing and temperature
+    questions, and each value stays in its own row. The table shows only the current
+    delivery, and only for staff with "View 24-Hour Surveillance". It is not shown for a
+    patient without such a form.
 - **Antenatal care (CPN) has its own place, "Consultations prénatales (CPN)".** Pregnancy
   follow-up is outpatient care, so it is a service of its own, not under Hospitalisation (IPD).
   Staff can choose it at sign-in and as the visit location, book appointments there and queue

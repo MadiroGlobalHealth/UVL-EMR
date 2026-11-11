@@ -1,0 +1,46 @@
+@use '@carbon/layout';
+@use '@carbon/type';
+@use '@openmrs/esm-styleguide/src/vars' as vars;
+
+.widgetCard {
+  background-color: vars.$ui-02;
+  border: 1px solid vars.$ui-03;
+  margin-bottom: layout.$spacing-05;
+}
+
+.content {
+  padding: 0 layout.$spacing-05 layout.$spacing-05;
+}
+
+.note {
+  @include type.type-style('helper-text-01');
+  color: vars.$text-02;
+  margin-bottom: layout.$spacing-03;
+}
+
+.tableWrapper {
+  overflow-x: auto;
+}
+
+.rowLabel {
+  @include type.type-style('label-01');
+  color: vars.$text-02;
+  white-space: nowrap;
+}
+
+.sectionRow td {
+  @include type.type-style('heading-compact-01');
+  background-color: vars.$ui-01;
+  color: vars.$ui-05;
+}
+
+.timePoint {
+  display: block;
+  font-weight: 600;
+}
+
+.time {
+  @include type.type-style('helper-text-01');
+  display: block;
+  color: vars.$text-02;
+}
