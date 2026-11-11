@@ -12,7 +12,8 @@
      rejects the whole encounter: "Assigning decimal value to numeric concept with 'Allowed
      decimal' property set to false is not allowed". The concept's allow_decimal comes from
      the OCL export in ocl/; a concept that no export defines is not checked. That is how
-     cervical dilatation (4.5 cm) failed on the partograph (#488).
+     cervical dilatation (4.5 cm) failed on the partograph (#488). The engine renders `numeric`
+     as `number`, so both are checked; until #566 the 12 `numeric` questions were not.
 
   2. A page shown only to male patients (hide: sex !== 'M') refuses to save. The maternity
      forms show such a page instead of their content, and without a block its Save
@@ -218,7 +219,7 @@ formFiles.each { File file ->
 
         questions.each { q ->
             def options = q.questionOptions ?: [:]
-            if (options.rendering == 'number' && !isTrue(options.disallowDecimals)
+            if (options.rendering in ['number', 'numeric'] && !isTrue(options.disallowDecimals)
                     && allowDecimal.containsKey(options.concept)) {
                 decimalQuestions++
                 if (!allowDecimal[options.concept]) {

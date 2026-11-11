@@ -24,104 +24,12 @@
                 "rendering": "text",
                 "concept": "caa77817-7440-4cef-8d94-555733f23a5a"
               }
-            },
-
-            {
-              "label": "Case Type",
-              "type": "obs",
-              "id": "caseType",
-              "questionOptions": {
-                "rendering": "radio",
-                "concept": "23ceec98-f1c5-42ce-8b11-60b5be1c2acf",
-                "answers": [
-                  {
-                    "concept": "484cc39e-282e-4abe-81af-368a9e2bf50b"
-                  },
-                  {
-                    "concept": "ba804ac7-473b-48cf-b844-c8d3e1f54eee"
-                  }
-                ]
-              }
-            },
-            {
-              "label": "Disease Category",
-              "type": "obs",
-              "id": "diseaseCategory",
-              "questionOptions": {
-                "rendering": "radio",
-                "concept": "4da71f38-c92b-4525-a7fa-5c559df0bc3e",
-                "answers": [
-                  {
-                    "concept": "9cd9b2fe-fc7f-410f-80e9-3d8c91d538e5"
-                  },
-                  {
-                    "concept": "f2297e8b-255d-432a-9817-a889bfaf4da8"
-                  },
-                  {
-                    "concept": "731f5328-dd5c-40c3-9b83-e181fcde5b2a"
-                  },
-                  {
-                    "concept": "569e08a9-99ba-4658-861e-3694e7ab9341"
-                  },
-                  {
-                    "concept": "e94cdea7-10bf-4526-8cca-7b2f0947312f"
-                  }
-                ]
-              }
-            },
-            {
-              "label": "Consultation Type",
-              "type": "obs",
-              "id": "consultType",
-              "questionOptions": {
-                "rendering": "checkbox",
-                "concept": "49cc3fd2-08fe-46cb-ab62-86b847584ff2",
-                "answers": [
-                  {
-                    "concept": "60eb5971-6c2b-44ae-bcb8-b08bded3a393"
-                  },
-                  {
-                    "concept": "f793e2ee-4e34-4d9a-8c83-a165bc74d869"
-                  },
-                  {
-                    "concept": "fbe78ab5-3591-4d1e-bb53-7e94857d98b3"
-                  },
-                  {
-                    "concept": "d1039f09-7423-4b14-adbe-8f10c1f7101e",
-                    "label": "Grossesse à risque élevé détectée lors de l'ANC"
-                  },
-                  {
-                    "concept": "9fcb0e5c-860c-42ce-b8f4-4f354d52b61e",
-                    "label": "Transfert interne"
-                  }
-                ]
-              }
             }
           ]
         },
         {
           "label": "Patient Condition",
           "questions": [
-            {
-              "label": "Patient Status on Arrival",
-              "type": "obs",
-              "id": "patientStatusOnArrival",
-              "questionOptions": {
-                "rendering": "radio",
-                "concept": "72e22610-8888-48b6-b182-d235000a7600",
-                "answers": [
-                  {
-                    "concept": "6a0ccf90-fb31-4aad-8ff4-1374917cc6ad"
-                  },
-                  {
-                    "concept": "c800042f-427a-42bf-9f0c-8a647e325d5f"
-                  },
-                  {
-                    "concept": "5f60e9b0-50e1-473c-b155-68a2a670559e"
-                  }
-                ]
-              }
-            },
             {
               "label": "Woman's Status",
               "type": "obs",
@@ -193,6 +101,100 @@
                   }
                 ]
               }
+            }
+          ]
+        },
+        {
+          "label": "Functional Signs",
+          "questions": [
+            {
+              "label": "Chief Complaint",
+              "type": "obsGroup",
+              "id": "chiefComplaintGroup",
+              "questionOptions": {
+                "rendering": "repeating",
+                "concept": "aa97dd6a-f27d-4aad-b1df-365f8b430f81"
+              },
+              "questions": [
+                {
+                  "label": "Complaint",
+                  "type": "obs",
+                  "id": "chiefComplaint",
+                  "questionOptions": {
+                    "rendering": "select",
+                    "concept": "5219AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "answers": [
+                      {
+                        "concept": "151AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                      },
+                      {
+                        "concept": "75478667-7fcd-494b-ad89-2fbe61d27e13"
+                      },
+                      {
+                        "concept": "c7eed63b-3e3e-49fb-9d1b-0ecd721bb129"
+                      },
+                      {
+                        "concept": "3917f2a9-f9ec-4d25-b5de-cb69f6bb0301"
+                      },
+                      {
+                        "concept": "e7a109e7-b7ea-4578-aafb-89efb1dee21d"
+                      },
+                      {
+                        "concept": "f50d08a0-fa10-44c7-aff8-4ba43607adad"
+                      },
+                      {
+                        "concept": "122983AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                      },
+                      {
+                        "concept": "b5c4b807-d3de-40cd-aae9-178df9b40535"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "label": "Other complaint (specify)",
+                  "type": "obs",
+                  "id": "otherChiefComplaint",
+                  "questionOptions": {
+                    "rendering": "text",
+                    "concept": "9777d11b-9b3c-477a-b5ff-62b77aa409a7"
+                  },
+                  "hide": {
+                    "hideWhenExpression": "chiefComplaint !== 'b5c4b807-d3de-40cd-aae9-178df9b40535'"
+                  }
+                },
+                {
+                  "label": "Duration",
+                  "type": "obs",
+                  "id": "chiefComplaintDuration",
+                  "questionOptions": {
+                    "rendering": "numeric",
+                    "concept": "1731AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "min": 0,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Duration unit",
+                  "type": "obs",
+                  "id": "chiefComplaintDurationUnit",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "abbd99ba-34df-45b3-aa35-fff14f643b59",
+                    "answers": [
+                      {
+                        "concept": "7923cbfd-79c9-4155-8897-cbf629f4c1bc"
+                      },
+                      {
+                        "concept": "5f20a893-6e84-4713-a9f6-5a189e99e98f"
+                      },
+                      {
+                        "concept": "088de917-ed82-4088-869d-ea8eaa844a64"
+                      }
+                    ]
+                  }
+                }
+              ]
             }
           ]
         },
