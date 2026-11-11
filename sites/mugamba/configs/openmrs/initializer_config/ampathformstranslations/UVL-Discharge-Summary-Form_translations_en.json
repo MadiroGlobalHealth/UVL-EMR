@@ -67,6 +67,10 @@
     "Grave": "Severe",
     "Confirmé avec anémie sévère": "Confirmed with Severe Anaemia",
     "Dihydroartémisinine + Pipéraquine comprimés": "Dihydroartemisinin-Piperaquine",
-    "Quinine injectable": "Quinine Injection"
+    "Quinine injectable": "Quinine Injection",
+    "Outcome at Discharge": "Outcome at Discharge",
+    "Date and Time of Death": "Date and Time of Death",
+    "Death Audit Done?": "Death Audit Done?",
+    "Référence vers un établissement de niveau supérieur": "Referral to Higher-Level Facility"
   }
 }
