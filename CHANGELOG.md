@@ -667,6 +667,14 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   that would overwrite prices or a product row with an empty price. (#439)
 
 ### Fixed
+- **Doctors can open the PACS (« Orthanc PACS » in the app menu) to view images.** Orthanc's
+  authorization service grants PACS permissions only to the realm roles in
+  `distro/configs/orthanc/permissions.json`, and doctors held only the `openmrs` client role
+  `Doctor`, so Orthanc Explorer 2 refused them with a 403. `permissions.json` gains a `clinician`
+  role with `view` only, and in Keycloak the `Doctor` role includes `clinician` (LIME-EMR-Tooling
+  realm file and `keycloak-pacs-clinician-role.sh`; deploy note 23). Doctors can look at studies;
+  they cannot download, modify, upload or reach the worklists. The chart's Imagerie card was not
+  affected. (#563)
 - **The Orthanc bridge no longer piles up failed patient events.** Its database watcher sends
   every change to `patient`, `person_name`, `person_address` and `patient_identifier` to
   `direct:orthanc-event-listener`, which had no consumer, so each patient edit failed with "No
@@ -1118,6 +1126,12 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
     The first run bills every admitted visit open or ended in the last 7 days, including stays
     admitted before this release: check those quotations before they are invoiced. The OpenMRS log
     must show "Auto close visits: N closed, M left open for admitted patients" after 23:59:59 CAT.
+23. **#563, doctors' PACS access:** the realm file is only read on a first install, so on
+    production run LIME-EMR-Tooling `Scripts/Bundled-Docker/scripts/keycloak-pacs-clinician-role.sh`
+    (`PROJECT_NAME` set as for the other Keycloak scripts; `--dry-run` first). It creates the realm
+    role `clinician` and makes the `openmrs` client role `Doctor` include it; it changes nothing on
+    a second run. The role grants something only with this release's `orthanc-auth-service` image.
+    Then a doctor's `/pacs/auth/user/profile` must list `"permissions": ["view"]`.
 
 ### Known issues
 - **CAM's coverage rate is a placeholder (0%).** No rate was given; finance sets it on the CAM
