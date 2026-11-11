@@ -58,6 +58,13 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
 - **A new « Assurance complémentaire » field when starting a visit**, after Payeur. Its one
   answer, PNB, pays a flat 20% of each line on top of the payer: MFP + PNB leaves the patient
   nothing; MSU 60% + PNB leaves the patient 20%. (#189)
+- **The vitals form shows each vital's normal range under its input** (« Normale : 60–100 »;
+  blood pressure as systolic / diastolic), taken from the concept's reference range for the
+  patient. A value outside it is flagged on the field and still saves; only an impossible value
+  (outside the absolute limits) blocks saving. The ranges are the ones already on the concepts
+  (`UVL_vital_signs_20261105.zip`): temperature 35–37.7 °C, pulse 60–100, respiratory rate
+  12–18, systolic 100–140, diastolic 60–90 mmHg, SpO2 ≥ 95 %. Weight, height and MUAC have no
+  normal range on their concepts, so none is shown. (#564)
 - **A payer with no plan bills the patient, and the quotation says so.** « Assurance privée » and
   the old « Assurance complémentaire » answer of the Payer list have no plan. A visit started with
   them still gets its quotation, with no insurance plan (the patient pays, as with Cash), and one
