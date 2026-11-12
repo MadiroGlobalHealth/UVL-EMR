@@ -4,7 +4,7 @@
   Run from sites/mugamba/pom.xml at prepare-package, against the assembled
   initializer_config, so it sees every layer (distro, country, site).
 
-  Twelve checks, each for a fault that passes every review of the form JSON and shows only
+  Thirteen checks, each for a fault that passes every review of the form JSON and shows only
   when someone saves or reads the form:
 
   1. A number question that accepts decimals asks a concept that allows them. The form
@@ -85,6 +85,12 @@
      its codes only in the concept names, so no diagnosis had a code in OpenMRS: the diagnosis search
      could not find one by code and reports had no code to read (#584). The six names with a code WHO
      ICD-10 no longer has are mapped to the current code in diagnosis_icd10_maps_replaced.sql (#585).
+ 13. A question whose answers are an official list offers exactly that list, in that order, under the
+     words the list uses. requirements/form-answer-lists-fr.tsv in the site holds, per form and question
+     id, each answer as staff must read it: the answer's label, or the French name of its concept when
+     it has none. The discharge outcome shipped with nine answers (one « Décédé », one « Transfert
+     intra-hospitalier ») while the product owner's list, which the hospitalisation register and the
+     Ministry ward activity count by, has ten (#609).
 */
 
 import groovy.io.FileType
@@ -96,6 +102,7 @@ File configDir = new File(project.build.directory,
 File formsDir = new File(configDir, 'ampathforms')
 File oclDir = new File(configDir, 'ocl')
 File sheetNamesFile = new File(project.basedir, 'requirements/form-concept-names-fr.tsv')
+File answerListsFile = new File(project.basedir, 'requirements/form-answer-lists-fr.tsv')
 File translationsDir = new File(configDir, 'ampathformstranslations')
 File imagingSetFile = new File(configDir, 'concepts')
 
@@ -247,6 +254,8 @@ Set<String> namedConcepts = [] as Set
 int answerLabelsChecked = 0
 int expressionValidators = 0
 int newbornMembersChecked = 0
+// '<form file> <question id>' -> what each answer shows in French: its label, else its concept's French name.
+Map<String, List<String>> answersShown = [:]
 // A newborn's obs group, by its id (newbornMonitoring, nb...), label or concept name.
 boolean isNewbornGroup(Map group, Map<String, String> names) {
     String text = [group.id, group.label, names[group.questionOptions?.concept]].findAll().join(' ')
@@ -295,6 +304,12 @@ formFiles.each { File file ->
                     faults << ("${file.name}: ${q.id} accepts decimals but concept ${options.concept} has " +
                             "allow_decimal false in the OCL export, so the server rejects the save. Set " +
                             "disallowDecimals, or allow decimals on the concept in OCL (#488)")
+                }
+            }
+
+            if (q.id && options.answers) {
+                answersShown["${file.name} ${q.id}".toString()] = options.answers.collect { answer ->
+                    (answer.label ?: frenchName[cielConcept.getOrDefault(answer.concept, answer.concept)])?.toString()
                 }
             }
 
@@ -374,6 +389,30 @@ sheetName.each { String concept, String want ->
     }
 }
 
+// form file <TAB> question id <TAB> position <TAB> answer as the official list words it <TAB> source.
+if (!answerListsFile.isFile()) {
+    throw new IllegalStateException("No ${answerListsFile}: the official answer lists would not be checked")
+}
+Map<String, List<List>> officialList = [:]
+answerListsFile.readLines('UTF-8').drop(1).findAll { it.trim() }.each { String line ->
+    List<String> cols = line.split('\t', -1) as List
+    officialList.computeIfAbsent("${cols[0].trim()} ${cols[1].trim()}".toString()) { [] } << [cols[2].trim().toInteger(), cols[3]]
+}
+int answerListsChecked = 0
+officialList.each { String question, List<List> rows ->
+    List<String> want = rows.sort { it[0] }.collect { it[1] }
+    List<String> shown = answersShown[question]
+    if (shown == null) {
+        faults << ("${answerListsFile.name}: no form question '${question}' with answers, so its official list " +
+                "is not offered. Fix the form or the file (#609)")
+    } else if (shown != want) {
+        faults << ("${question} offers ${shown} but the official list is ${want} (${answerListsFile.name}). " +
+                "Give the form those answers, in that order, labelled as the list words them (#609)")
+    } else {
+        answerListsChecked++
+    }
+}
+
 // Members of the "Imaging procedures" set: Members column of concepts/imaging_procedures.csv.
 int imagingChecked = 0
 filesIn(imagingSetFile, 'imaging_procedures.csv').each { File csv ->
@@ -405,6 +444,7 @@ log.info("Forms OK: ${decimalQuestions} decimal number questions on concepts tha
         "${maleOnlyPages} male-only pages that refuse to save, ${groupMembersChecked} members of hidden-by-rule " +
         "groups that repeat the group's rule, ${namedConcepts.size()} question and answer concepts with a French name, " +
         "${sheetName.size()} French names as the requirements sheet gives them, " +
+        "${answerListsChecked} questions offering their official answer list, " +
         "${mappingsChecked} OCL mappings with a target, ${labConceptsChecked} lab concepts with a French name, " +
         "${diagnosesChecked} diagnoses with an ICD-10 code, " +
         "${answerLabelsChecked} answer labels the saved-encounter view shows as the entry form does, " +
