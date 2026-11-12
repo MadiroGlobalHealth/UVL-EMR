@@ -29,12 +29,14 @@ concept_uuid	fr_name	sheet_label	note
 041ba365-7014-4a7b-bcba-72d7ad394912	C78 Tumeur maligne secondaire des organes respiratoires et digestifs		
 041df9d9-d041-4823-a700-8a04875fb5a5	J36 Angine phlegmoneuse		
 043171b4-f450-4ee6-beee-08bb8be64b01	Traitements / antécédents PTME		
+04354c88-8f24-4372-8a84-f6a0686cf4f4	Conseils nutritionnels		F16 ANC, product owner answers 11 Nov 2026; not in the forms sheet yet (#592)
 04afeb18-f3ec-4725-aba0-24578c765665	N28 Autres affections du rein et de l'uretere non classees ailleurs		
 04c66abd-5361-4d45-adf3-68146bbb7eab	J96.1 Insuffisance respiratoire chronique		
 04cdeaec-240c-4416-9286-e6f64d789395	C22.9 Foie sans precision		
 057723c1-6b41-4e30-9fc0-7a9be2cf2e6f	Médicaments administrés (ex. Ab : antibiotique)		
 0579342f-8958-4710-b5d6-f20132e1dd49	B86 Gale		
 059d5f70-20d1-4b5c-a7bf-b26b605e5d11	Prématurité		
+05c914a0-0b13-4119-bb30-2ac4d648f7d2	Planification familiale refusée		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 06128667-cf07-4041-b063-30e8bb42dc2c	M25.4 Epanchement articulaire		
 06185294-5cf2-442a-acb7-bd2da861e760	Q10 Malformations congenitales des paupieres de l'appareil lacrymal et de l'orbite		
 06237650-74b5-4981-a853-9469fce4ed89	I11 Cardiopathie hypertensive		
@@ -60,12 +62,15 @@ concept_uuid	fr_name	sheet_label	note
 092ea4fe-382a-4354-b614-d36398b51207	D58.8 Autres anemies hemolytiques hereditaires precisees		
 0987aff6-85e3-4f97-b699-5d78567b572e	G93 Autres affections du cerveau		
 09cbdbac-6edc-47b8-8aee-6c846df3613d	H59 Affections de l'oeil et de ses annexes apres un acte a visee diagnostique ou therapeutique non classees ailleurs		
+09fb3bc6-0e1f-4b4e-8fff-6c895b50c8c2	Soins immédiats du nouveau-né		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 0a0829a9-8723-4c6e-8553-29e5b20c2a7c	R56 Convulsions non classees ailleurs		
 0a59a756-fc7d-4286-a4f7-6db0c017acc7	L72 Kystes folliculaires de la peau et du tissu cellulaire sous-cutane		
+0a98db7c-6805-4024-b756-12aa59fa33c1	Counseling PF (planification familiale)		F16 ANC, product owner answers 11 Nov 2026; not in the forms sheet yet (#592)
 0a9c8640-852b-4bc9-a489-15572f381962	O03 Avortement spontane		
 0adef99c-b393-41f2-9053-df66700fa5c9	G52 Affections des autres nerfs craniens		
 0b1f6973-0377-49be-b1c3-7295dea5f87d	Fin de l'anesthésie		
 0b26c562-8542-4b39-abf3-f45f1a2d0a28	F91 Troubles des conduites		
+0b40109b-bfc9-4e75-8c4d-b97cbdd01c73	Décès néonatal précoce, de 24 heures à 7 jours		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 0b481e35-48fc-4ea1-9f1f-410b0bc96fb8	Résumé		2 labels in the sheet, most frequent used
 0b595254-1988-444f-82e7-ad07e1eb8b32	D45 Polyglobulie essentielle		
 0b6bf495-dec6-4fe3-b85e-e892f4d13a6b	A70 Infection a Chlamydia psittaci		
@@ -82,10 +87,12 @@ concept_uuid	fr_name	sheet_label	note
 0ca9d17c-ebf9-480f-9443-c60fa4e8fdc9	N48.3 Priapisme		
 0cb33e21-b186-4255-983e-371cfd44f857	Tube oral		
 0ccd264a-a16c-46c8-8272-a92dffdea8aa	ECG		
+0cf31bbf-b4d8-479d-ae13-fda82950efd4	Utérotonique : ocytocine		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 0d36a425-dd0b-454c-8d71-842d305d101a	O34 Soins maternels pour anomalie connue ou presumee des organes pelviens		
 0d3f2880-c504-48f1-b5db-5722c3d43331	Pouls du nouveau-né (/min)	Pouls (/min)	qualified: the newborn's own pulse; "Pouls (/min)" is the mother's vital sign bc54cb7c (#562)
 0d5c519a-658a-4f55-9345-e83080e1cb11	F65 Troubles de la preference sexuelle		
 0dc95673-a190-4a51-bd2f-8fcea444db95	T80 Complications consecutives a une injection therapeutique une perfusion et une transfusion		
+0de995d6-17c2-44c1-a375-216b83d3a30e	Implant contraceptif		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 0e304da8-2fc7-4ed5-bae1-0ede51dd8a46	R44 Autres symptomes et signes relatifs aux sensations et aux perceptions generales		
 0e34e286-03dd-40d1-a3e2-1e255ce120f5	G04 Encephalite myelite et encephalomyelite		
 0e9e645e-2296-4ebe-92d6-6677cb0aa46e	K00.0 Anodontie		
@@ -114,6 +121,7 @@ concept_uuid	fr_name	sheet_label	note
 11dcf913-8334-4917-99d9-d332281b4a80	M30 Periarterite noueuse et affections apparentees		
 1226d842-4e1e-4adb-ba5d-2329f2fd2a1c	K00.7 Syndrome d'eruption dentaire		
 122b6408-2ba9-4ecf-952f-3f7d1c862264	J01 Sinusite aigue		
+126e0d52-60d0-4941-b375-d73213a3a75b	Antécédent d'hépatite B		F16 ANC, product owner answers 11 Nov 2026; not in the forms sheet yet (#592)
 1294588b-0efe-455e-b165-a13476b7e575	H53 Troubles de la vision		
 12ab2425-f04a-466f-adbd-8aa8b1eb99c0	Consultation menée par		
 12e310c2-8b17-45ea-8850-a916901d7333	M62.5 Atrophie et fonte musculaires non classees ailleurs		
@@ -125,6 +133,7 @@ concept_uuid	fr_name	sheet_label	note
 137b0800-a9dd-49d0-ab42-1dcdc91eca74	Lunettes nasales		
 137b9409-54f4-4982-b8a5-d9d588e17c54	T45 Intox par substces systemiques et hematologiques		
 13d558c4-e7a2-4ff2-8d47-9d60163b1029	R62 Retard du developpement physiologique		
+1404e287-609f-4329-a0e2-3bbe8b8dd75a	Ventilation au ballon et au masque		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 1406894d-bc8c-4146-8a4f-1017cf1fde72	T04 Ecrasements de plusieurs parties du corps		
 141763ab-5cf2-4fad-a686-0fcc0a14677b	O67 Travail et accouchement compliques d'une hemorragie non classes ailleurs		
 14184840-6f78-46bf-a1f2-fd21a78674b7	F04 Syndrome amnesique organique non induit par l'alcool et d'autres substances psycho-actives		
@@ -150,6 +159,7 @@ concept_uuid	fr_name	sheet_label	note
 16da5d88-d067-4197-a28a-8f9af3559a0e	J02 Pharyngite aigue		
 16f8d29e-75bb-41ae-9592-ee7bf4f80523	Arrivée du médecin (heure)		sheet spelling fixed; 2 labels in the sheet, most frequent used
 1705d674-c012-427b-a769-dfeaca10a77c	A69.0 Stomatite ulcero-necrotique		
+17d1db49-cca2-42cf-a3ac-4340aef7c449	GATPA : utérotonique administré		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 1812b945-018a-484b-9c5b-bc663687839c	Accompagné par : nom		
 181cf87e-2842-4eed-82fb-c1a88ded38d4	H62 Affections de l'oreille externe au cours de maladies classees ailleurs		
 18265a7b-4918-4db4-b784-c456489e6067	K70 Maladie alcoolique du foie		
@@ -177,9 +187,11 @@ concept_uuid	fr_name	sheet_label	note
 1ba17d3c-b168-4fd7-b4b8-44a2514b820d	G83 Autres syndromes paralytiques		
 1bbe2b4b-1a9a-4153-965a-5da17b07de30	T36 Intoxication par antibiotiques systemiques		
 1be0ce4e-b174-48ab-8148-048741d3dc9a	F60 Troubles specifiques de la personnalite		
+1bec9685-9b83-4a94-bd88-c4ac02b91819	Soins du cordon ombilical		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 1c05e1f1-b1f2-4d30-8d82-3bd47e036d0b	O42 Rupture prematuree des membranes		2 labels in the sheet, most frequent used (tie: closest to the old name)
 1c33786c-6218-4aaa-a30a-be5d5d1c8db2	Infirmier(e) du bloc		Operation protocol (Protocole opératoire), paper form of 11 Nov 2026 (#595)
 1c45a7a1-dbc6-4143-97e0-01698584a1af	2017-U81 Agents resistant a la Vancomycine et apparente		
+1c45a7a1-dbc6-4143-97e0-01698584a1af	U83.0 Résistance à la vancomycine		WHO retired the ICD-10 code of the old name; renamed with the current code, old name « 2017-U81 Agents resistant a la Vancomycine et apparente » kept as a synonym (#585)
 1c61f402-221f-4c6f-9b7f-7094bccea77f	S60 Lesion traumatique superficielle du poignet et de la main		
 1cad4ddd-f9a1-4d59-8623-019ccc3931ec	C62 Tumeur maligne du testicule		
 1cb8cdd5-2ca4-4ace-b1ff-eef6e59a7811	Intervention / acte pratiqué		
@@ -208,13 +220,14 @@ concept_uuid	fr_name	sheet_label	note
 1f002f85-7ac5-4116-aa26-e2b2582af66e	R10 Douleur abdominale et pelvienne		
 1f973615-964e-4dff-82f2-45edfdddcf4b	C40 Tumeur maligne des os et du cartilage articulaire des membres		
 1ffe4f1d-5cd8-481b-9882-274622711d65	D63.8 Anemie au cours d'autres maladies chroniques classees ailleurs		
+2071f21d-0ad9-42c7-908c-f5ff0efa034b	Décès avant 24 h		F07 outcome, official list 11 Nov 2026 (#609)
 208fb851-f844-42b8-bfb2-8f2a8dc86a9f	H72 Perforation du tympan		
 20a75014-2642-442f-b406-065cc3b54ddd	P36 Infection bacterienne du nouveau-ne		
 20c8e6ef-116d-4a25-8e8d-956c8eb54949	BI12 - GOT (AST)	SGOT	kept: lab catalogue test (Test); the sheet label is the in-form abbreviation
 20cb16c0-e692-413f-b64b-d7a188e984dc	E24 Syndrome de Cushing		
 20d76b9b-44f2-4a9f-90cc-7d0e11f01b55	S37 Lesion traumatique des organes pelviens		
 21195762-7649-471d-985a-482ba97d89b6	R13 Dysphagie		
-211fdd7f-9afa-47d4-9160-14900e2668e1	N18.0 Insuffisance renale terminale		
+211fdd7f-9afa-47d4-9160-14900e2668e1	N18.5 Insuffisance rénale terminale (stade 5)		WHO retired the ICD-10 code of the old name; renamed with the current code, old name « N18.0 Insuffisance renale terminale » kept as a synonym (#585)
 212f40d9-1af9-4b60-88df-325afde4e2d2	C04 Tumeur maligne du plancher de la bouche		
 217ad862-37ae-49aa-9488-2679f97d20cc	D22 Nvus a melanocytes		
 219b6489-0992-47bb-a780-b97c85d10d33	Néonatologie		
@@ -259,6 +272,7 @@ concept_uuid	fr_name	sheet_label	note
 2754628d-e56c-4d87-b1e6-fb17893c047c	R23 Autres modifications de la peau		
 27674481-f383-4ad0-93f2-e6e8b3eb5e45	Ne réagit pas		
 276af262-8a8e-44f4-b60f-087e7a2e6201	K72.1 Insuffisance hepatique chronique		
+27ca999a-956e-4293-9263-f439b21578c2	Date du prochain rendez-vous CPN		F16 ANC, product owner answers 11 Nov 2026; not in the forms sheet yet (#592)
 27e3347c-c736-4e40-bd92-27813f465345	J61 Pneumoconiose due a l'amiante et a d'autres fibres minerales		
 27ebb9bd-09a5-4146-93e1-269363735b23	O+		
 2805d3c7-90c6-4a5f-8135-abbfb2cd689a	X44 Intoxication accidentelle par d'autres medicaments et substances biologiques non precises et exposition a ces produits		
@@ -273,6 +287,7 @@ concept_uuid	fr_name	sheet_label	note
 29ff306b-5a2a-48c1-affa-8fa4620a8fda	Traitement / Médicaments		5 labels in the sheet, most frequent used
 2a2796b4-5697-452b-bbd2-e905b5bfc257	E31 Dysfonctionnement pluriglandulaire		
 2a308861-0358-4096-b1b2-5be5f56c1c4a	I20.9 Angine de poitrine sans precision		
+2abac335-7bd3-4e0d-878e-b9cde8e24e02	Stimulation tactile du nouveau-né		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 2b2af6ca-7a6c-4f91-b408-0d3576d15b20	A98 Autres fievres hemorragiques virales non classees ailleurs		
 2b7c43e6-b422-40e4-a05c-ccaa39e76212	F23 Troubles psychotiques aigus et transitoires		
 2bb98047-5cdf-4100-bc4a-dddc9490ac2d	P24.8 Autres syndromes neonatals d'aspiration		
@@ -301,6 +316,7 @@ concept_uuid	fr_name	sheet_label	note
 2f24b34a-b9f6-43e9-91b2-189ab008a59b	AB-		
 2f274772-cb93-4884-b8a3-7d2cb115578e	E00 Syndrome d'insuffisance thyroidienne congenitale		
 2f4e6527-c032-4e4d-a1cf-d78cf162ed13	D34 Tumeur benigne de la thyroide		
+2f5e44d4-9d66-4c4b-bbbf-c7410e987215	Massage cardiaque externe du nouveau-né		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 2f622f0a-4ef2-482b-9a98-9bd207dd9d7d	Date des dernières règles		2 labels in the sheet, most frequent used
 2fabe22a-c38c-43c1-a282-6a6e841b3699	Réponse motrice (/6)		
 301fe68d-7040-4cad-bf0e-5eb586b5014c	S08 Amputation traumatique d'une partie de la tete		
@@ -328,6 +344,7 @@ concept_uuid	fr_name	sheet_label	note
 348f7313-d111-4391-be5c-722e881b04f2	A39 Infection a meningocoques		
 34bae7d7-fb4a-4dfc-83d7-44cdd74eb622	K02 Caries dentaires		
 3526fea8-aecd-4290-9ecd-e6f6bb6855fd	O69 Travail et accouchement compliques d'anomalies du cordon ombilical		
+3565ae9a-30cc-4086-b244-ce420afcbb1d	Utérotonique : ergométrine		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 357bea56-af7d-4813-86a4-4e51b1c4a3a1	L23 Dermite allergique de contact		
 358e708a-1f79-4ad4-8386-179395243877	G56.0 Syndrome du canal carpien		
 35a26f39-d215-4938-b398-8ce8b887a85f	Z02 Examen medical et prise de contact a des fins administratives		
@@ -346,10 +363,12 @@ concept_uuid	fr_name	sheet_label	note
 37b150f3-f90d-425d-9b85-0ed7dab7d22a	Grossesse à risque	Grossesse a haut risque	sheet spelling fixed; 2 labels in the sheet, most frequent used (tie: closest to the old name)
 37cd9e6e-1a9e-4d51-b1f3-c07c48ebdf30	D12 Tumeur benigne du colon du rectum de l'anus et du canal anal		
 37f9a1f9-96f9-4427-b51a-4c49e33ff3c9	C43 Melanome malin de la peau		
+380cc83a-2c9f-4878-a046-7ab8839b6b86	Allaitement dans la première heure		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 38371e93-8eb4-4468-ac90-020fabbc4143	J12.9 Pneumopathie virale sans precision		
 383f9874-7ebe-45ce-82c4-644fed31e14c	ASA I		
-3843ff81-ebfd-48a7-840a-4ffd75e6ff1d	U89 Agents resistant a des antibiotiques autres et non precises		
+3843ff81-ebfd-48a7-840a-4ffd75e6ff1d	U83.9 Résistance à un antibiotique non précisé		WHO retired the ICD-10 code of the old name; renamed with the current code, old name « U89 Agents resistant a des antibiotiques autres et non precises » kept as a synonym (#585)
 38b7593c-6fec-4726-ba2e-d1bbbf3ddbdd	I73 Autres maladies vasculaires peripheriques		
+38eca4cd-21ab-4689-a18b-202a50d34569	Mode d'accouchement		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 38f41f66-3736-4b67-be2f-73f38443ffd9	F12 Troubles mentaux et du comportement lies a l'utilisation de derives du cannabis		
 3917f2a9-f9ec-4d25-b5de-cb69f6bb0301	Convulsions		
 391f4eaf-65ab-4f81-855b-6aae6907b575	O61 Echec du declenchement		
@@ -357,9 +376,11 @@ concept_uuid	fr_name	sheet_label	note
 3957d3d6-445d-4629-a870-e2ec3a6c2a62	Col utérin : longueur		2 labels in the sheet, most frequent used (tie: closest to the old name)
 395ea9ae-3b6a-4fcf-b0a6-cbf0acfba836	B38 Coccidioidomycose		
 3979a3de-eb18-4def-8eb0-fbc150cba0d2	R50 Fievre d'origine inconnue		
+3996635c-8a42-47ff-9774-40ce5be6437b	Référée lors de la CPN		F16 ANC, product owner answers 11 Nov 2026; not in the forms sheet yet (#592)
 39a60662-bcc1-4b26-9764-6013af93bbdb	Rayons X		3 labels in the sheet, most frequent used
 39b4ec6f-73dd-413b-83ce-985f2fd29ac2	Prévention des complications		
 39c996ee-bf24-4341-a25e-35a368142556	Température du nouveau-né (°C)	Température (°C)	qualified: the newborn's own temperature; "Température (°C)" is the mother's vital sign 748f8d43 (#562)
+39da6ae4-96ee-4b41-97a4-fe1bcac07591	Antécédent d'hépatite C		F16 ANC, product owner answers 11 Nov 2026; not in the forms sheet yet (#592)
 39df2e82-5405-4927-aabf-8b2611789ede	N81 Prolapsus genital		
 39e137c4-7a68-4963-baed-1c6890ecde23	Périmètre crânien (cm)		sheet spelling fixed
 39ec17b9-c7c5-4e79-918a-f1d631acc583	I30.0 Pericardite idiopathique aigue non specifique		
@@ -367,6 +388,7 @@ concept_uuid	fr_name	sheet_label	note
 3a47ae05-7840-489f-b26f-edb8fbcc5ac4	F90 Troubles hyperkinetiques		
 3a4b93e8-562d-4bfd-adc2-77961a97344a	E63 Autres carences nutritionnelles		
 3a58ff0d-3612-40a3-b32d-a19964c67bdf	N92 Menorragie polymenorrhee et metrorragie		
+3a8cc1fb-a9f4-48cb-9950-2b5cadd14e63	Placenta prævia		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 3a935023-0826-4b27-95af-e66dfb1e8d07	X95 Agression par arme a feu autre et sans precision		
 3a9e7fed-b782-45a6-ab41-b2430b60c73b	K07 Anomalies dento-faciales [y compris les malocclusions]		
 3aa0e609-4c94-44a7-b119-32969dbb30b3	Q2		
@@ -382,6 +404,7 @@ concept_uuid	fr_name	sheet_label	note
 3c48028d-46eb-4620-bd4c-ccfa06836ccd	I67 Autres maladies cerebrovasculaires		
 3c4a4b7b-e0c2-489b-aef0-1f0f38cea87e	S01 Plaie ouverte de la tete		
 3c623d60-f03a-4186-8f02-8ef299e4e4dd	L85 Autres epaississements de l'epiderme		
+3c6e75d9-9796-4bcf-a67d-1447f1ccdcd6	Conseils donnés à la CPN		F16 ANC, product owner answers 11 Nov 2026; not in the forms sheet yet (#592)
 3c86c770-173b-43ae-820d-d709a3e2c123	L22 Dermite fessiere du nourrisson		
 3cb05e17-7b04-49f2-8177-0e9b37fc99d6	J86 Pyothorax		
 3cf64748-b581-4f01-b771-4b58e7ad43a3	Aspiration (ml)		
@@ -429,12 +452,14 @@ concept_uuid	fr_name	sheet_label	note
 42ca9785-e1b0-4781-9f8b-5e8eb7b7fa91	K13 Autres maladies des levres et de la muqueuse buccale		
 42e06150-f016-45b1-82dd-a6e0d44c8ae9	J40 Bronchite non precisee comme aigue ou chronique		
 42fe6256-2a75-4560-9875-1c59c08f601c	C38 Tumeur maligne du coeur du mediastin et de la plevre		
+430b40b9-7488-4a02-a566-24a4c6288b5b	Aspiration des voies aériennes du nouveau-né		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 4348dc65-f4f7-4693-a621-9e2e33aaa96a	S90 Lesion traumatique superficielle de la cheville et du pied		
 4353aad2-6f43-4058-9ca1-865e9608cbee	P10 Dechirure et hemorragie intracraniennes dues a un traumatisme obstetrical		
 43c37413-c711-4051-8263-6674c7565af2	Contractions utérines (CU) depuis		
 44060e30-bae8-464d-b63b-ec7c83e8f980	O72 Hemorragie du postpartum		2 labels in the sheet, most frequent used (tie: closest to the old name)
 440bd5e0-dbb6-464d-a971-6245a7bfa0f9	6 h		
 440ff015-1c4f-417a-aafb-388791226a32	L63 Pelade		
+442b409b-705f-4374-ae49-44ce83053209	Décès après 24 h		F07 outcome, official list 11 Nov 2026 (#609)
 4432c463-339d-48ac-bfb7-791efa671128	N99 Affections de l'appareil genito-urinaire apres un acte a visee diagnostique ou therapeutique non classees ailleurs		
 4434233c-63e0-43ca-bafe-204dbb6c1488	H20 Iridocyclite		
 444b4099-812f-4b84-9c72-72213f1fbadf	G00.0 Meningite a Haemophilus		
@@ -443,10 +468,12 @@ concept_uuid	fr_name	sheet_label	note
 44de521d-441a-4b3a-a8cd-e677822ee111	O60 Travail premature (avant terme)		
 450f217d-34fe-465b-b4dc-52bc2198b37b	Limite		
 4515e0cb-d87e-4a99-9b5d-1688adcf4e8f	Paludisme associé à la grossesse		2 labels in the sheet, most frequent used (tie: closest to the old name)
+451add23-1cc6-4dd8-b5aa-30c2c8098431	Dose de l'utérotonique		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 4523374c-c654-448d-8a29-d0b5e00c9466	2017-C74 Tumeur maligne de la surrenale		
 453331e0-2cf4-46c1-a158-81722b6ebb05	2017-X76 Lesion auto-infligee par exposition a la fumee au feu et aux flammes		
 45428c4f-02d1-4563-9ef8-5c186102f32a	G97 Affections du systeme nerveux apres un acte a visee diagnostique et therapeutique non classees ailleurs		
 45436fbd-f7ae-457b-950e-fd1aa1951118	Carnet Mère-Enfant		sheet spelling fixed
+454e693e-43e6-4566-8b10-16c41e68263a	GATPA : massage utérin		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 4583c749-421c-40f9-8203-219129893987	X98 Agression par la vapeur d'eau des gaz et objets brulants		
 459e2e4d-0a02-403d-bcb1-e43a6e4aba23	Avortement		2 labels in the sheet, most frequent used
 45cecef4-bfc7-4fa0-a5e6-e93bdad2a9be	O29 Complication d'une anesthesie au cours de la grossesse		
@@ -487,6 +514,8 @@ concept_uuid	fr_name	sheet_label	note
 4a1dd983-5d18-45e6-a6c7-620f63462725	Z63 Autres difficultes liees a l'entourage immediat y compris la situation familiale		
 4a28da58-a3bd-4390-b76f-c654f74f178d	N75 Affection de la glande de Bartholin		
 4a51a06e-9d1d-4dec-b99b-3f9fdc37cd53	P29 Affections cardio-vasculaires survenant pendant la periode perinatale		
+4a5abf6f-d250-4aa2-a14e-9bae713f3c57	Type de réanimation du nouveau-né		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
+4a8e5f2a-da35-4a5d-aefb-ffabe41e6783	Accouchement par césarienne		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 4ab62eaf-5448-4079-b5ff-39e905301a3c	T38 Intox par hormones et leurs substituts synthetiques et antagonistes		
 4ac185fa-ca63-412f-a410-ff2faf854531	O92 Autres mastopathies et anomalies de la lactation associees a l'accouchement		
 4ae2adeb-1e81-410d-9b08-2fcbba6397a2	Référence vers un établissement de même niveau		F07 outcome, Ministry list: référence même niveau (#583)
@@ -516,6 +545,7 @@ concept_uuid	fr_name	sheet_label	note
 4e34510b-4d07-493f-b3b7-11fcc71cccab	R54 Senilite		
 4e887505-0db7-40be-b375-cc19965207f6	Tension artérielle (bras droit)	TA bras droit (mmHg)	sheet spelling fixed; 3 labels in the sheet, most frequent used (tie: closest to the old name)
 4ed4f1a2-3b48-4aaf-b594-6f76ea2df6fd	P14 Lesion du systeme nerveux peripherique due a un traumatisme obstetrical		
+4f1f9cd1-c785-4a05-bb32-ac50e5c762f2	Non documenté		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 4f2bf7da-23d6-4477-a2f7-3d60fd9bc6a1	L29 Prurit		
 4f2ffc6b-f6eb-4fbf-928c-ccd722c27662	Diagnostic provisoire / différentiel		2 labels in the sheet, most frequent used
 4f485983-9d24-4228-b7f6-040088c6f4df	P35 Maladies virales congenitales		
@@ -527,6 +557,7 @@ concept_uuid	fr_name	sheet_label	note
 511f16be-26d1-4ede-aafc-412e2599faca	O13 Hypertension gestationnelle (liee a la grossesse) sans proteinurie importante		
 5131d50e-c568-4319-82ab-df73ccac7bc3	I45.8 Autres troubles precises de la conduction		
 5165645a-5b3a-42ed-a8b6-44758dae53d9	Synthèse résultats CPN		
+5170d464-dce0-46b5-b0c7-7ca64a5b3d44	Utérotonique : misoprostol		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 5178ddfd-1d61-4956-a868-bcc881397aff	Ikirezi - renseignements cliniques		
 51b433fd-7907-459c-abde-55d907c1bf32	O90 Complications puerperales non classees ailleurs		
 52506e95-0ae4-4718-b622-d4226b4238dd	Deux plus	++ : chevauchement réductible	kept: shared lab result answer "++" (labtests); the sheet label is the partograph moulding legend
@@ -579,6 +610,7 @@ concept_uuid	fr_name	sheet_label	note
 57bda061-2810-4a01-be6b-d861d38fb32a	T75 Effets d'autres causes externes		
 5806cc38-04e0-46af-8fbe-02308d10a8ec	C03 Tumeur maligne de la gencive		
 580b0191-7b6a-40f7-b99d-dab155f12dbf	Indication de la césarienne		
+5812b489-7a25-4ad3-beb4-f5e3b317a909	Dispositif intra-utérin (DIU)		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 581882c3-dc76-438a-83b0-40658360128a	L11 Autres acantholyses		
 58260c7c-fed8-462c-bd49-812cd2154016	D18 Hemangiome et lymphangiome tout siege		
 5841a760-ac78-4c75-8d31-9df9af3891ec	Diarrhée : classification	Diarrhée	qualified: sheet word 'Diarrhée' is a French synonym; tie Diarrhée / Diarrhée : classification; "Diarrhée" is allergen reaction c7eed63b; 2 labels in the sheet, most frequent used (tie: closest to the old name)
@@ -614,6 +646,7 @@ concept_uuid	fr_name	sheet_label	note
 5c84b4e4-2950-4d94-ab74-765dc6eea01e	O81 Accouchement unique par forceps et ventouse		
 5c8d6240-9cc2-4bc1-b783-30eb887f950c	Négatif		
 5ca1e454-517c-49ee-96ea-55b32b7e0425	D14 Tumeur benigne de l'oreille moyenne et de l'appareil respiratoire		
+5ca471fb-b694-49c9-abdb-2a11df721076	TDF débuté à 28 SA (PTME hépatite B)		F16 ANC, product owner answers 11 Nov 2026; not in the forms sheet yet (#592)
 5d214371-cf09-4589-b357-de8b091b66d3	Complications éventuelles		sheet spelling fixed; 2 labels in the sheet, most frequent used (tie: closest to the old name)
 5d313565-ff6a-48ec-b80d-ef2fa21456ea	G93.3 Syndrome de fatigue post-virale		
 5d32f886-732b-439c-956c-82c0415f17c9	Perte de sang (ml)		sheet spelling fixed; 2 labels in the sheet, most frequent used (tie: closest to the old name)
@@ -622,6 +655,7 @@ concept_uuid	fr_name	sheet_label	note
 5d6ff4b1-f2ae-4843-a1e9-b43875886d0c	I64 Accident vasculaire cerebral non precise comme etant hemorragique ou par infarctus		
 5daf959a-ae9c-4e8a-bd2f-efb55437e686	E16.0 Hypoglycemie medicamenteuse sans coma		
 5db0f7af-9982-434d-b528-34d509b59a8a	E07 Autres affections de la thyroide		
+5de4d33f-5765-4d25-966b-c67b7c00c0a6	Antécédent de drépanocytose		F16 ANC, product owner answers 11 Nov 2026; not in the forms sheet yet (#592)
 5deae4cb-12fe-4a66-a39d-4ecd10dd9ec7	L30 Autres dermites		
 5e26870e-6ef6-441a-bab5-9eadc72919ba	Technique de ventilation		
 5e685075-eaf9-4e22-bacf-b26e03e102f9	J05.1 Epiglottite aigue		
@@ -674,6 +708,7 @@ concept_uuid	fr_name	sheet_label	note
 66002261-246c-4c0a-a1de-45df9dacb72c	C26 Tumeur maligne des organes digestifs de sieges autres et mal definis		
 6627ddb9-2108-4b9f-9ec8-aee5d8dd489d	R01 Souffles et autres bruits cardiaques		
 66a68569-dfe2-4955-890c-07f7e3a28d49	A04 Autres infections intestinales bacteriennes		
+671af333-5b5e-4c9c-9a56-3ac3b2cfe39c	CPN 7		F16 ANC contact number, Ministry Fiche 14 rows CPN 1-8 (#592)
 6732823c-6c7d-44d0-96c4-ce7f7ebad185	A55 Lymphogranulomatose venerienne a Chlamydia		
 673fcc0e-419d-436d-b774-9137c5392913	I26 Embolie pulmonaire		
 67407193-5dd0-4ee9-8a9b-ff0ed6fd3de4	R04 Hemorragie des voies respiratoires		
@@ -682,6 +717,7 @@ concept_uuid	fr_name	sheet_label	note
 676269f7-7f09-4f04-8447-2c8aed67bced	E10.6 Diabete sucre insulinodependant avec complications precisees		
 67996910-c7ad-42cd-bc62-84c87c8b8be9	Douleurs lombaires / pelviennes sous forme de contractions utérines	Présence de douleurs pelviennes / utérines sous forme de contractions	2 labels in the sheet, most frequent used (tie: closest to the old name)
 67a1b143-fe72-492b-954e-2207b084959d	Q43 Autres malformations congenitales de l'intestin		
+67c9c3d1-9829-41b0-9603-ea81e3963a4f	Rétention placentaire		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 6844c0b2-a503-4a12-9991-cf56062cfb50	Transfert intra-hospitalier		
 686cd423-94df-408b-8f50-fd09158f2e99	I85 Varices oesophagiennes		
 687f3eb3-79c5-4fae-b76c-e867fafecb48	J17.0 Pneumopathie au cours de maladies bacteriennes classees ailleurs		
@@ -696,6 +732,7 @@ concept_uuid	fr_name	sheet_label	note
 695e34db-578f-44fc-9483-8319e6bcc9e5	O41 Autres anomalies du liquide amniotique et des membranes		
 696135f0-e1b5-439c-b426-20754e3a2c49	F50.1 La boulimie		
 696c3131-6e7e-4cf0-b88d-bf2d95baa6fb	Z75 Difficultes liees aux installations medicales et autres soins de sante		
+69b30dcf-4edc-403e-890c-0c1a7be5a442	Pilule contraceptive		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 69c8d26c-cbdb-4773-9ac9-59cba7f761b5	Décès maternel		
 69ca530c-a6d6-47e6-ad15-6045041160d1	S07 Ecrasement de la tete		
 69d62ae8-fec9-4b5c-a3c7-ef7920a26a85	F51 Troubles du sommeil non organiques		
@@ -747,7 +784,7 @@ concept_uuid	fr_name	sheet_label	note
 707b2569-784f-4188-9392-73e611ef5364	I40 Myocardite aigue		
 707e858d-d8c4-4b01-91a2-104046cf3e08	Q3		
 70956a7e-c3a4-4172-9363-09678fc5cd9f	T74.3 Sevices psychologiques		
-70b7da6c-50e1-4f99-ae24-6ccf036cc1de	U88 Agents resistant a de multiples antibiotiques		
+70b7da6c-50e1-4f99-ae24-6ccf036cc1de	U83.7 Résistance à plusieurs antibiotiques		WHO retired the ICD-10 code of the old name; renamed with the current code, old name « U88 Agents resistant a de multiples antibiotiques » kept as a synonym (#585)
 7126386d-ffe7-43c3-9fa2-9fbb6609a494	K82 Autres maladies de la vesicule biliaire		
 71d3d368-8b25-47b7-9888-77c1bf4b8ede	Ouverture des yeux (/4)		
 721aea7f-5cd1-4012-8187-7f948a01458b	M05 Polyarthrite rhumatoide seropositive		
@@ -772,6 +809,7 @@ concept_uuid	fr_name	sheet_label	note
 73825b93-f6a4-44bb-ab04-023c84bde65b	O02 Autres produits anormaux de la conception		
 739410d6-43bb-433f-bcd0-c00e820ebe94	Assistée		
 73b7e837-109a-4c01-8fcb-d605b8724f70	Pédiatrie		
+73df184e-5a2d-4462-a75b-1d466a6b353a	Procidence du cordon		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 7441b681-e89e-470e-8f74-24bbe2b5217c	Statut inconnu		
 7465403d-96c8-44d8-bc84-70c171a302b3	T60 Effet toxique de pesticides		
 748f8d43-617a-40ba-9474-20522e73fb8a	Température (°C)		sheet spelling fixed
@@ -791,12 +829,14 @@ concept_uuid	fr_name	sheet_label	note
 76729084-5d45-4183-97c2-c90f6aacb656	A34 Tetanos obstetrical (maternel)		
 76a0438d-947d-4867-b216-d3c6dc80a1f5	Q52.3 Imperforation de l'hymen		
 76a7e8a2-9138-4def-840f-7a52f1d08476	F50 Troubles de l'alimentation		
+770e2b0e-153b-4ef9-b05f-00ec69011d04	Méthode de l'allaitement maternel et de l'aménorrhée (MAMA)		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 771e3222-4ef1-40df-85c6-ee9a95185499	B08.1 Molluscum contagiosum		
 771f4641-e88b-4d08-a869-d56766b0469d	I88 Lymphadenite non specifique		
 77ad79e7-d6c9-43f4-81cc-0259e3105497	Sérum physiologique (ml)		
 77e3ad26-eb44-448d-b2f4-89171be17917	Q31 Malformations congenitales du larynx		
+77fafd3b-02c6-4b81-b421-f669a6f2e906	Conseils sur l'allaitement maternel		F16 ANC, product owner answers 11 Nov 2026; not in the forms sheet yet (#592)
 7819a3e9-ecc4-415d-83db-859a53dc8844	S77 Ecrasement de la hanche et de la cuisse		
-78313547-45e1-4242-bb82-d4eded3591d0	U80 Agents resistant a la Penicilline et apparente		
+78313547-45e1-4242-bb82-d4eded3591d0	U82.0 Résistance à la pénicilline		WHO retired the ICD-10 code of the old name; renamed with the current code, old name « U80 Agents resistant a la Penicilline et apparente » kept as a synonym (#585)
 78362a4f-4a16-4ee1-9249-10a6a982bd5e	K31 Autres maladies de l'estomac et du duodenum		
 78437fb5-1c64-482b-abe8-e9e0b7d7e9b0	N41 Affections inflammatoires de la prostate		
 78467585-b794-4a66-b556-da362cb708d9	S54 Lesion traumatique de nerfs au niveau de l'avant-bras		
@@ -809,7 +849,9 @@ concept_uuid	fr_name	sheet_label	note
 79556d7a-ec6b-43ab-9d03-a591e923e600	T66 Effets de rayonnements sans precision		
 796d9d6a-a013-46ea-9f6a-77c77bd7b623	Lunettes nasales à haut débit		
 79a559a9-c7aa-4006-98c2-02c530f6f7db	Programmée		
+79f55cbc-9151-430a-84bc-f1ca03df57fc	Préparation à l'accouchement et aux urgences		F16 ANC, product owner answers 11 Nov 2026; not in the forms sheet yet (#592)
 7a3d56f3-d2cb-4749-8716-0d6b809f8db6	I50.9 Insuffisance cardiaque sans precision		
+7a47e51b-9829-4caa-87af-0c18851d47fb	Motif et lieu de la référence (CPN)		F16 ANC, product owner answers 11 Nov 2026; not in the forms sheet yet (#592)
 7a8f27b2-7741-4bb2-be01-ee0bb521b3d2	J17.3 Pneumopathie au cours de maladies parasitaires		
 7aa184df-ed71-468b-bd8c-5f370f42d3b2	Q41 Absence atresie et stenose congenitale de l'intestin grele		
 7b7945b4-625b-4f0f-9288-2598e6602230	Déchirure utérine		
@@ -834,7 +876,9 @@ concept_uuid	fr_name	sheet_label	note
 7dd06052-3e8b-4721-b9a2-5c1361115a4b	Matin		
 7de554f6-bd52-4eaa-940b-4398f56cd20b	J90 Epanchement pleural non classe ailleurs		
 7e3a3684-43f9-4c2e-b58e-6bdfd214aa13	F52.8 Autres dysfonctionnements sexuels non dus a un trouble ou a une maladie organique		
+7e52fe3b-f870-485f-8288-75ab3b11a9b1	Prophylaxie oculaire du nouveau-né		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 7eabf345-f407-4e91-920f-b3dd770a27ab	N04 Syndrome nephrotique		
+7eb868de-0875-41ff-ba14-12aa96665224	Partenaire présent à la CPN		F16 ANC, product owner answers 11 Nov 2026; not in the forms sheet yet (#592)
 7eda268b-33df-4df3-99e7-6eeeb521b46c	L04 Lymphadenite aigue		
 7ef2ebf9-779e-4b2e-9ed0-381616152f44	B87 Myiase		
 7ef82061-14da-443c-ae78-a61af4114bd0	C18 Tumeur maligne du colon		
@@ -853,12 +897,16 @@ concept_uuid	fr_name	sheet_label	note
 80e1f197-1aeb-412a-9f19-90ba564ab0ae	Post-procédure (externe)		
 80e88001-9b84-4643-90a5-c3776a15e31d	A48 Autres maladies bacteriennes non classees ailleurs		
 817dd6ab-b51f-4c79-8943-86aa1793567c	A+		
+8186fbee-834d-4abb-b4e3-1d5334205b05	Contraceptif injectable		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 8206f5ab-1472-4cd0-9365-40015329cc57	R95 Syndrome de la mort subite du nourrisson		
 82515303-12a6-452d-be19-37ff8fbc320d	A88 Autres infections virales du systeme nerveux central non classees ailleurs		
+829a7576-06e2-42b3-aa7d-30dfa73250fc	Décès néonatal		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 82c22ea0-638a-4165-9c3f-5739f51e1082	N94.1 Dyspareunie		
+82c5ce4e-34b1-4b72-ac01-21c2214ca968	Non précisé		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 830fc087-f715-4e15-bd7e-9019924f9248	P24 Syndromes neonatals d'aspiration		
 83105052-9f3b-4c9f-a2cb-20777d5b2f85	I27.9 Affection cardiopulmonaire sans precision		
 8330abbe-a389-4b95-b0c0-8d1e4a86fe3d	Signes neurologiques		
+833c6c6a-79f3-4f7a-9b01-b2d802201a6d	Anomalies visibles du nouveau-né (préciser)		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 834c9ecb-be7a-4b8f-962c-9a5a52d3908d	Quinine comprimés	Comprimés de quinine	2 labels in the sheet, most frequent used (tie: closest to the old name)
 83541b65-2434-453e-b817-aeaef27165c9	R21 Rash et autres eruptions cutanees non specifiques		
 83a51dce-3adb-4844-860e-ebdc2a7c7dcb	I24 Autres cardiopathies ischemiques aigues		
@@ -866,12 +914,14 @@ concept_uuid	fr_name	sheet_label	note
 8485ff3c-006d-4304-9fb6-e8d4de5f28c5	B37.4 Candidose d'autres localisations uro-genitales		
 8491ffbe-4511-47d1-b6d6-b4558012dfaa	A41.3 Septicemie a Haemophilus influenzae		
 849d9689-19df-4a87-889b-e11cca7588a4	Hauteur utérine (semaines)		
+84b341c7-ed3f-4493-a4b3-af15f85dcfbe	Utérotonique administré		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 84e1184e-a6d5-40a9-b231-9f8d4268e639	E87.2 Acidose		
 850255cc-3488-4984-b65a-f6a27480dbdf	Q61 Maladies kystiques du rein		
 850393a5-970a-4143-851d-5ca668da7ef7	B85 Pediculose et phtiriase		
 8524cd55-169c-4adc-a3e3-e1b7aa547f3f	2017-T55 Effet toxique de savons et detergents		
 8537148a-357e-49e6-bcee-9774058eb085	H35 Autres affections retiniennes		
 85bdd055-670b-4a51-94be-f3bf128dd3e6	SaO2 sous O2 (%)		
+85e171bb-188e-45bd-b75d-dcaa665dd538	Antécédent d'hémorragie du post-partum		F16 ANC, product owner answers 11 Nov 2026; not in the forms sheet yet (#592)
 861ce5f8-a42c-483d-a91b-4384db6ee996	S72 Fracture du femur		
 86551d50-6f8f-415e-9a04-bf60b5c9b419	N94 Douleurs et autres affections des organes genitaux de la femme et du cycle menstruel		
 86612339-a0d0-4308-bd6b-bd70aed9a527	Z56 Difficultes liees a l'emploi et au chomage		
@@ -883,6 +933,7 @@ concept_uuid	fr_name	sheet_label	note
 8799de67-2b9a-4a6d-be6a-e0565aaace70	X99 Agression par objet tranchant		
 87a17237-ced8-4552-9c14-d588c0c95bb8	D44 Tumeur des glandes endocrines a evolution imprevisible ou inconnue		
 87acb414-87df-46d9-9d03-5cc50c7ab136	R49 Troubles de la voix		
+87b902f8-7af6-48b3-b445-856e35780642	Voie d'administration de l'utérotonique		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 87e3c233-2820-46ac-b3ef-a8dbc38133f5	D04 Carcinome in situ de la peau		
 88282a98-3be1-45e5-a208-55c94c4a56e1	R45 Symptomes et signes relatifs a l'humeur		
 88474844-acff-4ffe-bc1a-fcdcc999e2c4	Type de visite		
@@ -922,6 +973,7 @@ concept_uuid	fr_name	sheet_label	note
 8f13921a-5e56-4536-b96c-bb0f7c6644f2	N88 Autres affections non inflammatoires du col de l'uterus		
 8f1e008a-f0d5-45d2-b409-de672848233f	R09 Autres symptomes et signes relatifs aux appareils circulatoire et respiratoire		
 8f433b9a-af68-4530-b019-86ff1c8c27cf	Q00 Anencephalie et malformations similaires		
+8fcd9d56-3397-4711-8286-cbe93118d577	Disproportion fœto-pelvienne		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 8fd68058-ada9-4927-b0a0-0e4f9437fede	D50 Anemie par carence en fer		
 8ffe5eae-2d1a-45da-9581-d29e8e0231e4	B02 Zona [herpes zoster]		
 901c5277-39d1-4632-bf14-3f620721af15	Date de la dernière césarienne		
@@ -944,6 +996,7 @@ concept_uuid	fr_name	sheet_label	note
 92a1c1d3-5dd8-4f34-930c-fdc59f57d175	D07 Carcinome in situ d'organes genitaux autres et non precises		
 92e09a39-76d2-4ee5-9485-8fbe8afc30f3	G50.1 Algie faciale atypique		
 93184b5b-7f69-4218-bd40-78979d993868	S68 Amputation traumatique du poignet et de la main		
+9341f154-4f21-46f4-afb8-c0907249e6f7	État de la mère à la sortie		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 937e4e80-2314-48de-9f49-c4dd86be7547	Antécédents gynéco-obstétricaux		2 labels in the sheet, most frequent used (tie: closest to the old name)
 9385d73b-7feb-4d12-b013-b099e2b4b940	M16 Coxarthrose [arthrose de la hanche]		
 93c1c161-de51-4989-817c-120e34a43d3e	D35 Tumeur benigne des glandes endocrines autres et non precisees		
@@ -958,6 +1011,7 @@ concept_uuid	fr_name	sheet_label	note
 95a06703-15e4-493c-bc65-9d7ff4448a4d	GO302 - Épisiotomie	Épisiotomie	also in UVL_procedures_20261106.zip (#546)
 95ae6efc-9baa-439f-91b6-302d94595ba3	N61 Affections inflammatoires du sein		
 95b8b815-3c21-4b0d-90f7-be80251dcac3	T02 Fractures de plusieurs parties du corps		
+95d5469b-652f-47f3-8552-54bb1af5c958	Séchage du nouveau-né		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 96437318-3637-4a83-a626-3dd987d167a1	R36 Ecoulement uretral		
 9649bbf2-9018-4692-9d1b-24805c6dd05e	Z99 Dependance envers des machines et appareils auxiliaires non classee ailleurs		
 964b6096-b375-455d-8131-aff2d6af4361	S82 Fracture de la jambe y compris la cheville		
@@ -1039,6 +1093,7 @@ concept_uuid	fr_name	sheet_label	note
 9f45d5d0-fe6c-45bc-9220-dad1481b3423	Q40 Autres malformations congenitales des voies digestives superieures		
 9f775165-1bf3-41dd-a688-b54609eb1eaf	O94 Sequelles de complications de la grossesse de l'accouchement et de la puerperalite		
 9fcb0e5c-860c-42ce-b8f4-4f354d52b61e	Transfert interne		
+9fcb1b56-1f2f-4323-9f7a-f629171744c3	Décès néonatal tardif, de 7 à 28 jours		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 9ff60055-20a8-4d4d-9cc1-f04548965365	Ambulatoire (issue de la consultation)	Ambulatoire	qualified: sheet word 'Ambulatoire' is a French synonym; "Ambulatoire" is the arrival-state answer (6a0ccf90)
 9ff6c160-e8a5-4015-86f0-1262a36fb290	Autre complication de la césarienne (préciser)		Operation protocol (Protocole opératoire), paper form of 11 Nov 2026 (#595)
 a00dcc3e-c828-4f1f-a25e-8b538e432a0d	Particularités de la grossesse		
@@ -1071,6 +1126,7 @@ a4be9556-c842-42c4-aea1-558be369c8e0	D61.3 Aplasie medullaire idiopathique
 a51412df-a25b-4ed7-9c68-411d1b3c421b	P38 Omphalite du nouveau-ne avec ou sans hemorragie legere		
 a553dcd5-6486-4411-99ef-6ff7c80e7ea5	D55 Anemie due a des anomalies enzymatiques		
 a59b07aa-e31d-4623-aaf7-a4772221d475	Début du travail		sheet spelling fixed
+a59ee0b4-f7b1-49c5-a81b-ca2dd516403b	Oxygénothérapie du nouveau-né		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 a5a88a14-b52c-478e-afd9-4d71a46d6ff7	H44 Affections du globe oculaire		
 a5bfd49b-8f7f-4666-be00-dfbdce93139e	Rompue depuis le		sheet spelling fixed; 2 labels in the sheet, most frequent used (tie: closest to the old name)
 a5c7c4ea-5ea1-4923-9c5c-8e56e4ca79d3	J03 Amygdalite aigue		
@@ -1089,6 +1145,7 @@ a94bc92d-c092-4036-b6e2-c1ad1fddb9c7	L91 Affections hypertrophiques de la peau
 a979e804-321f-4cb2-b089-c6cba8259da7	T82 Complications de protheses implants et greffes cardiaques et vasculaires		
 a98e31d5-21f7-4c45-a99f-86d058e4f563	Z31 Mesures procreatives		
 a9d5aff6-8c45-4a7b-992d-533baeb29742	F52.1 Aversion sexuelle et manque de plaisir sexuel		
+a9d956de-06f9-4e61-bd43-97d5735d3cea	Intubation endotrachéale du nouveau-né		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 a9e52d34-3dc7-46c6-84a5-0db65faefaf6	HS12 - Groupe sanguin	Groupe sanguin et rhésus	kept: lab catalogue test (Test); the sheet label is the in-form abbreviation
 aa32ae94-8abf-4a55-bcd4-b743d8c05e6a	E05 Thyreotoxicose [hyperthyroidie]		
 aa4aba23-865b-4b95-98b1-6abb86126b09	Référé par le Centre de Santé (CS)		
@@ -1106,6 +1163,7 @@ ab5b1972-ca49-40f4-81d0-5d242e8edaaf	Hauteur utérine (cm)		sheet spelling fixed
 ab6aac99-e061-4bd9-a51a-50981989ef35	SA		3 labels in the sheet, most frequent used
 ab88b293-436c-4182-909a-24971f3b378a	2017-Z55 Difficultes liees a l'education et l'alphabetisation		
 ab9b64c4-93b8-4736-9ab3-563cbc8bb120	B08 Autres infections virales caracterisees par des lesions cutaneo-muqueuses non classees ailleurs		
+aba4878d-de8a-4d6a-a2d6-4d5d9584b34f	Gestion active de la troisième période (GATPA) réalisée		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 abd9eb8f-a837-4c41-85bd-916cc3d7dc6a	J00 Rhinopharyngite aigue [rhume banal]		
 ac0a6887-a5b5-4280-ae12-4f038163ce3d	Contre-référence		
 ac11ec86-844a-496f-9726-a39f0a7b47a5	Nouveau-né		
@@ -1186,6 +1244,7 @@ b76fca68-f4f4-45b8-a0dc-74c6eb48b319	Réanimation : adrénaline
 b7806ff4-a208-4923-b010-877ee56dfb7f	M23 Lesion interne du genou		
 b78ce196-288c-4763-a58b-a6b5b856ab94	R32 Incontinence urinaire sans precision		
 b7a1c8ad-0676-4e5c-aa3b-2acff20a63e0	I77 Autres atteintes des arteres et arterioles		
+b7ff8cd4-950d-4a30-82ee-7ac10a7fcea6	Signes de danger pendant la grossesse		F16 ANC, product owner answers 11 Nov 2026; not in the forms sheet yet (#592)
 b83f9008-37da-470c-8646-6d62b11be829	F52.7 Activite sexuelle excessive		
 b8728c13-7a18-4ddf-8c8d-a1d364ec6bd9	B881 Tungose [infestation par puce-chique]		
 b88b4fa9-3216-4531-b9fe-502713468fbe	Avec déshydratation		
@@ -1198,6 +1257,7 @@ b9de3568-8f4c-4368-898c-3a09a11074cf	T74 Syndromes dus a de mauvais traitements
 b9f2b623-ab12-4cd3-b5e6-e10b274b0504	Antécédents (pré-opératoire)	Antécédents	qualified: sheet word 'Antécédents' is a French synonym; "Antécédents" is the history question e55584c3
 b9fbe1af-2dc2-4e97-b961-54c0eaa5ed53	Contractions utérines (CU)		
 ba193b51-7617-4186-93a5-de8657855aaa	Indication opératoire		
+ba3544d8-4fd3-4f90-aebe-7e8c362e8eb5	Hépatite C pendant la grossesse actuelle		F16 ANC, product owner answers 11 Nov 2026; not in the forms sheet yet (#592)
 ba39e9aa-4f48-45fe-a9da-c2a7795dc063	Chirurgie		
 ba42f2a1-0cce-424a-81a1-22aed0e7d294	M01 Arthrites infectieuses directes au cours de maladies infectieuses et parasitaires classees ailleurs		
 ba72d459-e378-4a75-9372-67f2de70a61b	O14.1 Preeclampsie severe		
@@ -1250,7 +1310,9 @@ c272a848-c97e-4119-a1e1-544b011fa752	Céphalique
 c2735842-6bbd-4ea4-a435-948da653ebfe	N18 Insuffisance renale chronique		
 c28f16fb-a7e1-4443-819a-ba47287a2969	N73 Autres affections inflammatoires pelviennes de la femme		
 c2a8cbfa-3eaf-4740-97d8-f2863e2b3c65	T71 Asphyxie		
+c2b4b0a1-1131-4e5d-ba1f-7d2686a1d1e9	Méthode de planification familiale à la sortie		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 c2beea3c-8b42-4d60-9cf3-d5a6686d0c08	C30 Tumeur maligne des fosses nasales et de l'oreille moyenne		
+c2c39986-b3cc-4452-9efa-88d4a0d70775	Motif de la césarienne		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 c33656cb-2afd-4c80-9e21-ede35c2201e1	A17.0 Meningite tuberculeuse		
 c3e5f153-0d66-45a7-ac9c-177b2110995e	N36 Autres affections de l'uretre		
 c3f6241f-f279-48d7-a339-4f8992611960	J34 Autres maladies du nez et des sinus du nez		
@@ -1294,6 +1356,7 @@ c8cf9e38-1b8c-4cf8-9c98-8e99cc0851c5	K56.4 Autres obstructions de l'intestin
 c8ddb4a5-a685-47c6-a972-b7f761c9c2db	2017-Y35 Intervention de la force publique		
 c9402888-2c05-49a5-9aaf-b42fa9e191d4	H11.0 Pterygion		
 c94db488-2d00-4ffc-b755-8dab620be092	P59 Ictere neonatal du a des causes autres et sans precision		
+c96bac89-a0ad-41e3-8af5-ff6653d5622e	Transfusion sanguine de la mère		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 c9a5c107-6d0c-4814-9f21-e1b543622512	C16 Tumeur maligne de l'estomac		
 c9db94f7-a0d6-4aa7-b649-9abfc72dbf0f	N60 Dysplasies mammaires benignes		
 c9dbd582-d728-4290-80cc-1465df2bed6f	R40 Somnolence stupeur et coma		
@@ -1306,6 +1369,7 @@ caa77817-7440-4cef-8d94-555733f23a5a	Médecin traitant
 cacddaa6-f749-4b1b-ad02-a290c5c550df	E01.0 Goitre diffus (endemique) lie a une carence en iode		
 caebd0e0-9533-4a4f-b049-f761daba87bf	I63 Infarctus cerebral		
 cafba4d3-fec8-4a47-a7d2-9f54f2971e4e	A85.0 Encephalite a enterovirus		
+cb254261-11d7-4856-8b56-cf167c08c661	Non applicable		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 cb43f38f-c2a7-42fd-a4e9-947519784ccc	B65 Schistosomiase [bilharziose]		
 cb533923-bee0-49f4-85e3-cad37436e7b0	M60 Myosite		
 cb601a13-3b25-489e-91dc-ffa85349c580	Transfusion ou anémie		
@@ -1325,9 +1389,12 @@ cc99a233-64d1-44f7-a4e3-94b515c6057b	W19 Chute sans precision
 ccba7a57-9aec-413f-b0f9-0eb1f859a818	J32 Sinusite chronique		
 ccc826d6-6b46-4330-a5d2-2d2fd6df7524	Dyspnée		
 cccddbfd-bf4c-4780-be65-8024773bf803	D27 Tumeur benigne de l'ovaire		
+cce2d80a-99a6-4109-9eea-76b47e626e1d	Administration de vitamine K au nouveau-né		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
+ccfd044e-4ca1-47f0-9cd8-d580c6976b47	Vivante à la sortie		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 cd4ae739-75b5-4c33-823c-df4ce4a28c73	R04.2 Hemoptysie		
 cd96c0b6-a08f-49eb-94ad-9a914f1612f0	État du nouveau-né	Statut	sheet spelling fixed; 2 labels in the sheet, most frequent used
 cdc82ddc-1413-4ec1-b891-b0155f8cc7fa	Usage du tabac		
+ce224cc0-b3f8-4243-9ed7-ad1587883e26	Présentation vicieuse		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 ce29830e-66e2-446e-b9d4-85ca2d49aa66	2017-T58 Effet toxique du monoxyde de carbone		
 ce39d6af-a74f-40d7-a06f-ead8cb298126	Cardiopathie	Cardiopathies	2 labels in the sheet, most frequent used (tie: closest to the old name)
 ce51f3f9-0c4f-4652-a248-05061090d995	M48 Autres spondylopathies		
@@ -1341,11 +1408,12 @@ cf6b7cb3-c8cf-4b1d-8d8f-e224877349df	R39 Autres symptomes et signes relatifs a l
 cf778145-e3a1-4cb4-aa11-5d20eb454bbd	N43 Hydrocele et spermatocele		
 cfb8f1eb-fb1e-4f2a-ab5d-fb7b2178a63d	P28 Autres affections respiratoires survenant pendant la periode perinatale		
 cfce22f3-9296-4af1-8c68-4e86cf02bf44	Œdème des membres inférieurs		
+d0190e1e-6593-472d-b508-efefefa0d0a7	Utérus cicatriciel (césarienne antérieure)		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 d02e8e6e-ea82-4b73-8d30-a85fc16c9b95	K14 Maladies de la langue		
 d08a99c7-c085-4b84-8539-ef531714fbba	Z82 Antecedents familiaux de certaines incapacites et maladies chroniques conduisant a l'invalidite		
 d093cd83-0f8a-4312-8443-0d574dfdc7c5	R68 Autres symptomes et signes generaux		
 d0b9ff62-59c5-492b-a7bf-6ef6416180b5	Rétréci		
-d0cf970b-6101-4143-a153-58e055c3275e	I84 Hemorroides		
+d0cf970b-6101-4143-a153-58e055c3275e	K64.9 Hémorroïdes		WHO retired the ICD-10 code of the old name; renamed with the current code, old name « I84 Hemorroides » kept as a synonym (#585)
 d1039f09-7423-4b14-adbe-8f10c1f7101e	Grossesse à risque élevé détectée lors de la CPN	Grossesse à risque élevé détectée lors de l'ANC	sheet spelling fixed
 d1048a0e-ff31-4b49-b999-5101b5fec30a	Q42.2 Absence atresie et stenose congenitale de l'anus avec fistules		
 d1342a8f-6d32-4257-a4cb-f463b6cb8718	E65 Adiposite localisee		
@@ -1368,6 +1436,7 @@ d44b9e98-820b-4495-a93a-49ed8a8913f5	A63 Autres maladies dont le mode de transmi
 d45102a2-d9b7-40dc-a30c-8e88494e1725	Non		
 d469feb2-203f-435f-9f1a-28dba304f40e	I24.1 Syndrome de Dressler		
 d46ce70d-63fb-494a-a2b9-b7d169e36a72	J05.0 Laryngite obstructive aigue [croup]		
+d4991798-b627-4973-b504-64379f5706b4	Contact peau à peau		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 d5332151-14c2-4e56-a5db-983924effc87	R47 Troubles du langage non classes ailleurs		
 d53d2d0e-afee-4765-9377-197f3391ef3f	Complications de la césarienne		Operation protocol (Protocole opératoire), paper form of 11 Nov 2026 (#595)
 d543b7fe-fa05-4254-babb-5deded8643cb	O26 Soins maternels pour d'autres affections liees principalement a la grossesse		
@@ -1404,6 +1473,7 @@ d970bcb2-08c9-4b63-87a4-6165eb546a1e	Incidents prévisibles
 d9a94f49-412b-41fe-ac47-437dbc66ffda	Dépistage VIH	Statut VIH+	sheet spelling fixed; 3 labels in the sheet, most frequent used
 d9ba390f-993e-4885-87d1-1896e50d13ab	E29 Dysfonction testiculaire		
 d9d31cd1-9f36-444f-a902-3a02c47a96dd	F09 Trouble mental organique ou symptomatique sans precision		
+d9f46606-34f7-456b-bc04-f7da9f85c727	GATPA : traction contrôlée du cordon		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 da446701-d7dd-4d93-89f6-8fe338d48f62	Enceinte		
 da640d8a-8703-4bd7-aceb-2e91a6c1d806	Post-partum		
 da7e3699-9a19-4f9f-bbe5-5ab3d33a861d	Artésunate injectable	Injection d'artésunate	2 labels in the sheet, most frequent used (tie: closest to the old name)
@@ -1417,6 +1487,7 @@ dbcc96b4-c208-4b2b-a171-e35886ef2a6a	F48 Autres troubles nevrotiques
 dbdfde0d-d0ad-43ce-86b5-e4f3443867ff	S87 Ecrasement de la jambe		
 dbfc43f2-5a41-4e77-8449-e389d0997ce9	N97 Sterilite de la femme		
 dc9adbb9-7694-4cc9-b597-aabcb37b7f3d	Référence de l'appareil d'anesthésie		
+dcf50938-ba9e-45ec-9b58-c2d35f3099fa	Administration d'adrénaline au nouveau-né		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 dcfd5776-1294-4e9d-8707-8be96235728f	E78 Anomalies du metabolisme des lipoproteines et autres lipidemies		
 dd4c1f5f-5252-43fe-94cd-cd415f44e301	30 min		
 de146600-dbb3-47cf-87cf-141cc31ba7ba	O12 oedeme et proteinurie gestationnels [lies a la grossesse] sans hypertension		
@@ -1438,10 +1509,13 @@ e01a2924-3b34-4afd-a073-b569731f58a9	L60.8 Autres maladies des ongles
 e051474d-a278-4417-b40f-19776a453e66	D51 Anemie par carence en vitamine B12		
 e056d097-59ba-4d0c-8de2-f00ecc7fc2dd	L43 Lichen plan		
 e0781bee-153a-45c6-be4c-95d7f3b9bca1	Q50 Malformations congenitales des ovaires des trompes de Fallope et des ligaments larges		
+e081d0bf-3140-4f87-b5ae-88169cb6f765	Souffrance fœtale		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 e11492aa-7451-48dc-83eb-cd0b5c928926	F52.5 Vaginisme non organique		
 e12bf039-80dc-49f7-981b-c58169a64afc	Z64 Difficultes liees a certaines situations psycho-sociales		
 e13549b6-1d3b-4820-9458-9de97a036813	N76 Autres inflammations du vagin et de la vulve		
 e1510ae8-a9ad-4ff4-94b8-c40b78a715cc	Q52.0 Absence congenitale du vagin		
+e1ba4086-d1bd-443c-b0fe-285f571c1a31	Date de pose du DIU ou de l'implant en post-partum		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
+e188d16a-6a36-4357-afbd-e67c26102737	CPN 8 et plus		F16 ANC contact number, Ministry Fiche 14 rows CPN 1-8 (#592)
 e1d4f4a8-aed8-40f0-9faf-9d0087388803	N48 Autres affections de la verge		
 e1dd0df8-b280-4e87-bbe6-1537b1eba5e7	Z04 Examen et mise en observation pour d'autres raisons		
 e2209ac1-7b0a-425c-a78c-4b07a0100878	J15 Pneumopathies bacteriennes non classees ailleurs		
@@ -1451,6 +1525,7 @@ e29780aa-3730-4ba4-b3ba-7591e8281436	J35 Maladies chroniques des amygdales et de
 e2a47ded-5f67-4d14-ae69-824f73d84dc0	O73 Retention du placenta et des membranes sans hemorragie		
 e2b25370-77fb-4c57-bbef-76dc5327dec7	Fréquence respiratoire du nouveau-né (/min)	Respiration (/min)	qualified: the newborn's own respiratory rate; "Fréquence respiratoire (/min)" is the mother's vital sign b39db318 (#562)
 e2cf2a07-1c10-4e17-bf1d-45a4452a85ae	Soir		
+e2d7db06-b446-4b5d-9da3-a38ae64baebc	Sublinguale		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 e34af8b9-0b04-4637-ae73-60377ebe0e45	A32 Listeriose		
 e3526865-b922-42c9-bede-f7018d488321	I95 Hypotension		
 e362b84d-8ecd-4ef5-80cd-5f2de1af47fe	A50 Syphilis congenitale		
@@ -1470,6 +1545,7 @@ e56083c5-658e-4715-85ce-30cd78e0b13b	Type d'anesthésie prévu		2 labels in the 
 e5aa333f-e333-4b98-8cf9-e1947c7dab65	I60 Hemorragie sous-arachnoidienne		
 e5b0895f-f128-40db-9ba7-713e5ff98e00	Siège		
 e5b889f4-7bc7-4e9c-ba22-a30a8f18d560	L21 Dermite seborrheique		
+e5d40464-155d-4bb6-aa16-101d335139c6	Heure d'administration de l'utérotonique		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 e5da53f3-f12b-42ce-84b4-7d3099034d25	I51 Complications de cardiopathies et maladies cardiaques mal definies		
 e62be2b8-664b-4391-8871-86540fee3219	S52 Fracture de l'avant-bras		
 e686b5c9-4269-4601-a56d-63940b2ae3a9	Moulage de la tête		
@@ -1552,6 +1628,7 @@ f21fec0e-5788-4de9-99ad-4cc45b9291e9	J42 Bronchite chronique sans precision
 f2297e8b-255d-432a-9817-a889bfaf4da8	Maladie professionnelle		
 f241a086-f3cd-4223-8e55-2b4dad84ca10	J43.0 Syndrome de MacLeod		
 f27044d7-f795-4206-a4b0-0881c924e7fe	F92 Troubles mixtes des conduites et troubles emotionnels		
+f27fcbf6-51b8-4894-bd54-548744d5f695	CPN 6		F16 ANC contact number, Ministry Fiche 14 rows CPN 1-8 (#592)
 f281d3ae-1a0d-4ed1-9a5e-fdf11461fb15	D75.1 Polycythemie secondaire		
 f28fe49e-e851-4872-8ffe-e4fb801ed976	J98 Autres troubles respiratoires		
 f2a5f2e2-aae7-4b7a-8775-21e34a325cf3	Z74 Difficultes liees a une dependance envers la personne qui donne les soins		
@@ -1581,7 +1658,9 @@ f648b184-0d59-429c-9faf-455f93865fb9	A63.0 Condylomes ano-genitaux (veneriens)
 f64ba209-6736-4468-b814-9e3616fe9fcc	H54 Cecite et baisse de la vision		
 f6667c79-6ecf-4fcd-b1f6-9cf70fa316c6	A22 Charbon		
 f66c77d1-d0a0-4172-a994-fa09572f601e	H51 Autres anomalies des mouvements binoculaires		
+f6a50d45-a064-42f8-8488-f53312acbede	Antécédent de pré-éclampsie		F16 ANC, product owner answers 11 Nov 2026; not in the forms sheet yet (#592)
 f6b7d315-4038-4d88-8acf-4b1c7cd33f75	Intubation difficile prévisible		
+f6bd087c-28e2-4ec0-87ff-ce0039803a11	Préservatif		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 f6cf8dc5-48ad-4c18-8dc4-c2ec9632768e	Infirmier(e) d'anesthésie		
 f6d11017-2812-48c5-b2d1-22b34c0b95db	I61 Hemorragie intracerebrale		
 f6d819ca-0922-45ab-9920-794591370a76	L51 Erytheme polymorphe		
@@ -1615,6 +1694,7 @@ f9237cf4-c54e-40d0-8310-a0c9236e7232	L95 Vascularite [angeite] limitee a la peau
 f98520df-4d99-418c-b7ac-f33c155b6a1e	H47 Autres affections du nerf et des voies optiques		
 f9a432dd-c781-40a0-8de8-509cac27fdfe	R69 Causes inconnues et non precisees de morbidite		
 f9f090e3-d0d6-4213-ae9d-5affee80ec4e	J11.8 Grippe avec d'autres manifestations virus non identifie		
+fa814efe-29a7-4282-9aff-f36e5189cec6	Heure de la première mise au sein		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 fa9a8aac-a572-4b46-ae1e-6af8a2c53b44	L42 Pityriasis rose de Gibert		
 faa2321c-c4c3-481a-83f1-ab0b15175593	R00 Anomalies du rythme cardiaque		
 fb2a9771-4133-4e99-acd1-baf8fd69eb95	E34.3 Insuffisance staturale non classee ailleurs		

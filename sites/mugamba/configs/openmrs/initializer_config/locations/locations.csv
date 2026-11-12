@@ -19,6 +19,7 @@ C458A0DB-A405-4DBC-96D2-F95B46EBDA43,,Salle d’imagerie (X-Ray),,,Login Locatio
 e1f4ab17-6dc5-4249-cf38-5bae7dbe9c64,,Ophtalmologie (OPH),,,Login Location;Visit Location;Queue Location,TRUE,,,,,,,,,,,,
 f2a5bc28-7ed6-435a-da49-6cbf8ecfad75,,Dentisterie (DEN),,,Login Location;Visit Location;Queue Location,TRUE,,,,,,,,,,,,
 a3b6cd39-8fe7-446b-eb5a-7dcaf9d0be86,,Bloc opératoire (OR),,,Login Location;Visit Location;Queue Location,TRUE,,,,,,,,,,,,
+6328b502-42a3-4f7b-b153-fb5c690e6bc4,,Salle de réveil,Salle de réveil (surveillance post-opératoire),Bloc opératoire (OR),Login Location;Admission Location;Transfer Location,TRUE,,,,,,,,,,,,
 b4c7de4a-90f8-4570-fc6b-8edba0e1cf97,,Échographie (US),,,Login Location;Visit Location;Queue Location,TRUE,,,,,,,,,,,,
 c5d8ef5b-a109-4681-0d7c-9fecb1f2da08,,Pharmacie - Dispensation (Rx-DISP),,,Login Location;Visit Location;Queue Location;Dispensary,TRUE,,,,,,,,,,,,
 7b6364f2-c2e8-432c-92e9-e560feec7e28,,Pharmacie - Dispensation Box 1 (Rx-DISP-1),,Pharmacie - Dispensation (Rx-DISP),Login Location;Dispensary;Sub Store,TRUE,,,,,,,,,,,,

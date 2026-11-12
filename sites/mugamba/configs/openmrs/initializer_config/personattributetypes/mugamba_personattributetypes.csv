@@ -3,3 +3,4 @@ c65ebb91-0de1-4622-9af4-bf9e19ea569b,,Marital Status,Marital status of patient,o
 96a9f1a6-7bd4-4147-a5b3-98b1f6137340,,Occupation,Occupation of the person,org.openmrs.Concept,b1effaa8-afeb-41f5-9226-0bdcc52a6ea9,
 9816ffad-781b-423f-a21d-1ab06afb4dcc,,Insurance Coverage Tier,Insurance coverage percentage that decides the payer split in Odoo (#189),org.openmrs.Concept,e8ebb02b-5b87-4997-801c-a606ee471204,
 c108c6bc-5f23-4e4a-ad34-8c788b86f288,,Chef de ménage,Head of household: name of the patient's chef de ménage captured at registration for the PBF report (#239),java.lang.String,,
+a8122ab5-de1f-4f0a-b882-7c5b375f4faa,,Numéro de carte d'assurance,"Insurance card number, recorded once at registration for the PBF registers. A new card replaces it; uvl_insurance_card_history keeps every number (#582)",java.lang.String,,
