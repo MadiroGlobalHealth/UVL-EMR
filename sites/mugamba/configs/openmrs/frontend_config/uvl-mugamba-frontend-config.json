@@ -18,7 +18,8 @@
         "reload": "Recharger",
         "somethingWentWrongTryReloading": "Une erreur s'est produite. Rechargez la page.",
         "yearAbbreviation": "an",
-        "yearsAbbreviation": "ans"
+        "yearsAbbreviation": "ans",
+        "closeSnackbar": "Fermer la notification"
       }
     }
   },
@@ -865,6 +866,8 @@
         "statusNew": "Nouveau",
         "itemsPerPage": "Éléments par page :",
         "paginationItemRange": "{{min}}–{{max}} sur {{total}} éléments",
+        "paginationItemRange_one": "{{min}}–{{max}} sur {{total}} élément",
+        "paginationItemRange_other": "{{min}}–{{max}} sur {{total}} éléments",
         "paginationPageRange_one": "sur {{count}} page",
         "paginationPageRange_other": "sur {{count}} pages",
         "previousPage": "Page précédente",
@@ -905,7 +908,24 @@
         "unselectAllRows": "Désélectionner toutes les lignes",
         "sortRowsAscending": "Cliquer pour trier par « {{header}} », ordre croissant",
         "sortRowsDescending": "Cliquer pour trier par « {{header}} », ordre décroissant",
-        "unsortRows": "Cliquer pour annuler le tri par « {{header}} »"
+        "unsortRows": "Cliquer pour annuler le tri par « {{header}} »",
+        "close": "Fermer",
+        "dataTableToolbar": "Barre d'outils du tableau",
+        "filterTable": "Filtrer le tableau",
+        "previousMonth": "Mois précédent",
+        "nextMonth": "Mois suivant",
+        "editDrugStockItemTitle": "Modifier {{name}} (Médicament)",
+        "editNonDrugStockItemTitle": "Modifier {{name}} (Non médicament)",
+        "pleaseSpecify": "Veuillez préciser",
+        "rules": "Règles",
+        "transaction": "Transaction",
+        "transactionIn": "ENTRÉE",
+        "transactionOut": "SORTIE",
+        "transactionQuantity": "{{quantity}} {{unit}} de {{factor}}",
+        "reference": "Référence",
+        "balance": "Solde",
+        "patientDispense": "Dispensation au patient",
+        "view": "Voir"
       }
     }
   },
