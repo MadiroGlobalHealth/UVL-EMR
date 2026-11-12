@@ -315,6 +315,22 @@ Fails the build on a Keycloak openmrs client role or an inherited role that
           </execution>
           <execution>
             <!--
+              Fails the build on an act the procedure order search offers that has no Odoo
+              product, so it would never reach the quotation (#596). See the script.
+            -->
+            <id>Check the procedures are billable</id>
+            <goals>
+              <goal>execute</goal>
+            </goals>
+            <phase>prepare-package</phase>
+            <configuration>
+              <scripts>
+                <script>file://${project.basedir}/../../scripts/check-procedure-billing.groovy</script>
+              </scripts>
+            </configuration>
+          </execution>
+          <execution>
+            <!--
               Fails the build on a form question that accepts decimals its concept refuses
               (#488), or a male-only "not applicable" page that can still be saved (#489).
               See the script.
