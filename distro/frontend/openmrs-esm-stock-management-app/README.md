@@ -30,6 +30,10 @@ with fixes that are not released upstream yet. Only the built module is here; th
 | uvl.6: filtering Operations with a row open no longer crashes (`reading 'operationTypeUuid'`): open rows close when a filter changes and the opened row finds its operation by uuid | not yet |
 | uvl.6: « Available » is the quantity at the operation's own location (its source, or a receipt's destination), all batches, not the total of every location | not yet |
 | uvl.6: Reject and Return icons the right way round; page picker, expand/collapse row and sort labels translatable | not yet |
+| uvl.7: the batch picker lists the batches with stock at the operation's location (source, or a receipt's destination), with the quantity there, from that location's inventory; it matched `stockbatch` rows to the first inventory row of any location | not yet |
+| uvl.7: Operations pages on the server (`startIndex` is a page number, `limit`, `totalCount`); it paged the server's first 50 in the browser | not yet |
+| uvl.7: Items name cells break long words anywhere, so the table fits 1280 px; Items and Operations pagination clear the help button | not yet |
+| uvl.7: an operation that is not new or returned opens as « View », without item search, edit or delete; toolbar menu, Start New menu and the operation form's ComboBox buttons translatable | not yet |
 
 The list's refresh after Complete and other status changes is already in 3.3.1 (3.2.1 revalidated a
 cache the app did not read); the branch only adds a test for it.
