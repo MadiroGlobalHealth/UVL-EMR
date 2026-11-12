@@ -4,6 +4,7 @@ concept_uuid	fr_name	sheet_label	note
 00a04006-e98f-4d29-ba7e-919a45709584	G44.0 Syndrome d'algie vasculaire de la face		
 00a4fd0a-9248-48bf-886e-896b2f80ea1b	E03 Autres hypothyroidies		
 011e5b5e-cf9e-49fb-a9a2-a3a08bbb2f1b	T21 Brulure et corrosion du tronc		
+0152aa3d-b26c-42e0-972d-0eea046822b4	Décès		Operation protocol (Protocole opératoire), paper form of 11 Nov 2026 (#595)
 0158876b-d74a-4520-a136-046d7051c49e	S76 Lesion traumatique de muscles et de tendons au niveau de la hanche et de la cuisse		
 01765a8e-0b40-4c08-bee2-4d87a733831a	D63.0 Anemie au cours de maladies tumorales		
 01889dc3-137b-4b93-91e2-110eca2e9df3	R34 Anurie et oligurie		
@@ -177,6 +178,7 @@ concept_uuid	fr_name	sheet_label	note
 1bbe2b4b-1a9a-4153-965a-5da17b07de30	T36 Intoxication par antibiotiques systemiques		
 1be0ce4e-b174-48ab-8148-048741d3dc9a	F60 Troubles specifiques de la personnalite		
 1c05e1f1-b1f2-4d30-8d82-3bd47e036d0b	O42 Rupture prematuree des membranes		2 labels in the sheet, most frequent used (tie: closest to the old name)
+1c33786c-6218-4aaa-a30a-be5d5d1c8db2	Infirmier(e) du bloc		Operation protocol (Protocole opératoire), paper form of 11 Nov 2026 (#595)
 1c45a7a1-dbc6-4143-97e0-01698584a1af	2017-U81 Agents resistant a la Vancomycine et apparente		
 1c61f402-221f-4c6f-9b7f-7094bccea77f	S60 Lesion traumatique superficielle du poignet et de la main		
 1cad4ddd-f9a1-4d59-8623-019ccc3931ec	C62 Tumeur maligne du testicule		
@@ -228,11 +230,13 @@ concept_uuid	fr_name	sheet_label	note
 22a4d95f-95b5-4108-9143-a25c6b6cdd5e	T70 Effets de la pression atmospherique et de la pression de l'eau		
 23034411-2681-49b1-8893-8181304dc354	O24 Diabete sucre au cours de la grossesse		
 2316f309-8802-431d-92a0-fc7cfa4df5c8	IMC (kg/m²)		2 labels in the sheet, most frequent used
+231dd950-8985-4685-91a1-fce38060d57c	Chirurgien (membre du personnel)		Theatre forms: surgeon and anaesthetist from the staff list, product owner's answers of 11 Nov 2026 (#597)
 2338e8f0-e616-4b88-bbbc-6dffb8b76713	P60 Coagulation intravasculaire disseminee chez le foetus et le nouveau-ne		
 237d5a2a-fd87-4c2a-b291-d813cd76c6f2	Poids		sheet spelling fixed; 3 labels in the sheet, most frequent used
 2386f386-050d-46cc-bd63-0e86b9d0d96d	S53 Luxation entorse et foulure des articulations et des ligaments du coude		
 23872ad9-11ed-45b1-b277-ff939bf80a5c	C73 Tumeur maligne de la thyroide		
 238f187c-5074-43f9-934c-a5b689d1c279	K50 Maladie de Crohn [enterite regionale]		
+23b585c1-b92e-4aa7-8db7-efaae552b94b	Hémorragie		Operation protocol (Protocole opératoire), paper form of 11 Nov 2026 (#595)
 23c3c794-7cf8-4afc-a935-8aea9ba69462	O32 Soins maternels pour presentation anormale connue ou presumee du foetus		
 23ce4d79-a5ef-40f5-9659-ff36f5a571f7	K57 Diverticulose de l'intestin		
 23ceec98-f1c5-42ce-8b11-60b5be1c2acf	Type de cas		2 labels in the sheet, most frequent used (tie: closest to the old name)
@@ -709,6 +713,7 @@ concept_uuid	fr_name	sheet_label	note
 6afaef5a-8961-4dce-9b34-283ea9a6ea37	K35 Appendicite aigue		
 6b0a4294-e90e-4c2d-99b9-3a3ce93bc840	N86 Erosion et ectropion du col de l'uterus		
 6b3e3935-0ce6-4687-b5fd-192ec9b9d4df	D69 Purpura et autres affections hemorragiques		
+6b72dcb8-eddb-4b9d-938a-da636659aae4	Assistant opératoire		Operation protocol (Protocole opératoire), paper form of 11 Nov 2026 (#595)
 6bbcf922-c9ed-443b-939a-6420b35c36ed	D23 Autres tumeurs benignes de la peau		
 6bcc3cb1-d0d3-40b4-bd12-bde637ca1cc5	N46 Sterilite chez l'homme		
 6bd6e1cc-91bf-44d1-8b47-1fc982588820	M75 Lesions de l'epaule		
@@ -747,6 +752,7 @@ concept_uuid	fr_name	sheet_label	note
 71d3d368-8b25-47b7-9888-77c1bf4b8ede	Ouverture des yeux (/4)		
 721aea7f-5cd1-4012-8187-7f948a01458b	M05 Polyarthrite rhumatoide seropositive		
 723d9b6e-86d9-40f3-8f0c-242bf3338b54	Néphropathie		
+72511ace-966d-480d-ab43-5f4bbd0a4c35	Indications de l'opération		Operation protocol (Protocole opératoire), paper form of 11 Nov 2026 (#595)
 7254dc15-5afe-43be-8cf7-0997391ba7c9	Antécédents médicaux et chirurgicaux		
 72624ccd-6282-48ae-8349-65d5fd67b409	N64 Autres affections du sein		
 72660a6a-7695-491d-8785-40a8051e0edb	W87 Exposition au courant electrique sans precision		
@@ -774,6 +780,7 @@ concept_uuid	fr_name	sheet_label	note
 7503b434-f012-4227-83b9-6c4334e43251	L82 Keratose seborrheique		
 7521b744-7182-4247-8fef-13cf856dbfe4	2017-I26.9 Embolie pulmonaire sans mention de coeur pulmonaire aigu		
 75393d3b-de5d-4562-9e54-cc8980f7e295	N14 Atteintes tubulo-interstitielles et tubulaires dues a des medicaments et des metaux lourds		
+753be061-2a1e-46de-8575-5a1b5a08725e	Cas de césarienne		Operation protocol (Protocole opératoire), paper form of 11 Nov 2026 (#595)
 759f0ddf-0cc6-4401-892b-da4ac2463f8b	C02 Tumeur maligne de la langue parties autres et non precisees		
 75c44f51-217e-4b5e-8e13-d1bc9e8f501e	F25 Troubles schizo-affectifs		
 75db5d44-48c5-4091-8585-e4710f9dca76	HBV+ (Hépatite B positive)		
@@ -1033,6 +1040,7 @@ concept_uuid	fr_name	sheet_label	note
 9f775165-1bf3-41dd-a688-b54609eb1eaf	O94 Sequelles de complications de la grossesse de l'accouchement et de la puerperalite		
 9fcb0e5c-860c-42ce-b8f4-4f354d52b61e	Transfert interne		
 9ff60055-20a8-4d4d-9cc1-f04548965365	Ambulatoire (issue de la consultation)	Ambulatoire	qualified: sheet word 'Ambulatoire' is a French synonym; "Ambulatoire" is the arrival-state answer (6a0ccf90)
+9ff6c160-e8a5-4015-86f0-1262a36fb290	Autre complication de la césarienne (préciser)		Operation protocol (Protocole opératoire), paper form of 11 Nov 2026 (#595)
 a00dcc3e-c828-4f1f-a25e-8b538e432a0d	Particularités de la grossesse		
 a0a67e27-42b0-4502-8e7f-f4d46eae0a24	Anémie		
 a0e98f08-78b5-4b6a-be97-06d9dec4b8f6	R16 Hepatomegalie et splenomegalie non classees ailleurs		
@@ -1123,6 +1131,7 @@ af222a75-9f9b-4447-8d66-137e7fe54c40	A20 Peste
 af2a49ea-21c3-4f98-80b4-421a8a2461bb	F31 Trouble affectif bipolaire		
 af44918f-bbb4-4dcb-9f55-0cc609afdaaa	Dose d'adrénaline (mg)	Dosage de l'adrénaline	2 labels in the sheet, most frequent used (tie: closest to the old name)
 af56e6aa-3148-4a9b-a9c3-0000d39de2ed	N82 Fistules de l'appareil genital de la femme		2 labels in the sheet, most frequent used (tie: closest to the old name)
+af79cfc6-a90b-4c26-9352-e6407c74c1bb	Compte rendu opératoire		Operation protocol (Protocole opératoire), paper form of 11 Nov 2026 (#595)
 af8a0f43-0c8d-44f3-aac0-c926f9fff57e	O15 Eclampsie		2 labels in the sheet, most frequent used (tie: closest to the old name)
 afc4f4b5-4f94-40de-b6d0-b78044d5c9d0	G25 Autres syndromes extrapyramidaux et troubles de la motricite		
 afdefddc-4e72-4d69-bac2-d04641a7cca1	K71 Maladie toxique du foie		
@@ -1153,6 +1162,7 @@ b39db318-d563-4114-bec0-31ad3d254b24	Fréquence respiratoire (/min)		2 labels in
 b3c0b415-288d-4adc-a68f-09bb000bba37	D59 Anemie hemolytique acquise		
 b41572ee-1b13-4804-8a1b-c7530e851588	Classe III		
 b445635a-b6d1-40a7-8100-6318cb628b04	E51 Carence en thiamine		
+b44fa2a5-5192-43ca-b65c-c12415fcbab5	Anesthésie réalisée par un anesthésiste		Theatre forms: surgeon and anaesthetist from the staff list, product owner's answers of 11 Nov 2026 (#597)
 b463e42f-b545-405c-b0f7-edef002ccf75	2017-Z72.0 Usage du tabac		
 b49d244c-7bc5-4f2f-8f44-9563fd9f3a25	D15 Tumeur benigne des organes intrathoraciques autres et non precises		
 b4ae0109-0132-4259-84fa-009f19932c36	Z80 Antecedents familiaux de tumeur maligne		
@@ -1304,6 +1314,7 @@ cb830e25-ec0e-44ab-b073-fd8f540d4fe1	F63 Troubles des habitudes et des impulsion
 cb891eb9-dd4f-43f0-b639-8e060b4bd56c	T15 Corps etranger dans la partie externe de l'oeil		
 cbdc2fd4-406e-4c84-a628-f597eca5195a	I74 Embolie et thrombose arterielles		
 cbf3f223-d3b9-454c-92a8-4af410db86db	Fond d'œil		
+cbffca6e-e274-4d6b-88d7-688b8aa6ed76	Anesthésiste (membre du personnel)		Theatre forms: surgeon and anaesthetist from the staff list, product owner's answers of 11 Nov 2026 (#597)
 cc10e05c-c992-4b2a-805e-70fe1cffa5b2	C77 Tumeur maligne des ganglions lymphatiques secondaire et non precisee		
 cc2b05bb-4587-4d4f-831b-1b88b3534ab3	S96 Lesion traumatique de muscles et de tendons au niveau de la cheville et du pied		
 cc52fb7f-8c35-4944-95f8-2aa99db83599	Q56 Non differenciation sexuelle et pseudo-hermaphrodisme		
@@ -1358,6 +1369,7 @@ d45102a2-d9b7-40dc-a30c-8e88494e1725	Non
 d469feb2-203f-435f-9f1a-28dba304f40e	I24.1 Syndrome de Dressler		
 d46ce70d-63fb-494a-a2b9-b7d169e36a72	J05.0 Laryngite obstructive aigue [croup]		
 d5332151-14c2-4e56-a5db-983924effc87	R47 Troubles du langage non classes ailleurs		
+d53d2d0e-afee-4765-9377-197f3391ef3f	Complications de la césarienne		Operation protocol (Protocole opératoire), paper form of 11 Nov 2026 (#595)
 d543b7fe-fa05-4254-babb-5deded8643cb	O26 Soins maternels pour d'autres affections liees principalement a la grossesse		
 d589822f-61e6-4e79-8f3a-1df58cbbb40e	C47 Tumeur maligne des nerfs peripheriques et du systeme nerveux autonome		
 d5afc6e0-44cc-4fdf-8865-a0edf3594ced	L70 Acne		
