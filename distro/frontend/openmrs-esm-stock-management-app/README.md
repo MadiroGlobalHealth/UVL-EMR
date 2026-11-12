@@ -37,6 +37,9 @@ with fixes that are not released upstream yet. Only the built module is here; th
 | uvl.8: the Operations search runs on the server (`q`, debounced): it matches the start of the operation number or a source/destination name, not item names (stockmanagement 2.1.2); a filter or search change asks for page 1 at once, with no request for the old page | not yet |
 | uvl.8: Items Type cells no longer break inside words (only name cells do); room under the pager of Items and Operations for the help button | not yet |
 | uvl.8: the batch picker's typed text narrows the batches; « View » details read-only (no ✕/▾/calendar, Remarks not editable); one expiry date format (framework `formatDate`, « 30 déc. 2027 »); action toast on one line; search clear, menu and edit labels translatable | not yet |
+| uvl.9: modal close button, table toolbars and searches, date picker month arrows (Carbon 1.119 `prevMonthAriaLabel`/`nextMonthAriaLabel`), item workspace title, Yes/No, transactions headers, quantities, statuses and « Print », and the item workspace and admin tables' pagination translatable; item range plural-aware | not yet |
+| uvl.9: operation item rows' edit and delete icons have accessible names; the Operations row button is « View » (eye) for an operation that can no longer be changed; real spaces around « By » in status lines | not yet |
+| uvl.9: Operations cells not hyphenated, only item names break inside words; list and transaction dates in the expiry date format (« 12 nov. 2026 »); an operation item's link opens the Items page on that item (`/stock-management/items?stockItem=<uuid>`; `/stock-items/<uuid>` is no route of the app) | not yet |
 
 The list's refresh after Complete and other status changes is already in 3.3.1 (3.2.1 revalidated a
 cache the app did not read); the branch only adds a test for it.
