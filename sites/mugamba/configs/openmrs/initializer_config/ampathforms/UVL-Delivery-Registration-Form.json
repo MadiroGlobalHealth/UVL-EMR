@@ -111,6 +111,82 @@
               }
             },
             {
+              "label": "Mode of Delivery",
+              "type": "obs",
+              "id": "deliveryMode",
+              "required": true,
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "38eca4cd-21ab-4689-a18b-202a50d34569",
+                "answers": [
+                  {
+                    "concept": "3de182b6-f7fe-4185-a7b5-89237593c1f1"
+                  },
+                  {
+                    "concept": "b08d3e60-2e3c-4d23-906c-9e36cd222bea"
+                  },
+                  {
+                    "concept": "4a8e5f2a-da35-4a5d-aefb-ffabe41e6783"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Reason for the Caesarean Section",
+              "type": "obs",
+              "id": "caesareanReason",
+              "required": true,
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "c2c39986-b3cc-4452-9efa-88d4a0d70775",
+                "answers": [
+                  {
+                    "concept": "8fcd9d56-3397-4711-8286-cbe93118d577"
+                  },
+                  {
+                    "concept": "af8a0f43-0c8d-44f3-aac0-c926f9fff57e"
+                  },
+                  {
+                    "concept": "3a8cc1fb-a9f4-48cb-9950-2b5cadd14e63"
+                  },
+                  {
+                    "concept": "ce224cc0-b3f8-4243-9ed7-ad1587883e26"
+                  },
+                  {
+                    "concept": "73df184e-5a2d-4462-a75b-1d466a6b353a"
+                  },
+                  {
+                    "concept": "7b7945b4-625b-4f0f-9288-2598e6602230"
+                  },
+                  {
+                    "concept": "d0190e1e-6593-472d-b508-efefefa0d0a7"
+                  },
+                  {
+                    "concept": "e081d0bf-3140-4f87-b5ae-88169cb6f765"
+                  },
+                  {
+                    "concept": "b5c4b807-d3de-40cd-aae9-178df9b40535"
+                  }
+                ]
+              },
+              "hide": {
+                "hideWhenExpression": "deliveryMode !== '4a8e5f2a-da35-4a5d-aefb-ffabe41e6783'"
+              }
+            },
+            {
+              "label": "Other Reason (specify)",
+              "type": "obs",
+              "id": "caesareanReasonOther",
+              "required": true,
+              "questionOptions": {
+                "rendering": "text",
+                "concept": "580b0191-7b6a-40f7-b99d-dab155f12dbf"
+              },
+              "hide": {
+                "hideWhenExpression": "deliveryMode !== '4a8e5f2a-da35-4a5d-aefb-ffabe41e6783' || caesareanReason !== 'b5c4b807-d3de-40cd-aae9-178df9b40535'"
+              }
+            },
+            {
               "label": "Delivery Procedures",
               "type": "obs",
               "id": "deliveryProcedures",
@@ -125,12 +201,6 @@
                   {
                     "concept": "9270cf59-2a50-4c06-b119-3bcba54b12b9",
                     "label": "Suture"
-                  },
-                  {
-                    "concept": "3de182b6-f7fe-4185-a7b5-89237593c1f1"
-                  },
-                  {
-                    "concept": "b08d3e60-2e3c-4d23-906c-9e36cd222bea"
                   }
                 ]
               }
@@ -189,6 +259,9 @@
                   {
                     "concept": "5b2b9b02-7edf-4ec7-853e-2610711b3482",
                     "label": "Avortement"
+                  },
+                  {
+                    "concept": "67c9c3d1-9829-41b0-9603-ea81e3963a4f"
                   }
                 ]
               }
@@ -212,6 +285,299 @@
               "questionOptions": {
                 "rendering": "textarea",
                 "concept": "fc4877d6-4976-4e2a-8dca-6e4abbb30bc9"
+              }
+            }
+          ]
+        },
+        {
+          "label": "Active Management of the Third Stage of Labour (AMTSL)",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Active Management of the Third Stage (AMTSL) Performed",
+              "type": "obs",
+              "id": "amtslPerformed",
+              "required": true,
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "aba4878d-de8a-4d6a-a2d6-4d5d9584b34f",
+                "answers": [
+                  {
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e"
+                  },
+                  {
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725"
+                  },
+                  {
+                    "concept": "4f1f9cd1-c785-4a05-bb32-ac50e5c762f2"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Uterotonic Given",
+              "type": "obs",
+              "id": "amtslUterotonic",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "17d1db49-cca2-42cf-a3ac-4340aef7c449",
+                "answers": [
+                  {
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e"
+                  },
+                  {
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725"
+                  },
+                  {
+                    "concept": "4f1f9cd1-c785-4a05-bb32-ac50e5c762f2"
+                  }
+                ]
+              },
+              "hide": {
+                "hideWhenExpression": "amtslPerformed !== '2f20b5d3-ce71-4b89-a3b4-388f416fc62e' && amtslPerformed !== 'd45102a2-d9b7-40dc-a30c-8e88494e1725'"
+              }
+            },
+            {
+              "label": "Uterotonic Drug",
+              "type": "obs",
+              "id": "uterotonicDrug",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "84b341c7-ed3f-4493-a4b3-af15f85dcfbe",
+                "answers": [
+                  {
+                    "concept": "0cf31bbf-b4d8-479d-ae13-fda82950efd4"
+                  },
+                  {
+                    "concept": "5170d464-dce0-46b5-b0c7-7ca64a5b3d44"
+                  },
+                  {
+                    "concept": "3565ae9a-30cc-4086-b244-ce420afcbb1d"
+                  },
+                  {
+                    "concept": "b5c4b807-d3de-40cd-aae9-178df9b40535"
+                  }
+                ]
+              },
+              "hide": {
+                "hideWhenExpression": "(amtslPerformed !== '2f20b5d3-ce71-4b89-a3b4-388f416fc62e' && amtslPerformed !== 'd45102a2-d9b7-40dc-a30c-8e88494e1725') || amtslUterotonic !== '2f20b5d3-ce71-4b89-a3b4-388f416fc62e'"
+              }
+            },
+            {
+              "label": "Uterotonic Dose (e.g. 10 IU)",
+              "type": "obs",
+              "id": "uterotonicDose",
+              "questionOptions": {
+                "rendering": "text",
+                "concept": "451add23-1cc6-4dd8-b5aa-30c2c8098431"
+              },
+              "hide": {
+                "hideWhenExpression": "(amtslPerformed !== '2f20b5d3-ce71-4b89-a3b4-388f416fc62e' && amtslPerformed !== 'd45102a2-d9b7-40dc-a30c-8e88494e1725') || amtslUterotonic !== '2f20b5d3-ce71-4b89-a3b4-388f416fc62e'"
+              }
+            },
+            {
+              "label": "Route of Administration",
+              "type": "obs",
+              "id": "uterotonicRoute",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "87b902f8-7af6-48b3-b445-856e35780642",
+                "answers": [
+                  {
+                    "concept": "054d598b-4b48-49ab-8053-510edcfada91"
+                  },
+                  {
+                    "concept": "64cb40c5-44cb-47bc-8f4a-4697b53e42cc"
+                  },
+                  {
+                    "concept": "ec89ee8a-af95-4e49-a748-a42f2d3a822b"
+                  },
+                  {
+                    "concept": "e2d7db06-b446-4b5d-9da3-a38ae64baebc"
+                  },
+                  {
+                    "concept": "8365c709-4e02-4330-b6df-2be41f5343a8"
+                  }
+                ]
+              },
+              "hide": {
+                "hideWhenExpression": "(amtslPerformed !== '2f20b5d3-ce71-4b89-a3b4-388f416fc62e' && amtslPerformed !== 'd45102a2-d9b7-40dc-a30c-8e88494e1725') || amtslUterotonic !== '2f20b5d3-ce71-4b89-a3b4-388f416fc62e'"
+              }
+            },
+            {
+              "label": "Time of Administration",
+              "type": "obs",
+              "id": "uterotonicTime",
+              "questionOptions": {
+                "rendering": "datetime",
+                "concept": "e5d40464-155d-4bb6-aa16-101d335139c6"
+              },
+              "hide": {
+                "hideWhenExpression": "(amtslPerformed !== '2f20b5d3-ce71-4b89-a3b4-388f416fc62e' && amtslPerformed !== 'd45102a2-d9b7-40dc-a30c-8e88494e1725') || amtslUterotonic !== '2f20b5d3-ce71-4b89-a3b4-388f416fc62e'"
+              },
+              "validators": [
+                {
+                  "type": "date"
+                }
+              ]
+            },
+            {
+              "label": "Controlled Cord Traction",
+              "type": "obs",
+              "id": "amtslCordTraction",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "d9f46606-34f7-456b-bc04-f7da9f85c727",
+                "answers": [
+                  {
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e"
+                  },
+                  {
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725"
+                  },
+                  {
+                    "concept": "4f1f9cd1-c785-4a05-bb32-ac50e5c762f2"
+                  }
+                ]
+              },
+              "hide": {
+                "hideWhenExpression": "amtslPerformed !== '2f20b5d3-ce71-4b89-a3b4-388f416fc62e' && amtslPerformed !== 'd45102a2-d9b7-40dc-a30c-8e88494e1725'"
+              }
+            },
+            {
+              "label": "Uterine Massage",
+              "type": "obs",
+              "id": "amtslUterineMassage",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "454e693e-43e6-4566-8b10-16c41e68263a",
+                "answers": [
+                  {
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e"
+                  },
+                  {
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725"
+                  },
+                  {
+                    "concept": "4f1f9cd1-c785-4a05-bb32-ac50e5c762f2"
+                  }
+                ]
+              },
+              "hide": {
+                "hideWhenExpression": "amtslPerformed !== '2f20b5d3-ce71-4b89-a3b4-388f416fc62e' && amtslPerformed !== 'd45102a2-d9b7-40dc-a30c-8e88494e1725'"
+              }
+            }
+          ]
+        },
+        {
+          "label": "Mother",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Estimated Blood Loss (mL)",
+              "type": "obs",
+              "id": "bloodLoss",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "5d32f886-732b-439c-956c-82c0415f17c9",
+                "min": "0",
+                "max": "5000",
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "Blood Transfusion",
+              "type": "obs",
+              "id": "motherTransfusion",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "c96bac89-a0ad-41e3-8af5-ff6653d5622e",
+                "answers": [
+                  {
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e"
+                  },
+                  {
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Family Planning Method at Discharge",
+              "type": "obs",
+              "id": "fpMethod",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "c2b4b0a1-1131-4e5d-ba1f-7d2686a1d1e9",
+                "answers": [
+                  {
+                    "concept": "01ff87e9-f0b0-4997-b402-7b12862d1784"
+                  },
+                  {
+                    "concept": "0de995d6-17c2-44c1-a375-216b83d3a30e"
+                  },
+                  {
+                    "concept": "5812b489-7a25-4ad3-beb4-f5e3b317a909"
+                  },
+                  {
+                    "concept": "8186fbee-834d-4abb-b4e3-1d5334205b05"
+                  },
+                  {
+                    "concept": "69b30dcf-4edc-403e-890c-0c1a7be5a442"
+                  },
+                  {
+                    "concept": "f6bd087c-28e2-4ec0-87ff-ce0039803a11"
+                  },
+                  {
+                    "concept": "770e2b0e-153b-4ef9-b05f-00ec69011d04"
+                  },
+                  {
+                    "concept": "b5c4b807-d3de-40cd-aae9-178df9b40535"
+                  },
+                  {
+                    "concept": "05c914a0-0b13-4119-bb30-2ac4d648f7d2"
+                  },
+                  {
+                    "concept": "82c5ce4e-34b1-4b72-ac01-21c2214ca968"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Insertion Date (IUD or Implant)",
+              "type": "obs",
+              "id": "fpInsertionDate",
+              "questionOptions": {
+                "rendering": "date",
+                "concept": "e1ba4086-d1bd-443c-b0fe-285f571c1a31"
+              },
+              "hide": {
+                "hideWhenExpression": "fpMethod !== '5812b489-7a25-4ad3-beb4-f5e3b317a909' && fpMethod !== '0de995d6-17c2-44c1-a375-216b83d3a30e'"
+              },
+              "validators": [
+                {
+                  "type": "date"
+                }
+              ]
+            },
+            {
+              "label": "Mother's Status at Discharge",
+              "type": "obs",
+              "id": "motherStatusAtDischarge",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "9341f154-4f21-46f4-afb8-c0907249e6f7",
+                "answers": [
+                  {
+                    "concept": "ccfd044e-4ca1-47f0-9cd8-d580c6976b47"
+                  },
+                  {
+                    "concept": "1c47742a-4eeb-46a8-94c5-70fdb0e85e7d"
+                  },
+                  {
+                    "concept": "69c8d26c-cbdb-4773-9ac9-59cba7f761b5"
+                  }
+                ]
               }
             }
           ]
@@ -311,6 +677,47 @@
                   }
                 },
                 {
+                  "label": "Neonatal Death",
+                  "type": "obs",
+                  "id": "nbNeonatalDeath",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "829a7576-06e2-42b3-aa7d-30dfa73250fc",
+                    "answers": [
+                      {
+                        "concept": "50e375f7-4d58-46a9-899a-b46a90629599"
+                      },
+                      {
+                        "concept": "0b40109b-bfc9-4e75-8c4d-b97cbdd01c73"
+                      },
+                      {
+                        "concept": "9fcb1b56-1f2f-4323-9f7a-f629171744c3"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "nbStatus !== '4056a982-6a2d-4062-9514-efcf4e66dd0a'"
+                  }
+                },
+                {
+                  "label": "Date & Time of Death",
+                  "type": "obs",
+                  "id": "nbDeathDatetime",
+                  "required": true,
+                  "questionOptions": {
+                    "rendering": "datetime",
+                    "concept": "533c19af-9bb5-4981-9876-5d638bb39e14"
+                  },
+                  "hide": {
+                    "hideWhenExpression": "nbStatus !== '4056a982-6a2d-4062-9514-efcf4e66dd0a' || isEmpty(nbNeonatalDeath)"
+                  },
+                  "validators": [
+                    {
+                      "type": "date"
+                    }
+                  ]
+                },
+                {
                   "label": "Weight (g)",
                   "type": "obs",
                   "id": "nbWeight",
@@ -345,23 +752,14 @@
                   }
                 },
                 {
-                  "label": "Intubation (time)",
+                  "label": "Gestational Age (weeks)",
                   "type": "obs",
-                  "id": "nbIntubationTime",
-                  "questionOptions": {
-                    "rendering": "datetime",
-                    "concept": "6551bb19-9430-42d7-a878-73195ed256f8"
-                  }
-                },
-                {
-                  "label": "Adrenaline Dose (mg)",
-                  "type": "obs",
-                  "id": "nbAdrenalineDose",
+                  "id": "nbGestationalAge",
                   "questionOptions": {
                     "rendering": "number",
-                    "concept": "bd619dea-1d0c-4812-bf34-23bded19460a",
-                    "min": "0",
-                    "max": "10"
+                    "concept": "ab6aac99-e061-4bd9-a51a-50981989ef35",
+                    "min": "20",
+                    "max": "45"
                   }
                 },
                 {
@@ -830,6 +1228,189 @@
                   "hide": {
                     "hideWhenExpression": "nbStatus === '63f4b85c-de5a-48e9-a9a5-bf2656c10125' || (isEmpty(apgar5Hr) && isEmpty(apgar5Resp) && isEmpty(apgar5Tone) && isEmpty(apgar5Refl) && isEmpty(apgar5Col) ? (isEmpty(apgar5Total) || apgar5Total >= 7) : ((apgar5Hr === '475f0140-91ce-4b0c-ae3f-2c820871fbc1' ? 2 : (apgar5Hr === '1034d639-4fb8-44e7-80ef-75a8aa9373fe' ? 1 : 0)) + (apgar5Resp === '27f526c7-e5cb-4034-8a4a-381ac74819ad' ? 2 : (apgar5Resp === '0019c755-3bf4-4a3c-8047-17d8ed9ba658' ? 1 : 0)) + (apgar5Tone === 'aeb00d31-7ebd-41be-830d-dffd75e10e07' ? 2 : (apgar5Tone === 'd9e538a1-4722-4647-87f7-e3e2e3d6f7c7' ? 1 : 0)) + (apgar5Refl === '8746e646-6c98-4fec-8d70-aad5a8f6b6b1' ? 2 : (apgar5Refl === '9b9eefd3-d29e-4296-9229-4c3a80fa5c07' ? 1 : 0)) + (apgar5Col === '75b37b86-2a58-4f82-ac3a-e5a7ee5d1b57' ? 2 : (apgar5Col === '80ebaa43-d932-497d-a94f-8f03fe169c3e' ? 1 : 0))) >= 7)"
                   }
+                },
+                {
+                  "label": "Resuscitation",
+                  "type": "obs",
+                  "id": "nbResuscitated",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "5f0b0e37-d169-4ba5-a49c-bbf8bb7d5b61",
+                    "answers": [
+                      {
+                        "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e"
+                      },
+                      {
+                        "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "nbStatus === '63f4b85c-de5a-48e9-a9a5-bf2656c10125'"
+                  }
+                },
+                {
+                  "label": "Type of Resuscitation",
+                  "type": "obs",
+                  "id": "nbResuscitationType",
+                  "questionOptions": {
+                    "rendering": "checkbox",
+                    "concept": "4a5abf6f-d250-4aa2-a14e-9bae713f3c57",
+                    "answers": [
+                      {
+                        "concept": "2abac335-7bd3-4e0d-878e-b9cde8e24e02"
+                      },
+                      {
+                        "concept": "430b40b9-7488-4a02-a566-24a4c6288b5b"
+                      },
+                      {
+                        "concept": "1404e287-609f-4329-a0e2-3bbe8b8dd75a"
+                      },
+                      {
+                        "concept": "a59ee0b4-f7b1-49c5-a81b-ca2dd516403b"
+                      },
+                      {
+                        "concept": "a9d956de-06f9-4e61-bd43-97d5735d3cea"
+                      },
+                      {
+                        "concept": "2f5e44d4-9d66-4c4b-bbbf-c7410e987215"
+                      },
+                      {
+                        "concept": "dcf50938-ba9e-45ec-9b58-c2d35f3099fa"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "nbStatus === '63f4b85c-de5a-48e9-a9a5-bf2656c10125' || nbResuscitated !== '2f20b5d3-ce71-4b89-a3b4-388f416fc62e'"
+                  }
+                },
+                {
+                  "label": "Intubation (time)",
+                  "type": "obs",
+                  "id": "nbIntubationTime",
+                  "questionOptions": {
+                    "rendering": "datetime",
+                    "concept": "6551bb19-9430-42d7-a878-73195ed256f8"
+                  },
+                  "hide": {
+                    "hideWhenExpression": "nbStatus === '63f4b85c-de5a-48e9-a9a5-bf2656c10125' || nbResuscitated !== '2f20b5d3-ce71-4b89-a3b4-388f416fc62e' || !includes(nbResuscitationType, 'a9d956de-06f9-4e61-bd43-97d5735d3cea')"
+                  }
+                },
+                {
+                  "label": "Adrenaline Dose (mg)",
+                  "type": "obs",
+                  "id": "nbAdrenalineDose",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "bd619dea-1d0c-4812-bf34-23bded19460a",
+                    "min": "0",
+                    "max": "10"
+                  },
+                  "hide": {
+                    "hideWhenExpression": "nbStatus === '63f4b85c-de5a-48e9-a9a5-bf2656c10125' || nbResuscitated !== '2f20b5d3-ce71-4b89-a3b4-388f416fc62e' || !includes(nbResuscitationType, 'dcf50938-ba9e-45ec-9b58-c2d35f3099fa')"
+                  }
+                },
+                {
+                  "label": "Visible Anomalies",
+                  "type": "obs",
+                  "id": "nbAnomalies",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "05cbda6b-9a32-4d6d-9821-38219e96630f",
+                    "answers": [
+                      {
+                        "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e"
+                      },
+                      {
+                        "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "label": "Describe the Anomalies",
+                  "type": "obs",
+                  "id": "nbAnomaliesDescription",
+                  "questionOptions": {
+                    "rendering": "textarea",
+                    "concept": "833c6c6a-79f3-4f7a-9b01-b2d802201a6d",
+                    "rows": 2
+                  },
+                  "hide": {
+                    "hideWhenExpression": "nbAnomalies !== '2f20b5d3-ce71-4b89-a3b4-388f416fc62e'"
+                  }
+                },
+                {
+                  "label": "Immediate Care",
+                  "type": "obs",
+                  "id": "nbImmediateCare",
+                  "questionOptions": {
+                    "rendering": "checkbox",
+                    "concept": "09fb3bc6-0e1f-4b4e-8fff-6c895b50c8c2",
+                    "answers": [
+                      {
+                        "concept": "95d5469b-652f-47f3-8552-54bb1af5c958"
+                      },
+                      {
+                        "concept": "d4991798-b627-4973-b504-64379f5706b4"
+                      },
+                      {
+                        "concept": "1bec9685-9b83-4a94-bd88-c4ac02b91819"
+                      },
+                      {
+                        "concept": "7e52fe3b-f870-485f-8288-75ab3b11a9b1"
+                      },
+                      {
+                        "concept": "cce2d80a-99a6-4109-9eea-76b47e626e1d"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "nbStatus === '63f4b85c-de5a-48e9-a9a5-bf2656c10125'"
+                  }
+                },
+                {
+                  "label": "Breastfed Within the First Hour",
+                  "type": "obs",
+                  "id": "nbBreastfedFirstHour",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "380cc83a-2c9f-4878-a046-7ab8839b6b86",
+                    "answers": [
+                      {
+                        "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e"
+                      },
+                      {
+                        "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725"
+                      },
+                      {
+                        "concept": "cb254261-11d7-4856-8b56-cf167c08c661"
+                      },
+                      {
+                        "concept": "4f1f9cd1-c785-4a05-bb32-ac50e5c762f2"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "nbStatus === '63f4b85c-de5a-48e9-a9a5-bf2656c10125'"
+                  }
+                },
+                {
+                  "label": "Time of First Breastfeeding Attempt",
+                  "type": "obs",
+                  "id": "nbFirstBreastfeedTime",
+                  "questionOptions": {
+                    "rendering": "datetime",
+                    "concept": "fa814efe-29a7-4282-9aff-f36e5189cec6"
+                  },
+                  "hide": {
+                    "hideWhenExpression": "nbStatus === '63f4b85c-de5a-48e9-a9a5-bf2656c10125' || (nbBreastfedFirstHour !== '2f20b5d3-ce71-4b89-a3b4-388f416fc62e' && nbBreastfedFirstHour !== 'd45102a2-d9b7-40dc-a30c-8e88494e1725')"
+                  },
+                  "validators": [
+                    {
+                      "type": "date"
+                    }
+                  ]
                 }
               ]
             },
@@ -920,6 +1501,47 @@
                   }
                 },
                 {
+                  "label": "Neonatal Death",
+                  "type": "obs",
+                  "id": "nbNeonatalDeath_1",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "829a7576-06e2-42b3-aa7d-30dfa73250fc",
+                    "answers": [
+                      {
+                        "concept": "50e375f7-4d58-46a9-899a-b46a90629599"
+                      },
+                      {
+                        "concept": "0b40109b-bfc9-4e75-8c4d-b97cbdd01c73"
+                      },
+                      {
+                        "concept": "9fcb1b56-1f2f-4323-9f7a-f629171744c3"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "(isEmpty(newbornCount) || newbornCount < 2) || (nbStatus_1 !== '4056a982-6a2d-4062-9514-efcf4e66dd0a')"
+                  }
+                },
+                {
+                  "label": "Date & Time of Death",
+                  "type": "obs",
+                  "id": "nbDeathDatetime_1",
+                  "required": true,
+                  "questionOptions": {
+                    "rendering": "datetime",
+                    "concept": "533c19af-9bb5-4981-9876-5d638bb39e14"
+                  },
+                  "hide": {
+                    "hideWhenExpression": "(isEmpty(newbornCount) || newbornCount < 2) || (nbStatus_1 !== '4056a982-6a2d-4062-9514-efcf4e66dd0a' || isEmpty(nbNeonatalDeath_1))"
+                  },
+                  "validators": [
+                    {
+                      "type": "date"
+                    }
+                  ]
+                },
+                {
                   "label": "Weight (g)",
                   "type": "obs",
                   "id": "nbWeight_1",
@@ -963,26 +1585,14 @@
                   }
                 },
                 {
-                  "label": "Intubation (time)",
+                  "label": "Gestational Age (weeks)",
                   "type": "obs",
-                  "id": "nbIntubationTime_1",
-                  "questionOptions": {
-                    "rendering": "datetime",
-                    "concept": "6551bb19-9430-42d7-a878-73195ed256f8"
-                  },
-                  "hide": {
-                    "hideWhenExpression": "isEmpty(newbornCount) || newbornCount < 2"
-                  }
-                },
-                {
-                  "label": "Adrenaline Dose (mg)",
-                  "type": "obs",
-                  "id": "nbAdrenalineDose_1",
+                  "id": "nbGestationalAge_1",
                   "questionOptions": {
                     "rendering": "number",
-                    "concept": "bd619dea-1d0c-4812-bf34-23bded19460a",
-                    "min": "0",
-                    "max": "10"
+                    "concept": "ab6aac99-e061-4bd9-a51a-50981989ef35",
+                    "min": "20",
+                    "max": "45"
                   },
                   "hide": {
                     "hideWhenExpression": "isEmpty(newbornCount) || newbornCount < 2"
@@ -1457,6 +2067,192 @@
                   "hide": {
                     "hideWhenExpression": "(isEmpty(newbornCount) || newbornCount < 2) || (nbStatus_1 === '63f4b85c-de5a-48e9-a9a5-bf2656c10125' || (isEmpty(apgar5Hr_1) && isEmpty(apgar5Resp_1) && isEmpty(apgar5Tone_1) && isEmpty(apgar5Refl_1) && isEmpty(apgar5Col_1) ? (isEmpty(apgar5Total_1) || apgar5Total_1 >= 7) : ((apgar5Hr_1 === '475f0140-91ce-4b0c-ae3f-2c820871fbc1' ? 2 : (apgar5Hr_1 === '1034d639-4fb8-44e7-80ef-75a8aa9373fe' ? 1 : 0)) + (apgar5Resp_1 === '27f526c7-e5cb-4034-8a4a-381ac74819ad' ? 2 : (apgar5Resp_1 === '0019c755-3bf4-4a3c-8047-17d8ed9ba658' ? 1 : 0)) + (apgar5Tone_1 === 'aeb00d31-7ebd-41be-830d-dffd75e10e07' ? 2 : (apgar5Tone_1 === 'd9e538a1-4722-4647-87f7-e3e2e3d6f7c7' ? 1 : 0)) + (apgar5Refl_1 === '8746e646-6c98-4fec-8d70-aad5a8f6b6b1' ? 2 : (apgar5Refl_1 === '9b9eefd3-d29e-4296-9229-4c3a80fa5c07' ? 1 : 0)) + (apgar5Col_1 === '75b37b86-2a58-4f82-ac3a-e5a7ee5d1b57' ? 2 : (apgar5Col_1 === '80ebaa43-d932-497d-a94f-8f03fe169c3e' ? 1 : 0))) >= 7))"
                   }
+                },
+                {
+                  "label": "Resuscitation",
+                  "type": "obs",
+                  "id": "nbResuscitated_1",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "5f0b0e37-d169-4ba5-a49c-bbf8bb7d5b61",
+                    "answers": [
+                      {
+                        "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e"
+                      },
+                      {
+                        "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "(isEmpty(newbornCount) || newbornCount < 2) || (nbStatus_1 === '63f4b85c-de5a-48e9-a9a5-bf2656c10125')"
+                  }
+                },
+                {
+                  "label": "Type of Resuscitation",
+                  "type": "obs",
+                  "id": "nbResuscitationType_1",
+                  "questionOptions": {
+                    "rendering": "checkbox",
+                    "concept": "4a5abf6f-d250-4aa2-a14e-9bae713f3c57",
+                    "answers": [
+                      {
+                        "concept": "2abac335-7bd3-4e0d-878e-b9cde8e24e02"
+                      },
+                      {
+                        "concept": "430b40b9-7488-4a02-a566-24a4c6288b5b"
+                      },
+                      {
+                        "concept": "1404e287-609f-4329-a0e2-3bbe8b8dd75a"
+                      },
+                      {
+                        "concept": "a59ee0b4-f7b1-49c5-a81b-ca2dd516403b"
+                      },
+                      {
+                        "concept": "a9d956de-06f9-4e61-bd43-97d5735d3cea"
+                      },
+                      {
+                        "concept": "2f5e44d4-9d66-4c4b-bbbf-c7410e987215"
+                      },
+                      {
+                        "concept": "dcf50938-ba9e-45ec-9b58-c2d35f3099fa"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "(isEmpty(newbornCount) || newbornCount < 2) || (nbStatus_1 === '63f4b85c-de5a-48e9-a9a5-bf2656c10125' || nbResuscitated_1 !== '2f20b5d3-ce71-4b89-a3b4-388f416fc62e')"
+                  }
+                },
+                {
+                  "label": "Intubation (time)",
+                  "type": "obs",
+                  "id": "nbIntubationTime_1",
+                  "questionOptions": {
+                    "rendering": "datetime",
+                    "concept": "6551bb19-9430-42d7-a878-73195ed256f8"
+                  },
+                  "hide": {
+                    "hideWhenExpression": "(isEmpty(newbornCount) || newbornCount < 2) || (nbStatus_1 === '63f4b85c-de5a-48e9-a9a5-bf2656c10125' || nbResuscitated_1 !== '2f20b5d3-ce71-4b89-a3b4-388f416fc62e' || !includes(nbResuscitationType_1, 'a9d956de-06f9-4e61-bd43-97d5735d3cea'))"
+                  }
+                },
+                {
+                  "label": "Adrenaline Dose (mg)",
+                  "type": "obs",
+                  "id": "nbAdrenalineDose_1",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "bd619dea-1d0c-4812-bf34-23bded19460a",
+                    "min": "0",
+                    "max": "10"
+                  },
+                  "hide": {
+                    "hideWhenExpression": "(isEmpty(newbornCount) || newbornCount < 2) || (nbStatus_1 === '63f4b85c-de5a-48e9-a9a5-bf2656c10125' || nbResuscitated_1 !== '2f20b5d3-ce71-4b89-a3b4-388f416fc62e' || !includes(nbResuscitationType_1, 'dcf50938-ba9e-45ec-9b58-c2d35f3099fa'))"
+                  }
+                },
+                {
+                  "label": "Visible Anomalies",
+                  "type": "obs",
+                  "id": "nbAnomalies_1",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "05cbda6b-9a32-4d6d-9821-38219e96630f",
+                    "answers": [
+                      {
+                        "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e"
+                      },
+                      {
+                        "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "isEmpty(newbornCount) || newbornCount < 2"
+                  }
+                },
+                {
+                  "label": "Describe the Anomalies",
+                  "type": "obs",
+                  "id": "nbAnomaliesDescription_1",
+                  "questionOptions": {
+                    "rendering": "textarea",
+                    "concept": "833c6c6a-79f3-4f7a-9b01-b2d802201a6d",
+                    "rows": 2
+                  },
+                  "hide": {
+                    "hideWhenExpression": "(isEmpty(newbornCount) || newbornCount < 2) || (nbAnomalies_1 !== '2f20b5d3-ce71-4b89-a3b4-388f416fc62e')"
+                  }
+                },
+                {
+                  "label": "Immediate Care",
+                  "type": "obs",
+                  "id": "nbImmediateCare_1",
+                  "questionOptions": {
+                    "rendering": "checkbox",
+                    "concept": "09fb3bc6-0e1f-4b4e-8fff-6c895b50c8c2",
+                    "answers": [
+                      {
+                        "concept": "95d5469b-652f-47f3-8552-54bb1af5c958"
+                      },
+                      {
+                        "concept": "d4991798-b627-4973-b504-64379f5706b4"
+                      },
+                      {
+                        "concept": "1bec9685-9b83-4a94-bd88-c4ac02b91819"
+                      },
+                      {
+                        "concept": "7e52fe3b-f870-485f-8288-75ab3b11a9b1"
+                      },
+                      {
+                        "concept": "cce2d80a-99a6-4109-9eea-76b47e626e1d"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "(isEmpty(newbornCount) || newbornCount < 2) || (nbStatus_1 === '63f4b85c-de5a-48e9-a9a5-bf2656c10125')"
+                  }
+                },
+                {
+                  "label": "Breastfed Within the First Hour",
+                  "type": "obs",
+                  "id": "nbBreastfedFirstHour_1",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "380cc83a-2c9f-4878-a046-7ab8839b6b86",
+                    "answers": [
+                      {
+                        "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e"
+                      },
+                      {
+                        "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725"
+                      },
+                      {
+                        "concept": "cb254261-11d7-4856-8b56-cf167c08c661"
+                      },
+                      {
+                        "concept": "4f1f9cd1-c785-4a05-bb32-ac50e5c762f2"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "(isEmpty(newbornCount) || newbornCount < 2) || (nbStatus_1 === '63f4b85c-de5a-48e9-a9a5-bf2656c10125')"
+                  }
+                },
+                {
+                  "label": "Time of First Breastfeeding Attempt",
+                  "type": "obs",
+                  "id": "nbFirstBreastfeedTime_1",
+                  "questionOptions": {
+                    "rendering": "datetime",
+                    "concept": "fa814efe-29a7-4282-9aff-f36e5189cec6"
+                  },
+                  "hide": {
+                    "hideWhenExpression": "(isEmpty(newbornCount) || newbornCount < 2) || (nbStatus_1 === '63f4b85c-de5a-48e9-a9a5-bf2656c10125' || (nbBreastfedFirstHour_1 !== '2f20b5d3-ce71-4b89-a3b4-388f416fc62e' && nbBreastfedFirstHour_1 !== 'd45102a2-d9b7-40dc-a30c-8e88494e1725'))"
+                  },
+                  "validators": [
+                    {
+                      "type": "date"
+                    }
+                  ]
                 }
               ],
               "hide": {
@@ -1550,6 +2346,47 @@
                   }
                 },
                 {
+                  "label": "Neonatal Death",
+                  "type": "obs",
+                  "id": "nbNeonatalDeath_2",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "829a7576-06e2-42b3-aa7d-30dfa73250fc",
+                    "answers": [
+                      {
+                        "concept": "50e375f7-4d58-46a9-899a-b46a90629599"
+                      },
+                      {
+                        "concept": "0b40109b-bfc9-4e75-8c4d-b97cbdd01c73"
+                      },
+                      {
+                        "concept": "9fcb1b56-1f2f-4323-9f7a-f629171744c3"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "(isEmpty(newbornCount) || newbornCount < 3) || (nbStatus_2 !== '4056a982-6a2d-4062-9514-efcf4e66dd0a')"
+                  }
+                },
+                {
+                  "label": "Date & Time of Death",
+                  "type": "obs",
+                  "id": "nbDeathDatetime_2",
+                  "required": true,
+                  "questionOptions": {
+                    "rendering": "datetime",
+                    "concept": "533c19af-9bb5-4981-9876-5d638bb39e14"
+                  },
+                  "hide": {
+                    "hideWhenExpression": "(isEmpty(newbornCount) || newbornCount < 3) || (nbStatus_2 !== '4056a982-6a2d-4062-9514-efcf4e66dd0a' || isEmpty(nbNeonatalDeath_2))"
+                  },
+                  "validators": [
+                    {
+                      "type": "date"
+                    }
+                  ]
+                },
+                {
                   "label": "Weight (g)",
                   "type": "obs",
                   "id": "nbWeight_2",
@@ -1593,26 +2430,14 @@
                   }
                 },
                 {
-                  "label": "Intubation (time)",
+                  "label": "Gestational Age (weeks)",
                   "type": "obs",
-                  "id": "nbIntubationTime_2",
-                  "questionOptions": {
-                    "rendering": "datetime",
-                    "concept": "6551bb19-9430-42d7-a878-73195ed256f8"
-                  },
-                  "hide": {
-                    "hideWhenExpression": "isEmpty(newbornCount) || newbornCount < 3"
-                  }
-                },
-                {
-                  "label": "Adrenaline Dose (mg)",
-                  "type": "obs",
-                  "id": "nbAdrenalineDose_2",
+                  "id": "nbGestationalAge_2",
                   "questionOptions": {
                     "rendering": "number",
-                    "concept": "bd619dea-1d0c-4812-bf34-23bded19460a",
-                    "min": "0",
-                    "max": "10"
+                    "concept": "ab6aac99-e061-4bd9-a51a-50981989ef35",
+                    "min": "20",
+                    "max": "45"
                   },
                   "hide": {
                     "hideWhenExpression": "isEmpty(newbornCount) || newbornCount < 3"
@@ -2087,6 +2912,192 @@
                   "hide": {
                     "hideWhenExpression": "(isEmpty(newbornCount) || newbornCount < 3) || (nbStatus_2 === '63f4b85c-de5a-48e9-a9a5-bf2656c10125' || (isEmpty(apgar5Hr_2) && isEmpty(apgar5Resp_2) && isEmpty(apgar5Tone_2) && isEmpty(apgar5Refl_2) && isEmpty(apgar5Col_2) ? (isEmpty(apgar5Total_2) || apgar5Total_2 >= 7) : ((apgar5Hr_2 === '475f0140-91ce-4b0c-ae3f-2c820871fbc1' ? 2 : (apgar5Hr_2 === '1034d639-4fb8-44e7-80ef-75a8aa9373fe' ? 1 : 0)) + (apgar5Resp_2 === '27f526c7-e5cb-4034-8a4a-381ac74819ad' ? 2 : (apgar5Resp_2 === '0019c755-3bf4-4a3c-8047-17d8ed9ba658' ? 1 : 0)) + (apgar5Tone_2 === 'aeb00d31-7ebd-41be-830d-dffd75e10e07' ? 2 : (apgar5Tone_2 === 'd9e538a1-4722-4647-87f7-e3e2e3d6f7c7' ? 1 : 0)) + (apgar5Refl_2 === '8746e646-6c98-4fec-8d70-aad5a8f6b6b1' ? 2 : (apgar5Refl_2 === '9b9eefd3-d29e-4296-9229-4c3a80fa5c07' ? 1 : 0)) + (apgar5Col_2 === '75b37b86-2a58-4f82-ac3a-e5a7ee5d1b57' ? 2 : (apgar5Col_2 === '80ebaa43-d932-497d-a94f-8f03fe169c3e' ? 1 : 0))) >= 7))"
                   }
+                },
+                {
+                  "label": "Resuscitation",
+                  "type": "obs",
+                  "id": "nbResuscitated_2",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "5f0b0e37-d169-4ba5-a49c-bbf8bb7d5b61",
+                    "answers": [
+                      {
+                        "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e"
+                      },
+                      {
+                        "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "(isEmpty(newbornCount) || newbornCount < 3) || (nbStatus_2 === '63f4b85c-de5a-48e9-a9a5-bf2656c10125')"
+                  }
+                },
+                {
+                  "label": "Type of Resuscitation",
+                  "type": "obs",
+                  "id": "nbResuscitationType_2",
+                  "questionOptions": {
+                    "rendering": "checkbox",
+                    "concept": "4a5abf6f-d250-4aa2-a14e-9bae713f3c57",
+                    "answers": [
+                      {
+                        "concept": "2abac335-7bd3-4e0d-878e-b9cde8e24e02"
+                      },
+                      {
+                        "concept": "430b40b9-7488-4a02-a566-24a4c6288b5b"
+                      },
+                      {
+                        "concept": "1404e287-609f-4329-a0e2-3bbe8b8dd75a"
+                      },
+                      {
+                        "concept": "a59ee0b4-f7b1-49c5-a81b-ca2dd516403b"
+                      },
+                      {
+                        "concept": "a9d956de-06f9-4e61-bd43-97d5735d3cea"
+                      },
+                      {
+                        "concept": "2f5e44d4-9d66-4c4b-bbbf-c7410e987215"
+                      },
+                      {
+                        "concept": "dcf50938-ba9e-45ec-9b58-c2d35f3099fa"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "(isEmpty(newbornCount) || newbornCount < 3) || (nbStatus_2 === '63f4b85c-de5a-48e9-a9a5-bf2656c10125' || nbResuscitated_2 !== '2f20b5d3-ce71-4b89-a3b4-388f416fc62e')"
+                  }
+                },
+                {
+                  "label": "Intubation (time)",
+                  "type": "obs",
+                  "id": "nbIntubationTime_2",
+                  "questionOptions": {
+                    "rendering": "datetime",
+                    "concept": "6551bb19-9430-42d7-a878-73195ed256f8"
+                  },
+                  "hide": {
+                    "hideWhenExpression": "(isEmpty(newbornCount) || newbornCount < 3) || (nbStatus_2 === '63f4b85c-de5a-48e9-a9a5-bf2656c10125' || nbResuscitated_2 !== '2f20b5d3-ce71-4b89-a3b4-388f416fc62e' || !includes(nbResuscitationType_2, 'a9d956de-06f9-4e61-bd43-97d5735d3cea'))"
+                  }
+                },
+                {
+                  "label": "Adrenaline Dose (mg)",
+                  "type": "obs",
+                  "id": "nbAdrenalineDose_2",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "bd619dea-1d0c-4812-bf34-23bded19460a",
+                    "min": "0",
+                    "max": "10"
+                  },
+                  "hide": {
+                    "hideWhenExpression": "(isEmpty(newbornCount) || newbornCount < 3) || (nbStatus_2 === '63f4b85c-de5a-48e9-a9a5-bf2656c10125' || nbResuscitated_2 !== '2f20b5d3-ce71-4b89-a3b4-388f416fc62e' || !includes(nbResuscitationType_2, 'dcf50938-ba9e-45ec-9b58-c2d35f3099fa'))"
+                  }
+                },
+                {
+                  "label": "Visible Anomalies",
+                  "type": "obs",
+                  "id": "nbAnomalies_2",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "05cbda6b-9a32-4d6d-9821-38219e96630f",
+                    "answers": [
+                      {
+                        "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e"
+                      },
+                      {
+                        "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "isEmpty(newbornCount) || newbornCount < 3"
+                  }
+                },
+                {
+                  "label": "Describe the Anomalies",
+                  "type": "obs",
+                  "id": "nbAnomaliesDescription_2",
+                  "questionOptions": {
+                    "rendering": "textarea",
+                    "concept": "833c6c6a-79f3-4f7a-9b01-b2d802201a6d",
+                    "rows": 2
+                  },
+                  "hide": {
+                    "hideWhenExpression": "(isEmpty(newbornCount) || newbornCount < 3) || (nbAnomalies_2 !== '2f20b5d3-ce71-4b89-a3b4-388f416fc62e')"
+                  }
+                },
+                {
+                  "label": "Immediate Care",
+                  "type": "obs",
+                  "id": "nbImmediateCare_2",
+                  "questionOptions": {
+                    "rendering": "checkbox",
+                    "concept": "09fb3bc6-0e1f-4b4e-8fff-6c895b50c8c2",
+                    "answers": [
+                      {
+                        "concept": "95d5469b-652f-47f3-8552-54bb1af5c958"
+                      },
+                      {
+                        "concept": "d4991798-b627-4973-b504-64379f5706b4"
+                      },
+                      {
+                        "concept": "1bec9685-9b83-4a94-bd88-c4ac02b91819"
+                      },
+                      {
+                        "concept": "7e52fe3b-f870-485f-8288-75ab3b11a9b1"
+                      },
+                      {
+                        "concept": "cce2d80a-99a6-4109-9eea-76b47e626e1d"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "(isEmpty(newbornCount) || newbornCount < 3) || (nbStatus_2 === '63f4b85c-de5a-48e9-a9a5-bf2656c10125')"
+                  }
+                },
+                {
+                  "label": "Breastfed Within the First Hour",
+                  "type": "obs",
+                  "id": "nbBreastfedFirstHour_2",
+                  "questionOptions": {
+                    "rendering": "radio",
+                    "concept": "380cc83a-2c9f-4878-a046-7ab8839b6b86",
+                    "answers": [
+                      {
+                        "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e"
+                      },
+                      {
+                        "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725"
+                      },
+                      {
+                        "concept": "cb254261-11d7-4856-8b56-cf167c08c661"
+                      },
+                      {
+                        "concept": "4f1f9cd1-c785-4a05-bb32-ac50e5c762f2"
+                      }
+                    ]
+                  },
+                  "hide": {
+                    "hideWhenExpression": "(isEmpty(newbornCount) || newbornCount < 3) || (nbStatus_2 === '63f4b85c-de5a-48e9-a9a5-bf2656c10125')"
+                  }
+                },
+                {
+                  "label": "Time of First Breastfeeding Attempt",
+                  "type": "obs",
+                  "id": "nbFirstBreastfeedTime_2",
+                  "questionOptions": {
+                    "rendering": "datetime",
+                    "concept": "fa814efe-29a7-4282-9aff-f36e5189cec6"
+                  },
+                  "hide": {
+                    "hideWhenExpression": "(isEmpty(newbornCount) || newbornCount < 3) || (nbStatus_2 === '63f4b85c-de5a-48e9-a9a5-bf2656c10125' || (nbBreastfedFirstHour_2 !== '2f20b5d3-ce71-4b89-a3b4-388f416fc62e' && nbBreastfedFirstHour_2 !== 'd45102a2-d9b7-40dc-a30c-8e88494e1725'))"
+                  },
+                  "validators": [
+                    {
+                      "type": "date"
+                    }
+                  ]
                 }
               ],
               "hide": {
