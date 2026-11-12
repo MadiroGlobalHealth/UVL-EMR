@@ -458,7 +458,9 @@
       "fr": {
         "viewNormalRanges": "Voir les valeurs normales",
         "normalRangeHint": "Normale : {{range}}",
-        "normalRanges": "Valeurs normales"
+        "normalRanges": "Valeurs normales",
+        "recordVitalsAndBiometrics": "Signes vitaux et biométrie",
+        "editVitalsAndBiometrics": "Modifier les signes vitaux"
       }
     }
   },
