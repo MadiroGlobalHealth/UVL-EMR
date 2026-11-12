@@ -34,6 +34,9 @@ with fixes that are not released upstream yet. Only the built module is here; th
 | uvl.7: Operations pages on the server (`startIndex` is a page number, `limit`, `totalCount`); it paged the server's first 50 in the browser | not yet |
 | uvl.7: Items name cells break long words anywhere, so the table fits 1280 px; Items and Operations pagination clear the help button | not yet |
 | uvl.7: an operation that is not new or returned opens as « View », without item search, edit or delete; toolbar menu, Start New menu and the operation form's ComboBox buttons translatable | not yet |
+| uvl.8: the Operations search runs on the server (`q`, debounced): it matches the start of the operation number or a source/destination name, not item names (stockmanagement 2.1.2); a filter or search change asks for page 1 at once, with no request for the old page | not yet |
+| uvl.8: Items Type cells no longer break inside words (only name cells do); room under the pager of Items and Operations for the help button | not yet |
+| uvl.8: the batch picker's typed text narrows the batches; « View » details read-only (no ✕/▾/calendar, Remarks not editable); one expiry date format (framework `formatDate`, « 30 déc. 2027 »); action toast on one line; search clear, menu and edit labels translatable | not yet |
 
 The list's refresh after Complete and other status changes is already in 3.3.1 (3.2.1 revalidated a
 cache the app did not read); the branch only adds a test for it.

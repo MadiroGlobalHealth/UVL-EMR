@@ -893,6 +893,8 @@
         "clearAllSelectedItems": "Effacer toutes les sélections",
         "openMenu": "Ouvrir le menu",
         "closeMenu": "Fermer le menu",
+        "edit": "Modifier",
+        "searchStockOperationsByNumber": "Rechercher par numéro d'opération ou emplacement",
         "expandCurrentRow": "Afficher le détail de la ligne",
         "collapseCurrentRow": "Masquer le détail de la ligne",
         "expandAllRows": "Afficher le détail de toutes les lignes",
