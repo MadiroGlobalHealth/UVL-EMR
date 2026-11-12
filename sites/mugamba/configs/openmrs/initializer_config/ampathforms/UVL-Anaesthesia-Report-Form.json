@@ -172,21 +172,60 @@
               }
             },
             {
-              "label": "Anaesthetist",
+              "label": "Anaesthetist (Staff List)",
+              "type": "obs",
+              "id": "anaesthetistProvider",
+              "questionOptions": {
+                "rendering": "ui-select-extended",
+                "concept": "cbffca6e-e274-4d6b-88d7-688b8aa6ed76",
+                "isSearchable": "true",
+                "datasource": {
+                  "name": "provider_datasource"
+                }
+              }
+            },
+            {
+              "label": "Anaesthetist Not in the Staff List (First and Last Name)",
               "type": "obs",
               "id": "anaesthetistName",
               "questionOptions": {
                 "rendering": "text",
                 "concept": "06bc374b-6862-48ce-9426-3b4e81ed0521"
+              },
+              "hide": {
+                "hideWhenExpression": "!isEmpty(anaesthetistProvider)"
+              },
+              "validators": [
+                {
+                  "type": "js_expression",
+                  "failsWhenExpression": "isEmpty(myValue) && isEmpty(anaesthetistProvider)",
+                  "message": "Choisissez l'anesthésiste dans la liste du personnel ou saisissez son nom et prénom / Pick the anaesthetist from the staff list or type their first and last name"
+                }
+              ]
+            },
+            {
+              "label": "Surgeon (Staff List)",
+              "type": "obs",
+              "id": "surgeonProvider",
+              "questionOptions": {
+                "rendering": "ui-select-extended",
+                "concept": "231dd950-8985-4685-91a1-fce38060d57c",
+                "isSearchable": "true",
+                "datasource": {
+                  "name": "provider_datasource"
+                }
               }
             },
             {
-              "label": "Surgeon",
+              "label": "Surgeon Not in the Staff List (First and Last Name)",
               "type": "obs",
               "id": "surgeonName",
               "questionOptions": {
                 "rendering": "text",
                 "concept": "9b01093f-21cc-4723-9ea4-88edfa8fccb8"
+              },
+              "hide": {
+                "hideWhenExpression": "!isEmpty(surgeonProvider)"
               }
             },
             {

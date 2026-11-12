@@ -243,6 +243,7 @@ concept_uuid	fr_name	sheet_label	note
 22a4d95f-95b5-4108-9143-a25c6b6cdd5e	T70 Effets de la pression atmospherique et de la pression de l'eau		
 23034411-2681-49b1-8893-8181304dc354	O24 Diabete sucre au cours de la grossesse		
 2316f309-8802-431d-92a0-fc7cfa4df5c8	IMC (kg/m²)		2 labels in the sheet, most frequent used
+231dd950-8985-4685-91a1-fce38060d57c	Chirurgien (membre du personnel)		Theatre forms: surgeon and anaesthetist from the staff list, product owner's answers of 11 Nov 2026 (#597)
 2338e8f0-e616-4b88-bbbc-6dffb8b76713	P60 Coagulation intravasculaire disseminee chez le foetus et le nouveau-ne		
 237d5a2a-fd87-4c2a-b291-d813cd76c6f2	Poids		sheet spelling fixed; 3 labels in the sheet, most frequent used
 2386f386-050d-46cc-bd63-0e86b9d0d96d	S53 Luxation entorse et foulure des articulations et des ligaments du coude		
@@ -1219,6 +1220,7 @@ b39db318-d563-4114-bec0-31ad3d254b24	Fréquence respiratoire (/min)		2 labels in
 b3c0b415-288d-4adc-a68f-09bb000bba37	D59 Anemie hemolytique acquise		
 b41572ee-1b13-4804-8a1b-c7530e851588	Classe III		
 b445635a-b6d1-40a7-8100-6318cb628b04	E51 Carence en thiamine		
+b44fa2a5-5192-43ca-b65c-c12415fcbab5	Anesthésie réalisée par un anesthésiste		Theatre forms: surgeon and anaesthetist from the staff list, product owner's answers of 11 Nov 2026 (#597)
 b463e42f-b545-405c-b0f7-edef002ccf75	2017-Z72.0 Usage du tabac		
 b49d244c-7bc5-4f2f-8f44-9563fd9f3a25	D15 Tumeur benigne des organes intrathoraciques autres et non precises		
 b4ae0109-0132-4259-84fa-009f19932c36	Z80 Antecedents familiaux de tumeur maligne		
@@ -1376,6 +1378,7 @@ cb830e25-ec0e-44ab-b073-fd8f540d4fe1	F63 Troubles des habitudes et des impulsion
 cb891eb9-dd4f-43f0-b639-8e060b4bd56c	T15 Corps etranger dans la partie externe de l'oeil		
 cbdc2fd4-406e-4c84-a628-f597eca5195a	I74 Embolie et thrombose arterielles		
 cbf3f223-d3b9-454c-92a8-4af410db86db	Fond d'œil		
+cbffca6e-e274-4d6b-88d7-688b8aa6ed76	Anesthésiste (membre du personnel)		Theatre forms: surgeon and anaesthetist from the staff list, product owner's answers of 11 Nov 2026 (#597)
 cc10e05c-c992-4b2a-805e-70fe1cffa5b2	C77 Tumeur maligne des ganglions lymphatiques secondaire et non precisee		
 cc2b05bb-4587-4d4f-831b-1b88b3534ab3	S96 Lesion traumatique de muscles et de tendons au niveau de la cheville et du pied		
 cc52fb7f-8c35-4944-95f8-2aa99db83599	Q56 Non differenciation sexuelle et pseudo-hermaphrodisme		
