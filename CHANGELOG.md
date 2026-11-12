@@ -216,7 +216,9 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
 - **"Complete dispatch" now shows for the receiving pharmacist** as soon as a Stock Issue is
   dispatched, and the approved requisition's "Issue stock" action as soon as it is approved, without
   an OpenMRS restart. A stock role or scope changed by an administrator applies at the next refresh
-  of the operations list. (#447)
+  of the operations list. A pharmacist can no longer create or change a stock operation outside
+  their stock scope (a location or operation type their scope doesn't give), even through the API:
+  the server answers 403. (#447)
 - **Each dispensing pharmacist has their own stock box.** Pharmacie - Dispensation Box 1, 2 and 3
   (Rx-DISP-1 to -3) sit under Pharmacie - Dispensation. A pharmacist signs in at their box; once
   deduction is on, a dispense takes from that box. The central pharmacy issues to the boxes, and a
@@ -1046,13 +1048,26 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   cleared. A server thread that had seen an operation once answered every later request for it the
   same way, for any user and whatever its status had become, so the receiver of a dispatched Stock
   Issue lost "Complete dispatch" until OpenMRS restarted. The distro now ships
-  `stockmanagement-2.1.2-uvl1.omod` from `distro/binaries/openmrs/modules`: the published 2.1.2 omod
-  with `StockOperationResource` rebuilt without the cache, and `config.xml` at `2.1.2-uvl1`. Every
-  other file is the published 2.1.2 (jnsereko fork branch `uvl/2.1.2-permission-cache` `3853e7f`; the
-  2.1.x source isn't public, so the class was decompiled and only the cache removed, see the
-  branch's `uvl/2.1.2-uvl1/README.md`). It replaces the stock 2.1.2 omod at build time. Upstream
-  `master` has the same cache, removed by O3-6248 (openmrs/openmrs-module-stockmanagement#57). Once
-  UVL takes a stockmanagement release without it, delete the omod. (#447)
+  `stockmanagement-2.1.2-uvl2.omod` from `distro/binaries/openmrs/modules`: the published 2.1.2 omod
+  with `StockOperationResource` rebuilt without the cache, and `config.xml` at `2.1.2-uvl2`. Upstream
+  `master` has the same cache, removed by O3-6248 (openmrs/openmrs-module-stockmanagement#57). (#447)
+- **Creating or updating a stock operation is checked against the user's stock role scopes.**
+  2.1.2 checks every action (submit, approve, reject, return, dispatch, complete, cancel) against
+  the scopes, but create and update only against the global mutate privilege, so a Pharmacist scoped
+  to one box created an Opening Stock at Pharmacie (Rx) through the API. The same omod's
+  `StockOperationResource.save` now makes the actions' check: the scopes must give
+  `Task: stockmanagement.stockoperations.mutate` for the operation's type at its location (the
+  destination of a Receipt, otherwise the source; on update the stored location as well). A refusal
+  is a 403 with the module's "You do not have permission..." message, and an action the scopes
+  refuse is now a 403 too, where it was a 500. Holders of `Task: stockmanagement.userRoleScopes.mutate`
+  (Inventory Administrator, System Developer) skip the create and update check. The module has no
+  rule against approving an operation one created, and none is added: who may approve is who holds
+  the approve privilege in scope. Every other file of the omod is the published 2.1.2 (jnsereko
+  fork branch `uvl/2.1.2-scope-enforcement` `b23907a`, on top of `uvl/2.1.2-permission-cache`; the
+  2.1.x source isn't public, so `StockOperationResource` and `StockOperationActionResource` were
+  decompiled and only these fixes applied, see the branch's `uvl/2.1.2-uvl2/README.md`). It replaces
+  the stock 2.1.2 omod at build time. Once UVL takes a stockmanagement release with both fixes,
+  delete the omod. (#447)
 
 ### Deploy notes for production
 1. Record the running image digests and take a database backup first.
@@ -1190,8 +1205,8 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
     Then a doctor's `/pacs/auth/user/profile` must list `"permissions": ["view"]`.
 24. **#447, stock module:** after the first start, the same check for `stockmanagement`:
     `docker exec <openmrs container> sh -c 'ls /openmrs/data/modules | grep stockmanagement'` must
-    show only `stockmanagement-2.1.2-uvl1.omod`, and the OpenMRS log must show it started as version
-    `2.1.2-uvl1`. Billing must still start (it needs stockmanagement >= 1.4.0).
+    show only `stockmanagement-2.1.2-uvl2.omod`, and the OpenMRS log must show it started as version
+    `2.1.2-uvl2`. Billing must still start (it needs stockmanagement >= 1.4.0).
 
 ### Known issues
 - **The location picker greets the user by username (« Bienvenue Pacifique.Gahungu »).** The
