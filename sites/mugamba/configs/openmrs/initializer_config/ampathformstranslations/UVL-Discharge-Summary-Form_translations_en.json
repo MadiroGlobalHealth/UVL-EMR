@@ -71,6 +71,11 @@
     "Outcome at Discharge": "Outcome at Discharge",
     "Date and Time of Death": "Date and Time of Death",
     "Death Audit Done?": "Death Audit Done?",
-    "Référence vers un établissement de niveau supérieur": "Referral to Higher-Level Facility"
+    "Guéris": "Cured",
+    "Améliorés": "Improved",
+    "Référence niveau équivalent": "Referral to Same-Level Facility",
+    "Référence niveau supérieur": "Referral to Higher-Level Facility",
+    "Référence intra-hospitalière": "Intra-Hospital Referral",
+    "Évadés": "Absconded"
   }
 }

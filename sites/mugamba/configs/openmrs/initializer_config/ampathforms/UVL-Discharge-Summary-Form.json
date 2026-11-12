@@ -330,32 +330,40 @@
                 "concept": "160433AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
                 "answers": [
                   {
-                    "concept": "55fd8787-27f2-456b-9f6b-acfc8d4ca8de"
+                    "concept": "55fd8787-27f2-456b-9f6b-acfc8d4ca8de",
+                    "label": "Guéris"
                   },
                   {
-                    "concept": "162677AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                    "concept": "162677AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "label": "Améliorés"
                   },
                   {
                     "concept": "ac0a6887-a5b5-4280-ae12-4f038163ce3d"
                   },
                   {
-                    "concept": "4ae2adeb-1e81-410d-9b08-2fcbba6397a2"
+                    "concept": "4ae2adeb-1e81-410d-9b08-2fcbba6397a2",
+                    "label": "Référence niveau équivalent"
                   },
                   {
                     "concept": "96cbc3ff-8ff8-4b3c-b341-815563df3641",
-                    "label": "Référence vers un établissement de niveau supérieur"
+                    "label": "Référence niveau supérieur"
                   },
                   {
-                    "concept": "6844c0b2-a503-4a12-9991-cf56062cfb50"
+                    "concept": "6844c0b2-a503-4a12-9991-cf56062cfb50",
+                    "label": "Référence intra-hospitalière"
                   },
                   {
                     "concept": "1694AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
                   },
                   {
-                    "concept": "160431AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                    "concept": "160431AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "label": "Évadés"
                   },
                   {
-                    "concept": "5f60e9b0-50e1-473c-b155-68a2a670559e"
+                    "concept": "2071f21d-0ad9-42c7-908c-f5ff0efa034b"
+                  },
+                  {
+                    "concept": "442b409b-705f-4374-ae49-44ce83053209"
                   }
                 ]
               }
@@ -370,7 +378,7 @@
                 "concept": "533c19af-9bb5-4981-9876-5d638bb39e14"
               },
               "hide": {
-                "hideWhenExpression": "dischargeOutcome !== '5f60e9b0-50e1-473c-b155-68a2a670559e'"
+                "hideWhenExpression": "dischargeOutcome !== '2071f21d-0ad9-42c7-908c-f5ff0efa034b' && dischargeOutcome !== '442b409b-705f-4374-ae49-44ce83053209'"
               },
               "validators": [
                 {
@@ -396,7 +404,7 @@
                 ]
               },
               "hide": {
-                "hideWhenExpression": "dischargeOutcome !== '5f60e9b0-50e1-473c-b155-68a2a670559e'"
+                "hideWhenExpression": "dischargeOutcome !== '2071f21d-0ad9-42c7-908c-f5ff0efa034b' && dischargeOutcome !== '442b409b-705f-4374-ae49-44ce83053209'"
               }
             }
           ]
