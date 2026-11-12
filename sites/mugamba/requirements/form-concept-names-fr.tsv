@@ -206,6 +206,7 @@ concept_uuid	fr_name	sheet_label	note
 1f002f85-7ac5-4116-aa26-e2b2582af66e	R10 Douleur abdominale et pelvienne		
 1f973615-964e-4dff-82f2-45edfdddcf4b	C40 Tumeur maligne des os et du cartilage articulaire des membres		
 1ffe4f1d-5cd8-481b-9882-274622711d65	D63.8 Anemie au cours d'autres maladies chroniques classees ailleurs		
+2071f21d-0ad9-42c7-908c-f5ff0efa034b	Décès avant 24 h		F07 outcome, official list 11 Nov 2026 (#609)
 208fb851-f844-42b8-bfb2-8f2a8dc86a9f	H72 Perforation du tympan		
 20a75014-2642-442f-b406-065cc3b54ddd	P36 Infection bacterienne du nouveau-ne		
 20c8e6ef-116d-4a25-8e8d-956c8eb54949	BI12 - GOT (AST)	SGOT	kept: lab catalogue test (Test); the sheet label is the in-form abbreviation
@@ -431,6 +432,7 @@ concept_uuid	fr_name	sheet_label	note
 44060e30-bae8-464d-b63b-ec7c83e8f980	O72 Hemorragie du postpartum		2 labels in the sheet, most frequent used (tie: closest to the old name)
 440bd5e0-dbb6-464d-a971-6245a7bfa0f9	6 h		
 440ff015-1c4f-417a-aafb-388791226a32	L63 Pelade		
+442b409b-705f-4374-ae49-44ce83053209	Décès après 24 h		F07 outcome, official list 11 Nov 2026 (#609)
 4432c463-339d-48ac-bfb7-791efa671128	N99 Affections de l'appareil genito-urinaire apres un acte a visee diagnostique ou therapeutique non classees ailleurs		
 4434233c-63e0-43ca-bafe-204dbb6c1488	H20 Iridocyclite		
 444b4099-812f-4b84-9c72-72213f1fbadf	G00.0 Meningite a Haemophilus		
