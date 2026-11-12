@@ -1,0 +1,30 @@
+slice_name: PBF – Liste des écarts (modèle vs EMR)
+description: null
+certified_by: null
+certification_details: null
+viz_type: table
+params:
+  datasource: 60__table
+  viz_type: table
+  query_mode: aggregate
+  groupby:
+  - indicator
+  - unit
+  - status
+  - rule
+  - gap
+  metrics: []
+  all_columns: []
+  adhoc_filters: []
+  row_limit: 1000
+  order_desc: false
+  server_page_length: 25
+  include_search: true
+  table_timestamp_format: smart_date
+  conditional_formatting: []
+  extra_form_data: {}
+query_context: null
+cache_timeout: null
+uuid: b25edfa6-7b83-4c2f-8d6a-5f9ec1724ab6
+version: 1.0.0
+dataset_uuid: 6b0f8a51-2c3e-4d7a-9e15-0a4f7c2d9b61
