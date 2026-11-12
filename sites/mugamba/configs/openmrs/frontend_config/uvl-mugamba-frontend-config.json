@@ -788,7 +788,39 @@
     "stockSourceTypeUUID": "291efb6a-0364-5ef7-96b8-47f24d50ab3d",
     "stockAdjustmentReasonUUID": "2973a766-bdb8-56c3-a5d2-d101a611a770",
     "stockTakeReasonUUID": "2973a766-bdb8-56c3-a5d2-d101a611a770",
-    "useItemCommonNameAsDisplay": false
+    "useItemCommonNameAsDisplay": false,
+    "responsiblePersonExcludedRoles": ["System Developer"],
+    "Translation overrides": {
+      "fr": {
+        "overview": "Vue d'ensemble",
+        "operations": "Opérations",
+        "items": "Articles",
+        "stockOperationItemsTableHeader": "Articles",
+        "startNew": "Nouvelle opération",
+        "nextButton": "Suivant",
+        "submitForReview": "Soumettre pour approbation",
+        "approve": "Approuver",
+        "cancel": "Annuler",
+        "reject": "Rejeter",
+        "complete": "Terminer",
+        "completeDispatch": "Confirmer la réception",
+        "quantity": "Quantité",
+        "stockItem": "Article",
+        "receivedItems": "Articles reçus",
+        "operationModalTitle": "Opération : {{title}}",
+        "confirmOperation": "Confirmez-vous l'action « {{title}} » sur cette opération ?",
+        "operationSuccessTitle": "Opération : {{title}}",
+        "operationSuccessful": "Action « {{title}} » effectuée",
+        "submitAction": "Soumettre",
+        "dispatchAction": "Expédier",
+        "completeAction": "Terminer",
+        "completeDispatchAction": "Confirmer la réception",
+        "cancelAction": "Annuler",
+        "rejectAction": "Rejeter",
+        "returnAction": "Retourner",
+        "approveAction": "Approuver"
+      }
+    }
   },
   "@madiro/uvl-partograph": {
     "encounterTypeUuid": "48d7672c-78a9-4dc0-b21f-40a8faeb61db",
