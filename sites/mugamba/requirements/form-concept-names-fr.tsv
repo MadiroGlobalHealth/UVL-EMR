@@ -180,7 +180,7 @@ concept_uuid	fr_name	sheet_label	note
 1bbe2b4b-1a9a-4153-965a-5da17b07de30	T36 Intoxication par antibiotiques systemiques		
 1be0ce4e-b174-48ab-8148-048741d3dc9a	F60 Troubles specifiques de la personnalite		
 1c05e1f1-b1f2-4d30-8d82-3bd47e036d0b	O42 Rupture prematuree des membranes		2 labels in the sheet, most frequent used (tie: closest to the old name)
-1c45a7a1-dbc6-4143-97e0-01698584a1af	2017-U81 Agents resistant a la Vancomycine et apparente		
+1c45a7a1-dbc6-4143-97e0-01698584a1af	U83.0 Résistance à la vancomycine		WHO retired the ICD-10 code of the old name; renamed with the current code, old name « 2017-U81 Agents resistant a la Vancomycine et apparente » kept as a synonym (#585)
 1c61f402-221f-4c6f-9b7f-7094bccea77f	S60 Lesion traumatique superficielle du poignet et de la main		
 1cad4ddd-f9a1-4d59-8623-019ccc3931ec	C62 Tumeur maligne du testicule		
 1cb8cdd5-2ca4-4ace-b1ff-eef6e59a7811	Intervention / acte pratiqué		
@@ -209,13 +209,14 @@ concept_uuid	fr_name	sheet_label	note
 1f002f85-7ac5-4116-aa26-e2b2582af66e	R10 Douleur abdominale et pelvienne		
 1f973615-964e-4dff-82f2-45edfdddcf4b	C40 Tumeur maligne des os et du cartilage articulaire des membres		
 1ffe4f1d-5cd8-481b-9882-274622711d65	D63.8 Anemie au cours d'autres maladies chroniques classees ailleurs		
+2071f21d-0ad9-42c7-908c-f5ff0efa034b	Décès avant 24 h		F07 outcome, official list 11 Nov 2026 (#609)
 208fb851-f844-42b8-bfb2-8f2a8dc86a9f	H72 Perforation du tympan		
 20a75014-2642-442f-b406-065cc3b54ddd	P36 Infection bacterienne du nouveau-ne		
 20c8e6ef-116d-4a25-8e8d-956c8eb54949	BI12 - GOT (AST)	SGOT	kept: lab catalogue test (Test); the sheet label is the in-form abbreviation
 20cb16c0-e692-413f-b64b-d7a188e984dc	E24 Syndrome de Cushing		
 20d76b9b-44f2-4a9f-90cc-7d0e11f01b55	S37 Lesion traumatique des organes pelviens		
 21195762-7649-471d-985a-482ba97d89b6	R13 Dysphagie		
-211fdd7f-9afa-47d4-9160-14900e2668e1	N18.0 Insuffisance renale terminale		
+211fdd7f-9afa-47d4-9160-14900e2668e1	N18.5 Insuffisance rénale terminale (stade 5)		WHO retired the ICD-10 code of the old name; renamed with the current code, old name « N18.0 Insuffisance renale terminale » kept as a synonym (#585)
 212f40d9-1af9-4b60-88df-325afde4e2d2	C04 Tumeur maligne du plancher de la bouche		
 217ad862-37ae-49aa-9488-2679f97d20cc	D22 Nvus a melanocytes		
 219b6489-0992-47bb-a780-b97c85d10d33	Néonatologie		
@@ -348,7 +349,7 @@ concept_uuid	fr_name	sheet_label	note
 37f9a1f9-96f9-4427-b51a-4c49e33ff3c9	C43 Melanome malin de la peau		
 38371e93-8eb4-4468-ac90-020fabbc4143	J12.9 Pneumopathie virale sans precision		
 383f9874-7ebe-45ce-82c4-644fed31e14c	ASA I		
-3843ff81-ebfd-48a7-840a-4ffd75e6ff1d	U89 Agents resistant a des antibiotiques autres et non precises		
+3843ff81-ebfd-48a7-840a-4ffd75e6ff1d	U83.9 Résistance à un antibiotique non précisé		WHO retired the ICD-10 code of the old name; renamed with the current code, old name « U89 Agents resistant a des antibiotiques autres et non precises » kept as a synonym (#585)
 38b7593c-6fec-4726-ba2e-d1bbbf3ddbdd	I73 Autres maladies vasculaires peripheriques		
 38f41f66-3736-4b67-be2f-73f38443ffd9	F12 Troubles mentaux et du comportement lies a l'utilisation de derives du cannabis		
 3917f2a9-f9ec-4d25-b5de-cb69f6bb0301	Convulsions		
@@ -438,6 +439,7 @@ concept_uuid	fr_name	sheet_label	note
 44060e30-bae8-464d-b63b-ec7c83e8f980	O72 Hemorragie du postpartum		2 labels in the sheet, most frequent used (tie: closest to the old name)
 440bd5e0-dbb6-464d-a971-6245a7bfa0f9	6 h		
 440ff015-1c4f-417a-aafb-388791226a32	L63 Pelade		
+442b409b-705f-4374-ae49-44ce83053209	Décès après 24 h		F07 outcome, official list 11 Nov 2026 (#609)
 4432c463-339d-48ac-bfb7-791efa671128	N99 Affections de l'appareil genito-urinaire apres un acte a visee diagnostique ou therapeutique non classees ailleurs		
 4434233c-63e0-43ca-bafe-204dbb6c1488	H20 Iridocyclite		
 444b4099-812f-4b84-9c72-72213f1fbadf	G00.0 Meningite a Haemophilus		
@@ -752,7 +754,7 @@ concept_uuid	fr_name	sheet_label	note
 707b2569-784f-4188-9392-73e611ef5364	I40 Myocardite aigue		
 707e858d-d8c4-4b01-91a2-104046cf3e08	Q3		
 70956a7e-c3a4-4172-9363-09678fc5cd9f	T74.3 Sevices psychologiques		
-70b7da6c-50e1-4f99-ae24-6ccf036cc1de	U88 Agents resistant a de multiples antibiotiques		
+70b7da6c-50e1-4f99-ae24-6ccf036cc1de	U83.7 Résistance à plusieurs antibiotiques		WHO retired the ICD-10 code of the old name; renamed with the current code, old name « U88 Agents resistant a de multiples antibiotiques » kept as a synonym (#585)
 7126386d-ffe7-43c3-9fa2-9fbb6609a494	K82 Autres maladies de la vesicule biliaire		
 71d3d368-8b25-47b7-9888-77c1bf4b8ede	Ouverture des yeux (/4)		
 721aea7f-5cd1-4012-8187-7f948a01458b	M05 Polyarthrite rhumatoide seropositive		
@@ -800,7 +802,7 @@ concept_uuid	fr_name	sheet_label	note
 77e3ad26-eb44-448d-b2f4-89171be17917	Q31 Malformations congenitales du larynx		
 77fafd3b-02c6-4b81-b421-f669a6f2e906	Conseils sur l'allaitement maternel		F16 ANC, product owner answers 11 Nov 2026; not in the forms sheet yet (#592)
 7819a3e9-ecc4-415d-83db-859a53dc8844	S77 Ecrasement de la hanche et de la cuisse		
-78313547-45e1-4242-bb82-d4eded3591d0	U80 Agents resistant a la Penicilline et apparente		
+78313547-45e1-4242-bb82-d4eded3591d0	U82.0 Résistance à la pénicilline		WHO retired the ICD-10 code of the old name; renamed with the current code, old name « U80 Agents resistant a la Penicilline et apparente » kept as a synonym (#585)
 78362a4f-4a16-4ee1-9249-10a6a982bd5e	K31 Autres maladies de l'estomac et du duodenum		
 78437fb5-1c64-482b-abe8-e9e0b7d7e9b0	N41 Affections inflammatoires de la prostate		
 78467585-b794-4a66-b556-da362cb708d9	S54 Lesion traumatique de nerfs au niveau de l'avant-bras		
@@ -1351,7 +1353,7 @@ d02e8e6e-ea82-4b73-8d30-a85fc16c9b95	K14 Maladies de la langue
 d08a99c7-c085-4b84-8539-ef531714fbba	Z82 Antecedents familiaux de certaines incapacites et maladies chroniques conduisant a l'invalidite		
 d093cd83-0f8a-4312-8443-0d574dfdc7c5	R68 Autres symptomes et signes generaux		
 d0b9ff62-59c5-492b-a7bf-6ef6416180b5	Rétréci		
-d0cf970b-6101-4143-a153-58e055c3275e	I84 Hemorroides		
+d0cf970b-6101-4143-a153-58e055c3275e	K64.9 Hémorroïdes		WHO retired the ICD-10 code of the old name; renamed with the current code, old name « I84 Hemorroides » kept as a synonym (#585)
 d1039f09-7423-4b14-adbe-8f10c1f7101e	Grossesse à risque élevé détectée lors de la CPN	Grossesse à risque élevé détectée lors de l'ANC	sheet spelling fixed
 d1048a0e-ff31-4b49-b999-5101b5fec30a	Q42.2 Absence atresie et stenose congenitale de l'anus avec fistules		
 d1342a8f-6d32-4257-a4cb-f463b6cb8718	E65 Adiposite localisee		
