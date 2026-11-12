@@ -28,6 +28,7 @@ concept_uuid	fr_name	sheet_label	note
 041ba365-7014-4a7b-bcba-72d7ad394912	C78 Tumeur maligne secondaire des organes respiratoires et digestifs		
 041df9d9-d041-4823-a700-8a04875fb5a5	J36 Angine phlegmoneuse		
 043171b4-f450-4ee6-beee-08bb8be64b01	Traitements / antécédents PTME		
+04354c88-8f24-4372-8a84-f6a0686cf4f4	Conseils nutritionnels		F16 ANC, product owner answers 11 Nov 2026; not in the forms sheet yet (#592)
 04afeb18-f3ec-4725-aba0-24578c765665	N28 Autres affections du rein et de l'uretere non classees ailleurs		
 04c66abd-5361-4d45-adf3-68146bbb7eab	J96.1 Insuffisance respiratoire chronique		
 04cdeaec-240c-4416-9286-e6f64d789395	C22.9 Foie sans precision		
@@ -63,6 +64,7 @@ concept_uuid	fr_name	sheet_label	note
 09fb3bc6-0e1f-4b4e-8fff-6c895b50c8c2	Soins immédiats du nouveau-né		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 0a0829a9-8723-4c6e-8553-29e5b20c2a7c	R56 Convulsions non classees ailleurs		
 0a59a756-fc7d-4286-a4f7-6db0c017acc7	L72 Kystes folliculaires de la peau et du tissu cellulaire sous-cutane		
+0a98db7c-6805-4024-b756-12aa59fa33c1	Counseling PF (planification familiale)		F16 ANC, product owner answers 11 Nov 2026; not in the forms sheet yet (#592)
 0a9c8640-852b-4bc9-a489-15572f381962	O03 Avortement spontane		
 0adef99c-b393-41f2-9053-df66700fa5c9	G52 Affections des autres nerfs craniens		
 0b1f6973-0377-49be-b1c3-7295dea5f87d	Fin de l'anesthésie		
@@ -118,6 +120,7 @@ concept_uuid	fr_name	sheet_label	note
 11dcf913-8334-4917-99d9-d332281b4a80	M30 Periarterite noueuse et affections apparentees		
 1226d842-4e1e-4adb-ba5d-2329f2fd2a1c	K00.7 Syndrome d'eruption dentaire		
 122b6408-2ba9-4ecf-952f-3f7d1c862264	J01 Sinusite aigue		
+126e0d52-60d0-4941-b375-d73213a3a75b	Antécédent d'hépatite B		F16 ANC, product owner answers 11 Nov 2026; not in the forms sheet yet (#592)
 1294588b-0efe-455e-b165-a13476b7e575	H53 Troubles de la vision		
 12ab2425-f04a-466f-adbd-8aa8b1eb99c0	Consultation menée par		
 12e310c2-8b17-45ea-8850-a916901d7333	M62.5 Atrophie et fonte musculaires non classees ailleurs		
@@ -185,7 +188,7 @@ concept_uuid	fr_name	sheet_label	note
 1be0ce4e-b174-48ab-8148-048741d3dc9a	F60 Troubles specifiques de la personnalite		
 1bec9685-9b83-4a94-bd88-c4ac02b91819	Soins du cordon ombilical		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 1c05e1f1-b1f2-4d30-8d82-3bd47e036d0b	O42 Rupture prematuree des membranes		2 labels in the sheet, most frequent used (tie: closest to the old name)
-1c45a7a1-dbc6-4143-97e0-01698584a1af	2017-U81 Agents resistant a la Vancomycine et apparente		
+1c45a7a1-dbc6-4143-97e0-01698584a1af	U83.0 Résistance à la vancomycine		WHO retired the ICD-10 code of the old name; renamed with the current code, old name « 2017-U81 Agents resistant a la Vancomycine et apparente » kept as a synonym (#585)
 1c61f402-221f-4c6f-9b7f-7094bccea77f	S60 Lesion traumatique superficielle du poignet et de la main		
 1cad4ddd-f9a1-4d59-8623-019ccc3931ec	C62 Tumeur maligne du testicule		
 1cb8cdd5-2ca4-4ace-b1ff-eef6e59a7811	Intervention / acte pratiqué		
@@ -214,13 +217,14 @@ concept_uuid	fr_name	sheet_label	note
 1f002f85-7ac5-4116-aa26-e2b2582af66e	R10 Douleur abdominale et pelvienne		
 1f973615-964e-4dff-82f2-45edfdddcf4b	C40 Tumeur maligne des os et du cartilage articulaire des membres		
 1ffe4f1d-5cd8-481b-9882-274622711d65	D63.8 Anemie au cours d'autres maladies chroniques classees ailleurs		
+2071f21d-0ad9-42c7-908c-f5ff0efa034b	Décès avant 24 h		F07 outcome, official list 11 Nov 2026 (#609)
 208fb851-f844-42b8-bfb2-8f2a8dc86a9f	H72 Perforation du tympan		
 20a75014-2642-442f-b406-065cc3b54ddd	P36 Infection bacterienne du nouveau-ne		
 20c8e6ef-116d-4a25-8e8d-956c8eb54949	BI12 - GOT (AST)	SGOT	kept: lab catalogue test (Test); the sheet label is the in-form abbreviation
 20cb16c0-e692-413f-b64b-d7a188e984dc	E24 Syndrome de Cushing		
 20d76b9b-44f2-4a9f-90cc-7d0e11f01b55	S37 Lesion traumatique des organes pelviens		
 21195762-7649-471d-985a-482ba97d89b6	R13 Dysphagie		
-211fdd7f-9afa-47d4-9160-14900e2668e1	N18.0 Insuffisance renale terminale		
+211fdd7f-9afa-47d4-9160-14900e2668e1	N18.5 Insuffisance rénale terminale (stade 5)		WHO retired the ICD-10 code of the old name; renamed with the current code, old name « N18.0 Insuffisance renale terminale » kept as a synonym (#585)
 212f40d9-1af9-4b60-88df-325afde4e2d2	C04 Tumeur maligne du plancher de la bouche		
 217ad862-37ae-49aa-9488-2679f97d20cc	D22 Nvus a melanocytes		
 219b6489-0992-47bb-a780-b97c85d10d33	Néonatologie		
@@ -263,6 +267,7 @@ concept_uuid	fr_name	sheet_label	note
 2754628d-e56c-4d87-b1e6-fb17893c047c	R23 Autres modifications de la peau		
 27674481-f383-4ad0-93f2-e6e8b3eb5e45	Ne réagit pas		
 276af262-8a8e-44f4-b60f-087e7a2e6201	K72.1 Insuffisance hepatique chronique		
+27ca999a-956e-4293-9263-f439b21578c2	Date du prochain rendez-vous CPN		F16 ANC, product owner answers 11 Nov 2026; not in the forms sheet yet (#592)
 27e3347c-c736-4e40-bd92-27813f465345	J61 Pneumoconiose due a l'amiante et a d'autres fibres minerales		
 27ebb9bd-09a5-4146-93e1-269363735b23	O+		
 2805d3c7-90c6-4a5f-8135-abbfb2cd689a	X44 Intoxication accidentelle par d'autres medicaments et substances biologiques non precises et exposition a ces produits		
@@ -356,7 +361,7 @@ concept_uuid	fr_name	sheet_label	note
 380cc83a-2c9f-4878-a046-7ab8839b6b86	Allaitement dans la première heure		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 38371e93-8eb4-4468-ac90-020fabbc4143	J12.9 Pneumopathie virale sans precision		
 383f9874-7ebe-45ce-82c4-644fed31e14c	ASA I		
-3843ff81-ebfd-48a7-840a-4ffd75e6ff1d	U89 Agents resistant a des antibiotiques autres et non precises		
+3843ff81-ebfd-48a7-840a-4ffd75e6ff1d	U83.9 Résistance à un antibiotique non précisé		WHO retired the ICD-10 code of the old name; renamed with the current code, old name « U89 Agents resistant a des antibiotiques autres et non precises » kept as a synonym (#585)
 38b7593c-6fec-4726-ba2e-d1bbbf3ddbdd	I73 Autres maladies vasculaires peripheriques		
 38eca4cd-21ab-4689-a18b-202a50d34569	Mode d'accouchement		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 38f41f66-3736-4b67-be2f-73f38443ffd9	F12 Troubles mentaux et du comportement lies a l'utilisation de derives du cannabis		
@@ -366,9 +371,11 @@ concept_uuid	fr_name	sheet_label	note
 3957d3d6-445d-4629-a870-e2ec3a6c2a62	Col utérin : longueur		2 labels in the sheet, most frequent used (tie: closest to the old name)
 395ea9ae-3b6a-4fcf-b0a6-cbf0acfba836	B38 Coccidioidomycose		
 3979a3de-eb18-4def-8eb0-fbc150cba0d2	R50 Fievre d'origine inconnue		
+3996635c-8a42-47ff-9774-40ce5be6437b	Référée lors de la CPN		F16 ANC, product owner answers 11 Nov 2026; not in the forms sheet yet (#592)
 39a60662-bcc1-4b26-9764-6013af93bbdb	Rayons X		3 labels in the sheet, most frequent used
 39b4ec6f-73dd-413b-83ce-985f2fd29ac2	Prévention des complications		
 39c996ee-bf24-4341-a25e-35a368142556	Température du nouveau-né (°C)	Température (°C)	qualified: the newborn's own temperature; "Température (°C)" is the mother's vital sign 748f8d43 (#562)
+39da6ae4-96ee-4b41-97a4-fe1bcac07591	Antécédent d'hépatite C		F16 ANC, product owner answers 11 Nov 2026; not in the forms sheet yet (#592)
 39df2e82-5405-4927-aabf-8b2611789ede	N81 Prolapsus genital		
 39e137c4-7a68-4963-baed-1c6890ecde23	Périmètre crânien (cm)		sheet spelling fixed
 39ec17b9-c7c5-4e79-918a-f1d631acc583	I30.0 Pericardite idiopathique aigue non specifique		
@@ -392,6 +399,7 @@ concept_uuid	fr_name	sheet_label	note
 3c48028d-46eb-4620-bd4c-ccfa06836ccd	I67 Autres maladies cerebrovasculaires		
 3c4a4b7b-e0c2-489b-aef0-1f0f38cea87e	S01 Plaie ouverte de la tete		
 3c623d60-f03a-4186-8f02-8ef299e4e4dd	L85 Autres epaississements de l'epiderme		
+3c6e75d9-9796-4bcf-a67d-1447f1ccdcd6	Conseils donnés à la CPN		F16 ANC, product owner answers 11 Nov 2026; not in the forms sheet yet (#592)
 3c86c770-173b-43ae-820d-d709a3e2c123	L22 Dermite fessiere du nourrisson		
 3cb05e17-7b04-49f2-8177-0e9b37fc99d6	J86 Pyothorax		
 3cf64748-b581-4f01-b771-4b58e7ad43a3	Aspiration (ml)		
@@ -446,6 +454,7 @@ concept_uuid	fr_name	sheet_label	note
 44060e30-bae8-464d-b63b-ec7c83e8f980	O72 Hemorragie du postpartum		2 labels in the sheet, most frequent used (tie: closest to the old name)
 440bd5e0-dbb6-464d-a971-6245a7bfa0f9	6 h		
 440ff015-1c4f-417a-aafb-388791226a32	L63 Pelade		
+442b409b-705f-4374-ae49-44ce83053209	Décès après 24 h		F07 outcome, official list 11 Nov 2026 (#609)
 4432c463-339d-48ac-bfb7-791efa671128	N99 Affections de l'appareil genito-urinaire apres un acte a visee diagnostique ou therapeutique non classees ailleurs		
 4434233c-63e0-43ca-bafe-204dbb6c1488	H20 Iridocyclite		
 444b4099-812f-4b84-9c72-72213f1fbadf	G00.0 Meningite a Haemophilus		
@@ -632,6 +641,7 @@ concept_uuid	fr_name	sheet_label	note
 5c84b4e4-2950-4d94-ab74-765dc6eea01e	O81 Accouchement unique par forceps et ventouse		
 5c8d6240-9cc2-4bc1-b783-30eb887f950c	Négatif		
 5ca1e454-517c-49ee-96ea-55b32b7e0425	D14 Tumeur benigne de l'oreille moyenne et de l'appareil respiratoire		
+5ca471fb-b694-49c9-abdb-2a11df721076	TDF débuté à 28 SA (PTME hépatite B)		F16 ANC, product owner answers 11 Nov 2026; not in the forms sheet yet (#592)
 5d214371-cf09-4589-b357-de8b091b66d3	Complications éventuelles		sheet spelling fixed; 2 labels in the sheet, most frequent used (tie: closest to the old name)
 5d313565-ff6a-48ec-b80d-ef2fa21456ea	G93.3 Syndrome de fatigue post-virale		
 5d32f886-732b-439c-956c-82c0415f17c9	Perte de sang (ml)		sheet spelling fixed; 2 labels in the sheet, most frequent used (tie: closest to the old name)
@@ -640,6 +650,7 @@ concept_uuid	fr_name	sheet_label	note
 5d6ff4b1-f2ae-4843-a1e9-b43875886d0c	I64 Accident vasculaire cerebral non precise comme etant hemorragique ou par infarctus		
 5daf959a-ae9c-4e8a-bd2f-efb55437e686	E16.0 Hypoglycemie medicamenteuse sans coma		
 5db0f7af-9982-434d-b528-34d509b59a8a	E07 Autres affections de la thyroide		
+5de4d33f-5765-4d25-966b-c67b7c00c0a6	Antécédent de drépanocytose		F16 ANC, product owner answers 11 Nov 2026; not in the forms sheet yet (#592)
 5deae4cb-12fe-4a66-a39d-4ecd10dd9ec7	L30 Autres dermites		
 5e26870e-6ef6-441a-bab5-9eadc72919ba	Technique de ventilation		
 5e685075-eaf9-4e22-bacf-b26e03e102f9	J05.1 Epiglottite aigue		
@@ -692,6 +703,7 @@ concept_uuid	fr_name	sheet_label	note
 66002261-246c-4c0a-a1de-45df9dacb72c	C26 Tumeur maligne des organes digestifs de sieges autres et mal definis		
 6627ddb9-2108-4b9f-9ec8-aee5d8dd489d	R01 Souffles et autres bruits cardiaques		
 66a68569-dfe2-4955-890c-07f7e3a28d49	A04 Autres infections intestinales bacteriennes		
+671af333-5b5e-4c9c-9a56-3ac3b2cfe39c	CPN 7		F16 ANC contact number, Ministry Fiche 14 rows CPN 1-8 (#592)
 6732823c-6c7d-44d0-96c4-ce7f7ebad185	A55 Lymphogranulomatose venerienne a Chlamydia		
 673fcc0e-419d-436d-b774-9137c5392913	I26 Embolie pulmonaire		
 67407193-5dd0-4ee9-8a9b-ff0ed6fd3de4	R04 Hemorragie des voies respiratoires		
@@ -766,7 +778,7 @@ concept_uuid	fr_name	sheet_label	note
 707b2569-784f-4188-9392-73e611ef5364	I40 Myocardite aigue		
 707e858d-d8c4-4b01-91a2-104046cf3e08	Q3		
 70956a7e-c3a4-4172-9363-09678fc5cd9f	T74.3 Sevices psychologiques		
-70b7da6c-50e1-4f99-ae24-6ccf036cc1de	U88 Agents resistant a de multiples antibiotiques		
+70b7da6c-50e1-4f99-ae24-6ccf036cc1de	U83.7 Résistance à plusieurs antibiotiques		WHO retired the ICD-10 code of the old name; renamed with the current code, old name « U88 Agents resistant a de multiples antibiotiques » kept as a synonym (#585)
 7126386d-ffe7-43c3-9fa2-9fbb6609a494	K82 Autres maladies de la vesicule biliaire		
 71d3d368-8b25-47b7-9888-77c1bf4b8ede	Ouverture des yeux (/4)		
 721aea7f-5cd1-4012-8187-7f948a01458b	M05 Polyarthrite rhumatoide seropositive		
@@ -814,8 +826,9 @@ concept_uuid	fr_name	sheet_label	note
 771f4641-e88b-4d08-a869-d56766b0469d	I88 Lymphadenite non specifique		
 77ad79e7-d6c9-43f4-81cc-0259e3105497	Sérum physiologique (ml)		
 77e3ad26-eb44-448d-b2f4-89171be17917	Q31 Malformations congenitales du larynx		
+77fafd3b-02c6-4b81-b421-f669a6f2e906	Conseils sur l'allaitement maternel		F16 ANC, product owner answers 11 Nov 2026; not in the forms sheet yet (#592)
 7819a3e9-ecc4-415d-83db-859a53dc8844	S77 Ecrasement de la hanche et de la cuisse		
-78313547-45e1-4242-bb82-d4eded3591d0	U80 Agents resistant a la Penicilline et apparente		
+78313547-45e1-4242-bb82-d4eded3591d0	U82.0 Résistance à la pénicilline		WHO retired the ICD-10 code of the old name; renamed with the current code, old name « U80 Agents resistant a la Penicilline et apparente » kept as a synonym (#585)
 78362a4f-4a16-4ee1-9249-10a6a982bd5e	K31 Autres maladies de l'estomac et du duodenum		
 78437fb5-1c64-482b-abe8-e9e0b7d7e9b0	N41 Affections inflammatoires de la prostate		
 78467585-b794-4a66-b556-da362cb708d9	S54 Lesion traumatique de nerfs au niveau de l'avant-bras		
@@ -828,7 +841,9 @@ concept_uuid	fr_name	sheet_label	note
 79556d7a-ec6b-43ab-9d03-a591e923e600	T66 Effets de rayonnements sans precision		
 796d9d6a-a013-46ea-9f6a-77c77bd7b623	Lunettes nasales à haut débit		
 79a559a9-c7aa-4006-98c2-02c530f6f7db	Programmée		
+79f55cbc-9151-430a-84bc-f1ca03df57fc	Préparation à l'accouchement et aux urgences		F16 ANC, product owner answers 11 Nov 2026; not in the forms sheet yet (#592)
 7a3d56f3-d2cb-4749-8716-0d6b809f8db6	I50.9 Insuffisance cardiaque sans precision		
+7a47e51b-9829-4caa-87af-0c18851d47fb	Motif et lieu de la référence (CPN)		F16 ANC, product owner answers 11 Nov 2026; not in the forms sheet yet (#592)
 7a8f27b2-7741-4bb2-be01-ee0bb521b3d2	J17.3 Pneumopathie au cours de maladies parasitaires		
 7aa184df-ed71-468b-bd8c-5f370f42d3b2	Q41 Absence atresie et stenose congenitale de l'intestin grele		
 7b7945b4-625b-4f0f-9288-2598e6602230	Déchirure utérine		
@@ -855,6 +870,7 @@ concept_uuid	fr_name	sheet_label	note
 7e3a3684-43f9-4c2e-b58e-6bdfd214aa13	F52.8 Autres dysfonctionnements sexuels non dus a un trouble ou a une maladie organique		
 7e52fe3b-f870-485f-8288-75ab3b11a9b1	Prophylaxie oculaire du nouveau-né		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 7eabf345-f407-4e91-920f-b3dd770a27ab	N04 Syndrome nephrotique		
+7eb868de-0875-41ff-ba14-12aa96665224	Partenaire présent à la CPN		F16 ANC, product owner answers 11 Nov 2026; not in the forms sheet yet (#592)
 7eda268b-33df-4df3-99e7-6eeeb521b46c	L04 Lymphadenite aigue		
 7ef2ebf9-779e-4b2e-9ed0-381616152f44	B87 Myiase		
 7ef82061-14da-443c-ae78-a61af4114bd0	C18 Tumeur maligne du colon		
@@ -897,6 +913,7 @@ concept_uuid	fr_name	sheet_label	note
 8524cd55-169c-4adc-a3e3-e1b7aa547f3f	2017-T55 Effet toxique de savons et detergents		
 8537148a-357e-49e6-bcee-9774058eb085	H35 Autres affections retiniennes		
 85bdd055-670b-4a51-94be-f3bf128dd3e6	SaO2 sous O2 (%)		
+85e171bb-188e-45bd-b75d-dcaa665dd538	Antécédent d'hémorragie du post-partum		F16 ANC, product owner answers 11 Nov 2026; not in the forms sheet yet (#592)
 861ce5f8-a42c-483d-a91b-4384db6ee996	S72 Fracture du femur		
 86551d50-6f8f-415e-9a04-bf60b5c9b419	N94 Douleurs et autres affections des organes genitaux de la femme et du cycle menstruel		
 86612339-a0d0-4308-bd6b-bd70aed9a527	Z56 Difficultes liees a l'emploi et au chomage		
@@ -1216,6 +1233,7 @@ b76fca68-f4f4-45b8-a0dc-74c6eb48b319	Réanimation : adrénaline
 b7806ff4-a208-4923-b010-877ee56dfb7f	M23 Lesion interne du genou		
 b78ce196-288c-4763-a58b-a6b5b856ab94	R32 Incontinence urinaire sans precision		
 b7a1c8ad-0676-4e5c-aa3b-2acff20a63e0	I77 Autres atteintes des arteres et arterioles		
+b7ff8cd4-950d-4a30-82ee-7ac10a7fcea6	Signes de danger pendant la grossesse		F16 ANC, product owner answers 11 Nov 2026; not in the forms sheet yet (#592)
 b83f9008-37da-470c-8646-6d62b11be829	F52.7 Activite sexuelle excessive		
 b8728c13-7a18-4ddf-8c8d-a1d364ec6bd9	B881 Tungose [infestation par puce-chique]		
 b88b4fa9-3216-4531-b9fe-502713468fbe	Avec déshydratation		
@@ -1228,6 +1246,7 @@ b9de3568-8f4c-4368-898c-3a09a11074cf	T74 Syndromes dus a de mauvais traitements
 b9f2b623-ab12-4cd3-b5e6-e10b274b0504	Antécédents (pré-opératoire)	Antécédents	qualified: sheet word 'Antécédents' is a French synonym; "Antécédents" is the history question e55584c3
 b9fbe1af-2dc2-4e97-b961-54c0eaa5ed53	Contractions utérines (CU)		
 ba193b51-7617-4186-93a5-de8657855aaa	Indication opératoire		
+ba3544d8-4fd3-4f90-aebe-7e8c362e8eb5	Hépatite C pendant la grossesse actuelle		F16 ANC, product owner answers 11 Nov 2026; not in the forms sheet yet (#592)
 ba39e9aa-4f48-45fe-a9da-c2a7795dc063	Chirurgie		
 ba42f2a1-0cce-424a-81a1-22aed0e7d294	M01 Arthrites infectieuses directes au cours de maladies infectieuses et parasitaires classees ailleurs		
 ba72d459-e378-4a75-9372-67f2de70a61b	O14.1 Preeclampsie severe		
@@ -1382,7 +1401,7 @@ d02e8e6e-ea82-4b73-8d30-a85fc16c9b95	K14 Maladies de la langue
 d08a99c7-c085-4b84-8539-ef531714fbba	Z82 Antecedents familiaux de certaines incapacites et maladies chroniques conduisant a l'invalidite		
 d093cd83-0f8a-4312-8443-0d574dfdc7c5	R68 Autres symptomes et signes generaux		
 d0b9ff62-59c5-492b-a7bf-6ef6416180b5	Rétréci		
-d0cf970b-6101-4143-a153-58e055c3275e	I84 Hemorroides		
+d0cf970b-6101-4143-a153-58e055c3275e	K64.9 Hémorroïdes		WHO retired the ICD-10 code of the old name; renamed with the current code, old name « I84 Hemorroides » kept as a synonym (#585)
 d1039f09-7423-4b14-adbe-8f10c1f7101e	Grossesse à risque élevé détectée lors de la CPN	Grossesse à risque élevé détectée lors de l'ANC	sheet spelling fixed
 d1048a0e-ff31-4b49-b999-5101b5fec30a	Q42.2 Absence atresie et stenose congenitale de l'anus avec fistules		
 d1342a8f-6d32-4257-a4cb-f463b6cb8718	E65 Adiposite localisee		
@@ -1483,6 +1502,7 @@ e12bf039-80dc-49f7-981b-c58169a64afc	Z64 Difficultes liees a certaines situation
 e13549b6-1d3b-4820-9458-9de97a036813	N76 Autres inflammations du vagin et de la vulve		
 e1510ae8-a9ad-4ff4-94b8-c40b78a715cc	Q52.0 Absence congenitale du vagin		
 e1ba4086-d1bd-443c-b0fe-285f571c1a31	Date de pose du DIU ou de l'implant en post-partum		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
+e188d16a-6a36-4357-afbd-e67c26102737	CPN 8 et plus		F16 ANC contact number, Ministry Fiche 14 rows CPN 1-8 (#592)
 e1d4f4a8-aed8-40f0-9faf-9d0087388803	N48 Autres affections de la verge		
 e1dd0df8-b280-4e87-bbe6-1537b1eba5e7	Z04 Examen et mise en observation pour d'autres raisons		
 e2209ac1-7b0a-425c-a78c-4b07a0100878	J15 Pneumopathies bacteriennes non classees ailleurs		
@@ -1595,6 +1615,7 @@ f21fec0e-5788-4de9-99ad-4cc45b9291e9	J42 Bronchite chronique sans precision
 f2297e8b-255d-432a-9817-a889bfaf4da8	Maladie professionnelle		
 f241a086-f3cd-4223-8e55-2b4dad84ca10	J43.0 Syndrome de MacLeod		
 f27044d7-f795-4206-a4b0-0881c924e7fe	F92 Troubles mixtes des conduites et troubles emotionnels		
+f27fcbf6-51b8-4894-bd54-548744d5f695	CPN 6		F16 ANC contact number, Ministry Fiche 14 rows CPN 1-8 (#592)
 f281d3ae-1a0d-4ed1-9a5e-fdf11461fb15	D75.1 Polycythemie secondaire		
 f28fe49e-e851-4872-8ffe-e4fb801ed976	J98 Autres troubles respiratoires		
 f2a5f2e2-aae7-4b7a-8775-21e34a325cf3	Z74 Difficultes liees a une dependance envers la personne qui donne les soins		
@@ -1624,6 +1645,7 @@ f648b184-0d59-429c-9faf-455f93865fb9	A63.0 Condylomes ano-genitaux (veneriens)
 f64ba209-6736-4468-b814-9e3616fe9fcc	H54 Cecite et baisse de la vision		
 f6667c79-6ecf-4fcd-b1f6-9cf70fa316c6	A22 Charbon		
 f66c77d1-d0a0-4172-a994-fa09572f601e	H51 Autres anomalies des mouvements binoculaires		
+f6a50d45-a064-42f8-8488-f53312acbede	Antécédent de pré-éclampsie		F16 ANC, product owner answers 11 Nov 2026; not in the forms sheet yet (#592)
 f6b7d315-4038-4d88-8acf-4b1c7cd33f75	Intubation difficile prévisible		
 f6bd087c-28e2-4ec0-87ff-ce0039803a11	Préservatif		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 f6cf8dc5-48ad-4c18-8dc4-c2ec9632768e	Infirmier(e) d'anesthésie		
