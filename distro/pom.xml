@@ -27,10 +27,11 @@
          refresh and never reaches the search index. Reproduced three times on
          UAT 2026-09-18. 2.1.2 is the last 2.x release and still satisfies
          billing 2.3.0, which requires stockmanagement >= 1.4.0.
-         overridden by distro/binaries/openmrs/modules/stockmanagement-2.1.2-uvl2.omod until a
+         overridden by distro/binaries/openmrs/modules/stockmanagement-2.1.2-uvl3.omod until a
          release without the stock operation permission cache (O3-6248,
-         openmrs/openmrs-module-stockmanagement#57) and with role scopes checked on stock
-         operation create and update is taken (UVL-EMR#447) -->
+         openmrs/openmrs-module-stockmanagement#57), with role scopes checked on stock
+         operation create and update (UVL-EMR#447) and with the operation items' own received
+         quantity in the full representation (UVL-EMR#638) is taken -->
     <stockmanagement.version>2.1.2</stockmanagement.version>
     <billing.version>2.3.0</billing.version>
     <initializer.version>2.12.0</initializer.version>
