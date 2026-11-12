@@ -22,6 +22,15 @@ the current WHO code of the same meaning on 12 Nov 2026 (REPLACED_CODES, #585). 
 are in a file of their own, run by a later changeset, because diagnosis_icd10_maps.sql is
 already applied and Liquibase refuses a changed file.
 
+The diagnosis search matches names, not maps, so those six could still not be found by their
+current code. `names` gives each a fully specified, preferred name in English and French that
+starts with the current code (CURRENT_NAMES, "K64.9 Hémorroïdes") and keeps the old names as
+synonyms, so the old code still finds them. It edits the concepts in OCL (uvl-custom); they reach
+OpenMRS in a small collection export, UVL_dx_v4_585_20261112.zip, loaded after UVL_dx_v4.zip. Each
+name carries an external_id: the old names the UUID OpenMRS already has for them (OCL_NAMESPACE),
+so the import turns those rows into synonyms instead of voiding and re-adding them; the new names
+a UUID derived from NAMESPACE.
+
 Usage:
   python3 scripts/diagnosis-icd10-maps.py sql \
       sites/mugamba/configs/openmrs/initializer_config/ocl/UVL_dx_v4.zip \
@@ -30,8 +39,9 @@ Usage:
       sites/mugamba/configs/openmrs/initializer_config/ocl/UVL_dx_v4.zip \
       sites/mugamba/configs/openmrs/initializer_config/liquibase/sql/diagnosis_icd10_maps_replaced.sql
   OCL_TOKEN=... python3 scripts/diagnosis-icd10-maps.py ocl <zip> [--apply] [--release VERSION]
+  OCL_TOKEN=... python3 scripts/diagnosis-icd10-maps.py names <zip> [--apply] [--release VERSION]
 
-`ocl` without --apply only reports what it would create. Both modes are idempotent.
+`ocl` and `names` without --apply only report what they would change. All modes are idempotent.
 """
 
 import argparse
@@ -82,6 +92,23 @@ REPLACED_CODES = {
     'U89': 'U83.9',    # Agents resistant to other and unspecified antibiotics -> Resistance to unspecified antibiotic
 }
 
+# The names of those six concepts, starting with the current code (#585 follow-up, 12 Nov 2026),
+# as (English, French). They become the fully specified, preferred names; the old ones stay as
+# synonyms.
+CURRENT_NAMES = {
+    'I84': ('K64.9 Hemorrhoids', 'K64.9 Hémorroïdes'),
+    'N18.0': ('N18.5 End-stage renal failure (stage 5)', 'N18.5 Insuffisance rénale terminale (stade 5)'),
+    'U80': ('U82.0 Resistance to penicillin', 'U82.0 Résistance à la pénicilline'),
+    'U81': ('U83.0 Resistance to vancomycin', 'U83.0 Résistance à la vancomycine'),
+    'U88': ('U83.7 Resistance to multiple antibiotics', 'U83.7 Résistance à plusieurs antibiotiques'),
+    'U89': ('U83.9 Resistance to unspecified antibiotic', 'U83.9 Résistance à un antibiotique non précisé'),
+}
+
+# Namespace the openconceptlab module derives a concept name's UUID from when the name has no
+# external_id: uuid5(OCL_NAMESPACE, '<concept url>/names/<name uuid in the export>')
+# (Saver.updateOrAddNamesFromOcl, Utils.version5Uuid, module 3.1.0).
+OCL_NAMESPACE = uuid.UUID('672c6cb2-4f47-4cb0-9fca-b5f6116cd33a')
+
 CODE = re.compile(r'[A-Z]\d\d(\.\d)?')
 
 
@@ -102,6 +129,15 @@ def code_of(concept):
     if re.fullmatch(r'[A-Z]\d{3}', token):   # "B881 Tungiasis" is B88.1
         token = token[:3] + '.' + token[3:]
     return token if CODE.fullmatch(token) else None
+
+
+def openmrs_name_uuid(concept, name):
+    """The UUID OpenMRS gave a name of the export that had no external_id."""
+    return name['external_id'] or str(uuid.uuid5(OCL_NAMESPACE, f'{concept["url"]}/names/{name["uuid"]}'))
+
+
+def name_uuid(concept_uuid, locale, code):
+    return str(uuid.uuid5(NAMESPACE, f'{concept_uuid}|name|{locale}|{code}'))
 
 
 def map_uuid(concept_uuid, code):
@@ -295,6 +331,67 @@ def run_ocl(rows, apply, release):
         print(f'released {SOURCE_URL}versions/{release}/', file=sys.stderr)
 
 
+def current_names(concept, old_code, head_names):
+    """The names the concept must have in OCL: the old ones as synonyms with the UUID OpenMRS
+    has for them, and the current-code names as fully specified and preferred."""
+    exported = {(n['locale'], n['name']): openmrs_name_uuid(concept, n) for n in concept['names']}
+    code = REPLACED_CODES[old_code]
+    names = []
+    for n in head_names:
+        if n['locale'] in ('en', 'fr') and n['name'] in CURRENT_NAMES[old_code]:
+            continue
+        names.append({'name': n['name'], 'locale': n['locale'], 'name_type': None, 'locale_preferred': False,
+                      'external_id': n.get('external_id') or exported.get((n['locale'], n['name']))})
+    for locale, text in zip(('en', 'fr'), CURRENT_NAMES[old_code]):
+        names.append({'name': text, 'locale': locale, 'name_type': 'FULLY_SPECIFIED', 'locale_preferred': True,
+                      'external_id': name_uuid(concept['external_id'], locale, code)})
+    return names
+
+
+def run_names(rows, apply, release):
+    token = os.environ.get('OCL_TOKEN')
+    if not token:
+        sys.exit('OCL_TOKEN is not set')
+    if set(CURRENT_NAMES) != NOT_IN_ICD10_WHO:
+        sys.exit(f'CURRENT_NAMES must name each of {sorted(NOT_IN_ICD10_WHO)}')
+
+    todo = []
+    for concept, old_code in rows:
+        if old_code not in NOT_IN_ICD10_WHO:
+            continue
+        path = f'{SOURCE_URL}concepts/{concept["id"]}/'
+        head = ocl('GET', f'{path}?verbose=true', token)
+        names = current_names(concept, old_code, head['names'])
+        have = {(n['locale'], n['name'], n['name_type'] in ('FULLY_SPECIFIED', 'Fully Specified'),
+                 bool(n['locale_preferred']), n.get('external_id')) for n in head['names']}
+        want = {(n['locale'], n['name'], n['name_type'] == 'FULLY_SPECIFIED', n['locale_preferred'],
+                 n['external_id']) for n in names}
+        if have == want:
+            continue
+        print(f'  {concept["id"]} {english_name(concept)} -> {CURRENT_NAMES[old_code][0]}', file=sys.stderr)
+        todo.append((path, head, names))
+    print(f'{len(todo)} concepts to rename in {SOURCE_URL}', file=sys.stderr)
+    if not apply:
+        return
+
+    for path, head, names in todo:
+        ocl('PUT', path, token, {
+            'concept_class': head['concept_class'], 'datatype': head['datatype'],
+            'external_id': head['external_id'], 'names': names, 'descriptions': head.get('descriptions') or [],
+            'extras': head.get('extras') or {},
+            'update_comment': 'UVL-EMR#585: name with the current ICD-10 code; old name kept as a synonym'})
+    print(f'renamed {len(todo)}', file=sys.stderr)
+
+    if release:
+        try:
+            ocl('POST', f'{SOURCE_URL}versions/', token,
+                {'id': release, 'released': True,
+                 'description': 'UVL-EMR#585: the six diagnoses with a retired ICD-10 code named with the current code'})
+        except urllib.error.HTTPError as e:
+            sys.exit(f'release {release} failed: {e.code} {e.read()[:300]}; choose another version id')
+        print(f'released {SOURCE_URL}versions/{release}/', file=sys.stderr)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = parser.add_subparsers(dest='mode', required=True)
@@ -307,6 +404,10 @@ def main():
     p_ocl.add_argument('zip')
     p_ocl.add_argument('--apply', action='store_true')
     p_ocl.add_argument('--release')
+    p_names = sub.add_parser('names')
+    p_names.add_argument('zip')
+    p_names.add_argument('--apply', action='store_true')
+    p_names.add_argument('--release')
     args = parser.parse_args()
 
     rows = load(args.zip)
@@ -315,6 +416,8 @@ def main():
         write_sql(replaced(rows), args.out, HEADER_REPLACED)
     elif args.mode == 'sql':
         write_sql(mappable(rows), args.out)
+    elif args.mode == 'names':
+        run_names(rows, args.apply, args.release)
     else:
         run_ocl(rows, args.apply, args.release)
 

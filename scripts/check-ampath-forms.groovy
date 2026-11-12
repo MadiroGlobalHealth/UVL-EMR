@@ -4,7 +4,7 @@
   Run from sites/mugamba/pom.xml at prepare-package, against the assembled
   initializer_config, so it sees every layer (distro, country, site).
 
-  Thirteen checks, each for a fault that passes every review of the form JSON and shows only
+  Fourteen checks, each for a fault that passes every review of the form JSON and shows only
   when someone saves or reads the form:
 
   1. A number question that accepts decimals asks a concept that allows them. The form
@@ -91,6 +91,13 @@
      it has none. The discharge outcome shipped with nine answers (one « Décédé », one « Transfert
      intra-hospitalier ») while the product owner's list, which the hospitalisation register and the
      Ministry ward activity count by, has ten (#609).
+ 14. Every diagnosis's English and French preferred names start with its ICD-10 code, the code of check
+     12. The visit note's diagnosis search matches names only, never maps, so a doctor finds a diagnosis
+     by code only when its name carries that code: the six diagnoses mapped to the current code in #585
+     kept names starting with the retired one (« I84 Hemorroides »), and K64.9 found nothing. A concept
+     in two diagnosis exports is judged on its newest version, and that version's export must sort (and
+     so load) after the older one, or the older names come back. Concepts whose name cannot carry the
+     code are listed in diagnosisNameExceptions.
 */
 
 import groovy.io.FileType
@@ -162,12 +169,22 @@ Map<String, Integer> knownMappingFaults = ['UVL_dx_v4.zip': 2]
 List<String> mappingFaults = []
 // #585: the codes WHO ICD-10 no longer has are mapped too (diagnosis_icd10_maps_replaced.sql), so
 // every diagnosis must have a row.
-Set<String> diagnosisIcd10Seeded = filesIn(new File(configDir, 'liquibase'), '.sql').findAll {
+// external_id -> the codes those rows give it (check 14).
+Map<String, Set<String>> diagnosisIcd10SeededCodes = [:]
+filesIn(new File(configDir, 'liquibase'), '.sql').findAll {
     it.name in ['diagnosis_icd10_maps.sql', 'diagnosis_icd10_maps_replaced.sql']
-}.collectMany { File sql ->
-    (sql.text =~ /(?m)^\s*\('([0-9a-f-]{36})', '[^']+', '[0-9a-f-]{36}', '[0-9a-f-]{36}'\)/).collect { it[1] }
-} as Set
+}.each { File sql ->
+    (sql.text =~ /(?m)^\s*\('([0-9a-f-]{36})', '([^']+)', '[0-9a-f-]{36}', '[0-9a-f-]{36}'\)/).each {
+        diagnosisIcd10SeededCodes.computeIfAbsent(it[1]) { [] as Set } << it[2]
+    }
+}
+Set<String> diagnosisIcd10Seeded = diagnosisIcd10SeededCodes.keySet()
 int diagnosesChecked = 0
+// Check 14: external_id -> [version, concept, ICD-10 codes, zip] of the newest version in a UVL_dx_ export.
+Map<String, List> newestDiagnosis = [:]
+// "C Malignant neoplasm of the ampulla of Vater": uvl-dx lost the code from the English name and
+// spells it "C 24.1" in the French one (CODE_OVERRIDES in scripts/diagnosis-icd10-maps.py).
+Set<String> diagnosisNameExceptions = ['a61f7a7e-be38-4970-b841-3adc2efdb46c'] as Set
 int mappingsChecked = 0
 int labConceptsChecked = 0
 filesIn(oclDir, '.zip').each { File zip ->
@@ -193,6 +210,21 @@ filesIn(oclDir, '.zip').each { File zip ->
                         it.to_source_name == 'ICD-10-WHO' && it.to_concept_code &&
                         it.map_type?.toString()?.toUpperCase()?.replaceAll('[\\s_-]', '') == 'SAMEAS' }
                         .collect { it.from_concept_url?.toString() } as Set
+                Map<String, Set<String>> icd10Codes = [:]
+                (export.mappings ?: []).findAll { !isTrue(it.retired) && it.to_source_name == 'ICD-10-WHO' && it.to_concept_code }
+                        .each { icd10Codes.computeIfAbsent(it.from_concept_url?.toString()) { [] as Set } << it.to_concept_code.toString() }
+                export.concepts?.findAll { !isTrue(it.retired) && it.concept_class == 'Diagnosis' && it.external_id }?.each { concept ->
+                    List newest = newestDiagnosis[concept.external_id]
+                    if (newest && newest[0] > versionOf(concept)) {
+                        mappingFaults << ("${zip.name}: diagnosis ${concept.url} '${concept.display_name}' is an older " +
+                                "version than in ${newest[3]}, which sorts before it, so the OCL loader would bring its " +
+                                "old names back. Name the newer export so it sorts after (#585)")
+                    } else {
+                        Set<String> codes = (icd10Codes[concept.url?.toString()] ?: [] as Set) +
+                                (diagnosisIcd10SeededCodes[concept.external_id] ?: [] as Set)
+                        newestDiagnosis[concept.external_id] = [versionOf(concept), concept, codes, zip.name]
+                    }
+                }
                 export.concepts?.findAll { !isTrue(it.retired) && it.concept_class == 'Diagnosis' }?.each { concept ->
                     if (concept.url?.toString() in icd10Mapped || concept.external_id in diagnosisIcd10Seeded) {
                         diagnosesChecked++
@@ -435,6 +467,29 @@ filesIn(imagingSetFile, 'imaging_procedures.csv').each { File csv ->
     }
 }
 
+// Check 14: the code a name starts with, as scripts/diagnosis-icd10-maps.py reads it.
+String codeInName(String name) {
+    String token = name.tokenize(' ') ? name.tokenize(' ')[0] : ''
+    if (token.startsWith('2017-')) token = token.substring(5)       // "2017-A98.4 Ebola virus disease"
+    if (token ==~ /[A-Z]\d{3}/) token = token[0..2] + '.' + token[3]  // "B881 Tungiasis" is B88.1
+    return token
+}
+int diagnosisNamesChecked = 0
+newestDiagnosis.each { String id, List newest ->
+    if (id in diagnosisNameExceptions) return
+    def concept = newest[1]
+    Set<String> codes = newest[2]
+    concept.names?.findAll { it.locale in ['en', 'fr'] && isTrue(it.locale_preferred) }?.each { name ->
+        diagnosisNamesChecked++
+        if (!(codeInName(name.name.toString()) in codes)) {
+            mappingFaults << ("${newest[3]}: diagnosis ${concept.url} ${name.locale} name '${name.name}' does not start " +
+                    "with its ICD-10 code ${codes.sort() ?: '(none)'}, so the diagnosis search, which matches names " +
+                    "only, cannot find it by that code. Name it '<code> <label>' in OCL and keep the old name as a " +
+                    "synonym (scripts/diagnosis-icd10-maps.py names, #585)")
+        }
+    }
+}
+
 faults.addAll(mappingFaults)
 
 if (faults) {
@@ -447,6 +502,7 @@ log.info("Forms OK: ${decimalQuestions} decimal number questions on concepts tha
         "${answerListsChecked} questions offering their official answer list, " +
         "${mappingsChecked} OCL mappings with a target, ${labConceptsChecked} lab concepts with a French name, " +
         "${diagnosesChecked} diagnoses with an ICD-10 code, " +
+        "${diagnosisNamesChecked} diagnosis names that start with it, " +
         "${answerLabelsChecked} answer labels the saved-encounter view shows as the entry form does, " +
         "${imagingChecked} imaging procedures that take a result, " +
         "${expressionValidators} js_expression validators with a condition and a message, " +
