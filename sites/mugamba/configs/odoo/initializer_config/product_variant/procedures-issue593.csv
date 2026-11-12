@@ -1,0 +1,23 @@
+id,name,categ_id/id,type,purchase_ok,sale_ok,invoice_policy
+"init.7ce8eeb8-65b3-47f2-b0b3-43bde713aaee","Ablation d'un granulome d'épisiotomie sous anesthésie générale",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.48bd17c2-80b8-4f45-965d-5e225c40dd1e","Ablation des fils (maternité)",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.c3a4017a-5e03-48bb-9679-9327efc6b41f","Accouchement avec épisiotomie",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.83e987f0-5dc1-4545-82a6-4e678b56154e","Accouchement avec forceps",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.98d920e9-eed8-4df6-8b01-5740e045b526","Accouchement assisté par un médecin",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.5f0626e6-4b00-4327-a8d6-d355484b271e","Biopsie et frottis cervical",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.c4ee8cf1-f73e-4177-96ae-fb6ca0e08626","Cerclage du col utérin",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.159167db-c09d-4603-9fde-89fa117b4210","Aspiration-curetage biopsique",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.acbd925f-bd42-4d90-90e1-6a6f66e6ac9b","Infiltration péridurale + surveillance",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.264dcb44-4cfe-4f32-b776-c875d8016738","Intubation (maternité)",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.2e3e0741-44cd-44f4-a1ff-5afb23cb73d2","Monitoring fœtal (maternité)",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.719f140c-af07-4902-9fea-bdb9852cc493","Électrocoagulation (maternité)",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.efac95d0-39aa-4342-8394-826ab3e31df0","Réanimation légère du nouveau-né (moins de 30 min)",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.208fe69e-fa8e-4c9b-8f24-d1231181bc78","Reprise d'épisiotomie",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.cfbbd538-427f-443d-92c1-3033bca75eef","Bartholinite - kyste vulvaire ou périnéal",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.5e5ec0d8-9038-4e1f-8abf-19810f569589","Ponction sus-pubienne",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.64d51f51-09ab-49d9-92f5-1c9626d413f1","Ponction articulaire (néonatologie)",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.512352c4-9a06-4111-bbf4-4c7c5215886c","Réanimation légère du nouveau-né (60 min, assistance, aspiration)",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.0322d9bb-b464-4389-a65e-eaf5f162feaf","Réanimation du nouveau-né (60 min, intubation, ventilation, massage cardiaque)",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.1c0561a3-65b0-4dc0-87fd-3cae9326ad80","Gavage du nouveau-né",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.c5205fcd-50a5-4071-a09a-9b352ae31cf7","Pose de sonde nasogastrique",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.b0c6a676-ba42-4252-a108-a46978c60a14","Soins du nouveau-né (toilette et soin du cordon)",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
