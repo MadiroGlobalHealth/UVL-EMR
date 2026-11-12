@@ -14,7 +14,15 @@ with fixes that are not released upstream yet. Only the built module is here; th
 | The location picker the server checks permissions on (the source when it is a location, otherwise the destination) offers only the locations of the user's stock role scopes for that operation type. System Developers, and users without a scope for the operation type, see every location as before | not yet |
 | « Start New », the Overview/Operations/Items side menu, the confirmation dialogs and the home modals' column headers are translatable | not yet |
 | The Items page no longer overflows the window horizontally | not yet |
-| The Responsible Person picker narrows the listed users as you type, searches after 300 ms instead of 1 s, and new config `responsiblePersonExcludedRoles` leaves out system accounts | not yet |
+| The Responsible Person picker narrows the listed users as you type, searches after 300 ms instead of 1 s, and new config `responsiblePersonExcludedRoles` leaves out system accounts (role names match whatever their case) | not yet |
+| uvl.2: the Items and Operations tables and toolbars fit 1366 px in French (wrapping names and headers, growing toolbars, Start New sized to its label) | not yet |
+| uvl.2: the Sources, User role scopes and Settings side-menu links need `Task: stockmanagement.stockSources.mutate`, `Task: stockmanagement.userRoleScopes.mutate` and `Manage Global Properties` | not yet |
+| uvl.2: the issue batch picker lists the batch that expires soonest first | not yet |
+| uvl.2: the home Receiving card lists completed receipts, newest first | not yet |
+| uvl.2: « Expiring stock / In 6 months » counts batches from their own expiry date | not yet |
+| uvl.2: the confirm button, side menu, step names, details heading, validation messages, batch label and Operations filters are translatable | not yet |
+| uvl.3: the wrapped toolbars of Items and Operations grow instead of covering the table header, whatever order Carbon's stylesheet loads in | not yet |
+| uvl.3: operation statuses, pagination, the batch actions bar and « Source Required » are translatable | not yet |
 
 The list's refresh after Complete and other status changes is already in 3.3.1 (3.2.1 revalidated a
 cache the app did not read); the branch only adds a test for it.
