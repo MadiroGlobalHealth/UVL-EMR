@@ -883,7 +883,21 @@
         "batchQuantityLabel": "Lot {{batchNo}}, quantité : {{quantity}} {{unit}}",
         "moreItems_one": "...({{count}} de plus)",
         "moreItems_other": "...({{count}} de plus)",
-        "discard": "Abandonner"
+        "discard": "Abandonner",
+        "paginationPageSelectLabel_one": "Page sur {{count}} page",
+        "paginationPageSelectLabel_other": "Page sur {{count}} pages",
+        "filterPlaceholder": "Filtrer...",
+        "expandCurrentRow": "Afficher le détail de la ligne",
+        "collapseCurrentRow": "Masquer le détail de la ligne",
+        "expandAllRows": "Afficher le détail de toutes les lignes",
+        "collapseAllRows": "Masquer le détail de toutes les lignes",
+        "selectRow": "Sélectionner la ligne",
+        "unselectRow": "Désélectionner la ligne",
+        "selectAllRows": "Sélectionner toutes les lignes",
+        "unselectAllRows": "Désélectionner toutes les lignes",
+        "sortRowsAscending": "Cliquer pour trier par « {{header}} », ordre croissant",
+        "sortRowsDescending": "Cliquer pour trier par « {{header}} », ordre décroissant",
+        "unsortRows": "Cliquer pour annuler le tri par « {{header}} »"
       }
     }
   },

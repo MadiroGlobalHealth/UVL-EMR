@@ -26,6 +26,10 @@ with fixes that are not released upstream yet. Only the built module is here; th
 | uvl.4: the toolbar section itself grows too (on Carbon 1.119 both it and its content are fixed at 3rem), Operations cells wrap | not yet |
 | uvl.4: AUTHORIZED status, home card statuses, availability, Stock Issue source message, plurals, inventory alert quantities | not yet |
 | uvl.5: long operation numbers wrap after each « - » (the Numéro button may shrink), expanded-row search placeholder translatable | not yet |
+| uvl.6: Operations, Items and the operation items step (« Suivant ») fit 1280 px with Carbon's stylesheet loaded last (narrower header and cell padding that outranks Carbon's, no empty « details » column, headers wrap between words only, the item name button and the stepper shrink); operation numbers break only after « - » | not yet |
+| uvl.6: filtering Operations with a row open no longer crashes (`reading 'operationTypeUuid'`): open rows close when a filter changes and the opened row finds its operation by uuid | not yet |
+| uvl.6: « Available » is the quantity at the operation's own location (its source, or a receipt's destination), all batches, not the total of every location | not yet |
+| uvl.6: Reject and Return icons the right way round; page picker, expand/collapse row and sort labels translatable | not yet |
 
 The list's refresh after Complete and other status changes is already in 3.3.1 (3.2.1 revalidated a
 cache the app did not read); the branch only adds a test for it.
