@@ -2553,4 +2553,307 @@
         <rollback/>
     </changeSet>
 
+    <!--
+        #246 - room class of each bed, for the nightly stay charge. eip-odoo-openmrs bills each night
+        of a stay as the Odoo product mapped to the bed type of the bed the patient occupied at that
+        midnight (EIP_INPATIENT_STAY_BED_TYPE_PRODUCTS, scripts/docker/docker-compose-override.yml),
+        else as the ward's class (the « Chambre privée » tag), else « Lit simple ». So the class of a
+        bed is changed in the bed management app (edit the bed, pick its type), without a release.
+
+        One bed type per rate the hospital charges (11 Nov 2026 answer and Joshua's 12 Nov decision:
+        shared 5,000, semi-private 10,000, private VIP1-VIP4 20,000 BIF; the 6 Oct price list's
+        intensive care bed, incubator and ventilator rates stay). Prices are entered in Odoo, not
+        here. bed_type.display_name is at most 10 characters.
+
+        Initializer 2.12.0 has no bed domain, so beds are seeded here. A bed type whose uuid or name
+        is already taken is left alone.
+    -->
+    <changeSet id="stay_bed_types-20261112" author="Joshua">
+        <preConditions onFail="MARK_RAN" onError="CONTINUE"
+                       onErrorMessage="WARN (#246): the bedmanagement tables do not exist yet; the bed types are retried on the next start.">
+            <tableExists tableName="bed_type"/>
+        </preConditions>
+        <comment>
+            Bed types for the room classes billed per night (#246).
+        </comment>
+        <sql>
+            INSERT INTO bed_type (name, display_name, description, uuid, creator, date_created, retired)
+            SELECT 'Partagé', 'Partagé', 'Lit en salle commune, facturé « Lit simple (par nuit) »', '933f2f84-461d-487e-bb21-2021ba374ad0', 1, NOW(), 0
+             WHERE NOT EXISTS (SELECT 1 FROM bed_type WHERE uuid = '933f2f84-461d-487e-bb21-2021ba374ad0' OR name = 'Partagé');
+            INSERT INTO bed_type (name, display_name, description, uuid, creator, date_created, retired)
+            SELECT 'Semi-privé', 'Semi-privé', 'Lit en chambre à deux lits, facturé « Lit semi-privé (par nuit) »', 'f62b4615-960d-434c-9d9d-c5df6c59af14', 1, NOW(), 0
+             WHERE NOT EXISTS (SELECT 1 FROM bed_type WHERE uuid = 'f62b4615-960d-434c-9d9d-c5df6c59af14' OR name = 'Semi-privé');
+            INSERT INTO bed_type (name, display_name, description, uuid, creator, date_created, retired)
+            SELECT 'Privé (VIP)', 'VIP', 'Chambre privée VIP, facturée « Lit VIP (par nuit) »', '263c34fa-2e97-454e-af8f-bbb4cb585f82', 1, NOW(), 0
+             WHERE NOT EXISTS (SELECT 1 FROM bed_type WHERE uuid = '263c34fa-2e97-454e-af8f-bbb4cb585f82' OR name = 'Privé (VIP)');
+            INSERT INTO bed_type (name, display_name, description, uuid, creator, date_created, retired)
+            SELECT 'Soins intensifs', 'SI', 'Lit de soins intensifs, facturé « Lit de soins intensifs (par nuit) »', '9fceca39-6da6-4588-968c-044c17908f29', 1, NOW(), 0
+             WHERE NOT EXISTS (SELECT 1 FROM bed_type WHERE uuid = '9fceca39-6da6-4588-968c-044c17908f29' OR name = 'Soins intensifs');
+            INSERT INTO bed_type (name, display_name, description, uuid, creator, date_created, retired)
+            SELECT 'Couveuse', 'Couveuse', 'Couveuse néonatale, facturée « Couveuse néonatale (par nuit) »', 'c243a937-73e5-434c-a5e3-f14af75846a6', 1, NOW(), 0
+             WHERE NOT EXISTS (SELECT 1 FROM bed_type WHERE uuid = 'c243a937-73e5-434c-a5e3-f14af75846a6' OR name = 'Couveuse');
+            INSERT INTO bed_type (name, display_name, description, uuid, creator, date_created, retired)
+            SELECT 'Soins intensifs sous respirateur', 'SI resp.', 'Lit de soins intensifs avec respirateur, facturé « Soins intensifs sous respirateur (par nuit) »', '86f1d0ca-d032-4663-94d6-84e4885e78e3', 1, NOW(), 0
+             WHERE NOT EXISTS (SELECT 1 FROM bed_type WHERE uuid = '86f1d0ca-d032-4663-94d6-84e4885e78e3' OR name = 'Soins intensifs sous respirateur');
+            INSERT INTO bed_type (name, display_name, description, uuid, creator, date_created, retired)
+            SELECT 'Soins intensifs VIP sous respirateur', 'VIP resp.', 'Lit VIP de soins intensifs avec respirateur, facturé « Soins intensifs VIP sous respirateur (par nuit) »', '06560f0a-ddaa-490d-a92b-e6e54060e871', 1, NOW(), 0
+             WHERE NOT EXISTS (SELECT 1 FROM bed_type WHERE uuid = '06560f0a-ddaa-490d-a92b-e6e54060e871' OR name = 'Soins intensifs VIP sous respirateur');
+        </sql>
+        <rollback/>
+    </changeSet>
+
+    <!--
+        #246 - the beds of each ward, from the product owner's 11 Nov 2026 answer: Neonatology 9,
+        Pediatrics 5, Surgery 2, Internal Medicine 11, Gyn-Obstetrics 22 (« Soins maternels
+        (accouchement normal) », the maternity ward; « Salle de césarienne » is the theatre),
+        Recovery Room 2 and Emergency 4 (observation beds). Intensive care was given no beds.
+
+        Every bed is « Partagé » until the product owner says which are semi-private (the decision
+        of 12 Nov 2026); VIP1-VIP4 are not created until we know their ward. Beds are numbered
+        <prefix>-01.., five to a row in the bed management grid.
+
+        A ward that already has a bed (created in the bed management app, or by an earlier run) is
+        left alone, so beds are never doubled. Liquibase runs before the Initializer loads the
+        locations, so on a new database « Salle de réveil » does not exist yet at the first start:
+        the changeset waits (onFail CONTINUE) and runs on the next start, as #354.
+    -->
+    <changeSet id="stay_beds_neonatale-20261112" author="Joshua">
+        <preConditions onFail="CONTINUE" onError="CONTINUE"
+                       onFailMessage="WARN (#246): location 3D1AD726-219C-4F9F-87C2-5BF709D04E41 (Salle néonatale) or the « Partagé » bed type does not exist yet, so its beds were NOT created; this changeset is retried on every start.">
+            <sqlCheck expectedResult="1">
+                SELECT COUNT(*) FROM location WHERE uuid = '3D1AD726-219C-4F9F-87C2-5BF709D04E41' AND retired = 0
+            </sqlCheck>
+            <sqlCheck expectedResult="1">
+                SELECT COUNT(*) FROM bed_type WHERE uuid = '933f2f84-461d-487e-bb21-2021ba374ad0'
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            9 beds in Salle néonatale (#246).
+        </comment>
+        <sql>
+            INSERT INTO bed (bed_number, status, bed_type_id, uuid, creator, date_created, voided)
+            SELECT CONCAT('NEO-', LPAD(numbers.n, 2, '0')), 'AVAILABLE', bt.bed_type_id, UUID(), 1, NOW(), 0
+              FROM (SELECT 1 AS n UNION ALL SELECT 2 AS n UNION ALL SELECT 3 AS n UNION ALL SELECT 4 AS n UNION ALL SELECT 5 AS n UNION ALL SELECT 6 AS n UNION ALL SELECT 7 AS n UNION ALL SELECT 8 AS n UNION ALL SELECT 9 AS n) numbers
+              JOIN bed_type bt ON bt.uuid = '933f2f84-461d-487e-bb21-2021ba374ad0'
+             WHERE NOT EXISTS (SELECT 1 FROM bed_location_map m JOIN location l ON l.location_id = m.location_id
+                                WHERE l.uuid = '3D1AD726-219C-4F9F-87C2-5BF709D04E41' AND m.bed_id IS NOT NULL);
+
+            INSERT INTO bed_location_map (location_id, bed_row_number, bed_column_number, bed_id)
+            SELECT l.location_id,
+                   FLOOR((CAST(SUBSTRING_INDEX(b.bed_number, '-', -1) AS UNSIGNED) - 1) / 5) + 1,
+                   MOD(CAST(SUBSTRING_INDEX(b.bed_number, '-', -1) AS UNSIGNED) - 1, 5) + 1,
+                   b.bed_id
+              FROM bed b
+              JOIN location l ON l.uuid = '3D1AD726-219C-4F9F-87C2-5BF709D04E41'
+             WHERE b.voided = 0
+               AND b.bed_number IN ('NEO-01', 'NEO-02', 'NEO-03', 'NEO-04', 'NEO-05', 'NEO-06', 'NEO-07', 'NEO-08', 'NEO-09')
+               AND NOT EXISTS (SELECT 1 FROM bed_location_map m WHERE m.bed_id = b.bed_id);
+        </sql>
+        <rollback/>
+    </changeSet>
+    <changeSet id="stay_beds_pediatrie-20261112" author="Joshua">
+        <preConditions onFail="CONTINUE" onError="CONTINUE"
+                       onFailMessage="WARN (#246): location 5536d753-6d7d-4eef-bff0-65e01f94e8c6 (Pédiatrie) or the « Partagé » bed type does not exist yet, so its beds were NOT created; this changeset is retried on every start.">
+            <sqlCheck expectedResult="1">
+                SELECT COUNT(*) FROM location WHERE uuid = '5536d753-6d7d-4eef-bff0-65e01f94e8c6' AND retired = 0
+            </sqlCheck>
+            <sqlCheck expectedResult="1">
+                SELECT COUNT(*) FROM bed_type WHERE uuid = '933f2f84-461d-487e-bb21-2021ba374ad0'
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            5 beds in Pédiatrie (#246).
+        </comment>
+        <sql>
+            INSERT INTO bed (bed_number, status, bed_type_id, uuid, creator, date_created, voided)
+            SELECT CONCAT('PED-', LPAD(numbers.n, 2, '0')), 'AVAILABLE', bt.bed_type_id, UUID(), 1, NOW(), 0
+              FROM (SELECT 1 AS n UNION ALL SELECT 2 AS n UNION ALL SELECT 3 AS n UNION ALL SELECT 4 AS n UNION ALL SELECT 5 AS n) numbers
+              JOIN bed_type bt ON bt.uuid = '933f2f84-461d-487e-bb21-2021ba374ad0'
+             WHERE NOT EXISTS (SELECT 1 FROM bed_location_map m JOIN location l ON l.location_id = m.location_id
+                                WHERE l.uuid = '5536d753-6d7d-4eef-bff0-65e01f94e8c6' AND m.bed_id IS NOT NULL);
+
+            INSERT INTO bed_location_map (location_id, bed_row_number, bed_column_number, bed_id)
+            SELECT l.location_id,
+                   FLOOR((CAST(SUBSTRING_INDEX(b.bed_number, '-', -1) AS UNSIGNED) - 1) / 5) + 1,
+                   MOD(CAST(SUBSTRING_INDEX(b.bed_number, '-', -1) AS UNSIGNED) - 1, 5) + 1,
+                   b.bed_id
+              FROM bed b
+              JOIN location l ON l.uuid = '5536d753-6d7d-4eef-bff0-65e01f94e8c6'
+             WHERE b.voided = 0
+               AND b.bed_number IN ('PED-01', 'PED-02', 'PED-03', 'PED-04', 'PED-05')
+               AND NOT EXISTS (SELECT 1 FROM bed_location_map m WHERE m.bed_id = b.bed_id);
+        </sql>
+        <rollback/>
+    </changeSet>
+    <changeSet id="stay_beds_chirurgie-20261112" author="Joshua">
+        <preConditions onFail="CONTINUE" onError="CONTINUE"
+                       onFailMessage="WARN (#246): location 34518e24-8481-464f-ab8e-71b3c15265e5 (Chirurgie) or the « Partagé » bed type does not exist yet, so its beds were NOT created; this changeset is retried on every start.">
+            <sqlCheck expectedResult="1">
+                SELECT COUNT(*) FROM location WHERE uuid = '34518e24-8481-464f-ab8e-71b3c15265e5' AND retired = 0
+            </sqlCheck>
+            <sqlCheck expectedResult="1">
+                SELECT COUNT(*) FROM bed_type WHERE uuid = '933f2f84-461d-487e-bb21-2021ba374ad0'
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            2 beds in Chirurgie (#246).
+        </comment>
+        <sql>
+            INSERT INTO bed (bed_number, status, bed_type_id, uuid, creator, date_created, voided)
+            SELECT CONCAT('CHI-', LPAD(numbers.n, 2, '0')), 'AVAILABLE', bt.bed_type_id, UUID(), 1, NOW(), 0
+              FROM (SELECT 1 AS n UNION ALL SELECT 2 AS n) numbers
+              JOIN bed_type bt ON bt.uuid = '933f2f84-461d-487e-bb21-2021ba374ad0'
+             WHERE NOT EXISTS (SELECT 1 FROM bed_location_map m JOIN location l ON l.location_id = m.location_id
+                                WHERE l.uuid = '34518e24-8481-464f-ab8e-71b3c15265e5' AND m.bed_id IS NOT NULL);
+
+            INSERT INTO bed_location_map (location_id, bed_row_number, bed_column_number, bed_id)
+            SELECT l.location_id,
+                   FLOOR((CAST(SUBSTRING_INDEX(b.bed_number, '-', -1) AS UNSIGNED) - 1) / 5) + 1,
+                   MOD(CAST(SUBSTRING_INDEX(b.bed_number, '-', -1) AS UNSIGNED) - 1, 5) + 1,
+                   b.bed_id
+              FROM bed b
+              JOIN location l ON l.uuid = '34518e24-8481-464f-ab8e-71b3c15265e5'
+             WHERE b.voided = 0
+               AND b.bed_number IN ('CHI-01', 'CHI-02')
+               AND NOT EXISTS (SELECT 1 FROM bed_location_map m WHERE m.bed_id = b.bed_id);
+        </sql>
+        <rollback/>
+    </changeSet>
+    <changeSet id="stay_beds_medecine_interne-20261112" author="Joshua">
+        <preConditions onFail="CONTINUE" onError="CONTINUE"
+                       onFailMessage="WARN (#246): location ff9a4718-8bdc-4c7e-901b-a66815b1c58d (Médecine interne) or the « Partagé » bed type does not exist yet, so its beds were NOT created; this changeset is retried on every start.">
+            <sqlCheck expectedResult="1">
+                SELECT COUNT(*) FROM location WHERE uuid = 'ff9a4718-8bdc-4c7e-901b-a66815b1c58d' AND retired = 0
+            </sqlCheck>
+            <sqlCheck expectedResult="1">
+                SELECT COUNT(*) FROM bed_type WHERE uuid = '933f2f84-461d-487e-bb21-2021ba374ad0'
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            11 beds in Médecine interne (#246).
+        </comment>
+        <sql>
+            INSERT INTO bed (bed_number, status, bed_type_id, uuid, creator, date_created, voided)
+            SELECT CONCAT('MI-', LPAD(numbers.n, 2, '0')), 'AVAILABLE', bt.bed_type_id, UUID(), 1, NOW(), 0
+              FROM (SELECT 1 AS n UNION ALL SELECT 2 AS n UNION ALL SELECT 3 AS n UNION ALL SELECT 4 AS n UNION ALL SELECT 5 AS n UNION ALL SELECT 6 AS n UNION ALL SELECT 7 AS n UNION ALL SELECT 8 AS n UNION ALL SELECT 9 AS n UNION ALL SELECT 10 AS n UNION ALL SELECT 11 AS n) numbers
+              JOIN bed_type bt ON bt.uuid = '933f2f84-461d-487e-bb21-2021ba374ad0'
+             WHERE NOT EXISTS (SELECT 1 FROM bed_location_map m JOIN location l ON l.location_id = m.location_id
+                                WHERE l.uuid = 'ff9a4718-8bdc-4c7e-901b-a66815b1c58d' AND m.bed_id IS NOT NULL);
+
+            INSERT INTO bed_location_map (location_id, bed_row_number, bed_column_number, bed_id)
+            SELECT l.location_id,
+                   FLOOR((CAST(SUBSTRING_INDEX(b.bed_number, '-', -1) AS UNSIGNED) - 1) / 5) + 1,
+                   MOD(CAST(SUBSTRING_INDEX(b.bed_number, '-', -1) AS UNSIGNED) - 1, 5) + 1,
+                   b.bed_id
+              FROM bed b
+              JOIN location l ON l.uuid = 'ff9a4718-8bdc-4c7e-901b-a66815b1c58d'
+             WHERE b.voided = 0
+               AND b.bed_number IN ('MI-01', 'MI-02', 'MI-03', 'MI-04', 'MI-05', 'MI-06', 'MI-07', 'MI-08', 'MI-09', 'MI-10', 'MI-11')
+               AND NOT EXISTS (SELECT 1 FROM bed_location_map m WHERE m.bed_id = b.bed_id);
+        </sql>
+        <rollback/>
+    </changeSet>
+    <changeSet id="stay_beds_gyneco_obstetrique-20261112" author="Joshua">
+        <preConditions onFail="CONTINUE" onError="CONTINUE"
+                       onFailMessage="WARN (#246): location 30081A32-690B-484E-A3C0-7B8E46126250 (Soins maternels (accouchement normal)) or the « Partagé » bed type does not exist yet, so its beds were NOT created; this changeset is retried on every start.">
+            <sqlCheck expectedResult="1">
+                SELECT COUNT(*) FROM location WHERE uuid = '30081A32-690B-484E-A3C0-7B8E46126250' AND retired = 0
+            </sqlCheck>
+            <sqlCheck expectedResult="1">
+                SELECT COUNT(*) FROM bed_type WHERE uuid = '933f2f84-461d-487e-bb21-2021ba374ad0'
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            22 beds in Soins maternels (accouchement normal) (#246).
+        </comment>
+        <sql>
+            INSERT INTO bed (bed_number, status, bed_type_id, uuid, creator, date_created, voided)
+            SELECT CONCAT('GO-', LPAD(numbers.n, 2, '0')), 'AVAILABLE', bt.bed_type_id, UUID(), 1, NOW(), 0
+              FROM (SELECT 1 AS n UNION ALL SELECT 2 AS n UNION ALL SELECT 3 AS n UNION ALL SELECT 4 AS n UNION ALL SELECT 5 AS n UNION ALL SELECT 6 AS n UNION ALL SELECT 7 AS n UNION ALL SELECT 8 AS n UNION ALL SELECT 9 AS n UNION ALL SELECT 10 AS n UNION ALL SELECT 11 AS n UNION ALL SELECT 12 AS n UNION ALL SELECT 13 AS n UNION ALL SELECT 14 AS n UNION ALL SELECT 15 AS n UNION ALL SELECT 16 AS n UNION ALL SELECT 17 AS n UNION ALL SELECT 18 AS n UNION ALL SELECT 19 AS n UNION ALL SELECT 20 AS n UNION ALL SELECT 21 AS n UNION ALL SELECT 22 AS n) numbers
+              JOIN bed_type bt ON bt.uuid = '933f2f84-461d-487e-bb21-2021ba374ad0'
+             WHERE NOT EXISTS (SELECT 1 FROM bed_location_map m JOIN location l ON l.location_id = m.location_id
+                                WHERE l.uuid = '30081A32-690B-484E-A3C0-7B8E46126250' AND m.bed_id IS NOT NULL);
+
+            INSERT INTO bed_location_map (location_id, bed_row_number, bed_column_number, bed_id)
+            SELECT l.location_id,
+                   FLOOR((CAST(SUBSTRING_INDEX(b.bed_number, '-', -1) AS UNSIGNED) - 1) / 5) + 1,
+                   MOD(CAST(SUBSTRING_INDEX(b.bed_number, '-', -1) AS UNSIGNED) - 1, 5) + 1,
+                   b.bed_id
+              FROM bed b
+              JOIN location l ON l.uuid = '30081A32-690B-484E-A3C0-7B8E46126250'
+             WHERE b.voided = 0
+               AND b.bed_number IN ('GO-01', 'GO-02', 'GO-03', 'GO-04', 'GO-05', 'GO-06', 'GO-07', 'GO-08', 'GO-09', 'GO-10', 'GO-11', 'GO-12', 'GO-13', 'GO-14', 'GO-15', 'GO-16', 'GO-17', 'GO-18', 'GO-19', 'GO-20', 'GO-21', 'GO-22')
+               AND NOT EXISTS (SELECT 1 FROM bed_location_map m WHERE m.bed_id = b.bed_id);
+        </sql>
+        <rollback/>
+    </changeSet>
+    <changeSet id="stay_beds_salle_de_reveil-20261112" author="Joshua">
+        <preConditions onFail="CONTINUE" onError="CONTINUE"
+                       onFailMessage="WARN (#246): location 6328b502-42a3-4f7b-b153-fb5c690e6bc4 (Salle de réveil) or the « Partagé » bed type does not exist yet, so its beds were NOT created; this changeset is retried on every start.">
+            <sqlCheck expectedResult="1">
+                SELECT COUNT(*) FROM location WHERE uuid = '6328b502-42a3-4f7b-b153-fb5c690e6bc4' AND retired = 0
+            </sqlCheck>
+            <sqlCheck expectedResult="1">
+                SELECT COUNT(*) FROM bed_type WHERE uuid = '933f2f84-461d-487e-bb21-2021ba374ad0'
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            2 beds in Salle de réveil (#246).
+        </comment>
+        <sql>
+            INSERT INTO bed (bed_number, status, bed_type_id, uuid, creator, date_created, voided)
+            SELECT CONCAT('REV-', LPAD(numbers.n, 2, '0')), 'AVAILABLE', bt.bed_type_id, UUID(), 1, NOW(), 0
+              FROM (SELECT 1 AS n UNION ALL SELECT 2 AS n) numbers
+              JOIN bed_type bt ON bt.uuid = '933f2f84-461d-487e-bb21-2021ba374ad0'
+             WHERE NOT EXISTS (SELECT 1 FROM bed_location_map m JOIN location l ON l.location_id = m.location_id
+                                WHERE l.uuid = '6328b502-42a3-4f7b-b153-fb5c690e6bc4' AND m.bed_id IS NOT NULL);
+
+            INSERT INTO bed_location_map (location_id, bed_row_number, bed_column_number, bed_id)
+            SELECT l.location_id,
+                   FLOOR((CAST(SUBSTRING_INDEX(b.bed_number, '-', -1) AS UNSIGNED) - 1) / 5) + 1,
+                   MOD(CAST(SUBSTRING_INDEX(b.bed_number, '-', -1) AS UNSIGNED) - 1, 5) + 1,
+                   b.bed_id
+              FROM bed b
+              JOIN location l ON l.uuid = '6328b502-42a3-4f7b-b153-fb5c690e6bc4'
+             WHERE b.voided = 0
+               AND b.bed_number IN ('REV-01', 'REV-02')
+               AND NOT EXISTS (SELECT 1 FROM bed_location_map m WHERE m.bed_id = b.bed_id);
+        </sql>
+        <rollback/>
+    </changeSet>
+    <changeSet id="stay_beds_urgences-20261112" author="Joshua">
+        <preConditions onFail="CONTINUE" onError="CONTINUE"
+                       onFailMessage="WARN (#246): location 9D062929-CC4F-7A51-C700-2B968AADEC34 (Salle d'urgence (ER)) or the « Partagé » bed type does not exist yet, so its beds were NOT created; this changeset is retried on every start.">
+            <sqlCheck expectedResult="1">
+                SELECT COUNT(*) FROM location WHERE uuid = '9D062929-CC4F-7A51-C700-2B968AADEC34' AND retired = 0
+            </sqlCheck>
+            <sqlCheck expectedResult="1">
+                SELECT COUNT(*) FROM bed_type WHERE uuid = '933f2f84-461d-487e-bb21-2021ba374ad0'
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            4 beds in Salle d'urgence (ER) (#246).
+        </comment>
+        <sql>
+            INSERT INTO bed (bed_number, status, bed_type_id, uuid, creator, date_created, voided)
+            SELECT CONCAT('URG-', LPAD(numbers.n, 2, '0')), 'AVAILABLE', bt.bed_type_id, UUID(), 1, NOW(), 0
+              FROM (SELECT 1 AS n UNION ALL SELECT 2 AS n UNION ALL SELECT 3 AS n UNION ALL SELECT 4 AS n) numbers
+              JOIN bed_type bt ON bt.uuid = '933f2f84-461d-487e-bb21-2021ba374ad0'
+             WHERE NOT EXISTS (SELECT 1 FROM bed_location_map m JOIN location l ON l.location_id = m.location_id
+                                WHERE l.uuid = '9D062929-CC4F-7A51-C700-2B968AADEC34' AND m.bed_id IS NOT NULL);
+
+            INSERT INTO bed_location_map (location_id, bed_row_number, bed_column_number, bed_id)
+            SELECT l.location_id,
+                   FLOOR((CAST(SUBSTRING_INDEX(b.bed_number, '-', -1) AS UNSIGNED) - 1) / 5) + 1,
+                   MOD(CAST(SUBSTRING_INDEX(b.bed_number, '-', -1) AS UNSIGNED) - 1, 5) + 1,
+                   b.bed_id
+              FROM bed b
+              JOIN location l ON l.uuid = '9D062929-CC4F-7A51-C700-2B968AADEC34'
+             WHERE b.voided = 0
+               AND b.bed_number IN ('URG-01', 'URG-02', 'URG-03', 'URG-04')
+               AND NOT EXISTS (SELECT 1 FROM bed_location_map m WHERE m.bed_id = b.bed_id);
+        </sql>
+        <rollback/>
+    </changeSet>
+
 </databaseChangeLog>
