@@ -94,6 +94,31 @@
      hold it (Dispensation: Pharmacist; Stock Management: Pharmacist and Central Pharmacist),
      and no clinical role may, directly or through an inherited role, or the entry comes back
      for that role.
+
+ 12. Only pharmacists dispense (#607). No clinical role may hold, directly or through an
+     inherited role, a privilege of check 5 or `Delete Medication Dispense`
+     (MedicationDispenseService.voidMedicationDispense and purge). Until #607 Doctor held
+     `Edit Medication Dispense` and `Delete Medication Dispense`, so a doctor could change or
+     delete a pharmacist's dispense through the API.
+
+ 13. Only the central store creates stock items (#607). `Task: stockmanagement.stockItems.mutate`
+     guards StockManagementService.saveStockItem, saveStockRule and importStockItems, that is
+     « Ajouter Article de Stock » and « Importer » on the stock app's Stock Items page. The page
+     shows both buttons to everyone who can open it, so the privilege is what refuses the save.
+     Pharmacist (the dispensing boxes) and the clinical roles must not hold it, directly or
+     through an inherited role; it comes with the stock module's Inventory Manager and Inventory
+     Administrator roles. Which operation types a box may create, Opening Stock included, is its
+     stock user role scope, not a role privilege, so this check cannot see it.
+
+ 14. X-Ray Technician keeps `Add Orders`, `Edit Orders` and `Edit Encounters` (#607). Entering a
+     result (« Entrer des résultats », esm-patient-orders-app lab-results form) posts the result
+     obs to the order's encounter together with a DISCONTINUE order for the order it answers,
+     then sets the order's fulfiller status: the DISCONTINUE order takes a new order number
+     (OrderServiceImpl.getNewOrderNumber calls getNextOrderNumberSeedSequenceValue, guarded by
+     `Add Orders`) and the fulfiller status needs `Edit Orders`
+     (OrderService.updateOrderFulfillerStatus). Core authorises saveOrder and discontinueOrder
+     with either privilege, so they cannot tell a result from a technician revising or cancelling
+     the order; taking either away stops results, not order changes.
 */
 
 import groovy.json.JsonSlurper
@@ -103,9 +128,9 @@ Set<String> coreRoles = ['System Developer', 'Provider', 'Anonymous', 'Authentic
 int maxRoleNameLength = 50
 String createOperations = 'Task: stockmanagement.stockoperations.mutate'
 String readScopes = 'App: stockmanagement.userRoleScopes'
-List<String> nonDispensingRoles = ['Central Pharmacist']
 List<String> dispensingPrivileges = ['Edit Medication Dispense', 'Task: dispensing.create.dispense',
-        'Task: stockmanagement.stockItems.dispense']
+        'Task: stockmanagement.stockItems.dispense', 'Delete Medication Dispense']
+String mutateStockItems = 'Task: stockmanagement.stockItems.mutate'
 List<String> userAdminPrivileges = ['Add Users', 'Edit Users', 'Edit User Passwords', 'Delete Users',
         'Purge Users', 'Manage Roles', 'Manage Privileges', 'Assign System Developer Role']
 List<String> deletePrivileges = ['Delete Encounters', 'Purge Encounters', 'Delete Visits', 'Purge Visits',
@@ -119,6 +144,8 @@ List<String> stockReports = ['App: stockmanagement.reports', 'Task: stockmanagem
 List<String> basketLookups = ['Get ChargeItemDefinition', 'Get InventoryItem']
 List<String> clinicalRoles = ['Help Nurse', 'Nurse', 'Midwife', 'Doctor', 'Ophtalmologist', 'Dentist',
         'Anesthesist', 'Lab Technician', 'X-Ray Technician']
+List<String> nonDispensingRoles = ['Central Pharmacist'] + clinicalRoles
+List<String> noStockItemRoles = ['Pharmacist'] + clinicalRoles
 Map<String, List<String>> appMenuUsers = [
         'dispensing-link'               : ['Pharmacist'],
         'stock-management-app-menu-item': ['Pharmacist', 'Central Pharmacist'],
@@ -130,6 +157,7 @@ Map<String, List<String>> requiredOf = [
         'Doctor'            : readDrugOrders + readPatientLists + basketLookups,
         'Pharmacist'        : stockReports + basketLookups,
         'Central Pharmacist': stockReports,
+        'X-Ray Technician'  : ['Add Orders', 'Edit Orders', 'Edit Encounters'],
 ]
 
 File distroConfigs = new File(project.build.directory,
@@ -247,6 +275,13 @@ nonDispensingRoles.each { name ->
     if (held) {
         problems << "${definedIn[name]}: role '${name}' must not dispense, but holds ${held.collect { "'${it}'" }.join(', ')}" +
                 " (directly or through an inherited role)"
+    }
+}
+
+noStockItemRoles.findAll { definedIn.containsKey(it) }.each { name ->
+    if (effectivePrivileges(name, privilegesOf, inheritances).contains(mutateStockItems)) {
+        problems << "${definedIn[name]}: role '${name}' holds '${mutateStockItems}' (directly or through an " +
+                "inherited role), so it can create and import stock items; only the central store may"
     }
 }
 
