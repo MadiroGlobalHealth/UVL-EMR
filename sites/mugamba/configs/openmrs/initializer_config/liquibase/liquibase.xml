@@ -2611,6 +2611,106 @@
         </comment>
         <sqlFile path="sql/diagnosis_icd10_maps_replaced.sql" relativeToChangelogFile="true" stripComments="true"/>
         <rollback/>
+        <rollback/>
+    </changeSet>
+
+    <!--
+        #582 - the insurance card number is recorded once, at registration, in the person attribute
+        "Numéro de carte d'assurance" (a8122ab5-de1f-4f0a-b882-7c5b375f4faa). The product owner asked
+        that a new card replace it and that the old numbers be kept. The registration app does not
+        do that: on edit, the REST person resource changes the attribute's value in place, so the
+        old number would be lost.
+
+        uvl_insurance_card_history keeps them. Each row is a number and the moment it came into
+        force: change_type 'recorded' (first number, or a number entered again after removal),
+        'replaced' (a new card typed over the old one) or 'removed' (field cleared; card_number is
+        NULL). changed_by and date_changed are the user and time of the change. The register SQL
+        reads the current number from person_attribute, and the number in force on a date from the
+        latest row of this table at or before that date.
+
+        The triggers need the same database setting as the #189 ones: with binary logging on and
+        log_bin_trust_function_creators off, CREATE TRIGGER fails for a user without SUPER. As
+        there, onFail CONTINUE retries on every start and the history starts when it is set. UAT
+        (MariaDB 10.11) has it set. MariaDB allows these next to the trg_uvl002_* triggers on the
+        same table and events.
+    -->
+    <changeSet id="insurance_card_history_table-20261112" author="Joshua">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="uvl_insurance_card_history"/>
+            </not>
+        </preConditions>
+        <comment>
+            History of the insurance card numbers recorded at registration (#582).
+        </comment>
+        <createTable tableName="uvl_insurance_card_history">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="person_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="person_attribute_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="card_number" type="varchar(50)"/>
+            <column name="change_type" type="varchar(16)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="changed_by" type="int"/>
+            <column name="date_changed" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createIndex tableName="uvl_insurance_card_history" indexName="uvl_insurance_card_history_person">
+            <column name="person_id"/>
+            <column name="date_changed"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="insurance_card_history_triggers-20261112" author="Joshua">
+        <preConditions onFail="CONTINUE" onError="CONTINUE"
+                       onFailMessage="WARN (#582): the insurance card history triggers were NOT created because binary logging is on and log_bin_trust_function_creators is off. A replaced card number will not be kept in uvl_insurance_card_history until log_bin_trust_function_creators=1 is set on the database server; this changeset is retried on every start."
+                       onErrorMessage="WARN (#582): could not read log_bin / log_bin_trust_function_creators, so the insurance card history triggers were NOT created; this changeset is retried on every start.">
+            <sqlCheck expectedResult="1">
+                SELECT CASE WHEN @@GLOBAL.log_bin = 0 OR @@GLOBAL.log_bin_trust_function_creators = 1 THEN 1 ELSE 0 END
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            Keep every insurance card number in uvl_insurance_card_history when it is recorded, replaced or removed (#582).
+        </comment>
+        <sql>DROP TRIGGER IF EXISTS trg_uvl582_insurance_card_ai;</sql>
+        <sql>DROP TRIGGER IF EXISTS trg_uvl582_insurance_card_au;</sql>
+        <sql splitStatements="false">
+            CREATE TRIGGER trg_uvl582_insurance_card_ai
+            AFTER INSERT ON person_attribute
+            FOR EACH ROW
+            INSERT INTO uvl_insurance_card_history (person_id, person_attribute_id, card_number, change_type, changed_by, date_changed)
+            SELECT NEW.person_id, NEW.person_attribute_id, NEW.value, 'recorded', NEW.creator, COALESCE(NEW.date_created, NOW())
+              FROM person_attribute_type pat
+             WHERE pat.person_attribute_type_id = NEW.person_attribute_type_id
+               AND pat.uuid = 'a8122ab5-de1f-4f0a-b882-7c5b375f4faa'
+               AND NEW.voided = 0;
+        </sql>
+        <sql splitStatements="false">
+            CREATE TRIGGER trg_uvl582_insurance_card_au
+            AFTER UPDATE ON person_attribute
+            FOR EACH ROW
+            INSERT INTO uvl_insurance_card_history (person_id, person_attribute_id, card_number, change_type, changed_by, date_changed)
+            SELECT NEW.person_id, NEW.person_attribute_id,
+                   CASE WHEN NEW.voided = 1 THEN NULL ELSE NEW.value END,
+                   CASE WHEN NEW.voided = 1 THEN 'removed' WHEN OLD.voided = 1 THEN 'recorded' ELSE 'replaced' END,
+                   CASE WHEN NEW.voided = 1 THEN COALESCE(NEW.voided_by, NEW.changed_by) ELSE COALESCE(NEW.changed_by, NEW.creator) END,
+                   CASE WHEN NEW.voided = 1 THEN COALESCE(NEW.date_voided, NOW()) ELSE COALESCE(NEW.date_changed, NOW()) END
+              FROM person_attribute_type pat
+             WHERE pat.person_attribute_type_id = NEW.person_attribute_type_id
+               AND pat.uuid = 'a8122ab5-de1f-4f0a-b882-7c5b375f4faa'
+               AND (NOT (OLD.value &lt;=&gt; NEW.value) OR OLD.voided &lt;&gt; NEW.voided);
+        </sql>
+        <rollback>
+            <sql>DROP TRIGGER IF EXISTS trg_uvl582_insurance_card_ai;</sql>
+            <sql>DROP TRIGGER IF EXISTS trg_uvl582_insurance_card_au;</sql>
+        </rollback>
     </changeSet>
 
 </databaseChangeLog>
