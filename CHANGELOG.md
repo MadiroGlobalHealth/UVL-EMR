@@ -655,6 +655,18 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
 - Liquibase `stock_item_units_sheet3-20261023`: the unit of 79 stock items of #437, from sheet 3.
   A packaging unit already used by a stock movement is not rewritten: the item gets a second one
   in the new unit. (#455)
+- **Theatre acts from the hospital price list can be ordered and billed.** 83 surgical and ENT acts
+  of « TARIFICATION UVL » (section A.2 « Actes de chirurgie »: urology, digestive, orthopaedics,
+  general, plastic and thyroid surgery; section B « Actes d'ORL ») are new Procedure concepts with
+  a French and an English name, members of « All procedures », so the « Actes » order search offers
+  them. 20 tariff lines are 19 acts that already existed (DIG101 appendectomy, ORT101 hip
+  prosthesis, the circumcisions, ...) and were not duplicated. Each new act has an Odoo product
+  `init.<concept uuid>` in `product_variant/procedures-issue596.csv`, so an order reaches the
+  quotation; no `lst_price` column, the UVL team enters the tariff prices in Odoo. OCL: uvl-custom
+  `20261112-acts-596-593`, collection `uvl-theatre-acts` `20261112`, shipped as
+  `UVL_theatre_acts_596_20261112.zip`. The build now fails when an act the order search offers has
+  no Odoo product (`scripts/check-procedure-billing.groovy`). Anaesthesia at 50% of the act, major
+  or minor, and national codes are not part of this change. (#596)
 
 ### Changed
 - **Doctor no longer holds `Delete Encounters`, `Delete Visits` or `Delete Observations`.** The
