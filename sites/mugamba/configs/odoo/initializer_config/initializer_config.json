@@ -49,6 +49,14 @@
             "model_name": "insurance.product.coverage",
             "folder": "insurance_coverage",
             "field_rules": {}
+        },
+        {
+            "model_name": "product.product",
+            "folder": "product_tags",
+            "field_rules": {
+                "lst_price": "NO_UPDATE",
+                "list_price": "NO_UPDATE"
+            }
         }
     ]
 }
