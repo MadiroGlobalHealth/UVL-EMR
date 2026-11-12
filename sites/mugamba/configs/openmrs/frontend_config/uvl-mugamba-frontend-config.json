@@ -851,7 +851,8 @@
         "statusNew": "Nouveau",
         "itemsPerPage": "Éléments par page :",
         "paginationItemRange": "{{min}}–{{max}} sur {{total}} éléments",
-        "paginationPageRange": "sur {{total}} pages",
+        "paginationPageRange_one": "sur {{count}} page",
+        "paginationPageRange_other": "sur {{count}} pages",
         "previousPage": "Page précédente",
         "nextPage": "Page suivante",
         "selectAll": "Tout sélectionner",
@@ -859,7 +860,16 @@
         "itemSelected_other": "{{count}} éléments sélectionnés",
         "itemsSelected_one": "{{count}} élément sélectionné",
         "itemsSelected_other": "{{count}} éléments sélectionnés",
-        "noStockItemsToDisplay": "Aucun article de stock à afficher"
+        "noStockItemsToDisplay": "Aucun article de stock à afficher",
+        "statusAuthorized": "Autorisé",
+        "destinationRequired": "Destination requise",
+        "atLeastOneStockItem": "Ajoutez au moins un article",
+        "availableQuantity": "Disponible : {{quantity}} {{unit}}",
+        "outOfStockLabel": "En rupture de stock",
+        "batchQuantityLabel": "Lot {{batchNo}}, quantité : {{quantity}} {{unit}}",
+        "moreItems_one": "...({{count}} de plus)",
+        "moreItems_other": "...({{count}} de plus)",
+        "discard": "Abandonner"
       }
     }
   },
