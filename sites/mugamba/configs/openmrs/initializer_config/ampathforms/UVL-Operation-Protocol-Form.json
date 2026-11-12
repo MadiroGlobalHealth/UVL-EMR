@@ -1,0 +1,357 @@
+{
+  "uuid": "4c5d6e1d-51c1-48cb-bb4b-4d73f70c209d",
+  "name": "UVL Operation Protocol Form",
+  "description": "UVL operation protocol (Protocole opératoire)",
+  "version": "1",
+  "published": true,
+  "retired": false,
+  "encounter": "Operation Protocol",
+  "processor": "EncounterFormProcessor",
+  "referencedForms": [],
+  "encounterType": "090a9937-0fb4-4a0e-9487-96ec0c3f9a38",
+  "pages": [
+    {
+      "label": "Operation Protocol",
+      "sections": [
+        {
+          "label": "Patient Identification",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Department",
+              "type": "obs",
+              "id": "referringService",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "b5f30fce-f71c-4a9e-9bae-d13c9d73c726",
+                "answers": [
+                  {
+                    "concept": "37112a4c-e8e9-4df5-8259-d610e9d36566"
+                  },
+                  {
+                    "concept": "ba39e9aa-4f48-45fe-a9da-c2a7795dc063"
+                  },
+                  {
+                    "concept": "1d66f34f-3dda-496b-881b-e38ba2cab2cc"
+                  },
+                  {
+                    "concept": "73b7e837-109a-4c01-8fcb-d605b8724f70"
+                  },
+                  {
+                    "concept": "219b6489-0992-47bb-a780-b97c85d10d33"
+                  },
+                  {
+                    "concept": "f8fbea1a-8579-4733-9add-59dfa2adc453",
+                    "label": "Urgences"
+                  },
+                  {
+                    "concept": "6c00b50f-4d8e-418a-b48d-9a6b51dcbd2f",
+                    "label": "Soins intensifs"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "label": "Operating Team",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Surgeon (First and Last Name)",
+              "type": "obs",
+              "id": "surgeonName",
+              "required": true,
+              "questionOptions": {
+                "rendering": "text",
+                "concept": "9b01093f-21cc-4723-9ea4-88edfa8fccb8"
+              }
+            },
+            {
+              "label": "Anaesthetist (First and Last Name)",
+              "type": "obs",
+              "id": "anaesthetistName",
+              "questionOptions": {
+                "rendering": "text",
+                "concept": "06bc374b-6862-48ce-9426-3b4e81ed0521"
+              }
+            },
+            {
+              "label": "Assistant (First and Last Name)",
+              "type": "obs",
+              "id": "assistantName",
+              "questionOptions": {
+                "rendering": "text",
+                "concept": "6b72dcb8-eddb-4b9d-938a-da636659aae4"
+              }
+            },
+            {
+              "label": "Theatre Nurse (First and Last Name)",
+              "type": "obs",
+              "id": "theatreNurseName",
+              "questionOptions": {
+                "rendering": "text",
+                "concept": "1c33786c-6218-4aaa-a30a-be5d5d1c8db2"
+              }
+            }
+          ]
+        },
+        {
+          "label": "Operation",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Indications for the Operation",
+              "type": "obs",
+              "id": "operationIndications",
+              "required": true,
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "72511ace-966d-480d-ab43-5f4bbd0a4c35"
+              }
+            },
+            {
+              "label": "Type of Anaesthesia",
+              "type": "obs",
+              "id": "anaesthesiaType",
+              "questionOptions": {
+                "rendering": "checkbox",
+                "concept": "e56083c5-658e-4715-85ce-30cd78e0b13b",
+                "answers": [
+                  {
+                    "concept": "0c279f31-78c9-4c5c-9714-0f5bfc19fb1e",
+                    "label": "Générale"
+                  },
+                  {
+                    "concept": "993c7783-e6dd-4786-961a-e658476ea753",
+                    "label": "Loco-régionale"
+                  },
+                  {
+                    "concept": "6e625252-c2c7-407a-8dba-406f1c2cf3c7",
+                    "label": "Locale"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Start of the Operation",
+              "type": "obs",
+              "id": "surgeryStart",
+              "required": true,
+              "questionOptions": {
+                "rendering": "datetime",
+                "concept": "01f8fb65-57ac-4743-8d00-d8c405789cb2"
+              }
+            },
+            {
+              "label": "End of the Operation",
+              "type": "obs",
+              "id": "surgeryEnd",
+              "required": true,
+              "questionOptions": {
+                "rendering": "datetime",
+                "concept": "a8f782e5-64e5-460d-a304-e8cd4acb1388"
+              },
+              "validators": [
+                {
+                  "type": "js_expression",
+                  "failsWhenExpression": "!isEmpty(myValue) && !isEmpty(surgeryStart) && new Date(myValue) - new Date(surgeryStart) < 0",
+                  "message": "La fin de l'intervention doit être postérieure à son début / The end of the operation must be after its start"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "Operative Report",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Operative Report",
+              "type": "obs",
+              "id": "operativeReport",
+              "required": true,
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "af79cfc6-a90b-4c26-9352-e6407c74c1bb",
+                "rows": 10
+              }
+            }
+          ]
+        },
+        {
+          "label": "Caesarean Section",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Caesarean Section",
+              "type": "obs",
+              "id": "caesareanCase",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "753be061-2a1e-46de-8575-5a1b5a08725e",
+                "answers": [
+                  {
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725"
+                  },
+                  {
+                    "concept": "79a559a9-c7aa-4006-98c2-02c530f6f7db",
+                    "label": "Césarienne programmée"
+                  },
+                  {
+                    "concept": "90a3cdc3-342e-456f-8154-5e6802166584",
+                    "label": "Césarienne non programmée"
+                  }
+                ]
+              },
+              "hide": {
+                "hideWhenExpression": "sex === 'M'"
+              }
+            },
+            {
+              "label": "Time the Newborn Was Delivered",
+              "type": "obs",
+              "id": "newbornDeliveryTime",
+              "required": true,
+              "questionOptions": {
+                "rendering": "datetime",
+                "concept": "b1fa6cba-2b54-4d51-9e91-323e7129224b"
+              },
+              "hide": {
+                "hideWhenExpression": "sex === 'M' || isEmpty(caesareanCase) || caesareanCase === 'd45102a2-d9b7-40dc-a30c-8e88494e1725'"
+              }
+            },
+            {
+              "label": "Newborn Status at Delivery",
+              "type": "obs",
+              "id": "newbornStatus",
+              "required": true,
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "cd96c0b6-a08f-49eb-94ad-9a914f1612f0",
+                "answers": [
+                  {
+                    "concept": "4056a982-6a2d-4062-9514-efcf4e66dd0a",
+                    "label": "Né vivant"
+                  },
+                  {
+                    "concept": "63f4b85c-de5a-48e9-a9a5-bf2656c10125"
+                  }
+                ]
+              },
+              "hide": {
+                "hideWhenExpression": "sex === 'M' || isEmpty(caesareanCase) || caesareanCase === 'd45102a2-d9b7-40dc-a30c-8e88494e1725'"
+              }
+            },
+            {
+              "label": "Caesarean Section Indication",
+              "type": "obs",
+              "id": "caesareanReason",
+              "required": true,
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "c2c39986-b3cc-4452-9efa-88d4a0d70775",
+                "answers": [
+                  {
+                    "concept": "8fcd9d56-3397-4711-8286-cbe93118d577"
+                  },
+                  {
+                    "concept": "af8a0f43-0c8d-44f3-aac0-c926f9fff57e"
+                  },
+                  {
+                    "concept": "3a8cc1fb-a9f4-48cb-9950-2b5cadd14e63"
+                  },
+                  {
+                    "concept": "ce224cc0-b3f8-4243-9ed7-ad1587883e26"
+                  },
+                  {
+                    "concept": "73df184e-5a2d-4462-a75b-1d466a6b353a"
+                  },
+                  {
+                    "concept": "7b7945b4-625b-4f0f-9288-2598e6602230"
+                  },
+                  {
+                    "concept": "d0190e1e-6593-472d-b508-efefefa0d0a7"
+                  },
+                  {
+                    "concept": "e081d0bf-3140-4f87-b5ae-88169cb6f765"
+                  },
+                  {
+                    "concept": "b5c4b807-d3de-40cd-aae9-178df9b40535"
+                  }
+                ]
+              },
+              "hide": {
+                "hideWhenExpression": "sex === 'M' || isEmpty(caesareanCase) || caesareanCase === 'd45102a2-d9b7-40dc-a30c-8e88494e1725'"
+              }
+            },
+            {
+              "label": "Other Indication (Specify)",
+              "type": "obs",
+              "id": "caesareanReasonOther",
+              "required": true,
+              "questionOptions": {
+                "rendering": "text",
+                "concept": "580b0191-7b6a-40f7-b99d-dab155f12dbf"
+              },
+              "hide": {
+                "hideWhenExpression": "sex === 'M' || isEmpty(caesareanCase) || caesareanCase === 'd45102a2-d9b7-40dc-a30c-8e88494e1725' || caesareanReason !== 'b5c4b807-d3de-40cd-aae9-178df9b40535'"
+              }
+            },
+            {
+              "label": "Complications",
+              "type": "obs",
+              "id": "caesareanComplications",
+              "questionOptions": {
+                "rendering": "checkbox",
+                "concept": "d53d2d0e-afee-4765-9377-197f3391ef3f",
+                "answers": [
+                  {
+                    "concept": "23b585c1-b92e-4aa7-8db7-efaae552b94b"
+                  },
+                  {
+                    "concept": "0152aa3d-b26c-42e0-972d-0eea046822b4"
+                  },
+                  {
+                    "concept": "b5c4b807-d3de-40cd-aae9-178df9b40535"
+                  }
+                ]
+              },
+              "hide": {
+                "hideWhenExpression": "sex === 'M' || isEmpty(caesareanCase) || caesareanCase === 'd45102a2-d9b7-40dc-a30c-8e88494e1725'"
+              }
+            },
+            {
+              "label": "Other Complication (Specify)",
+              "type": "obs",
+              "id": "otherCaesareanComplication",
+              "required": true,
+              "questionOptions": {
+                "rendering": "text",
+                "concept": "9ff6c160-e8a5-4015-86f0-1262a36fb290"
+              },
+              "hide": {
+                "hideWhenExpression": "sex === 'M' || isEmpty(caesareanCase) || caesareanCase === 'd45102a2-d9b7-40dc-a30c-8e88494e1725' || isEmpty(caesareanComplications) || !includes(caesareanComplications, 'b5c4b807-d3de-40cd-aae9-178df9b40535')"
+              }
+            }
+          ]
+        },
+        {
+          "label": "Validation",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Operating Surgeon (Name and Signature)",
+              "type": "encounterProvider",
+              "id": "encProvider",
+              "required": true,
+              "questionOptions": {
+                "rendering": "ui-select-extended"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

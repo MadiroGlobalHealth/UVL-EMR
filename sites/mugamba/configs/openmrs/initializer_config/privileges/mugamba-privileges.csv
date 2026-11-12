@@ -21,6 +21,8 @@ ae8d6fb7-8ad8-43a3-b444-3288c638f017,View Pre-operative Record,Able to view Pre-
 ea7fd063-3fcd-4065-8551-3ec486b269ca,Edit Pre-operative Record,Able to edit Pre-operative Record observations,
 96a4e00a-f486-4b94-85fc-3cc41ee984c2,View Anaesthesia Report,Able to view Anaesthesia Report observations,
 7e2dcf34-a63a-4c43-8e7d-7a3ca7893ac9,Edit Anaesthesia Report,Able to edit Anaesthesia Report observations,
+af95fa42-59d1-44a7-91f9-4d194228b62b,View Operation Protocol,Able to view Operation Protocol observations,
+ccc7e407-eaba-4b1e-b176-62aeea6a401f,Edit Operation Protocol,Able to edit Operation Protocol observations,
 30b643ad-298a-4d29-8827-4823e5c0aa87,View Maternity Consultation,Able to view Maternity Consultation observations,
 52f34966-ff62-4dc3-8ba4-833ddbb67d8e,Edit Maternity Consultation,Able to edit Maternity Consultation observations,
 91add47a-412e-4276-acf8-91921cf34568,View Delivery Registration,Able to view Delivery Registration observations,
