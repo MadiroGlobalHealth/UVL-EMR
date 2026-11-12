@@ -129,6 +129,10 @@
       {
         "uuid": "09529492-ed24-464a-b2e3-0658091828b5",
         "required": false
+      },
+      {
+        "uuid": "deb7a704-0406-4f57-8705-a674f7ae0759",
+        "required": true
       }
     ],
     "restrictByVisitLocationTag": true,
@@ -323,6 +327,15 @@
         "validation": {
           "required": false
         }
+      },
+      {
+        "id": "insuranceCardNumber",
+        "type": "person attribute",
+        "uuid": "a8122ab5-de1f-4f0a-b882-7c5b375f4faa",
+        "label": "Numéro de carte d'assurance",
+        "validation": {
+          "required": false
+        }
       }
     ],
     "sectionDefinitions": [
@@ -338,7 +351,7 @@
       {
         "id": "additionalInformation",
         "name": "Additional Information",
-        "fields": ["maritalStatus", "occupation", "chefDeMenage"]
+        "fields": ["maritalStatus", "occupation", "chefDeMenage", "insuranceCardNumber"]
       }
     ],
     "fieldConfigurations": {
@@ -377,7 +390,8 @@
   "@openmrs/esm-patient-banner-app": {
     "contactAttributeTypes": [
       "14d4f066-15f5-102d-96e4-000c29c2a5d7",
-      "c108c6bc-5f23-4e4a-ad34-8c788b86f288"
+      "c108c6bc-5f23-4e4a-ad34-8c788b86f288",
+      "a8122ab5-de1f-4f0a-b882-7c5b375f4faa"
     ]
   },
   "@openmrs/esm-billing-app": {
