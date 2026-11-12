@@ -1,0 +1,11 @@
+form	question_id	position	fr_label	source
+UVL-Discharge-Summary-Form.json	dischargeOutcome	1	Guéris	product owner answers 11 Nov 2026, discharge outcome list (#609)
+UVL-Discharge-Summary-Form.json	dischargeOutcome	2	Améliorés	product owner answers 11 Nov 2026, discharge outcome list (#609)
+UVL-Discharge-Summary-Form.json	dischargeOutcome	3	Contre-référence	product owner answers 11 Nov 2026, discharge outcome list (#609)
+UVL-Discharge-Summary-Form.json	dischargeOutcome	4	Référence niveau équivalent	product owner answers 11 Nov 2026, discharge outcome list (#609)
+UVL-Discharge-Summary-Form.json	dischargeOutcome	5	Référence niveau supérieur	product owner answers 11 Nov 2026, discharge outcome list (#609)
+UVL-Discharge-Summary-Form.json	dischargeOutcome	6	Référence intra-hospitalière	product owner answers 11 Nov 2026, discharge outcome list (#609)
+UVL-Discharge-Summary-Form.json	dischargeOutcome	7	Sortie contre avis médical (décharge)	product owner answers 11 Nov 2026, discharge outcome list (#609)
+UVL-Discharge-Summary-Form.json	dischargeOutcome	8	Évadés	product owner answers 11 Nov 2026, discharge outcome list (#609)
+UVL-Discharge-Summary-Form.json	dischargeOutcome	9	Décès avant 24 h	product owner answers 11 Nov 2026, discharge outcome list (#609)
+UVL-Discharge-Summary-Form.json	dischargeOutcome	10	Décès après 24 h	product owner answers 11 Nov 2026, discharge outcome list (#609)
