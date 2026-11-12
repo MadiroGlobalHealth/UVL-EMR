@@ -57,6 +57,139 @@
       "label": "ANC Consultation",
       "sections": [
         {
+          "label": "General",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "ANC Contact Number",
+              "type": "obs",
+              "id": "ancVisitNumber",
+              "questionOptions": {
+                "rendering": "select",
+                "concept": "88474844-acff-4ffe-bc1a-fcdcc999e2c4",
+                "answers": [
+                  {
+                    "concept": "47e298c9-eeb2-4f06-8e03-f07a645c70ee",
+                    "label": "CPN 1"
+                  },
+                  {
+                    "concept": "d137e3df-02ec-46b3-8a53-50f66281c1f4",
+                    "label": "CPN 2"
+                  },
+                  {
+                    "concept": "64e4aad8-5679-41cf-9043-8b0f51290d35",
+                    "label": "CPN 3"
+                  },
+                  {
+                    "concept": "80518d2e-7a93-41e2-a1b7-c090a9b7d099",
+                    "label": "CPN 4"
+                  },
+                  {
+                    "concept": "560ed817-46c2-45fb-8b2d-e5ca92527a46",
+                    "label": "CPN 5"
+                  },
+                  {
+                    "concept": "f27fcbf6-51b8-4894-bd54-548744d5f695",
+                    "label": "CPN 6"
+                  },
+                  {
+                    "concept": "671af333-5b5e-4c9c-9a56-3ac3b2cfe39c",
+                    "label": "CPN 7"
+                  },
+                  {
+                    "concept": "e188d16a-6a36-4357-afbd-e67c26102737",
+                    "label": "CPN 8 et plus"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Partner Present",
+              "type": "obs",
+              "id": "partnerPresent",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "7eb868de-0875-41ff-ba14-12aa96665224",
+                "answers": [
+                  {
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e"
+                  },
+                  {
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725"
+                  },
+                  {
+                    "concept": "c9be680f-4d74-4098-8682-9cb4416429f7",
+                    "label": "Non précisé"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Pregnancy Period",
+              "type": "obs",
+              "id": "pregnancyPeriod",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "14a50528-98d2-4012-9b29-bcd0cfddedc2",
+                "answers": [
+                  {
+                    "concept": "f3cceb56-160a-4e77-a138-88fc5854909a",
+                    "label": "1er au 3e mois"
+                  },
+                  {
+                    "concept": "82932105-7485-472d-a93a-14e370bb59a3",
+                    "label": "4e au 6e mois"
+                  },
+                  {
+                    "concept": "9f4db43b-d90b-4bad-9a1e-a4e8a0ce6c50",
+                    "label": "7e au 9e mois"
+                  },
+                  {
+                    "concept": "472fd65d-c64b-48d4-bd58-d40204104f91",
+                    "label": "Au-delà de 9 mois"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Smoking",
+              "type": "obs",
+              "id": "smoking",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "cdc82ddc-1413-4ec1-b891-b0155f8cc7fa",
+                "answers": [
+                  {
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e"
+                  },
+                  {
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725"
+                  }
+                ]
+              },
+              "required": true
+            },
+            {
+              "label": "Alcohol",
+              "type": "obs",
+              "id": "alcohol",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "86b0bf2e-4445-4f3f-aae9-dde28a9b0822",
+                "answers": [
+                  {
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e"
+                  },
+                  {
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725"
+                  }
+                ]
+              },
+              "required": true
+            }
+          ]
+        },
+        {
           "label": "Gestational Age",
           "isExpanded": "true",
           "questions": [
@@ -142,78 +275,90 @@
           ]
         },
         {
-          "label": "General",
+          "label": "Obstetric History",
           "isExpanded": "true",
           "questions": [
             {
-              "label": "Visit Type",
+              "label": "Gravidity",
               "type": "obs",
-              "id": "ancVisitNumber",
+              "id": "gravida",
               "questionOptions": {
-                "rendering": "select",
-                "concept": "88474844-acff-4ffe-bc1a-fcdcc999e2c4",
-                "answers": [
-                  {
-                    "concept": "47e298c9-eeb2-4f06-8e03-f07a645c70ee",
-                    "label": "CPN 1"
-                  },
-                  {
-                    "concept": "d137e3df-02ec-46b3-8a53-50f66281c1f4",
-                    "label": "CPN 2"
-                  },
-                  {
-                    "concept": "64e4aad8-5679-41cf-9043-8b0f51290d35",
-                    "label": "CPN 3"
-                  },
-                  {
-                    "concept": "80518d2e-7a93-41e2-a1b7-c090a9b7d099",
-                    "label": "CPN 4"
-                  },
-                  {
-                    "concept": "560ed817-46c2-45fb-8b2d-e5ca92527a46",
-                    "label": "CPN 5"
-                  },
-                  {
-                    "concept": "58aea4dc-6a29-47b4-9922-155edfc0462b",
-                    "label": "CPN 6 et plus"
-                  }
-                ]
+                "rendering": "number",
+                "concept": "59c072eb-e253-4c85-a748-077f086158b4",
+                "min": "0",
+                "max": "30",
+                "disallowDecimals": true
+              },
+              "required": true
+            },
+            {
+              "label": "Parity",
+              "type": "obs",
+              "id": "parity",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "29301b07-6835-4a1c-89d6-d12ac01acdc1",
+                "min": "0",
+                "max": "30",
+                "disallowDecimals": true
+              },
+              "required": true
+            },
+            {
+              "label": "Living Children",
+              "type": "obs",
+              "id": "livingChildren",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "9a1ad424-adf5-485e-95e3-ba1fa7484a33",
+                "min": "0",
+                "max": "30",
+                "disallowDecimals": true
               }
             },
             {
-              "label": "Pregnancy Period",
+              "label": "Number of Children Deceased",
               "type": "obs",
-              "id": "pregnancyPeriod",
+              "id": "deceasedChildrenCount",
               "questionOptions": {
-                "rendering": "radio",
-                "concept": "14a50528-98d2-4012-9b29-bcd0cfddedc2",
-                "answers": [
-                  {
-                    "concept": "f3cceb56-160a-4e77-a138-88fc5854909a",
-                    "label": "1er au 3e mois"
-                  },
-                  {
-                    "concept": "82932105-7485-472d-a93a-14e370bb59a3",
-                    "label": "4e au 6e mois"
-                  },
-                  {
-                    "concept": "9f4db43b-d90b-4bad-9a1e-a4e8a0ce6c50",
-                    "label": "7e au 9e mois"
-                  },
-                  {
-                    "concept": "472fd65d-c64b-48d4-bd58-d40204104f91",
-                    "label": "Au-delà de 9 mois"
-                  }
-                ]
+                "rendering": "number",
+                "concept": "a85812ec-5e7f-4e7d-b0da-d75ec56182f7",
+                "min": "0",
+                "max": "20",
+                "disallowDecimals": true
               }
             },
             {
-              "label": "Smoking",
+              "label": "Number of Stillbirths",
               "type": "obs",
-              "id": "smoking",
+              "id": "stillbirthsCount",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "a6e86791-f24b-4cd9-9c6a-6e30fb3ef842",
+                "min": "0",
+                "max": "20",
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "Abortions",
+              "type": "obs",
+              "id": "abortions",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "459e2e4d-0a02-403d-bcb1-e43a6e4aba23",
+                "min": "0",
+                "max": "30",
+                "disallowDecimals": true
+              }
+            },
+            {
+              "label": "Previous Caesarean Section",
+              "type": "obs",
+              "id": "hxCaesarean",
               "questionOptions": {
                 "rendering": "radio",
-                "concept": "cdc82ddc-1413-4ec1-b891-b0155f8cc7fa",
+                "concept": "dea6738f-1150-406a-8a06-2b9be1f528ce",
                 "answers": [
                   {
                     "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e"
@@ -222,16 +367,15 @@
                     "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725"
                   }
                 ]
-              },
-              "required": true
+              }
             },
             {
-              "label": "Alcohol",
+              "label": "Previous Pre-eclampsia",
               "type": "obs",
-              "id": "alcohol",
+              "id": "hxPreEclampsia",
               "questionOptions": {
                 "rendering": "radio",
-                "concept": "86b0bf2e-4445-4f3f-aae9-dde28a9b0822",
+                "concept": "f6a50d45-a064-42f8-8488-f53312acbede",
                 "answers": [
                   {
                     "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e"
@@ -240,8 +384,423 @@
                     "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725"
                   }
                 ]
+              }
+            },
+            {
+              "label": "Previous Postpartum Haemorrhage",
+              "type": "obs",
+              "id": "hxPph",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "85e171bb-188e-45bd-b75d-dcaa665dd538",
+                "answers": [
+                  {
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e"
+                  },
+                  {
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "label": "Medical History (Before Pregnancy)",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Diabetes Known Before Pregnancy",
+              "type": "obs",
+              "id": "hxDiabetes",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "ad40e99a-cb47-4d86-a3cd-a86b391ea0cc",
+                "answers": [
+                  {
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e"
+                  },
+                  {
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Hypertension Known Before Pregnancy",
+              "type": "obs",
+              "id": "hxHypertension",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "0e391e82-113c-4c41-a68a-f60fb9f5bb60",
+                "answers": [
+                  {
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e"
+                  },
+                  {
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Hepatitis C Known Before Pregnancy",
+              "type": "obs",
+              "id": "hxHepatitisC",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "39da6ae4-96ee-4b41-97a4-fe1bcac07591",
+                "answers": [
+                  {
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e"
+                  },
+                  {
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Hepatitis B Known Before Pregnancy",
+              "type": "obs",
+              "id": "hxHepatitisB",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "126e0d52-60d0-4941-b375-d73213a3a75b",
+                "answers": [
+                  {
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e"
+                  },
+                  {
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Sickle Cell Disease",
+              "type": "obs",
+              "id": "hxSickleCell",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "5de4d33f-5765-4d25-966b-c67b7c00c0a6",
+                "answers": [
+                  {
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e"
+                  },
+                  {
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "HIV Status Known Before Pregnancy",
+              "type": "obs",
+              "id": "hivStatusKnown",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "5fac5cd6-13d3-4851-a20c-d02cb21320be",
+                "answers": [
+                  {
+                    "concept": "9252290a-63a4-4304-9f04-9ce72431fe08"
+                  },
+                  {
+                    "concept": "c1abc032-80a8-4544-ba97-2b8396592a46"
+                  },
+                  {
+                    "concept": "7441b681-e89e-470e-8f74-24bbe2b5217c"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "label": "Found During This Pregnancy",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Diabetes Found During This Pregnancy",
+              "type": "obs",
+              "id": "pregDiabetes",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "a97e3516-ebce-43a2-b04a-22e9ed307d28",
+                "answers": [
+                  {
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e"
+                  },
+                  {
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Hypertension Found During This Pregnancy",
+              "type": "obs",
+              "id": "pregHypertension",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "be99a2d0-39a9-41c0-b2a3-2aaea42734d7",
+                "answers": [
+                  {
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e"
+                  },
+                  {
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Hepatitis C Found During This Pregnancy",
+              "type": "obs",
+              "id": "pregHepatitisC",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "ba3544d8-4fd3-4f90-aebe-7e8c362e8eb5",
+                "answers": [
+                  {
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e"
+                  },
+                  {
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "label": "Haemoglobin",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Haemoglobin (g/dL)",
+              "type": "obs",
+              "id": "haemoglobin",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "6d792222-d3e8-4b1e-a1b3-7af9bd7b0f2a",
+                "min": "0",
+                "max": "25"
               },
-              "required": true
+              "validators": [
+                {
+                  "type": "js_expression",
+                  "warnsWhenExpression": "!isEmpty(myValue) && myValue < 7",
+                  "message": "Alerte critique : hémoglobine < 7 g/dL (anémie sévère) / Critical alert: haemoglobin < 7 g/dL (severe anaemia)"
+                },
+                {
+                  "type": "js_expression",
+                  "warnsWhenExpression": "!isEmpty(myValue) && myValue >= 7 && myValue < ((trimester === '3aa0e609-4c94-44a7-b119-32969dbb30b3' || (isEmpty(trimester) && !isEmpty(gestationalAge) && gestationalAge >= 14 && gestationalAge < 28)) ? 10.5 : 11)",
+                  "message": "Alerte : hémoglobine basse (< 11 g/dL aux 1er et 3e trimestres, < 10,5 g/dL au 2e) / Alert: low haemoglobin (< 11 g/dL in the 1st and 3rd trimesters, < 10.5 g/dL in the 2nd)"
+                }
+              ]
+            },
+            {
+              "label": "Haemoglobin Sample Date",
+              "type": "obs",
+              "id": "haemoglobinDate",
+              "questionOptions": {
+                "rendering": "date",
+                "concept": "af20c4a5-8413-4d34-aab1-95f37615c0c6"
+              },
+              "validators": [
+                {
+                  "type": "js_expression",
+                  "warnsWhenExpression": "isEmpty(myValue) && !isEmpty(haemoglobin)",
+                  "message": "Indiquer la date du prélèvement / Enter the sample date"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "Physical Examination",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Blood Pressure: Systolic (mmHg)",
+              "type": "obs",
+              "id": "systolic",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "6d0b8551-feb8-4d57-892a-d75398181b3f",
+                "min": "0",
+                "max": "300",
+                "disallowDecimals": true
+              },
+              "validators": [
+                {
+                  "type": "js_expression",
+                  "warnsWhenExpression": "!isEmpty(myValue) && myValue >= 140",
+                  "message": "Alerte : TA ≥ 140/90 mmHg (hypertension) / Alert: BP ≥ 140/90 mmHg (hypertension)"
+                }
+              ]
+            },
+            {
+              "label": "Blood Pressure: Diastolic (mmHg)",
+              "type": "obs",
+              "id": "diastolic",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "c46fcfdd-a785-4416-80bc-2d9e2edf5a45",
+                "min": "0",
+                "max": "200",
+                "disallowDecimals": true
+              },
+              "validators": [
+                {
+                  "type": "js_expression",
+                  "warnsWhenExpression": "!isEmpty(myValue) && myValue >= 90",
+                  "message": "Alerte : TA ≥ 140/90 mmHg (hypertension) / Alert: BP ≥ 140/90 mmHg (hypertension)"
+                }
+              ]
+            },
+            {
+              "label": "Weight (kg)",
+              "type": "obs",
+              "id": "weight",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "5302aa6f-7528-4aeb-a3e8-0dc16a39b6ce",
+                "min": "20",
+                "max": "250"
+              }
+            },
+            {
+              "label": "Height (cm)",
+              "type": "obs",
+              "id": "height",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "b32af377-04c0-4f00-a571-d01170a16d9d",
+                "min": "100",
+                "max": "220"
+              }
+            },
+            {
+              "label": "Mid-Upper Arm Circumference (cm)",
+              "type": "obs",
+              "id": "muac",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "6d4a1b5a-d41d-4779-b441-70ba440b64de",
+                "min": "0",
+                "max": "60"
+              },
+              "validators": [
+                {
+                  "type": "js_expression",
+                  "warnsWhenExpression": "!isEmpty(myValue) && myValue < 21",
+                  "message": "Alerte : PB < 21 cm (malnutrition) / Alert: MUAC < 21 cm (malnutrition)"
+                }
+              ]
+            },
+            {
+              "label": "Uterine Height (cm)",
+              "type": "obs",
+              "id": "fundalHeight",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "ab5b1972-ca49-40f4-81d0-5d242e8edaaf",
+                "min": "0",
+                "max": "60"
+              }
+            },
+            {
+              "label": "Fetal Heart Sounds",
+              "type": "obs",
+              "id": "fetalHeartSounds",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "c2b05041-052a-4008-be54-d669ddee4bba",
+                "answers": [
+                  {
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e"
+                  },
+                  {
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Active Fetal Movements (MAF)",
+              "type": "obs",
+              "id": "activeFetalMovements",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "7e31897b-8091-4d09-ab54-55467982f41e",
+                "answers": [
+                  {
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e"
+                  },
+                  {
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Head Presentation",
+              "type": "obs",
+              "id": "presentation",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "b5d92a81-f711-477c-9fa2-e4d5dacedf87",
+                "answers": [
+                  {
+                    "concept": "c272a848-c97e-4119-a1e1-544b011fa752",
+                    "label": "Céphalique"
+                  },
+                  {
+                    "concept": "270574b0-31a7-4b9e-83bc-b613b403d9f8",
+                    "label": "Transverse"
+                  },
+                  {
+                    "concept": "e5b0895f-f128-40db-9ba7-713e5ff98e00",
+                    "label": "Siège"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Oedema (OMI)",
+              "type": "obs",
+              "id": "lowerLimbOedema",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "cfce22f3-9296-4af1-8c68-4e86cf02bf44",
+                "answers": [
+                  {
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e"
+                  },
+                  {
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Proteinuria (dipstick)",
+              "type": "obs",
+              "id": "proteinuria",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "2f40bcd4-7e1b-415b-a883-8fb53eef3ff2",
+                "answers": [
+                  {
+                    "concept": "5ebcf822-0398-43ef-8d70-117e363541da"
+                  },
+                  {
+                    "concept": "5c8d6240-9cc2-4bc1-b783-30eb887f950c"
+                  }
+                ]
+              }
             }
           ]
         },
@@ -347,129 +906,9 @@
           ]
         },
         {
-          "label": "Additional Details",
+          "label": "Prevention",
           "isExpanded": "true",
           "questions": [
-            {
-              "label": "Gravidity",
-              "type": "obs",
-              "id": "gravida",
-              "questionOptions": {
-                "rendering": "number",
-                "concept": "59c072eb-e253-4c85-a748-077f086158b4",
-                "min": "0",
-                "max": "30",
-                "disallowDecimals": true
-              },
-              "required": true
-            },
-            {
-              "label": "Parity",
-              "type": "obs",
-              "id": "parity",
-              "questionOptions": {
-                "rendering": "number",
-                "concept": "29301b07-6835-4a1c-89d6-d12ac01acdc1",
-                "min": "0",
-                "max": "30",
-                "disallowDecimals": true
-              },
-              "required": true
-            },
-            {
-              "label": "Living Children",
-              "type": "obs",
-              "id": "livingChildren",
-              "questionOptions": {
-                "rendering": "number",
-                "concept": "9a1ad424-adf5-485e-95e3-ba1fa7484a33",
-                "min": "0",
-                "max": "30",
-                "disallowDecimals": true
-              }
-            },
-            {
-              "label": "Number of Children Deceased",
-              "type": "obs",
-              "id": "deceasedChildrenCount",
-              "questionOptions": {
-                "rendering": "number",
-                "concept": "a85812ec-5e7f-4e7d-b0da-d75ec56182f7",
-                "min": "0",
-                "max": "20",
-                "disallowDecimals": true
-              }
-            },
-            {
-              "label": "Number of Stillbirths",
-              "type": "obs",
-              "id": "stillbirthsCount",
-              "questionOptions": {
-                "rendering": "number",
-                "concept": "a6e86791-f24b-4cd9-9c6a-6e30fb3ef842",
-                "min": "0",
-                "max": "20",
-                "disallowDecimals": true
-              }
-            },
-            {
-              "label": "Abortions",
-              "type": "obs",
-              "id": "abortions",
-              "questionOptions": {
-                "rendering": "number",
-                "concept": "459e2e4d-0a02-403d-bcb1-e43a6e4aba23",
-                "min": "0",
-                "max": "30",
-                "disallowDecimals": true
-              }
-            },
-            {
-              "label": "Uterine Height (cm)",
-              "type": "obs",
-              "id": "fundalHeight",
-              "questionOptions": {
-                "rendering": "number",
-                "concept": "ab5b1972-ca49-40f4-81d0-5d242e8edaaf",
-                "min": "0",
-                "max": "60"
-              }
-            },
-            {
-              "label": "Fetal Heart Sounds",
-              "type": "obs",
-              "id": "fetalHeartSounds",
-              "questionOptions": {
-                "rendering": "radio",
-                "concept": "c2b05041-052a-4008-be54-d669ddee4bba",
-                "answers": [
-                  {
-                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e"
-                  },
-                  {
-                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725"
-                  }
-                ]
-              }
-            },
-            {
-              "label": "Insecticide-Treated Net (MILDA)",
-              "type": "obs",
-              "id": "itnUsed",
-              "questionOptions": {
-                "rendering": "radio",
-                "concept": "2e816317-73e0-4f67-89be-dc0081fd3dcc",
-                "answers": [
-                  {
-                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e"
-                  },
-                  {
-                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725"
-                  }
-                ]
-              },
-              "required": true
-            },
             {
               "label": "Iron / Folic Acid",
               "type": "obs",
@@ -507,71 +946,7 @@
               "required": true
             },
             {
-              "label": "PMTCT",
-              "type": "obs",
-              "id": "pmtct",
-              "questionOptions": {
-                "rendering": "radio",
-                "concept": "235e1df6-870f-4aed-a3fb-b696fdc720a1",
-                "answers": [
-                  {
-                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e"
-                  },
-                  {
-                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725"
-                  }
-                ]
-              },
-              "required": true
-            },
-            {
-              "label": "High-Risk Pregnancy",
-              "type": "obs",
-              "id": "highRiskPregnancy",
-              "questionOptions": {
-                "rendering": "radio",
-                "concept": "37b150f3-f90d-425d-9b85-0ed7dab7d22a",
-                "answers": [
-                  {
-                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e"
-                  },
-                  {
-                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725"
-                  }
-                ]
-              }
-            },
-            {
-              "label": "Woman with a Pregnancy Problem",
-              "type": "obs",
-              "id": "pregnancyProblem",
-              "questionOptions": {
-                "rendering": "radio",
-                "concept": "9c868a4d-4afd-43d4-a6ed-b9b8c233ca29",
-                "answers": [
-                  {
-                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e"
-                  },
-                  {
-                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725"
-                  }
-                ]
-              },
-              "required": true
-            },
-            {
-              "label": "Mid-Upper Arm Circumference (cm)",
-              "type": "obs",
-              "id": "muac",
-              "questionOptions": {
-                "rendering": "number",
-                "concept": "6d4a1b5a-d41d-4779-b441-70ba440b64de",
-                "min": "0",
-                "max": "60"
-              }
-            },
-            {
-              "label": "Tetanus Vaccine (VAT)",
+              "label": "Tetanus-Diphtheria Vaccine (Td)",
               "type": "obs",
               "id": "vatDose",
               "questionOptions": {
@@ -580,71 +955,31 @@
                 "answers": [
                   {
                     "concept": "32cf88ed-5cd2-4f4b-b098-1cc94c6171e1",
-                    "label": "VAT 1"
+                    "label": "Td 1"
                   },
                   {
                     "concept": "08232a31-da64-418d-a61b-bbaa45c05691",
-                    "label": "VAT 2"
+                    "label": "Td 2"
                   },
                   {
                     "concept": "edab1e19-95b7-4873-a323-910a4aae165d",
-                    "label": "VAT 3"
+                    "label": "Td 3"
                   },
                   {
                     "concept": "f4e3a976-f4d3-4278-b087-f4cdbc6316f1",
-                    "label": "VAT 4"
+                    "label": "Td 4"
                   },
                   {
                     "concept": "07a0629c-68fd-4acd-873a-75ad0e11a203",
-                    "label": "VAT 5"
+                    "label": "Td 5"
                   },
                   {
                     "concept": "9fa8c53e-f890-41ed-8de0-ecd6263cc16a",
-                    "label": "VAT rappel"
+                    "label": "Td rappel"
                   },
                   {
                     "concept": "97007635-f184-40d5-8a97-4b201cbc2bf9",
                     "label": "Complètement vaccinée"
-                  }
-                ]
-              }
-            },
-            {
-              "label": "Active Fetal Movements (MAF)",
-              "type": "obs",
-              "id": "activeFetalMovements",
-              "questionOptions": {
-                "rendering": "radio",
-                "concept": "7e31897b-8091-4d09-ab54-55467982f41e",
-                "answers": [
-                  {
-                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e"
-                  },
-                  {
-                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725"
-                  }
-                ]
-              }
-            },
-            {
-              "label": "Head Presentation",
-              "type": "obs",
-              "id": "presentation",
-              "questionOptions": {
-                "rendering": "radio",
-                "concept": "b5d92a81-f711-477c-9fa2-e4d5dacedf87",
-                "answers": [
-                  {
-                    "concept": "c272a848-c97e-4119-a1e1-544b011fa752",
-                    "label": "Céphalique"
-                  },
-                  {
-                    "concept": "270574b0-31a7-4b9e-83bc-b613b403d9f8",
-                    "label": "Transverse"
-                  },
-                  {
-                    "concept": "e5b0895f-f128-40db-9ba7-713e5ff98e00",
-                    "label": "Siège"
                   }
                 ]
               }
@@ -684,6 +1019,91 @@
                 ]
               }
             },
+            {
+              "label": "Insecticide-Treated Net (MILDA)",
+              "type": "obs",
+              "id": "itnUsed",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "2e816317-73e0-4f67-89be-dc0081fd3dcc",
+                "answers": [
+                  {
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e"
+                  },
+                  {
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725"
+                  }
+                ]
+              },
+              "required": true
+            },
+            {
+              "label": "PMTCT",
+              "type": "obs",
+              "id": "pmtct",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "235e1df6-870f-4aed-a3fb-b696fdc720a1",
+                "answers": [
+                  {
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e"
+                  },
+                  {
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725"
+                  }
+                ]
+              },
+              "required": true
+            },
+            {
+              "label": "TDF Started at 28 Weeks (Hepatitis B PMTCT)",
+              "type": "obs",
+              "id": "tdf28",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "5ca471fb-b694-49c9-abdb-2a11df721076",
+                "answers": [
+                  {
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e"
+                  },
+                  {
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Counselling Given",
+              "type": "obs",
+              "id": "counselling",
+              "questionOptions": {
+                "rendering": "checkbox",
+                "concept": "3c6e75d9-9796-4bcf-a67d-1447f1ccdcd6",
+                "answers": [
+                  {
+                    "concept": "0a98db7c-6805-4024-b756-12aa59fa33c1"
+                  },
+                  {
+                    "concept": "04354c88-8f24-4372-8a84-f6a0686cf4f4"
+                  },
+                  {
+                    "concept": "79f55cbc-9151-430a-84bc-f1ca03df57fc"
+                  },
+                  {
+                    "concept": "b7ff8cd4-950d-4a30-82ee-7ac10a7fcea6"
+                  },
+                  {
+                    "concept": "77fafd3b-02c6-4b81-b421-f669a6f2e906"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "label": "Gender-Based Violence",
+          "isExpanded": "true",
+          "questions": [
             {
               "label": "Active Search for Gender-Based Violence",
               "type": "obs",
@@ -727,6 +1147,92 @@
               "hide": {
                 "hideWhenExpression": "gbvScreening !== '2f20b5d3-ce71-4b89-a3b4-388f416fc62e'"
               }
+            }
+          ]
+        },
+        {
+          "label": "Follow-up",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "High-Risk Pregnancy",
+              "type": "obs",
+              "id": "highRiskPregnancy",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "37b150f3-f90d-425d-9b85-0ed7dab7d22a",
+                "answers": [
+                  {
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e"
+                  },
+                  {
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Woman with a Pregnancy Problem",
+              "type": "obs",
+              "id": "pregnancyProblem",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "9c868a4d-4afd-43d4-a6ed-b9b8c233ca29",
+                "answers": [
+                  {
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e"
+                  },
+                  {
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725"
+                  }
+                ]
+              },
+              "required": true
+            },
+            {
+              "label": "Referred",
+              "type": "obs",
+              "id": "referred",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "3996635c-8a42-47ff-9774-40ce5be6437b",
+                "answers": [
+                  {
+                    "concept": "2f20b5d3-ce71-4b89-a3b4-388f416fc62e"
+                  },
+                  {
+                    "concept": "d45102a2-d9b7-40dc-a30c-8e88494e1725"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Referral Reason and Destination",
+              "type": "obs",
+              "id": "referralReason",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "7a47e51b-9829-4caa-87af-0c18851d47fb"
+              },
+              "hide": {
+                "hideWhenExpression": "referred !== '2f20b5d3-ce71-4b89-a3b4-388f416fc62e'"
+              }
+            },
+            {
+              "label": "Next ANC Appointment",
+              "type": "obs",
+              "id": "nextAppointment",
+              "questionOptions": {
+                "rendering": "date",
+                "concept": "27ca999a-956e-4293-9263-f439b21578c2"
+              },
+              "validators": [
+                {
+                  "type": "js_expression",
+                  "warnsWhenExpression": "mode === 'enter' && !isEmpty(myValue) && new Date(myValue) < new Date(new Date().toDateString())",
+                  "message": "Le rendez-vous est dans le passé / The appointment is in the past"
+                }
+              ]
             },
             {
               "label": "Observations",
