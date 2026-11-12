@@ -2553,4 +2553,32 @@
         <rollback/>
     </changeSet>
 
+    <!--
+        #609 - the outcome at discharge (CIEL 160433) offers the official list (product owner,
+        11 Nov 2026): « Décédé » is replaced by « Décès avant 24 h » and « Décès après 24 h »
+        (OCL collection uvl-discharge-outcome 20261112-609). The OCL import adds answers but never
+        removes one, so the Décédé answer #583 gave the question stays in concept_answer although
+        its Q-AND-A mapping is retired in OCL (uvl-ciel 20261112-609). The OCL module keys the
+        answer by the mapping's external_id, dd09a7e5. Décédé itself is not retired: the outpatient
+        outcome still offers it, and an obs already saved with it keeps its value.
+
+        On a database that has not loaded the uvl-forms export yet, the question is missing, the
+        precondition fails and the changeset is tried again on the next start (onFail CONTINUE), as #584.
+    -->
+    <changeSet id="discharge_outcome_without_deceased_answer-20261112" author="Joshua">
+        <preConditions onFail="CONTINUE" onError="CONTINUE"
+                       onFailMessage="WARN (#609): the outcome at discharge question (CIEL 160433) does not exist yet (OCL not loaded), so its Décédé answer was NOT removed; this changeset is retried on every start.">
+            <sqlCheck expectedResult="1">
+                SELECT COUNT(*) FROM concept WHERE uuid = '160433AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            Remove Décédé from the answers of the outcome at discharge (#609).
+        </comment>
+        <sql>
+            DELETE FROM concept_answer WHERE uuid = 'dd09a7e5-dba9-4803-803f-3e0319d940cf';
+        </sql>
+        <rollback/>
+    </changeSet>
+
 </databaseChangeLog>
