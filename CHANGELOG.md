@@ -51,6 +51,11 @@ MSF-OCG/LIME-EMR-Tooling.
 - French: the test and procedure order workspaces read « Ajouter : examen de laboratoire » / « Ajouter : acte » (« Modifier : … » when revising) instead of a bare lowercase « examen de laboratoire » / « acte ». The tests app lowercases the order type's name in that title (`toLocaleLowerCase`), so capitalising `Display:fr` cannot fix it; the French `addOrderableForOrderType` was just `{{orderTypeDisplay}}`. The visit note's diagnosis results list is « Résultats de la recherche de diagnostic » (was « Diagnosis search results »), with « Actions pour … » and « Retirer … » on each diagnosis (#603).
 - French: 23 procedures get a French preferred name from the 2024 UVL procedures list (`concepts/procedures.csv`, removed in #174): « Incision d'abcès », « Consultation généraliste », « Suture simple » and « Suture complexe » (also ORT304, URG301, GO304, ORT207, GO206), « Circoncision » (also DIG201), « GO101 - Césarienne », … Two spellings of that list are corrected (« Atelle » → « Attelle plâtrée », « Césarine » → « Césarienne »). 121 procedures, the coded ANE/DEN/DIG/END/GO/KIN/MED/OPH/ORL/ORT/URG acts among them, have no French source yet and stay English until the product owner gives their French names. OCL: uvl-custom 20261111-4; `UVL_procedures_20261111-2` replaces `UVL_procedures_20261106` (#603).
 - Imaging: the Imagerie card dates a study « 03 nov. 2026 » (core `formatDate` standard mode) instead of « 03 — nov. — 2026 »; `@madiro/esm-uvl-imaging-app` 1.0.1. The Attachments card beside it still reads « 03 — nov. — 2026 »: that is the stock `@openmrs/esm-patient-attachments-app`, which formats with `mode: 'wide'` and has no setting for it (#603).
+- Stock app: UVL ships `@openmrs/esm-stock-management-app` 3.3.1-uvl.1, release 3.3.1 with fixes not released upstream yet (`distro/frontend/openmrs-esm-stock-management-app`, source `jnsereko/openmrs-esm-stock-management-app` branch `uvl/3.3.1`). A batch's expiry date is saved on the day picked, not the day before (Burundi is UTC+2). The bin button on an operation line deletes the line. The search inside an expanded operation ignores case. Opening a Stock Issue without a requisition no longer shows a red « Demande de stock associée Requise ». An item whose common name is its drug name reads « X », not « X (X) ». The picker for the location an operation is made at (« De » for a Requisition or Stock Issue, « À » for a Receipt) offers only the locations of the user's stock role scope for that operation type (a Box 1 pharmacist no longer sees Boxes 2 and 3); the other picker, such as the store a requisition asks from, is unchanged, as are System Developers. The Items page fits the window. The Responsible Person list narrows as you type, searches after 300 ms instead of 1 s, and leaves out System Developer accounts (`responsiblePersonExcludedRoles`). French: « Nouvelle opération », « Suivant », « Soumettre pour approbation », « Confirmer la réception », the confirmation dialogs (« Confirmez-vous l'action « Terminer » sur cette opération ? »), « Vue d'ensemble » / « Opérations » / « Articles », « Approuver » instead of « Expédier » on the approve button, and « Quantité » instead of « Seuil de Quantité ». The list's refresh after Complete was already fixed by 3.3.1 (#447).
+- Roles: only pharmacists dispense. Doctor loses `Edit Medication Dispense` and `Delete Medication Dispense`, so a doctor can no longer change or delete a pharmacist's dispense (the Dispensation app was already hidden from doctors by #603). `scripts/check-openmrs-roles.groovy` now fails the build if any clinical role holds a dispensing privilege, if the Pharmacist or a clinical role holds `Task: stockmanagement.stockItems.mutate` (« Ajouter Article de Stock » and « Importer » on Stock Items; only the central store's Inventory Manager / Inventory Administrator hold it), or if X-Ray Technician loses `Add Orders`, `Edit Orders` or `Edit Encounters`. The X-ray technician cannot be kept from revising or cancelling an order by privileges: entering a result saves a DISCONTINUE order and sets the order's fulfiller status, which need exactly those privileges. Whether a dispensing box may create Opening Stock is its stock scope, set outside this repo (#607).
+- French: the vitals workspace is titled « Signes vitaux et biométrie » (« Modifier les signes vitaux » when editing) instead of « Enregistrer les signes vitaux et la biométrie », which wrapped and was clipped in the workspace header. Both keys are only used as that title (`recordVitalsAndBiometrics`, `editVitalsAndBiometrics`, esm-patient-vitals-app translation overrides) (#608).
+- French, Odoo: the invoice split screens are in French for French-speaking users: « Générer les factures par payeur », « Calculer la répartition assurance », « Assurance de base » / « Assurance complémentaire », « Ticket modérateur », the contact's « Assurance » tab and the split error messages. UVL-Odoo-Addons `insurance_coverage` `i18n/fr.po` now covers all 80 terms of the module (it had 5); the Odoo boot's `-i insurance_coverage` loads it, no module upgrade needed. Only users whose Odoo language is French see it: on UAT 13 of the 20 internal users are still `en_US` (#608).
+- French, Keycloak: the sign-in and sign-out pages are in French whatever the browser language. The `ozone` realm supported `en` and `fr` with no default, so once the session had ended an English browser got « Do you want to log out? ». LIME-EMR-Tooling realm seed: `supportedLocales` `fr`, `defaultLocale` `fr`; existing realms need both set once in the admin console or API, the seed is only read on a first install (#608).
 
 Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
 
@@ -216,7 +221,9 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
 - **"Complete dispatch" now shows for the receiving pharmacist** as soon as a Stock Issue is
   dispatched, and the approved requisition's "Issue stock" action as soon as it is approved, without
   an OpenMRS restart. A stock role or scope changed by an administrator applies at the next refresh
-  of the operations list. (#447)
+  of the operations list. A pharmacist can no longer create or change a stock operation outside
+  their stock scope (a location or operation type their scope doesn't give), even through the API:
+  the server answers 403. (#447)
 - **Each dispensing pharmacist has their own stock box.** Pharmacie - Dispensation Box 1, 2 and 3
   (Rx-DISP-1 to -3) sit under Pharmacie - Dispensation. A pharmacist signs in at their box; once
   deduction is on, a dispense takes from that box. The central pharmacy issues to the boxes, and a
@@ -1046,13 +1053,26 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   cleared. A server thread that had seen an operation once answered every later request for it the
   same way, for any user and whatever its status had become, so the receiver of a dispatched Stock
   Issue lost "Complete dispatch" until OpenMRS restarted. The distro now ships
-  `stockmanagement-2.1.2-uvl1.omod` from `distro/binaries/openmrs/modules`: the published 2.1.2 omod
-  with `StockOperationResource` rebuilt without the cache, and `config.xml` at `2.1.2-uvl1`. Every
-  other file is the published 2.1.2 (jnsereko fork branch `uvl/2.1.2-permission-cache` `3853e7f`; the
-  2.1.x source isn't public, so the class was decompiled and only the cache removed, see the
-  branch's `uvl/2.1.2-uvl1/README.md`). It replaces the stock 2.1.2 omod at build time. Upstream
-  `master` has the same cache, removed by O3-6248 (openmrs/openmrs-module-stockmanagement#57). Once
-  UVL takes a stockmanagement release without it, delete the omod. (#447)
+  `stockmanagement-2.1.2-uvl2.omod` from `distro/binaries/openmrs/modules`: the published 2.1.2 omod
+  with `StockOperationResource` rebuilt without the cache, and `config.xml` at `2.1.2-uvl2`. Upstream
+  `master` has the same cache, removed by O3-6248 (openmrs/openmrs-module-stockmanagement#57). (#447)
+- **Creating or updating a stock operation is checked against the user's stock role scopes.**
+  2.1.2 checks every action (submit, approve, reject, return, dispatch, complete, cancel) against
+  the scopes, but create and update only against the global mutate privilege, so a Pharmacist scoped
+  to one box created an Opening Stock at Pharmacie (Rx) through the API. The same omod's
+  `StockOperationResource.save` now makes the actions' check: the scopes must give
+  `Task: stockmanagement.stockoperations.mutate` for the operation's type at its location (the
+  destination of a Receipt, otherwise the source; on update the stored location as well). A refusal
+  is a 403 with the module's "You do not have permission..." message, and an action the scopes
+  refuse is now a 403 too, where it was a 500. Holders of `Task: stockmanagement.userRoleScopes.mutate`
+  (Inventory Administrator, System Developer) skip the create and update check. The module has no
+  rule against approving an operation one created, and none is added: who may approve is who holds
+  the approve privilege in scope. Every other file of the omod is the published 2.1.2 (jnsereko
+  fork branch `uvl/2.1.2-scope-enforcement` `b23907a`, on top of `uvl/2.1.2-permission-cache`; the
+  2.1.x source isn't public, so `StockOperationResource` and `StockOperationActionResource` were
+  decompiled and only these fixes applied, see the branch's `uvl/2.1.2-uvl2/README.md`). It replaces
+  the stock 2.1.2 omod at build time. Once UVL takes a stockmanagement release with both fixes,
+  delete the omod. (#447)
 
 ### Deploy notes for production
 1. Record the running image digests and take a database backup first.
@@ -1190,8 +1210,8 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
     Then a doctor's `/pacs/auth/user/profile` must list `"permissions": ["view"]`.
 24. **#447, stock module:** after the first start, the same check for `stockmanagement`:
     `docker exec <openmrs container> sh -c 'ls /openmrs/data/modules | grep stockmanagement'` must
-    show only `stockmanagement-2.1.2-uvl1.omod`, and the OpenMRS log must show it started as version
-    `2.1.2-uvl1`. Billing must still start (it needs stockmanagement >= 1.4.0).
+    show only `stockmanagement-2.1.2-uvl2.omod`, and the OpenMRS log must show it started as version
+    `2.1.2-uvl2`. Billing must still start (it needs stockmanagement >= 1.4.0).
 
 ### Known issues
 - **The location picker greets the user by username (« Bienvenue Pacifique.Gahungu »).** The

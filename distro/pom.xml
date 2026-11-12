@@ -27,9 +27,10 @@
          refresh and never reaches the search index. Reproduced three times on
          UAT 2026-09-18. 2.1.2 is the last 2.x release and still satisfies
          billing 2.3.0, which requires stockmanagement >= 1.4.0.
-         overridden by distro/binaries/openmrs/modules/stockmanagement-2.1.2-uvl1.omod until a
-         release without the stock operation permission cache is taken (UVL-EMR#447, O3-6248,
-         openmrs/openmrs-module-stockmanagement#57) -->
+         overridden by distro/binaries/openmrs/modules/stockmanagement-2.1.2-uvl2.omod until a
+         release without the stock operation permission cache (O3-6248,
+         openmrs/openmrs-module-stockmanagement#57) and with role scopes checked on stock
+         operation create and update is taken (UVL-EMR#447) -->
     <stockmanagement.version>2.1.2</stockmanagement.version>
     <billing.version>2.3.0</billing.version>
     <initializer.version>2.12.0</initializer.version>
@@ -819,6 +820,13 @@
                 </tar>
                 <tar destfile="${uvl.frontend.modules}/openmrs-esm-ward-app.tgz" compression="gzip" longfile="posix">
                   <tarfileset dir="${project.basedir}/frontend/openmrs-esm-ward-app" prefix="package">
+                    <include name="package.json" />
+                    <include name="dist/**" />
+                    <exclude name="dist/**/*.map" />
+                  </tarfileset>
+                </tar>
+                <tar destfile="${uvl.frontend.modules}/openmrs-esm-stock-management-app.tgz" compression="gzip" longfile="posix">
+                  <tarfileset dir="${project.basedir}/frontend/openmrs-esm-stock-management-app" prefix="package">
                     <include name="package.json" />
                     <include name="dist/**" />
                     <exclude name="dist/**/*.map" />
