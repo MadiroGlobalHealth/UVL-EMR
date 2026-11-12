@@ -824,6 +824,13 @@
                     <exclude name="dist/**/*.map" />
                   </tarfileset>
                 </tar>
+                <tar destfile="${uvl.frontend.modules}/openmrs-esm-stock-management-app.tgz" compression="gzip" longfile="posix">
+                  <tarfileset dir="${project.basedir}/frontend/openmrs-esm-stock-management-app" prefix="package">
+                    <include name="package.json" />
+                    <include name="dist/**" />
+                    <exclude name="dist/**/*.map" />
+                  </tarfileset>
+                </tar>
                 <replaceregexp file="${project.build.directory}/openmrs_frontend/spa-assemble-config.json"
                                match="&quot;file:(?!/)" replace="&quot;file:${uvl.frontend.modules}/" flags="g" />
               </target>

@@ -42,11 +42,11 @@
     "@openmrs/esm-ward-app": "file:openmrs-esm-ward-app.tgz",
     "@openmrs/esm-bed-management-app": "12.1.1",
     "@openmrs/esm-reports-app": "4.6.1",
-    "@openmrs/esm-stock-management-app": "3.3.1",
+    "@openmrs/esm-stock-management-app": "file:openmrs-esm-stock-management-app.tgz",
     "@madiro/esm-uvl-imaging-app": "file:madiro-esm-uvl-imaging-app.tgz",
     "@madiro/esm-uvl-partograph-app": "file:madiro-esm-uvl-partograph-app.tgz"
   },
-  "__comment": "Excluding modules some default modules to ensure we are using the specified versions. Every module here is pinned to a release that requires @openmrs/esm-framework 11.x, which is what coreVersion provides -- keep it that way when bumping any single entry. The patient-chart monorepo apps (including esm-form-engine-app) share one build number and move together; 13.0.2-pre.12863 is the first build that bundles esm-form-engine-lib with the fix for duplicated obs on re-save (#490). \"file:\" entries are UVL's own modules from distro/frontend: distro/pom.xml packs each into target/uvl-frontend-modules and anchors the name there (#494). Some \"file:\" entries are patched builds of upstream modules, waiting for upstream releases: esm-dispensing-app is 1.11.2 plus #541 and #394, esm-patient-vitals-app is 13.0.2-pre.12863 plus #347 and #564, esm-patient-tests-app is 13.0.2-pre.12863 plus #548, esm-ward-app is 12.1.1 plus #246 and #529 (see each README in distro/frontend).",
+  "__comment": "Excluding modules some default modules to ensure we are using the specified versions. Every module here is pinned to a release that requires @openmrs/esm-framework 11.x, which is what coreVersion provides -- keep it that way when bumping any single entry. The patient-chart monorepo apps (including esm-form-engine-app) share one build number and move together; 13.0.2-pre.12863 is the first build that bundles esm-form-engine-lib with the fix for duplicated obs on re-save (#490). \"file:\" entries are UVL's own modules from distro/frontend: distro/pom.xml packs each into target/uvl-frontend-modules and anchors the name there (#494). Some \"file:\" entries are patched builds of upstream modules, waiting for upstream releases: esm-dispensing-app is 1.11.2 plus #541 and #394, esm-patient-vitals-app is 13.0.2-pre.12863 plus #347 and #564, esm-patient-tests-app is 13.0.2-pre.12863 plus #548, esm-ward-app is 12.1.1 plus #246 and #529, esm-stock-management-app is 3.3.1 plus #447 (see each README in distro/frontend).",
   "frontendModuleExcludes": [
     "@openmrs/esm-help-menu-app",
     "@openmrs/esm-billing-app",
