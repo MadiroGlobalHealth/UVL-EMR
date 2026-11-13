@@ -1,0 +1,346 @@
+table_name: PBF Registre Chirurgie
+main_dttm_col: DATE
+description: "Registre PBF CHIRURGIE, une ligne par intervention (formulaire Operation\
+  \ Protocol) (UVL-EMR#589). Type de chirurgie d\xE9duit du code PBF de l'acte ; CARTE\
+  \ vide tant que non saisi (#582)."
+default_endpoint: null
+offset: 0
+cache_timeout: null
+schema: public
+sql: "-- ============================================================================\n\
+  -- UVL-EMR \xB7 PBF register \xAB CHIRURGIE \xBB (Superset virtual dataset)\n--\
+  \ https://github.com/MadiroGlobalHealth/UVL-EMR/issues/589   (related #586 #587\
+  \ #582)\n--\n-- Shape: one row per operation (UVL Operation Protocol form encounter),\
+  \ columns in\n-- the order of the PBF template.\n--\n-- Sources (13 Nov 2026). The\
+  \ analytics DB has no Operation Protocol encounter yet,\n-- so the encounter is\
+  \ selected by FORM NAME and the questions by the concept UUIDs\n-- found in the\
+  \ analytics \xAB concepts \xBB table (to re-check once the first operations sync):\n\
+  --   * Operation encounter: encounters.form_name ILIKE '%Operation Protocol%'.\n\
+  --   * TYPE D'INTERVENTION: obs \xAB Procedure performed (text) \xBB 1cb8cdd5-2ca4-4ace-b1ff-eef6e59a7811\n\
+  --     or \xAB Procedure \xBB 27fe6714-0bc6-4435-adb0-818538abe42c in the encounter;\
+  \ else the\n--     surgical Procedure orders (order type 67a92e56-0f88-11ea-8d71-362b9e155667,\
+  \ PBF code\n--     with hundreds digit 1-3, e.g. \xAB GO101 - Cesarean section \xBB\
+  ) of the same encounter,\n--     else of the same visit.\n--   * TYPE DE CHIRURGIE:\
+  \ from that PBF procedure code: x1xx = Majeure, x2xx = Interm\xE9diaire,\n--   \
+  \  x3xx = Mineure (the nomenclature's \xAB Other major / intermediate / minor \u2026\
+  \ surgery \xBB).\n--     Empty when only a free-text procedure is recorded.\n--\
+  \   * TYPE D'ANESTHESIE: \xAB Anaesthesia type (general, loco-regional, local) \xBB\
+  \n--     e56083c5-658e-4715-85ce-30cd78e0b13b, else \xAB Anesthesia Type \xBB 3017f680-5c3c-4f7b-94e1-6afda9e07eaf.\n\
+  --   * CHIRURGIEN: \xAB Surgeon name \xBB 9b01093f-21cc-4723-9ea4-88edfa8fccb8,\
+  \ else \xAB Surgeon \xBB\n--     0b21ca75-2fab-4c34-bf4c-f66ae2415829.\n--   * CIM10\
+  \ / DIAGNOSTIC: diagnoses on the operation encounter, else on the latest\n--   \
+  \  consultation of the visit before it (Outpatient 0ff55309\u2026 / Inpatient 43f383ec\u2026\
+  );\n--     ICD-10 from the diagnosis concept's \xAB ICD-10-WHO: X \xBB mapping (#584).\n\
+  --   * ASSURANCE / ASSURANCE COMPLEMENTAIRE: visit attributes Payer / Supplementary\
+  \ insurance.\n--   * CARTE: not captured yet (#582) -> empty.\n--   * SERVICE: the\
+  \ operation encounter's location (#222).\n--   * Test patients excluded (SYNTH-\
+  \ / E2E / QA / TEST / DEMO, voided persons,\n--     \xAB Locations test \xBB 450be362-59a7-4ccd-964d-ebd930a8b30f).\n\
+  -- ============================================================================\n\
+  \nWITH op AS (\n    SELECT\n        e.encounter_id,\n        e.encounter_uuid,\n\
+  \        e.visit_uuid,\n        e.patient_uuid,\n        e.encounter_datetime,\n\
+  \        e.location\n    FROM encounters e\n    WHERE e.form_name ILIKE '%Operation\
+  \ Protocol%'\n      AND COALESCE(e.encounter_voided, false) = false\n      AND e.location_uuid\
+  \ IS DISTINCT FROM '450be362-59a7-4ccd-964d-ebd930a8b30f'\n),\n\n-- Latest answer\
+  \ per question in the operation encounter.\nop_obs AS (\n    SELECT DISTINCT ON\
+  \ (o.encounter_uuid, o.question_uuid)\n        o.encounter_uuid,\n        o.question_uuid,\n\
+  \        COALESCE(o.answer_coded, o.answer_text) AS answer\n    FROM observations\
+  \ o\n    WHERE COALESCE(o.obs_voided, false) = false\n      AND o.encounter_uuid\
+  \ IN (SELECT encounter_uuid FROM op)\n      AND o.question_uuid IN ('1cb8cdd5-2ca4-4ace-b1ff-eef6e59a7811',\
+  \   -- Procedure performed (text)\n                              '27fe6714-0bc6-4435-adb0-818538abe42c',\
+  \   -- Procedure\n                              'e56083c5-658e-4715-85ce-30cd78e0b13b',\
+  \   -- Anaesthesia type (general, loco-regional, local)\n                      \
+  \        '3017f680-5c3c-4f7b-94e1-6afda9e07eaf',   -- Anesthesia Type\n        \
+  \                      '9b01093f-21cc-4723-9ea4-88edfa8fccb8',   -- Surgeon name\n\
+  \                              '0b21ca75-2fab-4c34-bf4c-f66ae2415829')   -- Surgeon\n\
+  \    ORDER BY o.encounter_uuid, o.question_uuid, o.obs_date_time DESC, o.obs_id\
+  \ DESC\n),\n\n-- Surgical procedure orders (PBF code with hundreds digit 1-3) per\
+  \ encounter.\nproc AS (\n    SELECT\n        r.encounter_uuid,\n        e.visit_uuid,\n\
+  \        r.order_name,\n        SUBSTRING(r.order_name FROM '^[A-Z]{2,3}([1-3])[0-9]{2}\
+  \ ') AS level\n    FROM orders r\n    JOIN encounters e ON e.encounter_uuid = r.encounter_uuid\n\
+  \    WHERE r.order_type_uuid = '67a92e56-0f88-11ea-8d71-362b9e155667'     -- Procedure\n\
+  \      AND COALESCE(r.voided, false) = false\n      AND r.order_name ~ '^[A-Z]{2,3}[1-3][0-9]{2}\
+  \ '\n      AND e.visit_uuid IN (SELECT visit_uuid FROM op)\n),\nop_proc AS (\n \
+  \   SELECT\n        o.encounter_id,\n        COALESCE(\n            (SELECT STRING_AGG(DISTINCT\
+  \ p.order_name, '; ') FROM proc p WHERE p.encounter_uuid = o.encounter_uuid),\n\
+  \            (SELECT STRING_AGG(DISTINCT p.order_name, '; ') FROM proc p WHERE p.visit_uuid\
+  \ = o.visit_uuid)\n        ) AS proc_names,\n        COALESCE(\n            (SELECT\
+  \ MIN(p.level) FROM proc p WHERE p.encounter_uuid = o.encounter_uuid),\n       \
+  \     (SELECT MIN(p.level) FROM proc p WHERE p.visit_uuid = o.visit_uuid)\n    \
+  \    ) AS proc_level                                        -- most major procedure\
+  \ wins\n    FROM op o\n),\n\n-- Diagnoses per encounter, with ICD-10 from the concept's\
+  \ ICD-10-WHO mapping.\nenc_dx AS (\n    SELECT\n        ed.encounter_id,\n     \
+  \   STRING_AGG(DISTINCT COALESCE(c.name, ed.diagnosis_non_coded), '; ')        AS\
+  \ dx_names,\n        STRING_AGG(DISTINCT TRIM(SUBSTRING(c.concept_mappings_source_codes\n\
+  \                                           FROM 'ICD-10-WHO: ([^,]+)')), '; ')\
+  \     AS icd10\n    FROM encounter_diagnoses ed\n    LEFT JOIN concepts c\n    \
+  \       ON c.concept_id = ed.diagnosis_coded\n          AND c.locale = 'en'\n  \
+  \  WHERE COALESCE(ed.voided, false) = false\n      AND ed.encounter_id IN (SELECT\
+  \ e.encounter_id FROM encounters e\n                               WHERE e.visit_uuid\
+  \ IN (SELECT visit_uuid FROM op))\n    GROUP BY ed.encounter_id\n),\nop_dx AS (\n\
+  \    SELECT DISTINCT ON (o.encounter_id)\n        o.encounter_id,\n        d.dx_names,\n\
+  \        d.icd10\n    FROM op o\n    JOIN encounters e\n      ON e.visit_uuid =\
+  \ o.visit_uuid\n     AND COALESCE(e.encounter_voided, false) = false\n    JOIN enc_dx\
+  \ d ON d.encounter_id = e.encounter_id\n    WHERE e.encounter_id = o.encounter_id\n\
+  \       OR (e.encounter_type_uuid IN ('0ff55309-1897-476b-a647-c7c180b102c8',  \
+  \ -- Outpatient Consultation\n                                     '43f383ec-90fd-4273-be45-9c1906dda9aa')\
+  \   -- Inpatient Consultation\n           AND e.encounter_datetime <= o.encounter_datetime)\n\
+  \    ORDER BY o.encounter_id,\n             (e.encounter_id = o.encounter_id) DESC,\n\
+  \             e.encounter_datetime DESC\n),\n\nbase AS (\n    SELECT\n        o.*,\n\
+  \        v.visit_attributes,\n        p.given_name,\n        p.family_name,\n  \
+  \      p.identifiers,\n        COALESCE(p.gender, v.patient_gender)       AS gender,\n\
+  \        COALESCE(p.birthdate, v.patient_birthdate) AS birthdate\n    FROM op o\n\
+  \    LEFT JOIN visits v ON v.visit_uuid = o.visit_uuid\n    JOIN patients p    ON\
+  \ p.patient_uuid = o.patient_uuid\n    WHERE COALESCE(v.visit_voided, false) = false\n\
+  \      AND COALESCE(p.person_voided, false) = false\n      AND NOT (COALESCE(p.family_name,\
+  \ '') ~* '^(SYNTH-|E2E|QA|TEST|DEMO)'\n            OR COALESCE(p.given_name,  '')\
+  \ ~* '^(SYNTH-|E2E|QA|TEST|DEMO)')\n)\n\nSELECT\n    b.encounter_datetime::date\
+  \                                               AS \"DATE\",\n    COALESCE(\n  \
+  \      TRIM(SPLIT_PART(SUBSTRING(b.identifiers FROM 'UVL ID: ([^,]+)'), ',', 1)),\n\
+  \        TRIM(SPLIT_PART(SUBSTRING(b.identifiers FROM 'Legacy ID: ([^,]+)'), ',',\
+  \ 1))\n    )                                                                   \
+  \     AS \"IDPERSONNE\",\n    b.family_name                                    \
+  \                        AS \"NOM\",\n    b.given_name                         \
+  \                                    AS \"PRENOM\",\n    b.gender              \
+  \                                                   AS \"SEXE\",\n    DATE_PART('year',\
+  \ AGE(b.encounter_datetime::date, b.birthdate))::int     AS \"AGE\",\n    COALESCE(pt.answer,\
+  \ pc.answer, pr.proc_names)                            AS \"TYPE D'INTERVENTION\"\
+  ,\n    COALESCE(an1.answer, an2.answer)                                        \
+  \ AS \"TYPE D'ANESTHESIE\",\n    COALESCE(su1.answer, su2.answer)              \
+  \                           AS \"CHIRURGIEN\",\n    CASE pr.proc_level\n       \
+  \ WHEN '1' THEN 'Majeure'\n        WHEN '2' THEN 'Interm\xE9diaire'\n        WHEN\
+  \ '3' THEN 'Mineure'\n    END                                                  \
+  \                    AS \"TYPE DE CHIRURGIE\",\n    dx.icd10                   \
+  \                                              AS \"CIM10\",\n    dx.dx_names  \
+  \                                                            AS \"DIAGNOSTIC\",\n\
+  \    NULLIF(TRIM(SUBSTRING(b.visit_attributes FROM '(?:^|/ )Payer: ((?:[^/]|/(?!\
+  \ ))*)')), '')                   AS \"ASSURANCE\",\n    CAST(NULL AS TEXT)     \
+  \                                                  AS \"CARTE\",   -- card number\
+  \ not captured yet (#582)\n    NULLIF(TRIM(SUBSTRING(b.visit_attributes FROM '(?:^|/\
+  \ )Supplementary insurance: ((?:[^/]|/(?! ))*)')), '') AS \"ASSURANCE COMPLEMENTAIRE\"\
+  ,\n    b.location                                                              \
+  \ AS \"SERVICE\"\nFROM base b\nLEFT JOIN op_proc pr  ON pr.encounter_id = b.encounter_id\n\
+  LEFT JOIN op_dx   dx  ON dx.encounter_id = b.encounter_id\nLEFT JOIN op_obs  pt\
+  \  ON pt.encounter_uuid  = b.encounter_uuid AND pt.question_uuid  = '1cb8cdd5-2ca4-4ace-b1ff-eef6e59a7811'\n\
+  LEFT JOIN op_obs  pc  ON pc.encounter_uuid  = b.encounter_uuid AND pc.question_uuid\
+  \  = '27fe6714-0bc6-4435-adb0-818538abe42c'\nLEFT JOIN op_obs  an1 ON an1.encounter_uuid\
+  \ = b.encounter_uuid AND an1.question_uuid = 'e56083c5-658e-4715-85ce-30cd78e0b13b'\n\
+  LEFT JOIN op_obs  an2 ON an2.encounter_uuid = b.encounter_uuid AND an2.question_uuid\
+  \ = '3017f680-5c3c-4f7b-94e1-6afda9e07eaf'\nLEFT JOIN op_obs  su1 ON su1.encounter_uuid\
+  \ = b.encounter_uuid AND su1.question_uuid = '9b01093f-21cc-4723-9ea4-88edfa8fccb8'\n\
+  LEFT JOIN op_obs  su2 ON su2.encounter_uuid = b.encounter_uuid AND su2.question_uuid\
+  \ = '0b21ca75-2fab-4c34-bf4c-f66ae2415829'\nORDER BY b.encounter_datetime DESC,\
+  \ b.encounter_id"
+params: null
+template_params: null
+filter_select_enabled: true
+fetch_values_predicate: null
+extra: null
+normalize_columns: false
+always_filter_main_dttm: false
+uuid: 3d0bc344-3d75-4ec4-8111-3b93e0052a0b
+metrics:
+- metric_name: count
+  verbose_name: COUNT(*)
+  metric_type: count
+  expression: COUNT(*)
+  description: null
+  d3format: null
+  currency: null
+  extra:
+    warning_markdown: ''
+  warning_text: null
+columns:
+- column_name: TYPE DE CHIRURGIE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: TYPE D'ANESTHESIE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: TYPE D'INTERVENTION
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: ASSURANCE COMPLEMENTAIRE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: CIM10
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: ASSURANCE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: DATE
+  verbose_name: null
+  is_dttm: true
+  is_active: true
+  type: DATE
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: DIAGNOSTIC
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: CARTE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: AGE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: INTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: SERVICE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: CHIRURGIEN
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: IDPERSONNE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: SEXE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: PRENOM
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: NOM
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+version: 1.0.0
+database_uuid: 44c13a30-0c14-402c-b81f-1c93972f5fbc
