@@ -1,0 +1,360 @@
+table_name: PBF Registre Accouchements
+main_dttm_col: DATE D'ACCOUCHEMENT
+description: Registre PBF ACCOUCHEMENTS, une ligne par accouchement (formulaire Delivery
+  Registration / Childbirth Record) (UVL-EMR#588). CARTE vide tant que non saisi (#582).
+default_endpoint: null
+offset: 0
+cache_timeout: null
+schema: public
+sql: "-- ============================================================================\n\
+  -- UVL-EMR \xB7 PBF register \xAB ACCOUCHEMENTS \xBB (Superset virtual dataset)\n\
+  -- https://github.com/MadiroGlobalHealth/UVL-EMR/issues/588   (related #586 #587\
+  \ #582)\n--\n-- Shape: one row per delivery encounter (UVL Delivery Registration\
+  \ form, else\n-- UVL Childbirth Record form), columns in the order of the PBF template.\n\
+  --\n-- Sources (13 Nov 2026). The analytics DB has no delivery encounter yet, so\
+  \ the\n-- encounter is selected by FORM NAME and the questions by the concept UUIDs\
+  \ found\n-- in the analytics \xAB concepts \xBB table (to re-check once the first\
+  \ deliveries sync):\n--   * Delivery encounter: encounters.form_name ILIKE '%Delivery\
+  \ Registration%'\n--     or '%Childbirth Record%'. Several forms in the same visit\
+  \ = one delivery\n--     (Delivery Registration preferred, earliest).\n--   * DATE\
+  \ D'ADMISSION: latest ADT Admission (e22e39fd-7db2-45e7-80f1-60fa0d5a4378)\n-- \
+  \    of the same visit at or before the delivery; else the visit start.\n--   *\
+  \ ACCOUCHE PAR: \xAB Delivery performed by (profession) \xBB 0c26bb7d-11e0-4d5b-9238-b645f924f29d\n\
+  --     (profession: Nurse / Doctor / Midwife / Other; the person's name is not captured).\n\
+  --   * TYPE D'ACCOUCHEMENT: C\xE9sarienne when a Procedure order GO101/GO102/GO103\n\
+  --     (86a76e88\u2026 / 455d4174\u2026 / 6060ba72\u2026) exists in the visit; else\n\
+  --     \xAB Other delivery procedures performed \xBB 6af027e5-8737-4ce0-8343-79b024cd1989\n\
+  --     answers Eutocic 3de182b6-f7fe-4185-a7b5-89237593c1f1 / Dystocic b08d3e60-2e3c-4d23-906c-9e36cd222bea.\n\
+  --   * DEROULEMENT: \xAB Delivery complications \xBB 5d214371-cf09-4589-b357-de8b091b66d3\
+  \ (all answers).\n--   * ISSUE NOUVEAU-NE: \xAB Newborn status during postpartum\
+  \ monitoring \xBB\n--     238652d6-4aca-451a-9c8e-8336cea6fff4, else \xAB Stillbirth\
+  \ type \xBB 52325f44-b6dd-470b-a672-97fefbd119e1.\n--   * ASSURANCE / ASSURANCE\
+  \ COMPLEMENTAIRE: visit attributes Payer / Supplementary insurance.\n--   * CARTE:\
+  \ not captured yet (#582) -> empty.\n--   * SERVICE: the delivery encounter's location\
+  \ (#222).\n--   * Test patients excluded (SYNTH- / E2E / QA / TEST / DEMO, voided\
+  \ persons,\n--     \xAB Locations test \xBB 450be362-59a7-4ccd-964d-ebd930a8b30f).\n\
+  -- ============================================================================\n\
+  \nWITH dlv_enc AS (\n    SELECT DISTINCT ON (e.visit_uuid)\n        e.encounter_id,\n\
+  \        e.encounter_uuid,\n        e.visit_uuid,\n        e.patient_uuid,\n   \
+  \     e.encounter_datetime,\n        e.location\n    FROM encounters e\n    WHERE\
+  \ (e.form_name ILIKE '%Delivery Registration%' OR e.form_name ILIKE '%Childbirth\
+  \ Record%')\n      AND COALESCE(e.encounter_voided, false) = false\n      AND e.location_uuid\
+  \ IS DISTINCT FROM '450be362-59a7-4ccd-964d-ebd930a8b30f'\n    ORDER BY e.visit_uuid,\n\
+  \             (e.form_name ILIKE '%Delivery Registration%') DESC,\n            \
+  \ e.encounter_datetime, e.encounter_id\n),\n\n-- Latest coded / text answer per\
+  \ question within the delivery forms of the visit.\ndlv_obs AS (\n    SELECT DISTINCT\
+  \ ON (o.visit_uuid, o.question_uuid)\n        o.visit_uuid,\n        o.question_uuid,\n\
+  \        o.answer_coded_uuid,\n        COALESCE(o.answer_coded, o.answer_text) AS\
+  \ answer\n    FROM observations o\n    JOIN encounters e\n      ON e.encounter_uuid\
+  \ = o.encounter_uuid\n     AND (e.form_name ILIKE '%Delivery Registration%' OR e.form_name\
+  \ ILIKE '%Childbirth Record%')\n     AND COALESCE(e.encounter_voided, false) = false\n\
+  \    WHERE COALESCE(o.obs_voided, false) = false\n      AND o.question_uuid IN ('0c26bb7d-11e0-4d5b-9238-b645f924f29d',\
+  \   -- Delivery performed by (profession)\n                              '6af027e5-8737-4ce0-8343-79b024cd1989',\
+  \   -- Other delivery procedures performed\n                              '238652d6-4aca-451a-9c8e-8336cea6fff4',\
+  \   -- Newborn status\n                              '52325f44-b6dd-470b-a672-97fefbd119e1')\
+  \   -- Stillbirth type\n    ORDER BY o.visit_uuid, o.question_uuid, o.obs_date_time\
+  \ DESC, o.obs_id DESC\n),\n\n-- Delivery mode: eutocic / dystocic answers (multi-select\
+  \ question, so aggregate).\ndlv_mode AS (\n    SELECT\n        o.visit_uuid,\n \
+  \       BOOL_OR(o.answer_coded_uuid = 'b08d3e60-2e3c-4d23-906c-9e36cd222bea') AS\
+  \ dystocic,\n        BOOL_OR(o.answer_coded_uuid = '3de182b6-f7fe-4185-a7b5-89237593c1f1')\
+  \ AS eutocic\n    FROM observations o\n    WHERE o.question_uuid = '6af027e5-8737-4ce0-8343-79b024cd1989'\n\
+  \      AND COALESCE(o.obs_voided, false) = false\n      AND o.visit_uuid IN (SELECT\
+  \ visit_uuid FROM dlv_enc)\n    GROUP BY o.visit_uuid\n),\n\n-- Complications (multi-select):\
+  \ all answers.\ndlv_compl AS (\n    SELECT\n        o.visit_uuid,\n        STRING_AGG(DISTINCT\
+  \ o.answer_coded, '; ') AS complications\n    FROM observations o\n    WHERE o.question_uuid\
+  \ = '5d214371-cf09-4589-b357-de8b091b66d3'\n      AND COALESCE(o.obs_voided, false)\
+  \ = false\n      AND o.visit_uuid IN (SELECT visit_uuid FROM dlv_enc)\n    GROUP\
+  \ BY o.visit_uuid\n),\n\n-- Caesarean section ordered in the visit.\ncsection AS\
+  \ (\n    SELECT DISTINCT e.visit_uuid\n    FROM orders r\n    JOIN encounters e\
+  \ ON e.encounter_uuid = r.encounter_uuid\n    WHERE r.concept_uuid IN ('86a76e88-fde2-4bc8-9da1-80064bf35fbb',\
+  \   -- GO101 Cesarean section\n                             '455d4174-42ba-4819-89b5-f574e54baa42',\
+  \   -- GO102 + Hysterectomy\n                             '6060ba72-90a2-4ed1-9232-d0bc97c607e2')\
+  \   -- GO103 + Tubal ligation\n      AND COALESCE(r.voided, false) = false\n   \
+  \   AND e.visit_uuid IN (SELECT visit_uuid FROM dlv_enc)\n),\n\n-- Admission to\
+  \ the ward in the same visit, at or before the delivery.\nadm AS (\n    SELECT DISTINCT\
+  \ ON (d.visit_uuid)\n        d.visit_uuid,\n        a.encounter_datetime AS admission_datetime\n\
+  \    FROM dlv_enc d\n    JOIN encounters a\n      ON a.visit_uuid = d.visit_uuid\n\
+  \     AND a.encounter_type_uuid = 'e22e39fd-7db2-45e7-80f1-60fa0d5a4378'   -- Admission\n\
+  \     AND COALESCE(a.encounter_voided, false) = false\n     AND a.encounter_datetime\
+  \ <= d.encounter_datetime + INTERVAL '1 hour'\n    ORDER BY d.visit_uuid, a.encounter_datetime\
+  \ DESC\n),\n\nbase AS (\n    SELECT\n        d.*,\n        v.visit_attributes,\n\
+  \        v.date_started,\n        p.given_name,\n        p.family_name,\n      \
+  \  p.identifiers,\n        COALESCE(p.birthdate, v.patient_birthdate) AS birthdate,\n\
+  \        p.address_state_province                   AS province,\n        p.address_county_district\
+  \                  AS commune,\n        p.address_1                            \
+  \    AS colline\n    FROM dlv_enc d\n    LEFT JOIN visits v ON v.visit_uuid = d.visit_uuid\n\
+  \    JOIN patients p    ON p.patient_uuid = d.patient_uuid\n    WHERE COALESCE(v.visit_voided,\
+  \ false) = false\n      AND COALESCE(p.person_voided, false) = false\n      AND\
+  \ NOT (COALESCE(p.family_name, '') ~* '^(SYNTH-|E2E|QA|TEST|DEMO)'\n           \
+  \ OR COALESCE(p.given_name,  '') ~* '^(SYNTH-|E2E|QA|TEST|DEMO)')\n)\n\nSELECT\n\
+  \    COALESCE(a.admission_datetime, b.date_started)::date                     AS\
+  \ \"DATE D'ADMISSION\",\n    b.encounter_datetime::date                        \
+  \                       AS \"DATE D'ACCOUCHEMENT\",\n    COALESCE(\n        TRIM(SPLIT_PART(SUBSTRING(b.identifiers\
+  \ FROM 'UVL ID: ([^,]+)'), ',', 1)),\n        TRIM(SPLIT_PART(SUBSTRING(b.identifiers\
+  \ FROM 'Legacy ID: ([^,]+)'), ',', 1))\n    )                                  \
+  \                                      AS \"IDPERSONNE\",\n    b.family_name   \
+  \                                                         AS \"NOM\",\n    b.given_name\
+  \                                                             AS \"PRENOM\",\n \
+  \   DATE_PART('year', AGE(b.encounter_datetime::date, b.birthdate))::int     AS\
+  \ \"AGE\",\n    b.province                                                     \
+  \          AS \"PROVINCE\",\n    b.commune                                     \
+  \                           AS \"COMMUNE\",\n    b.colline                     \
+  \                                           AS \"COLLINE\",\n    CASE by_.answer_coded_uuid\n\
+  \        WHEN '31c7d379-1191-4823-a970-fdf665792362' THEN 'Infirmier(\xE8re)'\n\
+  \        WHEN '331be736-309d-4e28-939f-efbd317ba431' THEN 'M\xE9decin'\n       \
+  \ WHEN '96e75bb2-8f26-4a10-99f8-7af041672b62' THEN 'Sage-femme'\n        WHEN 'b5c4b807-d3de-40cd-aae9-178df9b40535'\
+  \ THEN 'Autre'\n        ELSE by_.answer\n    END                               \
+  \                                       AS \"ACCOUCHE PAR\",\n    CASE\n       \
+  \ WHEN cs.visit_uuid IS NOT NULL THEN 'C\xE9sarienne'\n        WHEN m.dystocic \
+  \               THEN 'Dystocique'\n        WHEN m.eutocic                 THEN 'Eutocique'\n\
+  \    END                                                                      AS\
+  \ \"TYPE D'ACCOUCHEMENT\",\n    c.complications                                \
+  \                          AS \"DEROULEMENT\",\n    CASE COALESCE(nb.answer_coded_uuid,\
+  \ sb.answer_coded_uuid)\n        WHEN '4056a982-6a2d-4062-9514-efcf4e66dd0a' THEN\
+  \ 'Vivant'\n        WHEN '50e375f7-4d58-46a9-899a-b46a90629599' THEN 'N\xE9 vivant,\
+  \ d\xE9c\xE9d\xE9 < 24h'\n        WHEN '63f4b85c-de5a-48e9-a9a5-bf2656c10125' THEN\
+  \ 'Mort-n\xE9'\n        WHEN '8312584c-d0b7-404e-b575-9b93fbe09736' THEN 'Mort-n\xE9\
+  \ frais'\n        WHEN 'f5cee4c8-2f54-43ff-8169-c7d64223a4ea' THEN 'Mort-n\xE9 mac\xE9\
+  r\xE9'\n        ELSE COALESCE(nb.answer, sb.answer)\n    END                   \
+  \                                                   AS \"ISSUE NOUVEAU-NE\",\n \
+  \   NULLIF(TRIM(SUBSTRING(b.visit_attributes FROM '(?:^|/ )Payer: ((?:[^/]|/(?!\
+  \ ))*)')), '')                   AS \"ASSURANCE\",\n    CAST(NULL AS TEXT)     \
+  \                                                  AS \"CARTE\",   -- card number\
+  \ not captured yet (#582)\n    NULLIF(TRIM(SUBSTRING(b.visit_attributes FROM '(?:^|/\
+  \ )Supplementary insurance: ((?:[^/]|/(?! ))*)')), '') AS \"ASSURANCE COMPLEMENTAIRE\"\
+  ,\n    b.location                                                              \
+  \ AS \"SERVICE\"\nFROM base b\nLEFT JOIN adm       a   ON a.visit_uuid  = b.visit_uuid\n\
+  LEFT JOIN dlv_obs   by_ ON by_.visit_uuid = b.visit_uuid AND by_.question_uuid =\
+  \ '0c26bb7d-11e0-4d5b-9238-b645f924f29d'\nLEFT JOIN dlv_obs   nb  ON nb.visit_uuid\
+  \  = b.visit_uuid AND nb.question_uuid  = '238652d6-4aca-451a-9c8e-8336cea6fff4'\n\
+  LEFT JOIN dlv_obs   sb  ON sb.visit_uuid  = b.visit_uuid AND sb.question_uuid  =\
+  \ '52325f44-b6dd-470b-a672-97fefbd119e1'\nLEFT JOIN dlv_mode  m   ON m.visit_uuid\
+  \   = b.visit_uuid\nLEFT JOIN dlv_compl c   ON c.visit_uuid   = b.visit_uuid\nLEFT\
+  \ JOIN csection  cs  ON cs.visit_uuid  = b.visit_uuid\nORDER BY b.encounter_datetime\
+  \ DESC, b.encounter_id"
+params: null
+template_params: null
+filter_select_enabled: true
+fetch_values_predicate: null
+extra: null
+normalize_columns: false
+always_filter_main_dttm: false
+uuid: 8ca8bdb5-6edd-4933-b06b-e541abbfdac6
+metrics:
+- metric_name: count
+  verbose_name: COUNT(*)
+  metric_type: count
+  expression: COUNT(*)
+  description: null
+  d3format: null
+  currency: null
+  extra:
+    warning_markdown: ''
+  warning_text: null
+columns:
+- column_name: DATE D'ACCOUCHEMENT
+  verbose_name: null
+  is_dttm: true
+  is_active: true
+  type: DATE
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: DATE D'ADMISSION
+  verbose_name: null
+  is_dttm: true
+  is_active: true
+  type: DATE
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: TYPE D'ACCOUCHEMENT
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: ISSUE NOUVEAU-NE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: ASSURANCE COMPLEMENTAIRE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: ACCOUCHE PAR
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: ASSURANCE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: CARTE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: AGE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: INTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: SERVICE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: COLLINE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: PROVINCE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: COMMUNE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: DEROULEMENT
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: IDPERSONNE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: PRENOM
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: NOM
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: {}
+version: 1.0.0
+database_uuid: 44c13a30-0c14-402c-b81f-1c93972f5fbc
