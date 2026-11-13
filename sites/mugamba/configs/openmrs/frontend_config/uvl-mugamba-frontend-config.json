@@ -879,7 +879,7 @@
         "itemsSelected_one": "{{count}} élément sélectionné",
         "itemsSelected_other": "{{count}} éléments sélectionnés",
         "noStockItemsToDisplay": "Aucun article de stock à afficher",
-        "statusAuthorized": "Autorisé",
+        "statusAuthorized": "Approuvé",
         "destinationRequired": "Destination requise",
         "atLeastOneStockItem": "Ajoutez au moins un article",
         "availableQuantity": "Disponible : {{quantity}} {{unit}}",
@@ -930,7 +930,15 @@
         "approved": "Approuvé",
         "dispensingUnitOfMeasurement": "Unité de mesure de l'emballage de distribution",
         "orderLevel": "Niveau de Réapprovisionnement",
-        "purchasePricePackagingUnit": "Prix d'achat de l'unité d'emballage"
+        "purchasePricePackagingUnit": "Prix d'achat de l'unité d'emballage",
+        "relatedTransactions": "Opérations liées :",
+        "cancelOperationAction": "Annuler l'opération",
+        "back": "Retour",
+        "characterCount_one": "{{count}} / {{max}} caractères",
+        "characterCount_other": "{{count}} / {{max}} caractères",
+        "dispatched": "Expédié",
+        "cancelled": "Annulé",
+        "completed": "Complété"
       }
     }
   },

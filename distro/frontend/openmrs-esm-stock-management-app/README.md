@@ -42,6 +42,8 @@ with fixes that are not released upstream yet. Only the built module is here; th
 | uvl.9: Operations cells not hyphenated, only item names break inside words; list and transaction dates in the expiry date format (« 12 nov. 2026 »); an operation item's link opens the Items page on that item (`/stock-management/items?stockItem=<uuid>`; `/stock-items/<uuid>` is no route of the app) | not yet |
 | uvl.10: a Stock Issue made from a requisition keeps each line's requested quantity and unit (`quantityRequested`, « Requested ») and is dated today; the « Issue Stock » button needs stockmanagement 2.1.2-uvl4, which sets `isRequisitionAndCanIssueStock` on an approved (`AUTHORIZED`) requisition | not yet |
 | uvl.10: the completed date of an approved operation is labelled « Approved » in status lines; one space between the names; date pickers use the user's language as Flatpickr locale (they were `en`); Received Items does not hyphenate; three stock item labels no longer append a colon; a line's « Available » is the chosen batch's quantity at the location | not yet |
+| uvl.11: the requisition prefills a new Stock Issue only; a saved one reopens with its own lines (it was rebuilt from the requisition: no batch, and the requisition's line uuids sent on save) | not yet |
+| uvl.11: cancel dialog « Back » / « Cancel operation »; related operations header and statuses translatable, one per line; the reason counter is translatable (Carbon's reads « Character limit 500 ») | not yet |
 
 The list's refresh after Complete and other status changes is already in 3.3.1 (3.2.1 revalidated a
 cache the app did not read); the branch only adds a test for it.
