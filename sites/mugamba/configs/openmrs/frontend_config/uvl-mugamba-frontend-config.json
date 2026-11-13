@@ -19,7 +19,8 @@
         "somethingWentWrongTryReloading": "Une erreur s'est produite. Rechargez la page.",
         "yearAbbreviation": "an",
         "yearsAbbreviation": "ans",
-        "closeSnackbar": "Fermer la notification"
+        "closeSnackbar": "Fermer la notification",
+        "snackbarNotification": "Notification"
       }
     }
   },
@@ -878,7 +879,7 @@
         "itemsSelected_one": "{{count}} élément sélectionné",
         "itemsSelected_other": "{{count}} éléments sélectionnés",
         "noStockItemsToDisplay": "Aucun article de stock à afficher",
-        "statusAuthorized": "Autorisé",
+        "statusAuthorized": "Approuvé",
         "destinationRequired": "Destination requise",
         "atLeastOneStockItem": "Ajoutez au moins un article",
         "availableQuantity": "Disponible : {{quantity}} {{unit}}",
@@ -887,8 +888,8 @@
         "moreItems_one": "...({{count}} de plus)",
         "moreItems_other": "...({{count}} de plus)",
         "discard": "Abandonner",
-        "paginationPageSelectLabel_one": "Page sur {{count}} page",
-        "paginationPageSelectLabel_other": "Page sur {{count}} pages",
+        "paginationPageSelectLabel_one": "Numéro de page ({{count}} page au total)",
+        "paginationPageSelectLabel_other": "Numéro de page ({{count}} pages au total)",
         "filterPlaceholder": "Filtrer...",
         "filter": "Filtrer...",
         "viewOperationTitle": "Voir {{operationType}}",
@@ -925,7 +926,19 @@
         "reference": "Référence",
         "balance": "Solde",
         "patientDispense": "Dispensation au patient",
-        "view": "Voir"
+        "view": "Voir",
+        "approved": "Approuvé",
+        "dispensingUnitOfMeasurement": "Unité de mesure de l'emballage de distribution",
+        "orderLevel": "Niveau de Réapprovisionnement",
+        "purchasePricePackagingUnit": "Prix d'achat de l'unité d'emballage",
+        "relatedTransactions": "Opérations liées :",
+        "cancelOperationAction": "Annuler l'opération",
+        "back": "Retour",
+        "characterCount_one": "{{count}} / {{max}} caractères",
+        "characterCount_other": "{{count}} / {{max}} caractères",
+        "dispatched": "Expédié",
+        "cancelled": "Annulé",
+        "completed": "Complété"
       }
     }
   },
