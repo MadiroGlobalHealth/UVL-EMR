@@ -1,0 +1,574 @@
+table_name: PBF Registre Consultations
+main_dttm_col: DATE DE CONSULTATION
+description: Registre PBF CONSULTATION SERVICE, une ligne par consultation externe
+  (UVL-EMR#586). Service = lieu de la rencontre. CIM10, CARTE, MALADIE_CHRONIQUE vides
+  tant que non saisis.
+default_endpoint: null
+offset: 0
+cache_timeout: null
+schema: public
+sql: "-- ============================================================================\n\
+  -- UVL-EMR \xB7 PBF register \xAB CONSULTATION SERVICE \xBB (Superset virtual dataset)\n\
+  -- https://github.com/MadiroGlobalHealth/UVL-EMR/issues/586   (related #205 #222\
+  \ #239 #241)\n--\n-- Shape: one row per OUTPATIENT CONSULTATION encounter, columns\
+  \ in the order of\n-- the PBF template sheet CONSULTATION SERVICE\n-- (\"FORMAT\
+  \ PBF pour Verification et Validation par CPVV.xlsx\"), plus SERVICE and\n-- TRANCHE\
+  \ D'AGE (MoH age bands) at the end.\n--\n-- Rules\n--   * Service = ENCOUNTER location,\
+  \ never the visit location (#222).\n--   * Payer / supplementary insurance / residence\
+  \ / case type come from the VISIT\n--     ATTRIBUTES (visit type names Payer 9e3c5a71\u2026\
+  , Supplementary insurance\n--     09529492\u2026, Patient location e880354f\u2026\
+  , Case Type 536b1547\u2026), not from the\n--     Odoo pricelist. The analytics\
+  \ flattening stores visit attributes as one text\n--     column \"Name: value /\
+  \ Name: value\", so they are parsed by attribute-type name.\n--   * Clinical answers\
+  \ come from the encounter's obs, filtered by concept UUID.\n--   * No cost columns:\
+  \ costs are not on the PBF form, and sale_order_lines has no\n--     visit key (V4/V5\
+  \ joined costs by patient, which double counts).\n--   * Test patients excluded\
+  \ (family/given name starting SYNTH- / E2E / QA / TEST /\n--     DEMO, voided persons,\
+  \ the \"Locations test\" location).\n--   * Month filter: use the temporal column\
+  \ \"DATE DE CONSULTATION\".\n-- ============================================================================\n\
+  \nWITH opd AS (\n    SELECT\n        e.encounter_id,\n        e.encounter_uuid,\n\
+  \        e.visit_uuid,\n        e.patient_uuid,\n        e.encounter_datetime,\n\
+  \        CAST(e.encounter_datetime AS DATE) AS consult_date,\n        e.location\
+  \                         AS encounter_location,\n        e.location_uuid\n    FROM\
+  \ encounters e\n    WHERE e.encounter_type_uuid = '0ff55309-1897-476b-a647-c7c180b102c8'\
+  \   -- Outpatient Consultation\n      AND COALESCE(e.encounter_voided, false) =\
+  \ false\n      AND e.location_uuid IS DISTINCT FROM '450be362-59a7-4ccd-964d-ebd930a8b30f'\
+  \ -- \"Locations test\"\n),\n\n-- One row per encounter: obs pivoted by concept\
+  \ UUID (latest value wins for single answers).\nenc_obs AS (\n    SELECT\n     \
+  \   o.encounter_uuid,\n        (ARRAY_AGG(o.answer_text   ORDER BY o.obs_date_time\
+  \ DESC) FILTER (WHERE o.question_uuid = 'caa77817-7440-4cef-8d94-555733f23a5a'))[1]\
+  \ AS physician,\n        STRING_AGG(DISTINCT o.answer_text,  '; ')             \
+  \     FILTER (WHERE o.question_uuid = 'c8523ef7-c18e-46fe-a760-c243fd3a3bd2')  AS\
+  \ complaint_text,\n        -- \xAB Signes fonctionnels \xBB coded complaints (#566\
+  \ group aa97dd6a\u2026, question 5219) + \"other complaint\" text\n        STRING_AGG(DISTINCT\
+  \ COALESCE(o.answer_coded, o.answer_text), '; ')\n                 FILTER (WHERE\
+  \ o.question_uuid IN ('5219AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',\n                \
+  \                                   '9777d11b-9b3c-477a-b5ff-62b77aa409a7'))   \
+  \                                          AS complaint_coded,\n        STRING_AGG(DISTINCT\
+  \ o.answer_text,  '; ')                  FILTER (WHERE o.question_uuid = '29ff306b-5a2a-48c1-affa-8fa4620a8fda')\
+  \  AS treatment_text,\n        (ARRAY_AGG(o.answer_coded  ORDER BY o.obs_date_time\
+  \ DESC) FILTER (WHERE o.question_uuid = 'c61917f2-08dd-475b-ba03-af03cbb7ae06'))[1]\
+  \ AS woman_status,\n        (ARRAY_AGG(o.answer_coded  ORDER BY o.obs_date_time\
+  \ DESC) FILTER (WHERE o.question_uuid = 'd9a94f49-412b-41fe-ac47-437dbc66ffda'))[1]\
+  \ AS hiv_status,\n        (ARRAY_AGG(o.answer_numeric ORDER BY o.obs_date_time DESC)\
+  \ FILTER (WHERE o.question_uuid = 'ab6aac99-e061-4bd9-a51a-50981989ef35'))[1] AS\
+  \ gest_age_weeks,\n        (ARRAY_AGG(o.answer_coded  ORDER BY o.obs_date_time DESC)\
+  \ FILTER (WHERE o.question_uuid = '1ec6ce6a-607a-4b6a-af5d-e14911fe98c5'))[1] AS\
+  \ pregnancy_months,\n        (ARRAY_AGG(o.answer_coded  ORDER BY o.obs_date_time\
+  \ DESC) FILTER (WHERE o.question_uuid = 'b501a1ac-f2ea-4e79-ace4-658c1af45bd2'))[1]\
+  \ AS outcome,\n        -- Case type was an obs on older form versions; the visit\
+  \ attribute is preferred below.\n        (ARRAY_AGG(o.answer_coded  ORDER BY o.obs_date_time\
+  \ DESC) FILTER (WHERE o.question_uuid = '23ceec98-f1c5-42ce-8b11-60b5be1c2acf'))[1]\
+  \ AS case_type_obs\n    FROM observations o\n    JOIN opd ON opd.encounter_uuid\
+  \ = o.encounter_uuid\n    WHERE COALESCE(o.obs_voided, false) = false\n      AND\
+  \ o.question_uuid IN (\n            'caa77817-7440-4cef-8d94-555733f23a5a',  --\
+  \ Attending physician\n            'c8523ef7-c18e-46fe-a760-c243fd3a3bd2',  -- Reason\
+  \ for consultation (text)\n            '5219AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', \
+  \ -- Chief complaint (coded, #566)\n            '9777d11b-9b3c-477a-b5ff-62b77aa409a7',\
+  \  -- Other complaint (specify)\n            '29ff306b-5a2a-48c1-affa-8fa4620a8fda',\
+  \  -- Treatment / medications (text)\n            'c61917f2-08dd-475b-ba03-af03cbb7ae06',\
+  \  -- Woman's status\n            'd9a94f49-412b-41fe-ac47-437dbc66ffda',  -- HIV+\
+  \ status\n            'ab6aac99-e061-4bd9-a51a-50981989ef35',  -- Gestational age\
+  \ (weeks)\n            '1ec6ce6a-607a-4b6a-af5d-e14911fe98c5',  -- Pregnant women\
+  \ (\u22643 / >3 months)\n            'b501a1ac-f2ea-4e79-ace4-658c1af45bd2',  --\
+  \ Outcome\n            '23ceec98-f1c5-42ce-8b11-60b5be1c2acf')  -- Case type (legacy\
+  \ obs)\n    GROUP BY o.encounter_uuid\n),\n\n-- Confirmed diagnoses of the encounter,\
+  \ with ICD-10 from the concept's ICD-10-WHO mapping.\nenc_dx AS (\n    SELECT\n\
+  \        ed.encounter_id,\n        STRING_AGG(DISTINCT COALESCE(c.name, ed.diagnosis_non_coded),\
+  \ '; ')        AS confirmed_dx,\n        STRING_AGG(DISTINCT TRIM(SUBSTRING(c.concept_mappings_source_codes\n\
+  \                                           FROM 'ICD-10-WHO: ([^,]+)')), '; ')\
+  \     AS icd10\n    FROM encounter_diagnoses ed\n    JOIN opd ON opd.encounter_id\
+  \ = ed.encounter_id\n    LEFT JOIN concepts c\n           ON c.concept_id = ed.diagnosis_coded\n\
+  \          AND c.locale = 'en'\n    WHERE COALESCE(ed.voided, false) = false\n \
+  \     AND UPPER(ed.certainty) = 'CONFIRMED'\n    GROUP BY ed.encounter_id\n),\n\n\
+  -- Drug orders of the same visit (prescriptions are saved in separate \"Order\"\
+  \ encounters).\nvisit_drugs AS (\n    SELECT\n        e.visit_uuid,\n        STRING_AGG(DISTINCT\
+  \ COALESCE(o.drug_name, o.order_name), '; ') AS drugs\n    FROM orders o\n    JOIN\
+  \ encounters e ON e.encounter_uuid = o.encounter_uuid\n    WHERE COALESCE(o.voided,\
+  \ false) = false\n      AND o.order_action NOT ILIKE '%DISCONTINUE%'\n      AND\
+  \ (o.order_type_name ILIKE '%drug%' OR o.drug_name IS NOT NULL)\n      AND e.visit_uuid\
+  \ IN (SELECT visit_uuid FROM opd)\n    GROUP BY e.visit_uuid\n),\n\nbase AS (\n\
+  \    SELECT\n        opd.*,\n        v.date_started,\n        v.visit_attributes,\n\
+  \        p.given_name,\n        p.family_name,\n        p.identifiers,\n       \
+  \ p.attributes AS person_attributes,\n        COALESCE(p.gender, v.patient_gender)\
+  \       AS gender,\n        COALESCE(p.birthdate, v.patient_birthdate) AS birthdate,\n\
+  \        p.address_state_province                   AS province,  -- hierarchy level\
+  \ 2\n        p.address_county_district                  AS commune,   -- level 3\n\
+  \        p.address_city                             AS zone,      -- level 4 (city_village)\n\
+  \        p.address_1                                AS colline    -- level 5 (address1)\n\
+  \    FROM opd\n    LEFT JOIN visits v            -- LEFT: a few encounters have\
+  \ no visit row in analytics; keep them\n      ON v.visit_uuid = opd.visit_uuid\n\
+  \    JOIN patients p\n      ON p.patient_uuid = opd.patient_uuid\n    WHERE COALESCE(v.visit_voided,\
+  \ false) = false\n      AND COALESCE(p.person_voided, false) = false\n      AND\
+  \ NOT (COALESCE(p.family_name, '') ~* '^(SYNTH-|E2E|QA|TEST|DEMO)'\n           \
+  \ OR COALESCE(p.given_name,  '') ~* '^(SYNTH-|E2E|QA|TEST|DEMO)')\n),\n\nattrs AS\
+  \ (\n    SELECT\n        b.*,\n        NULLIF(TRIM(SUBSTRING(b.visit_attributes\
+  \ FROM '(?:^|/ )Payer: ([^/]*)')), '')                   AS payer,\n        NULLIF(TRIM(SUBSTRING(b.visit_attributes\
+  \ FROM '(?:^|/ )Supplementary insurance: ([^/]*)')), '') AS supp_insurance,\n  \
+  \      NULLIF(TRIM(SUBSTRING(b.visit_attributes FROM '(?:^|/ )Patient location:\
+  \ ([^/]*)')), '')        AS patient_location,\n        NULLIF(TRIM(SUBSTRING(b.visit_attributes\
+  \ FROM '(?:^|/ )Case Type: ([^/]*)')), '')               AS case_type_attr,\n  \
+  \      NULLIF(TRIM(SUBSTRING(b.person_attributes FROM '(?:^|/ )Chef de m\xE9nage:\
+  \ ([^/]*)')), '')         AS chef_menage,\n        (b.consult_date - b.birthdate)\
+  \                                                                  AS age_days,\n\
+  \        DATE_PART('year', AGE(b.consult_date, b.birthdate))::int              \
+  \                          AS age_years,\n        (DATE_PART('year', AGE(b.consult_date,\
+  \ b.birthdate)) * 12\n          + DATE_PART('month', AGE(b.consult_date, b.birthdate)))::int\
+  \                                  AS age_months\n    FROM base b\n)\n\nSELECT\n\
+  \    COALESCE(a.date_started::date, a.consult_date)                           AS\
+  \ \"DATE\",  -- visit start date\n    CASE a.patient_location\n        WHEN 'Outside\
+  \ Burundi'      THEN 'Hors Burundi'\n        WHEN 'Outside Province'     THEN 'Hors\
+  \ Province'\n        WHEN 'Outside District'     THEN 'Hors District'\n        WHEN\
+  \ 'Outside Municipality' THEN 'Hors Commune'   -- not one of the 4 template values:\
+  \ confirm with Didier\n        WHEN 'Same Municipality'    THEN 'Commune'\n    END\
+  \                                                                      AS \"SITUATION\"\
+  ,\n    COALESCE(\n        TRIM(SPLIT_PART(SUBSTRING(a.identifiers FROM 'UVL ID:\
+  \ ([^,]+)'), ',', 1)),\n        TRIM(SPLIT_PART(SUBSTRING(a.identifiers FROM 'Legacy\
+  \ ID: ([^,]+)'), ',', 1))\n    )                                               \
+  \                         AS \"IDPERSONNE\",\n    a.given_name                 \
+  \                                            AS \"PRENOM\",\n    a.family_name \
+  \                                                           AS \"NOM\",\n    a.gender\
+  \                                                                 AS \"SEXE\",\n\
+  \    a.age_years                                                              AS\
+  \ \"AGE\",\n    a.birthdate                                                    \
+  \          AS \"NAISSANCE\",\n    a.chef_menage                                \
+  \                            AS \"CHEF_FAMILLE\",\n    a.province              \
+  \                                                 AS \"PROVINCE\",\n    a.commune\
+  \                                                                AS \"COMMUNE\"\
+  ,\n    a.zone                                                                  \
+  \ AS \"ZONE\",\n    a.colline                                                  \
+  \              AS \"COLLINE\",\n    eo.physician                               \
+  \                              AS \"NOM DU MEDECIN\",\n    dx.icd10            \
+  \                                                     AS \"CIM10\",   -- from ICD-10-WHO\
+  \ concept mappings; empty until the diagnosis concepts carry ICD-10 codes again\n\
+  \    NULLIF(CONCAT_WS('; ', eo.complaint_coded, eo.complaint_text), '')       AS\
+  \ \"MOTIF DE CONSULTATION\",\n    dx.confirmed_dx                              \
+  \                            AS \"DIAGNOSTIC CONFIRME\",\n    COALESCE(vd.drugs,\
+  \ eo.treatment_text)                                    AS \"TRAITEMENT\",  -- drug\
+  \ orders of the visit, else the free-text treatment\n    NULLIF(CONCAT_WS(', ',\n\
+  \        CASE eo.woman_status WHEN 'Pregnant' THEN 'Femme enceinte'\n          \
+  \                   WHEN 'Postpartum' THEN 'Post-partum' END,\n        CASE WHEN\
+  \ eo.hiv_status = 'Positive' THEN 'PVVIH' END), '')          AS \"STATUT\",\n  \
+  \  COALESCE(\n        CASE WHEN eo.gest_age_weeks IS NOT NULL\n             THEN\
+  \ ROUND(eo.gest_age_weeks::numeric)::text || ' SA' END,\n        CASE eo.pregnancy_months\
+  \ WHEN '3 months'  THEN '\u2264 3 mois'\n                                 WHEN '>3\
+  \ Months' THEN '> 3 mois' END)       AS \"DUREE_GROSSESSE\",\n    a.payer      \
+  \                                                            AS \"ASSURANCE\",\n\
+  \    CAST(NULL AS TEXT)                                                       AS\
+  \ \"CARTE\",   -- insurance card number: not captured in the EMR yet\n    a.supp_insurance\
+  \                                                         AS \"ASSURANCE COMPLEMENTAIRE\"\
+  ,\n    CASE COALESCE(a.case_type_attr, eo.case_type_obs)\n        WHEN 'New Case'\
+  \       THEN 'Oui'\n        WHEN 'Follow-Up Case' THEN 'Non'\n    END          \
+  \                                                            AS \"NOUVEAU_CAS\"\
+  ,\n    CASE eo.outcome\n        WHEN 'Outpatient'                         THEN 'Ambulatoire'\n\
+  \        WHEN 'Intra-Hospital Transfer'            THEN 'Transfert intra-hospitalier'\n\
+  \        WHEN 'Transfer to Higher-Level Facility'  THEN 'R\xE9f\xE9r\xE9 niveau\
+  \ sup\xE9rieur'\n        WHEN 'Counter-Referral'                   THEN 'Contre-r\xE9\
+  f\xE9rence'\n        ELSE eo.outcome\n    END                                  \
+  \                                    AS \"EVOLUTION\",\n    CAST(NULL AS TEXT) \
+  \                                                      AS \"MALADIE_CHRONIQUE\"\
+  ,  -- not captured on the consultation form yet\n    a.consult_date            \
+  \                                               AS \"DATE DE CONSULTATION\",\n \
+  \   -- extra columns (not on the PBF sheet) -------------------------------------\n\
+  \    CASE a.location_uuid\n        WHEN '44c3efb0-2583-4c80-a79e-1f756a03c0a1' THEN\
+  \ 'Consultation externe'\n        WHEN '9D062929-CC4F-7A51-C700-2B968AADEC34' THEN\
+  \ 'Urgences'\n        WHEN 'e1f4ab17-6dc5-4249-cf38-5bae7dbe9c64' THEN 'Ophtalmologie'\n\
+  \        WHEN 'f2a5bc28-7ed6-435a-da49-6cbf8ecfad75' THEN 'Dentisterie'\n      \
+  \  ELSE a.encounter_location\n    END                                          \
+  \                            AS \"SERVICE\",\n    CASE\n        WHEN a.birthdate\
+  \ IS NULL     THEN NULL\n        WHEN a.age_days   <= 28      THEN '0-28 jours'\n\
+  \        WHEN a.age_months <  12      THEN '29 jours-11 mois'\n        WHEN a.age_months\
+  \ <  60      THEN '12-59 mois'\n        WHEN a.age_years  <= 9       THEN '5-9 ans'\n\
+  \        WHEN a.age_years  <= 14      THEN '10-14 ans'\n        WHEN a.age_years\
+  \  <= 17      THEN '15-17 ans'\n        WHEN a.age_years  <= 19      THEN '18-19\
+  \ ans'\n        WHEN a.age_years  <= 64      THEN (20 + 5 * ((a.age_years - 20)\
+  \ / 5))::text || '-'\n                                          || (24 + 5 * ((a.age_years\
+  \ - 20) / 5))::text || ' ans'\n        WHEN a.age_years  <= 70      THEN '65-70\
+  \ ans'\n        ELSE '71 ans et +'\n    END                                    \
+  \                                  AS \"TRANCHE D'AGE\",\n    a.encounter_id   \
+  \                                                        AS \"ID CONSULTATION\"\n\
+  FROM attrs a\nLEFT JOIN enc_obs     eo ON eo.encounter_uuid = a.encounter_uuid\n\
+  LEFT JOIN enc_dx      dx ON dx.encounter_id   = a.encounter_id\nLEFT JOIN visit_drugs\
+  \ vd ON vd.visit_uuid     = a.visit_uuid\nORDER BY a.consult_date DESC, a.encounter_id"
+params: null
+template_params: null
+filter_select_enabled: true
+fetch_values_predicate: null
+extra: null
+normalize_columns: false
+always_filter_main_dttm: false
+uuid: 48d1b816-df10-4586-8461-77816c96bc09
+metrics:
+- metric_name: count
+  verbose_name: COUNT(*)
+  metric_type: count
+  expression: COUNT(*)
+  description: null
+  d3format: null
+  currency: null
+  extra:
+    warning_markdown: ''
+  warning_text: null
+columns:
+- column_name: DATE DE CONSULTATION
+  verbose_name: null
+  is_dttm: true
+  is_active: true
+  type: DATE
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: MOTIF DE CONSULTATION
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: NOM DU MEDECIN
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: TRANCHE D'AGE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: ASSURANCE COMPLEMENTAIRE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: DIAGNOSTIC CONFIRME
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: ID CONSULTATION
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: CIM10
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: NAISSANCE
+  verbose_name: null
+  is_dttm: true
+  is_active: true
+  type: DATE
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: MALADIE_CHRONIQUE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: NOUVEAU_CAS
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: ASSURANCE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: DATE
+  verbose_name: null
+  is_dttm: true
+  is_active: true
+  type: DATE
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: CHEF_FAMILLE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: CARTE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: AGE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: INTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: TRAITEMENT
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: SITUATION
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: STATUT
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: SERVICE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: COLLINE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: PROVINCE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: COMMUNE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: DUREE_GROSSESSE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: IDPERSONNE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: SEXE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: EVOLUTION
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: PRENOM
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: ZONE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: NOM
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+version: 1.0.0
+database_uuid: 44c13a30-0c14-402c-b81f-1c93972f5fbc

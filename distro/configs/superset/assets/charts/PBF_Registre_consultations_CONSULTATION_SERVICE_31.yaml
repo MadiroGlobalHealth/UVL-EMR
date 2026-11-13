@@ -1,0 +1,88 @@
+slice_name: "PBF \u2013 Registre consultations (CONSULTATION SERVICE)"
+description: null
+certified_by: null
+certification_details: null
+viz_type: table
+params:
+  datasource: 22__table
+  viz_type: table
+  query_mode: raw
+  groupby: []
+  time_grain_sqla: P1D
+  temporal_columns_lookup:
+    DATE: true
+    NAISSANCE: true
+    DATE DE CONSULTATION: true
+  all_columns:
+  - DATE
+  - SITUATION
+  - IDPERSONNE
+  - PRENOM
+  - NOM
+  - SEXE
+  - AGE
+  - NAISSANCE
+  - CHEF_FAMILLE
+  - PROVINCE
+  - COMMUNE
+  - ZONE
+  - COLLINE
+  - NOM DU MEDECIN
+  - CIM10
+  - MOTIF DE CONSULTATION
+  - DIAGNOSTIC CONFIRME
+  - TRAITEMENT
+  - STATUT
+  - DUREE_GROSSESSE
+  - ASSURANCE
+  - CARTE
+  - ASSURANCE COMPLEMENTAIRE
+  - NOUVEAU_CAS
+  - EVOLUTION
+  - MALADIE_CHRONIQUE
+  - DATE DE CONSULTATION
+  - SERVICE
+  - TRANCHE D'AGE
+  percent_metrics: []
+  adhoc_filters:
+  - expressionType: SIMPLE
+    subject: DATE DE CONSULTATION
+    operator: TEMPORAL_RANGE
+    comparator: Last month
+    clause: WHERE
+    sqlExpression: null
+    isExtra: false
+    isNew: false
+    datasourceWarning: false
+    filterOptionName: filter_57k6fit01qd_wgv28w1qld
+  order_by_cols:
+  - '["DATE DE CONSULTATION", true]'
+  server_pagination: true
+  row_limit: 10000
+  server_page_length: 50
+  order_desc: true
+  table_timestamp_format: smart_date
+  show_cell_bars: true
+  color_pn: true
+  allow_rearrange_columns: true
+  conditional_formatting: []
+  extra_form_data: {}
+query_context: '{"datasource":{"id":22,"type":"table"},"force":false,"queries":[{"filters":[{"col":"DATE
+  DE CONSULTATION","op":"TEMPORAL_RANGE","val":"Last month"}],"extras":{"time_grain_sqla":"P1D","having":"","where":""},"applied_time_extras":{},"columns":["DATE","SITUATION","IDPERSONNE","PRENOM","NOM","SEXE","AGE","NAISSANCE","CHEF_FAMILLE","PROVINCE","COMMUNE","ZONE","COLLINE","NOM
+  DU MEDECIN","CIM10","MOTIF DE CONSULTATION","DIAGNOSTIC CONFIRME","TRAITEMENT","STATUT","DUREE_GROSSESSE","ASSURANCE","CARTE","ASSURANCE
+  COMPLEMENTAIRE","NOUVEAU_CAS","EVOLUTION","MALADIE_CHRONIQUE","DATE DE CONSULTATION","SERVICE","TRANCHE
+  D''AGE"],"orderby":[["DATE DE CONSULTATION",true]],"annotation_layers":[],"row_limit":50,"row_offset":0,"series_limit":0,"order_desc":true,"url_params":{},"custom_params":{},"custom_form_data":{},"post_processing":[]},{"filters":[{"col":"DATE
+  DE CONSULTATION","op":"TEMPORAL_RANGE","val":"Last month"}],"extras":{"time_grain_sqla":"P1D","having":"","where":""},"applied_time_extras":{},"columns":["DATE","SITUATION","IDPERSONNE","PRENOM","NOM","SEXE","AGE","NAISSANCE","CHEF_FAMILLE","PROVINCE","COMMUNE","ZONE","COLLINE","NOM
+  DU MEDECIN","CIM10","MOTIF DE CONSULTATION","DIAGNOSTIC CONFIRME","TRAITEMENT","STATUT","DUREE_GROSSESSE","ASSURANCE","CARTE","ASSURANCE
+  COMPLEMENTAIRE","NOUVEAU_CAS","EVOLUTION","MALADIE_CHRONIQUE","DATE DE CONSULTATION","SERVICE","TRANCHE
+  D''AGE"],"orderby":[["DATE DE CONSULTATION",true]],"annotation_layers":[],"row_limit":0,"row_offset":0,"series_limit":0,"order_desc":true,"url_params":{},"custom_params":{},"custom_form_data":{},"post_processing":[],"is_rowcount":true}],"form_data":{"datasource":"22__table","viz_type":"table","query_mode":"raw","groupby":[],"time_grain_sqla":"P1D","temporal_columns_lookup":{"DATE":true,"NAISSANCE":true,"DATE
+  DE CONSULTATION":true},"all_columns":["DATE","SITUATION","IDPERSONNE","PRENOM","NOM","SEXE","AGE","NAISSANCE","CHEF_FAMILLE","PROVINCE","COMMUNE","ZONE","COLLINE","NOM
+  DU MEDECIN","CIM10","MOTIF DE CONSULTATION","DIAGNOSTIC CONFIRME","TRAITEMENT","STATUT","DUREE_GROSSESSE","ASSURANCE","CARTE","ASSURANCE
+  COMPLEMENTAIRE","NOUVEAU_CAS","EVOLUTION","MALADIE_CHRONIQUE","DATE DE CONSULTATION","SERVICE","TRANCHE
+  D''AGE"],"percent_metrics":[],"adhoc_filters":[{"expressionType":"SIMPLE","subject":"DATE
+  DE CONSULTATION","operator":"TEMPORAL_RANGE","comparator":"Last month","clause":"WHERE","sqlExpression":null,"isExtra":false,"isNew":false,"datasourceWarning":false,"filterOptionName":"filter_57k6fit01qd_wgv28w1qld"}],"order_by_cols":["[\"DATE
+  DE CONSULTATION\", true]"],"server_pagination":true,"row_limit":10000,"server_page_length":50,"order_desc":true,"table_timestamp_format":"smart_date","show_cell_bars":true,"color_pn":true,"allow_rearrange_columns":true,"conditional_formatting":[],"extra_form_data":{},"force":false,"result_format":"json","result_type":"full","include_time":false},"result_format":"json","result_type":"full"}'
+cache_timeout: null
+uuid: 627ac8ba-56bc-4ba6-88c0-9e9bfab90a38
+version: 1.0.0
+dataset_uuid: 48d1b816-df10-4586-8461-77816c96bc09
