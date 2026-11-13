@@ -1,0 +1,77 @@
+slice_name: "PBF \u2013 Registre journ\xE9es d'hospitalisation"
+description: null
+certified_by: null
+certification_details: null
+viz_type: table
+params:
+  datasource: 23__table
+  viz_type: table
+  query_mode: raw
+  groupby: []
+  time_grain_sqla: P1D
+  temporal_columns_lookup:
+    NAISSANCE: true
+    DATE D'ENTREE: true
+    DATE DE SORTIE: true
+  all_columns:
+  - IDPERSONNE
+  - NOM
+  - PRENOM
+  - SEXE
+  - NAISSANCE
+  - AGE
+  - PROVINCE
+  - COMMUNE
+  - ZONE
+  - COLLINE
+  - DATE D'ENTREE
+  - ORIGINE
+  - DATE DE SORTIE
+  - DUREE
+  - EVOLUTION
+  - CIM10_ENTREE
+  - CIM10_SORTIE
+  - ASSURANCE
+  - NUMERO_ASSURANCE
+  - ASSURANCE COMPLEMENTAIRE
+  - SERVICE D'HOSPITALISATION
+  percent_metrics: []
+  adhoc_filters:
+  - expressionType: SIMPLE
+    subject: DATE DE SORTIE
+    operator: TEMPORAL_RANGE
+    comparator: Last month
+    clause: WHERE
+    sqlExpression: null
+    isExtra: false
+    isNew: false
+    datasourceWarning: false
+    filterOptionName: filter_dnsxxt8dmwd_fvdk60mzj09
+  order_by_cols:
+  - '["DATE DE SORTIE", true]'
+  server_pagination: true
+  row_limit: 10000
+  server_page_length: 50
+  order_desc: true
+  table_timestamp_format: smart_date
+  show_cell_bars: true
+  color_pn: true
+  allow_rearrange_columns: true
+  conditional_formatting: []
+  extra_form_data: {}
+query_context: '{"datasource":{"id":23,"type":"table"},"force":false,"queries":[{"filters":[{"col":"DATE
+  DE SORTIE","op":"TEMPORAL_RANGE","val":"Last month"}],"extras":{"time_grain_sqla":"P1D","having":"","where":""},"applied_time_extras":{},"columns":["IDPERSONNE","NOM","PRENOM","SEXE","NAISSANCE","AGE","PROVINCE","COMMUNE","ZONE","COLLINE","DATE
+  D''ENTREE","ORIGINE","DATE DE SORTIE","DUREE","EVOLUTION","CIM10_ENTREE","CIM10_SORTIE","ASSURANCE","NUMERO_ASSURANCE","ASSURANCE
+  COMPLEMENTAIRE","SERVICE D''HOSPITALISATION"],"orderby":[["DATE DE SORTIE",true]],"annotation_layers":[],"row_limit":50,"row_offset":0,"series_limit":0,"order_desc":true,"url_params":{},"custom_params":{},"custom_form_data":{},"post_processing":[]},{"filters":[{"col":"DATE
+  DE SORTIE","op":"TEMPORAL_RANGE","val":"Last month"}],"extras":{"time_grain_sqla":"P1D","having":"","where":""},"applied_time_extras":{},"columns":["IDPERSONNE","NOM","PRENOM","SEXE","NAISSANCE","AGE","PROVINCE","COMMUNE","ZONE","COLLINE","DATE
+  D''ENTREE","ORIGINE","DATE DE SORTIE","DUREE","EVOLUTION","CIM10_ENTREE","CIM10_SORTIE","ASSURANCE","NUMERO_ASSURANCE","ASSURANCE
+  COMPLEMENTAIRE","SERVICE D''HOSPITALISATION"],"orderby":[["DATE DE SORTIE",true]],"annotation_layers":[],"row_limit":0,"row_offset":0,"series_limit":0,"order_desc":true,"url_params":{},"custom_params":{},"custom_form_data":{},"post_processing":[],"is_rowcount":true}],"form_data":{"datasource":"23__table","viz_type":"table","query_mode":"raw","groupby":[],"time_grain_sqla":"P1D","temporal_columns_lookup":{"NAISSANCE":true,"DATE
+  D''ENTREE":true,"DATE DE SORTIE":true},"all_columns":["IDPERSONNE","NOM","PRENOM","SEXE","NAISSANCE","AGE","PROVINCE","COMMUNE","ZONE","COLLINE","DATE
+  D''ENTREE","ORIGINE","DATE DE SORTIE","DUREE","EVOLUTION","CIM10_ENTREE","CIM10_SORTIE","ASSURANCE","NUMERO_ASSURANCE","ASSURANCE
+  COMPLEMENTAIRE","SERVICE D''HOSPITALISATION"],"percent_metrics":[],"adhoc_filters":[{"expressionType":"SIMPLE","subject":"DATE
+  DE SORTIE","operator":"TEMPORAL_RANGE","comparator":"Last month","clause":"WHERE","sqlExpression":null,"isExtra":false,"isNew":false,"datasourceWarning":false,"filterOptionName":"filter_dnsxxt8dmwd_fvdk60mzj09"}],"order_by_cols":["[\"DATE
+  DE SORTIE\", true]"],"server_pagination":true,"row_limit":10000,"server_page_length":50,"order_desc":true,"table_timestamp_format":"smart_date","show_cell_bars":true,"color_pn":true,"allow_rearrange_columns":true,"conditional_formatting":[],"extra_form_data":{},"force":false,"result_format":"json","result_type":"full","include_time":false},"result_format":"json","result_type":"full"}'
+cache_timeout: null
+uuid: 265e16f2-51e6-48e1-8eae-7ce296488534
+version: 1.0.0
+dataset_uuid: 34c798a0-1044-41dd-aef2-4736cc499d78
