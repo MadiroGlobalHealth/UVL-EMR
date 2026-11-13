@@ -1,0 +1,669 @@
+table_name: "Fiche 1 Activit\xE9 par service"
+main_dttm_col: MOIS
+description: "Fiche 1 du Minist\xE8re, activit\xE9 globale par service d'hospitalisation\
+  \ et par mois, \xE0 partir des s\xE9jours du registre PBF hospitalisation (UVL-EMR#590).\
+  \ Lits mont\xE9s et taux d'occupation vides (pas de table des lits)."
+default_endpoint: null
+offset: 0
+cache_timeout: null
+schema: public
+sql: "-- ============================================================================\n\
+  -- UVL-EMR \xB7 Ministry \xAB Fiche 1 \xBB \u2014 activit\xE9 globale par service\
+  \ d'hospitalisation\n-- https://github.com/MadiroGlobalHealth/UVL-EMR/issues/590\
+  \   (related #587 #583 #582)\n--\n-- Shape: one row per inpatient ward (SERVICE)\
+  \ per month (MOIS) with activity.\n-- The ward stays are those of the PBF hospitalisation\
+  \ register (#587,\n-- pbf_hospitalisation_register.sql, copied up to the \xAB calc\
+  \ \xBB CTE, without the diagnosis CTEs):\n--   * ADT encounter types: Admission\
+  \ e22e39fd-7db2-45e7-80f1-60fa0d5a4378,\n--     Transfer d3b07384-8d1c-4e6b-9b8e-2f3b8e4a1c9f,\
+  \ Discharge 181820aa-88c9-479b-9077-af92f5364329.\n--     A Transfer closes the\
+  \ stay in one ward and opens one in the receiving ward.\n--   * Exit mode: F07 Discharge\
+  \ Summary (669262a8-f351-4d5b-8480-3551734eed8f), question\n--     CIEL 160433AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA,\
+  \ mapped by answer UUID (#583).\n--   * Origin: visit attribute \xAB Origin \xBB\
+  , else the Contact form \xAB Patient Origin \xBB\n--     c110605a-e601-40bc-ae07-e1f261d317fa;\
+  \ a transfer-in = R\xE9f\xE9rence intra-hospitali\xE8re.\n-- Measures per ward and\
+  \ month:\n--   * ENTREES <origine>: ward stays starting in the month, by origin.\n\
+  --   * SORTIES <mode>: ward stays ending in the month, by exit mode (transfer out\
+  \ included).\n--   * DECES < 24H / >= 24H: deaths in the month, split on the time\
+  \ since the hospital\n--     admission (stay start); totals and by sex (M / F).\
+  \ Ministry age bands not split.\n--   * JOURNEES D'HOSPITALISATION: nights spent\
+  \ in the ward during the month (stays still\n--     open count up to today).\n--\
+  \   * LITS MONTES: empty \u2014 the analytics DB has no bed / bed-location table\
+  \ yet.\n--     TAUX D'OCCUPATION = journ\xE9es / (lits \xD7 jours du mois) is therefore\
+  \ empty too.\n--   * DUREE MOYENNE DE SEJOUR = journ\xE9es / sorties (of the month).\n\
+  --   * INFECTIONS POST-OPERATOIRES, DECES MATERNELS, DECES PERINATAUX, DECES NEONATAUX,\n\
+  --     AUDITS: not captured yet -> empty.\n--   * Test patients excluded as in #587.\
+  \ Month filter column: MOIS.\n-- ============================================================================\n\
+  \nWITH adt AS (\n    SELECT\n        e.encounter_id,\n        e.visit_uuid,\n  \
+  \      e.patient_uuid,\n        e.encounter_datetime,\n        e.location      \
+  \ AS ward,\n        e.location_uuid  AS ward_uuid,\n        CASE e.encounter_type_uuid\n\
+  \            WHEN 'e22e39fd-7db2-45e7-80f1-60fa0d5a4378' THEN 'A'   -- Admission\n\
+  \            WHEN 'd3b07384-8d1c-4e6b-9b8e-2f3b8e4a1c9f' THEN 'T'   -- Transfer\n\
+  \            WHEN '181820aa-88c9-479b-9077-af92f5364329' THEN 'D'   -- Discharge\n\
+  \        END              AS kind\n    FROM encounters e\n    WHERE e.encounter_type_uuid\
+  \ IN ('e22e39fd-7db2-45e7-80f1-60fa0d5a4378',\n                                \
+  \    'd3b07384-8d1c-4e6b-9b8e-2f3b8e4a1c9f',\n                                 \
+  \   '181820aa-88c9-479b-9077-af92f5364329')\n      AND COALESCE(e.encounter_voided,\
+  \ false) = false\n      AND e.location_uuid IS DISTINCT FROM '450be362-59a7-4ccd-964d-ebd930a8b30f'\
+  \ -- \"Locations test\"\n),\n\n-- Every ADT event with the next one of the same\
+  \ visit, and the stay it belongs to.\nadt_seq AS (\n    SELECT\n        a.*,\n \
+  \       LEAD(a.kind)               OVER w AS next_kind,\n        LEAD(a.encounter_datetime)\
+  \ OVER w AS next_datetime,\n        SUM(CASE WHEN a.kind = 'A' THEN 1 ELSE 0 END)\
+  \ OVER w AS stay_no\n    FROM adt a\n    WINDOW w AS (PARTITION BY a.visit_uuid\
+  \ ORDER BY a.encounter_datetime, a.encounter_id)\n),\n\n-- One row per ward stay:\
+  \ an Admission or a Transfer that follows an Admission.\nseg AS (\n    SELECT\n\
+  \        s.*,\n        FIRST_VALUE(s.encounter_id)       OVER st AS stay_id,\n \
+  \       FIRST_VALUE(s.encounter_datetime) OVER st AS stay_start\n    FROM adt_seq\
+  \ s\n    WINDOW st AS (PARTITION BY s.visit_uuid, s.stay_no ORDER BY s.encounter_datetime,\
+  \ s.encounter_id)\n),\nstays AS (\n    SELECT\n        g.*,\n        -- start of\
+  \ the next stay in the same visit (re-admission), to bound the F07 search\n    \
+  \    (SELECT MIN(x.encounter_datetime) FROM adt x\n          WHERE x.visit_uuid\
+  \ = g.visit_uuid AND x.kind = 'A'\n            AND x.encounter_datetime > g.stay_start)\
+  \                   AS next_stay_start\n    FROM seg g\n    WHERE g.kind IN ('A',\
+  \ 'T') AND g.stay_no > 0\n),\n\n-- The stay's F07 Discharge Summary (latest one\
+  \ between admission and the next admission).\nf07 AS (\n    SELECT DISTINCT ON (s.stay_id)\n\
+  \        s.stay_id,\n        e.encounter_id       AS f07_encounter_id,\n       \
+  \ e.encounter_uuid     AS f07_encounter_uuid,\n        e.encounter_datetime AS f07_datetime\n\
+  \    FROM (SELECT DISTINCT stay_id, visit_uuid, stay_start, next_stay_start FROM\
+  \ stays) s\n    JOIN encounters e\n      ON e.visit_uuid = s.visit_uuid\n     AND\
+  \ e.encounter_type_uuid = '669262a8-f351-4d5b-8480-3551734eed8f'   -- Discharge\
+  \ Summary\n     AND COALESCE(e.encounter_voided, false) = false\n     AND e.encounter_datetime\
+  \ >= s.stay_start - INTERVAL '1 day'\n     AND (s.next_stay_start IS NULL OR e.encounter_datetime\
+  \ < s.next_stay_start)\n    ORDER BY s.stay_id, e.encounter_datetime DESC, e.encounter_id\
+  \ DESC\n),\nf07_outcome AS (\n    SELECT DISTINCT ON (f.stay_id)\n        f.stay_id,\n\
+  \        o.answer_coded_uuid AS outcome_uuid,\n        o.answer_coded      AS outcome_name\n\
+  \    FROM f07 f\n    JOIN observations o\n      ON o.encounter_uuid = f.f07_encounter_uuid\n\
+  \     AND o.question_uuid = '160433AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'           --\
+  \ Outcome at discharge\n     AND COALESCE(o.obs_voided, false) = false\n    ORDER\
+  \ BY f.stay_id, o.obs_date_time DESC\n),\n\n-- Origin from the Contact form when\
+  \ the visit attribute is missing.\ncontact_origin AS (\n    SELECT DISTINCT ON (o.visit_uuid)\n\
+  \        o.visit_uuid,\n        o.answer_coded_uuid AS origin_uuid\n    FROM observations\
+  \ o\n    WHERE o.question_uuid = 'c110605a-e601-40bc-ae07-e1f261d317fa'        \
+  \  -- Patient Origin\n      AND COALESCE(o.obs_voided, false) = false\n      AND\
+  \ o.visit_uuid IN (SELECT visit_uuid FROM stays)\n    ORDER BY o.visit_uuid, o.obs_date_time\
+  \ DESC\n),\n\nbase AS (\n    SELECT\n        s.*,\n        f.f07_datetime,\n   \
+  \     fo.outcome_uuid,\n        fo.outcome_name,\n        v.visit_attributes,\n\
+  \        co.origin_uuid AS contact_origin_uuid,\n        p.given_name,\n       \
+  \ p.family_name,\n        p.identifiers,\n        COALESCE(p.gender, v.patient_gender)\
+  \       AS gender,\n        COALESCE(p.birthdate, v.patient_birthdate) AS birthdate,\n\
+  \        p.address_state_province                   AS province,  -- hierarchy level\
+  \ 2\n        p.address_county_district                  AS commune,   -- level 3\n\
+  \        p.address_city                             AS zone,      -- level 4 (city_village)\n\
+  \        p.address_1                                AS colline    -- level 5 (address1)\n\
+  \    FROM stays s\n    LEFT JOIN f07            f  ON f.stay_id  = s.stay_id\n \
+  \   LEFT JOIN f07_outcome    fo ON fo.stay_id = s.stay_id\n    LEFT JOIN visits\
+  \         v  ON v.visit_uuid = s.visit_uuid\n    LEFT JOIN contact_origin co ON\
+  \ co.visit_uuid = s.visit_uuid\n    JOIN patients p ON p.patient_uuid = s.patient_uuid\n\
+  \    WHERE COALESCE(v.visit_voided, false) = false\n      AND COALESCE(p.person_voided,\
+  \ false) = false\n      AND NOT (COALESCE(p.family_name, '') ~* '^(SYNTH-|E2E|QA|TEST|DEMO)'\n\
+  \            OR COALESCE(p.given_name,  '') ~* '^(SYNTH-|E2E|QA|TEST|DEMO)')\n),\n\
+  \ncalc AS (\n    SELECT\n        b.*,\n        -- Values are separated by \" / \"\
+  ; a \"/\" inside a value (Consultation/Other Department) is kept.\n        NULLIF(TRIM(SUBSTRING(b.visit_attributes\
+  \ FROM '(?:^|/ )Origin: ((?:[^/]|/(?! ))*)')), '')                  AS origin_attr,\n\
+  \        NULLIF(TRIM(SUBSTRING(b.visit_attributes FROM '(?:^|/ )Payer: ((?:[^/]|/(?!\
+  \ ))*)')), '')                   AS payer,\n        NULLIF(TRIM(SUBSTRING(b.visit_attributes\
+  \ FROM '(?:^|/ )Supplementary insurance: ((?:[^/]|/(?! ))*)')), '') AS supp_insurance,\n\
+  \        CASE\n            WHEN b.next_kind IN ('T', 'D', 'A') THEN b.next_datetime\
+  \   -- next ADT event closes this ward stay\n            WHEN b.next_kind IS NULL\
+  \ AND b.f07_datetime >= b.encounter_datetime\n                 THEN b.f07_datetime\
+  \                                   -- no Discharge recorded: the F07 closes it\n\
+  \        END                                                            AS exit_datetime\n\
+  \    FROM base b\n)\n,\n\n-- One row per ward stay with the labels used below.\n\
+  wst AS (\n    SELECT\n        c.stay_id,\n        c.encounter_id,\n        c.ward,\n\
+  \        c.gender,\n        c.stay_start,\n        c.encounter_datetime        \
+  \                  AS entry_datetime,\n        c.exit_datetime,\n        CASE\n\
+  \            WHEN c.kind = 'T' THEN 'R\xE9f\xE9rence intra-hospitali\xE8re'\n  \
+  \          ELSE CASE COALESCE(\n                     CASE c.origin_attr\n      \
+  \                   WHEN 'Home'                            THEN '7282deba-8db9-4b83-b0a9-799b7a91f9da'\n\
+  \                         WHEN 'Referred by Health Center (CDS)' THEN 'aa4aba23-865b-4b95-98b1-6abb86126b09'\n\
+  \                         WHEN 'Referred by Another Hospital'    THEN '1cf31ac9-1763-4f89-836b-078d0afd79a1'\n\
+  \                         WHEN 'Intra-Hospital Referral (Consultation/Other Department)'\n\
+  \                                                                THEN '497a7e30-5757-4a0a-85da-4d14520969bf'\n\
+  \                     END, c.contact_origin_uuid)\n                     WHEN '7282deba-8db9-4b83-b0a9-799b7a91f9da'\
+  \ THEN 'Domicile'\n                     WHEN 'aa4aba23-865b-4b95-98b1-6abb86126b09'\
+  \ THEN 'R\xE9f\xE9r\xE9 par CDS'\n                     WHEN '1cf31ac9-1763-4f89-836b-078d0afd79a1'\
+  \ THEN 'Autre h\xF4pital'\n                     WHEN '497a7e30-5757-4a0a-85da-4d14520969bf'\
+  \ THEN 'R\xE9f\xE9rence intra-hospitali\xE8re'\n                     ELSE 'Autre\
+  \ / non renseign\xE9'\n                 END\n        END                       \
+  \                    AS origine,\n        CASE\n            WHEN c.next_kind = 'T'\
+  \ THEN 'Transfert intra-hospitalier'\n            WHEN c.exit_datetime IS NULL THEN\
+  \ NULL\n            ELSE CASE c.outcome_uuid\n                     WHEN '55fd8787-27f2-456b-9f6b-acfc8d4ca8de'\
+  \ THEN 'Gu\xE9ri'\n                     WHEN '162677AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'\
+  \ THEN 'Am\xE9lior\xE9'\n                     WHEN 'ac0a6887-a5b5-4280-ae12-4f038163ce3d'\
+  \ THEN 'Contre-r\xE9f\xE9rence'\n                     WHEN '4ae2adeb-1e81-410d-9b08-2fcbba6397a2'\
+  \ THEN 'R\xE9f\xE9rence m\xEAme niveau'\n                     WHEN '96cbc3ff-8ff8-4b3c-b341-815563df3641'\
+  \ THEN 'R\xE9f\xE9rence niveau sup\xE9rieur'\n                     WHEN '6844c0b2-a503-4a12-9991-cf56062cfb50'\
+  \ THEN 'Transfert intra-hospitalier'\n                     WHEN '1694AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'\
+  \ THEN 'Sortie contre avis m\xE9dical (d\xE9charge)'\n                     WHEN\
+  \ '160431AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' THEN '\xC9vad\xE9'\n                  \
+  \   WHEN '5f60e9b0-50e1-473c-b155-68a2a670559e' THEN 'D\xE9c\xE9d\xE9'\n       \
+  \              ELSE 'Non renseign\xE9'\n                 END\n        END      \
+  \                                     AS evolution\n    FROM calc c\n),\n\n-- Every\
+  \ month a stay touches (entry month .. exit month, or the current month if open).\n\
+  st_month AS (\n    SELECT\n        s.*,\n        m::date                       \
+  \                AS mois,\n        (m + INTERVAL '1 month')::date              \
+  \  AS mois_fin\n    FROM wst s\n    CROSS JOIN LATERAL generate_series(\n      \
+  \  date_trunc('month', s.entry_datetime),\n        date_trunc('month', COALESCE(s.exit_datetime,\
+  \ now())),\n        INTERVAL '1 month') AS m\n),\n\nagg AS (\n    SELECT\n     \
+  \   sm.mois,\n        sm.ward,\n        COUNT(*) FILTER (WHERE date_trunc('month',\
+  \ sm.entry_datetime) = sm.mois)                                   AS entrees,\n\
+  \        COUNT(*) FILTER (WHERE date_trunc('month', sm.entry_datetime) = sm.mois\
+  \ AND sm.origine = 'Domicile')       AS e_domicile,\n        COUNT(*) FILTER (WHERE\
+  \ date_trunc('month', sm.entry_datetime) = sm.mois AND sm.origine = 'R\xE9f\xE9\
+  r\xE9 par CDS') AS e_cds,\n        COUNT(*) FILTER (WHERE date_trunc('month', sm.entry_datetime)\
+  \ = sm.mois AND sm.origine = 'Autre h\xF4pital')  AS e_hopital,\n        COUNT(*)\
+  \ FILTER (WHERE date_trunc('month', sm.entry_datetime) = sm.mois AND sm.origine\
+  \ = 'R\xE9f\xE9rence intra-hospitali\xE8re') AS e_intra,\n        COUNT(*) FILTER\
+  \ (WHERE date_trunc('month', sm.entry_datetime) = sm.mois AND sm.origine = 'Autre\
+  \ / non renseign\xE9') AS e_autre,\n        COUNT(*) FILTER (WHERE date_trunc('month',\
+  \ sm.exit_datetime) = sm.mois)                                    AS sorties,\n\
+  \        COUNT(*) FILTER (WHERE date_trunc('month', sm.exit_datetime) = sm.mois\
+  \ AND sm.evolution = 'Gu\xE9ri')                     AS s_gueri,\n        COUNT(*)\
+  \ FILTER (WHERE date_trunc('month', sm.exit_datetime) = sm.mois AND sm.evolution\
+  \ = 'Am\xE9lior\xE9')                  AS s_ameliore,\n        COUNT(*) FILTER (WHERE\
+  \ date_trunc('month', sm.exit_datetime) = sm.mois AND sm.evolution = 'Contre-r\xE9\
+  f\xE9rence')          AS s_contre_ref,\n        COUNT(*) FILTER (WHERE date_trunc('month',\
+  \ sm.exit_datetime) = sm.mois AND sm.evolution = 'R\xE9f\xE9rence m\xEAme niveau')\
+  \     AS s_ref_meme,\n        COUNT(*) FILTER (WHERE date_trunc('month', sm.exit_datetime)\
+  \ = sm.mois AND sm.evolution = 'R\xE9f\xE9rence niveau sup\xE9rieur')AS s_ref_sup,\n\
+  \        COUNT(*) FILTER (WHERE date_trunc('month', sm.exit_datetime) = sm.mois\
+  \ AND sm.evolution = 'Transfert intra-hospitalier') AS s_transfert,\n        COUNT(*)\
+  \ FILTER (WHERE date_trunc('month', sm.exit_datetime) = sm.mois AND sm.evolution\
+  \ = 'Sortie contre avis m\xE9dical (d\xE9charge)') AS s_cam,\n        COUNT(*) FILTER\
+  \ (WHERE date_trunc('month', sm.exit_datetime) = sm.mois AND sm.evolution = '\xC9\
+  vad\xE9')                     AS s_evade,\n        COUNT(*) FILTER (WHERE date_trunc('month',\
+  \ sm.exit_datetime) = sm.mois AND sm.evolution = 'D\xE9c\xE9d\xE9')            \
+  \        AS s_decede,\n        COUNT(*) FILTER (WHERE date_trunc('month', sm.exit_datetime)\
+  \ = sm.mois AND sm.evolution = 'Non renseign\xE9')             AS s_nr,\n      \
+  \  COUNT(*) FILTER (WHERE date_trunc('month', sm.exit_datetime) = sm.mois AND sm.evolution\
+  \ = 'D\xE9c\xE9d\xE9'\n                           AND sm.exit_datetime - sm.stay_start\
+  \ <  INTERVAL '24 hours')                            AS d_lt24,\n        COUNT(*)\
+  \ FILTER (WHERE date_trunc('month', sm.exit_datetime) = sm.mois AND sm.evolution\
+  \ = 'D\xE9c\xE9d\xE9'\n                           AND sm.exit_datetime - sm.stay_start\
+  \ <  INTERVAL '24 hours' AND sm.gender = 'M')        AS d_lt24_m,\n        COUNT(*)\
+  \ FILTER (WHERE date_trunc('month', sm.exit_datetime) = sm.mois AND sm.evolution\
+  \ = 'D\xE9c\xE9d\xE9'\n                           AND sm.exit_datetime - sm.stay_start\
+  \ <  INTERVAL '24 hours' AND sm.gender = 'F')        AS d_lt24_f,\n        COUNT(*)\
+  \ FILTER (WHERE date_trunc('month', sm.exit_datetime) = sm.mois AND sm.evolution\
+  \ = 'D\xE9c\xE9d\xE9'\n                           AND sm.exit_datetime - sm.stay_start\
+  \ >= INTERVAL '24 hours')                            AS d_ge24,\n        COUNT(*)\
+  \ FILTER (WHERE date_trunc('month', sm.exit_datetime) = sm.mois AND sm.evolution\
+  \ = 'D\xE9c\xE9d\xE9'\n                           AND sm.exit_datetime - sm.stay_start\
+  \ >= INTERVAL '24 hours' AND sm.gender = 'M')        AS d_ge24_m,\n        COUNT(*)\
+  \ FILTER (WHERE date_trunc('month', sm.exit_datetime) = sm.mois AND sm.evolution\
+  \ = 'D\xE9c\xE9d\xE9'\n                           AND sm.exit_datetime - sm.stay_start\
+  \ >= INTERVAL '24 hours' AND sm.gender = 'F')        AS d_ge24_f,\n        -- nights\
+  \ in the ward within the month\n        SUM(GREATEST(0,\n              LEAST(COALESCE(sm.exit_datetime::date,\
+  \ CURRENT_DATE), sm.mois_fin)\n            - GREATEST(sm.entry_datetime::date, sm.mois)))\
+  \                                                         AS journees\n    FROM\
+  \ st_month sm\n    GROUP BY sm.mois, sm.ward\n)\n\nSELECT\n    a.mois          \
+  \                                             AS \"MOIS\",\n    a.ward         \
+  \                                              AS \"SERVICE\",\n    CAST(NULL AS\
+  \ INTEGER)                                        AS \"LITS MONTES\",          --\
+  \ no bed table in the analytics DB\n    a.entrees                              \
+  \                      AS \"ENTREES\",\n    a.e_domicile                       \
+  \                          AS \"ENTREES DOMICILE\",\n    a.e_cds               \
+  \                                       AS \"ENTREES REFERE PAR CDS\",\n    a.e_hopital\
+  \                                                  AS \"ENTREES AUTRE HOPITAL\"\
+  ,\n    a.e_intra                                                    AS \"ENTREES\
+  \ REFERENCE INTRA-HOSPITALIERE\",\n    a.e_autre                               \
+  \                     AS \"ENTREES AUTRE / NON RENSEIGNE\",\n    a.sorties     \
+  \                                               AS \"SORTIES\",\n    a.s_gueri \
+  \                                                   AS \"SORTIES GUERI\",\n    a.s_ameliore\
+  \                                                 AS \"SORTIES AMELIORE\",\n   \
+  \ a.s_contre_ref                                               AS \"SORTIES CONTRE-REFERENCE\"\
+  ,\n    a.s_ref_meme                                                 AS \"SORTIES\
+  \ REFERENCE MEME NIVEAU\",\n    a.s_ref_sup                                    \
+  \              AS \"SORTIES REFERENCE NIVEAU SUPERIEUR\",\n    a.s_transfert   \
+  \                                             AS \"SORTIES TRANSFERT INTRA-HOSPITALIER\"\
+  ,\n    a.s_cam                                                      AS \"SORTIES\
+  \ CONTRE AVIS MEDICAL\",\n    a.s_evade                                        \
+  \            AS \"SORTIES EVADE\",\n    a.s_decede                             \
+  \                      AS \"SORTIES DECEDE\",\n    a.s_nr                      \
+  \                                 AS \"SORTIES NON RENSEIGNE\",\n    a.d_lt24  \
+  \                                                   AS \"DECES < 24H\",\n    a.d_lt24_m\
+  \                                                   AS \"DECES < 24H M\",\n    a.d_lt24_f\
+  \                                                   AS \"DECES < 24H F\",\n    a.d_ge24\
+  \                                                     AS \"DECES >= 24H\",\n   \
+  \ a.d_ge24_m                                                   AS \"DECES >= 24H\
+  \ M\",\n    a.d_ge24_f                                                   AS \"DECES\
+  \ >= 24H F\",\n    a.journees::int                                             \
+  \ AS \"JOURNEES D'HOSPITALISATION\",\n    CAST(NULL AS NUMERIC)                \
+  \                        AS \"TAUX D'OCCUPATION\",    -- needs LITS MONTES\n   \
+  \ ROUND(a.journees::numeric / NULLIF(a.sorties, 0), 1)         AS \"DUREE MOYENNE\
+  \ DE SEJOUR\",\n    CAST(NULL AS INTEGER)                                      \
+  \  AS \"INFECTIONS POST-OPERATOIRES\",\n    CAST(NULL AS INTEGER)              \
+  \                          AS \"DECES MATERNELS\",\n    CAST(NULL AS INTEGER)  \
+  \                                      AS \"DECES PERINATAUX\",\n    CAST(NULL AS\
+  \ INTEGER)                                        AS \"DECES NEONATAUX\",\n    CAST(NULL\
+  \ AS INTEGER)                                        AS \"AUDITS\"\nFROM agg a\n\
+  ORDER BY a.mois DESC, a.ward"
+params: null
+template_params: null
+filter_select_enabled: true
+fetch_values_predicate: null
+extra: null
+normalize_columns: false
+always_filter_main_dttm: false
+uuid: 64648242-7f0c-4f28-b05f-b42441d41b88
+metrics:
+- metric_name: count
+  verbose_name: COUNT(*)
+  metric_type: count
+  expression: COUNT(*)
+  description: null
+  d3format: null
+  currency: null
+  extra:
+    warning_markdown: ''
+  warning_text: null
+columns:
+- column_name: ENTREES AUTRE / NON RENSEIGNE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: DECES < 24H F
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: DECES < 24H M
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: DECES >= 24H F
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: DECES >= 24H M
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: SORTIES CONTRE AVIS MEDICAL
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: DUREE MOYENNE DE SEJOUR
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: DECIMAL
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: ENTREES REFERE PAR CDS
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: SORTIES REFERENCE NIVEAU SUPERIEUR
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: SORTIES REFERENCE MEME NIVEAU
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: SORTIES TRANSFERT INTRA-HOSPITALIER
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: ENTREES REFERENCE INTRA-HOSPITALIERE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: DECES < 24H
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: DECES >= 24H
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: ENTREES AUTRE HOPITAL
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: SORTIES NON RENSEIGNE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: TAUX D'OCCUPATION
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: DECIMAL
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: JOURNEES D'HOSPITALISATION
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: INTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: INFECTIONS POST-OPERATOIRES
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: INTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: SORTIES CONTRE-REFERENCE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: DECES PERINATAUX
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: INTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: DECES NEONATAUX
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: INTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: DECES MATERNELS
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: INTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: SORTIES EVADE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: SORTIES AMELIORE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: SORTIES DECEDE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: ENTREES DOMICILE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: SORTIES GUERI
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: LITS MONTES
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: INTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: AUDITS
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: INTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: MOIS
+  verbose_name: null
+  is_dttm: true
+  is_active: true
+  type: DATE
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: SERVICE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: ENTREES
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: SORTIES
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: {}
+version: 1.0.0
+database_uuid: 44c13a30-0c14-402c-b81f-1c93972f5fbc
