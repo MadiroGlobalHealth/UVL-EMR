@@ -492,6 +492,27 @@
             </configuration>
           </execution>
           <execution>
+            <!--
+              Tests the #570 icon sprite patch: the patched esm-styleguide dist, and the
+              app shell built from it in process-resources. See 'Patch the icon sprite in
+              the app shell' below.
+            -->
+            <id>Test the esm-styleguide icon sprite patch</id>
+            <phase>test</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
+                <exec executable="node" failonerror="true">
+                  <arg value="${project.basedir}/../scripts/test/esm-styleguide-svg-sprite/test.mjs"/>
+                  <arg value="${project.build.directory}/openmrs_cli/node_modules/@openmrs/esm-styleguide"/>
+                  <arg value="${project.build.directory}/${project.artifactId}-${project.version}/distro/binaries/openmrs/frontend"/>
+                </exec>
+              </target>
+            </configuration>
+          </execution>
+          <execution>
             <id>Add UVL Distro Frontend Configuration</id>
             <phase>process-resources</phase>
             <goals>
@@ -631,6 +652,38 @@
                 <exec executable="npm" dir="${project.build.directory}/openmrs_cli" failonerror="true">
                   <arg line="ci --legacy-peer-deps --no-audit --no-fund"/>
                 </exec>
+                <!--
+                  Patch the icon sprite in the app shell (#570), until core ships
+                  https://github.com/openmrs/openmrs-esm-core/pull/1981.
+
+                  @openmrs/esm-styleguide attaches #omrs-svgs-container only on window
+                  `load`, and MaybeIcon reads whether its icon exists once, at mount. On a
+                  hard reload or a direct link the chart's left nav mounts before `load`,
+                  so its links never get their icons. The patch is that PR applied to the
+                  styleguide's dist, which `openmrs build` compiles into the shell: the
+                  container is attached once, as soon as there is a body, and MaybeIcon
+                  re-renders when its icon appears. The shell pins every module's
+                  @openmrs/esm-framework to its own copy, so this reaches every app.
+
+                  The patch is named for the core version. Moving coreVersion fails here
+                  until someone checks whether the new core has #1981: if it does, delete
+                  this step and the patch; if not, regenerate the patch for that version.
+                  scripts/test/esm-styleguide-svg-sprite/test.mjs tests the patched dist
+                  and the built shell.
+                -->
+                <property name="frontend.styleguide.patch"
+                          value="${project.basedir}/frontend/openmrs-cli/patches/esm-styleguide-${frontend.core.version}.patch"/>
+                <fail message="No ${frontend.styleguide.patch}. Frontend core moved to ${frontend.core.version}: if it contains openmrs/openmrs-esm-core#1981, remove the #570 patch step from distro/pom.xml; otherwise regenerate the patch for this version.">
+                  <condition>
+                    <not>
+                      <available file="${frontend.styleguide.patch}"/>
+                    </not>
+                  </condition>
+                </fail>
+                <exec executable="patch" failonerror="true">
+                  <arg line="-t -p1 -d ${project.build.directory}/openmrs_cli/node_modules/@openmrs/esm-styleguide -i ${frontend.styleguide.patch}"/>
+                </exec>
+                <echo level="info" message="Patched @openmrs/esm-styleguide ${frontend.core.version}: the icon sprite is attached before the window load event (#570)"/>
                 <replaceregexp file="${project.build.directory}/openmrs/frontend_assembly/build-openmrs-frontend.groovy"
                               match="npx --legacy-peer-deps openmrs@\$\{openmrsVersion\}"
                               replace="${project.build.directory}/openmrs_cli/node_modules/.bin/openmrs"
