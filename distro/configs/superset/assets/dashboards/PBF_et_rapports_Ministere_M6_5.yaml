@@ -1,0 +1,265 @@
+dashboard_title: "PBF et rapports Minist\xE8re (M6)"
+description: null
+css: ''
+slug: null
+certified_by: ''
+certification_details: ''
+published: true
+uuid: 3c679454-9c22-4603-8e72-a1fb994ae6ab
+position:
+  CHART-87Lj81Rs2T:
+    children: []
+    id: CHART-87Lj81Rs2T
+    meta:
+      chartId: 29
+      height: 50
+      sliceName: "PBF \u2013 Registre chirurgie"
+      uuid: e15306e5-f939-4ad0-a9c8-94e43a6eb331
+      width: 12
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-GtMakn6g5K
+    type: CHART
+  CHART-IHbheD2vL2:
+    children: []
+    id: CHART-IHbheD2vL2
+    meta:
+      chartId: 30
+      height: 50
+      sliceName: "Fiche 1 \u2013 Activit\xE9 globale par service"
+      uuid: 92483ebd-f69f-4482-a432-65f96872ac60
+      width: 12
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-_Xgz7KBTu3
+    type: CHART
+  CHART-explore-28-1:
+    children: []
+    id: CHART-explore-28-1
+    meta:
+      chartId: 28
+      height: 50
+      sliceName: "PBF \u2013 Registre accouchements"
+      uuid: 8a1eeb5b-8fac-4d7d-ae96-2efa289b2c8b
+      width: 12
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-KhkXpVNaq
+    type: CHART
+  CHART-explore-31-1:
+    children: []
+    id: CHART-explore-31-1
+    meta:
+      chartId: 31
+      height: 50
+      sliceName: "PBF \u2013 Registre consultations (CONSULTATION SERVICE)"
+      uuid: 627ac8ba-56bc-4ba6-88c0-9e9bfab90a38
+      width: 12
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-KhkXpVNaq
+    type: CHART
+  CHART-explore-32-1:
+    children: []
+    id: CHART-explore-32-1
+    meta:
+      chartId: 32
+      height: 50
+      sliceName: "PBF \u2013 Registre journ\xE9es d'hospitalisation"
+      uuid: 265e16f2-51e6-48e1-8eae-7ce296488534
+      width: 12
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-KhkXpVNaq
+    type: CHART
+  DASHBOARD_VERSION_KEY: v2
+  GRID_ID:
+    children:
+    - ROW-Oji9-u0Nz
+    - ROW-KhkXpVNaq
+    - ROW-6lQ-N1D7E
+    - ROW-GtMakn6g5K
+    - ROW-_Xgz7KBTu3
+    id: GRID_ID
+    parents:
+    - ROOT_ID
+    type: GRID
+  HEADER_ID:
+    id: HEADER_ID
+    meta:
+      text: "PBF et rapports Minist\xE8re (M6)"
+    type: HEADER
+  ROOT_ID:
+    children:
+    - GRID_ID
+    id: ROOT_ID
+    type: ROOT
+  ROW-6lQ-N1D7E:
+    children:
+    - CHART-explore-28-1
+    id: ROW-6lQ-N1D7E
+    meta:
+      background: BACKGROUND_TRANSPARENT
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    type: ROW
+  ROW-GtMakn6g5K:
+    children:
+    - CHART-87Lj81Rs2T
+    id: ROW-GtMakn6g5K
+    meta:
+      background: BACKGROUND_TRANSPARENT
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    type: ROW
+  ROW-KhkXpVNaq:
+    children:
+    - CHART-explore-32-1
+    id: ROW-KhkXpVNaq
+    meta:
+      '0': ROOT_ID
+      background: BACKGROUND_TRANSPARENT
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    type: ROW
+  ROW-Oji9-u0Nz:
+    children:
+    - CHART-explore-31-1
+    id: ROW-Oji9-u0Nz
+    meta:
+      background: BACKGROUND_TRANSPARENT
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    type: ROW
+  ROW-_Xgz7KBTu3:
+    children:
+    - CHART-IHbheD2vL2
+    id: ROW-_Xgz7KBTu3
+    meta:
+      background: BACKGROUND_TRANSPARENT
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    type: ROW
+metadata:
+  chart_configuration:
+    '28':
+      id: 28
+      crossFilters:
+        scope: global
+        chartsInScope:
+        - 29
+        - 30
+        - 31
+        - 32
+    '29':
+      id: 29
+      crossFilters:
+        scope: global
+        chartsInScope:
+        - 28
+        - 30
+        - 31
+        - 32
+    '30':
+      id: 30
+      crossFilters:
+        scope: global
+        chartsInScope:
+        - 28
+        - 29
+        - 31
+        - 32
+    '31':
+      id: 31
+      crossFilters:
+        scope: global
+        chartsInScope:
+        - 28
+        - 29
+        - 30
+        - 32
+    '32':
+      id: 32
+      crossFilters:
+        scope: global
+        chartsInScope:
+        - 28
+        - 29
+        - 30
+        - 31
+  global_chart_configuration:
+    scope:
+      rootPath:
+      - ROOT_ID
+      excluded: []
+    chartsInScope:
+    - 28
+    - 29
+    - 30
+    - 31
+    - 32
+  color_scheme: ''
+  refresh_frequency: 0
+  shared_label_colors: {}
+  color_scheme_domain: []
+  expanded_slices: {}
+  label_colors: {}
+  timed_refresh_immune_slices: []
+  cross_filters_enabled: true
+  default_filters: '{}'
+  native_filter_configuration:
+  - id: NATIVE_FILTER-K97fsOJvd
+    controlValues:
+      enableEmptyFilter: false
+    name: Mois
+    filterType: filter_time
+    targets:
+    - {}
+    defaultDataMask:
+      extraFormData:
+        time_range: previous calendar month
+      filterState:
+        value: previous calendar month
+    cascadeParentIds: []
+    scope:
+      rootPath:
+      - ROOT_ID
+      excluded: []
+    type: NATIVE_FILTER
+    description: ''
+  - id: NATIVE_FILTER-S2BhrN5ik
+    controlValues:
+      enableEmptyFilter: false
+      defaultToFirstItem: false
+      multiSelect: true
+      searchAllOptions: false
+      inverseSelection: false
+    name: Service
+    filterType: filter_select
+    targets:
+    - column:
+        name: SERVICE
+      datasetUuid: 48d1b816-df10-4586-8461-77816c96bc09
+    defaultDataMask:
+      extraFormData: {}
+      filterState: {}
+      ownState: {}
+    cascadeParentIds: []
+    scope:
+      rootPath:
+      - ROOT_ID
+      excluded:
+      - 32
+    type: NATIVE_FILTER
+    description: ''
+version: 1.0.0
