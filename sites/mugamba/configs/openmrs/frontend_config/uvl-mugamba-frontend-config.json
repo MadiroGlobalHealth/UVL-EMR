@@ -938,7 +938,12 @@
         "characterCount_other": "{{count}} / {{max}} caractères",
         "dispatched": "Expédié",
         "cancelled": "Annulé",
-        "completed": "Complété"
+        "completed": "Complété",
+        "validationError": "Erreur de validation",
+        "atLeastOneItem": "Vous devez ajouter au moins un article",
+        "updateBatchInformationForItems": "Vous devez renseigner le lot de chaque article",
+        "operationTypeRequisition": "Réquisition",
+        "operationTypeStockIssue": "Sortie de stock"
       }
     }
   },

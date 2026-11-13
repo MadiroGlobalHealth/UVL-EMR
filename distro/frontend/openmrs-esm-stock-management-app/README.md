@@ -44,6 +44,10 @@ with fixes that are not released upstream yet. Only the built module is here; th
 | uvl.10: the completed date of an approved operation is labelled « Approved » in status lines; one space between the names; date pickers use the user's language as Flatpickr locale (they were `en`); Received Items does not hyphenate; three stock item labels no longer append a colon; a line's « Available » is the chosen batch's quantity at the location | not yet |
 | uvl.11: the requisition prefills a new Stock Issue only; a saved one reopens with its own lines (it was rebuilt from the requisition: no batch, and the requisition's line uuids sent on save) | not yet |
 | uvl.11: cancel dialog « Back » / « Cancel operation »; related operations header and statuses translatable, one per line; the reason counter is translatable (Carbon's reads « Character limit 500 ») | not yet |
+| uvl.12: the operations dialog shows an apostrophe in the translated action as it is (« Annuler l'opération »; i18next escaped it and React escaped it again, `l&#39;opération`) | not yet |
+| uvl.12: « Validation error / You must add at least one item » (and the batch information message) translatable, and it closes by itself like other snackbars | not yet |
+| uvl.12: a line's « Available » before a batch is chosen is the sum of the batches the batch picker offers (same request), not the location's net total | not yet |
+| uvl.12: the operation type names stockmanagement seeds (« Requisition », « Stock Issue », ...) are translatable wherever the app shows them; a type the site added or renamed keeps its own name | not yet |
 
 The list's refresh after Complete and other status changes is already in 3.3.1 (3.2.1 revalidated a
 cache the app did not read); the branch only adds a test for it.
