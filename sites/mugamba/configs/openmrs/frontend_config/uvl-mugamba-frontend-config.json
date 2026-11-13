@@ -19,7 +19,8 @@
         "somethingWentWrongTryReloading": "Une erreur s'est produite. Rechargez la page.",
         "yearAbbreviation": "an",
         "yearsAbbreviation": "ans",
-        "closeSnackbar": "Fermer la notification"
+        "closeSnackbar": "Fermer la notification",
+        "snackbarNotification": "Notification"
       }
     }
   },
@@ -887,8 +888,8 @@
         "moreItems_one": "...({{count}} de plus)",
         "moreItems_other": "...({{count}} de plus)",
         "discard": "Abandonner",
-        "paginationPageSelectLabel_one": "Page sur {{count}} page",
-        "paginationPageSelectLabel_other": "Page sur {{count}} pages",
+        "paginationPageSelectLabel_one": "Numéro de page ({{count}} page au total)",
+        "paginationPageSelectLabel_other": "Numéro de page ({{count}} pages au total)",
         "filterPlaceholder": "Filtrer...",
         "filter": "Filtrer...",
         "viewOperationTitle": "Voir {{operationType}}",
@@ -925,7 +926,11 @@
         "reference": "Référence",
         "balance": "Solde",
         "patientDispense": "Dispensation au patient",
-        "view": "Voir"
+        "view": "Voir",
+        "approved": "Approuvé",
+        "dispensingUnitOfMeasurement": "Unité de mesure de l'emballage de distribution",
+        "orderLevel": "Niveau de Réapprovisionnement",
+        "purchasePricePackagingUnit": "Prix d'achat de l'unité d'emballage"
       }
     }
   },
