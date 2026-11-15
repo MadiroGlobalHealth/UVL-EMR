@@ -19,7 +19,8 @@ always wins over the default, so a product a plan excludes needs a row at 0%.
 | Santé Assuré | 80%, patient 20% | plan default |
 | DGAC | 100% (private insurer, 13 Nov 2026) | plan default |
 | CAM | State 80%, patient 20% | plan default |
-| PNB (police officers) | everything the base plan leaves: the co-payment, what MFP does not cover | complementary plan, 100% *of what the base plan leaves* |
+| MFP | medicines: 80% of at most MFP's reference price per unit; the patient pays the rest | `mfp-medicines-ceiling-issue184.csv`, `amount` rows |
+| PNB (police officers) | everything the base plan leaves: the co-payment, what MFP does not cover, the difference above MFP's price | complementary plan, 100% *of what the base plan leaves* |
 | CMU (MSU members, 13 Nov 2026) | the MSU patient share: 30% in category B, 40% in category C | complementary plan, 100% *of what the base plan leaves* |
 
 The MSU category is chosen per visit: it is the visit's Payer answer, which the bridge
@@ -48,16 +49,32 @@ are plainly supplies (blood-collection needles and tubes, sample bottles, plain 
 compresses, catheters, sutures, intubation tube, ...). The three kinds of gloves are rows at 0
 instead. A new consumable product needs a row here, or MFP pays it at 80%.
 
-## MFP price ceiling (not loaded yet)
+## MFP price ceiling, medicines (`mfp-medicines-ceiling-issue184.csv`)
 
 MFP sets its own price per item; when the clinic price is higher, the patient pays the
 difference on top of the co-payment (PNB pays it for a police officer). This is the
 `amount` covered base: MFP pays its percentage of at most `covered_base_amount` per unit,
-and whatever the line costs above that is a co-payment the base plan never pays. When MFP's
-price list arrives, each priced product gets `covered_base_mode=amount` and
-`covered_base_amount=<MFP price>` on its MFP row, keeping that row's percentage (70 for a
-consumable, 80 otherwise). A product already in `mfp-issue184.csv` is updated in place (same
-`id`); any other product gets a new row at 80. Nothing in the addon changes.
+and whatever the line costs above that is a co-payment the base plan never pays. So MFP
+pays 80% × min(clinic unit price, MFP unit price) × quantity.
+
+Source: MFP's « Liste des médicaments remboursables » 2026–2027 (1,798 items, product
+owner, 13 Nov 2026), column « PRIX DE RÉFÉRENCE POUR LE REMBOURSEMENT », a price **per
+pack**. Our drug products are sold per unit: a tablet, capsule, ampoule, suppository or
+sachet; a bottle, tube or eye-drop vial. The unit price is the pack price divided by the
+units in the PRESENTATION (« BTE 30 CES » → 30, « BTE 5 AMP 2ML » → 5, « FL 100ML » → 1),
+rounded to the franc (BIF has no decimals in Odoo).
+
+Only matches we are sure of are loaded (137 products): the same brand (or the generic
+row for a generic product), the same form, the same strength and, for a bottle, the same
+volume, with one unit price. The other drug products have no ceiling yet: MFP still pays
+80% of the clinic price for them. The full matching sheet, with each product's candidates
+and why it was not loaded, was handed to Joshua with the change (#184, 15 Nov 2026).
+Procedures and consumables have no ceiling: MFP's lists for them are paper only.
+
+To add or change a ceiling, add or edit the product's row here (`covered_base_mode`
+`amount`, the unit price in `covered_base_amount`). A product that is also in
+`mfp-issue184.csv` must have a single row: Odoo rejects the whole file on a second
+(plan, product) pair. A product whose MFP row is at 70% or 0% keeps that percentage.
 
 ## Format
 
