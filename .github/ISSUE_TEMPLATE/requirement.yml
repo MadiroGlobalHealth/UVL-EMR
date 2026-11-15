@@ -1,0 +1,57 @@
+name: Requirement
+description: Something the hospital needs the system to do, from the product owner or ward staff.
+body:
+  - type: markdown
+    attributes:
+      value: |
+        A requirement is recorded in **two places**: Drive `2 _ REQUIREMENTS` and this issue. Never only in an email or a chat.
+
+        Write it in the hospital's terms: who does the work, what they need to record or see, and how you will know it works. How to build it is decided later, on this issue. French is fine.
+
+        **This repository is public.** No patient data, and no staff names beyond their role.
+  - type: input
+    id: requested-by
+    attributes:
+      label: Requested by
+      description: Role, date, and where it was asked (meeting, email, call).
+    validations:
+      required: true
+  - type: input
+    id: drive
+    attributes:
+      label: Requirement document in Drive
+      description: Link to the document in `2 _ REQUIREMENTS`.
+  - type: input
+    id: service
+    attributes:
+      label: Service or ward
+      placeholder: "Outpatient / Inpatient / Maternity / Laboratory / Pharmacy / Imaging / Billing / Reporting"
+    validations:
+      required: true
+  - type: textarea
+    id: who-what
+    attributes:
+      label: Who does what today, and what is missing
+      description: The role that does this work, the steps they follow today (paper or system), and where the system stops helping.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: How we will know it works
+      description: Concrete checks a tester can perform as that role on the test environment.
+      placeholder: |
+        - [ ] A nurse can ...
+        - [ ] The invoice shows ...
+    validations:
+      required: true
+  - type: textarea
+    id: inputs
+    attributes:
+      label: Data the build depends on
+      description: Prices or fee schedules, insurance/payer terms, concept lists, roles and who holds them, report definitions. Attach them or say who will provide them; work cannot start until they exist.
+  - type: input
+    id: deadline
+    attributes:
+      label: Needed by
+      description: A date, and why (go-live, contract report, inspection).

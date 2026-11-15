@@ -8,8 +8,8 @@ id,name,categ_id/id,type,purchase_ok,sale_ok,invoice_policy
 "init.e3dea2c8-62c6-4487-bdaa-1d009642f7ad","RX01 - Chest X-ray",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
 "init.521361cf-ce7d-49a6-9721-8ebad1b76702","EC02 - Gastrointestinal ultrasound",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
 "init.8155e2e0-5b62-42bc-b47c-0702aaafe3df","EC01 - Abdominal ultrasound",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-"init.5a609990-2381-4d3c-b5ac-34d8f86fcb9d","Generalist consultation with MFP",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-"init.ed284c29-531f-4666-837c-01345e3dbb5b","Generalist consultation",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.5a609990-2381-4d3c-b5ac-34d8f86fcb9d","Consultation généraliste avec MFP",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.ed284c29-531f-4666-837c-01345e3dbb5b","Consultation généraliste",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
 "init.bf6bb5b0-3cad-4452-8031-f4c2fce6ee1a","Birth certificate",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
 "init.2ac65c1c-3403-46c1-8a5f-2278de6044e4","Plaster casting",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
 "init.aa7444e6-3919-4326-8f4a-cdbd63066d69","Circumcision with local anesthesia",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
