@@ -41,6 +41,7 @@ MSF-OCG/LIME-EMR-Tooling.
 
 ## [Unreleased] — `UAT` · `main` `75a339a`
 
+- **Forms: a saved form's read view shows each answer as data entry does** (#475). In the expanded encounter row (and any form opened read-only), the answer of a radio, checkbox, list or switch question showed the answer label as written in the form JSON, without the form's translations, while data entry translates it: an English label read in English in a French session, and since #528 a French label read in French in an English session. Form engine app `13.0.2-pre.12863.uvl.5` translates the answer the way data entry does (the form's translations for the session language, else the concept's name in that language when the form gives no label), so « Dorsale », « Masque », « Oui » in French and "Dorsal (supine)", "Mask", "Yes" in English. Question labels were already translated. Form engine library branch `uvl/5.0.1-pre.2754-475`.
 - **Medications: « pour 1 semaine », not « pour 1 semaines » (#542).** The chart's medication list joined the duration to the unit's French concept name, which is plural. A `@openmrs/esm-patient-medications-app` French translation override now picks the singular for 1 (seconde, minute, heure, jour, semaine, année); 2 and more keep the concept name. The `$` of the nesting is written `\u0024`: the frontend image runs `envsubst` over every config JSON at start, which turned `$t(` into `(`.
 - **Forms: a click anywhere on a row of the forms list opens the form (#662).** Before, only the form name did, although the whole row highlights on hover. The forms app patched build moves to `.uvl.2`.
 - **Forms: the outpatient consultation form is no longer offered on an inpatient visit (#518).** The forms app (13.0.2-pre.12863 patched as `.uvl.1`, `distro/frontend/openmrs-esm-patient-forms-app`) gains `formVisitTypeRestrictions`; « UVL Outpatient Consultation Form » is offered only on « Outpatient visit » and « General » visits. Every other form stays on every visit type: a patient admitted on an outpatient visit keeps that visit type and still needs the inpatient forms.
@@ -902,8 +903,8 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   spelled in French. English names are unchanged. The names come from the requirements sheet
   (Release 1.1). OCL: uvl-ciel and uvl-custom 20261104-2; the uvl-forms 20261104-3 and
   uvl-vital-signs 20261104 exports replace uvl-forms 20261104-2 and uvl-vital-signs 20261001.
-  The form's own read view (the expanded encounter row) still shows the form's English answer
-  labels: see Known issues. (#475)
+  The form's own read view (the expanded encounter row) showed the form's English answer labels
+  until form engine app `13.0.2-pre.12863.uvl.5`. (#475)
 - **Concept names read as the form does.** The forms requirements sheet (Release 1.1) is the
   source of truth for concept names. 305 question and answer concepts of the UVL forms take the
   sheet's label as their French name, so a French session shows the word staff chose in the form
@@ -1321,11 +1322,6 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
 - A Keycloak role change reaches OpenMRS only at the user's second sign-in. Until then the stock
   scope form lists no role for that user. (#438)
 - The dispensing block is in the interface only; the server doesn't refuse an over-dispense. (#374)
-- **A saved form's read view shows coded answers in English in a French session.** With the
-  `enable-embedded-form-view` flag on, the expanded encounter row renders the form, and
-  form-engine-lib (5.0.1-pre.2754, in esm-form-engine-app 13.0.2-pre.12863, and upstream `main`)
-  prints the answer's raw English `label` without translating it, while the question label is
-  translated. The concept names don't reach this view. It needs a form-engine fix. (#475)
 - **The forms list offers every form on every visit type,** so a doctor on an inpatient visit
   is offered the UVL Outpatient Consultation Form. The forms app (esm-patient-forms-app
   13.0.2-pre.12863, and upstream `main`) has no visit-type setting: it hides a form only when it
