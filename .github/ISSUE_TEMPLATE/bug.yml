@@ -1,0 +1,71 @@
+name: Bug
+description: Something in UVL-EMR does not work as it should.
+labels: ["Bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you. You do not need to be sure it is a real bug: an issue that turns out to be a misunderstanding still tells us the system is confusing.
+
+        **This repository is public.** Never include patient names, identifiers, dates of birth, diagnoses or photographs, and no passwords, tokens or server addresses. Describe the shape of the problem instead ("a patient with two identifiers of the same type").
+  - type: dropdown
+    id: environment
+    attributes:
+      label: Where did it happen?
+      options:
+        - My local stack
+        - Test environment (UAT)
+        - At the hospital (production)
+    validations:
+      required: true
+  - type: input
+    id: role
+    attributes:
+      label: Role you were signed in as
+      description: For example Nurse, Doctor, Lab Technician, Pharmacist, Billing. Most of our faults only appear for one role and are invisible to an administrator.
+      placeholder: Nurse
+    validations:
+      required: true
+  - type: input
+    id: where
+    attributes:
+      label: Screen, form or app
+      placeholder: "UVL Outpatient Consultation Form / Order basket / Odoo invoice / ..."
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: How to see it again
+      description: The steps, in order. Say which fields you filled, including optional ones.
+      placeholder: |
+        1. Open a patient with an active outpatient visit
+        2. Open the consultation form and fill every field
+        3. Save
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: What happened instead
+      description: Copy the exact error message, if there was one. Screenshots help, after checking the patient banner shows no real patient.
+    validations:
+      required: true
+  - type: input
+    id: when
+    attributes:
+      label: When (date and approximate time)
+      description: Lets us find the matching server log.
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Privacy
+      options:
+        - label: This issue contains no patient data and no credentials.
+          required: true
