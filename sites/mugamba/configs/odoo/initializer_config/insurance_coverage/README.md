@@ -17,12 +17,30 @@ always wins over the default, so a product a plan excludes needs a row at 0%.
 | MSU category B | 70%, patient 30% | plan « MSU catégorie B (70 %) », Payer answer « MSU 70% » |
 | MSU category C | 60%, patient 40% | plan « MSU catégorie C (60 %) », Payer answer « MSU 60% » |
 | Santé Assuré | 80%, patient 20% | plan default |
+| DGAC | 100% (private insurer, 13 Nov 2026) | plan default |
 | CAM | State 80%, patient 20% | plan default |
 | PNB (police officers) | everything the base plan leaves: the co-payment, what MFP does not cover | complementary plan, 100% *of what the base plan leaves* |
+| CMU (MSU members, 13 Nov 2026) | the MSU patient share: 30% in category B, 40% in category C | complementary plan, 100% *of what the base plan leaves* |
 
 The MSU category is chosen per visit: it is the visit's Payer answer, which the bridge
-maps to the plan with that `insurance_payer_code`. PNB is the visit's « Assurance
-complémentaire » answer.
+maps to the plan with that `insurance_payer_code`. PNB and CMU are answers of the visit's
+« Assurance complémentaire » question (concept « Payeur complémentaire »). Nothing in
+Odoo stops CMU being picked with another payer than MSU: it then pays what that payer
+leaves, like PNB.
+
+### « Assurance privée » and the old « Assurance complémentaire » Payer answers (#581)
+
+The product owner's answer of 11 Nov 2026: « Assurance privée » is a partnership with a
+private insurer and « Assurance complémentaire » one with a supplementary insurer; both
+bill the insurer. On 13 Nov he named them: the private insurers are DGAC, MSU (B and C)
+and Santé Assuré, each already a Payer answer with its plan; the supplementary insurers
+are PNB (with MFP) and CMU (with MSU), answers of the « Assurance complémentaire » question.
+The two generic answers therefore have no plan of their own and are **removed from the
+Payer list** (OCL `uvl-registration` 20261115-581, their Q-AND-A mappings retired). The
+concepts themselves stay active, so a visit recorded with one of them still shows it,
+and its quotation is still billed to the patient with the bridge's note. To bring an answer
+back, unretire its mapping in OCL `uvl-custom` (1732 « Assurance privée », 1733
+« Assurance complémentaire ») and release the collection again.
 
 `mfp-issue184.csv` lists, as MFP's medical supplies and consumables, the 42 consumables of
 the stock catalogue (product owner, 5 Oct 2026, #437 and #455) and 19 other products that
