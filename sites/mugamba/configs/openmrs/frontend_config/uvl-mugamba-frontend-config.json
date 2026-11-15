@@ -5,7 +5,7 @@
         "paginationItemsCount": "{{pageItemsCount}} / {{totalItems}} éléments",
         "paginationOfPages": "sur {{count}} pages",
         "discardUnsavedChangesPromptTitle": "Abandonner les modifications non enregistrées ?",
-        "discardUnsavedChangesPromptBodySingle": "<strong>{{workspaceTitle}}</strong> contient des modifications non enregistrées. Le fermer les abandonnera.",
+        "discardUnsavedChangesPromptBodySingle": "<strong>{{- workspaceTitle}}</strong> contient des modifications non enregistrées. Le fermer les abandonnera.",
         "discardUnsavedChangesPromptBodyMultiple": "{{count}} espaces de travail contiennent des modifications non enregistrées. Les fermer abandonnera ces modifications :",
         "keepEditing": "Continuer la saisie",
         "emptyStateText": "Aucun(e) {{displayText}} à afficher",
