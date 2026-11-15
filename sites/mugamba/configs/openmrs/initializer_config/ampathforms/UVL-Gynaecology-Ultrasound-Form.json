@@ -245,7 +245,7 @@
                     "concept": "2cc1d9a4-d743-462b-b389-45331625318f",
                     "min": "0",
                     "max": "7000",
-                    "disallowDecimals": true
+                    "disallowDecimals": false
                   }
                 },
                 {
@@ -383,7 +383,7 @@
                     "concept": "2cc1d9a4-d743-462b-b389-45331625318f",
                     "min": "0",
                     "max": "7000",
-                    "disallowDecimals": true
+                    "disallowDecimals": false
                   },
                   "hide": {
                     "hideWhenExpression": "pregnancyType !== 'be80699e-1ab2-47b4-8b98-a11efc7cb24d'"
@@ -536,7 +536,7 @@
                     "concept": "2cc1d9a4-d743-462b-b389-45331625318f",
                     "min": "0",
                     "max": "7000",
-                    "disallowDecimals": true
+                    "disallowDecimals": false
                   },
                   "hide": {
                     "hideWhenExpression": "pregnancyType !== 'be80699e-1ab2-47b4-8b98-a11efc7cb24d' || isEmpty(fetusCount) || fetusCount < 3"
