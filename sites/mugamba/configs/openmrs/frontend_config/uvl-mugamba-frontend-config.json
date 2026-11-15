@@ -141,8 +141,11 @@
       }
     ],
     "restrictByVisitLocationTag": true,
+    "preselectVisitLocation": false,
     "Translation overrides": {
       "fr": {
+        "visitLocation": "Service de la visite",
+        "selectLocation": "Choisir le service où le patient est vu",
         "completedForms": "Formulaires remplis",
         "collapseEncounter": "Réduire la consultation",
         "expandEncounter": "Développer la consultation",

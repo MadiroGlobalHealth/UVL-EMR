@@ -119,6 +119,12 @@
      (OrderService.updateOrderFulfillerStatus). Core authorises saveOrder and discontinueOrder
      with either privilege, so they cannot tell a result from a technician revising or cancelling
      the order; taking either away stops results, not order changes.
+
+ 15. No user in the realm file holds a `superset` or `senaite` client role (#348). The realm
+     taken from production once gave 31 staff, nurses among them, superset Admin and senaite
+     Manager, and a first-install import hands out whatever the file says. Superset sets a
+     user's roles from these at every sign-in; SENAITE is not used at UVL. Staff accounts and
+     their roles come from the roster (LIME-EMR-Tooling keycloak-apply-users.sh).
 */
 
 import groovy.json.JsonSlurper
@@ -366,6 +372,14 @@ if (realmFile.isFile()) {
             if (privileges.contains(openChart) && !privileges.contains(readEnrolments)) {
                 problems << "${definedIn[r.name]}: role '${r.name}' has '${openChart}' but not " +
                         "'${readEnrolments}'; the patient chart's program enrolments would return 403"
+            }
+        }
+    }
+    (realm?.users ?: []).each { u ->
+        ['superset', 'senaite'].each { client ->
+            if (u.clientRoles?.get(client)) {
+                problems << "ozone-realm.json: user '${u.username}' holds ${client} client role(s) " +
+                        "${u.clientRoles[client]}; an import would hand them out (#348)"
             }
         }
     }

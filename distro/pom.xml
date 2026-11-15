@@ -864,6 +864,13 @@
                     <exclude name="dist/**/*.map" />
                   </tarfileset>
                 </tar>
+                <tar destfile="${uvl.frontend.modules}/openmrs-esm-patient-chart-app.tgz" compression="gzip" longfile="posix">
+                  <tarfileset dir="${project.basedir}/frontend/openmrs-esm-patient-chart-app" prefix="package">
+                    <include name="package.json" />
+                    <include name="dist/**" />
+                    <exclude name="dist/**/*.map" />
+                  </tarfileset>
+                </tar>
                 <tar destfile="${uvl.frontend.modules}/openmrs-esm-patient-vitals-app.tgz" compression="gzip" longfile="posix">
                   <tarfileset dir="${project.basedir}/frontend/openmrs-esm-patient-vitals-app" prefix="package">
                     <include name="package.json" />
