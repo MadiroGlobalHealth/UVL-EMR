@@ -148,6 +148,8 @@
     "Describe the Anomalies": "Describe the Anomalies",
     "Immediate Care": "Immediate Care",
     "Breastfed Within the First Hour": "Breastfed Within the First Hour",
-    "Time of First Breastfeeding Attempt": "Time of First Breastfeeding Attempt"
+    "Time of First Breastfeeding Attempt": "Time of First Breastfeeding Attempt",
+    "Caesarean Section: One Visit": "Caesarean Section: One Visit",
+    "Caesarean section: fill in the Delivery Registration (maternity) and the Operation Protocol (theatre) in this same visit. Reports identify the caesarean section by the visit and count it once.": "Caesarean section: fill in the Delivery Registration (maternity) and the Operation Protocol (theatre) in this same visit. Reports identify the caesarean section by the visit and count it once."
   }
 }

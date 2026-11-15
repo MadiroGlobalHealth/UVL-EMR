@@ -187,6 +187,20 @@
               }
             },
             {
+              "label": "Caesarean Section: One Visit",
+              "type": "markdown",
+              "id": "caesareanVisitLink",
+              "questionOptions": {
+                "rendering": "markdown"
+              },
+              "value": [
+                "Caesarean section: fill in the Delivery Registration (maternity) and the Operation Protocol (theatre) in this same visit. Reports identify the caesarean section by the visit and count it once."
+              ],
+              "hide": {
+                "hideWhenExpression": "deliveryMode !== '4a8e5f2a-da35-4a5d-aefb-ffabe41e6783'"
+              }
+            },
+            {
               "label": "Delivery Procedures",
               "type": "obs",
               "id": "deliveryProcedures",
