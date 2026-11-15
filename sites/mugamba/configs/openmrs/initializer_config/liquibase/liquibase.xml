@@ -2720,10 +2720,10 @@
         else as the ward's class (the « Chambre privée » tag), else « Lit simple ». So the class of a
         bed is changed in the bed management app (edit the bed, pick its type), without a release.
 
-        One bed type per rate the hospital charges (11 Nov 2026 answer and Joshua's 12 Nov decision:
-        shared 5,000, semi-private 10,000, private VIP1-VIP4 20,000 BIF; the 6 Oct price list's
-        intensive care bed, incubator and ventilator rates stay). Prices are entered in Odoo, not
-        here. bed_type.display_name is at most 10 characters.
+        One bed type per room class the hospital charges (11 Nov 2026 answer and Joshua's 12 Nov
+        decision: shared, semi-private, private for the VIP rooms; the 6 Oct price list's intensive
+        care bed, incubator and ventilator classes stay). The rates are entered in Odoo, not here.
+        bed_type.display_name is at most 10 characters.
 
         Initializer 2.12.0 has no bed domain, so beds are seeded here. A bed type whose uuid or name
         is already taken is left alone.
@@ -2768,9 +2768,10 @@
         (accouchement normal) », the maternity ward; « Salle de césarienne » is the theatre),
         Recovery Room 2 and Emergency 4 (observation beds). Intensive care was given no beds.
 
-        Every bed is « Partagé » until the product owner says which are semi-private (the decision
-        of 12 Nov 2026); VIP1-VIP4 are not created until we know their ward. Beds are numbered
-        <prefix>-01.., five to a row in the bed management grid.
+        Every bed is « Partagé »; a semi-private bed is set per bed in the bed management app (the
+        decision of 13 Nov 2026). These changesets number the beds <prefix>-01.., five to a row in
+        the bed management grid; stay_beds_codes_l-20261115 below renames them L1..Ln (product
+        owner, 13 Nov 2026), and stay_beds_vip-20261115 creates the shared VIP1-VIP4 rooms.
 
         A ward that already has a bed (created in the bed management app, or by an earlier run) is
         left alone, so beds are never doubled. Liquibase runs before the Initializer loads the
@@ -3012,6 +3013,175 @@
              WHERE b.voided = 0
                AND b.bed_number IN ('URG-01', 'URG-02', 'URG-03', 'URG-04')
                AND NOT EXISTS (SELECT 1 FROM bed_location_map m WHERE m.bed_id = b.bed_id);
+        </sql>
+        <rollback/>
+    </changeSet>
+
+    <!--
+        #246 - bed codes L1..Ln in every ward (product owner, 13 Nov 2026), instead of the ward
+        prefix of stay_beds_*-20261112 (MI-01, GO-22...). bed_number is not unique in the
+        bedmanagement module (no index, no lookup by number; the Ward app lists the beds of one ward),
+        so every ward has its own L1.
+
+        The beds are renamed in place, never deleted or recreated: their uuid, type (a bed made
+        « Semi-privé » in the bed management app stays so), place in the grid and patient
+        assignments are kept. Only a bed numbered <its ward's prefix>-<n> is renamed, to L<n>, and
+        only when no other bed of that ward is already called L<n>; a bed named otherwise is left
+        alone.
+
+        runAlways, so the order of the releases does not matter: on a database where
+        stay_beds_*-20261112 has not run yet (production), each ward's beds are created by that
+        changeset earlier in this file, then renamed here in the same start; « Salle de réveil »,
+        which the Initializer only creates after Liquibase, gets its beds on the second start and is
+        renamed then. Idempotent: once renamed nothing matches. runOnChange, so editing this
+        changeset does not stop Liquibase.
+    -->
+    <changeSet id="stay_beds_codes_l-20261115" author="Joshua" runAlways="true" runOnChange="true">
+        <preConditions onFail="MARK_RAN" onError="CONTINUE"
+                       onErrorMessage="WARN (#246): the bedmanagement tables do not exist yet; the bed codes are renamed on the next start.">
+            <tableExists tableName="bed_location_map"/>
+        </preConditions>
+        <comment>
+            Ward bed codes L1..Ln, renamed from the stay_beds_*-20261112 prefixes (#246).
+        </comment>
+        <sql>
+            UPDATE bed b
+              JOIN bed_location_map m ON m.bed_id = b.bed_id
+              JOIN location l ON l.location_id = m.location_id
+              JOIN (SELECT '3D1AD726-219C-4F9F-87C2-5BF709D04E41' AS ward_uuid, 'NEO' AS prefix
+                    UNION ALL SELECT '5536d753-6d7d-4eef-bff0-65e01f94e8c6', 'PED'
+                    UNION ALL SELECT '34518e24-8481-464f-ab8e-71b3c15265e5', 'CHI'
+                    UNION ALL SELECT 'ff9a4718-8bdc-4c7e-901b-a66815b1c58d', 'MI'
+                    UNION ALL SELECT '30081A32-690B-484E-A3C0-7B8E46126250', 'GO'
+                    UNION ALL SELECT '6328b502-42a3-4f7b-b153-fb5c690e6bc4', 'REV'
+                    UNION ALL SELECT '9D062929-CC4F-7A51-C700-2B968AADEC34', 'URG') w ON w.ward_uuid = l.uuid
+               SET b.bed_number = CONCAT('L', CAST(SUBSTRING(b.bed_number, CHAR_LENGTH(w.prefix) + 2) AS UNSIGNED)),
+                   b.changed_by = 1,
+                   b.date_changed = NOW()
+             WHERE b.voided = 0
+               AND b.bed_number REGEXP CONCAT('^', w.prefix, '-[0-9]+$')
+               AND NOT EXISTS (SELECT 1
+                                 FROM (SELECT m2.location_id, b2.bed_number
+                                         FROM bed b2
+                                         JOIN bed_location_map m2 ON m2.bed_id = b2.bed_id
+                                        WHERE b2.voided = 0
+                                        GROUP BY m2.location_id, b2.bed_number) taken
+                                WHERE taken.location_id = m.location_id
+                                  AND taken.bed_number = CONCAT('L', CAST(SUBSTRING(b.bed_number, CHAR_LENGTH(w.prefix) + 2) AS UNSIGNED)));
+        </sql>
+        <rollback/>
+    </changeSet>
+
+    <!--
+        #246 - VIP1 to VIP4, the four private rooms (« Privé (VIP) », billed « Lit VIP (par nuit) »
+        at the rate set in Odoo), shared by every department subject to availability and the patient's choice
+        (product owner, 13 Nov 2026). A bed belongs to one location, so they are the beds of one
+        ward, « Chambres VIP » (locations.csv): an Admission and Transfer Location under
+        « Hospitalisation (IPD) », so any ward can request an admission or a transfer to it and its
+        nurse picks the room in the Ward app. It also carries « Chambre privée », so a night there
+        without a bed is billed « Lit VIP » too.
+
+        Fixed uuids, so a bed is created once and never doubled; a « Chambres VIP » that already has
+        a bed called VIPn does not get another. The Initializer creates « Chambres VIP » after
+        Liquibase, so on the first start the location is missing: the changeset waits (onFail
+        CONTINUE) and runs on the next start, as stay_beds_salle_de_reveil-20261112.
+    -->
+    <changeSet id="stay_beds_vip-20261115" author="Joshua">
+        <preConditions onFail="CONTINUE" onError="CONTINUE"
+                       onFailMessage="WARN (#246): location c59ed605-2673-4378-b926-367cbe36b662 (Chambres VIP) or the « Privé (VIP) » bed type does not exist yet, so VIP1-VIP4 were NOT created; this changeset is retried on every start.">
+            <sqlCheck expectedResult="1">
+                SELECT COUNT(*) FROM location WHERE uuid = 'c59ed605-2673-4378-b926-367cbe36b662' AND retired = 0
+            </sqlCheck>
+            <sqlCheck expectedResult="1">
+                SELECT COUNT(*) FROM bed_type WHERE uuid = '263c34fa-2e97-454e-af8f-bbb4cb585f82'
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            VIP1-VIP4 in Chambres VIP, bed type Privé (VIP) (#246).
+        </comment>
+        <sql>
+            INSERT INTO bed (bed_number, status, bed_type_id, uuid, creator, date_created, voided)
+            SELECT v.bed_number, 'AVAILABLE', bt.bed_type_id, v.uuid, 1, NOW(), 0
+              FROM (SELECT 'VIP1' AS bed_number, '8ed6529e-5b0c-4623-9bc0-d9963e6e4663' AS uuid
+                    UNION ALL SELECT 'VIP2', 'bd82a26d-a1c9-4d0b-bf77-1539b992ca84'
+                    UNION ALL SELECT 'VIP3', '59d676a4-f900-4be9-8153-5ebe174690df'
+                    UNION ALL SELECT 'VIP4', '91c2c875-5e4a-4b21-847b-e4836bf84ea3') v
+              JOIN bed_type bt ON bt.uuid = '263c34fa-2e97-454e-af8f-bbb4cb585f82'
+             WHERE NOT EXISTS (SELECT 1 FROM bed b WHERE b.uuid = v.uuid)
+               AND NOT EXISTS (SELECT 1 FROM bed b
+                                 JOIN bed_location_map m ON m.bed_id = b.bed_id
+                                 JOIN location l ON l.location_id = m.location_id
+                                WHERE l.uuid = 'c59ed605-2673-4378-b926-367cbe36b662'
+                                  AND b.voided = 0 AND b.bed_number = v.bed_number);
+
+            INSERT INTO bed_location_map (location_id, bed_row_number, bed_column_number, bed_id)
+            SELECT l.location_id, 1, CAST(SUBSTRING(b.bed_number, 4) AS UNSIGNED), b.bed_id
+              FROM bed b
+              JOIN location l ON l.uuid = 'c59ed605-2673-4378-b926-367cbe36b662'
+             WHERE b.uuid IN ('8ed6529e-5b0c-4623-9bc0-d9963e6e4663', 'bd82a26d-a1c9-4d0b-bf77-1539b992ca84',
+                              '59d676a4-f900-4be9-8153-5ebe174690df', '91c2c875-5e4a-4b21-847b-e4836bf84ea3')
+               AND NOT EXISTS (SELECT 1 FROM bed_location_map m WHERE m.bed_id = b.bed_id);
+        </sql>
+        <rollback/>
+    </changeSet>
+
+    <!--
+        #246 - repair of the beds bedmanagement 6.2.0-SNAPSHOT rewrote. Its unassign path (every
+        transfer, every bed change, the Ward app's « remove from bed ») saved a Bed built from only
+        the bed number and id, so the bed the patient LEFT got a new uuid, a new creator and
+        date_created, and no bed type; the stay bridge then skips the bed and bills the ward's
+        class. Fixed in bedmanagement-6.2.0-uvl1.omod (distro/binaries/openmrs/modules, upstream
+        a96fa35); this changeset repairs what the old module already did.
+
+        A bed with no type in one of the seeded wards gets « Partagé », in « Chambres VIP »
+        « Privé (VIP) ». A bed that was « Semi-privé » before it was rewritten cannot be told apart
+        (its type is gone): it comes back « Partagé » and is set again in the bed management app. A
+        VIP room whose uuid was replaced gets its seeded uuid back when that uuid is free; other
+        beds keep the new uuid (nothing refers to a bed's uuid). Beds elsewhere (QA01 in
+        « Hospitalisation (IPD) » on UAT) are left alone.
+
+        runAlways, so a bed rewritten again before the fixed module is running is repaired on the
+        next start; idempotent, only beds with no type match. runOnChange, so editing it does not
+        stop Liquibase.
+    -->
+    <changeSet id="stay_beds_repair_type-20261115" author="Joshua" runAlways="true" runOnChange="true">
+        <preConditions onFail="MARK_RAN" onError="CONTINUE"
+                       onErrorMessage="WARN (#246): the bedmanagement tables do not exist yet; the beds are repaired on the next start.">
+            <tableExists tableName="bed_location_map"/>
+        </preConditions>
+        <comment>
+            Bed type back on the beds the bedmanagement unassign path rewrote (#246).
+        </comment>
+        <sql>
+            UPDATE bed b
+              JOIN bed_location_map m ON m.bed_id = b.bed_id
+              JOIN location l ON l.location_id = m.location_id
+              JOIN (SELECT '3D1AD726-219C-4F9F-87C2-5BF709D04E41' AS ward_uuid, '933f2f84-461d-487e-bb21-2021ba374ad0' AS type_uuid
+                    UNION ALL SELECT '5536d753-6d7d-4eef-bff0-65e01f94e8c6', '933f2f84-461d-487e-bb21-2021ba374ad0'
+                    UNION ALL SELECT '34518e24-8481-464f-ab8e-71b3c15265e5', '933f2f84-461d-487e-bb21-2021ba374ad0'
+                    UNION ALL SELECT 'ff9a4718-8bdc-4c7e-901b-a66815b1c58d', '933f2f84-461d-487e-bb21-2021ba374ad0'
+                    UNION ALL SELECT '30081A32-690B-484E-A3C0-7B8E46126250', '933f2f84-461d-487e-bb21-2021ba374ad0'
+                    UNION ALL SELECT '6328b502-42a3-4f7b-b153-fb5c690e6bc4', '933f2f84-461d-487e-bb21-2021ba374ad0'
+                    UNION ALL SELECT '9D062929-CC4F-7A51-C700-2B968AADEC34', '933f2f84-461d-487e-bb21-2021ba374ad0'
+                    UNION ALL SELECT 'c59ed605-2673-4378-b926-367cbe36b662', '263c34fa-2e97-454e-af8f-bbb4cb585f82') w ON w.ward_uuid = l.uuid
+              JOIN bed_type bt ON bt.uuid = w.type_uuid
+               SET b.bed_type_id = bt.bed_type_id,
+                   b.changed_by = 1,
+                   b.date_changed = NOW()
+             WHERE b.voided = 0
+               AND b.bed_type_id IS NULL;
+
+            UPDATE bed b
+              JOIN bed_location_map m ON m.bed_id = b.bed_id
+              JOIN location l ON l.location_id = m.location_id AND l.uuid = 'c59ed605-2673-4378-b926-367cbe36b662'
+              JOIN (SELECT 'VIP1' AS bed_number, '8ed6529e-5b0c-4623-9bc0-d9963e6e4663' AS uuid
+                    UNION ALL SELECT 'VIP2', 'bd82a26d-a1c9-4d0b-bf77-1539b992ca84'
+                    UNION ALL SELECT 'VIP3', '59d676a4-f900-4be9-8153-5ebe174690df'
+                    UNION ALL SELECT 'VIP4', '91c2c875-5e4a-4b21-847b-e4836bf84ea3') v ON v.bed_number = b.bed_number
+               SET b.uuid = v.uuid
+             WHERE b.voided = 0
+               AND b.uuid &lt;&gt; v.uuid
+               AND NOT EXISTS (SELECT 1 FROM (SELECT uuid FROM bed GROUP BY uuid) taken WHERE taken.uuid = v.uuid);
         </sql>
         <rollback/>
     </changeSet>

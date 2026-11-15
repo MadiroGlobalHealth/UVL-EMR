@@ -12,7 +12,8 @@
                                                imagingpaymentgate), or patched builds of
                                                inherited ones (oauth2login, #476;
                                                webservices.rest, #545;
-                                               stockmanagement, #447)
+                                               stockmanagement, #447;
+                                               bedmanagement, #246)
 
   The patched patient-attachments ESM (openmrs/frontend/openmrs-esm-patient-attachments/)
   was dropped with the move to frontend core 11 (#490): it was a core-10 build, and the
