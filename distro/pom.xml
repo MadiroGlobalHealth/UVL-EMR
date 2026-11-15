@@ -67,6 +67,11 @@
     <o3forms.version>2.3.0</o3forms.version>
     <emrapi.version>3.4.0</emrapi.version>
     <event.version>4.0.0</event.version>
+    <!-- overridden by distro/binaries/openmrs/modules/bedmanagement-6.2.0-uvl1.omod until a release
+         with openmrs/openmrs-module-bedmanagement a96fa35 (#115) is taken: unassigning a patient
+         (every transfer and bed change in the Ward app) rewrote the bed left with a new uuid and no
+         bed type, so its nights lost their room class (UVL-EMR#246). Same source as this snapshot
+         plus that fix. -->
     <bedmanagement.version>6.2.0-20250806.164740-6</bedmanagement.version>
     <patientdocuments.version>1.2.0</patientdocuments.version>
 
