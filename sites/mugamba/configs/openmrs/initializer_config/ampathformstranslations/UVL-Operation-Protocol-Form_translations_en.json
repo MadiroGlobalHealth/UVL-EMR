@@ -38,6 +38,8 @@
     "Time the Newborn Was Delivered": "Time the Newborn Was Delivered",
     "Type of Anaesthesia": "Type of Anaesthesia",
     "Urgences": "Emergency",
-    "Validation": "Validation"
+    "Validation": "Validation",
+    "Caesarean Section: One Visit": "Caesarean Section: One Visit",
+    "Caesarean section: fill in the Delivery Registration (maternity) and the Operation Protocol (theatre) in this same visit. Reports identify the caesarean section by the visit and count it once.": "Caesarean section: fill in the Delivery Registration (maternity) and the Operation Protocol (theatre) in this same visit. Reports identify the caesarean section by the visit and count it once."
   }
 }

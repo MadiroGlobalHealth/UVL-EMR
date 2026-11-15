@@ -38,6 +38,8 @@
     "Time the Newborn Was Delivered": "Heure de sortie du nouveau-né",
     "Type of Anaesthesia": "Types d'anesthésie",
     "Urgences": "Urgences",
-    "Validation": "Validation"
+    "Validation": "Validation",
+    "Caesarean Section: One Visit": "Césarienne : une seule visite",
+    "Caesarean section: fill in the Delivery Registration (maternity) and the Operation Protocol (theatre) in this same visit. Reports identify the caesarean section by the visit and count it once.": "Césarienne : remplir l'Enregistrement de l'accouchement (maternité) et le Protocole opératoire (bloc) dans cette même visite. Les rapports identifient la césarienne par la visite et la comptent une seule fois."
   }
 }
