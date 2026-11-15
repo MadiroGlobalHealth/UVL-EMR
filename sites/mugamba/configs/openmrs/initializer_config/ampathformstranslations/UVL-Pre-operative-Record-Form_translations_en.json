@@ -95,6 +95,24 @@
     "Classe IV": "Class IV",
     "Générale": "General",
     "Loco-régionale": "Loco-regional",
-    "Locale": "Local"
+    "Locale": "Local",
+    "Previous Surgery": "Previous Surgery",
+    "Past Blood Transfusion": "Past Blood Transfusion",
+    "Blood Group & Rhesus": "Blood Group & Rhesus",
+    "A+": "A+",
+    "A-": "A-",
+    "B+": "B+",
+    "B-": "B-",
+    "AB+": "AB+",
+    "AB-": "AB-",
+    "O+": "O+",
+    "O-": "O-",
+    "PT / INR": "PT / INR",
+    "Current Treatments with Anaesthetic Risk": "Current Treatments with Anaesthetic Risk",
+    "Corticoïdes": "Corticosteroids",
+    "Anticoagulants": "Anticoagulants",
+    "Sédatifs": "Sedatives",
+    "Insuline / ADO": "Insulin / Oral Antidiabetics",
+    "Antibiotiques": "Antibiotics"
   }
 }

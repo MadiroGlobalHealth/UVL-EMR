@@ -1173,6 +1173,15 @@
                 "max": "10",
                 "disallowDecimals": true
               }
+            },
+            {
+              "label": "Other Observations (Cervix)",
+              "type": "obs",
+              "id": "cervixOther",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "b5830b03-558e-4d1a-acbb-1963dee49c1d"
+              }
             }
           ]
         },
