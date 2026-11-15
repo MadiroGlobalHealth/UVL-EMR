@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunk_openmrs_esm_patient_forms_app=globalThis.webpackChunk_openmrs_esm_patient_forms_app||[]).push([["9061"],{9876(e,a,t){t.r(a),t.d(a,{default:()=>i,immutable:()=>s});var r=t(4675),l=t(2372);let s=e=>(a,t,r)=>(r.revalidateOnFocus=!1,r.revalidateIfStale=!1,r.revalidateOnReconnect=!1,r.refreshInterval=0,e(a,t,r)),i=(0,l.withMiddleware)(r.u,s)}}]);
