@@ -243,6 +243,7 @@
               "label": "Caesarean Section",
               "type": "obs",
               "id": "caesareanCase",
+              "required": true,
               "questionOptions": {
                 "rendering": "radio",
                 "concept": "753be061-2a1e-46de-8575-5a1b5a08725e",
@@ -388,6 +389,20 @@
               },
               "hide": {
                 "hideWhenExpression": "sex === 'M' || isEmpty(caesareanCase) || caesareanCase === 'd45102a2-d9b7-40dc-a30c-8e88494e1725' || isEmpty(caesareanComplications) || !includes(caesareanComplications, 'b5c4b807-d3de-40cd-aae9-178df9b40535')"
+              }
+            },
+            {
+              "label": "Caesarean Section: One Visit",
+              "type": "markdown",
+              "id": "caesareanVisitLink",
+              "questionOptions": {
+                "rendering": "markdown"
+              },
+              "value": [
+                "Caesarean section: fill in the Delivery Registration (maternity) and the Operation Protocol (theatre) in this same visit. Reports identify the caesarean section by the visit and count it once."
+              ],
+              "hide": {
+                "hideWhenExpression": "sex === 'M' || isEmpty(caesareanCase) || caesareanCase === 'd45102a2-d9b7-40dc-a30c-8e88494e1725'"
               }
             }
           ]

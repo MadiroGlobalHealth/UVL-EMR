@@ -5,8 +5,8 @@ commit CI run 12863 published), with the form engine library it bundles,
 `@openmrs/esm-form-engine-lib` 5.0.1-pre.2754 (source `88459d3`), patched with fixes that are
 not released upstream yet. Only the built module is here; the sources are:
 
-- library: `jnsereko/openmrs-esm-form-engine-lib`, branch `uvl/5.0.1-pre.2754-i18n`;
-- app: `jnsereko/openmrs-esm-patient-chart`, branch `uvl/form-engine-13.0.2-pre.12863-i18n`
+- library: `jnsereko/openmrs-esm-form-engine-lib`, branch `uvl/5.0.1-pre.2754-602` (on top of `uvl/5.0.1-pre.2754-571-577`);
+- app: `jnsereko/openmrs-esm-patient-chart`, branch `uvl/form-engine-13.0.2-pre.12863-602`
   (only the English keys and the version; the app source is unchanged).
 
 | UVL-EMR | Fix | Upstream PR |
@@ -15,6 +15,7 @@ not released upstream yet. Only the built module is here; the sources are:
 | #500 | A number limit reads "Value must be at most {{max}}" / "at least {{min}}" (keys `valueMustBeAtMost`, `valueMustBeAtLeast`): the limit itself is allowed, which "lower than" / "greater than" contradicted | same |
 | #571 | Switching a radio from one answer to another shows the new answer as selected. The click handler cancelled the click and the browser restored the old radio, while the field kept the new value | openmrs/openmrs-esm-form-engine-lib#859 |
 | #577 | A save blocked by an invalid field shows an error snackbar (number of fields, first field's label; keys `formHasInvalidFields`, `invalidFieldsSummary`), scrolls to the first invalid field and focuses it | openmrs/openmrs-esm-form-engine-lib#860 |
+| #602 | A date-time field's time input has its own id (`<field id>-time`) and shows only a time, never the date text ("does not conform to HH:mm"); beside a date picker it leaves the error and warning to the date picker, so no error icon covers the clock button. The invalid-fields snackbar closes after 8 s instead of piling up | none yet |
 
 The other patient-chart apps stay on the npm 13.0.2-pre.12863 packages.
 
@@ -30,11 +31,11 @@ To rebuild, with Node 22:
 
 ```sh
 # library
-cd openmrs-esm-form-engine-lib          # branch uvl/5.0.1-pre.2754-i18n
+cd openmrs-esm-form-engine-lib          # branch uvl/5.0.1-pre.2754-602
 yarn install --immutable && yarn test && yarn build
 
 # app, bundling that library build
-cd openmrs-esm-patient-chart            # branch uvl/form-engine-13.0.2-pre.12863-i18n
+cd openmrs-esm-patient-chart            # branch uvl/form-engine-13.0.2-pre.12863-602
 yarn install --immutable
 rsync -a --delete ../openmrs-esm-form-engine-lib/dist/ node_modules/@openmrs/esm-form-engine-lib/dist/
 cd packages/esm-form-engine-app
