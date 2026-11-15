@@ -38,6 +38,10 @@
     "Time the Newborn Was Delivered": "Heure de sortie du nouveau-né",
     "Type of Anaesthesia": "Types d'anesthésie",
     "Urgences": "Urgences",
-    "Validation": "Validation"
+    "Validation": "Validation",
+    "Rachianesthésie": "Rachianesthésie",
+    "Péridurale": "Péridurale",
+    "Bloc nerveux périphérique": "Bloc nerveux périphérique",
+    "Sédation": "Sédation"
   }
 }
