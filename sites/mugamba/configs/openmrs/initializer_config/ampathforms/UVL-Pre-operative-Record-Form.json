@@ -662,12 +662,28 @@
                     "label": "Générale"
                   },
                   {
+                    "concept": "15d1491a-7da2-4ec7-8924-d9cf4a93a7e8",
+                    "label": "Rachianesthésie"
+                  },
+                  {
+                    "concept": "a0727cf8-6180-41cf-b3af-e90ab87a6c80",
+                    "label": "Péridurale"
+                  },
+                  {
+                    "concept": "be06e579-479a-44fa-95fe-09fa5ad49c62",
+                    "label": "Bloc nerveux périphérique"
+                  },
+                  {
                     "concept": "993c7783-e6dd-4786-961a-e658476ea753",
                     "label": "Loco-régionale"
                   },
                   {
                     "concept": "6e625252-c2c7-407a-8dba-406f1c2cf3c7",
                     "label": "Locale"
+                  },
+                  {
+                    "concept": "4f768b60-3beb-48a2-bee5-915b30467700",
+                    "label": "Sédation"
                   }
                 ]
               }

@@ -5,7 +5,7 @@
         "paginationItemsCount": "{{pageItemsCount}} / {{totalItems}} éléments",
         "paginationOfPages": "sur {{count}} pages",
         "discardUnsavedChangesPromptTitle": "Abandonner les modifications non enregistrées ?",
-        "discardUnsavedChangesPromptBodySingle": "<strong>{{workspaceTitle}}</strong> contient des modifications non enregistrées. Le fermer les abandonnera.",
+        "discardUnsavedChangesPromptBodySingle": "<strong>{{- workspaceTitle}}</strong> contient des modifications non enregistrées. Le fermer les abandonnera.",
         "discardUnsavedChangesPromptBodyMultiple": "{{count}} espaces de travail contiennent des modifications non enregistrées. Les fermer abandonnera ces modifications :",
         "keepEditing": "Continuer la saisie",
         "emptyStateText": "Aucun(e) {{displayText}} à afficher",
@@ -141,8 +141,11 @@
       }
     ],
     "restrictByVisitLocationTag": true,
+    "preselectVisitLocation": false,
     "Translation overrides": {
       "fr": {
+        "visitLocation": "Service de la visite",
+        "selectLocation": "Choisir le service où le patient est vu",
         "completedForms": "Formulaires remplis",
         "collapseEncounter": "Réduire la consultation",
         "expandEncounter": "Développer la consultation",
@@ -388,7 +391,13 @@
       "fr": {
         "additionalInformationSection": "Informations supplémentaires",
         "Country": "Pays",
-        "Address Detail": "Détail de l'adresse"
+        "Address Detail": "Détail de l'adresse",
+        "noMatchingResults": "Aucun résultat correspondant",
+        "noAddressResults": "Aucune adresse correspondante",
+        "errorFetchingAddresses": "Erreur lors de la recherche des adresses",
+        "errorFetchingResults": "Erreur lors de la recherche des résultats",
+        "searching": "Recherche en cours...",
+        "loading": "Chargement"
       }
     }
   },
@@ -517,7 +526,16 @@
         "ordersCompleted": "Prescriptions terminées",
         "orderedFor": "Prescription enregistrée pour",
         "updated": "Mis à jour",
-        "discontinued": "Arrêté"
+        "discontinued": "Arrêté",
+        "medicationDurationAndUnit": "pour \u0024t(uvlDurationWithUnit, {\"count\": {{duration}}, \"context\": \"{{durationUnit}}\"})",
+        "uvlDurationWithUnit_one": "{{count}} {{durationUnit}}",
+        "uvlDurationWithUnit_other": "{{count}} {{durationUnit}}",
+        "uvlDurationWithUnit_secondes_one": "{{count}} seconde",
+        "uvlDurationWithUnit_minutes_one": "{{count}} minute",
+        "uvlDurationWithUnit_heures_one": "{{count}} heure",
+        "uvlDurationWithUnit_jours_one": "{{count}} jour",
+        "uvlDurationWithUnit_semaines_one": "{{count}} semaine",
+        "uvlDurationWithUnit_années_one": "{{count}} année"
       }
     }
   },
@@ -598,6 +616,12 @@
       {
         "name": "Autres",
         "forms": ["UVL Contact Form"]
+      }
+    ],
+    "formVisitTypeRestrictions": [
+      {
+        "form": "UVL Outpatient Consultation Form",
+        "visitTypes": ["31fe9bef-4b22-4686-acb2-4ecce1fdd8b9", "32176576-1652-4835-8736-826eb0237482"]
       }
     ],
     "Translation overrides": {
@@ -775,6 +799,8 @@
       "fr": {
         "medicationDispensed": "Médicament délivré.",
         "medicationDispenseUpdated": "Délivrance du médicament mise à jour.",
+        "medicationDispensePaused": "Délivrance du médicament suspendue.",
+        "medicationDispenseClosed": "Délivrance du médicament clôturée.",
         "orderedMedication": "a prescrit le médicament",
         "stockDispense": "Lot à délivrer (obligatoire)",
         "selectStockDispense": "Choisir un lot pour pouvoir délivrer",
