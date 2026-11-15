@@ -600,6 +600,12 @@
         "forms": ["UVL Contact Form"]
       }
     ],
+    "formVisitTypeRestrictions": [
+      {
+        "form": "UVL Outpatient Consultation Form",
+        "visitTypes": ["31fe9bef-4b22-4686-acb2-4ecce1fdd8b9", "32176576-1652-4835-8736-826eb0237482"]
+      }
+    ],
     "Translation overrides": {
       "fr": {
         "backToClinicalForms": "Retour aux formulaires cliniques",
