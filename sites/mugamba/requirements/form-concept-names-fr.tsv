@@ -3,6 +3,7 @@ concept_uuid	fr_name	sheet_label	note
 00850809-0931-4ce2-a5c2-c6832a331fcb	Type de grossesse		
 00a04006-e98f-4d29-ba7e-919a45709584	G44.0 Syndrome d'algie vasculaire de la face		
 00a4fd0a-9248-48bf-886e-896b2f80ea1b	E03 Autres hypothyroidies		
+00c06464-0a8a-4141-9d56-906359a13527	Anticoagulants		UVL team field lists of 13 Nov 2026, maternity and theatre forms (#652)
 011e5b5e-cf9e-49fb-a9a2-a3a08bbb2f1b	T21 Brulure et corrosion du tronc		
 0152aa3d-b26c-42e0-972d-0eea046822b4	Décès		Operation protocol (Protocole opératoire), paper form of 11 Nov 2026 (#595)
 0158876b-d74a-4520-a136-046d7051c49e	S76 Lesion traumatique de muscles et de tendons au niveau de la hanche et de la cuisse		
@@ -147,6 +148,7 @@ concept_uuid	fr_name	sheet_label	note
 1566b6e1-de6c-465e-a942-3be735fcbd6a	F80 Troubles specifiques du developpement de la parole et du langage		
 156eef4a-905f-4baf-9f9a-a34355a8d73d	F53 Troubles mentaux et du comportement associes a la puerperalite non classes ailleurs		
 1582dbcf-1e2a-46aa-adea-820bf1a95ef2	Examens déjà réalisés		
+15d1491a-7da2-4ec7-8924-d9cf4a93a7e8	Rachianesthésie		UVL team field lists of 13 Nov 2026, maternity and theatre forms (#652)
 15dcf0f9-ec60-42c7-abd8-1468272aa805	F05 Delirium non induit par l'alcool et d'autres substances psycho-actives		
 160431AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA	Évadé		F07 outcome, Ministry list (#583)
 160433AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA	Évolution à la sortie		F07, Ministry outcome list; not in the forms sheet yet (#583)
@@ -549,6 +551,7 @@ concept_uuid	fr_name	sheet_label	note
 4f2ffc6b-f6eb-4fbf-928c-ccd722c27662	Diagnostic provisoire / différentiel		2 labels in the sheet, most frequent used
 4f485983-9d24-4228-b7f6-040088c6f4df	P35 Maladies virales congenitales		
 4f65cd69-3ba7-47ef-9cfe-90e8fa0f2e1d	T42 Intoxication par anti-epileptiques sedatifs hypnotiques et anti-parkinsoniens		
+4f768b60-3beb-48a2-bee5-915b30467700	Sédation		UVL team field lists of 13 Nov 2026, maternity and theatre forms (#652)
 4fc17e46-75f3-47d9-bfc1-2fabb068fa6e	Traitements reçus		
 505ce8f3-84ee-4936-b7f2-d0083bed8b97	Diabète		
 5086bd0c-d4b1-4fa5-bbbf-d2a1dda0fed6	Nombre de CPN		
@@ -603,6 +606,7 @@ concept_uuid	fr_name	sheet_label	note
 56e82b2a-e3f3-4816-b13d-32c8f6987010	Q25 Malformations congenitales des gros vaisseaux		
 56fd47e3-6f14-4ee4-8ddf-1a54d8ecd90a	Déchirure du col		
 570e9f02-3ae3-4ec6-981d-1aa1e60dedd6	H71 Cholesteatome de l'oreille moyenne		
+57455b87-4bff-4653-b535-73408be53a40	Traitements en cours à risque		UVL team field lists of 13 Nov 2026, maternity and theatre forms (#652)
 5768d32f-8c3f-4052-a141-2b0a82d8acf0	E28 Dysfonction ovarienne		
 5769f086-3b52-4979-a21f-c3ce46f45249	B73 Onchocercose		
 578ab087-f416-4dc2-818b-9625df68d3c7	E34 Autres troubles endocriniens		
@@ -622,6 +626,7 @@ concept_uuid	fr_name	sheet_label	note
 5902a023-495c-45bb-ad37-7a0c64a65bec	G47 Troubles du sommeil		
 5918202d-b8bd-496c-9054-c31eab420e8a	A15 Tuberculose de l'appareil respiratoire avec confirmation bacteriologique et histologique		
 5941fff4-429c-404e-8b3e-3aeedb4f133e	Sonde nasogastrique (ml)		
+594962c7-60d3-4ff0-b0d4-fb9abc49b0f2	Antibiotiques		UVL team field lists of 13 Nov 2026, maternity and theatre forms (#652)
 5966e904-c513-42e2-9d9b-b42e0977f2e1	K07.6 Lesions de l'articulation temporo-mandibulaire		
 59bb5013-c82b-4755-b348-4d14793e6174	Sexe		
 59bc311b-4e61-4b6a-8b96-2172ba7178c3	Taille de l'enfant	Taille (cm)	2 labels in the sheet, most frequent used (tie: closest to the old name)
@@ -898,6 +903,7 @@ concept_uuid	fr_name	sheet_label	note
 817dd6ab-b51f-4c79-8943-86aa1793567c	A+		
 8186fbee-834d-4abb-b4e3-1d5334205b05	Contraceptif injectable		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 8206f5ab-1472-4cd0-9365-40015329cc57	R95 Syndrome de la mort subite du nourrisson		
+823f86b2-2a49-4b71-be24-3eb4d7d54605	TP / INR		UVL team field lists of 13 Nov 2026, maternity and theatre forms (#652)
 82515303-12a6-452d-be19-37ff8fbc320d	A88 Autres infections virales du systeme nerveux central non classees ailleurs		
 829a7576-06e2-42b3-aa7d-30dfa73250fc	Décès néonatal		F14 Delivery Registration, product owner's answers of 11 Nov 2026 (#591)
 82c22ea0-638a-4165-9c3f-5739f51e1082	N94.1 Dyspareunie		
@@ -946,6 +952,7 @@ concept_uuid	fr_name	sheet_label	note
 8a86b776-fd56-429e-939b-9ba70f246e33	K80 Cholelithiase		
 8abb3dbe-f19f-4f9b-9ab4-dc48db8f37f3	Audit du décès réalisé		F07, shown when the outcome is Décédé (#583)
 8b12161f-6b5b-48cd-baec-005481b16645	N85 Autres affections non inflammatoires de l'uterus sauf le col		
+8b1957b5-6774-4d32-a180-610580190c68	Corticoïdes		UVL team field lists of 13 Nov 2026, maternity and theatre forms (#652)
 8b34dee4-a8ba-4405-a593-92f584d1142e	J43 Emphyseme		
 8b531402-184c-4775-ba7c-0ea7a7522453	D80 Deficit immunitaire avec deficit predominant de la production d'anticorps		
 8bc397f2-faf6-41b4-84f7-ea08b0012cca	Y07 Autre mauvais traitement		
@@ -988,6 +995,7 @@ concept_uuid	fr_name	sheet_label	note
 91792645-572f-436e-9d23-b99e55754919	Contractions par 10 minutes		
 919fa56c-a6f2-4e52-a349-af167e3b0209	R30 Douleur a la miction		
 91a8462b-647d-4ef0-b498-4dcf4c020617	H15 Affections de la sclerotique		
+91fa28ae-b0be-4918-b6a6-cccbeae7727a	Chirurgie antérieure		UVL team field lists of 13 Nov 2026, maternity and theatre forms (#652)
 91fe026e-2f84-419f-aca4-75dbfd2f0713	N96 Avortements a repetition		
 9252290a-63a4-4304-9f04-9ce72431fe08	VIH+ connu avant la grossesse		
 9270cf59-2a50-4c06-b119-3bcba54b12b9	Suture		
@@ -1096,6 +1104,7 @@ concept_uuid	fr_name	sheet_label	note
 9ff60055-20a8-4d4d-9cc1-f04548965365	Ambulatoire (issue de la consultation)	Ambulatoire	qualified: sheet word 'Ambulatoire' is a French synonym; "Ambulatoire" is the arrival-state answer (6a0ccf90)
 9ff6c160-e8a5-4015-86f0-1262a36fb290	Autre complication de la césarienne (préciser)		Operation protocol (Protocole opératoire), paper form of 11 Nov 2026 (#595)
 a00dcc3e-c828-4f1f-a25e-8b538e432a0d	Particularités de la grossesse		
+a0727cf8-6180-41cf-b3af-e90ab87a6c80	Péridurale		UVL team field lists of 13 Nov 2026, maternity and theatre forms (#652)
 a0a67e27-42b0-4502-8e7f-f4d46eae0a24	Anémie		
 a0e98f08-78b5-4b6a-be97-06d9dec4b8f6	R16 Hepatomegalie et splenomegalie non classees ailleurs		
 a0fa5502-72d1-44a2-9b69-4ad5a130424a	P61 Autres affections hematologiques de la periode perinatale		
@@ -1230,6 +1239,7 @@ b501a1ac-f2ea-4e79-ace4-658c1af45bd2	Résultat
 b535fee4-580a-4ba1-ac28-3e1283e0b2aa	Q51 Malformations de l'uterus et du col de l'uterus		
 b54be29d-8e42-4465-af5c-e88983980018	D29 Tumeur benigne des organes genitaux de l'homme		
 b5687d7c-2973-4d4b-bf75-d6c9c90ec942	Post-opératoire (externe)		
+b5830b03-558e-4d1a-acbb-1963dee49c1d	Col utérin : autres observations	Autres observations (col)	UVL team field lists of 13 Nov 2026, maternity and theatre forms (#652)
 b5c4b807-d3de-40cd-aae9-178df9b40535	Autre		2 labels in the sheet, most frequent used
 b5d92a81-f711-477c-9fa2-e4d5dacedf87	Présentation tête	Présentation têtê	sheet spelling fixed; 2 labels in the sheet, most frequent used
 b5f30fce-f71c-4a9e-9bae-d13c9d73c726	Service émetteur		
@@ -1279,7 +1289,9 @@ bd00f0fc-35ab-4e88-8d0d-bc4c781461bb	Tour de taille (cm)
 bd1937ad-322b-4168-ab17-d05f24f94ae3	F32 Episodes depressifs		
 bd663fad-7227-45ab-aa80-8388f1688491	E20 Hypoparathyroidie		
 bd67f2b1-6cf8-4e3a-b722-27ad183536de	R22 Autres tumefactions et masses localisees de la peau et du tissu cellulaire sous-cutane		
+bdaba26e-daf2-4120-a9dc-0fc663fc0370	Sédatifs		UVL team field lists of 13 Nov 2026, maternity and theatre forms (#652)
 bdc1ea1f-2a7d-424d-a3d0-5a3bab9f5e33	Déchirure vaginale		
+be06e579-479a-44fa-95fe-09fa5ad49c62	Bloc nerveux périphérique		UVL team field lists of 13 Nov 2026, maternity and theatre forms (#652)
 be0efe80-47a8-43e8-bbb1-0aeda72edac8	Durée des contractions (secondes)		
 be1f12b2-f841-4f36-8fce-e2c5420a3afe	F00 Demence de la maladie d'Alzheimer		
 be5c426c-b3cb-4da1-9801-74e19f230a83	L08 Autres infections localisees de la peau et du tissu cellulaire sous-cutane		
@@ -1301,6 +1313,7 @@ c16d1643-0fec-41ff-9609-b0b72841f343	K90.9 Malabsorption intestinale sans precis
 c1989c3b-e83d-4749-8967-a079aa704a0f	S64 Lesion traumatique de nerfs au niveau du poignet et de la main		
 c1abc032-80a8-4544-ba97-2b8396592a46	VIH négatif		
 c1cdda3d-f4c3-42f7-9720-50aa13f16154	H93 Autres affections de l'oreille non classees ailleurs		
+c1d5469a-c822-4b2f-9ee1-fa2d9b0920ec	Transfusion antérieure		UVL team field lists of 13 Nov 2026, maternity and theatre forms (#652)
 c1fc766a-bd19-4c18-bbf1-30ae5add2ff8	R02 Gangrene non classee ailleurs		
 c2162762-996e-44ff-929f-a644b5046c65	O91 Infections mammaires associees a l'accouchement		
 c234f679-c70a-4376-80ba-9538948cbf57	N94.4 Dysmenorrhee primaire		
@@ -1496,6 +1509,7 @@ de621ce6-104a-496a-873e-5c2745aeb469	Traitement / médicaments administrés en p
 de84cba5-7764-4690-a2ee-870ec0512001	Q18 Autres malformations congenitales de la face et du cou		
 df0c78b5-ee66-4a55-9ff5-6f22023a6390	Accès palustre		
 df195a4e-3f88-40cf-8a7d-19996fcaadf6	Destination du nouveau-né		sheet spelling fixed
+df28771f-43fd-4ef8-b91e-48a98222c729	Insuline / antidiabétiques oraux (ADO)		UVL team field lists of 13 Nov 2026, maternity and theatre forms (#652)
 df6eb968-251a-4d9b-a52d-0995d17953cb	N49 Affections inflammatoires des organes genitaux de l'homme non classees ailleurs		
 df88f814-562a-4b84-b09d-c0874db969be	T73 Effets d'autres privations		
 df8c9356-41ab-40be-a463-de3ce270d2c2	Effets secondaires observés		

@@ -80,6 +80,10 @@
     "Tube nasal": "Nasal Tube",
     "Spontanée": "Spontaneous",
     "Assistée": "Assisted",
-    "Contrôlée": "Controlled"
+    "Contrôlée": "Controlled",
+    "Rachianesthésie": "Spinal anaesthesia",
+    "Péridurale": "Epidural anaesthesia",
+    "Bloc nerveux périphérique": "Peripheral nerve block",
+    "Sédation": "Sedation"
   }
 }

@@ -66,6 +66,10 @@
     "Type of Anaesthesia": "Type d'anesthésie",
     "Unforeseeable Incidents": "Incidents imprévisibles",
     "Ventral (prone)": "Ventrale",
-    "Yes": "Oui"
+    "Yes": "Oui",
+    "Rachianesthésie": "Rachianesthésie",
+    "Péridurale": "Péridurale",
+    "Bloc nerveux périphérique": "Bloc nerveux périphérique",
+    "Sédation": "Sédation"
   }
 }
