@@ -21,45 +21,85 @@
     <maven.compiler.target>8</maven.compiler.target>
     <PatientIdentifierGeneratorVersion>0.1.0</PatientIdentifierGeneratorVersion>
     <UVLReferenceapplicationDockerVersion>3.2.0-rc.3</UVLReferenceapplicationDockerVersion>
-    <reporting.version>1.27.0</reporting.version>
-    <!-- Stock Management and Billing -->
-    <stockmanagement.version>2.0.2-SNAPSHOT</stockmanagement.version>
-    <billing.version>1.2.0-SNAPSHOT</billing.version>
-    <initializer.version>2.9.0</initializer.version>
+    <!-- Stock Management and Billing.
+         stockmanagement is deliberately NOT on RefApp 3.7.1's 3.0.0: with 3.0.0
+         actually started, OpenMRS startup spins for ever in the module context
+         refresh and never reaches the search index. Reproduced three times on
+         UAT 2026-09-18. 2.1.2 is the last 2.x release and still satisfies
+         billing 2.3.0, which requires stockmanagement >= 1.4.0.
+         overridden by distro/binaries/openmrs/modules/stockmanagement-2.1.2-uvl4.omod until a
+         release without the stock operation permission cache (O3-6248,
+         openmrs/openmrs-module-stockmanagement#57), with role scopes checked on stock
+         operation create and update (UVL-EMR#447), with the operation items' own received
+         quantity in the full representation (UVL-EMR#638) and with stock issued from an
+         approved requisition, which its Stock Issue completes (UVL-EMR#641), is taken -->
+    <stockmanagement.version>2.1.2</stockmanagement.version>
+    <billing.version>2.3.0</billing.version>
+    <initializer.version>2.12.0</initializer.version>
 
-    <!--RefApp 3.5.0 modules -->
-    <openmrs.version>2.7.7</openmrs.version>
-    <fhir2.version>2.7.0</fhir2.version>
-    <webservices.rest.version>3.2.0</webservices.rest.version>
+    <!-- RefApp 3.7.1 module set. openmrs.version is deliberately 2.8.9, one patch
+         ahead of RefApp 3.7.1's 2.8.8, to run the latest platform release. -->
+    <openmrs.version>2.8.9</openmrs.version>
+    <fhir2.version>4.2.0</fhir2.version>
+    <!-- overridden by distro/binaries/openmrs/modules/webservices.rest-3.5.0-uvl1.omod until upstream
+         releases saving a user's own properties without Edit Users (UVL-EMR#545,
+         openmrs/openmrs-module-webservices.rest#778) -->
+    <webservices.rest.version>3.5.0</webservices.rest.version>
     <addresshierarchy.version>2.21.0</addresshierarchy.version>
-    <idgen.version>4.14.0</idgen.version>
-    <legacyui.version>1.23.0</legacyui.version>
-    <metadatamapping.version>1.6.0</metadatamapping.version>
-    <openconceptlab.version>2.4.0</openconceptlab.version>
-    <attachments.version>3.7.0</attachments.version>
-    <queue.version>2.9.0</queue.version>
+    <idgen.version>5.0.4</idgen.version>
+    <legacyui.version>2.1.0</legacyui.version>
+    <metadatamapping.version>2.0.0</metadatamapping.version>
+    <openconceptlab.version>3.1.0</openconceptlab.version>
+    <attachments.version>4.0.0</attachments.version>
+    <queue.version>3.1.1</queue.version>
     <appointments.version>2.1.0-20250318.070530-1</appointments.version>
     <teleconsultation.version>2.1.0-20250318.154145-1</teleconsultation.version>
     <cohort.version>3.7.3</cohort.version>
-    <reporting.version>1.28.0</reporting.version>
-    <reportingrest.version>1.15.0</reportingrest.version>
-    <!-- the next three are required for reporting -->
-    <calculation.version>1.3.0</calculation.version>
-    <htmlwidgets.version>1.11.0</htmlwidgets.version>
-    <ordertemplates.version>1.0.2</ordertemplates.version>
-    <patientflags.version>3.0.8</patientflags.version>
+    <reporting.version>2.1.0</reporting.version>
+    <reportingrest.version>2.0.0</reportingrest.version>
+    <!-- the next four are required for reporting; reporting 2.1.0 will not start
+         against serialization.xstream 0.2.16, which is what the Ozone base ships -->
+    <calculation.version>2.0.0</calculation.version>
+    <htmlwidgets.version>2.0.1</htmlwidgets.version>
+    <serialization-xstream.version>0.3.0</serialization-xstream.version>
+    <ordertemplates.version>2.2.0</ordertemplates.version>
+    <patientflags.version>3.0.10</patientflags.version>
     <o3forms.version>2.3.0</o3forms.version>
-    <emrapi.version>2.3.0</emrapi.version>
-    <event.version>3.0.0</event.version>
+    <emrapi.version>3.4.0</emrapi.version>
+    <event.version>4.0.0</event.version>
+    <!-- overridden by distro/binaries/openmrs/modules/bedmanagement-6.2.0-uvl1.omod until a release
+         with openmrs/openmrs-module-bedmanagement a96fa35 (#115) is taken: unassigning a patient
+         (every transfer and bed change in the Ward app) rewrote the bed left with a new uuid and no
+         bed type, so its nights lost their room class (UVL-EMR#246). Same source as this snapshot
+         plus that fix. -->
     <bedmanagement.version>6.2.0-20250806.164740-6</bedmanagement.version>
-    <patientdocuments.version>1.0.0-SNAPSHOT</patientdocuments.version>
+    <patientdocuments.version>1.2.0</patientdocuments.version>
 
     <!-- Ozone alpha 13 modules -->
+    <!-- overridden by distro/binaries/openmrs/modules/oauth2login-1.5.0-uvl1.omod until upstream
+         releases the role sync fix (UVL-EMR#476, openmrs/openmrs-module-oauth2login#36) -->
     <oauth2loginVersion>1.5.0</oauth2loginVersion>
     <fhirproxyVersion>1.0.0</fhirproxyVersion>
     <patientsummaryVersion>2.2.0</patientsummaryVersion>     
   	<msf.environment>dev</msf.environment>
     <bundled.docker.tag>${msf.environment}</bundled.docker.tag>
+
+    <!--
+      Orthanc secrets written into run/docker/.env and concatenated.env at build
+      time. The defaults are deliberately NOT usable: this repository is public, and
+      anything committed here stays in git history for good.
+
+      Supply the real values on the build, e.g.
+
+        mvn package -Porthanc \
+          -Dorthanc.client.secret="$ORTHANC_CLIENT_SECRET" \
+          -Dorthanc.auth.service.secret.key="$ORTHANC_AUTH_SERVICE_SECRET_KEY"
+
+      orthanc.client.secret must match the "orthanc-service" client secret in the
+      site's ozone-realm.json.
+    -->
+    <orthanc.client.secret>CHANGEME</orthanc.client.secret>
+    <orthanc.auth.service.secret.key>CHANGEME</orthanc.auth.service.secret.key>
   </properties>
 
   <dependencies>
@@ -82,6 +122,13 @@
       <groupId>org.openmrs.module</groupId>
       <artifactId>reporting-omod</artifactId>
       <version>${reporting.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.openmrs.module</groupId>
+      <artifactId>serialization.xstream-omod</artifactId>
+      <version>${serialization-xstream.version}</version>
+      <!-- only ever published with the .omod extension, never as a jar -->
+      <type>omod</type>
     </dependency>
     <dependency>
       <groupId>org.openmrs.module</groupId>
@@ -171,6 +218,12 @@
       <groupId>org.openmrs.module</groupId>
       <artifactId>htmlwidgets-omod</artifactId>
       <version>${htmlwidgets.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.openmrs.module</groupId>
+      <artifactId>ordertemplates-omod</artifactId>
+      <version>${ordertemplates.version}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -279,10 +332,6 @@
               <resources>
                 <resource>
                   <directory>${project.basedir}/configs</directory>
-                  <excludes>
-                    <!-- Remove overides -->
-                    <exclude>openmrs/overrides/**/*.*</exclude>
-                  </excludes>
                 </resource>
               </resources>
             </configuration>
@@ -318,7 +367,41 @@
           </execution>
 
           <execution>
-            <!-- Copy UVL Disto docker compose .txt file -->
+            <!--
+              Site-authored database bootstrap scripts, layered onto the data/ tree
+              inherited from Ozone. Currently just the Orthanc index database, which
+              lives on the shared postgresql instance (orthanc.json points its
+              PostgreSQL Host at "postgresql").
+
+              data/postgresql/create_db.sh walks /docker-entrypoint-initdb.d/db/* on
+              first init, so a new directory here is picked up with no other change
+              for the local stack; the bundled image needs an extra ADD, applied by
+              the bundled-docker profile below.
+            -->
+            <id>Copy UVL Distro data files</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>
+                ${project.build.directory}/${project.artifactId}-${project.version}/distro/data</outputDirectory>
+              <overwrite>true</overwrite>
+              <resources>
+                <resource>
+                  <directory>${project.basedir}/data</directory>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+
+          <execution>
+            <!--
+              The compose-file manifest is read by run/docker/scripts/utils.sh with a
+              bare relative path (`cat docker-compose-files.txt`), so it must sit
+              alongside the scripts, NOT in run/docker with the compose files it lists.
+              That is why it is copied separately and excluded from the copy below.
+            -->
             <id>Copy UVL Disto docker compose .txt file</id>
             <phase>prepare-package</phase>
             <goals>
@@ -330,7 +413,7 @@
               <overwrite>true</overwrite>
               <resources>
                 <resource>
-                  <directory>${project.basedir}/../scripts</directory>
+                  <directory>${project.basedir}/../scripts/docker</directory>
                   <includes>
                     <include>
                       docker-compose-files.txt
@@ -342,8 +425,8 @@
           </execution>
 
           <execution>
-            <!-- Copy UVL Disto docker compose .txt file -->
-            <id>Copy UVL Disto docker override file</id>
+            <!-- scripts/docker -> run/docker : compose files and their overrides -->
+            <id>Copy UVL Distro docker files</id>
             <phase>prepare-package</phase>
             <goals>
               <goal>copy-resources</goal>
@@ -354,17 +437,38 @@
               <overwrite>true</overwrite>
               <resources>
                 <resource>
-                  <directory>${project.basedir}/../scripts</directory>
-                  <includes>
-                    <include>
-                      docker-compose-override.yml
-                    </include>
-                  </includes>
+                  <directory>${project.basedir}/../scripts/docker</directory>
+                  <excludes>
+                    <!-- Belongs with the scripts — see the execution above. -->
+                    <exclude>docker-compose-files.txt</exclude>
+                  </excludes>
                 </resource>
               </resources>
             </configuration>
           </execution>
 
+          <execution>
+            <!--
+              scripts/src -> run/docker/scripts : shell helpers invoked from the
+              launcher. The antrun step below chmods run/docker/scripts/*.sh to 700,
+              so anything landing here stays executable.
+            -->
+            <id>Copy UVL Distro docker scripts</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>
+                ${project.build.directory}/${project.artifactId}-${project.version}/run/docker/scripts</outputDirectory>
+              <overwrite>true</overwrite>
+              <resources>
+                <resource>
+                  <directory>${project.basedir}/../scripts/src</directory>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
       <plugin>
@@ -372,6 +476,47 @@
         <artifactId>maven-antrun-plugin</artifactId>
         <version>3.1.0</version>
         <executions>
+          <execution>
+            <!--
+              Tests the OpenMRS entrypoint patch (#305, #476) against the real openmrs-core
+              lines it edits, in every build, so it does not wait for an image build
+              to be exercised. The bundled-docker profile below wires the patch into
+              the Dockerfile; see scripts/bundled-docker/openmrs/patch-startup-init.sh.
+            -->
+            <id>Test the OpenMRS startup-init patch</id>
+            <phase>test</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
+                <exec executable="bash" failonerror="true">
+                  <arg value="${project.basedir}/../scripts/test/openmrs-startup-init/test.sh"/>
+                </exec>
+              </target>
+            </configuration>
+          </execution>
+          <execution>
+            <!--
+              Tests the #570 icon sprite patch: the patched esm-styleguide dist, and the
+              app shell built from it in process-resources. See 'Patch the icon sprite in
+              the app shell' below.
+            -->
+            <id>Test the esm-styleguide icon sprite patch</id>
+            <phase>test</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
+                <exec executable="node" failonerror="true">
+                  <arg value="${project.basedir}/../scripts/test/esm-styleguide-svg-sprite/test.mjs"/>
+                  <arg value="${project.build.directory}/openmrs_cli/node_modules/@openmrs/esm-styleguide"/>
+                  <arg value="${project.build.directory}/${project.artifactId}-${project.version}/distro/binaries/openmrs/frontend"/>
+                </exec>
+              </target>
+            </configuration>
+          </execution>
           <execution>
             <id>Add UVL Distro Frontend Configuration</id>
             <phase>process-resources</phase>
@@ -398,7 +543,6 @@
                 <delete>
                   <fileset dir="${project.build.directory}/${project.artifactId}-${project.version}/distro/binaries/openmrs/modules">
                       <include name="*.omod" />
-                      <exclude name="serialization*.omod" />
                   </fileset>
                 </delete>
 
@@ -426,6 +570,143 @@
                 <replaceregexp file="${project.build.directory}/openmrs/frontend_assembly/build-openmrs-frontend.groovy"
                               match="openmrsVersion =.*" replace='openmrsVersion = slurper.parse(Paths.get("${project.build.directory}", "openmrs_frontend", "spa-assemble-config.json").toFile())["coreVersion"] ?: "next"'/>
 
+                <!--
+                  Load importmap.json and routes.registry.json from the SPA root (#519).
+
+                  Ozone runs `openmrs build` without the importmap and routes options, so
+                  the CLI writes the relative defaults into index.html. There is no
+                  <base href>, so a chart opened by direct link
+                  (/openmrs/spa/patient/<uuid>/chart) asks for
+                  /openmrs/spa/patient/<uuid>/chart/importmap.json; nginx answers 404 and
+                  the app shell stays blank until it recovers. Pass the same values as the
+                  reference application: `$SPA_PATH/...` goes into index.html literally,
+                  like $SPA_CONFIG_URLS, and the frontend container's startup.sh envsubst
+                  turns it into /openmrs/spa/... (SPA_PATH is set by Ozone's compose).
+
+                  The match needs `build` directly followed by the config-url option, so a
+                  rewritten file is not rewritten twice. The check below fails the build if
+                  an Ozone bump changes the command and the rewrite stops applying.
+                  Four backslashes in `replace` give the groovy source `\$SPA_PATH`: Ant
+                  turns each `\\` into one backslash and escapes the `$` for Java.
+                -->
+                <replaceregexp file="${project.build.directory}/openmrs/frontend_assembly/build-openmrs-frontend.groovy"
+                              match="(openmrs\S* build) (--config-url )"
+                              replace="\1 --importmap \\\\$SPA_PATH/importmap.json --routes \\\\$SPA_PATH/routes.registry.json \2"/>
+                <loadfile property="frontend.build.script.contents"
+                          srcFile="${project.build.directory}/openmrs/frontend_assembly/build-openmrs-frontend.groovy" />
+                <fail message="build-openmrs-frontend.groovy does not pass --importmap/--routes to `openmrs build`; the rewrite for #519 did not match, so a chart opened by direct link would request importmap.json under the chart path. Script contents:${line.separator}${frontend.build.script.contents}">
+                  <condition>
+                    <not>
+                      <contains string="${frontend.build.script.contents}"
+                                substring="build --importmap \$SPA_PATH/importmap.json --routes \$SPA_PATH/routes.registry.json --config-url" />
+                    </not>
+                  </condition>
+                </fail>
+                <echo level="info" message="Verified: openmrs build loads importmap.json and routes.registry.json from $SPA_PATH"/>
+
+                <!--
+                  Pin the OpenMRS frontend build.
+
+                  Ozone's script runs `npx openmrs@<coreVersion>`, which installs the CLI
+                  and @openmrs/esm-app-shell into a fresh npx cache with no lockfile. The
+                  app shell takes ranges (@carbon/react ^1.92.1, i18next ^25, ...) and
+                  shares them as singletons with every ESM, so the same coreVersion built
+                  on two days can serve different libraries. On 2026-11-11 CI resolved
+                  @carbon/react 1.120.0 (published 2026-11-04), whose styles broke the
+                  core 11.0.0 modules (location picker, patient-chart left nav), while a
+                  build from an older npx cache shared 1.119.0 and looked right.
+
+                  The CLI is installed instead from distro/frontend/openmrs-cli with
+                  `npm ci`: its lockfile is the tree that built the working UAT shell, and
+                  its overrides pin the shared singletons, so a regenerated lockfile keeps
+                  them. Both of Ozone's commands are pointed at that install. The checks
+                  fail the build if the rewrite stops matching, or if coreVersion moves
+                  without the CLI pin (bump "openmrs" in package.json and regenerate the
+                  lockfile with npm install and legacy peer deps). The built shell is
+                  checked by scripts/check-frontend-shared-versions.groovy.
+                -->
+                <loadfile property="frontend.core.version" srcFile="${project.basedir}/configs/openmrs/frontend_assembly/spa-assemble-config.json">
+                  <filterchain>
+                    <tokenfilter>
+                      <containsregex pattern='.*"coreVersion"\s*:\s*"([^"]+)".*' replace="\1"/>
+                    </tokenfilter>
+                    <striplinebreaks/>
+                  </filterchain>
+                </loadfile>
+                <loadfile property="frontend.cli.version" srcFile="${project.basedir}/frontend/openmrs-cli/package.json">
+                  <filterchain>
+                    <tokenfilter>
+                      <containsregex pattern='.*"openmrs"\s*:\s*"([^"]+)".*' replace="\1"/>
+                    </tokenfilter>
+                    <striplinebreaks/>
+                  </filterchain>
+                </loadfile>
+                <fail message="spa-assemble-config.json asks for frontend core ${frontend.core.version} but distro/frontend/openmrs-cli/package.json pins openmrs ${frontend.cli.version}. Set &quot;openmrs&quot; to ${frontend.core.version} there and regenerate its package-lock.json.">
+                  <condition>
+                    <not>
+                      <equals arg1="${frontend.core.version}" arg2="${frontend.cli.version}"/>
+                    </not>
+                  </condition>
+                </fail>
+                <copy todir="${project.build.directory}/openmrs_cli" overwrite="true">
+                  <fileset dir="${project.basedir}/frontend/openmrs-cli">
+                    <include name="package.json"/>
+                    <include name="package-lock.json"/>
+                  </fileset>
+                </copy>
+                <exec executable="npm" dir="${project.build.directory}/openmrs_cli" failonerror="true">
+                  <arg line="ci --legacy-peer-deps --no-audit --no-fund"/>
+                </exec>
+                <!--
+                  Patch the icon sprite in the app shell (#570), until core ships
+                  https://github.com/openmrs/openmrs-esm-core/pull/1981.
+
+                  @openmrs/esm-styleguide attaches #omrs-svgs-container only on window
+                  `load`, and MaybeIcon reads whether its icon exists once, at mount. On a
+                  hard reload or a direct link the chart's left nav mounts before `load`,
+                  so its links never get their icons. The patch is that PR applied to the
+                  styleguide's dist, which `openmrs build` compiles into the shell: the
+                  container is attached once, as soon as there is a body, and MaybeIcon
+                  re-renders when its icon appears. The shell pins every module's
+                  @openmrs/esm-framework to its own copy, so this reaches every app.
+
+                  The patch is named for the core version. Moving coreVersion fails here
+                  until someone checks whether the new core has #1981: if it does, delete
+                  this step and the patch; if not, regenerate the patch for that version.
+                  scripts/test/esm-styleguide-svg-sprite/test.mjs tests the patched dist
+                  and the built shell.
+                -->
+                <property name="frontend.styleguide.patch"
+                          value="${project.basedir}/frontend/openmrs-cli/patches/esm-styleguide-${frontend.core.version}.patch"/>
+                <fail message="No ${frontend.styleguide.patch}. Frontend core moved to ${frontend.core.version}: if it contains openmrs/openmrs-esm-core#1981, remove the #570 patch step from distro/pom.xml; otherwise regenerate the patch for this version.">
+                  <condition>
+                    <not>
+                      <available file="${frontend.styleguide.patch}"/>
+                    </not>
+                  </condition>
+                </fail>
+                <exec executable="patch" failonerror="true">
+                  <arg line="-t -p1 -d ${project.build.directory}/openmrs_cli/node_modules/@openmrs/esm-styleguide -i ${frontend.styleguide.patch}"/>
+                </exec>
+                <echo level="info" message="Patched @openmrs/esm-styleguide ${frontend.core.version}: the icon sprite is attached before the window load event (#570)"/>
+                <replaceregexp file="${project.build.directory}/openmrs/frontend_assembly/build-openmrs-frontend.groovy"
+                              match="npx --legacy-peer-deps openmrs@\$\{openmrsVersion\}"
+                              replace="${project.build.directory}/openmrs_cli/node_modules/.bin/openmrs"
+                              flags="g"/>
+                <loadfile property="frontend.build.script.pinned"
+                          srcFile="${project.build.directory}/openmrs/frontend_assembly/build-openmrs-frontend.groovy" />
+                <fail message="build-openmrs-frontend.groovy still runs openmrs through npx; the rewrite that pins the frontend build did not match, so the app shell would share whatever @carbon/react is newest. Script contents:${line.separator}${frontend.build.script.pinned}">
+                  <condition>
+                    <or>
+                      <contains string="${frontend.build.script.pinned}" substring="npx "/>
+                      <not>
+                        <contains string="${frontend.build.script.pinned}" substring="openmrs_cli/node_modules/.bin/openmrs build --importmap"/>
+                      </not>
+                    </or>
+                  </condition>
+                </fail>
+                <echo level="info" message="Verified: the frontend is built with the pinned openmrs ${frontend.cli.version} CLI from distro/frontend/openmrs-cli"/>
+
                 <echo level="info" message="Adding UVL project Name to ozone" />
                 <replace
                   dir="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/scripts"
@@ -445,6 +726,188 @@
 
                 <echo level="info" message="Setting executable permissions for the Ozone start.sh script" />
                 <chmod file="${project.build.directory}/${project.artifactId}-${project.version}/run/docker/scripts/*.sh" perm="700"/>
+                <!--
+                  ORTHANC_ATTACHMENTS_PATCH_PATH is deliberately NOT set here.
+
+                  It used to be exported as
+                  ${project.basedir}/../../openmrs-esm-patient-chart/packages/esm-patient-attachments-app/dist
+                  — a sibling checkout that exists on no other machine and on no CI
+                  runner. Because the consuming bind mount takes a directory, Docker
+                  silently CREATES an empty one when the path is missing, so the
+                  frontend would serve an empty attachments app rather than failing
+                  loudly. The bind mount in scripts/docker/docker-compose-override.yml
+                  was removed alongside this.
+
+                  The patched attachments app was later committed under
+                  distro/binaries and applied by scripts/apply-uvl-binaries.groovy.
+                  That override was dropped with the move to frontend core 11 (#490):
+                  the distro now ships the stock esm-patient-attachments-app pinned in
+                  distro/configs/openmrs/frontend_assembly/spa-assemble-config.json.
+                  To reinstate a patched app, publish the ESM and pin its version
+                  there, so the frontend assembly carries it like every other ESM.
+                -->
+
+                <!--
+                  Orthanc / PACS and Superset runtime values.
+
+                  Inserted by anchoring on keys upstream Ozone already defines
+                  (ORTHANC_HOSTNAME, SUPERSET_CLIENT_SECRET) and re-emitting the
+                  anchor plus the new keys — the same \1-plus-content pattern this
+                  pom uses for SPA_CONFIG_URLS. A plain replace cannot be used
+                  because none of these nine keys exist upstream to match against.
+
+                  Idempotent by construction: the resources copy above restores
+                  .env and concatenated.env from target/ozone on every build, so the
+                  anchor is never already expanded.
+
+                  orthancWorklist.py needs no copy step of its own: the "Copy local
+                  resources" execution above already copies all of configs/ into
+                  distro/configs, including configs/orthanc.
+                -->
+                <echo level="info" message="Adding Orthanc/PACS and Superset runtime values to the env files" />
+                <replaceregexp byline="true"
+                  match="^ORTHANC_HOSTNAME=(.*)$"
+                  replace="ORTHANC_HOSTNAME=\1${line.separator}ORTHANC_PUBLIC_URL=$${SERVER_SCHEME}://$${ORTHANC_HOSTNAME}${line.separator}PACS_PUBLIC_URL=$${SERVER_SCHEME}://$${ORTHANC_HOSTNAME}${line.separator}ORTHANC_CLIENT_SECRET=${orthanc.client.secret}${line.separator}ORTHANC_AUTH_SERVICE_SECRET_KEY=${orthanc.auth.service.secret.key}${line.separator}ORTHANC_DB_PASSWORD=orthanc">
+                  <fileset dir="${project.build.directory}/${project.artifactId}-${project.version}/run/docker">
+                    <include name=".env" />
+                    <include name="concatenated.env" />
+                  </fileset>
+                </replaceregexp>
+                <replaceregexp byline="true"
+                  match="^SUPERSET_CLIENT_SECRET=(.*)$"
+                  replace="SUPERSET_CLIENT_SECRET=\1${line.separator}SUPERSET_DB_USER=superset${line.separator}SUPERSET_DB_PASSWORD=superset${line.separator}SUPERSET_SECRET_KEY=supersetSecretKey${line.separator}SUPERSET_ADMIN_PASSWORD=admin${line.separator}ORTHANC_DB_NAME=orthanc${line.separator}ORTHANC_DB_USER=orthanc">
+                  <fileset dir="${project.build.directory}/${project.artifactId}-${project.version}/run/docker">
+                    <include name=".env" />
+                    <include name="concatenated.env" />
+                  </fileset>
+                </replaceregexp>
+
+                <!--
+                  SSO: drop the provider mapping so oauth2login does not try to
+                  resolve an OpenMRS Provider for every SSO user, which fails login
+                  for users who have no provider account.
+
+                  Note there is deliberately NO rewrite of accessTokenUri /
+                  userInfoUri / keysUrl here: upstream Ozone already points those at
+                  ${KEYCLOAK_INTERNAL_HOST_URL} (http://keycloak:8080), so the
+                  container-to-container URLs are correct as shipped. The sed in
+                  build2.sh predates that and is now a no-op.
+
+                  This file is baked into the openmrs image by
+                  bundled-docker/openmrs/Dockerfile, so the edit must happen at build
+                  time — a post-build script would never reach the pushed image.
+                -->
+                <echo level="info" message="Removing the oauth2login provider mapping for SSO" />
+                <replaceregexp
+                  file="${project.build.directory}/${project.artifactId}-${project.version}/distro/configs/openmrs/properties/oauth2.properties"
+                  match="^openmrs\.mapping\.user\.provider=provider$"
+                  replace=""
+                  byline="true" />
+              </target>
+            </configuration>
+          </execution>
+          <execution>
+            <!--
+              UVL's own frontend modules (distro/frontend), handed to the frontend
+              assembly like any published ESM.
+
+              Each module's built dist/ is committed (see its README for how to
+              rebuild it), so this build needs no npm install. The tarball has the
+              npm-pack layout (package/package.json + package/dist) that
+              `openmrs assemble` expects, and spa-assemble-config.json pins the
+              module as "file:<tarball>". assemble then extracts it next to the
+              other ESMs and writes its importmap.json and routes.registry.json
+              entries itself, so nothing post-processes those files.
+
+              assemble resolves "file:" against its working directory, which is
+              wherever Maven was started; the relative names are therefore anchored
+              here to the directory the tarballs are written to. Must run in
+              process-resources after "Copy spa-assemble-config.json"
+              (generate-resources) and before "Rebuild OpenMRS Frontend if
+              necessary", like the core-version edit above.
+            -->
+            <id>Package the UVL frontend modules</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
+                <property name="uvl.frontend.modules" value="${project.build.directory}/uvl-frontend-modules" />
+                <mkdir dir="${uvl.frontend.modules}" />
+                <!-- Patched build of an upstream module (#499, #500); see distro/frontend/openmrs-esm-form-engine-app/README.md -->
+                <tar destfile="${uvl.frontend.modules}/openmrs-esm-form-engine-app.tgz" compression="gzip" longfile="posix">
+                  <tarfileset dir="${project.basedir}/frontend/openmrs-esm-form-engine-app" prefix="package">
+                    <include name="package.json" />
+                    <include name="dist/**" />
+                    <exclude name="dist/**/*.map" />
+                  </tarfileset>
+                </tar>
+                <tar destfile="${uvl.frontend.modules}/madiro-esm-uvl-imaging-app.tgz" compression="gzip" longfile="posix">
+                  <tarfileset dir="${project.basedir}/frontend/esm-uvl-imaging-app" prefix="package">
+                    <include name="package.json" />
+                    <include name="dist/**" />
+                    <exclude name="dist/**/*.map" />
+                  </tarfileset>
+                </tar>
+                <tar destfile="${uvl.frontend.modules}/madiro-esm-uvl-partograph-app.tgz" compression="gzip" longfile="posix">
+                  <tarfileset dir="${project.basedir}/frontend/esm-uvl-partograph-app" prefix="package">
+                    <include name="package.json" />
+                    <include name="dist/**" />
+                    <exclude name="dist/**/*.map" />
+                  </tarfileset>
+                </tar>
+                <tar destfile="${uvl.frontend.modules}/openmrs-esm-dispensing-app.tgz" compression="gzip" longfile="posix">
+                  <tarfileset dir="${project.basedir}/frontend/openmrs-esm-dispensing-app" prefix="package">
+                    <include name="package.json" />
+                    <include name="dist/**" />
+                    <exclude name="dist/**/*.map" />
+                  </tarfileset>
+                </tar>
+                <tar destfile="${uvl.frontend.modules}/openmrs-esm-patient-chart-app.tgz" compression="gzip" longfile="posix">
+                  <tarfileset dir="${project.basedir}/frontend/openmrs-esm-patient-chart-app" prefix="package">
+                    <include name="package.json" />
+                    <include name="dist/**" />
+                    <exclude name="dist/**/*.map" />
+                  </tarfileset>
+                </tar>
+                <tar destfile="${uvl.frontend.modules}/openmrs-esm-patient-vitals-app.tgz" compression="gzip" longfile="posix">
+                  <tarfileset dir="${project.basedir}/frontend/openmrs-esm-patient-vitals-app" prefix="package">
+                    <include name="package.json" />
+                    <include name="dist/**" />
+                    <exclude name="dist/**/*.map" />
+                  </tarfileset>
+                </tar>
+                <tar destfile="${uvl.frontend.modules}/openmrs-esm-patient-tests-app.tgz" compression="gzip" longfile="posix">
+                  <tarfileset dir="${project.basedir}/frontend/openmrs-esm-patient-tests-app" prefix="package">
+                    <include name="package.json" />
+                    <include name="dist/**" />
+                    <exclude name="dist/**/*.map" />
+                  </tarfileset>
+                </tar>
+                <tar destfile="${uvl.frontend.modules}/openmrs-esm-patient-forms-app.tgz" compression="gzip" longfile="posix">
+                  <tarfileset dir="${project.basedir}/frontend/openmrs-esm-patient-forms-app" prefix="package">
+                    <include name="package.json" />
+                    <include name="dist/**" />
+                    <exclude name="dist/**/*.map" />
+                  </tarfileset>
+                </tar>
+                <tar destfile="${uvl.frontend.modules}/openmrs-esm-ward-app.tgz" compression="gzip" longfile="posix">
+                  <tarfileset dir="${project.basedir}/frontend/openmrs-esm-ward-app" prefix="package">
+                    <include name="package.json" />
+                    <include name="dist/**" />
+                    <exclude name="dist/**/*.map" />
+                  </tarfileset>
+                </tar>
+                <tar destfile="${uvl.frontend.modules}/openmrs-esm-stock-management-app.tgz" compression="gzip" longfile="posix">
+                  <tarfileset dir="${project.basedir}/frontend/openmrs-esm-stock-management-app" prefix="package">
+                    <include name="package.json" />
+                    <include name="dist/**" />
+                    <exclude name="dist/**/*.map" />
+                  </tarfileset>
+                </tar>
+                <replaceregexp file="${project.build.directory}/openmrs_frontend/spa-assemble-config.json"
+                               match="&quot;file:(?!/)" replace="&quot;file:${uvl.frontend.modules}/" flags="g" />
               </target>
             </configuration>
           </execution>
@@ -455,20 +918,41 @@
         <artifactId>gmavenplus-plugin</artifactId>
         <version>3.0.2</version>
         <executions>
-          <!-- Loaded custom patient documents module and ESM patient banner app for stickers functionality. -->
-					<!-- Kept for manual override capability if needed. -->
-          <!-- <execution>
-            <id>apply-overrides</id>
+          <execution>
+            <!--
+              Applies distro/binaries over the build output: the two EIP bridges and
+              the custom omods. See the script for
+              why each target is emptied before the override is copied in, and why this
+              cannot run before prepare-package.
+            -->
+            <id>Apply the UVL distro/binaries overrides</id>
             <goals>
               <goal>execute</goal>
             </goals>
-            <phase>process-resources</phase>
+            <phase>prepare-package</phase>
             <configuration>
               <scripts>
-                <script>file://${project.basedir}/../scripts/apply-overrides.groovy</script>
+                <script>file://${project.basedir}/../scripts/apply-uvl-binaries.groovy</script>
               </scripts>
             </configuration>
-          </execution> -->
+          </execution>
+          <execution>
+            <!--
+              Checks that the built app shell shares the library versions pinned in
+              distro/frontend/openmrs-cli/package.json. Runs after the frontend is built
+              (process-resources); see 'Pin the OpenMRS frontend build' above.
+            -->
+            <id>Check the libraries the app shell shares</id>
+            <goals>
+              <goal>execute</goal>
+            </goals>
+            <phase>compile</phase>
+            <configuration>
+              <scripts>
+                <script>file://${project.basedir}/../scripts/check-frontend-shared-versions.groovy</script>
+              </scripts>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
     </plugins>
@@ -572,9 +1056,116 @@
                     <replaceregexp file="${project.build.directory}/bundled-docker-tmp/bundled-docker/openmrs/Dockerfile"
                                             match="FROM openmrs/openmrs-core.*" replace="FROM openmrs/openmrs-core:${openmrs.version}" />
 
+                    <!--
+                      Make the entrypoint empty /openmrs/data/configuration before it
+                      refills it from the image (#305). openmrs-core 2.8.x quotes the
+                      glob in `rm -fR "${OMRS_CONFIG_DIR:?}/*"`, so config deleted from
+                      the repo stays in the volume and keeps loading. The script says
+                      why it is patched the way it is, and fails the image build if
+                      the upstream line is no longer there to patch.
+
+                      Right after FROM, so the layer is cached across config changes.
+                      Stripped first, then re-added, because bundled-docker-tmp is NOT
+                      refreshed between non-clean builds (same as the postgresql edit below).
+                      The script reaches bundled-docker/openmrs/ through
+                      "Add UVL bundled docker files".
+                    -->
+                    <echo level="info" message="Patching the OpenMRS entrypoint to mirror the image's configuration and modules"/>
+                    <replaceregexp file="${project.build.directory}/bundled-docker-tmp/bundled-docker/openmrs/Dockerfile"
+                                            match="[\r\n]+[^\r\n]*patch-startup-init\.sh[^\r\n]*"
+                                            replace=""
+                                            flags="g" />
+                    <replaceregexp file="${project.build.directory}/bundled-docker-tmp/bundled-docker/openmrs/Dockerfile"
+                                            byline="true"
+                                            match="^(FROM openmrs/openmrs-core:.*)$"
+                                            replace="\1${line.separator}COPY bundled-docker/openmrs/patch-startup-init.sh /openmrs/uvl/patch-startup-init.sh${line.separator}RUN sh /openmrs/uvl/patch-startup-init.sh /openmrs/startup-init.sh" />
+
+                    <!--
+                      Assert the rewrite actually happened.
+
+                      openmrs.version reaches the built image through this one regex and
+                      nothing else. If the inherited Dockerfile's FROM line ever changes
+                      shape - a digest pin, a different registry, a renamed base - the
+                      match silently fails, replaceregexp reports nothing, and the build
+                      succeeds against whatever base the inherited file carried. The
+                      platform would then be whatever that file says, not what this pom
+                      says, and the only way to notice is to unpack the image.
+
+                      This project has lost days to exactly that class of silent
+                      fallback. Fail the build instead.
+                    -->
+                    <loadfile property="openmrs.dockerfile.contents"
+                              srcFile="${project.build.directory}/bundled-docker-tmp/bundled-docker/openmrs/Dockerfile" />
+                    <fail message="The OpenMRS Dockerfile does not pin openmrs-core:${openmrs.version}. The FROM rewrite did not match, so the image would be built on an unintended base. Dockerfile contents:${line.separator}${openmrs.dockerfile.contents}">
+                      <condition>
+                        <not>
+                          <contains string="${openmrs.dockerfile.contents}"
+                                    substring="FROM openmrs/openmrs-core:${openmrs.version}" />
+                        </not>
+                      </condition>
+                    </fail>
+                    <echo level="info" message="Verified: openmrs Dockerfile pins openmrs-core:${openmrs.version}"/>
+                    <!-- Same for the entrypoint patch: without it the build succeeds and deleted config keeps loading (#305). -->
+                    <fail message="The OpenMRS Dockerfile does not run patch-startup-init.sh, so the image would never remove configuration or modules deleted from the repo (#305, #476). Dockerfile contents:${line.separator}${openmrs.dockerfile.contents}">
+                      <condition>
+                        <not>
+                          <contains string="${openmrs.dockerfile.contents}"
+                                    substring="RUN sh /openmrs/uvl/patch-startup-init.sh /openmrs/startup-init.sh" />
+                        </not>
+                      </condition>
+                    </fail>
+                    <available file="${project.basedir}/../scripts/bundled-docker/openmrs/patch-startup-init.sh" property="openmrs.startup.patch.present"/>
+                    <fail unless="openmrs.startup.patch.present"
+                          message="scripts/bundled-docker/openmrs/patch-startup-init.sh is missing; the OpenMRS Dockerfile COPYs it (#305)."/>
+                    <echo level="info" message="Verified: openmrs Dockerfile runs patch-startup-init.sh"/>
+
                     <echo level="info" message="Adding msf MYSQL docker image version"/>
+                    <!--
+                      Allow modules that ship trigger or stored-function DDL to migrate.
+
+                      log_bin is ON because Debezium reads the binlog, and OpenMRS
+                      connects as the non-SUPER `openmrs` user. Under exactly that
+                      combination MySQL refuses the DDL:
+
+                        (1419) You do not have the SUPER privilege and binary
+                        logging is enabled
+
+                      stockmanagement then aborts mid-migration, billing refuses to
+                      start because its dependency is not running, and OpenMRS still
+                      reports healthy. Cost most of a day on UAT, 2026-09-18.
+
+                      Stripped first, then re-added with the FROM line, because
+                      bundled-docker-tmp is NOT refreshed between non-clean builds and
+                      a bare append accumulates a duplicate RUN on every `mvn package`.
+                    -->
                     <replaceregexp file="${project.build.directory}/bundled-docker-tmp/bundled-docker/mysql/Dockerfile"
-                                            match="FROM mariadb.*" replace="FROM mariadb:10.11.13" />
+                                            byline="true"
+                                            match="^RUN echo .\[mysqld\].*zz-openmrs.cnf.*$" replace="" />
+                    <replaceregexp file="${project.build.directory}/bundled-docker-tmp/bundled-docker/mysql/Dockerfile"
+                                            match="FROM mariadb.*"
+                                            replace="FROM mariadb:10.11.13${line.separator}RUN echo '[mysqld]' &gt; /etc/mysql/conf.d/zz-openmrs.cnf &amp;&amp; echo 'log_bin_trust_function_creators = 1' &gt;&gt; /etc/mysql/conf.d/zz-openmrs.cnf" />
+
+                    <!--
+                      Bake the Orthanc index database bootstrap into the postgresql
+                      image. Upstream's Dockerfile ADDs each database directory by
+                      name (odoo, senaite, keycloak), so a new data/postgresql/orthanc
+                      directory is NOT picked up automatically the way the local
+                      stack's bind mount is.
+
+                      Two steps because bundled-docker-tmp is NOT refreshed between
+                      non-clean builds: a bare append accumulates a duplicate ADD on
+                      every `mvn package` without `clean`. Stripping any existing line
+                      first makes this idempotent.
+                    -->
+                    <echo level="info" message="Adding Orthanc database bootstrap to the postgresql image"/>
+                    <replaceregexp file="${project.build.directory}/bundled-docker-tmp/bundled-docker/postgresql/Dockerfile"
+                                            match="[\r\n]+ADD data/postgresql/orthanc[^\r\n]*"
+                                            replace=""
+                                            flags="g" />
+                    <replaceregexp file="${project.build.directory}/bundled-docker-tmp/bundled-docker/postgresql/Dockerfile"
+                                            match="^(ADD data/postgresql/keycloak .*)$"
+                                            replace="\1${line.separator}ADD data/postgresql/orthanc /docker-entrypoint-initdb.d/db/orthanc"
+                                            byline="true" />
                   </target>
                 </configuration>
               </execution>
@@ -590,6 +1181,32 @@
                     <copy overwrite="true"
                           file="${project.basedir}/../scripts/proxy/default.conf.template"
                           tofile="${project.build.directory}/bundled-docker-tmp/bundled-docker/proxy/default.conf.template"/>
+                  </target>
+                </configuration>
+              </execution>
+              <execution>
+                <!--
+                  Site-authored Dockerfiles for services upstream
+                  com.ozonehis:bundled-docker does not cover (currently Orthanc).
+
+                  Must run BEFORE "Copy Bundled Docker Scripts to Distro" below,
+                  which snapshots bundled-docker-tmp/bundled-docker into the distro
+                  artifact — that is how the tree reaches countries/burundi and then
+                  sites/mugamba, where the images are actually built and pushed.
+                  Executions of the same plugin in one phase run in declaration
+                  order, so position here is load-bearing.
+                -->
+                <id>Add UVL bundled docker files</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <echo level="info" message="Adding UVL-authored bundled-docker files (orthanc, openmrs entrypoint patch)"/>
+                    <copy todir="${project.build.directory}/bundled-docker-tmp/bundled-docker" overwrite="true">
+                      <fileset dir="${project.basedir}/../scripts/bundled-docker" includes="**/*" />
+                    </copy>
                   </target>
                 </configuration>
               </execution>
@@ -717,6 +1334,19 @@
     <repository>
       <id>madiro-global-health-github-uvl-emr</id>
       <url>https://maven.pkg.github.com/MadiroGlobalHealth/UVL-EMR/</url>
+    </repository>
+    <!--
+      Required, not optional: mks-nexus-public stopped serving org.openmrs.* core and
+      parent artifacts (its OpenMRS proxy 404s since OpenMRS moved to JFrog). Modules
+      like initializer-omod and commonreports-omod still resolve from Mekom, but their
+      descriptors can't be read without maven-parent-openmrs-module, which only lives
+      here. Inheriting this from the aggregator pom does not work — repositories come
+      down the parent chain, and our parent is com.ozonehis:maven-parent.
+    -->
+    <repository>
+      <id>openmrs-repo</id>
+      <name>OpenMRS Nexus Repository</name>
+      <url>https://mavenrepo.openmrs.org/public</url>
     </repository>
   </repositories>
 

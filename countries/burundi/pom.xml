@@ -131,6 +131,12 @@
       <id>madiro-global-health-github-uvl-emr</id>
       <url>https://maven.pkg.github.com/MadiroGlobalHealth/UVL-EMR/</url>
     </repository>
+    <!-- mks-nexus-public no longer proxies org.openmrs.*; see distro/pom.xml -->
+    <repository>
+      <id>openmrs-repo</id>
+      <name>OpenMRS Nexus Repository</name>
+      <url>https://mavenrepo.openmrs.org/public</url>
+    </repository>
   </repositories>
 
   <distributionManagement>

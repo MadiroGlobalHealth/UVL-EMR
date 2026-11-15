@@ -1,0 +1,111 @@
+slice_name: Patient Analytics Query Chart V5
+description: null
+certified_by: null
+certification_details: null
+viz_type: table
+params:
+  datasource: 16__table
+  viz_type: table
+  slice_id: 22
+  query_mode: raw
+  groupby: []
+  time_grain_sqla: P1D
+  temporal_columns_lookup:
+    Date de visite: true
+    Date de naissance: true
+  metrics: []
+  all_columns:
+  - ID de visite
+  - Date de visite
+  - Lieu
+  - ID du patient
+  - CNI Burundi
+  - Acte de naissance
+  - Date de naissance
+  - "\xC2ge"
+  - Sexe
+  - Province
+  - Commune
+  - Zone
+  - Colline
+  - Grossesse
+  - Motifs de consultation
+  - Liste des rencontres
+  - Nombre de rencontres
+  - Liste des diagnostics
+  - Nombre de diagnostics
+  - "Liste des diagnostics confirm\xE9s"
+  - "Nombre de diagnostics confirm\xE9s"
+  - Liste des examens de laboratoire
+  - Nombre d'examens de laboratoire
+  - "Co\xFBt des examens de laboratoire"
+  - "Liste des proc\xE9dures"
+  - "Nombre de proc\xE9dures"
+  - "Co\xFBt des proc\xE9dures"
+  - "Liste des m\xE9dicaments"
+  - "Nombre de m\xE9dicaments"
+  - "Co\xFBt des m\xE9dicaments"
+  - Montant de la facture
+  - Assurance
+  - "Assurance compl\xE9mentaire"
+  percent_metrics: []
+  adhoc_filters:
+  - clause: WHERE
+    comparator: No filter
+    expressionType: SIMPLE
+    operator: TEMPORAL_RANGE
+    subject: Visit Date
+  order_by_cols: []
+  row_limit: 1000
+  server_page_length: 10
+  order_desc: true
+  table_timestamp_format: smart_date
+  page_length: 0
+  include_search: true
+  show_cell_bars: false
+  align_pn: true
+  color_pn: true
+  conditional_formatting: []
+  extra_form_data: {}
+  dashboards:
+  - 4
+query_context: "{\"datasource\":{\"id\":16,\"type\":\"table\"},\"force\":false,\"\
+  queries\":[{\"filters\":[{\"col\":\"Visit Date\",\"op\":\"TEMPORAL_RANGE\",\"val\"\
+  :\"No filter\"}],\"extras\":{\"time_grain_sqla\":\"P1D\",\"having\":\"\",\"where\"\
+  :\"\"},\"applied_time_extras\":{},\"columns\":[\"ID de visite\",\"Date de visite\"\
+  ,\"Lieu\",\"ID du patient\",\"CNI Burundi\",\"Acte de naissance\",\"Date de naissance\"\
+  ,\"\xC2ge\",\"Sexe\",\"Province\",\"Commune\",\"Zone\",\"Colline\",\"Grossesse\"\
+  ,\"Motifs de consultation\",\"Liste des rencontres\",\"Nombre de rencontres\",\"\
+  Liste des diagnostics\",\"Nombre de diagnostics\",\"Liste des diagnostics confirm\xE9\
+  s\",\"Nombre de diagnostics confirm\xE9s\",\"Liste des examens de laboratoire\"\
+  ,\"Nombre d'examens de laboratoire\",\"Co\xFBt des examens de laboratoire\",\"Liste\
+  \ des proc\xE9dures\",\"Nombre de proc\xE9dures\",\"Co\xFBt des proc\xE9dures\"\
+  ,\"Liste des m\xE9dicaments\",\"Nombre de m\xE9dicaments\",\"Co\xFBt des m\xE9dicaments\"\
+  ,\"Montant de la facture\",\"Assurance\",\"Assurance compl\xE9mentaire\"],\"orderby\"\
+  :[],\"annotation_layers\":[],\"row_limit\":1000,\"series_limit\":0,\"order_desc\"\
+  :true,\"url_params\":{},\"custom_params\":{},\"custom_form_data\":{},\"post_processing\"\
+  :[]}],\"form_data\":{\"datasource\":\"16__table\",\"viz_type\":\"table\",\"slice_id\"\
+  :22,\"query_mode\":\"raw\",\"groupby\":[],\"time_grain_sqla\":\"P1D\",\"temporal_columns_lookup\"\
+  :{\"Date de visite\":true,\"Date de naissance\":true},\"metrics\":[],\"all_columns\"\
+  :[\"ID de visite\",\"Date de visite\",\"Lieu\",\"ID du patient\",\"CNI Burundi\"\
+  ,\"Acte de naissance\",\"Date de naissance\",\"\xC2ge\",\"Sexe\",\"Province\",\"\
+  Commune\",\"Zone\",\"Colline\",\"Grossesse\",\"Motifs de consultation\",\"Liste\
+  \ des rencontres\",\"Nombre de rencontres\",\"Liste des diagnostics\",\"Nombre de\
+  \ diagnostics\",\"Liste des diagnostics confirm\xE9s\",\"Nombre de diagnostics confirm\xE9\
+  s\",\"Liste des examens de laboratoire\",\"Nombre d'examens de laboratoire\",\"\
+  Co\xFBt des examens de laboratoire\",\"Liste des proc\xE9dures\",\"Nombre de proc\xE9\
+  dures\",\"Co\xFBt des proc\xE9dures\",\"Liste des m\xE9dicaments\",\"Nombre de m\xE9\
+  dicaments\",\"Co\xFBt des m\xE9dicaments\",\"Montant de la facture\",\"Assurance\"\
+  ,\"Assurance compl\xE9mentaire\"],\"percent_metrics\":[],\"adhoc_filters\":[{\"\
+  clause\":\"WHERE\",\"comparator\":\"No filter\",\"expressionType\":\"SIMPLE\",\"\
+  operator\":\"TEMPORAL_RANGE\",\"subject\":\"Visit Date\"}],\"order_by_cols\":[],\"\
+  row_limit\":1000,\"server_page_length\":10,\"order_desc\":true,\"table_timestamp_format\"\
+  :\"smart_date\",\"page_length\":0,\"include_search\":true,\"show_cell_bars\":false,\"\
+  align_pn\":true,\"color_pn\":true,\"conditional_formatting\":[],\"extra_form_data\"\
+  :{},\"dashboards\":[4],\"force\":false,\"result_format\":\"json\",\"result_type\"\
+  :\"full\",\"include_time\":false},\"result_format\":\"json\",\"result_type\":\"\
+  full\"}"
+cache_timeout: null
+uuid: 5b123b21-5f12-4e32-9709-dc0943db97e3
+version: 1.0.0
+dataset_uuid: 82eb0545-483b-4e7d-b4de-a38eac66ea25

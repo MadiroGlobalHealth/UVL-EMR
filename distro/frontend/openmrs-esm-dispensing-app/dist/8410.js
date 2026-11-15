@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunk_openmrs_esm_dispensing_app=globalThis.webpackChunk_openmrs_esm_dispensing_app||[]).push([["8410"],{2177(e,s,a){a.r(s),a.d(s,{SWRConfig:()=>n.S,default:()=>n.u,mutate:()=>p.k,preload:()=>i.preload,unload:()=>p.l,unstable_serialize:()=>l,useSWRConfig:()=>i.useSWRConfig});var n=a(2272),p=a(8444),i=a(4993);let l=e=>(0,p.s)(e)[0]}}]);

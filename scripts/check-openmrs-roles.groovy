@@ -1,0 +1,394 @@
+#!/usr/bin/env groovy
+/*
+  Fails the build when a role the realm or the roles CSVs name does not exist in OpenMRS.
+  Run from sites/mugamba/pom.xml at prepare-package, against the assembled
+  initializer_config, so it sees every layer (RefApp, distro, country, site).
+
+  Each of these goes wrong without a word in any log:
+
+  1. Every `openmrs` client role in the Keycloak realm is an OpenMRS role. oauth2login
+     maps the token's roles onto OpenMRS roles by exact name and drops the names it
+     does not know, so a misspelt Keycloak role signs its holder in with nothing.
+     Until #438 no client role mapped to the stock roles, so nobody could be given them.
+
+  2. Every inherited role a roles CSV names is defined. A pharmacy role that inherits a
+     misspelt stock role loses every privilege it was meant to bring.
+
+  3. Role names fit in 50 characters, the width of the stock module's role scope column.
+
+  4. A Keycloak role that may create stock operations can also read stock user role
+     scopes. The stock app's Operations page offers only the operation types in the
+     user's own scope, and reads it with GET stockmanagement/userrolescope, which the
+     module guards with `App: stockmanagement.userRoleScopes`. Without it the page
+     gets a 403 and offers nothing to create, though the scope exists (#438, UAT
+     2026-10-20). Only Keycloak roles are checked: the stock module's own roles are
+     never given to anyone directly here.
+
+  5. The central pharmacist cannot dispense (#453). They feed the dispensing boxes and
+     never dispense to patients, so Central Pharmacist must not hold, directly or through
+     an inherited role, a privilege that saves a dispense: `Edit Medication Dispense`
+     (core MedicationDispenseService.saveMedicationDispense), the dispensing app's
+     `Task: dispensing.create.dispense` (it hides the Dispense action without it), or the
+     stock module's `Task: stockmanagement.stockItems.dispense` (POST dispenserequest,
+     which deducts the dispensed stock). Until #453 it inherited Pharmacist, and with it
+     all three.
+
+  6. Only administrators manage user accounts (#502). No Keycloak role but System Developer
+     may hold, directly or through an inherited role, a privilege that creates, changes or
+     removes an OpenMRS user or what it may do: `Add Users` (UserService.createUser),
+     `Edit Users` (saveUser, so the roles of any account), `Edit User Passwords`,
+     `Delete Users`, `Purge Users`, `Manage Roles`, `Manage Privileges` or
+     `Assign System Developer Role`. Until #502 `Add Users` and `Edit Users` sat in
+     "Register patients", which every clinical role inherits. Reading users (`Get Users`,
+     `View Users`) stays allowed: provider and orderer names are read through it.
+
+  7. Only administrators delete a saved consultation (#510). No Keycloak role but System
+     Developer may hold, directly or through an inherited role, `Delete Encounters`,
+     `Purge Encounters`, `Delete Visits` (VisitService.voidVisit, the chart's delete
+     visit button), `Purge Visits`, `Delete Observations` or `Purge Observations`.
+     Until #510 Doctor held `Delete Encounters`, `Delete Visits` and `Delete
+     Observations`. Editing a consultation stays allowed. Note that core voids an
+     encounter under `Edit Encounters`, and the patient chart shows its delete action
+     to whoever may edit the encounter, so this check alone does not hide the action.
+
+  8. A Keycloak role that may open a patient chart (`Get Patients`) can also read the
+     patient's program enrolments (`Get Patient Programs`). The chart's Programs widget
+     loads GET programenrollment?patient=..., which core guards with Get Patient Programs
+     (ProgramWorkflowService.getPatientPrograms), so without it every chart load returns a
+     403 for that role (#517, Midwife on UAT 2026-11-05). Until #517 only Doctor and the
+     lab, pharmacy and imaging roles held it; Register patients, Help Nurse, Nurse, Midwife
+     and every role built on Nurse did not.
+
+  9. Each role below holds, directly or through an inherited role, the read privileges its
+     screens call. Without them the call returns a 403, and some screens retry it for ever.
+     - Help Nurse, Nurse, Midwife and Doctor read drug orders (`Get Orders`, and `Get Care
+       Settings`, because the medications widget filters GET order?patient=... by care
+       setting and core resolves it through OrderService.getCareSettingByUuid) and patient
+       lists (`View Cohorts In Cohort Module`, which the cohort module's services require
+       for GET cohortm/cohort and cohortm/cohortmember, and `Get Patient Cohorts`, the
+       display condition the site frontend config puts on the two patient-list apps, so
+       without it the Patient Lists link and the chart widget stay hidden). Until #508 Help
+       Nurse had neither, its patient summary looped on the drug orders call, and no
+       clinical role could read a patient list (UAT 2026-11-04).
+     - Pharmacist and Central Pharmacist open Stock -> Reports (#438): `App:
+       stockmanagement.reports`, `Task: stockmanagement.reports.mutate` to request a report,
+       and `Manage Scheduler`, because the stock module queues the report with
+       SchedulerService.scheduleIfNotRunning in the requesting user's session. The three come
+       with the stock module's own `Inventory Reporting` role.
+     - Pharmacist and Doctor read the order basket's price and stock lookups, FHIR
+       ChargeItemDefinition and InventoryItem (`Get ChargeItemDefinition`, `Get
+       InventoryItem`). Until #351 the Pharmacist did not.
+
+ 10. Only administrators see System Administration. The site frontend config shows
+     `@openmrs/esm-system-admin-app` (the « Administration du système » app menu entry) only
+     to users with `View Administration Functions`; the app itself ties the entry to no
+     privilege, so until this condition every signed-in user, the pharmacists included, saw
+     it (UAT 2026-11-06). No Keycloak role but System Developer may hold it, directly or
+     through an inherited role, or the entry comes back for that role.
+
+ 11. Only pharmacists see Dispensation and Stock Management in the app menu. Neither app ties
+     its menu entry (`dispensing-link`, `stock-management-app-menu-item`) to a privilege, so
+     until #603 every signed-in user, the doctors included, saw both (UAT 2026-11-11). The site
+     frontend config gives each entry a `Display conditions` privilege in the primary
+     navigation's `app-menu-slot`. Each entry must have one, the roles that use the app must
+     hold it (Dispensation: Pharmacist; Stock Management: Pharmacist and Central Pharmacist),
+     and no clinical role may, directly or through an inherited role, or the entry comes back
+     for that role.
+
+ 12. Only pharmacists dispense (#607). No clinical role may hold, directly or through an
+     inherited role, a privilege of check 5 or `Delete Medication Dispense`
+     (MedicationDispenseService.voidMedicationDispense and purge). Until #607 Doctor held
+     `Edit Medication Dispense` and `Delete Medication Dispense`, so a doctor could change or
+     delete a pharmacist's dispense through the API.
+
+ 13. Only the central store creates stock items (#607). `Task: stockmanagement.stockItems.mutate`
+     guards StockManagementService.saveStockItem, saveStockRule and importStockItems, that is
+     « Ajouter Article de Stock » and « Importer » on the stock app's Stock Items page. The page
+     shows both buttons to everyone who can open it, so the privilege is what refuses the save.
+     Pharmacist (the dispensing boxes) and the clinical roles must not hold it, directly or
+     through an inherited role; it comes with the stock module's Inventory Manager and Inventory
+     Administrator roles. Which operation types a box may create, Opening Stock included, is its
+     stock user role scope, not a role privilege, so this check cannot see it.
+
+ 14. X-Ray Technician keeps `Add Orders`, `Edit Orders` and `Edit Encounters` (#607). Entering a
+     result (« Entrer des résultats », esm-patient-orders-app lab-results form) posts the result
+     obs to the order's encounter together with a DISCONTINUE order for the order it answers,
+     then sets the order's fulfiller status: the DISCONTINUE order takes a new order number
+     (OrderServiceImpl.getNewOrderNumber calls getNextOrderNumberSeedSequenceValue, guarded by
+     `Add Orders`) and the fulfiller status needs `Edit Orders`
+     (OrderService.updateOrderFulfillerStatus). Core authorises saveOrder and discontinueOrder
+     with either privilege, so they cannot tell a result from a technician revising or cancelling
+     the order; taking either away stops results, not order changes.
+
+ 15. No user in the realm file holds a `superset` or `senaite` client role (#348). The realm
+     taken from production once gave 31 staff, nurses among them, superset Admin and senaite
+     Manager, and a first-install import hands out whatever the file says. Superset sets a
+     user's roles from these at every sign-in; SENAITE is not used at UVL. Staff accounts and
+     their roles come from the roster (LIME-EMR-Tooling keycloak-apply-users.sh).
+*/
+
+import groovy.json.JsonSlurper
+
+// Defined by openmrs-core itself, not by any Initializer CSV.
+Set<String> coreRoles = ['System Developer', 'Provider', 'Anonymous', 'Authenticated'] as Set
+int maxRoleNameLength = 50
+String createOperations = 'Task: stockmanagement.stockoperations.mutate'
+String readScopes = 'App: stockmanagement.userRoleScopes'
+List<String> dispensingPrivileges = ['Edit Medication Dispense', 'Task: dispensing.create.dispense',
+        'Task: stockmanagement.stockItems.dispense', 'Delete Medication Dispense']
+String mutateStockItems = 'Task: stockmanagement.stockItems.mutate'
+List<String> userAdminPrivileges = ['Add Users', 'Edit Users', 'Edit User Passwords', 'Delete Users',
+        'Purge Users', 'Manage Roles', 'Manage Privileges', 'Assign System Developer Role']
+List<String> deletePrivileges = ['Delete Encounters', 'Purge Encounters', 'Delete Visits', 'Purge Visits',
+        'Delete Observations', 'Purge Observations']
+String viewAdmin = 'View Administration Functions'
+String openChart = 'Get Patients'
+String readEnrolments = 'Get Patient Programs'
+List<String> readDrugOrders = ['Get Orders', 'Get Care Settings']
+List<String> readPatientLists = ['View Cohorts In Cohort Module', 'Get Patient Cohorts']
+List<String> stockReports = ['App: stockmanagement.reports', 'Task: stockmanagement.reports.mutate', 'Manage Scheduler']
+List<String> basketLookups = ['Get ChargeItemDefinition', 'Get InventoryItem']
+List<String> clinicalRoles = ['Help Nurse', 'Nurse', 'Midwife', 'Doctor', 'Ophtalmologist', 'Dentist',
+        'Anesthesist', 'Lab Technician', 'X-Ray Technician']
+List<String> nonDispensingRoles = ['Central Pharmacist'] + clinicalRoles
+List<String> noStockItemRoles = ['Pharmacist'] + clinicalRoles
+Map<String, List<String>> appMenuUsers = [
+        'dispensing-link'               : ['Pharmacist'],
+        'stock-management-app-menu-item': ['Pharmacist', 'Central Pharmacist'],
+]
+Map<String, List<String>> requiredOf = [
+        'Help Nurse'        : readDrugOrders + readPatientLists,
+        'Nurse'             : readDrugOrders + readPatientLists,
+        'Midwife'           : readDrugOrders + readPatientLists,
+        'Doctor'            : readDrugOrders + readPatientLists + basketLookups,
+        'Pharmacist'        : stockReports + basketLookups,
+        'Central Pharmacist': stockReports,
+        'X-Ray Technician'  : ['Add Orders', 'Edit Orders', 'Edit Encounters'],
+]
+
+File distroConfigs = new File(project.build.directory,
+        "${project.artifactId}-${project.version}/distro/configs")
+File rolesDir = new File(distroConfigs, 'openmrs/initializer_config/roles')
+File realmFile = new File(distroConfigs, 'keycloak/realms/ozone-realm.json')
+File siteFrontendConfigDir = new File(project.basedir, 'configs/openmrs/frontend_config')
+
+if (!rolesDir.isDirectory()) {
+    log.info("No initializer_config/roles in the build output, nothing to check")
+    return
+}
+
+// Splits one CSV line, honouring double-quoted fields and "" escapes.
+List<String> splitCsvLine(String line) {
+    List<String> fields = []
+    StringBuilder field = new StringBuilder()
+    boolean quoted = false
+    for (int i = 0; i < line.length(); i++) {
+        char c = line.charAt(i)
+        if (quoted) {
+            if (c == '"' as char) {
+                if (i + 1 < line.length() && line.charAt(i + 1) == '"' as char) {
+                    field.append('"')
+                    i++
+                } else {
+                    quoted = false
+                }
+            } else {
+                field.append(c)
+            }
+        } else if (c == '"' as char) {
+            quoted = true
+        } else if (c == ',' as char) {
+            fields << field.toString()
+            field.setLength(0)
+        } else {
+            field.append(c)
+        }
+    }
+    fields << field.toString()
+    return fields
+}
+
+Map<String, String> definedIn = [:]
+Map<String, Set<String>> privilegesOf = [:]
+List<Map> inheritances = []
+rolesDir.eachFileRecurse(groovy.io.FileType.FILES) { f ->
+    if (!f.name.toLowerCase().endsWith('.csv')) {
+        return
+    }
+    List<String> lines = f.readLines('UTF-8').findAll { it.trim() }
+    if (lines.isEmpty()) {
+        return
+    }
+    List<String> header = splitCsvLine(lines[0]).collect { it.trim().toLowerCase() }
+    int nameCol = header.indexOf('role name')
+    int inheritedCol = header.indexOf('inherited roles')
+    int privilegesCol = header.indexOf('privileges')
+    if (nameCol < 0) {
+        return
+    }
+    lines.drop(1).each { line ->
+        List<String> row = splitCsvLine(line)
+        String name = row.size() > nameCol ? row[nameCol].trim() : ''
+        if (!name) {
+            return
+        }
+        definedIn[name] = f.name
+        if (privilegesCol >= 0 && row.size() > privilegesCol) {
+            // The RefApp CSVs separate privileges with "; ", Initializer trims them.
+            privilegesOf[name] = row[privilegesCol].split(';').collect { it.trim() }.findAll { it } as Set
+        }
+        if (inheritedCol >= 0 && row.size() > inheritedCol) {
+            row[inheritedCol].split(';').collect { it.trim() }.findAll { it }.each { parent ->
+                inheritances << [role: name, parent: parent, file: f.name]
+            }
+        }
+    }
+}
+
+Set<String> known = coreRoles + definedIn.keySet()
+List<String> problems = []
+
+inheritances.each { inh ->
+    if (!known.contains(inh.parent)) {
+        problems << "${inh.file}: role '${inh.role}' inherits '${inh.parent}', which no roles CSV defines"
+    }
+}
+
+definedIn.each { name, file ->
+    if (name.length() > maxRoleNameLength) {
+        problems << "${file}: role '${name}' is ${name.length()} characters, more than ${maxRoleNameLength}"
+    }
+}
+
+// A role's privileges with those of every role it inherits, as OpenMRS resolves them.
+Set<String> effectivePrivileges(String role, Map<String, Set<String>> privilegesOf,
+        List<Map> inheritances, Set<String> seen = [] as Set) {
+    if (!seen.add(role)) {
+        return [] as Set
+    }
+    Set<String> all = new HashSet<>(privilegesOf[role] ?: [])
+    inheritances.findAll { it.role == role }.each { all.addAll(effectivePrivileges(it.parent, privilegesOf, inheritances, seen)) }
+    return all
+}
+
+nonDispensingRoles.each { name ->
+    if (!definedIn.containsKey(name)) {
+        problems << "role '${name}' is not defined in any roles CSV; cannot check that it does not dispense"
+        return
+    }
+    Set<String> privileges = effectivePrivileges(name, privilegesOf, inheritances)
+    List<String> held = dispensingPrivileges.findAll { privileges.contains(it) }
+    if (held) {
+        problems << "${definedIn[name]}: role '${name}' must not dispense, but holds ${held.collect { "'${it}'" }.join(', ')}" +
+                " (directly or through an inherited role)"
+    }
+}
+
+noStockItemRoles.findAll { definedIn.containsKey(it) }.each { name ->
+    if (effectivePrivileges(name, privilegesOf, inheritances).contains(mutateStockItems)) {
+        problems << "${definedIn[name]}: role '${name}' holds '${mutateStockItems}' (directly or through an " +
+                "inherited role), so it can create and import stock items; only the central store may"
+    }
+}
+
+requiredOf.each { name, required ->
+    if (!definedIn.containsKey(name)) {
+        problems << "role '${name}' is not defined in any roles CSV; cannot check the privileges its screens need"
+        return
+    }
+    Set<String> privileges = effectivePrivileges(name, privilegesOf, inheritances)
+    List<String> missing = required.findAll { !privileges.contains(it) }
+    if (missing) {
+        problems << "${definedIn[name]}: role '${name}' lacks ${missing.collect { "'${it}'" }.join(', ')}" +
+                " (directly or through an inherited role); its screens would get a 403"
+    }
+}
+
+// The privilege each app menu entry requires, from the site frontend config.
+Map<String, List<String>> appMenuPrivileges = [:]
+(siteFrontendConfigDir.listFiles({ File f -> f.name.endsWith('.json') } as FileFilter) ?: []).each { File f ->
+    def configure = new JsonSlurper().parse(f, 'UTF-8')?.get('@openmrs/esm-primary-navigation-app')
+            ?.extensionSlots?.get('app-menu-slot')?.configure ?: [:]
+    configure.each { String extension, conf ->
+        def privileges = conf?.get('Display conditions')?.privileges
+        if (privileges) {
+            appMenuPrivileges[extension] = (privileges instanceof List ? privileges : [privileges]) as List<String>
+        }
+    }
+}
+appMenuUsers.each { extension, users ->
+    List<String> required = appMenuPrivileges[extension]
+    if (!required) {
+        problems << "site frontend config: app menu entry '${extension}' has no Display conditions privilege " +
+                "in @openmrs/esm-primary-navigation-app app-menu-slot, so every signed-in user sees it"
+        return
+    }
+    users.findAll { definedIn.containsKey(it) }.each { name ->
+        Set<String> privileges = effectivePrivileges(name, privilegesOf, inheritances)
+        List<String> missing = required.findAll { !privileges.contains(it) }
+        if (missing) {
+            problems << "${definedIn[name]}: role '${name}' lacks ${missing.collect { "'${it}'" }.join(', ')}, " +
+                    "so the app menu hides '${extension}' from it"
+        }
+    }
+    clinicalRoles.findAll { definedIn.containsKey(it) }.each { name ->
+        Set<String> privileges = effectivePrivileges(name, privilegesOf, inheritances)
+        if (required.every { privileges.contains(it) }) {
+            problems << "${definedIn[name]}: role '${name}' holds ${required.collect { "'${it}'" }.join(', ')} " +
+                    "(directly or through an inherited role), so the app menu shows '${extension}' to it"
+        }
+    }
+}
+
+if (realmFile.isFile()) {
+    def realm = new JsonSlurper().parse(realmFile, 'UTF-8')
+    List clientRoles = realm?.roles?.client?.openmrs ?: []
+    clientRoles.each { r ->
+        if (!known.contains(r.name)) {
+            problems << "ozone-realm.json: openmrs client role '${r.name}' is not an OpenMRS role; " +
+                    "oauth2login would drop it at sign-in"
+        } else if (definedIn.containsKey(r.name)) {
+            Set<String> privileges = effectivePrivileges(r.name, privilegesOf, inheritances)
+            if (privileges.contains(createOperations) && !privileges.contains(readScopes)) {
+                problems << "${definedIn[r.name]}: role '${r.name}' has '${createOperations}' but not " +
+                        "'${readScopes}'; the stock app could not read its scopes, so it could create no operation"
+            }
+            List<String> userAdmin = userAdminPrivileges.findAll { privileges.contains(it) }
+            if (userAdmin) {
+                problems << "${definedIn[r.name]}: role '${r.name}' can manage user accounts through " +
+                        "${userAdmin.collect { "'${it}'" }.join(', ')} (directly or through an inherited role); " +
+                        "only System Developer may"
+            }
+            List<String> deletes = deletePrivileges.findAll { privileges.contains(it) }
+            if (deletes) {
+                problems << "${definedIn[r.name]}: role '${r.name}' can delete consultations through " +
+                        "${deletes.collect { "'${it}'" }.join(', ')} (directly or through an inherited role); " +
+                        "only System Developer may"
+            }
+            if (privileges.contains(viewAdmin)) {
+                problems << "${definedIn[r.name]}: role '${r.name}' holds '${viewAdmin}' (directly or through " +
+                        "an inherited role), so the System Administration menu shows for it; only System Developer may"
+            }
+            if (privileges.contains(openChart) && !privileges.contains(readEnrolments)) {
+                problems << "${definedIn[r.name]}: role '${r.name}' has '${openChart}' but not " +
+                        "'${readEnrolments}'; the patient chart's program enrolments would return 403"
+            }
+        }
+    }
+    (realm?.users ?: []).each { u ->
+        ['superset', 'senaite'].each { client ->
+            if (u.clientRoles?.get(client)) {
+                problems << "ozone-realm.json: user '${u.username}' holds ${client} client role(s) " +
+                        "${u.clientRoles[client]}; an import would hand them out (#348)"
+            }
+        }
+    }
+    log.info("Checked ${clientRoles.size()} Keycloak openmrs client roles against ${definedIn.size()} OpenMRS roles")
+} else {
+    log.info("No keycloak/realms/ozone-realm.json in the build output, Keycloak roles not checked")
+}
+
+if (problems) {
+    problems.each { log.error(it) }
+    throw new IllegalStateException("${problems.size()} role problem(s), see above (scripts/check-openmrs-roles.groovy)")
+}

@@ -1,0 +1,22 @@
+id,name,categ_id/id,type,purchase_ok,invoice_policy,lst_price
+init.d0b5d4a0100100000000000000000001,Chest X-Ray,product.categ_services_radiology_orders,service,FALSE,Ordered quantities,25.0
+init.d0b5d4a0100200000000000000000001,Abdominal X-Ray,product.categ_services_radiology_orders,service,FALSE,Ordered quantities,25.0
+init.d0b5d4a0100300000000000000000001,Hand X-Ray,product.categ_services_radiology_orders,service,FALSE,Ordered quantities,20.0
+init.d0b5d4a0100400000000000000000001,Foot X-Ray,product.categ_services_radiology_orders,service,FALSE,Ordered quantities,20.0
+init.d0b5d4a0100500000000000000000001,Knee X-Ray,product.categ_services_radiology_orders,service,FALSE,Ordered quantities,20.0
+init.d0b5d4a0100600000000000000000001,Spine X-Ray,product.categ_services_radiology_orders,service,FALSE,Ordered quantities,30.0
+init.d0b5d4a0100700000000000000000001,Pelvis X-Ray,product.categ_services_radiology_orders,service,FALSE,Ordered quantities,25.0
+init.d0b5d4a0100800000000000000000001,Skull X-Ray,product.categ_services_radiology_orders,service,FALSE,Ordered quantities,25.0
+init.d0b5d4a0200100000000000000000001,Abdominal Ultrasound,product.categ_services_radiology_orders,service,FALSE,Ordered quantities,35.0
+init.d0b5d4a0200200000000000000000001,Pelvic Ultrasound,product.categ_services_radiology_orders,service,FALSE,Ordered quantities,35.0
+init.d0b5d4a0200300000000000000000001,Obstetric Ultrasound,product.categ_services_radiology_orders,service,FALSE,Ordered quantities,40.0
+init.d0b5d4a0200400000000000000000001,Neck Ultrasound,product.categ_services_radiology_orders,service,FALSE,Ordered quantities,35.0
+init.d0b5d4a0200500000000000000000001,Renal Ultrasound,product.categ_services_radiology_orders,service,FALSE,Ordered quantities,35.0
+init.d0b5d4a0200600000000000000000001,Soft Tissue Ultrasound,product.categ_services_radiology_orders,service,FALSE,Ordered quantities,30.0
+init.d0b5d4a0300100000000000000000001,CT Scan Head,product.categ_services_radiology_orders,service,FALSE,Ordered quantities,120.0
+init.d0b5d4a0300200000000000000000001,CT Scan Chest,product.categ_services_radiology_orders,service,FALSE,Ordered quantities,120.0
+init.d0b5d4a0300300000000000000000001,CT Scan Abdomen,product.categ_services_radiology_orders,service,FALSE,Ordered quantities,120.0
+init.d0b5d4a0300400000000000000000001,CT Scan Spine,product.categ_services_radiology_orders,service,FALSE,Ordered quantities,130.0
+init.d0b5d4a0300500000000000000000001,CT Scan Pelvis,product.categ_services_radiology_orders,service,FALSE,Ordered quantities,120.0
+init.d0b5d4a0400100000000000000000001,Echocardiography,product.categ_services_radiology_orders,service,FALSE,Ordered quantities,80.0
+init.d0b5d4a0400200000000000000000001,Doppler Echocardiography,product.categ_services_radiology_orders,service,FALSE,Ordered quantities,100.0

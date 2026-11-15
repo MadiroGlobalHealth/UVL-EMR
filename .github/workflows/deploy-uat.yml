@@ -1,0 +1,115 @@
+name: Deploy to UAT
+
+# Updates the UAT server with the published images, using the same
+# deploy-lime.sh update command as a manual UAT deploy.
+# Started by hand from the Actions tab, or by Implementer AI's "Deploy to UAT".
+#
+# Secrets (repository or "uat" environment):
+#   UAT_SSH_PRIVATE_KEY  key allowed to log in as ubuntu on the UAT server
+#   LIME_TOOLING_TOKEN   GitHub token that can read MSF-OCG/LIME-EMR-Tooling
+
+on:
+  workflow_dispatch:
+    inputs:
+      image_tag:
+        description: Docker image tag to deploy
+        default: dev
+        required: true
+      image_prefix:
+        description: Docker image prefix
+        default: globalmadiro/ozone-uvl-mugamba
+        required: true
+
+concurrency:
+  group: deploy-uat
+  cancel-in-progress: false
+
+env:
+  UAT_HOST: 78.232.42.100
+  UAT_PORT: 2222
+  UAT_USER: ubuntu
+  UAT_HOST_KEY: "[78.232.42.100]:2222 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPpIyz/MKd2t5ucwDC3+OoLN7ZdVfgUsTrujXNheMln2"
+  UAT_DOMAIN: uvl-emr-uat.madiro.org
+  LOCK_DIR: /home/ubuntu/.uat-deploy.lock
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    environment:
+      name: uat
+      url: https://uvl-emr-uat.madiro.org
+    steps:
+      - name: Set up SSH
+        env:
+          SSH_KEY: ${{ secrets.UAT_SSH_PRIVATE_KEY }}
+        run: |
+          test -n "$SSH_KEY" || { echo "::error::UAT_SSH_PRIVATE_KEY is not set"; exit 1; }
+          test -n "${{ secrets.LIME_TOOLING_TOKEN }}" || { echo "::error::LIME_TOOLING_TOKEN is not set"; exit 1; }
+          mkdir -p ~/.ssh && chmod 700 ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/id_ed25519 && chmod 600 ~/.ssh/id_ed25519
+          echo "$UAT_HOST_KEY" > ~/.ssh/known_hosts
+          cat > ~/.ssh/config <<EOF
+          Host uat
+            HostName $UAT_HOST
+            Port $UAT_PORT
+            User $UAT_USER
+            IdentityFile ~/.ssh/id_ed25519
+            IdentitiesOnly yes
+            StrictHostKeyChecking yes
+            ServerAliveInterval 30
+          EOF
+
+      - name: Take the UAT slot
+        run: |
+          ssh uat "mkdir $LOCK_DIR 2>/dev/null && echo \"build=gha-${{ github.run_id }} actor=${{ github.actor }} phase=deploying since=\$(date -u +%FT%TZ)\" > $LOCK_DIR/owner" || {
+            echo "::error::UAT is busy (deploy slot held):"
+            ssh uat "cat $LOCK_DIR/owner" || true
+            exit 1
+          }
+
+      - name: Deploy
+        env:
+          TOKEN: ${{ secrets.LIME_TOOLING_TOKEN }}
+          PREFIX: ${{ inputs.image_prefix }}
+          TAG: ${{ inputs.image_tag }}
+        run: |
+          # The token goes over ssh stdin, so it never appears on the server's command line.
+          printf '%s\n' "$TOKEN" | ssh uat "PREFIX='$PREFIX' TAG='$TAG' DOMAIN='$UAT_DOMAIN' bash -c '
+            read -r GH_TOKEN
+            curl -fsSL -H \"Cache-Control: no-cache, no-store\" \
+              -H \"Authorization: token \$GH_TOKEN\" \
+              https://raw.githubusercontent.com/MSF-OCG/LIME-EMR-Tooling/dev/Procedures/deploy-lime.sh \
+            | sudo bash -s -- update \
+              --distro=uvl --site=mugamba --env=uat \
+              --github-token=\"\$GH_TOKEN\" \
+              --docker-image-tag=\$TAG \
+              --image-prefix=\$PREFIX \
+              --branch=dev \
+              --enable-backups --enable-monitoring --enable-odoo \
+              --openmrs-port=80 --enable-https --domain=\$DOMAIN \
+              --enable-sso --enable-orthanc --yes
+          '" 2>&1 | sed -E 's/gh[pousr]_[A-Za-z0-9_]+/<TOKEN>/g'
+
+      - name: Wait for OpenMRS and Odoo
+        run: |
+          for i in $(seq 1 60); do
+            o=$(curl -s -o /dev/null -m 15 -w '%{http_code}' "https://$UAT_DOMAIN/openmrs/health/started" || true)
+            d=$(curl -s -o /dev/null -m 15 -w '%{http_code}' "https://odoo.$UAT_DOMAIN/web/login" || true)
+            echo "try $i: openmrs=$o odoo=$d"
+            # With SSO, /web/login redirects to Keycloak (303).
+            [ "$o" = 200 ] && { [ "$d" = 200 ] || [ "$d" = 303 ]; } && exit 0
+            sleep 20
+          done
+          echo "::error::UAT did not become healthy within 20 minutes"
+          exit 1
+
+      - name: Record running images
+        if: always()
+        run: |
+          ssh uat "docker ps --format '{{.Names}} {{.Image}} {{.Status}}' | grep ozone-msf-mugamba" | tee -a "$GITHUB_STEP_SUMMARY" || true
+
+      - name: Release the UAT slot
+        if: always()
+        run: |
+          ssh uat "grep -q 'build=gha-${{ github.run_id }} ' $LOCK_DIR/owner 2>/dev/null && rm -rf $LOCK_DIR" || true

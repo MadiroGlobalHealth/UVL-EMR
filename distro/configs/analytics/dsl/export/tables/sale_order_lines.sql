@@ -18,5 +18,6 @@ CREATE TABLE sale_order_lines (
     `customer_phone` VARCHAR,
     `invoicing_status` VARCHAR,
     `pricelist` VARCHAR,
-    `order_state`VARCHAR
+    `order_state`VARCHAR,
+    `salesperson` VARCHAR
 )
