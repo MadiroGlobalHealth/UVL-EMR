@@ -1,0 +1,71 @@
+name: Form request
+description: A paper form the hospital wants in UVL-EMR. Usually opened by a maintainer; a good starter issue for volunteers.
+title: "Form: <English name> (<French name>)"
+labels: ["Forms"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        One issue per paper form. Volunteers build these by following [Building a form](https://github.com/MadiroGlobalHealth/UVL-EMR/blob/main/CONTRIBUTING.md#building-a-form) in CONTRIBUTING.md, so this issue only needs what is specific to the form.
+
+        Add the **Help wanted** label once the issue is ready for a volunteer to pick up. Never attach a filled-in paper form: use a blank one.
+  - type: input
+    id: requested-by
+    attributes:
+      label: Requested by
+      description: Role and date, and where the request was made.
+      placeholder: "Product owner, email \"Forms to develop\", 3 Oct 2026"
+    validations:
+      required: true
+  - type: input
+    id: paper-form
+    attributes:
+      label: Paper form
+      description: Link to the blank form in Drive `2 _ REQUIREMENTS / REQUIRED_FORMS`, and the English version if there is one.
+    validations:
+      required: true
+  - type: input
+    id: part-of
+    attributes:
+      label: Part of
+      description: The milestone or epic issue this form belongs to.
+      placeholder: "#279 (M7 Maternity)"
+  - type: dropdown
+    id: difficulty
+    attributes:
+      label: Difficulty
+      options:
+        - easy (short, flat form; a good first form)
+        - medium (several sections, or reuses patient/visit attributes)
+        - hard (large, or needs a design decision first)
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes for the builder
+      description: Mandatory fields, fields that reuse an existing patient or visit attribute instead of a new question, codes already printed on the paper form, sensitive sections (HIV/PMTCT), whether it needs its own encounter type.
+  - type: textarea
+    id: fields
+    attributes:
+      label: Sections and fields on the paper form
+      description: Extracted from the blank form, section by section. Check the original for layout.
+      value: |
+        <details><summary>Sections and fields</summary>
+
+        **1. Section name**
+        - Field : | answers ☐ … ☐ …
+
+        </details>
+    validations:
+      required: true
+  - type: textarea
+    id: done
+    attributes:
+      label: Done when
+      value: |
+        - [ ] Concept mapping table posted on this issue and agreed (missing concepts created in OCL by a maintainer)
+        - [ ] The form renders in French and English, with every section of the paper form
+        - [ ] Saving creates one encounter of the right type, with one observation per filled field (checked in the patient chart)
+        - [ ] Mandatory fields are enforced where the paper form says so
+        - [ ] The product owner validates it on the test environment
