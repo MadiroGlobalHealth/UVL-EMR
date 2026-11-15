@@ -517,7 +517,16 @@
         "ordersCompleted": "Prescriptions terminées",
         "orderedFor": "Prescription enregistrée pour",
         "updated": "Mis à jour",
-        "discontinued": "Arrêté"
+        "discontinued": "Arrêté",
+        "medicationDurationAndUnit": "pour $t(uvlDurationWithUnit, {\"count\": {{duration}}, \"context\": \"{{durationUnit}}\"})",
+        "uvlDurationWithUnit_one": "{{count}} {{durationUnit}}",
+        "uvlDurationWithUnit_other": "{{count}} {{durationUnit}}",
+        "uvlDurationWithUnit_secondes_one": "{{count}} seconde",
+        "uvlDurationWithUnit_minutes_one": "{{count}} minute",
+        "uvlDurationWithUnit_heures_one": "{{count}} heure",
+        "uvlDurationWithUnit_jours_one": "{{count}} jour",
+        "uvlDurationWithUnit_semaines_one": "{{count}} semaine",
+        "uvlDurationWithUnit_années_one": "{{count}} année"
       }
     }
   },
