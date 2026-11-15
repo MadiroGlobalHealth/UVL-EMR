@@ -14,6 +14,7 @@ ff9a4718-8bdc-4c7e-901b-a66815b1c58d,,Médecine interne,Service d'hospitalisatio
 5536d753-6d7d-4eef-bff0-65e01f94e8c6,,Pédiatrie,"Service d'hospitalisation de pédiatrie, y compris la malnutrition aiguë sévère (MAS)",Hospitalisation (IPD),Login Location;Admission Location;Transfer Location,TRUE,,,,,,,,,,,,
 34518e24-8481-464f-ab8e-71b3c15265e5,,Chirurgie,Service d'hospitalisation de chirurgie,Hospitalisation (IPD),Login Location;Admission Location;Transfer Location,TRUE,,,,,,,,,,,,
 2948f709-8458-40f2-88c0-54f568f0abf7,,Soins intensifs,Service de soins intensifs,Hospitalisation (IPD),Login Location;Admission Location;Transfer Location,TRUE,,,,,,,,,,,,
+c59ed605-2673-4378-b926-367cbe36b662,,Chambres VIP,"Chambres privées VIP1 à VIP4, communes à tous les services d'hospitalisation selon la disponibilité et le choix du patient",Hospitalisation (IPD),Login Location;Admission Location;Transfer Location;Chambre privée,TRUE,,,,,,,,,,,,
 C458A0DB-A405-4DBC-96D2-F95B46EBDA43,,Salle d’imagerie (X-Ray),,,Login Location;Visit Location,TRUE,,,,,,,,,,,,
 450be362-59a7-4ccd-964d-ebd930a8b30f,,Locations test,,,Login Location,TRUE,,,,,,,,,,,,
 e1f4ab17-6dc5-4249-cf38-5bae7dbe9c64,,Ophtalmologie (OPH),,,Login Location;Visit Location;Queue Location,TRUE,,,,,,,,,,,,
