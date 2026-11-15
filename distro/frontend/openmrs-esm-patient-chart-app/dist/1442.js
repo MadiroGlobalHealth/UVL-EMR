@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunk_openmrs_esm_patient_chart_app=globalThis.webpackChunk_openmrs_esm_patient_chart_app||[]).push([["1442"],{9876(e,a,t){t.r(a),t.d(a,{default:()=>n,immutable:()=>i});var r=t(4675),l=t(2372);let i=e=>(a,t,r)=>(r.revalidateOnFocus=!1,r.revalidateIfStale=!1,r.revalidateOnReconnect=!1,r.refreshInterval=0,e(a,t,r)),n=(0,l.withMiddleware)(r.u,i)}}]);

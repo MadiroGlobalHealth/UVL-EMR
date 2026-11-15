@@ -1,0 +1,95 @@
+--- a/dist/icons/icons.js
++++ b/dist/icons/icons.js
+@@ -1,5 +1,5 @@
+ import { jsx as _jsx } from "react/jsx-runtime";
+-/** @category Icons */ import React, { forwardRef, memo, useEffect, useImperativeHandle, useRef } from "react";
++/** @category Icons */ import React, { forwardRef, memo, useEffect, useImperativeHandle, useRef, useState } from "react";
+ import classNames from "classnames";
+ import { RenderIfValueIsTruthy } from "@openmrs/esm-react-utils";
+ import style from "./icons.module.scss";
+@@ -864,6 +864,10 @@
+  *
+  * Note this is an alias for ShoppingCartArrowDownIcon
+  */ export const ShoppingCartAddItemIcon = ShoppingCartArrowDownIcon;
++const svgContainerId = 'omrs-svgs-container';
++function isIconAvailable(icon) {
++    return Boolean(icon && document.getElementById(icon));
++}
+ /**
+  * This is a utility component that takes an `icon` and renders it if the sprite for the icon
+  * is available. The goal is to make it easier to conditionally render configuration-specified icons.
+@@ -873,19 +877,30 @@
+  *   <MaybeIcon icon='omrs-icon-baby' className={styles.myIconStyles} />
+  * ```
+  */ export const MaybeIcon = /*#__PURE__*/ memo(/*#__PURE__*/ forwardRef(function MaybeIcon({ icon, fallback, ...iconProps }, ref) {
+-    const iconRef = useRef(icon ? document.getElementById(icon) : undefined);
++    // UVL-EMR#570, openmrs/openmrs-esm-core#1981: keep availability in state so a sprite that
++    // arrives after mount re-renders the icon, and watch the body until the container exists.
++    const [iconAvailable, setIconAvailable] = useState(()=>isIconAvailable(icon));
+     useEffect(()=>{
+-        const container = document.getElementById('omrs-svgs-container');
+-        const callback = (mutationList)=>{
+-            for (const mutation of mutationList){
+-                if (mutation.type === 'childList') {
+-                    iconRef.current = icon ? document.getElementById(icon) : undefined;
+-                }
++        const update = ()=>setIconAvailable(isIconAvailable(icon));
++        update();
++        let containerObserved = false;
++        const observer = new MutationObserver(()=>{
++            update();
++            observeContainer();
++        });
++        const observeContainer = ()=>{
++            const container = document.getElementById(svgContainerId);
++            if (container && !containerObserved) {
++                containerObserved = true;
++                observer.disconnect();
++                observer.observe(container, {
++                    childList: true
++                });
+             }
+         };
+-        const observer = new MutationObserver(callback);
+-        if (container) {
+-            observer.observe(container, {
++        observeContainer();
++        if (!containerObserved && document.body) {
++            observer.observe(document.body, {
+                 childList: true
+             });
+         }
+@@ -894,7 +909,7 @@
+         icon
+     ]);
+     return /*#__PURE__*/ _jsx(RenderIfValueIsTruthy, {
+-        value: iconRef.current,
++        value: iconAvailable,
+         fallback: fallback,
+         children: /*#__PURE__*/ _jsx(Icon, {
+             ref: ref,
+--- a/dist/svg-utils.js
++++ b/dist/svg-utils.js
+@@ -7,14 +7,19 @@
+  * This approach is known as "svg sprites"
+  */ const svgContainer = document.createElement('div');
+ const appendContainer = ()=>{
+-    document.body.appendChild(svgContainer);
++    if (!svgContainer.isConnected) {
++        document.body.appendChild(svgContainer);
++    }
+ };
+ svgContainer.id = 'omrs-svgs-container';
+ svgContainer.style.display = 'none';
+-if (document.readyState === 'complete') {
++// UVL-EMR#570, openmrs/openmrs-esm-core#1981: attach the container as soon as there is a
++// body to attach it to. Waiting for the window `load` event leaves components that mount
++// earlier (e.g. on a hard reload) unable to find any icon.
++if (document.body) {
+     appendContainer();
+ } else {
+-    window.addEventListener('load', appendContainer);
++    document.addEventListener('DOMContentLoaded', appendContainer);
+ }
+ const queue = [];
+ let flushed = false;

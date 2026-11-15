@@ -1,0 +1,84 @@
+id,name,categ_id/id,type,purchase_ok,sale_ok,invoice_policy
+"init.9392ffa2-8fe5-4080-9c82-2c7857dff442","Biopsie testiculaire",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.c2e55579-fcb5-42e1-92c8-b98aa77f927d","Cure d'ectopie testiculaire",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.6e82f0bf-e3a0-48a7-a874-a72b5780bf75","Exérèse de kyste de l'épididyme",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.cb494f48-54b2-4c26-b210-1d3bc271e620","Ponction vésicale - cystostomie",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.4df5dca1-61aa-4c62-b957-f493d292c93c","Cure de varicocèle",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.f501a90d-84fe-47a0-b93a-8ec00d5117b5","Amputation de la verge",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.4b4aa2c6-da06-4b2c-977c-1f701f32d571","Cure de lithiase vésicale",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.5a5fae43-b045-4010-9320-abbe6f1f7477","Cure de sténose de l'urètre",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.070ee0b9-cf06-4ba6-88ff-8f116dfc66d9","Biopsie de la prostate",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.bdc2fe6d-ce4c-4737-a9f3-d2fd73825fc9","Cystoscopie exploratrice",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.05528f1e-1be6-47f7-a0a0-778ad7c394fd","Résection transurétrale de la prostate",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.3d2f371a-5cce-41e0-8baf-f127b2b43f0d","Résection transurétrale d'une tumeur de la vessie",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.2532d6ba-156d-4fb2-9dc0-13443de6447c","Ablation des valves de l'urètre postérieur",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.def41086-4486-49bb-96ef-f3089f1529fd","Pose de sonde JJ",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.b5a2231d-bd4a-43e3-9775-1b2899d7115c","Ablation de sonde JJ",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.260b4577-fa80-480a-9029-75462fd67f17","Pyéloplastie + JJ",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.b1c2bdc1-1f08-4fba-8a9a-9e18af61bf7f","Urétrotomie + JJ",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.f7a0a9f0-e7af-44df-a8fa-f6a663f4d8f2","Urétrotomie/lithotomie + JJ",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.1cdfb516-bc73-4091-aae0-7a1dd9d07e79","Urétéroplastie/lithotomie bilatérale",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.29984f98-6e25-4533-9697-608c40616ce2","Urétéroplastie +/- lambeau",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.e1c33777-0cfb-44d4-bde2-904e5f0d3ed2","Adénomectomie de la prostate",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.79e1df75-e0f1-4d7f-a00f-d78a644441ee","Néphrectomie partielle ou totale",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.6874b5f4-1089-4f78-880e-62867150b48c","Promontofixation",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.9b941b20-12e0-4b09-ba4b-ceb8a962adb8","Pulpectomie testiculaire",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.54d7c460-e542-445e-81ba-2bcc64637e26","Cure d'hypospadias",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.475cbf4e-8b2e-4ca8-ad3b-84163ffb60b7","Cholécystectomie",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.756d1136-a203-4c38-96dc-95cde7cb412a","Colostomie pour imperforation anale",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.9d0efd0c-621b-41a5-b94b-6e7d3e27f765","Cure de hernie avec pose de prothèse (mèche ou treillis)",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.bc339055-4ca9-4568-b377-c38684be7d84","Cure d'éventration",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.ebaf714c-95b6-44c7-bfdb-3bfa05cdc73b","Gastrectomie",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.321530c3-545c-45b6-a45e-7da083a8dc7c","Laparotomie exploratrice (splénectomie, péritonite, résection intestinale)",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.e81a6b07-39a9-44e3-9515-4df99ddbd729","Amputation abdomino-périnéale du rectum",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.fe69eedd-19ac-4903-8259-8a3d2d27a04b","Ablation de matériel d'ostéosynthèse (broches, vis) sous anesthésie locale",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.6619a818-029f-4826-8a45-db99f54735b2","Ostéosynthèse de reconstruction",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.fd10a993-74ef-4612-9103-0c4e427512a5","Ablation de matériel d'ostéosynthèse (broches, vis) sous anesthésie générale",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.6915b9c6-31c7-4c98-a8e6-8bd36f73b22e","Réduction sanglante (embrochage, vissage, haubanage)",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.9962ef2f-cdad-4c18-babd-8440d68329bd","Mise en place d'une lame, plaque vissée ou fixateur externe",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.19f85a89-7001-4ba9-893c-ebc55831879a","Réduction orthopédique de fracture du membre supérieur",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.05989a49-2181-47b8-8461-f772fc8263be","Réduction orthopédique de fracture du membre inférieur",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.c7c97304-fe99-425f-987f-7a6cb5544fbb","Ablation de matériel d'ostéosynthèse (plaque vissée, haubanage, clous)",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.54df4c8a-530e-4587-a5bb-61edd8d9bf04","Réparation de rupture tendineuse (Achille, rotulien, quadricipital)",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.d757468c-f623-43d8-a23f-e2609d61e431","Biopsie ganglionnaire ou autre biopsie chirurgicale",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.b53744b3-5e2d-4b1f-9d39-f5265a56d908","Ablation de corps étranger profond",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.d1090246-5d21-4424-9188-750aa3588536","Ablation de kyste synovial",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.52a59f2f-34de-4e8d-b4bb-b79457b8c215","Ablation de plâtre court",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.0c245de8-ad02-4420-9b39-e4764e33e0b7","Ablation de drain (abdominal, thoracique)",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.181b8f22-3eb1-4b6b-93e4-130757f476f6","Électrocoagulation des verrues",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.cc0e167f-1017-43e3-80a9-099927a2854a","Exérèse de lipome sous anesthésie générale",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.0fbd36c9-ef21-40da-89f5-1b97eecad6f3","Incision d'abcès ou de panaris sous anesthésie générale",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.ca7bf902-5c90-4897-b493-1a7ca25ca665","Mastectomie + curage ganglionnaire",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.0fbfe555-d251-4ee2-a2d8-9d4ab2dc55b4","Cure d'ongle incarné (coin unique)",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.aea98288-9834-4ff4-bae2-644488eac917","Parage et suture de plaie complexe sous anesthésie générale",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.8df4f7db-e29b-4b58-92d9-d4c2feb6cd7a","Parage et suture de plaie complexe sous anesthésie locale",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.e56c82e2-06be-4711-8d68-2a51055b1269","Ablation des fils de suture",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.211194d7-2329-416b-b0bc-b2444ccc5f01","Incision de thrombose hémorroïdaire sous anesthésie locale",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.34b8f81c-940a-43f0-9dfe-29d6d126c36a","Cure de cicatrice rétractile, greffe de peau",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.438e537a-ac1b-4233-99dc-6341493ae589","Exérèse de chéloïdes",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.97c8b955-036d-4989-b87b-d1773f7de1d2","Cure de fente labio-palatine",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.c53a3b0c-a1d8-4f80-b585-a4bd1c885866","Plasties multiples en Z",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.900cfb61-9604-4d3b-9fe5-f744b34dcfdf","Thyroïdectomie totale ou hémithyroïdectomie",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.78ea3d64-8e9a-4601-b9be-bbb717f5626f","Drainage d'abcès du cou",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.0b20fcd3-1592-4138-87d1-1ec51e57dc1e","Adéno-amygdalectomie",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.029e6411-733f-4e91-acf5-875391c331f7","Adénoïdectomie",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.21ec6e4b-ba88-4981-b7e7-a89c1c2e7873","Aérateurs transtympaniques",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.67241121-872d-4030-8018-c878c79d313e","Amygdalectomie - enfant",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.be77e21f-0271-4aa1-865f-0dbed299f577","Cervicotomie exploratrice",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.c70bd31f-8ed1-4a25-832f-8c8c54818c62","Extraction de corps étranger trachéobronchique",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.12bc7611-ebd4-4469-b99c-95228c7de6b9","Exérèse de fistule latérale du cou",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.1caa8bd8-1b74-45ca-8c18-607215a8ef91","Exérèse de fistule pré-auriculaire",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.df4bee7b-31d9-4dbe-8893-ea3981ce95ec","Section du frein de la langue",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.23c64413-5d56-4365-a228-5e8e78e5f274","Exérèse de kyste du tractus thyréoglosse",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.4b9abf3b-e2fd-4af3-b0ab-f1a984143a30","Méatotomie moyenne",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.e4587014-c8ad-4bba-b37a-826540044f39","Myringoplastie",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.fefdf7ed-e93e-4c27-9a04-629eaa52bff4","Parotidectomie",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.dd0df25d-e844-4314-a642-e88d664768f3","Drainage de phlegmon péri-amygdalien",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.c7868dd9-1430-45a3-b402-a4f357572b10","Ponction du sinus avec drainage",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.583b02a9-672c-426b-a16e-2a9d0e135b41","Réduction de fracture des os propres du nez (plâtre et méchage)",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.c6715036-3bd2-4779-99da-5d81e0aa7414","Révision du cavum sous anesthésie générale",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.f1629443-a2f4-4636-ad75-db2e19cf6281","Révision du cavum sous anesthésie locale",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.672e6f7d-d377-4ff6-9d23-de37ca88791b","Septoplastie",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.99e6721b-3ed4-4b82-8cc4-be5426bd66b2","Sous-maxillectomie",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.63168640-db84-4474-9571-56a4741a4f4e","Exérèse de tumeur du cavum",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.25a4a04b-d774-497a-ae9b-1776e49a68e4","Exérèse de tumeur cutanée de la face et du cou",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities

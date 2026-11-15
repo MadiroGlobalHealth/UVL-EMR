@@ -36,6 +36,11 @@
       <id>madiro-global-health-github-uvl-emr</id>
       <url>https://maven.pkg.github.com/MadiroGlobalHealth/UVL-EMR/</url>
     </repository>
+    <repository>
+      <id>openmrs-repo</id>
+      <name>OpenMRS Nexus Repository</name>
+      <url>https://mavenrepo.openmrs.org/public</url>
+    </repository>
   </repositories>
 
   <distributionManagement>

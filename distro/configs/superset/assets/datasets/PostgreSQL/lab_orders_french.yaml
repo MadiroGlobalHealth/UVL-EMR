@@ -1,0 +1,246 @@
+table_name: lab_orders_french
+main_dttm_col: Date de consultation
+description: null
+default_endpoint: null
+offset: 0
+cache_timeout: null
+schema: public
+sql: "SELECT\n    o.encounter_datetime  AS \"Date de consultation\",\n    replace(replace(p.identifiers,\
+  \ 'UVL ID: ', ''), 'UVL', 'UVL-') AS \"ID du patient\",\n    p.gender          \
+  \    AS \"Sexe\",\n    date_part('year', age(o.encounter_datetime, p.birthdate))::int\
+  \ AS \"\xC2ge (ann\xE9es)\",\n    o.order_name          AS \"Nom du test\",\n  \
+  \  p.address_city        AS \"Ville\",\n    o.care_setting_name   AS \"Cadre de\
+  \ soins\",\n    p.birthdate           AS \"Date de naissance\",\n    CASE\n    \
+  \    WHEN date_part('year', age(o.encounter_datetime, p.birthdate)) < 1  THEN '<1'\n\
+  \        WHEN date_part('year', age(o.encounter_datetime, p.birthdate)) < 5  THEN\
+  \ '1-4'\n        WHEN date_part('year', age(o.encounter_datetime, p.birthdate))\
+  \ < 15 THEN '5-14'\n        WHEN date_part('year', age(o.encounter_datetime, p.birthdate))\
+  \ < 25 THEN '15-24'\n        WHEN date_part('year', age(o.encounter_datetime, p.birthdate))\
+  \ < 50 THEN '25-49'\n        WHEN date_part('year', age(o.encounter_datetime, p.birthdate))\
+  \ < 65 THEN '50-64'\n        ELSE '65+'\n    END                   AS \"Tranche\
+  \ d'\xE2ge\",\n    o.orderer             AS \"ID du prescripteur\",\n    o.order_id\
+  \            AS \"ID de commande\",\n    e.location            AS \"Service demandeur\"\
+  ,\n    p.given_name          AS \"Prenom\",\n    p.family_name         AS \"Nom\
+  \ de famille\",\n    CASE WHEN EXISTS (SELECT 1 FROM observations pr WHERE pr.patient_uuid\
+  \ = o.patient_uuid AND pr.question_label = 'Pregnant Women') THEN 'Oui' ELSE 'Non'\
+  \ END AS \"Femme enceinte\",\n    (SELECT COALESCE(obs.answer_coded, obs.answer_text,\
+  \ obs.answer_numeric::text)\n       FROM observations obs\n      WHERE obs.encounter_uuid\
+  \ = o.encounter_uuid\n        AND obs.question_uuid = o.concept_uuid\n        AND\
+  \ COALESCE(obs.answer_coded, obs.answer_text, obs.answer_numeric::text) IS NOT NULL\n\
+  \      ORDER BY obs.obs_date_time DESC\n      LIMIT 1)            AS \"Resultat\
+  \ du test\"\nFROM orders o\nLEFT JOIN patients p ON p.patient_uuid = o.patient_uuid\n\
+  LEFT JOIN encounters e ON e.encounter_uuid = o.encounter_uuid\nWHERE o.order_type_name\
+  \ = 'Test Order'\n  AND COALESCE(o.voided, false) = false"
+params: null
+template_params: null
+filter_select_enabled: true
+fetch_values_predicate: null
+extra: null
+normalize_columns: false
+always_filter_main_dttm: false
+uuid: e58aaa11-c459-49ff-8f25-bf6fd029afe2
+metrics:
+- metric_name: count
+  verbose_name: COUNT(*)
+  metric_type: count
+  expression: COUNT(*)
+  description: null
+  d3format: null
+  currency: null
+  extra: null
+  warning_text: null
+columns:
+- column_name: Date de consultation
+  verbose_name: null
+  is_dttm: true
+  is_active: true
+  type: DATETIME
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: Date de naissance
+  verbose_name: null
+  is_dttm: true
+  is_active: true
+  type: DATE
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: Cadre de soins
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: ID de commande
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: ID du prescripteur
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: ID du patient
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: Nom de famille
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: Nom du test
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: Resultat du test
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: "Tranche d'\xE2ge"
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: "\xC2ge (ann\xE9es)"
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: INTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: Femme enceinte
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: Service demandeur
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: Prenom
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: Sexe
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: Ville
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+version: 1.0.0
+database_uuid: 44c13a30-0c14-402c-b81f-1c93972f5fbc

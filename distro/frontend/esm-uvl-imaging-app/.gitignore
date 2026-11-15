@@ -1,0 +1,5 @@
+node_modules/
+# The built module is committed: distro/pom.xml packs it for the frontend assembly so the
+# Maven build needs no npm install. Source maps are left out of the repository and the pack.
+!dist/
+dist/**/*.map

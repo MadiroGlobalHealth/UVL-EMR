@@ -94,4 +94,4 @@ jobs:
         run: npm install --prefix $HOME @react-aria/utils@3.24.0
         
       - name: Publish maven artifacts
-        run: "mvn --batch-mode --no-transfer-progress clean deploy ${{ inputs.maven-args }}"
+        run: "mvn --batch-mode --no-transfer-progress --update-snapshots clean deploy ${{ inputs.maven-args }}"

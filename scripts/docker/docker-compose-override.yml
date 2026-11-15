@@ -1,0 +1,243 @@
+services:
+  openmrs:
+    image: openmrs/openmrs-core:2.8.9-amazoncorretto-17
+    environment:
+      ORTHANCTOKEN_KEYCLOAK_CLIENTSECRET: ${ORTHANC_CLIENT_SECRET}
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "curl",
+          "-fsS",
+          "--connect-timeout",
+          "5",
+          "--max-time",
+          "10",
+          "http://localhost:8080/openmrs/health/started",
+        ]
+      interval: 15s
+      timeout: 10s
+      retries: 40
+      start_period: 600s
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:22.0.5
+    platform: linux/arm64
+    command: start-dev --import-realm
+    networks:
+      ozone:
+      web:
+    volumes:
+      - ${KEYCLOAK_CONFIG_PATH}/realms:/opt/keycloak/data/import
+      - ${KEYCLOAK_CONFIG_PATH}/themes/carbon:/opt/keycloak/themes/carbon
+    environment:
+      KC_HOSTNAME_ADMIN_URL: ${SERVER_SCHEME}://${KEYCLOAK_HOSTNAME}
+      KC_HOSTNAME_URL: ${SERVER_SCHEME}://${KEYCLOAK_HOSTNAME}
+      KC_HTTP_ENABLED: "true"
+      KC_HOSTNAME_STRICT: "false"
+      KC_PROXY_HEADERS: forwarded
+      KC_DB: postgres
+      KC_DB_URL_HOST: postgresql
+      KC_DB_URL_PORT: 5432
+      KC_DB_URL_DATABASE: ${KEYCLOAK_DB}
+      KC_DB_USERNAME: ${KEYCLOAK_DB_USER}
+      KC_DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
+      KC_DB_SCHEMA: ${KEYCLOAK_DB_SCHEMA}
+      KEYCLOAK_ADMIN: ${KEYCLOAK_USER}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_PASSWORD}
+
+  orthanc-auth-service:
+    image: orthancteam/orthanc-auth-service:latest
+    platform: linux/amd64
+    restart: unless-stopped
+    networks:
+      ozone:
+        aliases:
+          - orthanc-auth-service
+    volumes:
+      - ${ORTHANC_CONFIG_PATH}/../permissions.json:/orthanc-auth-service/permissions.json
+      - ${ORTHANC_CONFIG_PATH}/../anonymous-profile.json:/orthanc_auth_service/anonymous-profile.json
+    environment:
+      ENABLE_KEYCLOAK: "true"
+      PERMISSIONS_FILE_PATH: "/orthanc-auth-service/permissions.json"
+      KEYCLOAK_URI: "http://keycloak:8080/realms/ozone/"
+      KEYCLOAK_CLIENT_ID: "orthanc-service"
+      KEYCLOAK_ADMIN_URI: "http://keycloak:8080/admin/realms/ozone/"
+      # Browser-facing URLs, so they must be the public Orthanc host, not the
+      # container name. Built from SERVER_SCHEME + ORTHANC_HOSTNAME the way the rest
+      # of the stack does it — utils.sh sets ORTHANC_HOSTNAME per environment
+      # (localhost:8889 locally, pacs-<ip>.traefik.me for a remote demo), so a
+      # hardcoded localhost only ever worked on the developer's own machine.
+      PUBLIC_ORTHANC_ROOT: "${SERVER_SCHEME}://${ORTHANC_HOSTNAME}/"
+      PUBLIC_LANDING_ROOT: "${SERVER_SCHEME}://${ORTHANC_HOSTNAME}/ui/app/token-landing.html"
+      PUBLIC_OHIF_ROOT: "${SERVER_SCHEME}://${ORTHANC_HOSTNAME}/ohif/"
+      # Confidential client with serviceAccountsEnabled, since this service also
+      # calls KEYCLOAK_ADMIN_URI. The previous value here matched no client in
+      # ozone-realm.json at all, and was paired with clientId "orthanc" — a PUBLIC
+      # client that by definition has no secret, so that pair could never
+      # authenticate. The browser-facing "orthanc" public client stays in use by
+      # OrthancExplorer2/OHIF via orthanc.json.
+      KEYCLOAK_CLIENT_SECRET: "${ORTHANC_CLIENT_SECRET}"
+      SECRET_KEY: "${ORTHANC_AUTH_SERVICE_SECRET_KEY}"
+      USERS: '{"orthanc":"orthanc"}'
+
+  orthanc:
+    environment:
+      - ORTHANC__AUTHENTICATION_ENABLED=false
+    depends_on:
+      postgres-orthanc:
+        condition: service_healthy
+
+  postgres-orthanc:
+    image: postgres:16
+    restart: always
+    environment:
+      POSTGRES_DB: orthanc
+      POSTGRES_USER: orthanc
+      POSTGRES_PASSWORD: ${ORTHANC_DB_PASSWORD}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U orthanc"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - orthanc-postgres-db:/var/lib/postgresql/data
+    networks:
+      ozone:
+        aliases:
+          - postgres-orthanc
+    
+  # Copies the routes jar from the distro tree into a shared volume. Version-agnostic:
+  # this named eip-openmrs-orthanc-1.0.0-SNAPSHOT.jar while the Ozone artifact ships
+  # 0.2.0, so the `cp` failed, this exited non-zero, and eip-openmrs-orthanc never
+  # started because of its service_completed_successfully dependency below — silently
+  # losing the whole OpenMRS<->Orthanc sync.
+  #
+  # Pull-only deployments use the %a-eip-openmrs-orthanc site image instead, which bakes
+  # the jar in; EIP_OPENMRS_ORTHANC_ROUTES_PATH is a host path they cannot provide.
+  eip-openmrs-orthanc-init:
+      # Pinned to match the bundled stack and UAT - see
+      # scripts/bundled-docker/eip-openmrs-orthanc/Dockerfile for why the digest, not the tag.
+      image: mekomsolutions/eip-client:2.4.0-SNAPSHOT@sha256:fef2ffee0bdc97b46bcf93b5bbffe091b906ea6db50db9145e61cf273d555d93
+      entrypoint: ["sh", "-c", "set -e; n=$$(ls /source/eip-openmrs-orthanc-*.jar 2>/dev/null | wc -l); if [ \"$$n\" -ne 1 ]; then echo \"expected exactly one routes jar in /source, found $$n\" >&2; ls -la /source >&2; exit 1; fi; rm -f /app/*.jar; cp /source/eip-openmrs-orthanc-*.jar /app/routes.jar && echo \"routes jar staged for -Dloader.path\""]
+      volumes:
+        - "${EIP_OPENMRS_ORTHANC_ROUTES_PATH}:/source"
+        - eip-openmrs-orthanc-app:/app
+      networks:
+        ozone:
+
+  eip-openmrs-orthanc:
+    image: mekomsolutions/eip-client:2.4.0-SNAPSHOT@sha256:fef2ffee0bdc97b46bcf93b5bbffe091b906ea6db50db9145e61cf273d555d93
+    # No entrypoint override: the image's own ./start.sh runs
+    # `java -cp eip-client.jar -Dloader.path=routes/`, which is how the bundled stack and UAT
+    # start it too, so local reproduces them.
+    #
+    # This used to be `java -jar /app/app.jar`, and that cannot work with the artifact the
+    # distro ships. Maven produces two jars: the shaded one (the routes bundle, ~63MB, no
+    # Spring classes at all) and the Spring Boot repackaged one (~254MB, dependencies under
+    # BOOT-INF/lib). Only the second is self-contained enough for `java -jar`; the first is
+    # meant to be ADDED to eip-client.jar's classpath, which is what supplies Spring Boot.
+    # Running the shaded jar directly dies immediately with
+    # NoClassDefFoundError: org/springframework/boot/SpringApplication, which is what this
+    # container was crash-looping on. Its Main-Class is set, so it looks runnable and is not.
+    #
+    # Loading via -Dloader.path also means the jar's filename does not matter - every jar in
+    # routes/ is picked up - so the version-agnostic copy above still does its job.
+    volumes:
+      - eip-openmrs-orthanc-app:/eip-client/routes
+      - eip-home-orthanc:/eip-home
+    depends_on:
+      eip-openmrs-orthanc-init:
+        condition: service_completed_successfully
+    environment:
+      - ORTHANC_OAUTH_ENABLED=true
+      - OAUTH_ACCESS_TOKEN_URL=http://keycloak:8080/realms/ozone/protocol/openid-connect/token
+      - OAUTH_CLIENT_ID=orthanc-service
+      - OAUTH_CLIENT_SECRET=${ORTHANC_CLIENT_SECRET}
+
+  # The Odoo bridge's runtime, reasserted here.
+  #
+  # Its service is declared in the inherited Ozone distro's docker-compose-odoo.yml, which pins
+  # eip-client 2.3.0 and is not a file this repo owns - so the only place to correct it is an
+  # override. Without this the two bridges run different framework versions against the same
+  # OpenMRS: measured locally, eip-odoo-openmrs on 2.3.0 and eip-openmrs-orthanc on
+  # 2.4.0-SNAPSHOT. The FHIR routers they both depend on live in the runtime, so that is two
+  # different sets of routing behaviour in one stack, and a bug reproduced in one bridge may not
+  # reproduce in the other.
+  #
+  # Keep in step with the pins above and with LIME-EMR-Tooling's docker-compose-orthanc.yml.
+  eip-odoo-openmrs:
+    image: mekomsolutions/eip-client:2.4.0-SNAPSHOT@sha256:fef2ffee0bdc97b46bcf93b5bbffe091b906ea6db50db9145e61cf273d555d93
+    environment:
+      # Dispensing units that measure an amount taken from a container, not a number of containers:
+      # Milliliter, Gram, Drop, Application, Spray (the OpenMRS concept uuids, which are also the Odoo
+      # unit external ids). A prescription in one of them is billed as one bottle/tube, because
+      # these drugs are priced per container. Unset, "10 mL" bills ten bottles (#385).
+      - ODOO_PER_CONTAINER_UOMS=bf712910-1c7f-4e72-9d50-6eb5453efcfd,c2beca4d-0e35-4989-8e9d-54134982bb37,11ae7979-7bb6-49c7-9715-9adacc1b4005,72262ed3-d3e2-4c94-b4d6-567934107481,2befd840-e135-4fc9-bb9d-acdcce088f19
+      # French duration unit in the drug line's text on the Odoo quotation ("5 jours", not FHIR's fixed
+      # English "5 day"), keyed by FHIR unit code, singular|plural (#539).
+      - "ODOO_DURATION_UNIT_LABELS=s=seconde|secondes,min=minute|minutes,h=heure|heures,d=jour|jours,wk=semaine|semaines,mo=mois|mois,a=an|ans"
+      # Inpatient stay billing (#246): every hour, each night (a midnight in Bujumbura) of a stay is
+      # billed on the visit's quotation as the product of the type of the bed occupied at that
+      # midnight (bed type uuid=product external id, below; the bed's type is set in the bed
+      # management app), else as « Lit VIP » in a ward tagged « Chambre privée » (tag uuid below) or
+      # under one, else « Lit simple ». At least one night per stay. Prices are set in Odoo, not here.
+      # Bed types (liquibase.xml stay_bed_types-20261112) and products (procedures-issue212.csv):
+      #   Partagé → Lit simple · Semi-privé → Lit semi-privé · Privé (VIP) → Lit VIP ·
+      #   Soins intensifs → Lit de soins intensifs · Couveuse → Couveuse néonatale ·
+      #   Soins intensifs sous respirateur → same name · Soins intensifs VIP sous respirateur → same name
+      - EIP_INPATIENT_STAY_ENABLED=true
+      - EIP_INPATIENT_STAY_TIMEZONE=Africa/Bujumbura
+      - EIP_INPATIENT_STAY_DEFAULT_PRODUCT=4913bd15-ea95-4109-bb1b-74f36ad197f7
+      - EIP_INPATIENT_STAY_LOCATION_TAG_PRODUCTS=3775fe54-7794-4fcb-99b2-d6bf8592d685=56744335-40ae-4231-9bfa-01d9c68dd588
+      - EIP_INPATIENT_STAY_BED_TYPE_PRODUCTS=933f2f84-461d-487e-bb21-2021ba374ad0=4913bd15-ea95-4109-bb1b-74f36ad197f7,f62b4615-960d-434c-9d9d-c5df6c59af14=11fed57b-8e18-47ef-a01d-7b0e9723b41d,263c34fa-2e97-454e-af8f-bbb4cb585f82=56744335-40ae-4231-9bfa-01d9c68dd588,9fceca39-6da6-4588-968c-044c17908f29=3b8d7fcf-ed28-4f91-9205-5fa44fa4e855,c243a937-73e5-434c-a5e3-f14af75846a6=f2af5c84-a4bd-4539-b9b2-f823208924b0,86f1d0ca-d032-4663-94d6-84e4885e78e3=c19ef94c-2f90-47ff-ba70-1fe110ba5760,06560f0a-ddaa-490d-a92b-e6e54060e871=60149be2-7b0b-458f-9bdd-8757aaf62121
+
+  mysql:
+    image: mariadb:10.11.13
+    # Ozone's options (docker-compose-common.yml; a command override replaces the whole list), plus
+    # --log-bin-trust-function-creators=1. Binary logging is on for the EIP bridges, and without
+    # that flag the stockmanagement module cannot create its triggers ("You do not have the SUPER
+    # privilege and binary logging is enabled"), so Stock Management, then Billing, then UVL's own
+    # Liquibase changes fail on a local start (#369). Local run only.
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --skip-character-set-client-handshake
+      - --skip-innodb-read-only-compressed
+      - --log-bin=mysqld-bin
+      - --binlog-format=ROW
+      - --server-id=2
+      - --sync-binlog=1
+      - --binlog-annotate-row-events=0
+      - --log-bin-trust-function-creators=1
+
+  frontend:
+    volumes:
+      - "${OPENMRS_FRONTEND_BINARY_PATH}:/usr/share/nginx/html"
+      - "${OPENMRS_FRONTEND_CONFIG_PATH}:/usr/share/nginx/html/configs"
+      # The patched attachments ESM used to be bind-mounted here from
+      # ${ORTHANC_ATTACHMENTS_PATCH_PATH}, which distro/pom.xml set to a sibling
+      # checkout of openmrs-esm-patient-chart. That path exists on no other machine,
+      # and since the mount target is a directory Docker silently creates an empty
+      # one — serving an EMPTY attachments app instead of failing. Since #490 the
+      # stock esm-patient-attachments-app is used; to reinstate a patched one,
+      # publish the ESM and pin its version in spa-assemble-config.json.
+
+  ohif:
+    image: ohif/app:latest
+    platform: linux/amd64
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    networks:
+      ozone:
+        aliases:
+          - ohif
+    volumes:
+      - "${ORTHANC_CONFIG_PATH}/../ohif-standalone-config.js:/usr/share/nginx/html/app-config.js"
+
+
+volumes:
+  orthanc-postgres-db:
+  eip-openmrs-orthanc-app:
+

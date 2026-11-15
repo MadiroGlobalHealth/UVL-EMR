@@ -1,0 +1,65 @@
+slice_name: Male/Female Patients
+description: null
+certified_by: null
+certification_details: null
+viz_type: pie
+params:
+  datasource: 10__table
+  viz_type: pie
+  slice_id: 1
+  groupby:
+  - gender
+  metric:
+    aggregate: COUNT_DISTINCT
+    column:
+      advanced_data_type: null
+      certification_details: null
+      certified_by: null
+      column_name: identifiers
+      description: null
+      expression: null
+      filterable: true
+      groupby: true
+      id: 74
+      is_certified: false
+      is_dttm: false
+      python_date_format: null
+      type: STRING
+      type_generic: 1
+      verbose_name: null
+      warning_markdown: null
+    datasourceWarning: false
+    expressionType: SIMPLE
+    hasCustomLabel: false
+    label: COUNT_DISTINCT(identifiers)
+    optionName: metric_91l6lr1cgeb_xfgqw5h9kno
+    sqlExpression: null
+  adhoc_filters:
+  - clause: WHERE
+    comparator: No filter
+    expressionType: SIMPLE
+    operator: TEMPORAL_RANGE
+    subject: birthdate
+  row_limit: 100
+  sort_by_metric: true
+  color_scheme: supersetColors
+  show_labels_threshold: 5
+  show_legend: true
+  legendType: scroll
+  legendOrientation: top
+  label_type: key
+  number_format: SMART_NUMBER
+  date_format: smart_date
+  show_labels: true
+  labels_outside: true
+  outerRadius: 70
+  innerRadius: 30
+  extra_form_data: {}
+  dashboards:
+  - 1
+  annotation_layers: []
+query_context: null
+cache_timeout: null
+uuid: 0cb807ba-b595-43e8-95b5-2b83c89705cb
+version: 1.0.0
+dataset_uuid: 34e209b6-fc04-4787-a892-9fd90fcf9bb3
