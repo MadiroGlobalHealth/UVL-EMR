@@ -388,7 +388,13 @@
       "fr": {
         "additionalInformationSection": "Informations supplémentaires",
         "Country": "Pays",
-        "Address Detail": "Détail de l'adresse"
+        "Address Detail": "Détail de l'adresse",
+        "noMatchingResults": "Aucun résultat correspondant",
+        "noAddressResults": "Aucune adresse correspondante",
+        "errorFetchingAddresses": "Erreur lors de la recherche des adresses",
+        "errorFetchingResults": "Erreur lors de la recherche des résultats",
+        "searching": "Recherche en cours...",
+        "loading": "Chargement"
       }
     }
   },
@@ -775,6 +781,8 @@
       "fr": {
         "medicationDispensed": "Médicament délivré.",
         "medicationDispenseUpdated": "Délivrance du médicament mise à jour.",
+        "medicationDispensePaused": "Délivrance du médicament suspendue.",
+        "medicationDispenseClosed": "Délivrance du médicament clôturée.",
         "orderedMedication": "a prescrit le médicament",
         "stockDispense": "Lot à délivrer (obligatoire)",
         "selectStockDispense": "Choisir un lot pour pouvoir délivrer",
