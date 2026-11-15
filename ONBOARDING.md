@@ -59,7 +59,7 @@ free RAM, 8 CPU cores and 25 GB of free disk**.
 ## Step 3: Run UVL-EMR on your machine
 
 Follow **[Quick start on localhost](README.md#quick-start-on-localhost)** in the README: install
-Git, a JDK and Docker Compose, add a [GitHub token](https://github.com/settings/tokens) to `~/.m2/settings.xml`, build with
+Git, a JDK and Docker Compose, add a **classic** [GitHub token](https://github.com/settings/tokens) with `read:packages` to `~/.m2/settings.xml`, build with
 `./scripts/mvnw clean package`, then start the Mugamba site. If you can't run it locally, the
 README's GitPod button runs it in your browser.
 
@@ -104,11 +104,14 @@ good map of where help is needed.
 
 ## Step 5: Pick up your first issue
 
-1. Browse the [issues](https://github.com/MadiroGlobalHealth/UVL-EMR/issues) or the
-   [project board](https://github.com/orgs/MadiroGlobalHealth/projects/9). Configuration work such
-   as forms, translations and roles is a good first contribution.
+1. Volunteers are currently building **clinical forms**. Pick one of the open
+   [`Forms` + `Help wanted` issues](https://github.com/MadiroGlobalHealth/UVL-EMR/issues?q=is%3Aopen+label%3AForms+label%3A%22Help+wanted%22),
+   starting with one marked **easy**. If none is open, say hello on any open issue and a
+   maintainer will add one. Other areas stay with the maintainers for now.
 2. Comment on the issue to say you're taking it, so two people don't build the same thing.
-3. Follow [CONTRIBUTING.md](CONTRIBUTING.md) for branch names, commits and pull requests.
+3. Follow [Building a form](CONTRIBUTING.md#building-a-form): the concept mapping table comes
+   before any JSON. Then [CONTRIBUTING.md](CONTRIBUTING.md) for branch names, commits and pull
+   requests.
 4. Test your change on your local stack, signed in as a user with the role the change affects,
    not as `admin`. Most of the faults we've shipped were invisible to an administrator.
 
