@@ -158,6 +158,8 @@ For SSO, use the following credentials:
 
 Contributions are welcome! If you're new, start with [ONBOARDING.md](ONBOARDING.md). [CONTRIBUTING.md](CONTRIBUTING.md) covers branches, commits, pull requests and where configuration lives. Record user-visible changes in the [CHANGELOG](CHANGELOG.md) in the same pull request.
 
+Running, supporting or deploying the clinic's system? See the [support runbook](RUNBOOK.md).
+
 ## Acknowledgments
 
 This project is made possible thanks to [OpenMRS](https://openmrs.org/), [OzoneHIS](https://www.ozone-his.com/), and [OpenConceptLab](https://openconceptlab.org/) communities. Special thanks to the contributors who have contributed to the development of these tools.
