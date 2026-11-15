@@ -32,6 +32,9 @@
       "privileges": ["Patient Dashboard - View Patient Summary"]
     },
     "extensionSlots": {
+      "patient-info-slot": {
+        "remove": ["sticky-notes-button"]
+      },
       "patient-chart-dashboard-slot": {
         "configure": {
           "encounters-summary-dashboard": {
