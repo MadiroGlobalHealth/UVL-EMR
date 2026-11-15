@@ -26,17 +26,18 @@ The diagnosis search matches names, not maps, so those six could still not be fo
 current code. `names` gives each a fully specified, preferred name in English and French that
 starts with the current code (CURRENT_NAMES, "K64.9 Hémorroïdes") and keeps the old names as
 synonyms, so the old code still finds them. It edits the concepts in OCL (uvl-custom); they reach
-OpenMRS in a small collection export, UVL_dx_v4_585_20261112.zip, loaded after UVL_dx_v4.zip. Each
+OpenMRS in a small collection export, UVL_dx_v4_585_20261112.zip, loaded after UVL_dx_533_20261116.zip
+(uvl-dx v4 without its two mappings that had no target, #533). Each
 name carries an external_id: the old names the UUID OpenMRS already has for them (OCL_NAMESPACE),
 so the import turns those rows into synonyms instead of voiding and re-adding them; the new names
 a UUID derived from NAMESPACE.
 
 Usage:
   python3 scripts/diagnosis-icd10-maps.py sql \
-      sites/mugamba/configs/openmrs/initializer_config/ocl/UVL_dx_v4.zip \
+      sites/mugamba/configs/openmrs/initializer_config/ocl/UVL_dx_533_20261116.zip \
       sites/mugamba/configs/openmrs/initializer_config/liquibase/sql/diagnosis_icd10_maps.sql
   python3 scripts/diagnosis-icd10-maps.py sql --replaced \
-      sites/mugamba/configs/openmrs/initializer_config/ocl/UVL_dx_v4.zip \
+      sites/mugamba/configs/openmrs/initializer_config/ocl/UVL_dx_533_20261116.zip \
       sites/mugamba/configs/openmrs/initializer_config/liquibase/sql/diagnosis_icd10_maps_replaced.sql
   OCL_TOKEN=... python3 scripts/diagnosis-icd10-maps.py ocl <zip> [--apply] [--release VERSION]
   OCL_TOKEN=... python3 scripts/diagnosis-icd10-maps.py names <zip> [--apply] [--release VERSION]

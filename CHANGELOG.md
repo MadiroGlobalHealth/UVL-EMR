@@ -773,6 +773,17 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   that would overwrite prices or a product row with an empty price. (#439)
 
 ### Fixed
+- **A full OCL import is clean.** When OpenMRS imports every OCL export again (a fresh install, a
+  restored volume, checksums cleared after a migration), the last five faults are gone: the drugs
+  export's retired Chlorpheniramine gets the concept id the servers hold, the coded thick smear gets
+  its own name ids (they were copies of « BP01 - Frottis paludéen »'s, so a new server failed on it
+  and its 12 mappings), and three mappings are dropped (two diagnosis maps with no target, an
+  immunization answer that CIEL has retired and no export carries, a repeated demo-queue set member
+  with no id). Nothing changes on a running server. OCL: uvl-ciel 20261116-533. `UVL_drugs_533`,
+  `UVL_labtests_533`, `UVL_dx_533`, `UVL_immunizations_533` and `UVL_demo_queue_533` (all
+  `_20261116`) replace `UVL_drugs_20261023-1`, `UVL_labtests_20261105-5`, `UVL_dx_v4`,
+  `UVL_immunizations_v2` and `OCL Demo Queue Concepts v4 Aug 8 2025`, each changed only in those
+  items. The build now fails on any of these faults (check 15). (#533)
 - **Doctors can open the PACS (« Orthanc PACS » in the app menu) to view images.** Orthanc's
   authorization service grants PACS permissions only to the realm roles in
   `distro/configs/orthanc/permissions.json`, and doctors held only the `openmrs` client role
