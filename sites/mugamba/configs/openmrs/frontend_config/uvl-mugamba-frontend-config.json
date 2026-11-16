@@ -646,6 +646,12 @@
     }
   },
   "@openmrs/esm-form-engine-app": {
+    "sessionLocationEncounterTypes": [
+      "e22e39fd-7db2-45e7-80f1-60fa0d5a4378",
+      "d3b07384-8d1c-4e6b-9b8e-2f3b8e4a1c9f",
+      "b2c4d5e6-7f8a-4e9b-8c1d-2e3f8e4a3b8f",
+      "181820aa-88c9-479b-9077-af92f5364329"
+    ],
     "Translation overrides": {
       "fr": {
         "submittedForm": "Formulaire enregistré",
