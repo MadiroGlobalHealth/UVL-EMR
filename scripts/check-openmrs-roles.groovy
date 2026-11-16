@@ -78,6 +78,14 @@
      - Pharmacist and Doctor read the order basket's price and stock lookups, FHIR
        ChargeItemDefinition and InventoryItem (`Get ChargeItemDefinition`, `Get
        InventoryItem`). Until #351 the Pharmacist did not.
+     - Help Nurse, Nurse, Midwife and Doctor save vitals at triage. The vitals app posts the
+       encounter with its patient, visit, location, encounter type, obs and the signed-in
+       provider under the `vitals.clinicianEncounterRole` encounter role (#347). The REST
+       module resolves each of these by uuid through a service guarded by its Get privilege,
+       and turns a refusal into a 400, not a 403, so the form says the values are invalid.
+       Until #700 Help Nurse lacked `Get Encounter Roles` and no Help Nurse could save vitals
+       (production 2026-11-16). `Authenticated` counts here, as OpenMRS gives it to every
+       signed-in user (`Get Locations` sits on it).
 
  10. Only administrators see System Administration. The site frontend config shows
      `@openmrs/esm-system-admin-app` (the « Administration du système » app menu entry) only
@@ -148,6 +156,9 @@ List<String> readDrugOrders = ['Get Orders', 'Get Care Settings']
 List<String> readPatientLists = ['View Cohorts In Cohort Module', 'Get Patient Cohorts']
 List<String> stockReports = ['App: stockmanagement.reports', 'Task: stockmanagement.reports.mutate', 'Manage Scheduler']
 List<String> basketLookups = ['Get ChargeItemDefinition', 'Get InventoryItem']
+List<String> saveVitals = ['Add Encounters', 'Edit Encounters', 'Add Observations', 'Edit Observations',
+        'Get Patients', 'Get Visits', 'Get Locations', 'Get Encounter Types', 'Get Concepts', 'Get Providers',
+        'Get Encounter Roles']
 List<String> clinicalRoles = ['Help Nurse', 'Nurse', 'Midwife', 'Doctor', 'Ophtalmologist', 'Dentist',
         'Anesthesist', 'Lab Technician', 'X-Ray Technician']
 List<String> nonDispensingRoles = ['Central Pharmacist'] + clinicalRoles
@@ -157,10 +168,10 @@ Map<String, List<String>> appMenuUsers = [
         'stock-management-app-menu-item': ['Pharmacist', 'Central Pharmacist'],
 ]
 Map<String, List<String>> requiredOf = [
-        'Help Nurse'        : readDrugOrders + readPatientLists,
-        'Nurse'             : readDrugOrders + readPatientLists,
-        'Midwife'           : readDrugOrders + readPatientLists,
-        'Doctor'            : readDrugOrders + readPatientLists + basketLookups,
+        'Help Nurse'        : readDrugOrders + readPatientLists + saveVitals,
+        'Nurse'             : readDrugOrders + readPatientLists + saveVitals,
+        'Midwife'           : readDrugOrders + readPatientLists + saveVitals,
+        'Doctor'            : readDrugOrders + readPatientLists + basketLookups + saveVitals,
         'Pharmacist'        : stockReports + basketLookups,
         'Central Pharmacist': stockReports,
         'X-Ray Technician'  : ['Add Orders', 'Edit Orders', 'Edit Encounters'],
@@ -296,11 +307,13 @@ requiredOf.each { name, required ->
         problems << "role '${name}' is not defined in any roles CSV; cannot check the privileges its screens need"
         return
     }
-    Set<String> privileges = effectivePrivileges(name, privilegesOf, inheritances)
+    // Every signed-in user holds Authenticated as well as their own roles.
+    Set<String> privileges = effectivePrivileges(name, privilegesOf, inheritances) +
+            effectivePrivileges('Authenticated', privilegesOf, inheritances)
     List<String> missing = required.findAll { !privileges.contains(it) }
     if (missing) {
         problems << "${definedIn[name]}: role '${name}' lacks ${missing.collect { "'${it}'" }.join(', ')}" +
-                " (directly or through an inherited role); its screens would get a 403"
+                " (directly or through an inherited role); its screens would be refused (403, or 400 for a uuid in a POST)"
     }
 }
 
