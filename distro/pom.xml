@@ -27,12 +27,13 @@
          refresh and never reaches the search index. Reproduced three times on
          UAT 2026-09-18. 2.1.2 is the last 2.x release and still satisfies
          billing 2.3.0, which requires stockmanagement >= 1.4.0.
-         overridden by distro/binaries/openmrs/modules/stockmanagement-2.1.2-uvl4.omod until a
+         overridden by distro/binaries/openmrs/modules/stockmanagement-2.1.2-uvl5.omod until a
          release without the stock operation permission cache (O3-6248,
          openmrs/openmrs-module-stockmanagement#57), with role scopes checked on stock
          operation create and update (UVL-EMR#447), with the operation items' own received
          quantity in the full representation (UVL-EMR#638) and with stock issued from an
-         approved requisition, which its Stock Issue completes (UVL-EMR#641), is taken -->
+         approved requisition, which its Stock Issue completes (UVL-EMR#641), and with concept
+         names (units, categories, reasons) in the user's locale (UVL-EMR#529), is taken -->
     <stockmanagement.version>2.1.2</stockmanagement.version>
     <billing.version>2.3.0</billing.version>
     <initializer.version>2.12.0</initializer.version>
@@ -518,6 +519,45 @@
             </configuration>
           </execution>
           <execution>
+            <!--
+              Leaves "Modifier la langue par défaut" unticked when the change-language
+              dialog opens (#681). esm-primary-navigation-app opens it ticked and has no
+              config key for it, so a short switch to English also rewrote the user's
+              default locale. Runs on the frontend that "Rebuild OpenMRS Frontend if
+              necessary" assembled in process-resources; fails the build if the dialog's
+              code is no longer recognised. See the script for details.
+            -->
+            <id>Untick the default locale box in the change-language dialog</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
+                <exec executable="node" failonerror="true">
+                  <arg value="${project.basedir}/../scripts/patch-change-language-default.mjs"/>
+                  <arg value="${project.build.directory}/${project.artifactId}-${project.version}/distro/binaries/openmrs/frontend"/>
+                </exec>
+              </target>
+            </configuration>
+          </execution>
+          <execution>
+            <!-- Tests the #681 change-language patch on the built frontend. -->
+            <id>Test the change-language default locale patch</id>
+            <phase>test</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
+                <exec executable="node" failonerror="true">
+                  <arg value="${project.basedir}/../scripts/test/change-language-default/test.mjs"/>
+                  <arg value="${project.build.directory}/${project.artifactId}-${project.version}/distro/binaries/openmrs/frontend"/>
+                </exec>
+              </target>
+            </configuration>
+          </execution>
+          <execution>
             <id>Add UVL Distro Frontend Configuration</id>
             <phase>process-resources</phase>
             <goals>
@@ -878,8 +918,22 @@
                     <exclude name="dist/**/*.map" />
                   </tarfileset>
                 </tar>
+                <tar destfile="${uvl.frontend.modules}/openmrs-esm-patient-medications-app.tgz" compression="gzip" longfile="posix">
+                  <tarfileset dir="${project.basedir}/frontend/openmrs-esm-patient-medications-app" prefix="package">
+                    <include name="package.json" />
+                    <include name="dist/**" />
+                    <exclude name="dist/**/*.map" />
+                  </tarfileset>
+                </tar>
                 <tar destfile="${uvl.frontend.modules}/openmrs-esm-patient-tests-app.tgz" compression="gzip" longfile="posix">
                   <tarfileset dir="${project.basedir}/frontend/openmrs-esm-patient-tests-app" prefix="package">
+                    <include name="package.json" />
+                    <include name="dist/**" />
+                    <exclude name="dist/**/*.map" />
+                  </tarfileset>
+                </tar>
+                <tar destfile="${uvl.frontend.modules}/openmrs-esm-patient-orders-app.tgz" compression="gzip" longfile="posix">
+                  <tarfileset dir="${project.basedir}/frontend/openmrs-esm-patient-orders-app" prefix="package">
                     <include name="package.json" />
                     <include name="dist/**" />
                     <exclude name="dist/**/*.map" />

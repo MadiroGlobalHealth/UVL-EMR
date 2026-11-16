@@ -22,7 +22,8 @@ Read these too. This runbook links to them and does not repeat them:
 | [CHANGELOG.md](CHANGELOG.md) | What each release changed, where it is live, and its extra steps |
 | LIME-EMR-Tooling `Procedures/deploy-uvl-runbook.md` | The full deploy, step by step. Its host values are old: use the ones from the handover |
 | LIME-EMR-Tooling `Documentation/deploy-lime.md` | Every `deploy-lime.sh` action and flag |
-| LIME-EMR-Tooling `restore-backups/README.md` | Whole-instance restore from dump files |
+| [RESTORE-DRILL.md](RESTORE-DRILL.md) | Restoring a restic snapshot onto a scratch machine and proving it, step by step |
+| LIME-EMR-Tooling `restore-backups/README.md` | Whole-instance restore from dump files, and `restore-from-restic.sh` |
 
 ---
 
@@ -134,11 +135,14 @@ Write down anything odd in a GitHub issue (section 8), even if it fixed itself.
 
 ### What is backed up
 
-The `backup` container runs restic. Each snapshot holds the OpenMRS database, the Odoo and
-Keycloak databases, and OpenMRS files (patient photos, attachments, configuration checksums).
-How often it runs and how long snapshots are kept is set in the env file (`CRON_SCHEDULE`,
-`RESTIC_KEEP_*`). Where they are stored is set by `RESTIC_REPOSITORY`. There may also be nightly
-dump files under `~/BACKUPS/` on the production server.
+The `backup` container runs restic. Each snapshot holds the OpenMRS database, the Odoo,
+Keycloak and Orthanc-index databases, OpenMRS files (patient photos, attachments), and, once the
+#261 change of LIME-EMR-Tooling is deployed, the Odoo filestore and the X-ray images. It runs
+every 5 minutes and keeps the newest snapshot of each day (`CRON_SCHEDULE`, `RESTIC_KEEP_*`, set
+in LIME-EMR-Tooling's `template.env`: the env file on the server is regenerated at each deploy).
+The repository (`RESTIC_REPOSITORY`) is a directory on the same server, so it is lost with the
+server unless a copy is kept elsewhere. There may also be nightly dump files under `~/BACKUPS/` on
+the production server. [RESTORE-DRILL.md](RESTORE-DRILL.md), section 1, has the details.
 
 ### Check backups
 
@@ -156,9 +160,11 @@ restored, so look at its age every day (section 2).
   the snapshot.
 - **From dump files:** `restore-backups/restore-instance.sh` in LIME-EMR-Tooling, following its
   README (dry run first). This was done in September 2026, twice on UAT and once on production.
-- **From a restic snapshot:** LIME-EMR-Tooling's `docker-compose-restore.yml`, with
-  `RESTIC_RESTORE_SNAPSHOT` set to the snapshot id. This has not been rehearsed yet. The restore
-  drill (#261) does it with the local support lead and adds the tested steps here.
+- **From a restic snapshot:** `restore-backups/restore-from-restic.sh` in LIME-EMR-Tooling, on a
+  scratch machine, following [RESTORE-DRILL.md](RESTORE-DRILL.md). Do not use
+  `docker-compose-restore.yml`: with one app still connected it restores Keycloak by half and
+  reports success. The drill with the local support lead (#261) is the first rehearsal; write its
+  date here.
 - **After any restore:**
   1. clear the Odoo initializer checksums and restart Odoo (section 5, first row);
   2. check that OpenMRS orders still reach Odoo;
