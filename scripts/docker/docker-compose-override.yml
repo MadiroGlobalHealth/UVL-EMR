@@ -177,6 +177,9 @@ services:
       # French duration unit in the drug line's text on the Odoo quotation ("5 jours", not FHIR's fixed
       # English "5 day"), keyed by FHIR unit code, singular|plural (#539).
       - "ODOO_DURATION_UNIT_LABELS=s=seconde|secondes,min=minute|minutes,h=heure|heures,d=jour|jours,wk=semaine|semaines,mo=mois|mois,a=an|ans"
+      # French label before the prescriber at the end of a quotation line ("| Prescripteur : …", not
+      # "| Orderer: …"); empty keeps "Orderer:" (#529).
+      - "ODOO_ORDERER_LABEL=Prescripteur :"
       # Inpatient stay billing (#246): every hour, each night (a midnight in Bujumbura) of a stay is
       # billed on the visit's quotation as the product of the type of the bed occupied at that
       # midnight (bed type uuid=product external id, below; the bed's type is set in the bed
