@@ -45,6 +45,9 @@
                     "concept": "da640d8a-8703-4bd7-aceb-2e91a6c1d806"
                   }
                 ]
+              },
+              "hide": {
+                "hideWhenExpression": "sex === 'M'"
               }
             },
             {
@@ -68,7 +71,7 @@
                 ]
               },
               "hide": {
-                "hideWhenExpression": "womanStatus !== 'da446701-d7dd-4d93-89f6-8fe338d48f62'"
+                "hideWhenExpression": "sex === 'M' || womanStatus !== 'da446701-d7dd-4d93-89f6-8fe338d48f62'"
               }
             },
             {
@@ -82,7 +85,7 @@
                 "disallowDecimals": true
               },
               "hide": {
-                "hideWhenExpression": "womanStatus !== 'da446701-d7dd-4d93-89f6-8fe338d48f62'"
+                "hideWhenExpression": "sex === 'M' || womanStatus !== 'da446701-d7dd-4d93-89f6-8fe338d48f62'"
               }
             },
             {

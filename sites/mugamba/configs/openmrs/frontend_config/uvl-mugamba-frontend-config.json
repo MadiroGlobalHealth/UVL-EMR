@@ -489,7 +489,9 @@
         "normalRangeHint": "Normale : {{range}}",
         "normalRanges": "Valeurs normales",
         "recordVitalsAndBiometrics": "Signes vitaux et biométrie",
-        "editVitalsAndBiometrics": "Modifier les signes vitaux"
+        "editVitalsAndBiometrics": "Modifier les signes vitaux",
+        "wholeNumberRequired": "Saisir un nombre entier, sans décimales",
+        "decimalsNotAllowed": "Nombres entiers uniquement, sans décimales : {{fields}}"
       }
     }
   },
