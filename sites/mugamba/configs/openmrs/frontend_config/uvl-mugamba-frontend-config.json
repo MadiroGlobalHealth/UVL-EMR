@@ -153,7 +153,8 @@
         "printSelected": "Imprimer la sélection",
         "recordedVia": "Enregistré via {{formName}}",
         "paginationPageText_one": "sur {{count}} page",
-        "paginationPageText_other": "sur {{count}} pages"
+        "paginationPageText_other": "sur {{count}} pages",
+        "noProvider": "Aucun professionnel de santé"
       }
     }
   },
