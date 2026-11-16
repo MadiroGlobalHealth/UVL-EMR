@@ -5,8 +5,8 @@ commit CI run 12863 published), with the form engine library it bundles,
 `@openmrs/esm-form-engine-lib` 5.0.1-pre.2754 (source `88459d3`), patched with fixes that are
 not released upstream yet. Only the built module is here; the sources are:
 
-- library: `jnsereko/openmrs-esm-form-engine-lib`, branch `uvl/5.0.1-pre.2754-475` (on top of `uvl/5.0.1-pre.2754-602`);
-- app: `jnsereko/openmrs-esm-patient-chart`, branch `uvl/form-engine-13.0.2-pre.12863-475`
+- library: `jnsereko/openmrs-esm-form-engine-lib`, branch `uvl/5.0.1-pre.2754-677` (on top of `uvl/5.0.1-pre.2754-475`);
+- app: `jnsereko/openmrs-esm-patient-chart`, branch `uvl/form-engine-13.0.2-pre.12863-677`
   (only the English keys and the version; the app source is unchanged).
 
 | UVL-EMR | Fix | Upstream PR |
@@ -17,6 +17,7 @@ not released upstream yet. Only the built module is here; the sources are:
 | #577 | A save blocked by an invalid field shows an error snackbar (number of fields, first field's label; keys `formHasInvalidFields`, `invalidFieldsSummary`), scrolls to the first invalid field and focuses it | openmrs/openmrs-esm-form-engine-lib#860 |
 | #602 | A date-time field's time input has its own id (`<field id>-time`) and shows only a time, never the date text ("does not conform to HH:mm"); beside a date picker it leaves the error and warning to the date picker, so no error icon covers the clock button. The invalid-fields snackbar closes after 8 s instead of piling up | none yet |
 | #475 | In view mode, a radio, checkbox, select or content-switcher answer is translated as data entry translates it, `t(answer.label)`: the form's translations, else the concept's locale name the label falls back to. It showed the label as written in the form JSON. Also a test that a save flags every required field across sections and pages (#509) | none yet |
+| #677 | Saving a new encounter first reads its visit's dates again. If the visit was ended while the form was open (another tab, another user, the task that closes the day's visits at midnight), the save stops with a warning (keys `visitHasEnded`, `visitEndedSaveToSaveInIt`) and the form stays filled; saving again files it in that ended visit, dated within it. It was rejected with `Encounter.datetimeShouldBeInVisitDatesRange` (`.uvl.6`) | none yet |
 
 The other patient-chart apps stay on the npm 13.0.2-pre.12863 packages.
 
@@ -32,11 +33,11 @@ To rebuild, with Node 22:
 
 ```sh
 # library
-cd openmrs-esm-form-engine-lib          # branch uvl/5.0.1-pre.2754-475
+cd openmrs-esm-form-engine-lib          # branch uvl/5.0.1-pre.2754-677
 yarn install --immutable && yarn test && yarn build
 
 # app, bundling that library build
-cd openmrs-esm-patient-chart            # branch uvl/form-engine-13.0.2-pre.12863-475
+cd openmrs-esm-patient-chart            # branch uvl/form-engine-13.0.2-pre.12863-677
 yarn install --immutable
 rsync -a --delete ../openmrs-esm-form-engine-lib/dist/ node_modules/@openmrs/esm-form-engine-lib/dist/
 cd packages/esm-form-engine-app
