@@ -679,7 +679,9 @@
         "invalidFieldsSummary": "{{count}} champs à compléter ou à corriger ; premier : {{- label}}",
         "invalidFieldsSummary_one": "1 champ à compléter ou à corriger : {{- label}}",
         "invalidFieldsSummary_other": "{{count}} champs à compléter ou à corriger ; premier : {{- label}}",
-        "time": "Heure"
+        "time": "Heure",
+        "visitHasEnded": "Cette visite est terminée",
+        "visitEndedSaveToSaveInIt": "La visite a été clôturée le {{- stopDatetime}}. Le formulaire est conservé : cliquez à nouveau sur « Enregistrer » pour l'enregistrer dans cette visite."
       }
     }
   },
