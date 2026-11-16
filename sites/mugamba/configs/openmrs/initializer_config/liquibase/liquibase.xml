@@ -3186,4 +3186,31 @@
         <rollback/>
     </changeSet>
 
+    <!--
+        #684: « commonreports.started = false » on UAT and production, although neither image ships
+        the commonreports module (nor metadatasharing, whose row still says « true »). OpenMRS writes
+        a module's global properties when it first loads it and never deletes them when the omod
+        leaves the distribution, so both modules left behind rows that read like modules that
+        failed to start. UVL prints its documents with patientdocuments, and no UVL configuration,
+        report or analytics query uses either module. Their global properties go; their other
+        leftovers (the « Patient History » report from commonreports) are not touched. A module
+        that is shipped again recreates its global properties with their defaults on load.
+    -->
+    <changeSet id="remove_unshipped_module_properties-20261116" author="Joshua">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT CASE WHEN COUNT(*) > 0 THEN 1 ELSE 0 END FROM global_property
+                WHERE property LIKE 'commonreports.%' OR property LIKE 'metadatasharing.%';
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            Global properties of the commonreports and metadatasharing modules, which UVL no longer ships (#684).
+        </comment>
+        <sql>
+            DELETE FROM global_property
+             WHERE property LIKE 'commonreports.%' OR property LIKE 'metadatasharing.%';
+        </sql>
+        <rollback/>
+    </changeSet>
+
 </databaseChangeLog>

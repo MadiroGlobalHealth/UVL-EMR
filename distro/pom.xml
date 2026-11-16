@@ -518,6 +518,45 @@
             </configuration>
           </execution>
           <execution>
+            <!--
+              Leaves "Modifier la langue par défaut" unticked when the change-language
+              dialog opens (#681). esm-primary-navigation-app opens it ticked and has no
+              config key for it, so a short switch to English also rewrote the user's
+              default locale. Runs on the frontend that "Rebuild OpenMRS Frontend if
+              necessary" assembled in process-resources; fails the build if the dialog's
+              code is no longer recognised. See the script for details.
+            -->
+            <id>Untick the default locale box in the change-language dialog</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
+                <exec executable="node" failonerror="true">
+                  <arg value="${project.basedir}/../scripts/patch-change-language-default.mjs"/>
+                  <arg value="${project.build.directory}/${project.artifactId}-${project.version}/distro/binaries/openmrs/frontend"/>
+                </exec>
+              </target>
+            </configuration>
+          </execution>
+          <execution>
+            <!-- Tests the #681 change-language patch on the built frontend. -->
+            <id>Test the change-language default locale patch</id>
+            <phase>test</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
+                <exec executable="node" failonerror="true">
+                  <arg value="${project.basedir}/../scripts/test/change-language-default/test.mjs"/>
+                  <arg value="${project.build.directory}/${project.artifactId}-${project.version}/distro/binaries/openmrs/frontend"/>
+                </exec>
+              </target>
+            </configuration>
+          </execution>
+          <execution>
             <id>Add UVL Distro Frontend Configuration</id>
             <phase>process-resources</phase>
             <goals>
@@ -873,6 +912,13 @@
                 </tar>
                 <tar destfile="${uvl.frontend.modules}/openmrs-esm-patient-vitals-app.tgz" compression="gzip" longfile="posix">
                   <tarfileset dir="${project.basedir}/frontend/openmrs-esm-patient-vitals-app" prefix="package">
+                    <include name="package.json" />
+                    <include name="dist/**" />
+                    <exclude name="dist/**/*.map" />
+                  </tarfileset>
+                </tar>
+                <tar destfile="${uvl.frontend.modules}/openmrs-esm-patient-medications-app.tgz" compression="gzip" longfile="posix">
+                  <tarfileset dir="${project.basedir}/frontend/openmrs-esm-patient-medications-app" prefix="package">
                     <include name="package.json" />
                     <include name="dist/**" />
                     <exclude name="dist/**/*.map" />
