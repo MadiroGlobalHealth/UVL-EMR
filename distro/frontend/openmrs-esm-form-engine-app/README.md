@@ -5,11 +5,12 @@ commit CI run 12863 published), with the form engine library it bundles,
 `@openmrs/esm-form-engine-lib` 5.0.1-pre.2754 (source `88459d3`), patched with fixes that are
 not released upstream yet. Only the built module is here; the sources are:
 
-- library: `jnsereko/openmrs-esm-form-engine-lib`, branch `uvl/5.0.1-pre.2754-751` (on top of `uvl/5.0.1-pre.2754-725`, `-723`,
-  `-719`, `-691` and `-677`);
-- app: `jnsereko/openmrs-esm-patient-chart`, branch `uvl/form-engine-13.0.2-pre.12863-751`
-  (on top of `-725`, `-723`, `-719`, `-691` and `-677`: the English keys, the version, and since
-  #691 the config key `sessionLocationEncounterTypes` passed on to the library).
+- library: `jnsereko/openmrs-esm-form-engine-lib`, branch `uvl/5.0.1-pre.2754-759` (on top of `uvl/5.0.1-pre.2754-751`, `-725`,
+  `-723`, `-719`, `-691` and `-677`);
+- app: `jnsereko/openmrs-esm-patient-chart`, branch `uvl/form-engine-13.0.2-pre.12863-759`
+  (on top of `-751`, `-725`, `-723`, `-719`, `-691` and `-677`: the English keys, the version, since
+  #691 the config key `sessionLocationEncounterTypes` passed on to the library, and since #759 the
+  config key `excludedProviderIdentifiers` the library reads).
 
 | UVL-EMR | Fix | Upstream PR |
 |---|---|---|
@@ -25,6 +26,7 @@ not released upstream yet. Only the built module is here; the sources are:
 | #723 | A number the form shows is written with the session's decimal mark, as the field takes it since #719: « 36,4 » in French, "36.4" in English. That is the field's text for a value it was not typed (an encounter being edited, a calculated field such as BMI), the read view, the previous value, and the limit in the range messages (« La valeur doit être de 37,7 au maximum »). The mark comes from `Intl` for the i18next language; the digits are those of `String(value)`, nothing is rounded or grouped. What is typed stays as typed (`.uvl.9`) | none yet |
 | #725 | A search list (diagnoses, problems, drugs, locations, providers: `ui-select-extended`) keeps only an entry picked from it. Text typed without picking one was emptied on leaving the field and the form saved without it, silently. Leaving the field with such text now shows an error naming it (key `textNotPickedFromList`) and blocks the save, with the invalid-fields snackbar (#577); picking an entry or clearing the field removes it. A label typed in full is not picked for the user either (`.uvl.10`) | none yet |
 | #751 | A number field is bounded by its concept's absolute limits as well as the form's `min`/`max`, the stricter of each winning: the server refuses an obs outside `hiAbsolute`/`lowAbsolute` (ObsValidator, HTTP 400 on save), so « Température » at 47,5 against a limit of 47 now reads « La valeur doit être de 47 au maximum » on the field and the save is blocked by the invalid-fields snackbar (#577). The limits come with the concepts the form already loads (`hiAbsolute,lowAbsolute` added to the `conceptreferences` representation; a concept that is not numeric has none). A server range error the server leaves untranslated (`error.value.outOfRange.high`/`.low`, `error.outOfRange.high`/`.low`; the REST error names neither field nor limit) shows `valueAboveAcceptedMaximum` / `valueBelowAcceptedMinimum` instead of the key (`.uvl.11`) | none yet |
+| #759 | A provider field (`encounterProvider`, `provider_datasource`) reads every active provider, page by page (`limit=100`): it asked once with the REST default, which returns 50, so at 54 providers four staff were missing from the list. Typed text is searched on the server (`provider?q=`, encoded) when the form marks the field `isSearchable`, as UVL's forms now do. Providers whose identifier is in the new config key `excludedProviderIdentifiers` (default empty; an entry ending with `*` is a prefix) are never offered, nor those in the field's datasource config `excludedIdentifiers`; UVL lists `admin` and `service-account-*` (the Keycloak service accounts). A provider already set on the encounter still shows (`.uvl.12`) | none yet |
 
 UVL lists Admission, Transfer, Transfer Request (the « Ward Admission » form) and Discharge in
 `sessionLocationEncounterTypes`: these are recorded at the ward the user works in. Every other UVL
@@ -56,11 +58,11 @@ To rebuild, with Node 22:
 
 ```sh
 # library
-cd openmrs-esm-form-engine-lib          # branch uvl/5.0.1-pre.2754-751
+cd openmrs-esm-form-engine-lib          # branch uvl/5.0.1-pre.2754-759
 yarn install --immutable && yarn test && yarn build
 
 # app, bundling that library build
-cd openmrs-esm-patient-chart            # branch uvl/form-engine-13.0.2-pre.12863-751
+cd openmrs-esm-patient-chart            # branch uvl/form-engine-13.0.2-pre.12863-759
 yarn install --immutable
 rsync -a --delete ../openmrs-esm-form-engine-lib/dist/ node_modules/@openmrs/esm-form-engine-lib/dist/
 # the library's types are its src/ (package.json "types"): without it the app build fails on the new props
