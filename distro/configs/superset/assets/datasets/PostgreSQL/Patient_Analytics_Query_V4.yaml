@@ -1,5 +1,5 @@
 table_name: Patient Analytics Query V4
-main_dttm_col: Visit Date
+main_dttm_col: Date de visite
 description: null
 default_endpoint: null
 offset: 0
@@ -7,9 +7,17 @@ cache_timeout: null
 schema: public
 sql: "-- ============================================================================\n\
   -- UVL-EMR Superset Visits Dashboard \u2014 V5 (performance rewrite of V4)\n-- https://github.com/MadiroGlobalHealth/UVL-EMR/issues/205\n\
-  --\n-- Behaviour is identical to \"Patient Analytics Query V4\". The ONLY change\
-  \ is\n-- the three cost CTEs (lab_test_cost_data / procedure_cost_data /\n-- drug_cost_data).\
-  \ V4 ran a CORRELATED sub-query per (visit x sale_order_line)\n-- row (11,487 executions,\
+  --\n-- #222 (17 Nov 2026): \xAB Lieu \xBB was the location where the visit was OPENED\
+  \ (reception for\n-- most visits). It is renamed \xAB Lieu d'accueil \xBB, and two\
+  \ columns are added:\n--   \xAB Service (point de prestation) \xBB = location of\
+  \ the visit's consultation encounter:\n--       Outpatient Consultation first, else\
+  \ Inpatient Consultation; if several, the most\n--       recent one (one row per\
+  \ visit, as agreed with the product owner: for FBP what\n--       counts is that\
+  \ a doctor saw the patient);\n--   \xAB M\xE9decin traitant \xBB = \xAB Attending\
+  \ Physician \xBB recorded on that outpatient consultation.\n--\n-- Behaviour is\
+  \ identical to \"Patient Analytics Query V4\". The ONLY change is\n-- the three\
+  \ cost CTEs (lab_test_cost_data / procedure_cost_data /\n-- drug_cost_data). V4\
+  \ ran a CORRELATED sub-query per (visit x sale_order_line)\n-- row (11,487 executions,\
   \ each seq-scanning `encounters`) -> ~17s each, ~50s\n-- total -> Superset 60s timeout.\
   \ V5 pre-computes the per-visit product set once\n-- and joins directly, so the\
   \ whole query runs in well under a second.\n--\n-- Recommended companion indexes\
@@ -131,40 +139,58 @@ sql: "-- =======================================================================
   \        ON sol.customer_uuid = vb.patient_uuid\n        AND sol.order_state NOT\
   \ ILIKE '%cancel%'\n    GROUP BY vb.visit_id\n),\n\n-- \"Insurance\": Odoo pricelist\
   \ is the only insurance signal in prod\n-- (coverage tiers Insurance 50%..100%,\
-  \ not insurer names).\ninsurance_data AS (\n    SELECT DISTINCT ON (vb.visit_id)\n\
+  \ not insurer names).\n-- #222: service point = location of the visit's consultation\
+  \ (outpatient first, latest wins)\nservice_point AS (\n    SELECT DISTINCT ON (vb.visit_id)\n\
+  \        vb.visit_id,\n        e.location       AS service_location,\n        e.encounter_uuid\
+  \ AS consult_encounter_uuid\n    FROM visit_base vb\n    JOIN encounters e\n   \
+  \     ON e.visit_uuid = vb.visit_uuid\n        AND COALESCE(e.encounter_voided,\
+  \ false) = false\n        AND e.encounter_type_uuid IN ('0ff55309-1897-476b-a647-c7c180b102c8',\
+  \   -- Outpatient Consultation\n                                      '43f383ec-90fd-4273-be45-9c1906dda9aa')\
+  \   -- Inpatient Consultation\n    ORDER BY vb.visit_id,\n             (e.encounter_type_uuid\
+  \ = '0ff55309-1897-476b-a647-c7c180b102c8') DESC,\n             e.encounter_datetime\
+  \ DESC, e.encounter_id DESC\n),\n\n-- #222: treating doctor = \xAB Attending Physician\
+  \ \xBB on that consultation\ntreating_doctor AS (\n    SELECT\n        sp.visit_id,\n\
+  \        (ARRAY_AGG(o.answer_text ORDER BY o.obs_date_time DESC))[1] AS doctor\n\
+  \    FROM service_point sp\n    JOIN observations o\n        ON o.encounter_uuid\
+  \ = sp.consult_encounter_uuid\n        AND COALESCE(o.obs_voided, false) = false\n\
+  \        AND o.question_uuid = 'caa77817-7440-4cef-8d94-555733f23a5a'\n    GROUP\
+  \ BY sp.visit_id\n),\n\ninsurance_data AS (\n    SELECT DISTINCT ON (vb.visit_id)\n\
   \        vb.visit_id,\n        COALESCE(sol.pricelist, '-') AS insurance\n    FROM\
   \ visit_base vb\n    LEFT JOIN sale_order_lines sol\n        ON sol.customer_uuid\
   \ = vb.patient_uuid\n        AND sol.order_state NOT ILIKE '%cancel%'\n    ORDER\
   \ BY vb.visit_id, sol.line_creation_date DESC\n)\n\nSELECT\n    vb.visit_id    \
   \                             AS \"ID de visite\",\n    vb.visit_date          \
   \                     AS \"Date de visite\",\n    vb.location                  \
-  \               AS \"Lieu\",\n    REGEXP_REPLACE(\n      CASE\n          WHEN vb.patient_id\
-  \ LIKE '%UVL ID:%' THEN\n              TRIM(SPLIT_PART(\n                  SUBSTRING(vb.patient_id\
-  \ FROM POSITION('UVL ID: ' IN vb.patient_id) + LENGTH('UVL ID: ')),\n          \
-  \        ',', 1))\n          ELSE vb.patient_id\n      END,\n      '([A-Za-z])([0-9])',\
-  \ \n      '\\1-\\2'\n    )                                           AS \"ID du\
-  \ patient\",\n    CASE\n        WHEN vb.patient_id LIKE '%Burundi CNI:%' THEN\n\
-  \            TRIM(SPLIT_PART(\n                SUBSTRING(vb.patient_id FROM POSITION('Burundi\
-  \ CNI: ' IN vb.patient_id) + LENGTH('Burundi CNI: ')),\n                ',', 1))\n\
-  \        ELSE '-'\n    END                                         AS \"CNI Burundi\"\
-  ,\n    COALESCE(bcd.birth_certificate, '-')        AS \"Acte de naissance\",\n \
-  \   vb.dob                                      AS \"Date de naissance\",\n    vb.age\
-  \                                      AS \"\xC2ge\",\n    vb.gender           \
-  \                        AS \"Sexe\",\n    COALESCE(vb.province, '-')          \
-  \        AS \"Province\",\n    COALESCE(vb.commune, '-')                   AS \"\
-  Commune\",\n    COALESCE(vb.zone, '-')                      AS \"Zone\",\n    COALESCE(vb.colline,\
-  \ '-')                   AS \"Colline\",\n    COALESCE(ps.pregnancy, '-')      \
-  \           AS \"Grossesse\",\n    COALESCE(ccd.chief_complaints, '-')         AS\
-  \ \"Motifs de consultation\",\n    COALESCE(ed.encounter_list, '')             AS\
-  \ \"Liste des rencontres\",\n    COALESCE(ed.encounter_count, 0)             AS\
-  \ \"Nombre de rencontres\",\n    COALESCE(dd.diagnosis_list, '')             AS\
-  \ \"Liste des diagnostics\",\n    COALESCE(dd.diagnosis_count, 0)             AS\
-  \ \"Nombre de diagnostics\",\n    COALESCE(dd.confirmed_diagnosis_list, '')   AS\
-  \ \"Liste des diagnostics confirm\xE9s\",\n    COALESCE(dd.confirmed_diagnosis_count,\
-  \ 0)   AS \"Nombre de diagnostics confirm\xE9s\",\n    COALESCE(ltd.lab_tests_list,\
-  \ '')            AS \"Liste des examens de laboratoire\",\n    COALESCE(ltd.lab_test_count,\
-  \ 0)             AS \"Nombre d'examens de laboratoire\",\n    COALESCE(lcd.lab_test_cost,\
-  \ 0)              AS \"Co\xFBt des examens de laboratoire\",\n    COALESCE(pd.procedure_list,\
+  \               AS \"Lieu d'accueil\",\n    COALESCE(sp.service_location, '-') \
+  \         AS \"Service (point de prestation)\",\n    COALESCE(td.doctor, '-')  \
+  \                  AS \"M\xE9decin traitant\",\n    REGEXP_REPLACE(\n      CASE\n\
+  \          WHEN vb.patient_id LIKE '%UVL ID:%' THEN\n              TRIM(SPLIT_PART(\n\
+  \                  SUBSTRING(vb.patient_id FROM POSITION('UVL ID: ' IN vb.patient_id)\
+  \ + LENGTH('UVL ID: ')),\n                  ',', 1))\n          ELSE vb.patient_id\n\
+  \      END,\n      '([A-Za-z])([0-9])', \n      '\\1-\\2'\n    )               \
+  \                            AS \"ID du patient\",\n    CASE\n        WHEN vb.patient_id\
+  \ LIKE '%Burundi CNI:%' THEN\n            TRIM(SPLIT_PART(\n                SUBSTRING(vb.patient_id\
+  \ FROM POSITION('Burundi CNI: ' IN vb.patient_id) + LENGTH('Burundi CNI: ')),\n\
+  \                ',', 1))\n        ELSE '-'\n    END                           \
+  \              AS \"CNI Burundi\",\n    COALESCE(bcd.birth_certificate, '-')   \
+  \     AS \"Acte de naissance\",\n    vb.dob                                    \
+  \  AS \"Date de naissance\",\n    vb.age                                      AS\
+  \ \"\xC2ge\",\n    vb.gender                                   AS \"Sexe\",\n  \
+  \  COALESCE(vb.province, '-')                  AS \"Province\",\n    COALESCE(vb.commune,\
+  \ '-')                   AS \"Commune\",\n    COALESCE(vb.zone, '-')           \
+  \           AS \"Zone\",\n    COALESCE(vb.colline, '-')                   AS \"\
+  Colline\",\n    COALESCE(ps.pregnancy, '-')                 AS \"Grossesse\",\n\
+  \    COALESCE(ccd.chief_complaints, '-')         AS \"Motifs de consultation\",\n\
+  \    COALESCE(ed.encounter_list, '')             AS \"Liste des rencontres\",\n\
+  \    COALESCE(ed.encounter_count, 0)             AS \"Nombre de rencontres\",\n\
+  \    COALESCE(dd.diagnosis_list, '')             AS \"Liste des diagnostics\",\n\
+  \    COALESCE(dd.diagnosis_count, 0)             AS \"Nombre de diagnostics\",\n\
+  \    COALESCE(dd.confirmed_diagnosis_list, '')   AS \"Liste des diagnostics confirm\xE9\
+  s\",\n    COALESCE(dd.confirmed_diagnosis_count, 0)   AS \"Nombre de diagnostics\
+  \ confirm\xE9s\",\n    COALESCE(ltd.lab_tests_list, '')            AS \"Liste des\
+  \ examens de laboratoire\",\n    COALESCE(ltd.lab_test_count, 0)             AS\
+  \ \"Nombre d'examens de laboratoire\",\n    COALESCE(lcd.lab_test_cost, 0)     \
+  \         AS \"Co\xFBt des examens de laboratoire\",\n    COALESCE(pd.procedure_list,\
   \ '')             AS \"Liste des proc\xE9dures\",\n    COALESCE(pd.procedure_count,\
   \ 0)             AS \"Nombre de proc\xE9dures\",\n    COALESCE(pcd.procedure_cost,\
   \ 0)             AS \"Co\xFBt des proc\xE9dures\",\n    COALESCE(drd.drugs_list,\
@@ -184,7 +210,9 @@ sql: "-- =======================================================================
   LEFT JOIN procedure_cost_data    pcd ON pcd.visit_id = vb.visit_id\nLEFT JOIN drug_cost_data\
   \         dcd ON dcd.visit_id = vb.visit_id\nLEFT JOIN invoice_data           id\
   \  ON id.visit_id  = vb.visit_id\nLEFT JOIN insurance_data         ins ON ins.visit_id\
-  \ = vb.visit_id\nORDER BY vb.visit_date DESC, vb.visit_id;\n"
+  \ = vb.visit_id\nLEFT JOIN service_point          sp  ON sp.visit_id  = vb.visit_id\n\
+  LEFT JOIN treating_doctor        td  ON td.visit_id  = vb.visit_id\nORDER BY vb.visit_date\
+  \ DESC, vb.visit_id;\n"
 params: null
 template_params: null
 filter_select_enabled: true
@@ -552,7 +580,7 @@ columns:
   description: null
   python_date_format: null
   extra: null
-- column_name: Lieu
+- column_name: Lieu d'accueil
   verbose_name: null
   is_dttm: false
   is_active: true
@@ -589,6 +617,30 @@ columns:
   python_date_format: null
   extra: null
 - column_name: Zone
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: Service (point de prestation)
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: "M\xE9decin traitant"
   verbose_name: null
   is_dttm: false
   is_active: true
