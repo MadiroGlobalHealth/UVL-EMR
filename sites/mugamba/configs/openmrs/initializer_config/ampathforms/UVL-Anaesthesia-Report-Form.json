@@ -88,6 +88,8 @@
               "label": "Duration of Anaesthesia (min)",
               "type": "obs",
               "id": "anaesthesiaDuration",
+              "readonly": true,
+              "questionInfo": "Calculated from the start and end times",
               "questionOptions": {
                 "rendering": "number",
                 "concept": "e97f88cb-a37e-42b2-8830-16e75ffe2bf9",
@@ -127,6 +129,8 @@
               "label": "Duration of the Procedure (min)",
               "type": "obs",
               "id": "surgeryDuration",
+              "readonly": true,
+              "questionInfo": "Calculated from the start and end times",
               "questionOptions": {
                 "rendering": "number",
                 "concept": "545878d1-6198-4dab-9a90-952e38b8e306",

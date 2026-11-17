@@ -3247,4 +3247,33 @@
         </rollback>
     </changeSet>
 
+    <!--
+        #729 - every user gets a provider account. The order basket's lab test search reads the
+        session's `currentProvider.uuid`, and a user without a provider has a null currentProvider, so
+        adding a test failed with « Cannot read properties of null (reading 'uuid') », from the
+        consultation forms' « Order Tests » button as from the chart. Signing the basket needs the
+        provider as orderer too.
+        Users who sign in through Keycloak get a provider on their first login. The ones left without
+        are the local `admin` (add_admin_provider-202407101630 was MARK_RAN wherever provider_id 1 was
+        already taken, as on UAT) and accounts made before SSO. Each gets one with its username as
+        identifier, as the SSO login creates it. The daemon user is skipped; a user whose provider was
+        retired keeps it retired.
+    -->
+    <changeSet id="add_missing_user_providers-20261117" author="Joshua">
+        <comment>
+            Create a provider for every active user whose person has none (#729).
+        </comment>
+        <sql>
+            INSERT INTO provider (person_id, identifier, creator, date_created, retired, uuid)
+            SELECT u.person_id, MIN(COALESCE(NULLIF(u.username, ''), u.system_id)), 1, NOW(), 0, UUID()
+              FROM users u
+             WHERE u.retired = 0
+               AND u.person_id IS NOT NULL
+               AND u.system_id &lt;&gt; 'daemon'
+               AND NOT EXISTS (SELECT 1 FROM provider p WHERE p.person_id = u.person_id)
+             GROUP BY u.person_id;
+        </sql>
+        <rollback/>
+    </changeSet>
+
 </databaseChangeLog>
