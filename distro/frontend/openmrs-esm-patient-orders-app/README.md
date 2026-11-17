@@ -5,6 +5,7 @@ commit CI run 12863 published; its source is identical to the npm package) with 
 released upstream yet. Only the built module is here; the source is
 `jnsereko/openmrs-esm-patient-chart`, branch `uvl/760-orders-date-utc` (on top of
 `uvl/752-orders-decimal-display`, `uvl/727-orders-decimal-separator`, `uvl/orders-13.0.2-pre.12863-691` and
+`jnsereko/openmrs-esm-patient-chart`, branch `uvl/752-orders-decimal-display` (on top of
 `uvl/orders-13.0.2-pre.12863-patched`).
 
 | UVL-EMR | Fix | Upstream PR |
