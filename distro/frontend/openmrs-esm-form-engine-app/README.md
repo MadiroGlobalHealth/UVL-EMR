@@ -28,6 +28,17 @@ UVL lists Admission, Transfer, Transfer Request (the « Ward Admission » form) 
 form counts under the visit's service. The vitals app (#678), the order basket and visit notes
 (#691) follow the same rule; immunizations are not patched (UVL records none).
 
+The browser console logs `Unknown config key '@openmrs/esm-form-engine-app.sessionLocationEncounterTypes'
+provided. Ignoring.` when a form opens. That is not true (#724): the key is in this build's schema
+(`src/config-schema.ts` of the app branch) and its value is used. Frontend core 11.0.0 checks the
+form widget's config against the bare implicit schema when the widget mounts, before the module's
+`startupApp()` has defined the real one, and despite « Ignoring » it keeps the value. Checked on UAT
+(build b31, 16–17 Nov 2026): Transfer Request encounters were filed at the user's ward when the
+visit was elsewhere, while every other form encounter sat at its visit's location. Fixed upstream in
+openmrs/openmrs-esm-core#1946 (O3-6135), not in a release yet; the warning goes when `coreVersion`
+moves to a core that contains it. A key the module really does not know would be logged too, so
+check a new key against `config-schema.ts` rather than the console.
+
 The other patient-chart apps stay on the npm 13.0.2-pre.12863 packages.
 
 ## Build and ship
