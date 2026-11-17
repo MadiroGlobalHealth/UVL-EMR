@@ -1812,7 +1812,7 @@
               }
             },
             {
-              "label": "Provider:",
+              "label": "Provider",
               "type": "encounterProvider",
               "id": "encProvider",
               "questionOptions": {

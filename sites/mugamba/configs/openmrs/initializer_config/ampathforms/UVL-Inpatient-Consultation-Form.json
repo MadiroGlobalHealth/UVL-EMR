@@ -1360,7 +1360,7 @@
               }
             },
             {
-              "label": "Provider:",
+              "label": "Provider",
               "type": "encounterProvider",
               "required": "false",
               "questionOptions": {
