@@ -5,7 +5,8 @@ commit CI run 12863 published; its source is identical to the npm package) with 
 released upstream yet. Only the built module is here; the source is
 `jnsereko/openmrs-esm-patient-chart`, branch `uvl/vitals-13.0.2-pre.12863-patched`.
 The #564 changes are on branch `uvl/564-vitals-normal-ranges`, #678 on top of them on
-`uvl/678-vitals-visit-location`, and #680 on top of that on `uvl/680-vitals-whole-numbers`.
+`uvl/678-vitals-visit-location`, #680 on top of that on `uvl/680-vitals-whole-numbers`, and #719 on top
+of that on `uvl/719-decimal-separator`.
 
 | UVL-EMR | Fix | Upstream PR |
 |---|---|---|
@@ -13,6 +14,7 @@ The #564 changes are on branch `uvl/564-vitals-normal-ranges`, #678 on top of th
 | #564 | The vitals form shows each vital's normal range under its input ("Normal: 60–100"; blood pressure as systolic / diastolic), from the concept's reference range for the patient. Values outside it are still flagged and still saved; only the absolute limits block saving. The range is inserted unescaped, so the slash shows as "/" and not "&#x2F;" (`.uvl.3`) | openmrs/openmrs-esm-patient-chart#3873 |
 | #678 | A new vitals encounter is filed at its visit's location (the service chosen when the visit started), not the user's session location; a visit without a location falls back to the session location, and an edit leaves the location alone (`.uvl.4`) | none yet |
 | #680 | A field whose concept takes whole numbers only (`allowDecimal` false, read with the vital signs set's members) refuses a decimal: the input says so at once, and Save names the fields instead of sending a value OpenMRS would reject with `Obs.error.precision` (`.uvl.5`) | none yet |
+| #719 | A number field is a text input (`inputMode` decimal) that takes a dot or a comma as the decimal point: "36.4" and "36,4" both save 36.4. It was `<input type="number">`, which on a French-locale Windows browser empties itself on a typed dot ("36.4" saved as 4) and elsewhere read "36,4" as 364. Letters and a second separator are ignored as typed; the whole-number rule (#680), the normal-range flags and the absolute limits are unchanged (`.uvl.6`) | none yet |
 
 The other patient-chart apps stay on the npm 13.0.2-pre.12863 packages.
 
