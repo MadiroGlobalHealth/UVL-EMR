@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunk_openmrs_esm_laboratory_app=globalThis.webpackChunk_openmrs_esm_laboratory_app||[]).push([["8435"],{6772(e,a,l){l.r(a),l.d(a,{default:()=>n});var r=l(7586),s=l.n(r),t=l(3136);let n=()=>s().createElement(t.A,{fulfillerStatus:"DRAFT",useFilter:!1,excludeCanceledAndDiscontinuedOrders:!1})}}]);
