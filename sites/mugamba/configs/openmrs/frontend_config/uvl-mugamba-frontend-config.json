@@ -781,7 +781,8 @@
         "invalidFieldsSummary_other": "{{count}} champs à compléter ou à corriger ; premier : {{- label}}",
         "time": "Heure",
         "visitHasEnded": "Cette visite est terminée",
-        "visitEndedSaveToSaveInIt": "La visite a été clôturée le {{- stopDatetime}}. Le formulaire est conservé : cliquez à nouveau sur « Enregistrer » pour l'enregistrer dans cette visite."
+        "visitEndedSaveToSaveInIt": "La visite a été clôturée le {{- stopDatetime}}. Le formulaire est conservé : cliquez à nouveau sur « Enregistrer » pour l'enregistrer dans cette visite.",
+        "textNotPickedFromList": "« {{- text}} » n'est pas enregistré : choisissez une entrée de la liste, ou videz le champ"
       }
     }
   },
