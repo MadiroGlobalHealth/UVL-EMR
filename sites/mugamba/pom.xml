@@ -363,6 +363,23 @@ Fails the build on a Keycloak openmrs client role or an inherited role that
               </scripts>
             </configuration>
           </execution>
+          <execution>
+            <!--
+              Fails the build on a Concept attribute in the patient banner's contact details,
+              which cannot render it, or a banner attribute type the site does not define
+              (#753). See the script.
+            -->
+            <id>Check the patient banner attributes</id>
+            <goals>
+              <goal>execute</goal>
+            </goals>
+            <phase>prepare-package</phase>
+            <configuration>
+              <scripts>
+                <script>file://${project.basedir}/../../scripts/check-patient-banner.groovy</script>
+              </scripts>
+            </configuration>
+          </execution>
         </executions>
         <dependencies>
           <!-- Same Groovy line as the bundled-docker profile's groovy-templates. -->
