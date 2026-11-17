@@ -6,8 +6,8 @@ released upstream yet. Only the built module is here; the source is
 `jnsereko/openmrs-esm-patient-chart`, branch `uvl/vitals-13.0.2-pre.12863-patched`.
 The #564 changes are on branch `uvl/564-vitals-normal-ranges`, #678 on top of them on
 `uvl/678-vitals-visit-location`, #680 on top of that on `uvl/680-vitals-whole-numbers`, #719 on top
-of that on `uvl/719-decimal-separator`, #726 on top of that on `uvl/726-vitals-french-pulse-unit`, and
-#723 on top of that on `uvl/723-vitals-decimal-display`.
+of that on `uvl/719-decimal-separator`, #726 on top of that on `uvl/726-vitals-french-pulse-unit`,
+#723 on top of that on `uvl/723-vitals-decimal-display`, and #752 on top of that on `uvl/752-vitals-celsius`.
 
 | UVL-EMR | Fix | Upstream PR |
 |---|---|---|
@@ -18,6 +18,7 @@ of that on `uvl/719-decimal-separator`, #726 on top of that on `uvl/726-vitals-f
 | #719 | A number field is a text input (`inputMode` decimal) that takes a dot or a comma as the decimal point: "36.4" and "36,4" both save 36.4. It was `<input type="number">`, which on a French-locale Windows browser empties itself on a typed dot ("36.4" saved as 4) and elsewhere read "36,4" as 364. Letters and a second separator are ignored as typed; the whole-number rule (#680), the normal-range flags and the absolute limits are unchanged (`.uvl.6`) | none yet |
 | #726 | Concept units that are words are written in the session's language: the pulse's « beats/min » reads « batt/min » in French (and a « breaths/min » unit « resp/min »), in the form, the header tiles, the normal ranges, the history table and the charts. Symbols (mmHg, kg, %, C) are shown as stored. New keys `unitBeatsPerMinute`, `unitBreathsPerMinute` (`.uvl.7`) | none yet |
 | #723 | Decimals are shown with the session language's decimal mark, « 36,4 » in French: the header tiles, the vitals and biometrics history tables, the weight tile, the normal ranges (under each input and in « Valeurs normales »), the computed BMI, a value loaded to edit an encounter, and the limits of the « between … and … » message. Only the mark changes, never the digits; sorting and flags still use the stored numbers, and the fields still take a dot or a comma (#719). The charts are drawn by Carbon Charts and keep their own number format (`.uvl.9`; `.uvl.8` reached UAT with the French translations of the main build and is not to be reused) | none yet |
+| #752 | A temperature unit stored as the bare letter « C » (UVL's temperature concept), or CIEL's « DEG C », is written « °C »: the header tile read « Temp 37,2 C ». Same place as #726, `translateUnit`, so the form, history and charts follow (`.uvl.10`) | none yet |
 
 The other patient-chart apps stay on the npm 13.0.2-pre.12863 packages.
 
