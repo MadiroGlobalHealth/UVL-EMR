@@ -55,7 +55,6 @@
     "Negative": "Negative",
     "Neonatology": "Neonatology",
     "New Case": "New Case",
-    "New Prescription": "New Prescription",
     "New Test Order": "New Test Order",
     "No": "No",
     "Nosocomial Infections": "Nosocomial Infections",
@@ -121,6 +120,7 @@
     "Comprimés de quinine": "Quinine Tablets",
     "Injection d'artésunate": "Artesunate Injection",
     "Ambulatoire": "Outpatient",
+    "Inconnu": "Unknown",
     "décès": "death"
   }
 }
