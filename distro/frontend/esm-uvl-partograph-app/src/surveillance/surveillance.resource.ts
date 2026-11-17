@@ -65,6 +65,27 @@ export function displayValue(value: unknown): string | undefined {
   return String(value);
 }
 
+/**
+ * A value as the session's language writes it: « 36,8 » in French, "36.8" in English (#752). Only the
+ * decimal mark of a number changes, never its digits; any other text (a coded answer, "1 h") is
+ * returned as it is.
+ */
+export function formatDecimal(text: string, locale: string | undefined): string {
+  if (!/^-?\d+\.\d+$/.test(text)) {
+    return text;
+  }
+  return text.replace('.', decimalSeparator(locale));
+}
+
+function decimalSeparator(locale: string | undefined): string {
+  try {
+    return new Intl.NumberFormat(locale).formatToParts(1.5).find((part) => part.type === 'decimal')?.value ?? '.';
+  } catch {
+    // A language tag Intl does not take
+    return '.';
+  }
+}
+
 function rowsFor(
   configured: Array<string>,
   values: Array<Record<string, string>>,

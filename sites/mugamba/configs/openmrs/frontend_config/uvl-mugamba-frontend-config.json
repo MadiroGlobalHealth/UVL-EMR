@@ -458,6 +458,19 @@
       "c108c6bc-5f23-4e4a-ad34-8c788b86f288",
       "a8122ab5-de1f-4f0a-b882-7c5b375f4faa"
     ],
+    "extensionSlots": {
+      "patient-banner-tags-slot": {
+        "add": ["person-attribute-tag#marital-status", "person-attribute-tag#occupation"],
+        "configure": {
+          "person-attribute-tag#marital-status": {
+            "attributeType": "c65ebb91-0de1-4622-9af4-bf9e19ea569b"
+          },
+          "person-attribute-tag#occupation": {
+            "attributeType": "96a9f1a6-7bd4-4147-a5b3-98b1f6137340"
+          }
+        }
+      }
+    },
     "Translation overrides": {
       "fr": {
         "pastVisitWithDate": "Visite passée : {{date}}"
@@ -660,6 +673,12 @@
     },
     "search": {
       "showRecentlySearchedPatients": false
+    },
+    "Translation overrides": {
+      "fr": {
+        "checkedInPatients": "Patients arrivés",
+        "noCheckedInPatients": "Aucun patient enregistré n'attend d'être ajouté à une file d'attente à ce lieu"
+      }
     }
   },
   "@openmrs/esm-patient-programs-app": {
@@ -782,7 +801,9 @@
         "time": "Heure",
         "visitHasEnded": "Cette visite est terminée",
         "visitEndedSaveToSaveInIt": "La visite a été clôturée le {{- stopDatetime}}. Le formulaire est conservé : cliquez à nouveau sur « Enregistrer » pour l'enregistrer dans cette visite.",
-        "textNotPickedFromList": "« {{- text}} » n'est pas enregistré : choisissez une entrée de la liste, ou videz le champ"
+        "textNotPickedFromList": "« {{- text}} » n'est pas enregistré : choisissez une entrée de la liste, ou videz le champ",
+        "valueAboveAcceptedMaximum": "Une valeur dépasse le maximum accepté pour sa question : vérifiez les nombres saisis dans le formulaire",
+        "valueBelowAcceptedMinimum": "Une valeur est inférieure au minimum accepté pour sa question : vérifiez les nombres saisis dans le formulaire"
       }
     }
   },
@@ -826,6 +847,57 @@
   "@openmrs/esm-appointments-app": {
     "Display conditions": {
       "privileges": ["Manage Appointments"]
+    },
+    "Translation overrides": {
+      "fr": {
+        "action": "Action",
+        "addAppointments": "Ajouter des rendez-vous",
+        "appointmentCheckedInAfterVisitStarted": "La visite a été démarrée et le rendez-vous enregistré",
+        "appointmentCheckedInWithExistingVisit": "Rendez-vous enregistré dans la visite en cours",
+        "appointmentCheckInFailed": "Une erreur est survenue lors de l'enregistrement du rendez-vous",
+        "appointmentCount_one": "{{count}} rendez-vous",
+        "appointmentCount_other": "{{count}} rendez-vous",
+        "appointmentsForDate": "Rendez-vous du {{date}}",
+        "appointmentsUpdated": "Rendez-vous mis à jour",
+        "appointmentsUpdatedMessage": "Les rendez-vous des patients sélectionnés ont été mis à jour",
+        "appointmentsUpdateFailed": "Échec de la mise à jour des rendez-vous",
+        "appointmentsUpdateFailedMessage": "Échec de la mise à jour des rendez-vous de {{patient}}. Motif : {{reason}}",
+        "appt": "rdv",
+        "appts": "rdv",
+        "Cancelled": "Annulé",
+        "changeAppointmentsStatus": "Changer le statut des rendez-vous",
+        "changeStatus": "Changer le statut",
+        "changeStatusForSelectedAppointments": "Changer le statut des rendez-vous suivants.",
+        "CheckedIn": "Enregistré",
+        "checkInFailed": "Échec de l'enregistrement",
+        "close": "Fermer",
+        "Completed": "Terminé",
+        "daily": "Quotidien",
+        "dateTime": "Heure du rendez-vous",
+        "early": "En avance",
+        "failedToEndActiveVisit": "Échec de la clôture de la visite en cours de {{patient}}",
+        "failedToUpdateVisit": "Échec de la mise à jour de la visite",
+        "filterAppointmentsByStatus": "Filtrer les rendez-vous par statut",
+        "invalidAppointmentStatusChange": "Impossible de passer un rendez-vous du statut {{currentStatus}} au statut {{newStatus}}",
+        "loadingAppointments": "Chargement des rendez-vous…",
+        "markAppointmentAsCompletedMessage": "Marquer le rendez-vous comme terminé met fin à la visite en cours du patient",
+        "Missed": "Manqué",
+        "monthly": "Mensuel",
+        "more": "autres",
+        "newAppointment": "Nouveau rendez-vous",
+        "noAppointments": "Aucun rendez-vous prévu",
+        "openDayView": "Ouvrir la vue du jour",
+        "previous": "Précédent",
+        "Requested": "Demandé",
+        "saving": "Enregistrement",
+        "Scheduled": "Programmé",
+        "selectStatus": "Choisir un statut",
+        "THU": "JEU",
+        "todaysAppointment": "Rendez-vous du jour",
+        "Virtual": "Virtuel",
+        "visitStartTime": "Heure de début de la visite",
+        "WalkIn": "Sans rendez-vous"
+      }
     }
   },
   "@openmrs/esm-patient-lists-app": {

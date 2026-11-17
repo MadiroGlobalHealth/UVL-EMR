@@ -1,17 +1,25 @@
 import React from 'react';
-import { beforeAll, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 import { render, screen, within } from '@testing-library/react';
 import { useConfig, useOpenmrsFetchAll } from '@openmrs/esm-framework';
 import i18next from 'i18next';
 import en from '../../translations/en.json';
 import type { SurveillanceConfig } from '../config-schema';
 import SurveillanceTable from './surveillance-table.component';
-import { surveillanceUrl, toSurveillanceTable, type SurveillanceEncounter } from './surveillance.resource';
+import {
+  formatDecimal,
+  surveillanceUrl,
+  toSurveillanceTable,
+  type SurveillanceEncounter,
+} from './surveillance.resource';
 
 // A real i18next with the module's strings, so the newborn headings are interpolated.
 const i18n = vi.hoisted(() => ({ instance: undefined as any }));
 vi.mock('react-i18next', () => ({
-  useTranslation: () => ({ t: (...args: Array<any>) => i18n.instance.t(...args) }),
+  useTranslation: () => ({
+    t: (...args: Array<any>) => i18n.instance.t(...args),
+    i18n: { language: i18n.instance.language },
+  }),
 }));
 
 beforeAll(async () => {
@@ -151,6 +159,18 @@ describe('toSurveillanceTable', () => {
   });
 });
 
+describe('formatDecimal', () => {
+  it("writes a decimal with the session language's mark, and leaves anything else alone (#752)", () => {
+    expect(formatDecimal('36.8', 'fr')).toBe('36,8');
+    expect(formatDecimal('-0.5', 'fr')).toBe('-0,5');
+    expect(formatDecimal('36.8', 'en')).toBe('36.8');
+    expect(formatDecimal('36.8', undefined)).toBe('36.8');
+    expect(formatDecimal('140', 'fr')).toBe('140');
+    expect(formatDecimal('1 h', 'fr')).toBe('1 h');
+    expect(formatDecimal('Born alive', 'fr')).toBe('Born alive');
+  });
+});
+
 describe('surveillanceUrl', () => {
   it('asks for the newborn groups with their members, and nothing without an encounter type', () => {
     expect(surveillanceUrl('patient-uuid', 'surveillance-type')).toContain(
@@ -203,5 +223,29 @@ describe('SurveillanceTable', () => {
       ['Newborn 2'],
       ['Pulse', '--', '150'],
     ]);
+  });
+
+  describe('in a French session', () => {
+    beforeAll(async () => {
+      await i18n.instance.changeLanguage('fr');
+    });
+    afterEach(async () => {
+      await i18n.instance.changeLanguage('en');
+    });
+
+    it('writes decimals with a comma (#752)', () => {
+      withData([
+        {
+          uuid: 'at-2h',
+          encounterDatetime: '2026-11-05T10:00:00.000+0000',
+          encounterType: { uuid: 'surveillance-type' },
+          obs: [obs('time-point', 'Time point', { uuid: 'two-hours', display: '2 h' }), obs('temperature', 'Temp', 36.8)],
+        },
+      ], { motherConcepts: ['temperature'] });
+      render(<SurveillanceTable patientUuid="patient-uuid" />);
+
+      const temperature = screen.getAllByRole('row').find((row) => row.textContent?.startsWith('Temp'));
+      expect(within(temperature).getAllByRole('cell').map((cell) => cell.textContent)).toEqual(['Temp', '36,8']);
+    });
   });
 });
