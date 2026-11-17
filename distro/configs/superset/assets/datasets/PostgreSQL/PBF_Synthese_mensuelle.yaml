@@ -1,0 +1,190 @@
+table_name: "PBF Synth\xE8se mensuelle"
+main_dttm_col: MOIS
+description: "UVL-EMR \xB7 \xAB PBF \u2013 Synth\xE8se mensuelle \xBB (#241). One\
+  \ row per MOIS \xD7 REGISTRE \xD7 CATEGORIE \xD7 ASSURANCE.\nLean rewrite 17 Nov\
+  \ 2026 (the 53 KB version inlining the 4 registers timed out in Superset);\nthe\
+  \ counting rules are those of the registers #586\u2013#589, see their SQL for the\
+  \ sources:\n  1. Consultations per SERVICE (month of the consultation); 2. Journ\xE9\
+  es d'hospitalisation =\n  sum of DUREE per ward (month of exit; open stays not counted);\
+  \ 3. Accouchements per type;\n  4. Chirurgie per PBF level. ASSURANCE = visit \xAB\
+  \ Payer \xBB, else \xAB Sans assurance \xBB.\n(Full annotated SQL: e2e/superset/<register>.annotated.sql;\
+  \ stored SQL is comment-free for speed, 17 Nov 2026.)"
+default_endpoint: null
+offset: 0
+cache_timeout: null
+schema: null
+sql: "WITH pt AS (\n    SELECT p.patient_uuid\n    FROM patients p\n    WHERE COALESCE(p.person_voided,\
+  \ false) = false\n      AND NOT (COALESCE(p.family_name, '') ~* '^(SYNTH-|E2E|QA|TEST|DEMO)'\n\
+  \            OR COALESCE(p.given_name,  '') ~* '^(SYNTH-|E2E|QA|TEST|DEMO)')\n),\n\
+  enc AS (\n    SELECT e.encounter_id, e.encounter_uuid, e.encounter_type_uuid, e.form_name,\
+  \ e.visit_uuid,\n           e.encounter_datetime, e.location, e.location_uuid, v.visit_attributes,\
+  \ v.date_stopped\n    FROM encounters e\n    JOIN pt ON pt.patient_uuid = e.patient_uuid\n\
+  \    LEFT JOIN visits v ON v.visit_uuid = e.visit_uuid\n    WHERE COALESCE(e.encounter_voided,\
+  \ false) = false\n      AND COALESCE(v.visit_voided, false) = false\n      AND e.location_uuid\
+  \ IS DISTINCT FROM '450be362-59a7-4ccd-964d-ebd930a8b30f'\n),\nc AS (\n    SELECT\
+  \ date_trunc('month', e.encounter_datetime)::date AS mois,\n           CASE e.location_uuid\n\
+  \               WHEN '44c3efb0-2583-4c80-a79e-1f756a03c0a1' THEN 'Consultation externe'\n\
+  \               WHEN '9D062929-CC4F-7A51-C700-2B968AADEC34' THEN 'Urgences'\n  \
+  \             WHEN 'e1f4ab17-6dc5-4249-cf38-5bae7dbe9c64' THEN 'Ophtalmologie'\n\
+  \               WHEN 'f2a5bc28-7ed6-435a-da49-6cbf8ecfad75' THEN 'Dentisterie'\n\
+  \               ELSE e.location\n           END AS categorie,\n           NULLIF(TRIM(SUBSTRING(e.visit_attributes\
+  \ FROM '(?:^|/ )Payer: ([^/]*)')), '') AS payer\n    FROM enc e\n    WHERE e.encounter_type_uuid\
+  \ = '0ff55309-1897-476b-a647-c7c180b102c8'\n),\nadt AS (\n    SELECT e.*,\n    \
+  \       CASE e.encounter_type_uuid WHEN 'e22e39fd-7db2-45e7-80f1-60fa0d5a4378' THEN\
+  \ 'A'\n                                      WHEN 'd3b07384-8d1c-4e6b-9b8e-2f3b8e4a1c9f'\
+  \ THEN 'T' ELSE 'D' END AS kind\n    FROM enc e\n    WHERE e.encounter_type_uuid\
+  \ IN ('e22e39fd-7db2-45e7-80f1-60fa0d5a4378', 'd3b07384-8d1c-4e6b-9b8e-2f3b8e4a1c9f',\n\
+  \                                    '181820aa-88c9-479b-9077-af92f5364329')\n),\n\
+  seq AS (\n    SELECT a.*,\n           LEAD(a.kind) OVER w AS next_kind,\n      \
+  \     LEAD(a.encounter_datetime) OVER w AS next_datetime,\n           SUM(CASE WHEN\
+  \ a.kind = 'A' THEN 1 ELSE 0 END) OVER w AS stay_no\n    FROM adt a\n    WINDOW\
+  \ w AS (PARTITION BY a.visit_uuid ORDER BY a.encounter_datetime, a.encounter_id)\n\
+  ),\nst AS (\n    SELECT s.*,\n           MIN(s.encounter_datetime) OVER (PARTITION\
+  \ BY s.visit_uuid, s.stay_no) AS stay_start\n    FROM seq s\n),\nstays AS (\n  \
+  \  SELECT s.*,\n           (SELECT MIN(x.encounter_datetime) FROM adt x\n      \
+  \       WHERE x.visit_uuid = s.visit_uuid AND x.kind = 'A' AND x.encounter_datetime\
+  \ > s.stay_start) AS next_stay_start\n    FROM st s\n    WHERE s.kind IN ('A', 'T')\
+  \ AND s.stay_no > 0\n),\nh AS (\n    SELECT s.location AS categorie,\n         \
+  \  NULLIF(TRIM(SUBSTRING(s.visit_attributes FROM '(?:^|/ )Payer: ((?:[^/]|/(?! ))*)')),\
+  \ '') AS payer,\n           CASE WHEN s.next_kind IS NOT NULL THEN s.next_datetime\n\
+  \                WHEN f.f07 >= s.encounter_datetime THEN f.f07\n               \
+  \ WHEN s.date_stopped >= s.encounter_datetime THEN s.date_stopped\n           END\
+  \ AS exit_dt,\n           s.encounter_datetime AS entry_dt\n    FROM stays s\n \
+  \   LEFT JOIN LATERAL (\n        SELECT MAX(e.encounter_datetime) AS f07\n     \
+  \   FROM enc e\n        WHERE e.visit_uuid = s.visit_uuid\n          AND e.encounter_type_uuid\
+  \ = '669262a8-f351-4d5b-8480-3551734eed8f'\n          AND e.encounter_datetime >=\
+  \ s.stay_start - INTERVAL '1 day'\n          AND (s.next_stay_start IS NULL OR e.encounter_datetime\
+  \ < s.next_stay_start)\n    ) f ON true\n),\ndv AS (\n    SELECT DISTINCT ON (e.visit_uuid)\
+  \ e.visit_uuid, e.encounter_datetime, e.visit_attributes\n    FROM enc e\n    WHERE\
+  \ e.form_name ILIKE '%Delivery Registration%' OR e.form_name ILIKE '%Childbirth\
+  \ Record%'\n    ORDER BY e.visit_uuid, (e.form_name ILIKE '%Delivery Registration%')\
+  \ DESC, e.encounter_datetime, e.encounter_id\n),\ndmode AS (\n    SELECT o.visit_uuid,\n\
+  \           BOOL_OR(o.answer_coded_uuid = '4a8e5f2a-da35-4a5d-aefb-ffabe41e6783'\n\
+  \                   OR (o.question_uuid = '753be061-2a1e-46de-8575-5a1b5a08725e'\n\
+  \                       AND o.answer_coded_uuid IN ('79a559a9-c7aa-4006-98c2-02c530f6f7db',\
+  \ '90a3cdc3-342e-456f-8154-5e6802166584'))) AS cs,\n           BOOL_OR(o.answer_coded_uuid\
+  \ = 'b08d3e60-2e3c-4d23-906c-9e36cd222bea'\n                   AND o.question_uuid\
+  \ <> '753be061-2a1e-46de-8575-5a1b5a08725e') AS dys,\n           BOOL_OR(o.answer_coded_uuid\
+  \ = '3de182b6-f7fe-4185-a7b5-89237593c1f1'\n                   AND o.question_uuid\
+  \ <> '753be061-2a1e-46de-8575-5a1b5a08725e') AS eut\n    FROM observations o\n \
+  \   WHERE o.question_uuid IN ('38eca4cd-21ab-4689-a18b-202a50d34569', '6af027e5-8737-4ce0-8343-79b024cd1989',\n\
+  \                              '753be061-2a1e-46de-8575-5a1b5a08725e')\n      AND\
+  \ COALESCE(o.obs_voided, false) = false\n      AND o.visit_uuid IN (SELECT visit_uuid\
+  \ FROM dv)\n    GROUP BY o.visit_uuid\n),\ndord AS (\n    SELECT DISTINCT e.visit_uuid\n\
+  \    FROM orders r JOIN encounters e ON e.encounter_uuid = r.encounter_uuid\n  \
+  \  WHERE r.concept_uuid IN ('86a76e88-fde2-4bc8-9da1-80064bf35fbb', '455d4174-42ba-4819-89b5-f574e54baa42',\n\
+  \                             '6060ba72-90a2-4ed1-9232-d0bc97c607e2')\n      AND\
+  \ COALESCE(r.voided, false) = false\n      AND e.visit_uuid IN (SELECT visit_uuid\
+  \ FROM dv)\n),\na AS (\n    SELECT date_trunc('month', d.encounter_datetime)::date\
+  \ AS mois,\n           CASE WHEN o.visit_uuid IS NOT NULL OR m.cs THEN 'C\xE9sarienne'\n\
+  \                WHEN m.dys THEN 'Dystocique'\n                WHEN m.eut THEN 'Eutocique'\
+  \ END AS categorie,\n           NULLIF(TRIM(SUBSTRING(d.visit_attributes FROM '(?:^|/\
+  \ )Payer: ((?:[^/]|/(?! ))*)')), '') AS payer\n    FROM dv d\n    LEFT JOIN dmode\
+  \ m ON m.visit_uuid = d.visit_uuid\n    LEFT JOIN dord o ON o.visit_uuid = d.visit_uuid\n\
+  ),\nop AS (\n    SELECT e.*\n    FROM enc e\n    WHERE e.encounter_type_uuid = '090a9937-0fb4-4a0e-9487-96ec0c3f9a38'\
+  \ OR e.form_name ILIKE '%Operation Protocol%'\n),\npr AS (\n    SELECT r.encounter_uuid,\
+  \ e.visit_uuid, SUBSTRING(r.order_name FROM '^[A-Z]{2,3}([1-3])[0-9]{2} ') AS lvl\n\
+  \    FROM orders r JOIN encounters e ON e.encounter_uuid = r.encounter_uuid\n  \
+  \  WHERE r.order_type_uuid = '67a92e56-0f88-11ea-8d71-362b9e155667'\n      AND COALESCE(r.voided,\
+  \ false) = false\n      AND r.order_name ~ '^[A-Z]{2,3}[1-3][0-9]{2} '\n      AND\
+  \ e.visit_uuid IN (SELECT visit_uuid FROM op)\n),\ns AS (\n    SELECT date_trunc('month',\
+  \ o.encounter_datetime)::date AS mois,\n           CASE COALESCE((SELECT MIN(p.lvl)\
+  \ FROM pr p WHERE p.encounter_uuid = o.encounter_uuid),\n                      \
+  \   (SELECT MIN(p.lvl) FROM pr p WHERE p.visit_uuid = o.visit_uuid))\n         \
+  \      WHEN '1' THEN 'Majeure' WHEN '2' THEN 'Interm\xE9diaire' WHEN '3' THEN 'Mineure'\
+  \ END AS categorie,\n           NULLIF(TRIM(SUBSTRING(o.visit_attributes FROM '(?:^|/\
+  \ )Payer: ((?:[^/]|/(?! ))*)')), '') AS payer\n    FROM op o\n)\nSELECT z.mois AS\
+  \ \"MOIS\", z.registre AS \"REGISTRE\", z.categorie AS \"CATEGORIE\",\n       z.assurance\
+  \ AS \"ASSURANCE\", z.valeur AS \"VALEUR\"\nFROM (\n    SELECT mois, '1. Consultations'\
+  \ AS registre, COALESCE(categorie, 'Non renseign\xE9') AS categorie,\n         \
+  \  COALESCE(payer, 'Sans assurance') AS assurance, COUNT(*)::bigint AS valeur\n\
+  \    FROM c GROUP BY 1, 2, 3, 4\n    UNION ALL\n    SELECT date_trunc('month', exit_dt::date)::date,\
+  \ '2. Journ\xE9es d''hospitalisation', COALESCE(categorie, 'Non renseign\xE9'),\n\
+  \           COALESCE(payer, 'Sans assurance'), SUM(GREATEST(exit_dt::date - entry_dt::date,\
+  \ 1))::bigint\n    FROM h WHERE exit_dt IS NOT NULL GROUP BY 1, 2, 3, 4\n    UNION\
+  \ ALL\n    SELECT mois, '3. Accouchements', COALESCE(categorie, 'Non renseign\xE9\
+  '), COALESCE(payer, 'Sans assurance'), COUNT(*)::bigint\n    FROM a GROUP BY 1,\
+  \ 2, 3, 4\n    UNION ALL\n    SELECT mois, '4. Chirurgie', COALESCE(categorie, 'Non\
+  \ renseign\xE9'), COALESCE(payer, 'Sans assurance'), COUNT(*)::bigint\n    FROM\
+  \ s GROUP BY 1, 2, 3, 4\n) z\nORDER BY 1 DESC, 2, 3, 4\n"
+params: null
+template_params: null
+filter_select_enabled: true
+fetch_values_predicate: null
+extra: null
+normalize_columns: false
+always_filter_main_dttm: false
+uuid: 769d6664-609f-4614-9fb7-927c2ec48cab
+metrics:
+- metric_name: count
+  verbose_name: COUNT(*)
+  metric_type: count
+  expression: COUNT(*)
+  description: null
+  d3format: null
+  currency: null
+  extra: null
+  warning_text: null
+columns:
+- column_name: ASSURANCE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: CATEGORIE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: MOIS
+  verbose_name: null
+  is_dttm: true
+  is_active: true
+  type: DATE
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: VALEUR
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: REGISTRE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+version: 1.0.0
+database_uuid: 44c13a30-0c14-402c-b81f-1c93972f5fbc
