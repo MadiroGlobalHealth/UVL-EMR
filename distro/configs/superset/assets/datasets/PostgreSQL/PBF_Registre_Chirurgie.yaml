@@ -1,0 +1,388 @@
+table_name: PBF Registre Chirurgie
+main_dttm_col: DATE
+description: "UVL-EMR \xB7 PBF register \xAB CHIRURGIE \xBB (Superset virtual dataset)\n\
+  https://github.com/MadiroGlobalHealth/UVL-EMR/issues/589   (related #586 #587 #582)\n\
+  Shape: one row per operation (UVL Operation Protocol form encounter), columns in\n\
+  the order of the PBF template.\nSources (13 Nov 2026). The analytics DB has no Operation\
+  \ Protocol encounter yet,\nso the encounter is selected by FORM NAME and the questions\
+  \ by the concept UUIDs\nfound in the analytics \xAB concepts \xBB table (to re-check\
+  \ once the first operations sync):\n  * Operation encounter: encounter type Operation\
+  \ Protocol 090a9937-0fb4-4a0e-9487-96ec0c3f9a38,\n    or encounters.form_name ILIKE\
+  \ '%Operation Protocol%'.\n  * TYPE D'INTERVENTION: obs \xAB Procedure performed\
+  \ (text) \xBB 1cb8cdd5-2ca4-4ace-b1ff-eef6e59a7811\n    or \xAB Procedure \xBB 27fe6714-0bc6-4435-adb0-818538abe42c\
+  \ in the encounter; else the\n    surgical Procedure orders (order type 67a92e56-0f88-11ea-8d71-362b9e155667,\
+  \ PBF code\n    with hundreds digit 1-3, e.g. \xAB GO101 - Cesarean section \xBB\
+  ) of the same encounter,\n    else of the same visit.\n  * TYPE DE CHIRURGIE: from\
+  \ that PBF procedure code: x1xx = Majeure, x2xx = Interm\xE9diaire,\n    x3xx =\
+  \ Mineure (the nomenclature's \xAB Other major / intermediate / minor \u2026 surgery\
+  \ \xBB).\n    Empty when only a free-text procedure is recorded.\n  * TYPE D'ANESTHESIE:\
+  \ \xAB Anaesthesia type (general, loco-regional, local) \xBB\n    e56083c5-658e-4715-85ce-30cd78e0b13b,\
+  \ else \xAB Anesthesia Type \xBB 3017f680-5c3c-4f7b-94e1-6afda9e07eaf.\n    Labelled\
+  \ in French by answer UUID (fixed 16 Nov 2026: \xAB Locale \xBB 6e625252\u2026 has\
+  \ no English\n    name, so the analytics answer name is empty for it).\n  * CHIRURGIEN:\
+  \ \xAB Surgeon (staff member) \xBB 231dd950-8985-4685-91a1-fce38060d57c (current\
+  \ form),\n    else \xAB Surgeon name \xBB 9b01093f-21cc-4723-9ea4-88edfa8fccb8,\
+  \ else \xAB Surgeon \xBB\n    0b21ca75-2fab-4c34-bf4c-f66ae2415829.\n  * CIM10 /\
+  \ DIAGNOSTIC: diagnoses on the operation encounter, else on the latest\n    consultation\
+  \ of the visit before it (Outpatient 0ff55309\u2026 / Inpatient 43f383ec\u2026),\n\
+  \    else the consultation of the visit closest in time (fixed 16 Nov 2026: the\
+  \ form's\n    date field can save the operation at 00:00, before the same-day consultation);\n\
+  \    ICD-10 from the diagnosis concept's \xAB ICD-10-WHO: X \xBB mapping (#584).\n\
+  \  * ASSURANCE / ASSURANCE COMPLEMENTAIRE: visit attributes Payer / Supplementary\
+  \ insurance.\n  * CARTE: person attribute \xAB Num\xE9ro de carte d'assurance \xBB\
+  \ (#582).\n  * SERVICE: \xAB Bloc op\xE9ratoire \xBB for every Operation Protocol\
+  \ encounter (fixed 16 Nov 2026:\n    since #691 the form is saved at the visit's\
+  \ location, so the location is never the\n    theatre). The location where it was\
+  \ saved is kept in \xAB LIEU D'ENREGISTREMENT \xBB.\n  * Test patients excluded\
+  \ (SYNTH- / E2E / QA / TEST / DEMO, voided persons,\n    \xAB Locations test \xBB\
+  \ 450be362-59a7-4ccd-964d-ebd930a8b30f).\n(Full annotated SQL: e2e/superset/<register>.annotated.sql;\
+  \ stored SQL is comment-free for speed, 17 Nov 2026.)\n17 Nov 2026: several answers\
+  \ to a question are joined with \xAB + \xBB (e.g. \xAB Bloc nerveux p\xE9riph\xE9\
+  rique + S\xE9dation \xBB).\n17 Nov 2026 (no N/A): empty text cells show \xAB Sans\
+  \ assurance \xBB (no payer / no card for Cash, Mobile Money, Free healthcare), \xAB\
+  \ Non applicable \xBB, \xAB En cours \xBB (open stay), \xAB Aucun \xBB (no special\
+  \ status), else \xAB Non renseign\xE9 \xBB; counts show 0.\n17 Nov 2026 (providers):\
+  \ CHIRURGIEN = the surgeon staff member's name from the analytics \xAB providers\
+  \ \xBB table (pipeline change 17 Nov 2026)."
+default_endpoint: null
+offset: 0
+cache_timeout: null
+schema: public
+sql: "WITH op AS (\n    SELECT\n        e.encounter_id,\n        e.encounter_uuid,\n\
+  \        e.visit_uuid,\n        e.patient_uuid,\n        e.encounter_datetime,\n\
+  \        e.location\n    FROM encounters e\n    WHERE (e.encounter_type_uuid = '090a9937-0fb4-4a0e-9487-96ec0c3f9a38'\n\
+  \           OR e.form_name ILIKE '%Operation Protocol%')\n      AND COALESCE(e.encounter_voided,\
+  \ false) = false\n      AND e.location_uuid IS DISTINCT FROM '450be362-59a7-4ccd-964d-ebd930a8b30f'\n\
+  ),\nop_obs AS (\n    SELECT o.encounter_uuid, o.question_uuid, STRING_AGG(DISTINCT\
+  \ o.answer, ' + ') AS answer\n    FROM (\n    SELECT\n        o.encounter_uuid,\n\
+  \        o.question_uuid,\n        CASE WHEN o.question_uuid = '231dd950-8985-4685-91a1-fce38060d57c'\n\
+  \             THEN COALESCE((SELECT pr.name FROM providers pr WHERE pr.provider_uuid\
+  \ = o.answer_text), o.answer_text)\n        ELSE\n        CASE o.answer_coded_uuid\n\
+  \            WHEN '0c279f31-78c9-4c5c-9714-0f5bfc19fb1e' THEN 'G\xE9n\xE9rale'\n\
+  \            WHEN '993c7783-e6dd-4786-961a-e658476ea753' THEN 'Loco-r\xE9gionale'\n\
+  \            WHEN '6e625252-c2c7-407a-8dba-406f1c2cf3c7' THEN 'Locale'\n       \
+  \     WHEN '15d1491a-7da2-4ec7-8924-d9cf4a93a7e8' THEN 'Rachianesth\xE9sie'\n  \
+  \          WHEN 'a0727cf8-6180-41cf-b3af-e90ab87a6c80' THEN 'P\xE9ridurale'\n  \
+  \          WHEN 'be06e579-479a-44fa-95fe-09fa5ad49c62' THEN 'Bloc nerveux p\xE9\
+  riph\xE9rique'\n            WHEN '4f768b60-3beb-48a2-bee5-915b30467700' THEN 'S\xE9\
+  dation'\n            ELSE COALESCE(o.answer_coded, o.answer_text, o.answer_coded_uuid)\n\
+  \        END END AS answer\n    FROM observations o\n    WHERE COALESCE(o.obs_voided,\
+  \ false) = false\n      AND o.encounter_uuid IN (SELECT encounter_uuid FROM op)\n\
+  \      AND o.question_uuid IN ('1cb8cdd5-2ca4-4ace-b1ff-eef6e59a7811',\n       \
+  \                       '27fe6714-0bc6-4435-adb0-818538abe42c',\n              \
+  \                'e56083c5-658e-4715-85ce-30cd78e0b13b',\n                     \
+  \         '3017f680-5c3c-4f7b-94e1-6afda9e07eaf',\n                            \
+  \  '231dd950-8985-4685-91a1-fce38060d57c',\n                              '9b01093f-21cc-4723-9ea4-88edfa8fccb8',\n\
+  \                              '0b21ca75-2fab-4c34-bf4c-f66ae2415829')\n    ) o\n\
+  \    GROUP BY o.encounter_uuid, o.question_uuid\n),\nproc AS (\n    SELECT\n   \
+  \     r.encounter_uuid,\n        e.visit_uuid,\n        r.order_name,\n        SUBSTRING(r.order_name\
+  \ FROM '^[A-Z]{2,3}([1-3])[0-9]{2} ') AS level\n    FROM orders r\n    JOIN encounters\
+  \ e ON e.encounter_uuid = r.encounter_uuid\n    WHERE r.order_type_uuid = '67a92e56-0f88-11ea-8d71-362b9e155667'\n\
+  \      AND COALESCE(r.voided, false) = false\n      AND r.order_name ~ '^[A-Z]{2,3}[1-3][0-9]{2}\
+  \ '\n      AND e.visit_uuid IN (SELECT visit_uuid FROM op)\n),\nop_proc AS (\n \
+  \   SELECT\n        o.encounter_id,\n        COALESCE(\n            (SELECT STRING_AGG(DISTINCT\
+  \ p.order_name, '; ') FROM proc p WHERE p.encounter_uuid = o.encounter_uuid),\n\
+  \            (SELECT STRING_AGG(DISTINCT p.order_name, '; ') FROM proc p WHERE p.visit_uuid\
+  \ = o.visit_uuid)\n        ) AS proc_names,\n        COALESCE(\n            (SELECT\
+  \ MIN(p.level) FROM proc p WHERE p.encounter_uuid = o.encounter_uuid),\n       \
+  \     (SELECT MIN(p.level) FROM proc p WHERE p.visit_uuid = o.visit_uuid)\n    \
+  \    ) AS proc_level\n    FROM op o\n),\nenc_dx AS (\n    SELECT\n        ed.encounter_id,\n\
+  \        STRING_AGG(DISTINCT COALESCE(c.name, ed.diagnosis_non_coded), '; ') AS\
+  \ dx_names,\n        STRING_AGG(DISTINCT TRIM(SUBSTRING(c.concept_mappings_source_codes\n\
+  \                                           FROM 'ICD-10-WHO: ([^,]+)')), '; ')\
+  \ AS icd10\n    FROM encounter_diagnoses ed\n    LEFT JOIN concepts c\n        \
+  \   ON c.concept_id = ed.diagnosis_coded\n          AND c.locale = 'en'\n    WHERE\
+  \ COALESCE(ed.voided, false) = false\n      AND ed.encounter_id IN (SELECT e.encounter_id\
+  \ FROM encounters e\n                               WHERE e.visit_uuid IN (SELECT\
+  \ visit_uuid FROM op))\n    GROUP BY ed.encounter_id\n),\nop_dx AS (\n    SELECT\
+  \ DISTINCT ON (o.encounter_id)\n        o.encounter_id,\n        d.dx_names,\n \
+  \       d.icd10\n    FROM op o\n    JOIN encounters e\n      ON e.visit_uuid = o.visit_uuid\n\
+  \     AND COALESCE(e.encounter_voided, false) = false\n    JOIN enc_dx d ON d.encounter_id\
+  \ = e.encounter_id\n    WHERE e.encounter_id = o.encounter_id\n       OR e.encounter_type_uuid\
+  \ IN ('0ff55309-1897-476b-a647-c7c180b102c8',\n                                \
+  \    '43f383ec-90fd-4273-be45-9c1906dda9aa')\n    ORDER BY o.encounter_id,\n   \
+  \          (e.encounter_id = o.encounter_id) DESC,\n             (e.encounter_datetime\
+  \ <= o.encounter_datetime) DESC,\n             ABS(EXTRACT(EPOCH FROM (e.encounter_datetime\
+  \ - o.encounter_datetime))) ASC\n),\nbase AS (\n    SELECT\n        o.*,\n     \
+  \   v.visit_attributes,\n        p.given_name,\n        p.family_name,\n       \
+  \ p.identifiers,\n        p.attributes AS person_attributes,\n        COALESCE(p.gender,\
+  \ v.patient_gender) AS gender,\n        COALESCE(p.birthdate, v.patient_birthdate)\
+  \ AS birthdate\n    FROM op o\n    LEFT JOIN visits v ON v.visit_uuid = o.visit_uuid\n\
+  \    JOIN patients p ON p.patient_uuid = o.patient_uuid\n    WHERE COALESCE(v.visit_voided,\
+  \ false) = false\n      AND COALESCE(p.person_voided, false) = false\n      AND\
+  \ NOT (COALESCE(p.family_name, '') ~* '^(SYNTH-|E2E|QA|TEST|DEMO)'\n           \
+  \ OR COALESCE(p.given_name,  '') ~* '^(SYNTH-|E2E|QA|TEST|DEMO)')\n)\n,\nres AS\
+  \ (\nSELECT\n    b.encounter_datetime::date AS \"DATE\",\n    COALESCE(\n      \
+  \  TRIM(SPLIT_PART(SUBSTRING(b.identifiers FROM 'UVL ID: ([^,]+)'), ',', 1)),\n\
+  \        TRIM(SPLIT_PART(SUBSTRING(b.identifiers FROM 'Legacy ID: ([^,]+)'), ',',\
+  \ 1))\n    ) AS \"IDPERSONNE\",\n    b.family_name AS \"NOM\",\n    b.given_name\
+  \ AS \"PRENOM\",\n    b.gender AS \"SEXE\",\n    DATE_PART('year', AGE(b.encounter_datetime::date,\
+  \ b.birthdate))::int AS \"AGE\",\n    COALESCE(pt.answer, pc.answer, pr.proc_names)\
+  \ AS \"TYPE D'INTERVENTION\",\n    COALESCE(an1.answer, an2.answer) AS \"TYPE D'ANESTHESIE\"\
+  ,\n    COALESCE(su1.answer, su2.answer, su0.answer) AS \"CHIRURGIEN\",\n    CASE\
+  \ pr.proc_level\n        WHEN '1' THEN 'Majeure'\n        WHEN '2' THEN 'Interm\xE9\
+  diaire'\n        WHEN '3' THEN 'Mineure'\n    END AS \"TYPE DE CHIRURGIE\",\n  \
+  \  dx.icd10 AS \"CIM10\",\n    dx.dx_names AS \"DIAGNOSTIC\",\n    NULLIF(TRIM(SUBSTRING(b.visit_attributes\
+  \ FROM '(?:^|/ )Payer: ((?:[^/]|/(?! ))*)')), '') AS \"ASSURANCE\",\n    NULLIF(TRIM(SUBSTRING(b.person_attributes\
+  \ FROM '(?:^|/ )Num\xE9ro de carte d''assurance: ((?:[^/]|/(?! ))*)')), '') AS \"\
+  CARTE\",\n    NULLIF(TRIM(SUBSTRING(b.visit_attributes FROM '(?:^|/ )Supplementary\
+  \ insurance: ((?:[^/]|/(?! ))*)')), '') AS \"ASSURANCE COMPLEMENTAIRE\",\n    'Bloc\
+  \ op\xE9ratoire' AS \"SERVICE\",\n    b.location AS \"LIEU D'ENREGISTREMENT\"\n\
+  FROM base b\nLEFT JOIN op_proc pr ON pr.encounter_id = b.encounter_id\nLEFT JOIN\
+  \ op_dx dx ON dx.encounter_id = b.encounter_id\nLEFT JOIN op_obs pt ON pt.encounter_uuid\
+  \ = b.encounter_uuid AND pt.question_uuid = '1cb8cdd5-2ca4-4ace-b1ff-eef6e59a7811'\n\
+  LEFT JOIN op_obs pc ON pc.encounter_uuid = b.encounter_uuid AND pc.question_uuid\
+  \ = '27fe6714-0bc6-4435-adb0-818538abe42c'\nLEFT JOIN op_obs an1 ON an1.encounter_uuid\
+  \ = b.encounter_uuid AND an1.question_uuid = 'e56083c5-658e-4715-85ce-30cd78e0b13b'\n\
+  LEFT JOIN op_obs an2 ON an2.encounter_uuid = b.encounter_uuid AND an2.question_uuid\
+  \ = '3017f680-5c3c-4f7b-94e1-6afda9e07eaf'\nLEFT JOIN op_obs su0 ON su0.encounter_uuid\
+  \ = b.encounter_uuid AND su0.question_uuid = '231dd950-8985-4685-91a1-fce38060d57c'\n\
+  LEFT JOIN op_obs su1 ON su1.encounter_uuid = b.encounter_uuid AND su1.question_uuid\
+  \ = '9b01093f-21cc-4723-9ea4-88edfa8fccb8'\nLEFT JOIN op_obs su2 ON su2.encounter_uuid\
+  \ = b.encounter_uuid AND su2.question_uuid = '0b21ca75-2fab-4c34-bf4c-f66ae2415829'\n\
+  )\nSELECT\n    r.\"DATE\"\n        AS \"DATE\",\n    COALESCE(r.\"IDPERSONNE\",\
+  \ 'Non renseign\xE9')\n        AS \"IDPERSONNE\",\n    COALESCE(r.\"NOM\", 'Non\
+  \ renseign\xE9')\n        AS \"NOM\",\n    COALESCE(r.\"PRENOM\", 'Non renseign\xE9\
+  ')\n        AS \"PRENOM\",\n    COALESCE(r.\"SEXE\", 'Non renseign\xE9')\n     \
+  \   AS \"SEXE\",\n    r.\"AGE\"\n        AS \"AGE\",\n    COALESCE(r.\"TYPE D'INTERVENTION\"\
+  , 'Non renseign\xE9')\n        AS \"TYPE D'INTERVENTION\",\n    COALESCE(r.\"TYPE\
+  \ D'ANESTHESIE\", 'Non renseign\xE9')\n        AS \"TYPE D'ANESTHESIE\",\n    CASE\
+  \ WHEN r.\"CHIRURGIEN\" ~ '^[0-9a-f-]{36}$' THEN 'Non renseign\xE9 (id ' || LEFT(r.\"\
+  CHIRURGIEN\", 8) || ')'\n         ELSE COALESCE(r.\"CHIRURGIEN\", 'Non renseign\xE9\
+  ') END\n        AS \"CHIRURGIEN\",\n    COALESCE(r.\"TYPE DE CHIRURGIE\", 'Non renseign\xE9\
+  ')\n        AS \"TYPE DE CHIRURGIE\",\n    COALESCE(r.\"CIM10\", 'Non renseign\xE9\
+  ')\n        AS \"CIM10\",\n    COALESCE(r.\"DIAGNOSTIC\", 'Non renseign\xE9')\n\
+  \        AS \"DIAGNOSTIC\",\n    COALESCE(r.\"ASSURANCE\", 'Sans assurance')\n \
+  \       AS \"ASSURANCE\",\n    CASE WHEN r.\"CARTE\" IS NOT NULL THEN r.\"CARTE\"\
+  \n         WHEN COALESCE(r.\"ASSURANCE\", '') IN ('', 'Cash', 'Mobile Money', 'Free\
+  \ healthcare') THEN 'Sans assurance'\n         ELSE 'Non renseign\xE9' END\n   \
+  \     AS \"CARTE\",\n    COALESCE(r.\"ASSURANCE COMPLEMENTAIRE\", 'Sans assurance')\n\
+  \        AS \"ASSURANCE COMPLEMENTAIRE\",\n    COALESCE(r.\"SERVICE\", 'Non renseign\xE9\
+  ')\n        AS \"SERVICE\",\n    COALESCE(r.\"LIEU D'ENREGISTREMENT\", 'Non renseign\xE9\
+  ')\n        AS \"LIEU D'ENREGISTREMENT\"\nFROM res r\nORDER BY \"DATE\" DESC\n"
+params: null
+template_params: null
+filter_select_enabled: true
+fetch_values_predicate: null
+extra: null
+normalize_columns: false
+always_filter_main_dttm: false
+uuid: 3d0bc344-3d75-4ec4-8111-3b93e0052a0b
+metrics:
+- metric_name: count
+  verbose_name: COUNT(*)
+  metric_type: count
+  expression: COUNT(*)
+  description: null
+  d3format: null
+  currency: null
+  extra:
+    warning_markdown: ''
+  warning_text: null
+columns:
+- column_name: TYPE DE CHIRURGIE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: TYPE D'ANESTHESIE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: TYPE D'INTERVENTION
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: LIEU D'ENREGISTREMENT
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: ASSURANCE COMPLEMENTAIRE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: CIM10
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: ASSURANCE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: DATE
+  verbose_name: null
+  is_dttm: true
+  is_active: true
+  type: DATE
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: DIAGNOSTIC
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: CARTE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: AGE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: INTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: SERVICE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: CHIRURGIEN
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: IDPERSONNE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: SEXE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: PRENOM
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: NOM
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: {}
+version: 1.0.0
+database_uuid: 44c13a30-0c14-402c-b81f-1c93972f5fbc
