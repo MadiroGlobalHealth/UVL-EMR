@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunk_openmrs_esm_laboratory_app=globalThis.webpackChunk_openmrs_esm_laboratory_app||[]).push([["1656"],{7457(e,a,r){r.r(a),r.d(a,{default:()=>n});var l=r(7586),p=r.n(l),s=r(3136);let n=()=>p().createElement(s.A,{unpickedOrdersOnly:!0})}}]);
