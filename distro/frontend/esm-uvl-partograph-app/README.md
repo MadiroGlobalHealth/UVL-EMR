@@ -192,7 +192,8 @@ generic partograph table. This table places each value by where it sits in the e
   `formFieldPath` (`rfe-forms-newbornMonitoring`, `…_1`, `…_2`: newborn 1, 2, 3).
 - **Rows:** the order of `motherConcepts` / `newbornConcepts`, keeping only the values recorded at
   some time point. The label is the concept's name in the user's locale, and a coded answer shows
-  its name.
+  its name. A decimal is written with the session language's mark, « 36,8 » in French (#752,
+  `1.1.1`).
 - **Current delivery:** forms before a gap longer than `surveillance.gapHours` (48 h) are left
   out, and the card says how many.
 - No card while loading, without `encounterTypeUuid`, or for a patient without a form. The site

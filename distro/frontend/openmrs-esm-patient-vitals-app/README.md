@@ -9,6 +9,7 @@ The #564 changes are on branch `uvl/564-vitals-normal-ranges`, #678 on top of th
 of that on `uvl/719-decimal-separator`, #726 on top of that on `uvl/726-vitals-french-pulse-unit`,
 #723 on top of that on `uvl/723-vitals-decimal-display`, #752 on top of that on `uvl/752-vitals-celsius`, and
 #761 on top of that on `uvl/761-vitals-header-latest`.
+#723 on top of that on `uvl/723-vitals-decimal-display`, and #752 on top of that on `uvl/752-vitals-celsius`.
 
 | UVL-EMR | Fix | Upstream PR |
 |---|---|---|
