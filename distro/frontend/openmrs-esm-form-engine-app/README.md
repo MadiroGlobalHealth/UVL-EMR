@@ -5,10 +5,11 @@ commit CI run 12863 published), with the form engine library it bundles,
 `@openmrs/esm-form-engine-lib` 5.0.1-pre.2754 (source `88459d3`), patched with fixes that are
 not released upstream yet. Only the built module is here; the sources are:
 
-- library: `jnsereko/openmrs-esm-form-engine-lib`, branch `uvl/5.0.1-pre.2754-691` (on top of `uvl/5.0.1-pre.2754-677`);
-- app: `jnsereko/openmrs-esm-patient-chart`, branch `uvl/form-engine-13.0.2-pre.12863-691`
-  (on top of `uvl/form-engine-13.0.2-pre.12863-677`: the English keys, the version, and since #691
-  the config key `sessionLocationEncounterTypes` passed on to the library).
+- library: `jnsereko/openmrs-esm-form-engine-lib`, branch `uvl/5.0.1-pre.2754-719` (on top of `uvl/5.0.1-pre.2754-691`,
+  itself on top of `uvl/5.0.1-pre.2754-677`);
+- app: `jnsereko/openmrs-esm-patient-chart`, branch `uvl/form-engine-13.0.2-pre.12863-719`
+  (on top of `uvl/form-engine-13.0.2-pre.12863-691` and `-677`: the English keys, the version, and since
+  #691 the config key `sessionLocationEncounterTypes` passed on to the library).
 
 | UVL-EMR | Fix | Upstream PR |
 |---|---|---|
@@ -20,6 +21,7 @@ not released upstream yet. Only the built module is here; the sources are:
 | #475 | In view mode, a radio, checkbox, select or content-switcher answer is translated as data entry translates it, `t(answer.label)`: the form's translations, else the concept's locale name the label falls back to. It showed the label as written in the form JSON. Also a test that a save flags every required field across sections and pages (#509) | none yet |
 | #677 | Saving a new encounter first reads its visit's dates again. If the visit was ended while the form was open (another tab, another user, the task that closes the day's visits at midnight), the save stops with a warning (keys `visitHasEnded`, `visitEndedSaveToSaveInIt`) and the form stays filled; saving again files it in that ended visit, dated within it. It was rejected with `Encounter.datetimeShouldBeInVisitDatesRange` (`.uvl.6`) | none yet |
 | #691 | A new encounter is filed at its visit's location (the service the visit was started for), not the user's sign-in location; without a visit, or a visit without a location, at the sign-in location. A form's own encounter location field still wins, and an edited encounter keeps its location. The new config key `sessionLocationEncounterTypes` (default empty) lists the encounter types that stay at the sign-in location. Nothing of it is in the shared `esm-patient-common-lib` (the app imports only a type from it): the logic is in the bundled library (`.uvl.7`) | none yet |
+| #719 | A number field is a text input (`inputMode` decimal) that takes a dot or a comma as the decimal point: "36.4" and "36,4" both save 36.4, and a leading minus is kept. It was `<input type="number">`, which on a French-locale Windows browser empties itself on a typed dot ("36.4" saved as 4) and elsewhere read "36,4" as 364. Letters and a second separator are ignored as typed. The range messages (#500) and the decimals message are unchanged: the validators see the same number. The field has no stepper buttons any more (`.uvl.8`) | none yet |
 
 UVL lists Admission, Transfer, Transfer Request (the « Ward Admission » form) and Discharge in
 `sessionLocationEncounterTypes`: these are recorded at the ward the user works in. Every other UVL
@@ -40,11 +42,11 @@ To rebuild, with Node 22:
 
 ```sh
 # library
-cd openmrs-esm-form-engine-lib          # branch uvl/5.0.1-pre.2754-691
+cd openmrs-esm-form-engine-lib          # branch uvl/5.0.1-pre.2754-719
 yarn install --immutable && yarn test && yarn build
 
 # app, bundling that library build
-cd openmrs-esm-patient-chart            # branch uvl/form-engine-13.0.2-pre.12863-691
+cd openmrs-esm-patient-chart            # branch uvl/form-engine-13.0.2-pre.12863-719
 yarn install --immutable
 rsync -a --delete ../openmrs-esm-form-engine-lib/dist/ node_modules/@openmrs/esm-form-engine-lib/dist/
 cd packages/esm-form-engine-app
