@@ -1,0 +1,157 @@
+table_name: Usage mensuel
+main_dttm_col: MOIS
+description: null
+default_endpoint: null
+offset: 0
+cache_timeout: null
+schema: public
+sql: "WITH pt AS (\n    SELECT p.patient_uuid, p.date_created\n    FROM patients p\n\
+  \    WHERE COALESCE(p.person_voided, false) = false\n      AND NOT (COALESCE(p.family_name,\
+  \ '') ~* '^(SYNTH-|E2E|QA|TEST|DEMO)'\n            OR COALESCE(p.given_name,  '')\
+  \ ~* '^(SYNTH-|E2E|QA|TEST|DEMO)')\n),\nenc AS (\n    SELECT e.encounter_datetime\
+  \ AS d, e.patient_uuid, e.creator_uuid, e.encounter_uuid,\n           CASE\n   \
+  \            WHEN e.encounter_type IN ('Vitals') THEN 'Accueil et signes vitaux'\n\
+  \               WHEN e.encounter_type IN ('Outpatient Consultation', 'Visit Note',\
+  \ 'Consultation', 'Contact') THEN 'Consultation externe'\n               WHEN e.encounter_type\
+  \ IN ('Admission', 'Transfer', 'Transfer Request', 'Discharge', 'Discharge Summary',\n\
+  \                                         'Inpatient Consultation', 'Inpatient Follow-up',\
+  \ 'IPD Monitoring',\n                                         '24-Hour Surveillance')\
+  \ THEN 'Hospitalisation'\n               WHEN e.encounter_type IN ('Delivery Registration',\
+  \ 'Childbirth Record', 'Partograph Reading',\n                                 \
+  \        'ANC Consultation', 'Maternity Consultation', 'Gynaecology Ultrasound')\
+  \ THEN 'Maternit\xE9'\n               WHEN e.encounter_type IN ('Operation Protocol',\
+  \ 'Anaesthesia Report', 'Pre-operative Record') THEN 'Bloc op\xE9ratoire'\n    \
+  \           WHEN e.encounter_type IN ('Order') THEN 'Prescriptions et demandes'\n\
+  \               ELSE 'Autres (' || COALESCE(e.encounter_type, '?') || ')'\n    \
+  \       END AS module\n    FROM encounters e\n    JOIN pt ON pt.patient_uuid = e.patient_uuid\n\
+  \    WHERE COALESCE(e.encounter_voided, false) = false\n      AND e.location_uuid\
+  \ IS DISTINCT FROM '450be362-59a7-4ccd-964d-ebd930a8b30f'\n),\nvis AS (\n    SELECT\
+  \ v.date_started AS d, v.patient_uuid, v.creator_uuid\n    FROM visits v\n    JOIN\
+  \ pt ON pt.patient_uuid = v.patient_uuid\n    WHERE COALESCE(v.visit_voided, false)\
+  \ = false\n      AND v.location_uuid IS DISTINCT FROM '450be362-59a7-4ccd-964d-ebd930a8b30f'\n\
+  ),\nord AS (\n    SELECT COALESCE(o.date_activated, o.encounter_datetime) AS d,\
+  \ o.patient_uuid, o.creator_uuid,\n           CASE WHEN o.order_type_name = 'Drug\
+  \ Order' THEN 'Ordonnances de m\xE9dicaments'\n                WHEN o.order_type_name\
+  \ ILIKE '%test%' THEN 'Demandes d''examens de laboratoire'\n                ELSE\
+  \ 'Demandes d''actes et d''imagerie' END AS kind\n    FROM orders o\n    JOIN pt\
+  \ ON pt.patient_uuid = o.patient_uuid\n    WHERE COALESCE(o.voided, false) = false\n\
+  \      AND COALESCE(o.order_action, '') NOT ILIKE '%DISCONTINUE%'\n),\nact AS (\
+  \   -- every recorded action, for active users\n    SELECT d, creator_uuid, module\
+  \ FROM enc\n    UNION ALL SELECT d, creator_uuid, 'Accueil et signes vitaux' FROM\
+  \ vis\n    UNION ALL SELECT d, creator_uuid, 'Prescriptions et demandes' FROM ord\n\
+  ),\nind AS (\n    SELECT date_trunc('month', d)::date AS mois, '1. Utilisateurs\
+  \ actifs' AS indicateur, 'Tous les modules' AS module,\n           COUNT(DISTINCT\
+  \ creator_uuid) AS valeur\n    FROM act GROUP BY 1\n    UNION ALL\n    SELECT date_trunc('month',\
+  \ d)::date, '1. Utilisateurs actifs', module, COUNT(DISTINCT creator_uuid)\n   \
+  \ FROM act GROUP BY 1, 3\n    UNION ALL\n    SELECT date_trunc('month', date_created)::date,\
+  \ '2. Patients enregistr\xE9s (nouveaux)', 'Enregistrement', COUNT(*)\n    FROM\
+  \ pt WHERE date_created IS NOT NULL GROUP BY 1\n    UNION ALL\n    SELECT date_trunc('month',\
+  \ d)::date, '3. Patients vus', 'Tous les modules', COUNT(DISTINCT patient_uuid)\n\
+  \    FROM (SELECT d, patient_uuid FROM enc UNION ALL SELECT d, patient_uuid FROM\
+  \ vis) x GROUP BY 1\n    UNION ALL\n    SELECT date_trunc('month', d)::date, '4.\
+  \ Visites d\xE9marr\xE9es', 'Accueil et signes vitaux', COUNT(*)\n    FROM vis GROUP\
+  \ BY 1\n    UNION ALL\n    SELECT date_trunc('month', d)::date, '5. Rencontres (formulaires)\
+  \ par module', module, COUNT(*)\n    FROM enc GROUP BY 1, 3\n    UNION ALL\n   \
+  \ SELECT date_trunc('month', d)::date, '6. Prescriptions et demandes', kind, COUNT(*)\n\
+  \    FROM ord GROUP BY 1, 3\n),\ncible AS (   -- monthly targets per indicator and\
+  \ module: none agreed yet (#285); add rows here when they are\n    SELECT CAST(NULL\
+  \ AS TEXT) AS indicateur, CAST(NULL AS TEXT) AS module, CAST(NULL AS NUMERIC) AS\
+  \ cible\n    WHERE false\n)\nSELECT\n    i.mois AS \"MOIS\",\n    i.indicateur AS\
+  \ \"INDICATEUR\",\n    i.module AS \"MODULE\",\n    i.valeur AS \"VALEUR\",\n  \
+  \  c.cible AS \"CIBLE\",\n    CASE WHEN c.cible > 0 THEN ROUND(100.0 * i.valeur\
+  \ / c.cible, 0) END AS \"% DE LA CIBLE\"\nFROM ind i\nLEFT JOIN cible c ON c.indicateur\
+  \ = i.indicateur AND c.module = i.module\nWHERE i.mois IS NOT NULL\nORDER BY 1 DESC,\
+  \ 2, 3\n"
+params: null
+template_params: null
+filter_select_enabled: true
+fetch_values_predicate: null
+extra: null
+normalize_columns: false
+always_filter_main_dttm: false
+uuid: 68f791ec-1a50-4be8-a0b5-e3001898a887
+metrics:
+- metric_name: count
+  verbose_name: COUNT(*)
+  metric_type: count
+  expression: COUNT(*)
+  description: null
+  d3format: null
+  currency: null
+  extra: null
+  warning_text: null
+columns:
+- column_name: '% DE LA CIBLE'
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: DECIMAL
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: CIBLE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: DECIMAL
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: INDICATEUR
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: MOIS
+  verbose_name: null
+  is_dttm: true
+  is_active: true
+  type: DATE
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: VALEUR
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: MODULE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+version: 1.0.0
+database_uuid: 44c13a30-0c14-402c-b81f-1c93972f5fbc

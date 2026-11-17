@@ -1,0 +1,153 @@
+table_name: Usage hebdomadaire
+main_dttm_col: SEMAINE
+description: "UVL-EMR \xB7 \xAB Usage hebdomadaire \xBB \u2014 adoption evidence (Superset\
+  \ virtual dataset)\nShape: one row per SEMAINE (week starting Monday) \xD7 LIEU\
+  \ \xD7 TYPE.\n  * Encounters (forms saved): LIEU = encounter location, TYPE = form\
+  \ name, else the\n    encounter type name. ENREGISTREMENTS = encounters, PATIENTS\
+  \ = distinct patients,\n    UTILISATEURS = distinct creator_uuid.\n  * Extra activity\
+  \ rows, TYPE in brackets:\n      [Visites d\xE9marr\xE9es]   visits by start date,\
+  \ LIEU = visit location\n      [Admissions] / [Sorties]  ADT encounter types e22e39fd\u2026\
+  \ / 181820aa\u2026\n      [Ordonnances m\xE9dicaments]  Drug Order orders (not DISCONTINUE),\
+  \ LIEU = order encounter location\n      [Demandes d'imagerie]  Procedure orders\
+  \ whose concept is in \xAB Imaging procedures \xBB\n                           \
+  \  b5ec1461-30af-4b01-b656-4e13dc2ba056\n  * Voided records and \xAB Locations test\
+  \ \xBB (450be362-59a7-4ccd-964d-ebd930a8b30f) excluded;\n    test patients (SYNTH-\
+  \ / E2E / QA / TEST / DEMO, voided persons) excluded.\n(Full annotated SQL: e2e/superset/<register>.annotated.sql;\
+  \ stored SQL is comment-free for speed, 17 Nov 2026.)\n17 Nov 2026 (zero grid):\
+  \ every week \xD7 (LIEU, TYPE) is returned, with 0 where nothing was recorded, so\
+  \ the pivot shows 0 rather than an empty cell."
+default_endpoint: null
+offset: 0
+cache_timeout: null
+schema: null
+sql: "WITH pt AS (\n    SELECT p.patient_uuid\n    FROM patients p\n    WHERE COALESCE(p.person_voided,\
+  \ false) = false\n      AND NOT (COALESCE(p.family_name, '') ~* '^(SYNTH-|E2E|QA|TEST|DEMO)'\n\
+  \            OR COALESCE(p.given_name,  '') ~* '^(SYNTH-|E2E|QA|TEST|DEMO)')\n),\n\
+  enc AS (\n    SELECT e.*\n    FROM encounters e\n    JOIN pt ON pt.patient_uuid\
+  \ = e.patient_uuid\n    WHERE COALESCE(e.encounter_voided, false) = false\n    \
+  \  AND e.location_uuid IS DISTINCT FROM '450be362-59a7-4ccd-964d-ebd930a8b30f'\n\
+  ),\nimg AS (\n    SELECT c.member_concepts_uuids::text AS members\n    FROM concepts\
+  \ c\n    WHERE c.uuid = 'b5ec1461-30af-4b01-b656-4e13dc2ba056' AND c.locale = 'en'\n\
+  \    LIMIT 1\n),\nev AS (\n    SELECT enc.encounter_datetime AS d, enc.location\
+  \ AS lieu,\n           COALESCE(enc.form_name, enc.encounter_type) AS type,\n  \
+  \         enc.patient_uuid AS patient, enc.creator_uuid AS createur\n    FROM enc\n\
+  \    UNION ALL\n    SELECT v.date_started, v.location, '[Visites d\xE9marr\xE9es]',\
+  \ v.patient_uuid, v.creator_uuid\n    FROM visits v\n    JOIN pt ON pt.patient_uuid\
+  \ = v.patient_uuid\n    WHERE COALESCE(v.visit_voided, false) = false\n      AND\
+  \ v.location_uuid IS DISTINCT FROM '450be362-59a7-4ccd-964d-ebd930a8b30f'\n    UNION\
+  \ ALL\n    SELECT enc.encounter_datetime, enc.location,\n           CASE enc.encounter_type_uuid\
+  \ WHEN 'e22e39fd-7db2-45e7-80f1-60fa0d5a4378' THEN '[Admissions]' ELSE '[Sorties]'\
+  \ END,\n           enc.patient_uuid, enc.creator_uuid\n    FROM enc\n    WHERE enc.encounter_type_uuid\
+  \ IN ('e22e39fd-7db2-45e7-80f1-60fa0d5a4378', '181820aa-88c9-479b-9077-af92f5364329')\n\
+  \    UNION ALL\n    SELECT COALESCE(o.date_activated, enc.encounter_datetime), enc.location,\n\
+  \           CASE WHEN o.order_type_name = 'Drug Order' THEN '[Ordonnances m\xE9\
+  dicaments]' ELSE '[Demandes d''imagerie]' END,\n           enc.patient_uuid, o.creator_uuid\n\
+  \    FROM orders o\n    JOIN enc ON enc.encounter_uuid = o.encounter_uuid\n    CROSS\
+  \ JOIN img\n    WHERE COALESCE(o.voided, false) = false\n      AND COALESCE(o.order_action,\
+  \ '') NOT ILIKE '%DISCONTINUE%'\n      AND (o.order_type_name = 'Drug Order'\n \
+  \          OR (o.order_type_name = 'Procedure' AND img.members LIKE '%' || o.concept_uuid\
+  \ || '%'))\n),\nagg AS (\n    SELECT\n        date_trunc('week', ev.d)::date AS\
+  \ semaine,\n        ev.lieu,\n        ev.type,\n        COUNT(*) AS enregistrements,\n\
+  \        COUNT(DISTINCT ev.patient) AS patients,\n        COUNT(DISTINCT ev.createur)\
+  \ AS utilisateurs\n    FROM ev\n    WHERE ev.d IS NOT NULL\n    GROUP BY 1, 2, 3\n\
+  ),\ngrid AS (\n    SELECT w.semaine, k.lieu, k.type\n    FROM (SELECT DISTINCT semaine\
+  \ FROM agg) w\n    CROSS JOIN (SELECT DISTINCT lieu, type FROM agg) k\n)\nSELECT\n\
+  \    g.semaine AS \"SEMAINE\",\n    COALESCE(g.lieu, 'Non renseign\xE9') AS \"LIEU\"\
+  ,\n    COALESCE(g.type, 'Non renseign\xE9') AS \"TYPE\",\n    COALESCE(a.enregistrements,\
+  \ 0) AS \"ENREGISTREMENTS\",\n    COALESCE(a.patients, 0) AS \"PATIENTS\",\n   \
+  \ COALESCE(a.utilisateurs, 0) AS \"UTILISATEURS\"\nFROM grid g\nLEFT JOIN agg a\
+  \ ON a.semaine = g.semaine\n               AND a.lieu IS NOT DISTINCT FROM g.lieu\n\
+  \               AND a.type IS NOT DISTINCT FROM g.type\nORDER BY 1 DESC, 2, 3\n"
+params: null
+template_params: null
+filter_select_enabled: true
+fetch_values_predicate: null
+extra: null
+normalize_columns: false
+always_filter_main_dttm: false
+uuid: a09932ad-adf3-431c-be0c-1d7597a36481
+metrics:
+- metric_name: count
+  verbose_name: COUNT(*)
+  metric_type: count
+  expression: COUNT(*)
+  description: null
+  d3format: null
+  currency: null
+  extra: null
+  warning_text: null
+columns:
+- column_name: SEMAINE
+  verbose_name: null
+  is_dttm: true
+  is_active: true
+  type: DATE
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: UTILISATEURS
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: PATIENTS
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: ENREGISTREMENTS
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: LIEU
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: TYPE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+version: 1.0.0
+database_uuid: 44c13a30-0c14-402c-b81f-1c93972f5fbc

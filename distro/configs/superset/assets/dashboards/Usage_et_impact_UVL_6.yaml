@@ -1,0 +1,110 @@
+dashboard_title: Usage et impact (UVL)
+description: null
+css: null
+slug: usage-impact-uvl
+certified_by: null
+certification_details: null
+published: true
+uuid: 752a7d59-4f59-47ac-bcd2-29cccfeb9181
+position:
+  DASHBOARD_VERSION_KEY: v2
+  ROOT_ID:
+    type: ROOT
+    id: ROOT_ID
+    children:
+    - GRID_ID
+  GRID_ID:
+    type: GRID
+    id: GRID_ID
+    children:
+    - ROW-u1
+    - ROW-u2
+    - ROW-u3
+    parents:
+    - ROOT_ID
+  HEADER_ID:
+    id: HEADER_ID
+    type: HEADER
+    meta:
+      text: Usage et impact (UVL)
+  ROW-u1:
+    type: ROW
+    id: ROW-u1
+    children:
+    - CHART-u-38
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    meta:
+      background: BACKGROUND_TRANSPARENT
+  CHART-u-38:
+    type: CHART
+    id: CHART-u-38
+    children: []
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-u1
+    meta:
+      chartId: 38
+      width: 12
+      height: 70
+      sliceName: "Usage mensuel \u2013 indicateurs par module"
+      uuid: 6ab3948b-0b50-4066-9532-0e1b8ddbb3f7
+  ROW-u2:
+    type: ROW
+    id: ROW-u2
+    children:
+    - CHART-u-39
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    meta:
+      background: BACKGROUND_TRANSPARENT
+  CHART-u-39:
+    type: CHART
+    id: CHART-u-39
+    children: []
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-u2
+    meta:
+      chartId: 39
+      width: 12
+      height: 60
+      sliceName: "Usage mensuel \u2013 valeurs et cibles"
+      uuid: c3a930b0-ed74-40b3-aa06-584e45d143f5
+  ROW-u3:
+    type: ROW
+    id: ROW-u3
+    children:
+    - CHART-u-35
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    meta:
+      background: BACKGROUND_TRANSPARENT
+  CHART-u-35:
+    type: CHART
+    id: CHART-u-35
+    children: []
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-u3
+    meta:
+      chartId: 35
+      width: 12
+      height: 80
+      sliceName: Usage hebdomadaire par service et formulaire
+      uuid: 456d36f1-f193-4744-8544-cb309c75f8d9
+metadata:
+  color_scheme: ''
+  refresh_frequency: 0
+  native_filter_configuration: []
+  timed_refresh_immune_slices: []
+  expanded_slices: {}
+  label_colors: {}
+  cross_filters_enabled: false
+version: 1.0.0
