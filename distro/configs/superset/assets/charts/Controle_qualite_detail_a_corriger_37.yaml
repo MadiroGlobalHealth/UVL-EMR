@@ -1,0 +1,49 @@
+slice_name: "Contr\xF4le qualit\xE9 \u2013 d\xE9tail (\xE0 corriger)"
+description: null
+certified_by: null
+certification_details: null
+viz_type: table
+params:
+  datasource: 27__table
+  viz_type: table
+  query_mode: raw
+  groupby: []
+  metrics: []
+  all_columns:
+  - DATE
+  - CONTROLE
+  - LIEU
+  - REFERENCE
+  - IDPERSONNE
+  - DETAIL
+  percent_metrics: []
+  temporal_columns_lookup:
+    MOIS: true
+    DATE: true
+  time_grain_sqla: P1D
+  adhoc_filters:
+  - expressionType: SIMPLE
+    subject: MOIS
+    operator: TEMPORAL_RANGE
+    comparator: previous calendar month
+    clause: WHERE
+    sqlExpression: null
+    isExtra: false
+    isNew: false
+    datasourceWarning: false
+    filterOptionName: filter_zgnph68yed
+  order_by_cols: []
+  server_pagination: true
+  row_limit: 10000
+  server_page_length: 50
+  order_desc: true
+  table_timestamp_format: smart_date
+  show_cell_bars: false
+  color_pn: true
+  allow_rearrange_columns: true
+  extra_form_data: {}
+query_context: null
+cache_timeout: null
+uuid: 76caf534-7dbf-4b30-b10c-846a5901c2f9
+version: 1.0.0
+dataset_uuid: 6eb8e958-fc54-4c39-b28c-83e31a311c34
