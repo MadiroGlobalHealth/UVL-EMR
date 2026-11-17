@@ -3213,4 +3213,38 @@
         <rollback/>
     </changeSet>
 
+    <!--
+        #457 - stock items for seven products of the central pharmacy's opening stock (file of
+        16 Nov 2026) whose drug exists but had no stock item: Dynamogen Ampoule 3mg/1g, Halothane
+        Flacon, Aiguille G19/G21/G22/G23 (Prélèvement) and Tissu Jersey 1m. Without an item their
+        opening count cannot be entered. Waits for the drugs and units (onFail CONTINUE, tried
+        again on the next start), as the #455 seeds do.
+    -->
+    <changeSet id="add_stock_items_opening_stock-20261116" author="Joshua">
+        <preConditions onFail="CONTINUE" onError="CONTINUE"
+                       onFailMessage="WARN (#457): the seven drugs of the opening-stock stock items or their units do not all exist yet (drugs or OCL not loaded), or the stockmanagement tables are missing, so their stock items were NOT created; this changeset is retried on every start.">
+            <tableExists tableName="stockmgmt_stock_item"/>
+            <tableExists tableName="stockmgmt_stock_item_packaging_uom"/>
+            <columnExists tableName="stockmgmt_stock_item" columnName="common_name"/>
+            <sqlCheck expectedResult="7">
+                SELECT COUNT(DISTINCT uuid) FROM drug
+                 WHERE uuid IN (
+                                 'd9fb690b-f0ba-4832-bb1e-db8386eba6cb', 'f26cf0e0-cb97-4227-a7dd-dffaf72d9b8d', 'c76c5115-afe7-425f-9e97-d2c8bb6c32dd',
+                                 '1a22d90c-8bf4-45ad-b141-a68cfe976496', 'cfef94fa-ba16-4c1f-b564-30f56d4cddb8', '29260dcc-9dcd-4315-b5ed-bdfe6792706f',
+                                 'df543826-8385-49a6-ac61-25a258f12100')
+            </sqlCheck>
+            <sqlCheck expectedResult="3">
+                SELECT COUNT(DISTINCT uuid) FROM concept
+                 WHERE uuid IN ('d81e10fe-0f6a-4b75-b9c0-a5e72d56f3b2', '04144d11-cfed-4930-8ffc-f1b8be92440b', 'c4b6c7b7-4906-4f76-af51-60ec9a34932e')
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            Create a stock item for each of the seven opening-stock products that had none (#457).
+        </comment>
+        <sqlFile path="sql/stock_items_opening_stock.sql" relativeToChangelogFile="true" stripComments="true"/>
+        <rollback>
+            <sqlFile path="sql/stock_items_opening_stock_rollback.sql" relativeToChangelogFile="true" stripComments="true"/>
+        </rollback>
+    </changeSet>
+
 </databaseChangeLog>
