@@ -458,6 +458,19 @@
       "c108c6bc-5f23-4e4a-ad34-8c788b86f288",
       "a8122ab5-de1f-4f0a-b882-7c5b375f4faa"
     ],
+    "extensionSlots": {
+      "patient-banner-tags-slot": {
+        "add": ["person-attribute-tag#marital-status", "person-attribute-tag#occupation"],
+        "configure": {
+          "person-attribute-tag#marital-status": {
+            "attributeType": "c65ebb91-0de1-4622-9af4-bf9e19ea569b"
+          },
+          "person-attribute-tag#occupation": {
+            "attributeType": "96a9f1a6-7bd4-4147-a5b3-98b1f6137340"
+          }
+        }
+      }
+    },
     "Translation overrides": {
       "fr": {
         "pastVisitWithDate": "Visite passée : {{date}}"
