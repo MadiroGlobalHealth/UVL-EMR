@@ -101,6 +101,10 @@
                   },
                   {
                     "concept": "5c8d6240-9cc2-4bc1-b783-30eb887f950c"
+                  },
+                  {
+                    "concept": "c9be680f-4d74-4098-8682-9cb4416429f7",
+                    "label": "Inconnu"
                   }
                 ]
               }
@@ -1796,16 +1800,6 @@
                   "rank": 1,
                   "conceptClasses": ["8d4918b0-c2cc-11de-8d13-0010c6dffd0f"]
                 }
-              }
-            },
-            {
-              "label": "New Prescription",
-              "type": null,
-              "id": "newPrescription",
-              "questionOptions": {
-                "rendering": "workspace-launcher",
-                "buttonLabel": "Order Prescription",
-                "workspaceName": "order-basket"
               }
             },
             {
