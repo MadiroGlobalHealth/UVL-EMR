@@ -86,6 +86,13 @@
        Until #700 Help Nurse lacked `Get Encounter Roles` and no Help Nurse could save vitals
        (production 2026-11-16). `Authenticated` counts here, as OpenMRS gives it to every
        signed-in user (`Get Locations` sits on it).
+     - Doctor, Ophtalmologist and Dentist open, save and edit « UVL Outpatient Consultation
+       Form ». The forms panel offers a form only to users holding its encounter type's edit
+       privilege (`Edit Outpatient Consultation`, with `View Outpatient Consultation` to read
+       it back), and the form posts its diagnoses with the encounter, which core saves through
+       DiagnosisService.save, guarded by `Edit Diagnoses`. Until #703 the eye and dental roles
+       inherited only Nurse, so the panel never offered them the consultation and their
+       consultations never reached the PBF consultations register or Fiche 15.
 
  10. Only administrators see System Administration. The site frontend config shows
      `@openmrs/esm-system-admin-app` (the « Administration du système » app menu entry) only
@@ -159,6 +166,10 @@ List<String> basketLookups = ['Get ChargeItemDefinition', 'Get InventoryItem']
 List<String> saveVitals = ['Add Encounters', 'Edit Encounters', 'Add Observations', 'Edit Observations',
         'Get Patients', 'Get Visits', 'Get Locations', 'Get Encounter Types', 'Get Concepts', 'Get Providers',
         'Get Encounter Roles']
+List<String> saveConsultation = ['Edit Outpatient Consultation', 'View Outpatient Consultation', 'Get Forms',
+        'Add Encounters', 'Edit Encounters', 'Add Observations', 'Edit Observations', 'Get Diagnoses',
+        'Edit Diagnoses', 'Get Patients', 'Get Visits', 'Get Locations', 'Get Encounter Types', 'Get Concepts',
+        'Get Providers', 'Get Encounter Roles']
 List<String> clinicalRoles = ['Help Nurse', 'Nurse', 'Midwife', 'Doctor', 'Ophtalmologist', 'Dentist',
         'Anesthesist', 'Lab Technician', 'X-Ray Technician']
 List<String> nonDispensingRoles = ['Central Pharmacist'] + clinicalRoles
@@ -171,7 +182,9 @@ Map<String, List<String>> requiredOf = [
         'Help Nurse'        : readDrugOrders + readPatientLists + saveVitals,
         'Nurse'             : readDrugOrders + readPatientLists + saveVitals,
         'Midwife'           : readDrugOrders + readPatientLists + saveVitals,
-        'Doctor'            : readDrugOrders + readPatientLists + basketLookups + saveVitals,
+        'Doctor'            : readDrugOrders + readPatientLists + basketLookups + saveVitals + saveConsultation,
+        'Ophtalmologist'    : saveConsultation,
+        'Dentist'           : saveConsultation,
         'Pharmacist'        : stockReports + basketLookups,
         'Central Pharmacist': stockReports,
         'X-Ray Technician'  : ['Add Orders', 'Edit Orders', 'Edit Encounters'],

@@ -1,0 +1,70 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+                        http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+	<!-- M6 reports (17 Nov 2026): provider names (surgeon / « Consultation menée par ») and the bed
+	     management tables (Fiche 1 « Lits montés », « Taux d'occupation »). Filled by the flattening
+	     queries providers.sql, beds.sql and bed_assignments.sql. -->
+	<changeSet id="1795400001" author="jnsereko">
+		<preConditions onFail="MARK_RAN">
+			<not><tableExists tableName="providers"/></not>
+		</preConditions>
+		<createTable tableName="providers">
+			<column name="provider_id" type="BIGINT">
+				<constraints nullable="false" primaryKey="true" primaryKeyName="providers_pkey"/>
+			</column>
+			<column name="provider_uuid" type="VARCHAR"/>
+			<column name="name" type="VARCHAR"/>
+			<column name="identifier" type="VARCHAR"/>
+			<column name="person_uuid" type="VARCHAR"/>
+			<column name="retired" type="BOOLEAN"/>
+		</createTable>
+		<createIndex tableName="providers" indexName="idx_providers_provider_uuid">
+			<column name="provider_uuid"/>
+		</createIndex>
+	</changeSet>
+	<changeSet id="1795400002" author="jnsereko">
+		<preConditions onFail="MARK_RAN">
+			<not><tableExists tableName="beds"/></not>
+		</preConditions>
+		<createTable tableName="beds">
+			<column name="bed_id" type="BIGINT">
+				<constraints nullable="false" primaryKey="true" primaryKeyName="beds_pkey"/>
+			</column>
+			<column name="bed_uuid" type="VARCHAR"/>
+			<column name="bed_number" type="VARCHAR"/>
+			<column name="status" type="VARCHAR"/>
+			<column name="bed_type" type="VARCHAR"/>
+			<column name="location_id" type="BIGINT"/>
+			<column name="location_uuid" type="VARCHAR"/>
+			<column name="location" type="VARCHAR"/>
+			<column name="voided" type="BOOLEAN"/>
+		</createTable>
+		<createIndex tableName="beds" indexName="idx_beds_location_uuid">
+			<column name="location_uuid"/>
+		</createIndex>
+	</changeSet>
+	<changeSet id="1795400003" author="jnsereko">
+		<preConditions onFail="MARK_RAN">
+			<not><tableExists tableName="bed_assignments"/></not>
+		</preConditions>
+		<createTable tableName="bed_assignments">
+			<column name="bed_assignment_id" type="BIGINT">
+				<constraints nullable="false" primaryKey="true" primaryKeyName="bed_assignments_pkey"/>
+			</column>
+			<column name="bed_assignment_uuid" type="VARCHAR"/>
+			<column name="bed_id" type="BIGINT"/>
+			<column name="patient_uuid" type="VARCHAR"/>
+			<column name="encounter_uuid" type="VARCHAR"/>
+			<column name="date_started" type="TIMESTAMP"/>
+			<column name="date_stopped" type="TIMESTAMP"/>
+			<column name="voided" type="BOOLEAN"/>
+		</createTable>
+		<createIndex tableName="bed_assignments" indexName="idx_bed_assignments_bed_id">
+			<column name="bed_id"/>
+		</createIndex>
+	</changeSet>
+</databaseChangeLog>
