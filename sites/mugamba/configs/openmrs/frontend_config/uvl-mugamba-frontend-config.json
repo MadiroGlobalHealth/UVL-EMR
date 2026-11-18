@@ -762,6 +762,7 @@
       "b2c4d5e6-7f8a-4e9b-8c1d-2e3f8e4a3b8f",
       "181820aa-88c9-479b-9077-af92f5364329"
     ],
+    "excludedProviderIdentifiers": ["admin", "service-account-*"],
     "Translation overrides": {
       "fr": {
         "submittedForm": "Formulaire enregistré",

@@ -1816,6 +1816,7 @@
               "type": "encounterProvider",
               "id": "encProvider",
               "questionOptions": {
+                "isSearchable": "true",
                 "rendering": "ui-select-extended"
               }
             }

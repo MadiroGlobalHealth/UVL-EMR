@@ -1357,6 +1357,7 @@
               "id": "encProvider",
               "required": true,
               "questionOptions": {
+                "isSearchable": "true",
                 "rendering": "ui-select-extended"
               }
             }
