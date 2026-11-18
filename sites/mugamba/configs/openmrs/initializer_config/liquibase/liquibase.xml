@@ -3248,6 +3248,49 @@
     </changeSet>
 
     <!--
+        #776 - the product owner's answers of 18 Nov 2026 on the opening-stock count.
+        Anamol Sirop is counted per 100 ml bottle and Cimetidine Injection 200mg/2ml per ampoule,
+        not per millilitre: their stock and dispensing unit become Flacon and Ampoule, as the
+        sheet-3 items did (stock_item_units_sheet3-20261023, same statements). Only while neither
+        item has a batch or a transaction: a count in millilitres re-read in bottles would be wrong
+        by a factor of 100, so with stock on hand the changeset waits (WARN) and the unit is changed
+        by a person with the stock in view.
+    -->
+    <changeSet id="stock_item_units_opening_stock-20261118" author="Joshua">
+        <preConditions onFail="CONTINUE" onError="CONTINUE"
+                       onFailMessage="WARN (#776): Anamol Sirop or Cimetidine Injection 200mg/2ml, or the Flacon or Ampoule unit, does not exist yet, or one of the two items already has stock or a transaction, so their unit was NOT changed to Flacon / Ampoule; this changeset is retried on every start.">
+            <tableExists tableName="stockmgmt_stock_item_packaging_uom"/>
+            <tableExists tableName="stockmgmt_stock_batch"/>
+            <tableExists tableName="stockmgmt_stock_item_transaction"/>
+            <sqlCheck expectedResult="2">
+                SELECT COUNT(DISTINCT uuid) FROM stockmgmt_stock_item
+                 WHERE uuid IN ('d9738e95-bc17-5ff5-8353-d1394ea6895e', 'c8b8d121-716e-5652-adf7-c5a56d6ec6eb')
+            </sqlCheck>
+            <sqlCheck expectedResult="2">
+                SELECT COUNT(DISTINCT uuid) FROM concept
+                 WHERE uuid IN ('04144d11-cfed-4930-8ffc-f1b8be92440b', 'd81e10fe-0f6a-4b75-b9c0-a5e72d56f3b2')
+            </sqlCheck>
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM stockmgmt_stock_batch b
+                  JOIN stockmgmt_stock_item si ON si.stock_item_id = b.stock_item_id
+                 WHERE si.uuid IN ('d9738e95-bc17-5ff5-8353-d1394ea6895e', 'c8b8d121-716e-5652-adf7-c5a56d6ec6eb')
+            </sqlCheck>
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM stockmgmt_stock_item_transaction t
+                  JOIN stockmgmt_stock_item si ON si.stock_item_id = t.stock_item_id
+                 WHERE si.uuid IN ('d9738e95-bc17-5ff5-8353-d1394ea6895e', 'c8b8d121-716e-5652-adf7-c5a56d6ec6eb')
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            Count Anamol Sirop per Flacon and Cimetidine Injection 200mg/2ml per Ampoule (#776).
+        </comment>
+        <sqlFile path="sql/stock_item_units_opening_stock.sql" relativeToChangelogFile="true" stripComments="true"/>
+        <rollback>
+            <sqlFile path="sql/stock_item_units_opening_stock_rollback.sql" relativeToChangelogFile="true" stripComments="true"/>
+        </rollback>
+    </changeSet>
+
+    <!--
         #729 - every user gets a provider account. The order basket's lab test search reads the
         session's `currentProvider.uuid`, and a user without a provider has a null currentProvider, so
         adding a test failed with « Cannot read properties of null (reading 'uuid') », from the

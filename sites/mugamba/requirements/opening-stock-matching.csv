@@ -1,4 +1,4 @@
-row,produit,forme,dosage,status,stock_item_uuid,stock_item,stock_item_unit,confidence,reason
+row,produit,forme,dosage,status,stock_item_uuid,stock_item,stock_item_unit,confidence,reason,expiry
 5,ADRENALINE inj,amp,1 mg,import,800070ed-a4fa-55e4-9fd2-8131c4709613,Adrénaline Injection 1mg/ml,Ampoule(s),high,"same product, form and strength"
 6,ALBENDAZOLE cp,cp,400 mg,import,e5a2dee9-eeeb-5e21-acf2-5568d5872a74,Albendazole Comprimé 400mg,Comprimé,high,"same product, form and strength"
 7,ALBENDAZOLE sirop,sirop,200 mg,import,6de3f19a-ae67-5872-9173-990f758ac795,Albendazole Suspension 200mg/5ml 10ml,Flacon,high,"same product, form and strength"
@@ -13,7 +13,7 @@ row,produit,forme,dosage,status,stock_item_uuid,stock_item,stock_item_unit,confi
 16,AMOXICILLINE sirop 250 mg,sirop,250 mg,import,e217acfc-3811-59a4-be77-815167af5e4d,Amoxicillin Suspension 250mg/5ml 100ml,Flacon,high,"product owner, 18 Nov 2026: the 100 ml bottle"
 17,AMPICILLINE 1 g inj,amp,1 g,import,8b9102db-9b8b-5f52-afa1-cda6dafb6059,Ampicilline Injection 1g,Flacon,high,"same product, form and strength"
 18,ANAMOL cp,cp,,import,22c6a89f-2adb-59ce-8d9b-b36bece35dc0,Anamol Comprimé,Comprimé,high,"same product, form and strength"
-19,ANAMOL sp,sirop,,excluded,d9738e95-bc17-5ff5-8353-d1394ea6895e,Anamol Sirop,Millilitre,,"unit: the item counts Anamol Sirop in Millilitre, the file counts bottles; confirm the unit before entering"
+19,ANAMOL sp,sirop,,import,d9738e95-bc17-5ff5-8353-d1394ea6895e,Anamol Sirop,Flacon,high,"product owner, 18 Nov 2026: counted per 100 ml bottle (the item's unit becomes Flacon, #776)"
 20,ANGINOVAG spray,spray,,import,8a79d883-4029-52a4-bace-55fad090a61c,Anginovag Spray 10ml,Flacon,high,"same product, form and strength"
 21,ANTALGEX cp,cp,,import,c0b49573-49d5-5b20-91f0-78f09c917e75,Antalgex Comprimé,Comprimé,high,"same product, form and strength"
 22,ARTEMETHER cp B/6,cp,,import,b584f92f-be86-529c-9fe0-8ac7a61efc65,Artéméther-Luméfantrine Comprimé Boîte de 6,Comprimé,high,"Artéméther-Luméfantrine, box of 6 (#455 M19)"
@@ -36,7 +36,7 @@ row,produit,forme,dosage,status,stock_item_uuid,stock_item,stock_item_unit,confi
 39,BENZYL DE BENZOATE,flacon,,import,7e5c06e1-94f6-583b-8be2-ed5162a98e7f,Benzyl Benzoate Solution 0.25% 100ml,Flacon,high,"same product, form and strength"
 45,BUPIVACAINE hyperbare 20 mg inj,amp,20mg/4ml,import,4ae08fc9-19d4-5f3e-87aa-9e02015d9118,Bupivacaïne Hyperbare Injection 20mg/4ml,Flacon,high,"same product, form and strength"
 49,CANDIDERM crème,tube,,import,f2dc1413-cf03-57d8-9801-511b883fb5c0,Candiderm Crème 15g,Conteneur,high,"same product, form and strength"
-50,A-CERUMEN,flacon,,unmatched,,,,,no drug in OpenMRS (needs a new concept in OCL and a drug)
+50,A-CERUMEN,flacon,,unmatched,,,,,"product owner, 18 Nov 2026: to be added as a new medicine; waits for its concept in OCL"
 51,CAPTOPRIL cp,cp,25 mg,import,73073217-3e5b-5faf-a38a-a7d85b67b9ad,Captopril Comprimé 25mg,Comprimé,high,"same product, form and strength"
 52,CARBAMAZEPINE cp,cp,500 mg,confirm,,,,low,#455 M44 left out: CARBAMAZEPINE cp 500 mg vs drug Carbamazepine Comprimé 400mg (no stock item)
 54,CEFIXIME cp 400 mg,cp,400 mg,import,8c4803f4-6eb4-5892-9200-bf95438e8ede,Cefixime Comprimé 400mg,Comprimé,high,"same product, form and strength"
@@ -44,11 +44,11 @@ row,produit,forme,dosage,status,stock_item_uuid,stock_item,stock_item_unit,confi
 56,CEFIXIME sp 100 mg,flacon,100 mg,import,ee0abcc3-8a66-5289-836e-b276990d7f34,Cefixime Sirop 100mg,Flacon,high,"same product, form and strength"
 58,CEFOTAXIME flacon 1 g (Claforan),flacon,1 g,import,29421eef-d385-59ac-a31b-343ca68fe11c,Céfotaxime Injectable 1g,Flacon,high,"same product, form and strength"
 59,CETIRIZINE cp,cp,10 mg,import,5c9345cb-6137-5e84-a9aa-8b9f2df4acd9,Cetirizine Comprimé 10mg,Comprimé,high,"same product, form and strength"
-60,CETIRIZINE sirop,flacon,5 mg,excluded,e7d2802a-f441-5279-931e-9f99c3e46e49,Cetirizine Sirop 10mg/ml,Flacon,,"expired (06/01/2026): to discard, not usable stock (decision)"
+60,CETIRIZINE sirop,flacon,5 mg,import,e7d2802a-f441-5279-931e-9f99c3e46e49,Cetirizine Sirop 10mg/ml,Flacon,high,"product owner, 18 Nov 2026: the expiry in the file (06/01/2026) is a typing error, the right date is 30/04/2028; the only cetirizine syrup item",2028-04-30
 64,CHLORHEXIDINE 1% flacon,flacon,300 ml,import,933722fc-f384-5c7e-bdc6-35e63fec6b5a,Chlorhexidine 1% Flacon 300ml,Flacon,high,"same product, form and strength"
 65,CHLORPHENIRAMINE cp 4 mg,cp,4 mg,import,7af5abb7-99b8-5c35-a0b7-b8149ca81a43,Chlorpheniramine Comprime 4mg,Comprimé,high,"same product, form and strength"
 66,CHLORPHENIRAMINE sp,flacon,2 mg/5 ml,import,b669f161-239e-54df-9d5e-cc58ac2d20a8,Chlorpheniramine Sirop 2mg/5ml,Flacon,high,"same product, form and strength"
-67,CIMETIDINE 200 mg inj,amp,400 mg,excluded,c8b8d121-716e-5652-adf7-c5a56d6ec6eb,Cimetidine Injection 200mg/2ml,Millilitre,,"unit: the item counts Cimetidine Injection in Millilitre, the file counts ampoules; confirm the unit before entering"
+67,CIMETIDINE 200 mg inj,amp,400 mg,import,c8b8d121-716e-5652-adf7-c5a56d6ec6eb,Cimetidine Injection 200mg/2ml,Ampoule(s),high,"product owner, 18 Nov 2026: counted per ampoule (the item's unit becomes Ampoule, #776)"
 68,CIPROFLOXACINE cp 500 mg,cp,500 mg,import,84874e19-d8e8-5ed0-a3a1-3a0dd3bf6465,Ciprofloxacin Comprimé 500mg,Comprimé,high,"same product, form and strength"
 70,CIPROFLOXACINE inj,flacon,,import,28042cbc-2adf-5310-8bbf-8a10f9dfcbc5,Ciprofloxacin Injection 200mg/100ml,Flacon,high,"same product, form and strength"
 71,CIPTOXEN-D,collyre,,import,a56539d7-554c-5f3b-8031-f0eefcbad003,Ciptoxen-D Collyre 0.3%,Flacon,high,"same product, form and strength"
@@ -143,7 +143,7 @@ row,produit,forme,dosage,status,stock_item_uuid,stock_item,stock_item_unit,confi
 187,METRONIDAZOLE fl 500 mg,inj,500 mg,import,967eea61-1c95-56ad-85ff-85ff32b6bea8,Metronidazole Injection 500mg/100ml,Flacon,high,"same product, form and strength"
 188,METRONIDAZOLE sirop 125 mg,sirop,125 mg,import,4a931d2f-45d6-56b6-8b10-08de0fb2b8c0,Metronidazole Suspension 125mg/5ml 100ml,Flacon,high,"same product, form and strength"
 189,MICONAZOLE crème,tube,200 mg,import,1c76ad7e-0f73-50ef-bc1f-c90c4a5eae91,Miconazole crème 2% 15gr,Tube,high,"same product, form and strength"
-190,MIDAZOLAM inj,amp,5mg/ml,unmatched,,,,,no drug in OpenMRS (needs a new concept in OCL and a drug)
+190,MIDAZOLAM inj,amp,5mg/ml,unmatched,,,,,"product owner, 18 Nov 2026: to be added as a new medicine; waits for its concept in OCL"
 191,MISOPROSTOL cp,cp,,import,b525fb7c-9e3f-51e9-8dc3-e37145a7c162,Misoprostol Comprimé 200mcg,Comprimé,high,"same product, form and strength"
 192,MORPHINE inj,amp,,import,8a554e06-f5ff-5042-bf60-d204048ecf5c,Morphine Injection,Ampoule(s),high,"same product, form and strength"
 193,MULTIVITAMINE sp,flacon,,import,93e2a4ec-f0b8-526f-b0e7-1444871aaebc,Multivitamine Sirop 100ml,Flacon,high,"same product, form and strength"
@@ -203,7 +203,7 @@ row,produit,forme,dosage,status,stock_item_uuid,stock_item,stock_item_unit,confi
 267,TRAMADOL inj,amp,,import,b1863c5f-884a-5213-a49f-33c0cc415931,Tramadol Injection 100mg/2ml,Ampoule(s),high,"same product, form and strength"
 268,UPACOF expectorant,flacon,,import,8e5f4ca2-9d87-5ecf-825a-483628390bba,Upacof Expectorant Flacon,Flacon,high,"same product, form and strength"
 269,UPACOF ped sp,flacon,,import,3bfa0d93-583a-56f1-916b-e67c2bb66f24,Upacof Pédiatrique Sirop,Flacon,high,"same product, form and strength"
-271,VIT K inj,Amp,1 mg,confirm,,,,low,#455 M253 left out: VIT K inj 1 mg vs item Injection de Vitamine K 10mg
+271,VIT K inj,Amp,1 mg,import,37ff9e44-0689-559b-a9e1-53c4367dc894,Injection de Vitamine K 10mg,Ampoule(s),high,"product owner, 18 Nov 2026: the ampoule is 10 mg, the 1 mg in the file is wrong"
 272,VITAMINE B COMPLEXE cp,cp,,import,21f882d1-e1f8-5975-9959-ae9fa192853b,Comprimé de Complexe de Vitamines B,Comprimé,high,"same product, form and strength"
 273,ZINC cp,cp,,import,5b1c604e-1ae4-5da3-ae08-d0c8a67ad234,Sulfate de Zinc Comprimé 20mg,Comprimé,high,"same product, form and strength"
 276,Abaisse-langue en bois,Unité,,import,7ce8d8ea-f21d-5525-a908-a0b83f34766a,Abaisse-langue en bois,Pièce,high,"same product, form and strength"
@@ -227,7 +227,7 @@ row,produit,forme,dosage,status,stock_item_uuid,stock_item,stock_item_unit,confi
 295,Fil de suture résorbable/pogale n°3-0,Unité,,import,c0b798e7-f238-5cb5-9185-3ac3080b678a,Pogal N° 3/0,Pièce,high,"same product, form and strength"
 296,Fil de suture non résorbable,Unité,,import,98f3a5e7-0b7f-5d13-8fef-03c61ec6e9a8,Suture Non-Absorbable,Pièce,high,Fil non résorbable = Suture Non-Absorbable
 297,Gants stériles,Paire,,import,34511d6b-ce64-5cac-8f71-d116c8bca694,Gants Stériles,Paire,high,"same product, form and strength"
-298,Gants non stériles,Paire,,excluded,09a8a405-e566-5f89-b7b3-483cc4e9e896,Gants Non Stériles,Pièce,,"unit: the item counts Gants Non Stériles per Pièce, the file per Paire; confirm before entering"
+298,Gants non stériles,Paire,,import,09a8a405-e566-5f89-b7b3-483cc4e9e896,Gants Non Stériles,Pièce,high,"product owner, 18 Nov 2026: the 5,540 are pieces, the unit of the item (the file's unit column says Paire)"
 299,Gants gynécologique,Paire,,import,195a642f-e5bd-5106-9d93-afe4d3d71030,Gants gynécologiques,Paire,high,"same product, form and strength"
 300,GEL pour échographie,Unité,,import,8b40318b-e568-5727-b01c-b761a5e940ed,Gel Echographique,Pièce,high,"same product, form and strength"
 301,Poche collectrice (sac collecteur) pour urines,Unité,,import,f3678566-4c86-59e5-b87d-0d5054b1062d,Sac à urines,Pièce,high,Poche collectrice pour urines = Sac à urines (catalogue seed)
