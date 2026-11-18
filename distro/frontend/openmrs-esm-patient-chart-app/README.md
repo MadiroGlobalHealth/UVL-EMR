@@ -3,12 +3,13 @@
 The pinned pre-release 13.0.2-pre.12863 (built from openmrs-esm-patient-chart `2eeffea`, the
 commit CI run 12863 published) with changes that are not released upstream. Only the built module
 is here; the source is `jnsereko/openmrs-esm-patient-chart`, branch
-`uvl/677-visit-ended-refresh` (on top of `uvl/222-visit-location-choice`).
+`uvl/767-chart-french` (on top of `uvl/677-visit-ended-refresh` and `uvl/222-visit-location-choice`).
 
 | UVL-EMR | Change | Upstream PR |
 |---|---|---|
 | #222 | New config key `preselectVisitLocation` (default `true`, upstream behaviour). When `false`, the Start Visit form opens with an empty visit location and shows « Obligatoire » under it if the user tries to start the visit without choosing one, so the visit records the service point the user picked instead of the session location. Editing a visit keeps its location. | not opened yet |
 | #677 | The visit in context is fetched again every minute while it is open (and on window focus). A visit ended while the chart is open (another tab, another user, the task that closes the day's visits at midnight) is then shown with its dates instead of « Visite active en cours », and the patient's other visit data is refreshed. Same visit uuid, so open forms and the order basket are not closed (`.uvl.2`) | not opened yet |
+| #767 | The Visits tab tables (visit history, a visit's encounters, the clinical views encounter list) pass Carbon's pagination texts in the session language (`src/uvl/pagination-labels.ts`): « Éléments par page », « 1–1 sur 1 élément », « sur 1 page » instead of « Items per page… of 1 items… of 1 page ». A visit's Médicaments sub-tab writes the dose, duration and quantity with the session language's decimal mark, « 3,75 », « 2,5 » (`src/uvl/format-decimal.ts`, the orders and medications apps' helper, not common-lib). Its « Discontinued » tag reads « Arrêté », as the Médicaments page, through the frontend config's translation override (`.uvl.3`) | not opened yet |
 
 UVL sets `preselectVisitLocation: false` in `sites/mugamba/configs/openmrs/frontend_config/uvl-mugamba-frontend-config.json`.
 Setting it back to `true` (or removing it) restores the upstream behaviour without a rebuild.
