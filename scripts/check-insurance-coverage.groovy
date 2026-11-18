@@ -21,7 +21,9 @@
   5. Every product the MFP matching (sites/mugamba/requirements/
      mfp-acts-devices-matching-issue184.csv) marks « load » has its MFP row at the matched
      price and percentage, and every MFP ceiling on a product of that matching is one it
-     loads. scripts/mfp-ceiling.py writes both, so they only drift on a hand edit.
+     loads. A product the matching gives a percentage without loading it (MFP's own 80% on a
+     bandage whose ceiling is still open) has its MFP row at that percentage.
+     scripts/mfp-ceiling.py writes both, so they only drift on a hand edit.
 */
 
 File configDir = new File(project.build.directory,
@@ -184,6 +186,12 @@ if (matchingFile.isFile()) {
         } else if (r != null && r['covered_base_mode'] == 'amount') {
             faults << ("${m['product']} (${m['product_id']}): ${r['at']} sets an MFP ceiling the matching does " +
                     "not load (${m['decision']}). Run scripts/mfp-ceiling.py")
+        } else if (m['coverage_percentage'] && (r == null || r['coverage_percentage'] != m['coverage_percentage'])) {
+            // MFP's own rate on a product whose ceiling is not known yet (a bandage of unknown width)
+            faults << ("${m['product']} (${m['product_id']}): the MFP matching sets ${m['coverage_percentage']}% " +
+                    "without a ceiling, but insurance_coverage has " +
+                    (r == null ? 'no MFP row' : "${r['coverage_percentage']}% (${r['at']})") +
+                    ". Run scripts/mfp-ceiling.py")
         }
     }
     log.info("Insurance coverage OK so far: ${loads} MFP ceilings of the acts and consumables matching")
