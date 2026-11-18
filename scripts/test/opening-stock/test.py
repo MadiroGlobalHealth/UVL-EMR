@@ -172,18 +172,20 @@ class AnsweredLines(unittest.TestCase):
 
 
 class AnsweredLines776(unittest.TestCase):
-    """#776: the five lines the product owner answered on 18 Nov 2026 are entered, from the repository's
+    """#776: the seven lines the product owner answered on 18 Nov 2026 are entered, from the repository's
     matching, and the corrected expiry replaces the file's date for the one line it names."""
 
     ANSWERS = {
         # produit: (stock item uuid, stock item, unit, lot, expiry of the file, expected expiry, quantity)
         'ANAMOL sp': ('d9738e95-bc17-5ff5-8353-d1394ea6895e', 'Anamol Sirop', 'Flacon', '5814791B', datetime.date(2028, 5, 31), None, 21),
+        'A-CERUMEN': ('52771744-0938-581c-8eec-d0c282ac42d2', 'A-Cerumen Gouttes Auriculaires', 'Flacon', 'A24c515', datetime.date(2027, 10, 31), None, 125),
         'CETIRIZINE sirop': ('e7d2802a-f441-5279-931e-9f99c3e46e49', 'Cetirizine Sirop 10mg/ml', 'Flacon', '89537', datetime.date(2026, 1, 6), datetime.date(2028, 4, 30), 71),
         'CIMETIDINE 200 mg inj': ('c8b8d121-716e-5652-adf7-c5a56d6ec6eb', 'Cimetidine Injection 200mg/2ml', 'Ampoule(s)', '251283', datetime.date(2028, 12, 31), None, 98),
+        'MIDAZOLAM inj': ('5dc5f1d7-6916-52d6-8d31-4b99633ee356', 'Midazolam Injection 5mg/ml', 'Ampoule(s)', '0060301254', datetime.date(2028, 1, 31), None, 5),
         'VIT K inj': ('37ff9e44-0689-559b-a9e1-53c4367dc894', 'Injection de Vitamine K 10mg', 'Ampoule(s)', 'OOPPHYIE001', datetime.date(2028, 1, 31), None, 51),
         'Gants non stériles': ('09a8a405-e566-5f89-b7b3-483cc4e9e896', 'Gants Non Stériles', 'Pièce', '21404539LPZA', datetime.date(2031, 3, 31), None, 5540),
     }
-    ROWS = {'ANAMOL sp': 19, 'CETIRIZINE sirop': 60, 'CIMETIDINE 200 mg inj': 67,
+    ROWS = {'ANAMOL sp': 19, 'A-CERUMEN': 50, 'CETIRIZINE sirop': 60, 'CIMETIDINE 200 mg inj': 67, 'MIDAZOLAM inj': 190,
             'VIT K inj': 271, 'Gants non stériles': 298}
 
     def entries(self, matching=None, extra=()):
@@ -200,7 +202,7 @@ class AnsweredLines776(unittest.TestCase):
 
     def test_planned_as_entered(self):
         entries = self.entries()
-        self.assertEqual(len(entries), 5)
+        self.assertEqual(len(entries), 7)
         for e in entries:
             uuid, name, unit, lot, _, corrected, qty = self.ANSWERS[e['line']['produit']]
             m = e['match']
@@ -269,20 +271,54 @@ class AnsweredLines776(unittest.TestCase):
 
 
 class AnsweredSeeds776(unittest.TestCase):
-    """#776: the two unit changes fit the stock items #437 created."""
+    """#776: the two new items, the two unit changes and the two new drugs fit together."""
 
+    NEW = {'A-Cerumen Gouttes Auriculaires': ('e9638191-c538-5b6e-9dbe-0d3d4bbf1721', '52771744-0938-581c-8eec-d0c282ac42d2', '04144d11-cfed-4930-8ffc-f1b8be92440b'),
+           'Midazolam Injection 5mg/ml': ('76dfeba4-e78a-5c6d-9bac-4c2c2ade50a0', '5dc5f1d7-6916-52d6-8d31-4b99633ee356', 'd81e10fe-0f6a-4b75-b9c0-a5e72d56f3b2')}
     UNITS = {'d9738e95-bc17-5ff5-8353-d1394ea6895e': '04144d11-cfed-4930-8ffc-f1b8be92440b',   # Anamol Sirop -> Flacon
              'c8b8d121-716e-5652-adf7-c5a56d6ec6eb': 'd81e10fe-0f6a-4b75-b9c0-a5e72d56f3b2'}  # Cimetidine -> Ampoule
     INIT = os.path.join(LIQUIBASE, '..')
 
-    def test_new_medicines_wait_for_their_concepts(self):
-        """A-Cerumen (row 50) and Midazolam (row 190) are not entered, and nothing seeds them yet."""
-        with open(os_.DEFAULT_MATCHING, newline='', encoding='utf-8') as f:
-            rows = {r['row']: r for r in csv.DictReader(f)}
-        for row in ('50', '190'):
-            self.assertEqual((rows[row]['status'], rows[row]['stock_item_uuid']), ('unmatched', ''))
-            self.assertIn('waits for its concept in OCL', rows[row]['reason'])
-        self.assertFalse(glob.glob(os.path.join(self.INIT, 'drugs', 'uvl-drugs-issue776.csv')))
+    def test_new_drugs_in_openmrs_and_odoo(self):
+        with open(os.path.join(self.INIT, 'drugs', 'uvl-drugs-issue776.csv'), newline='', encoding='utf-8') as f:
+            drugs = {r['Name']: r for r in csv.DictReader(f)}
+        odoo = os.path.join(ROOT, 'sites', 'mugamba', 'configs', 'odoo', 'initializer_config', 'product_variant', 'uvl-drugs-issue776.csv')
+        with open(odoo, newline='', encoding='utf-8') as f:
+            products = {r['name']: r for r in csv.DictReader(f)}
+        self.assertEqual(set(drugs), set(self.NEW))
+        self.assertEqual(set(products), set(self.NEW))
+        for name, (drug, _, unit) in self.NEW.items():
+            self.assertEqual((drugs[name]['Uuid'], drugs[name]['Concept Dosage Form'], drugs[name]['Name:fr']), (drug, unit, name))
+            self.assertEqual((products[name]['id'], products[name]['uom_id/id']), ('init.' + drug, 'init.' + unit))
+        self.assertEqual(drugs['Midazolam Injection 5mg/ml']['Concept Drug'], '79853AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')  # CIEL Midazolam
+
+    def test_new_drug_concepts_are_in_the_ocl_export(self):
+        """The drugs load only if their concepts come with an OCL export in the repository (a drugs CSV that
+        fails its first load keeps its checksum)."""
+        import json
+        path = os.path.join(self.INIT, 'ocl', 'UVL_drugs_776_20261118.zip')
+        with zipfile.ZipFile(path) as z:
+            concepts = {c['external_id']: c for c in json.load(z.open('export.json'))['concepts']}
+        with open(os.path.join(self.INIT, 'drugs', 'uvl-drugs-issue776.csv'), newline='', encoding='utf-8') as f:
+            for r in csv.DictReader(f):
+                c = concepts[r['Concept Drug']]
+                self.assertEqual((c['concept_class'], c['datatype'], c['retired']), ('Drug', 'N/A', False), r['Name'])
+        self.assertEqual(concepts['79853AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA']['source'], 'uvl-ciel')
+        self.assertEqual(concepts['f837d2dc-144d-533c-9bbf-6ca637b2ae83']['source'], 'uvl-custom')
+
+    def test_new_stock_items_and_their_changeset(self):
+        seed = read(os.path.join(LIQUIBASE, 'sql', 'stock_items_opening_stock_answered.sql'))
+        rollback = read(os.path.join(LIQUIBASE, 'sql', 'stock_items_opening_stock_answered_rollback.sql'))
+        changelog = read(os.path.join(LIQUIBASE, 'liquibase.xml'))
+        start = changelog.index('id="add_stock_items_opening_stock_answered-20261118"')
+        changeset = changelog[start:changelog.index('</changeSet>', start)]
+        for name, (drug, item_uuid, unit) in self.NEW.items():
+            self.assertIn("'%s', '%s', 1, '%s'" % (drug, unit, item_uuid), seed)
+            self.assertIn("'%s'" % name, seed)
+            self.assertIn(item_uuid, rollback)
+            self.assertIn(drug, changeset)  # waits for the drug
+        self.assertIn('expectedResult="2"', changeset)
+        self.assertIn('stock_items_opening_stock_answered_rollback.sql', changeset)
 
     def test_unit_changes_are_for_existing_items_and_guarded(self):
         seed = read(os.path.join(LIQUIBASE, 'sql', 'stock_item_units_opening_stock.sql'))

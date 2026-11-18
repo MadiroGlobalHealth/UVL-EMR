@@ -3291,6 +3291,37 @@
     </changeSet>
 
     <!--
+        #776 - two more stock items for the central pharmacy's opening stock, which the product owner
+        answered on 18 Nov 2026 (no drug existed): A-Cerumen Gouttes Auriculaires, counted per
+        bottle, and Midazolam Injection 5mg/ml, counted per ampoule. Their drugs are
+        drugs/uvl-drugs-issue776.csv (and Odoo product_variant/uvl-drugs-issue776.csv); the concepts
+        come with the OCL release of the uvl-drugs collection. Waits for the drugs as the #457 seed does.
+    -->
+    <changeSet id="add_stock_items_opening_stock_answered-20261118" author="Joshua">
+        <preConditions onFail="CONTINUE" onError="CONTINUE"
+                       onFailMessage="WARN (#776): the drugs A-Cerumen Gouttes Auriculaires and Midazolam Injection 5mg/ml or their units do not exist yet (drugs or OCL not loaded), or the stockmanagement tables are missing, so their stock items were NOT created; this changeset is retried on every start.">
+            <tableExists tableName="stockmgmt_stock_item"/>
+            <tableExists tableName="stockmgmt_stock_item_packaging_uom"/>
+            <columnExists tableName="stockmgmt_stock_item" columnName="common_name"/>
+            <sqlCheck expectedResult="2">
+                SELECT COUNT(DISTINCT uuid) FROM drug
+                 WHERE uuid IN ('e9638191-c538-5b6e-9dbe-0d3d4bbf1721', '76dfeba4-e78a-5c6d-9bac-4c2c2ade50a0')
+            </sqlCheck>
+            <sqlCheck expectedResult="2">
+                SELECT COUNT(DISTINCT uuid) FROM concept
+                 WHERE uuid IN ('04144d11-cfed-4930-8ffc-f1b8be92440b', 'd81e10fe-0f6a-4b75-b9c0-a5e72d56f3b2')
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            Create a stock item for A-Cerumen Gouttes Auriculaires and Midazolam Injection 5mg/ml (#776).
+        </comment>
+        <sqlFile path="sql/stock_items_opening_stock_answered.sql" relativeToChangelogFile="true" stripComments="true"/>
+        <rollback>
+            <sqlFile path="sql/stock_items_opening_stock_answered_rollback.sql" relativeToChangelogFile="true" stripComments="true"/>
+        </rollback>
+    </changeSet>
+
+    <!--
         #729 - every user gets a provider account. The order basket's lab test search reads the
         session's `currentProvider.uuid`, and a user without a provider has a null currentProvider, so
         adding a test failed with « Cannot read properties of null (reading 'uuid') », from the

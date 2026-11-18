@@ -1,0 +1,3 @@
+id,name,categ_id/id,type,uom_id/id,uom_po_id/id,purchase_ok,sale_ok,tracking,use_expiration_date,invoice_policy
+init.e9638191-c538-5b6e-9dbe-0d3d4bbf1721,A-Cerumen Gouttes Auriculaires,init.categ_products_drug_orders,product,init.04144d11-cfed-4930-8ffc-f1b8be92440b,init.04144d11-cfed-4930-8ffc-f1b8be92440b,TRUE,TRUE,By Lots,TRUE,Ordered quantities
+init.76dfeba4-e78a-5c6d-9bac-4c2c2ade50a0,Midazolam Injection 5mg/ml,init.categ_products_drug_orders,product,init.d81e10fe-0f6a-4b75-b9c0-a5e72d56f3b2,init.d81e10fe-0f6a-4b75-b9c0-a5e72d56f3b2,TRUE,TRUE,By Lots,TRUE,Ordered quantities
