@@ -3,9 +3,8 @@
 The pinned pre-release 13.0.2-pre.12863 (built from openmrs-esm-patient-chart `2eeffea`, the
 commit CI run 12863 published; its source is identical to the npm package) with fixes that are not
 released upstream yet. Only the built module is here; the source is
-`jnsereko/openmrs-esm-patient-chart`, branch `uvl/760-orders-date-utc` (on top of
+`jnsereko/openmrs-esm-patient-chart`, branch `uvl/765-orders-first-paint` (on top of `uvl/760-orders-date-utc`,
 `uvl/752-orders-decimal-display`, `uvl/727-orders-decimal-separator`, `uvl/orders-13.0.2-pre.12863-691` and
-`jnsereko/openmrs-esm-patient-chart`, branch `uvl/752-orders-decimal-display` (on top of
 `uvl/orders-13.0.2-pre.12863-patched`).
 
 | UVL-EMR | Fix | Upstream PR |
@@ -16,6 +15,7 @@ released upstream yet. Only the built module is here; the source is
 | #727 | Numeric lab results are a text field (`inputMode="decimal"`) instead of `<input type="number">`, which a French-locale Windows browser empties at a typed dot (« 4.5 » was saved as 5). « 4.5 » and « 4,5 » both save 4.5; a leading minus is still accepted; letters and a second separator are ignored. The whole-number and range messages are unchanged. The field is the app's own `src/components/decimal-text-input.component.tsx`, not common-lib (`.uvl.5`) | none yet |
 | #752 | A numeric lab result is written with the session language's decimal mark, « 95,4 mg/dl », « 4,5 % » in French: the results table of a test order (the Laboratory « Terminé » tab, the Orders tab) and its printout. Its interpretation (high, low) still comes from the number. A drug order's dose, duration and quantity in the Orders tab too. The helper is the app's own `src/utils/format-decimal.ts`, not common-lib (`.uvl.6`). The Orders tab's row of a drug order is written from its fields, « Paracetamol Sirop 120mg/5ml — 2,5 millilitre — orale — deux fois par jour — pour 3 jours », instead of the server's « (NEW) …: 2.5 Millilitre Orale … »; a revised, renewed or discontinued order is named « (Modifier) », « (Renouveler) », « (Interrompre) ». The fields come from the request the expanded row already makes; the server's text shows until they arrive and is what the search matches (`.uvl.7`; `.uvl.6` reached UAT and is not to be reused) | none yet |
 | #760 | The Orders tab's period is sent as the first and last instants of the local days with their UTC offset (« 2026-11-18T00:00:00.000+0200 »), not as date-only strings, which OpenMRS read as days of the server's time zone (UTC): orders placed between 00:00 and 02:00 Burundi time did not show under « today ». OpenMRS rounds these bounds out to whole server days, so the tab keeps only the orders activated within the period. Fetched with the app's own `src/hooks/usePatientOrdersInPeriod.ts`, not common-lib (`.uvl.8`) | none yet |
+| #765 | The Orders tab's row of a drug order never shows the server's « (NEW) …: 2.5 Millilitre Orale … » first: the orders list is read without the drug fields, so the row shows a one-line placeholder (`SkeletonText`) until `useDrugOrderByUuid` answers, then the French line of #752. An order that already carries its fields is written at once, without that request; if they cannot be read, the line is written from what the order has (drug or concept, action). The search still matches the server's text (`.uvl.9`) | none yet |
 
 The other patient-chart apps stay on the npm 13.0.2-pre.12863 packages, except the patched builds
 next to this directory.
