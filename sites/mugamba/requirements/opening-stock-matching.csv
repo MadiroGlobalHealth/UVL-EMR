@@ -10,7 +10,7 @@ row,produit,forme,dosage,status,stock_item_uuid,stock_item,stock_item_unit,confi
 13,AMINOSIDINE cp,cp,250 mg,import,e8c74756-4012-53e3-80ab-b04b844d7776,Aminosidine Comprimé 250mg,Comprimé,high,"same product, form and strength"
 14,AMOXICILLINE gel 500 mg,gél,500 mg,import,f85d5512-2425-5694-8c49-3b9c60a732a5,Amoxicilline Gélule 500mg,Gélule,high,"same product, form and strength"
 15,AMOXICILLINE sirop 125 mg,sirop,125 mg,import,d917866b-df04-5c18-9954-60ec074864af,Amoxicilline Sirop 125mg/5ml,Flacon,high,"same product, form and strength"
-16,AMOXICILLINE sirop 250 mg,sirop,250 mg,confirm,,,,low,"#455 M13 left out: 3 amoxicilline 250mg/5ml syrups of different volumes (80 ml, 100 ml, 60 ml)"
+16,AMOXICILLINE sirop 250 mg,sirop,250 mg,import,e217acfc-3811-59a4-be77-815167af5e4d,Amoxicillin Suspension 250mg/5ml 100ml,Flacon,high,"product owner, 18 Nov 2026: the 100 ml bottle"
 17,AMPICILLINE 1 g inj,amp,1 g,import,8b9102db-9b8b-5f52-afa1-cda6dafb6059,Ampicilline Injection 1g,Flacon,high,"same product, form and strength"
 18,ANAMOL cp,cp,,import,22c6a89f-2adb-59ce-8d9b-b36bece35dc0,Anamol Comprimé,Comprimé,high,"same product, form and strength"
 19,ANAMOL sp,sirop,,excluded,d9738e95-bc17-5ff5-8353-d1394ea6895e,Anamol Sirop,Millilitre,,"unit: the item counts Anamol Sirop in Millilitre, the file counts bottles; confirm the unit before entering"
@@ -83,7 +83,7 @@ row,produit,forme,dosage,status,stock_item_uuid,stock_item,stock_item_unit,confi
 108,DICYTAM gel,gel,,confirm,,,,low,"#455 M97 left out: DICYTAM capsule, OpenMRS has Dicytam Comprimé 500mg only"
 109,DICYTAM inj,amp,,import,15ef2bbe-c27d-5b1c-a0b4-fea52429a85e,Dicytam Injection,Ampoule(s),high,"same product, form and strength"
 110,DIFENASOL collyre,collyre,,import,a79d0017-fad3-5fb1-a9a0-cf8843e08733,"Difenasol Gouttes oculaires 0,001% 5ml",Flacon,high,"same product, form and strength"
-111,DIPYRONE 500 mg inj,amp,500 mg,confirm,,,,low,#455 M100 left out: DIPYRONE 500 mg inj vs items 1g/2ml and 2.5g/5ml
+111,DIPYRONE 500 mg inj,amp,500 mg,import,dfc5c05b-f5b9-5278-84c7-b26fdcf04dfc,Dipyrone Injection 1g/2ml,Ampoule(s),high,"product owner, 18 Nov 2026: the 1g/2ml ampoule"
 112,DOMPERIDONE sirop,flacon,,import,14ebe40b-4b37-5e72-a178-a84fe7095518,Dompéridone Suspension 1mg/ml 125ml,Flacon,high,"same product, form and strength"
 113,DOMPERIDONE cp,cp,10 mg,import,81a6e6e3-515c-516b-b23a-4eea8f3249a3,Domperidone Comprimé 10mg,Comprimé,high,"same product, form and strength"
 114,DOXYCYCLINE cp,cp,200 mg,import,116ade52-860e-50d9-9779-fabb5c153ad4,Doxycycline Comprimé 200mg,Comprimé,high,"same product, form and strength"
@@ -118,7 +118,7 @@ row,produit,forme,dosage,status,stock_item_uuid,stock_item,stock_item_unit,confi
 152,HYOSCIN 20 mg/Buscopam inj,amp,20 mg,import,9796288e-8431-5867-8216-06996fb2fcb4,Hyoscine (Buscopan) Injectable 20mg,Ampoule(s),high,"same product, form and strength"
 153,HYOSCINE/Buscopam 10 mg cp,cp,10 mg,import,920b82f5-d3d0-5f81-8e55-36c7ca7c2e48,Hyoscine Comprimé 10mg,Comprimé,high,"same product, form and strength"
 155,IBUPROFEN 400 mg cp,cp,400 mg,import,79b7c765-1b91-59b8-8f2e-c03259fe6261,Ibuprofène Comprimé 400mg,Comprimé,high,"same product, form and strength"
-156,IBUPROFEN sirop 100 mg,sirop,100 MG,confirm,,,,low,#455 M144 left out: IBUPROFEN sirop 100 mg vs items 100 ml and 60 ml
+156,IBUPROFEN sirop 100 mg,sirop,100 MG,import,e1abef4d-5486-51b2-b957-10a5ea7c9ac6,Ibuprofen Suspension 100mg/5ml 100ml,Flacon,high,"product owner, 18 Nov 2026: the 100 ml bottle"
 157,INDOMETHACINE 25 mg cp,cp,25 mg,import,92dd1ea0-c543-5562-bdb5-4b8b16c4ae60,Indométacine Gélule 25mg,Gélule,high,"same product, form and strength"
 158,INSULINE RAPIDE flacon 10 ml,flacon,10 ml,import,44fb1907-4cf1-5dfb-9c61-0d5de90377a5,Insuline Rapide Flacon 10ml,Flacon,high,"same product, form and strength"
 159,INSULINE SEMI-LENTE flacon 10 ml,flacon,10 ml,import,4bce91f1-d8a9-596a-a1b8-ee0d5248aed9,Insuline Semi-Lente Flacon 10ml,Flacon,high,"same product, form and strength"
@@ -129,7 +129,7 @@ row,produit,forme,dosage,status,stock_item_uuid,stock_item,stock_item_unit,confi
 168,KOFLYN sirop,sirop,,import,a1248ef5-304d-5551-b38e-97112b37e97f,Koflyn Suspension 2.2/110/40/1.1/5ml 100ml,Flacon,high,"same product, form and strength"
 169,LAMOLUBE collyre,collyre,,import,62534d55-2b6d-54b1-b844-0df0ec8cbde5,"Lamolube Collyre 0,5% 10ml",Conteneur,high,"same product, form and strength"
 170,LIDOCAÏNE 2% flacon 50 ml,flacon,50 ml,import,ce43e252-73be-538f-907b-f62d7b009152,Lidocaïne Injectable 2%,Flacon,high,"same product, form and strength"
-171,LIGNOCAÏNE,flacon,4%W/V,unmatched,,,,,no drug for lidocaïne 4% (only Lidocaïne Injectable 2%)
+171,LIGNOCAÏNE,flacon,4%W/V,import,ce43e252-73be-538f-907b-f62d7b009152,Lidocaïne Injectable 2%,Flacon,high,"product owner, 18 Nov 2026: the 4% is a typing error, it is Lidocaïne 2%"
 172,LOAKTAN - H cp,cp,50 mg,import,a58ff421-2f05-5171-98f8-518df9454255,Loaktan-H Comprimé 50/12.5mg,Comprimé,high,"same product, form and strength"
 173,LOAKTAN cp,cp,50 mg,import,eb30bcb2-3917-563b-9f4f-f7f8b54847c8,Loaktan Comprimé 50mg,Comprimé,high,"same product, form and strength"
 176,MAGSIM 180 ml,flacon,180 ml,import,96f3fa75-22c2-52c4-9f2d-c18969aac299,Magsim Sirop 400/20mg 180ml,Flacon,high,"same product, form and strength"
