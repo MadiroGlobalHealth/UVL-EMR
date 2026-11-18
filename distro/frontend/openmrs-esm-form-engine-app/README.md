@@ -5,10 +5,10 @@ commit CI run 12863 published), with the form engine library it bundles,
 `@openmrs/esm-form-engine-lib` 5.0.1-pre.2754 (source `88459d3`), patched with fixes that are
 not released upstream yet. Only the built module is here; the sources are:
 
-- library: `jnsereko/openmrs-esm-form-engine-lib`, branch `uvl/5.0.1-pre.2754-759` (on top of `uvl/5.0.1-pre.2754-751`, `-725`,
-  `-723`, `-719`, `-691` and `-677`);
-- app: `jnsereko/openmrs-esm-patient-chart`, branch `uvl/form-engine-13.0.2-pre.12863-759`
-  (on top of `-751`, `-725`, `-723`, `-719`, `-691` and `-677`: the English keys, the version, since
+- library: `jnsereko/openmrs-esm-form-engine-lib`, branch `uvl/5.0.1-pre.2754-768` (on top of `uvl/5.0.1-pre.2754-759`, `-751`,
+  `-725`, `-723`, `-719`, `-691` and `-677`);
+- app: `jnsereko/openmrs-esm-patient-chart`, branch `uvl/form-engine-13.0.2-pre.12863-768`
+  (on top of `-759`, `-751`, `-725`, `-723`, `-719`, `-691` and `-677`: the English keys, the version, since
   #691 the config key `sessionLocationEncounterTypes` passed on to the library, and since #759 the
   config key `excludedProviderIdentifiers` the library reads).
 
@@ -27,6 +27,7 @@ not released upstream yet. Only the built module is here; the sources are:
 | #725 | A search list (diagnoses, problems, drugs, locations, providers: `ui-select-extended`) keeps only an entry picked from it. Text typed without picking one was emptied on leaving the field and the form saved without it, silently. Leaving the field with such text now shows an error naming it (key `textNotPickedFromList`) and blocks the save, with the invalid-fields snackbar (#577); picking an entry or clearing the field removes it. A label typed in full is not picked for the user either (`.uvl.10`) | none yet |
 | #751 | A number field is bounded by its concept's absolute limits as well as the form's `min`/`max`, the stricter of each winning: the server refuses an obs outside `hiAbsolute`/`lowAbsolute` (ObsValidator, HTTP 400 on save), so « Température » at 47,5 against a limit of 47 now reads « La valeur doit être de 47 au maximum » on the field and the save is blocked by the invalid-fields snackbar (#577). The limits come with the concepts the form already loads (`hiAbsolute,lowAbsolute` added to the `conceptreferences` representation; a concept that is not numeric has none). A server range error the server leaves untranslated (`error.value.outOfRange.high`/`.low`, `error.outOfRange.high`/`.low`; the REST error names neither field nor limit) shows `valueAboveAcceptedMaximum` / `valueBelowAcceptedMinimum` instead of the key (`.uvl.11`) | none yet |
 | #759 | A provider field (`encounterProvider`, `provider_datasource`) reads every active provider, page by page (`limit=100`): it asked once with the REST default, which returns 50, so at 54 providers four staff were missing from the list. Typed text is searched on the server (`provider?q=`, encoded) when the form marks the field `isSearchable`, as UVL's forms now do. Providers whose identifier is in the new config key `excludedProviderIdentifiers` (default empty; an entry ending with `*` is a prefix) are never offered, nor those in the field's datasource config `excludedIdentifiers`; UVL lists `admin` and `service-account-*` (the Keycloak service accounts). A provider already set on the encounter still shows (`.uvl.12`). A searchable list (`ui-select-extended`, `isSearchable`) searches the server for every typed term: it skipped the search when a loaded entry contained the text, so a doctor signed in as one « Pacifique » was offered only himself. A search with no match empties the list (it kept the previous results, which could be picked by mistake); the selected entry is remembered apart from the list, so the field keeps its value. Editing an encounter without touching its provider field keeps the encounter's providers: the save fell back to the signed-in user and added them as a second provider (`.uvl.13`). Leaving a search list with typed text that is no entry's label, while an entry is picked, no longer flags the text (#725): Carbon writes the picked entry back, but the error stayed and blocked the save until the field was left again. Changing the provider field of an edited encounter replaces the encounter's provider in that role: the REST `encounterProviders` setter only adds, so the old one is sent as `{uuid, voided: true}` in the same save; providers of other roles stay (`.uvl.14`) | none yet |
+| #768 | Text left in a search list (`ui-select-extended`) without picking an entry is settled against the entries found for it, not only against exact labels. A provider is listed as « identifier - name », so typing another provider's name in full (« Nephtalie CIMANA ») over the picked one and leaving the field or saving put the picked provider back and saved it, silently. Now the one entry the text names is picked: by its label, its display, or, for an entry with an identifier, the name after « identifier - » or the identifier, ignoring case and repeated spaces. Text naming several entries keeps the « n'est pas enregistré » error (#725) and blocks the save; text naming none puts the picked entry back with no error (#759), or is flagged when none is picked (#725). Text left before its search has answered blocks the save until the answer, then is settled the same way. The picked entry is put back through the combobox, so the input shows it on Tab too: Tab left the typed text on screen while the save used the pick. A label typed in full with no entry picked is now picked rather than flagged (`.uvl.15`) | none yet |
 
 UVL lists Admission, Transfer, Transfer Request (the « Ward Admission » form) and Discharge in
 `sessionLocationEncounterTypes`: these are recorded at the ward the user works in. Every other UVL
@@ -58,11 +59,11 @@ To rebuild, with Node 22:
 
 ```sh
 # library
-cd openmrs-esm-form-engine-lib          # branch uvl/5.0.1-pre.2754-759
+cd openmrs-esm-form-engine-lib          # branch uvl/5.0.1-pre.2754-768
 yarn install --immutable && yarn test && yarn build
 
 # app, bundling that library build
-cd openmrs-esm-patient-chart            # branch uvl/form-engine-13.0.2-pre.12863-759
+cd openmrs-esm-patient-chart            # branch uvl/form-engine-13.0.2-pre.12863-768
 yarn install --immutable
 rsync -a --delete ../openmrs-esm-form-engine-lib/dist/ node_modules/@openmrs/esm-form-engine-lib/dist/
 # the library's types are its src/ (package.json "types"): without it the app build fails on the new props
