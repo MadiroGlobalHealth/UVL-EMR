@@ -185,7 +185,8 @@
         "thisMayTakeAMoment": "Cela peut prendre un moment.",
         "visitStartDateBeforeBirthdate": "La date de début ne peut pas précéder la date de naissance du patient",
         "errorCreatingVisitAttribute": "Erreur lors de la création de l'attribut de visite {{attributeName}}",
-        "printError": "Échec de la génération du PDF. Consultez les journaux du serveur."
+        "printError": "Échec de la génération du PDF. Consultez les journaux du serveur.",
+        "discontinued": "Arrêté"
       }
     }
   },
@@ -284,7 +285,7 @@
         "ON_HOLD": "En attente",
         "RECEIVED": "Reçu",
         "STAT": "Urgent",
-        "ROUTINE": "Routine",
+        "ROUTINE": "De routine",
         "ON_SCHEDULED_DATE": "À la date prévue",
         "testOrders": "demandes d'examen",
         "ordersPlaced": "Prescriptions enregistrées",
@@ -572,7 +573,8 @@
         "recordVitalsAndBiometrics": "Signes vitaux et biométrie",
         "editVitalsAndBiometrics": "Modifier les signes vitaux",
         "wholeNumberRequired": "Saisir un nombre entier, sans décimales",
-        "decimalsNotAllowed": "Nombres entiers uniquement, sans décimales : {{fields}}"
+        "decimalsNotAllowed": "Nombres entiers uniquement, sans décimales : {{fields}}",
+        "heartRate": "Pouls"
       }
     }
   },
@@ -866,6 +868,10 @@
         "appt": "rdv",
         "appts": "rdv",
         "Cancelled": "Annulé",
+        "female": "Femme",
+        "male": "Homme",
+        "other": "Autre",
+        "unknown": "Inconnu",
         "changeAppointmentsStatus": "Changer le statut des rendez-vous",
         "changeStatus": "Changer le statut",
         "changeStatusForSelectedAppointments": "Changer le statut des rendez-vous suivants.",
