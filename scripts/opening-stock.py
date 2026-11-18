@@ -21,6 +21,13 @@ positive whole number, when it has no lot number or no expiry, or when it expire
 the operation date (to be discarded, not counted). An impossible date such as 31/09/2029 is
 read as the last day of that month (30/09/2029) and listed as corrected.
 
+The count file stays as the pharmacy sent it, so a date the product owner has said is a typing
+error is corrected from the repository instead: the optional `expiry` column of the matching
+(ISO date, yyyy-mm-dd) replaces the file's expiry on the line of the file that the matching row
+names (column row, the worksheet row number; a matching row without a row number corrects every
+line of the product). It is listed with the corrected dates as « expiry corrected by the product
+owner », with the date the file had.
+
 Quantities are entered in the stock item's dispensing unit, as the file counts them (tablets,
 ampoules, bottles, pieces). The matching marks as `excluded` the items whose unit differs from
 the file's (for example an item counted in millilitres when the file counts bottles). Before
@@ -193,11 +200,29 @@ def quantity(value):
 
 
 # ------------------------------------------------------------------ plan
+def matching_expiry(m, line):
+    """The corrected expiry the matching gives this line of the file, or None. See the module doc."""
+    text = (m.get('expiry') or '').strip()
+    if not text:
+        return None
+    row = (m.get('row') or '').strip()
+    if row and row != str(line.get('row')):
+        return None
+    return datetime.date.fromisoformat(text)
+
+
 def load_matching(path):
     with open(path, newline='', encoding='utf-8') as f:
         rows = list(csv.DictReader(f))
     matching = {}
     for r in rows:
+        text = (r.get('expiry') or '').strip()
+        if text:
+            try:
+                datetime.date.fromisoformat(text)
+            except ValueError:
+                raise SystemExit('matching: row %s %r: expiry %r is not an ISO date (yyyy-mm-dd)'
+                                 % (r['row'], r['produit'], text))
         key = norm(r['produit'])
         if key in matching and matching[key]['stock_item_uuid'] != r['stock_item_uuid']:
             raise SystemExit('matching: %r is matched twice, to different stock items' % r['produit'])
@@ -216,6 +241,12 @@ def plan(lines, matching, op_date):
         entry = {'line': line, 'match': m, 'qty': qty, 'lot': cell_text(line.get('lot')),
                  'entered': False, 'note': '', 'date_note': ''}
         expiry, entry['date_note'] = parse_expiry(line.get('expiry'))
+        corrected = matching_expiry(m, line) if m else None
+        if corrected:
+            entry['date_note'] = 'expiry corrected by the product owner: %s in the file, %s' % (
+                expiry.strftime('%d/%m/%Y') if expiry else (str(line.get('expiry')).strip() or 'none'),
+                corrected.strftime('%d/%m/%Y'))
+            expiry = corrected
         entry['expiry'] = expiry
         if qty is None:
             entry['note'] = 'stock %r is not a whole number' % line.get('stock')

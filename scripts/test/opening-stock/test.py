@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Tests scripts/opening-stock.py (#457, #773) on a small made-up count file, and checks that the
+Tests scripts/opening-stock.py (#457, #773, #776) on a small made-up count file, and checks that the
 product matching (sites/mugamba/requirements/opening-stock-matching.csv) only names stock items
 the Liquibase seeds create, so the same matching holds on every server. The server side of apply
 (unit check by concept, stock scope check) runs against a fake stockmanagement REST API.
@@ -169,6 +169,176 @@ class AnsweredLines(unittest.TestCase):
             self.assertEqual((m['stock_item_uuid'], m['stock_item'], m['stock_item_unit']), self.ANSWERS[e['line']['produit']])
             self.assertEqual((m['status'], m['confidence']), ('import', 'high'))
             self.assertTrue(m['reason'].startswith('product owner, 18 Nov 2026'), m['reason'])
+
+
+class AnsweredLines776(unittest.TestCase):
+    """#776: the seven lines the product owner answered on 18 Nov 2026 are entered, from the repository's
+    matching, and the corrected expiry replaces the file's date for the one line it names."""
+
+    ANSWERS = {
+        # produit: (stock item uuid, stock item, unit, lot, expiry of the file, expected expiry, quantity)
+        'ANAMOL sp': ('d9738e95-bc17-5ff5-8353-d1394ea6895e', 'Anamol Sirop', 'Flacon', '5814791B', datetime.date(2028, 5, 31), None, 21),
+        'A-CERUMEN': ('52771744-0938-581c-8eec-d0c282ac42d2', 'A-Cerumen Gouttes Auriculaires', 'Flacon', 'A24c515', datetime.date(2027, 10, 31), None, 125),
+        'CETIRIZINE sirop': ('e7d2802a-f441-5279-931e-9f99c3e46e49', 'Cetirizine Sirop 10mg/ml', 'Flacon', '89537', datetime.date(2026, 1, 6), datetime.date(2028, 4, 30), 71),
+        'CIMETIDINE 200 mg inj': ('c8b8d121-716e-5652-adf7-c5a56d6ec6eb', 'Cimetidine Injection 200mg/2ml', 'Ampoule(s)', '251283', datetime.date(2028, 12, 31), None, 98),
+        'MIDAZOLAM inj': ('5dc5f1d7-6916-52d6-8d31-4b99633ee356', 'Midazolam Injection 5mg/ml', 'Ampoule(s)', '0060301254', datetime.date(2028, 1, 31), None, 5),
+        'VIT K inj': ('37ff9e44-0689-559b-a9e1-53c4367dc894', 'Injection de Vitamine K 10mg', 'Ampoule(s)', 'OOPPHYIE001', datetime.date(2028, 1, 31), None, 51),
+        'Gants non stériles': ('09a8a405-e566-5f89-b7b3-483cc4e9e896', 'Gants Non Stériles', 'Pièce', '21404539LPZA', datetime.date(2031, 3, 31), None, 5540),
+    }
+    ROWS = {'ANAMOL sp': 19, 'A-CERUMEN': 50, 'CETIRIZINE sirop': 60, 'CIMETIDINE 200 mg inj': 67, 'MIDAZOLAM inj': 190,
+            'VIT K inj': 271, 'Gants non stériles': 298}
+
+    def entries(self, matching=None, extra=()):
+        d = tempfile.mkdtemp()
+        path = os.path.join(d, 'stock.xlsx')
+        rows = [['N°', 'PRODUIT', 'Forme', 'Dosage', 'N° de Lot', 'Date de peremption', 'Stock', 'Prix Unitaire']]
+        for p, (_, _, _, lot, exp, _, qty) in self.ANSWERS.items():
+            rows.append([1.0, p, None, None, lot, serial(exp), float(qty), 1.0])
+        xlsx(path, rows + list(extra))
+        file = os_.file_lines(os_.read_xlsx(path))
+        for line, p in zip(file, self.ANSWERS):
+            line['row'] = self.ROWS[p]  # the worksheet row the real count file has them on
+        return os_.plan(file, os_.load_matching(matching or os_.DEFAULT_MATCHING), datetime.date(2026, 11, 18))
+
+    def test_planned_as_entered(self):
+        entries = self.entries()
+        self.assertEqual(len(entries), 7)
+        for e in entries:
+            uuid, name, unit, lot, _, corrected, qty = self.ANSWERS[e['line']['produit']]
+            m = e['match']
+            self.assertTrue(e['entered'], (e['line']['produit'], e['note']))
+            self.assertEqual((m['stock_item_uuid'], m['stock_item'], m['stock_item_unit']), (uuid, name, unit))
+            self.assertEqual((m['status'], m['confidence']), ('import', 'high'))
+            self.assertTrue(m['reason'].startswith('product owner, 18 Nov 2026'), m['reason'])
+            self.assertEqual((e['lot'], e['qty']), (lot, qty))
+            self.assertEqual(bool(e['date_note']), corrected is not None, e['line']['produit'])
+
+    def test_expiry_corrected_from_the_matching(self):
+        e = next(e for e in self.entries() if e['line']['produit'] == 'CETIRIZINE sirop')
+        self.assertEqual(e['expiry'], datetime.date(2028, 4, 30))
+        self.assertIn('expiry corrected by the product owner', e['date_note'])
+        self.assertIn('06/01/2026', e['date_note'])  # what the file had
+        self.assertIn('30/04/2028', e['date_note'])
+        out = io.StringIO()
+        os_.report([e], out)
+        self.assertIn('Expiry dates corrected (1)', out.getvalue())
+
+    def test_without_the_correction_the_line_is_expired(self):
+        d = tempfile.mkdtemp()
+        matching = os.path.join(d, 'matching.csv')
+        with open(os_.DEFAULT_MATCHING, newline='', encoding='utf-8') as f, open(matching, 'w', newline='', encoding='utf-8') as g:
+            rows = list(csv.DictReader(f))
+            w = csv.DictWriter(g, fieldnames=list(rows[0].keys()), lineterminator='\n')
+            w.writeheader()
+            for r in rows:
+                r['expiry'] = ''
+                w.writerow(r)
+        e = next(e for e in self.entries(matching) if e['line']['produit'] == 'CETIRIZINE sirop')
+        self.assertFalse(e['entered'])
+        self.assertIn('expired 06/01/2026', e['note'])
+
+    def test_correction_names_its_line(self):
+        """A matching row with a row number corrects that line of the file only; without one, every line."""
+        m = {'row': '60', 'expiry': '2028-04-30'}
+        self.assertEqual(os_.matching_expiry(m, {'row': 60}), datetime.date(2028, 4, 30))
+        self.assertIsNone(os_.matching_expiry(m, {'row': 61}))
+        self.assertEqual(os_.matching_expiry({'row': '', 'expiry': '2028-04-30'}, {'row': 61}), datetime.date(2028, 4, 30))
+        self.assertIsNone(os_.matching_expiry({'row': '60', 'expiry': ''}, {'row': 60}))
+        self.assertIsNone(os_.matching_expiry({'row': '60'}, {'row': 60}))  # a row of a file without the column
+
+    def test_correction_must_be_an_iso_date(self):
+        d = tempfile.mkdtemp()
+        matching = os.path.join(d, 'matching.csv')
+        with open(matching, 'w', newline='', encoding='utf-8') as f:
+            f.write('row,produit,forme,dosage,status,stock_item_uuid,stock_item,stock_item_unit,confidence,reason,expiry\n'
+                    '60,X,,,import,u,X,Flacon,high,test,30/04/2028\n')
+        with self.assertRaises(SystemExit) as e:
+            os_.load_matching(matching)
+        self.assertIn('not an ISO date', str(e.exception))
+
+    def test_matching_rows_without_the_column_still_load(self):
+        d = tempfile.mkdtemp()
+        matching = os.path.join(d, 'matching.csv')
+        with open(matching, 'w', newline='', encoding='utf-8') as f:
+            f.write('row,produit,forme,dosage,status,stock_item_uuid,stock_item,stock_item_unit,confidence,reason\n'
+                    '60,X,,,import,u,X,Flacon,high,test\n')
+        self.assertIn('x', os_.load_matching(matching))
+
+    def test_only_the_two_other_lines_of_the_issue_stay_to_confirm(self):
+        with open(os_.DEFAULT_MATCHING, newline='', encoding='utf-8') as f:
+            rows = {r['row']: r for r in csv.DictReader(f)}
+        self.assertEqual((rows['52']['status'], rows['108']['status']), ('confirm', 'confirm'))
+
+
+class AnsweredSeeds776(unittest.TestCase):
+    """#776: the two new items, the two unit changes and the two new drugs fit together."""
+
+    NEW = {'A-Cerumen Gouttes Auriculaires': ('e9638191-c538-5b6e-9dbe-0d3d4bbf1721', '52771744-0938-581c-8eec-d0c282ac42d2', '04144d11-cfed-4930-8ffc-f1b8be92440b'),
+           'Midazolam Injection 5mg/ml': ('76dfeba4-e78a-5c6d-9bac-4c2c2ade50a0', '5dc5f1d7-6916-52d6-8d31-4b99633ee356', 'd81e10fe-0f6a-4b75-b9c0-a5e72d56f3b2')}
+    UNITS = {'d9738e95-bc17-5ff5-8353-d1394ea6895e': '04144d11-cfed-4930-8ffc-f1b8be92440b',   # Anamol Sirop -> Flacon
+             'c8b8d121-716e-5652-adf7-c5a56d6ec6eb': 'd81e10fe-0f6a-4b75-b9c0-a5e72d56f3b2'}  # Cimetidine -> Ampoule
+    INIT = os.path.join(LIQUIBASE, '..')
+
+    def test_new_drugs_in_openmrs_and_odoo(self):
+        with open(os.path.join(self.INIT, 'drugs', 'uvl-drugs-issue776.csv'), newline='', encoding='utf-8') as f:
+            drugs = {r['Name']: r for r in csv.DictReader(f)}
+        odoo = os.path.join(ROOT, 'sites', 'mugamba', 'configs', 'odoo', 'initializer_config', 'product_variant', 'uvl-drugs-issue776.csv')
+        with open(odoo, newline='', encoding='utf-8') as f:
+            products = {r['name']: r for r in csv.DictReader(f)}
+        self.assertEqual(set(drugs), set(self.NEW))
+        self.assertEqual(set(products), set(self.NEW))
+        for name, (drug, _, unit) in self.NEW.items():
+            self.assertEqual((drugs[name]['Uuid'], drugs[name]['Concept Dosage Form'], drugs[name]['Name:fr']), (drug, unit, name))
+            self.assertEqual((products[name]['id'], products[name]['uom_id/id']), ('init.' + drug, 'init.' + unit))
+        self.assertEqual(drugs['Midazolam Injection 5mg/ml']['Concept Drug'], '79853AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')  # CIEL Midazolam
+
+    def test_new_drug_concepts_are_in_the_ocl_export(self):
+        """The drugs load only if their concepts come with an OCL export in the repository (a drugs CSV that
+        fails its first load keeps its checksum)."""
+        import json
+        path = os.path.join(self.INIT, 'ocl', 'UVL_drugs_776_20261118.zip')
+        with zipfile.ZipFile(path) as z:
+            concepts = {c['external_id']: c for c in json.load(z.open('export.json'))['concepts']}
+        with open(os.path.join(self.INIT, 'drugs', 'uvl-drugs-issue776.csv'), newline='', encoding='utf-8') as f:
+            for r in csv.DictReader(f):
+                c = concepts[r['Concept Drug']]
+                self.assertEqual((c['concept_class'], c['datatype'], c['retired']), ('Drug', 'N/A', False), r['Name'])
+        self.assertEqual(concepts['79853AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA']['source'], 'uvl-ciel')
+        self.assertEqual(concepts['f837d2dc-144d-533c-9bbf-6ca637b2ae83']['source'], 'uvl-custom')
+
+    def test_new_stock_items_and_their_changeset(self):
+        seed = read(os.path.join(LIQUIBASE, 'sql', 'stock_items_opening_stock_answered.sql'))
+        rollback = read(os.path.join(LIQUIBASE, 'sql', 'stock_items_opening_stock_answered_rollback.sql'))
+        changelog = read(os.path.join(LIQUIBASE, 'liquibase.xml'))
+        start = changelog.index('id="add_stock_items_opening_stock_answered-20261118"')
+        changeset = changelog[start:changelog.index('</changeSet>', start)]
+        for name, (drug, item_uuid, unit) in self.NEW.items():
+            self.assertIn("'%s', '%s', 1, '%s'" % (drug, unit, item_uuid), seed)
+            self.assertIn("'%s'" % name, seed)
+            self.assertIn(item_uuid, rollback)
+            self.assertIn(drug, changeset)  # waits for the drug
+        self.assertIn('expectedResult="2"', changeset)
+        self.assertIn('stock_items_opening_stock_answered_rollback.sql', changeset)
+
+    def test_unit_changes_are_for_existing_items_and_guarded(self):
+        seed = read(os.path.join(LIQUIBASE, 'sql', 'stock_item_units_opening_stock.sql'))
+        rollback = read(os.path.join(LIQUIBASE, 'sql', 'stock_item_units_opening_stock_rollback.sql'))
+        items = read(os.path.join(LIQUIBASE, 'sql', 'stock_items.sql'))
+        changelog = read(os.path.join(LIQUIBASE, 'liquibase.xml'))
+        start = changelog.index('id="stock_item_units_opening_stock-20261118"')
+        changeset = changelog[start:changelog.index('</changeSet>', start)]
+        for item_uuid, unit in self.UNITS.items():
+            self.assertIn(item_uuid, items)  # created by #437
+            row = next(l for l in seed.splitlines() if l.lstrip().startswith("('%s'" % item_uuid))
+            self.assertIn("'%s'" % unit, row.split(',')[2])  # the unit_uuid column
+            self.assertIn(item_uuid, rollback)
+            self.assertIn(item_uuid, changeset)
+        # not while the items hold stock: a count in millilitres would be re-read in bottles
+        self.assertIn('stockmgmt_stock_batch', changeset)
+        self.assertIn('stockmgmt_stock_item_transaction', changeset)
+        self.assertEqual(changeset.count('expectedResult="0"'), 2)
+        # a packaging unit that something refers to is never rewritten in place
+        self.assertIn('NOT EXISTS (SELECT 1 FROM stockmgmt_stock_item_transaction', seed)
 
 
 class FakeServer:
