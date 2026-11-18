@@ -20,6 +20,8 @@ always wins over the default, so a product a plan excludes needs a row at 0%.
 | DGAC | 100% (private insurer, 13 Nov 2026) | plan default |
 | CAM | State 80%, patient 20% | plan default |
 | MFP | medicines: 80% of at most MFP's reference price per unit; the patient pays the rest | `mfp-medicines-ceiling-issue184.csv`, `amount` rows |
+| MFP | acts, consultations, bed-days, certificates: 80% of at most MFP's price | `mfp-acts-ceiling-issue184.csv`, `amount` rows |
+| MFP | consumables: 70% of at most MFP's 2011 price per item | `mfp-issue184.csv`, rows at 70 in `amount` mode |
 | PNB (police officers) | everything the base plan leaves: the co-payment, what MFP does not cover, the difference above MFP's price | complementary plan, 100% *of what the base plan leaves* |
 | CMU (MSU members, 13 Nov 2026) | the MSU patient share: 30% in category B, 40% in category C | complementary plan, 100% *of what the base plan leaves* |
 
@@ -69,12 +71,42 @@ row for a generic product), the same form, the same strength and, for a bottle, 
 volume, with one unit price. The other drug products have no ceiling yet: MFP still pays
 80% of the clinic price for them. The full matching sheet, with each product's candidates
 and why it was not loaded, was handed to Joshua with the change (#184, 15 Nov 2026).
-Procedures and consumables have no ceiling: MFP's lists for them are paper only.
 
 To add or change a ceiling, add or edit the product's row here (`covered_base_mode`
 `amount`, the unit price in `covered_base_amount`). A product that is also in
 `mfp-issue184.csv` must have a single row: Odoo rejects the whole file on a second
 (plan, product) pair. A product whose MFP row is at 70% or 0% keeps that percentage.
+
+## MFP price ceiling, acts and consumables (`mfp-acts-ceiling-issue184.csv`)
+
+Same rule as for medicines: MFP pays its percentage of at most its own price; the patient
+(or PNB for a police officer) pays the rest. Source: the product owner's file of 18 Nov 2026,
+« TARIFS DES ACTES ET CONSOMMABLES MFP », transcribed from scans (not in the repository):
+
+- **Acts:** the national nomenclature of the 2021 ordinance (Ordonnance conjointe
+  N°630/540/207 du 01/03/2021). A coefficient such as « K 3 » is not a price: the price is
+  the coefficient times its key letter's value (Article 4: K 1,000, R 1,000, N 800, B 300 BIF).
+  « K 3 » is 3,000 BIF.
+- **Consultations, bed-days, certificates:** the ordinance's own amounts (Articles 2, 5, 7).
+  Beds use the district-hospital rates, the same as the national hospitals': a shared ward bed
+  2,000 a day, a private room 10,000.
+- **Consumables:** MFP's device list of 2011, « PRIX 2011 » per item. MFP's list gives
+  80% for bandages and compresses; we keep the agreed 70% for every consumable (#618, decision
+  of 17 Nov 2026), so only the price is taken from the list.
+
+Which MFP line each product is, and how sure we are, is in
+`sites/mugamba/requirements/mfp-acts-devices-matching-issue184.csv`. A product is loaded only
+when the match is « exact » or « reviewed » and MFP's name and value were read clearly (the
+transcriber marked doubtful readings in yellow). The others, with a question for the
+product owner, are listed by `scripts/mfp-ceiling.py --confirm`. Without a ceiling a product
+keeps its percentage of the clinic price.
+
+To change a match, edit the product's row of the matching file (`mfp_ref`, `confidence`)
+and run `python3 scripts/mfp-ceiling.py '<workbook>.xlsx'`: it rewrites the matching file's
+values from the workbook, `mfp-acts-ceiling-issue184.csv`, and the consumables' rows of
+`mfp-issue184.csv`. The build (`scripts/check-insurance-coverage.groovy`) fails if the
+coverage files and the matching file disagree, or if a coverage file has a row Odoo would
+reject (an unknown product or plan, a second row for the same plan and product).
 
 ## Format
 
