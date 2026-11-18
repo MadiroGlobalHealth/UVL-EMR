@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunk_openmrs_esm_appointments_app=globalThis.webpackChunk_openmrs_esm_appointments_app||[]).push([["7209"],{5216(e,a,s){s.r(a),s.d(a,{SWRConfig:()=>p.S,default:()=>p.u,mutate:()=>n.k,preload:()=>l.preload,unload:()=>n.l,unstable_serialize:()=>o,useSWRConfig:()=>l.useSWRConfig});var p=s(4675),n=s(4079),l=s(2372);let o=e=>(0,n.s)(e)[0]}}]);
