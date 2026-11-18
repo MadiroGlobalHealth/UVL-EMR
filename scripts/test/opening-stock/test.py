@@ -1,15 +1,19 @@
 #!/usr/bin/env python3
 """
-Tests scripts/opening-stock.py (#457) on a small made-up count file, and checks that the
+Tests scripts/opening-stock.py (#457, #773) on a small made-up count file, and checks that the
 product matching (sites/mugamba/requirements/opening-stock-matching.csv) only names stock items
-the Liquibase seeds create, so the same matching holds on every server.
+the Liquibase seeds create, so the same matching holds on every server. The server side of apply
+(unit check by concept, stock scope check) runs against a fake stockmanagement REST API.
 
   python3 scripts/test/opening-stock/test.py
 """
+import argparse
+import contextlib
 import csv
 import datetime
 import glob
 import importlib.util
+import io
 import os
 import tempfile
 import unittest
@@ -138,6 +142,176 @@ class Matching(unittest.TestCase):
                 self.assertIn(r['stock_item_uuid'], seeds, r['produit'])
             if r['status'] == 'new-item':
                 self.assertIn(r['stock_item_uuid'], new_items, r['produit'])
+
+
+class AnsweredLines(unittest.TestCase):
+    """#773: the four lines the product owner answered on 18 Nov 2026 are entered, as on production."""
+
+    ANSWERS = {
+        'AMOXICILLINE sirop 250 mg': ('e217acfc-3811-59a4-be77-815167af5e4d', 'Amoxicillin Suspension 250mg/5ml 100ml', 'Flacon'),
+        'DIPYRONE 500 mg inj': ('dfc5c05b-f5b9-5278-84c7-b26fdcf04dfc', 'Dipyrone Injection 1g/2ml', 'Ampoule(s)'),
+        'IBUPROFEN sirop 100 mg': ('e1abef4d-5486-51b2-b957-10a5ea7c9ac6', 'Ibuprofen Suspension 100mg/5ml 100ml', 'Flacon'),
+        'LIGNOCAÏNE': ('ce43e252-73be-538f-907b-f62d7b009152', 'Lidocaïne Injectable 2%', 'Flacon'),
+    }
+
+    def test_planned_as_entered(self):
+        d = tempfile.mkdtemp()
+        path = os.path.join(d, 'stock.xlsx')
+        later = serial(datetime.date(2028, 5, 31))
+        xlsx(path, [['N°', 'PRODUIT', 'Forme', 'Dosage', 'N° de Lot', 'Date de peremption', 'Stock', 'Prix Unitaire']]
+             + [[float(i), p, None, None, 'L%d' % i, later, 10.0, 1.0] for i, p in enumerate(self.ANSWERS, 1)])
+        entries = os_.plan(os_.file_lines(os_.read_xlsx(path)), os_.load_matching(os_.DEFAULT_MATCHING),
+                           datetime.date(2026, 11, 18))
+        self.assertEqual(len(entries), 4)
+        for e in entries:
+            m = e['match']
+            self.assertTrue(e['entered'], e['note'])
+            self.assertEqual((m['stock_item_uuid'], m['stock_item'], m['stock_item_unit']), self.ANSWERS[e['line']['produit']])
+            self.assertEqual((m['status'], m['confidence']), ('import', 'high'))
+            self.assertTrue(m['reason'].startswith('product owner, 18 Nov 2026'), m['reason'])
+
+
+class FakeServer:
+    """The stockmanagement REST calls apply makes, with one stock location and its stock items."""
+
+    LOCATION = 'loc-rx'
+
+    def __init__(self, items, scopes, concepts, created=None):
+        self.items, self.scopes, self.concepts = items, scopes, concepts
+        self.created = created if created is not None else {'uuid': 'op-1', 'operationNumber': 'IST-1'}
+        self.posts, self.concept_reads = [], []
+
+    def get(self, path, **params):
+        if path == '/session':
+            return {'authenticated': True, 'user': {'uuid': 'user-1', 'username': 'pharmacist'}}
+        if path == '/stockmanagement/session':
+            return {'privileges': self.scopes}
+        if path.startswith('/concept/'):
+            uuid = path.split('/')[-1]
+            self.concept_reads.append(uuid)
+            return {'uuid': uuid, 'names': [{'name': n, 'locale': l} for l, n in self.concepts[uuid]]}
+        raise AssertionError(path)
+
+    def all(self, path, **params):
+        if path == '/stockmanagement/party':
+            return [{'uuid': 'party-rx', 'name': 'Pharmacie (Rx)', 'locationUuid': self.LOCATION}]
+        if path == '/stockmanagement/stockbatch':
+            return []
+        if path == '/stockmanagement/stockitem':
+            return self.items
+        raise AssertionError(path)
+
+    def call(self, method, path, body=None):
+        if method == 'POST':
+            self.posts.append((path, body))
+            return self.created if path == '/stockmanagement/stockoperation' else {}
+        return {'status': 'AUTHORIZED', 'operationNumber': 'IST-1'}
+
+
+def scope(privilege, location=FakeServer.LOCATION, operation_type=os_.OPENING_STOCK_TYPE):
+    return {'privilege': privilege, 'operationTypeUuid': operation_type, 'locationUuid': location}
+
+
+FULL_SCOPE = [scope(os_.MUTATE), scope(os_.APPROVE)]
+AMPOULE = 'concept-ampoule'
+CONCEPTS = {AMPOULE: [('en', 'Ampule(s)'), ('fr', 'Ampoule(s)')], 'concept-ml': [('en', 'Millilitre'), ('fr', 'Millilitre')]}
+
+
+def item(uuid, shown, concept):
+    return {'uuid': uuid, 'voided': False, 'dispensingUnitUuid': concept, 'dispensingUnitName': shown,
+            'dispensingUnitPackagingUoMUuid': 'pu-' + uuid, 'dispensingUnitPackagingUoMName': shown,
+            'packagingUnits': [{'uuid': 'pu-' + uuid, 'packagingUomUuid': concept, 'factor': 1}]}
+
+
+def entry(uuid, unit, lot='L1'):
+    return {'entered': True, 'lot': lot, 'qty': 5, 'expiry': datetime.date(2028, 5, 31), 'note': '', 'date_note': '',
+            'line': {'row': 1, 'produit': 'DIPYRONE 500 mg inj'},
+            'match': {'stock_item_uuid': uuid, 'stock_item_unit': unit}}
+
+
+def run(server, entries, commit, no_approval=False):
+    args = argparse.Namespace(user='pharmacist', location='Pharmacie (Rx)', commit=commit, no_approval=no_approval,
+                              operation_date='2026-11-18', remarks='test')
+    out = io.StringIO()
+    with contextlib.redirect_stdout(out):
+        os_.apply(args, entries, datetime.date(2026, 11, 18), om=server)
+    return out.getvalue()
+
+
+class Units(unittest.TestCase):
+    """#773: the unit is compared by concept, not by the name shown in the account's locale."""
+
+    def test_same_concept_in_another_locale(self):
+        server = FakeServer([item('i1', 'Ampule(s)', AMPOULE), item('i2', 'Ampule(s)', AMPOULE)], FULL_SCOPE, CONCEPTS)
+        run(server, [entry('i1', 'Ampoule(s)'), entry('i2', 'AMPOULE(S)')], commit=True)
+        self.assertEqual(len(server.posts[0][1]['stockOperationItems']), 2)
+        self.assertEqual(server.concept_reads, [AMPOULE])  # read once
+
+    def test_accents_and_case_ignored(self):
+        units = os_.Units(FakeServer([], [], {'c': [('fr', 'Pièce')]}))
+        self.assertIsNone(units.mismatch(item('i', 'Piece', 'c'), 'pièce'))
+        self.assertIsNone(units.mismatch(item('i', 'Pièce', 'c'), 'PIECE'))
+
+    def test_different_unit_refused(self):
+        server = FakeServer([item('i1', 'Millilitre', 'concept-ml')], FULL_SCOPE, CONCEPTS)
+        with self.assertRaises(SystemExit) as e:
+            run(server, [entry('i1', 'Flacon')], commit=True)
+        self.assertIn("matching says 'Flacon'", str(e.exception))
+        self.assertEqual(server.posts, [])
+
+    def test_packaging_unit_concept_first(self):
+        i = item('i1', 'Ampule(s)', 'concept-ml')
+        i['packagingUnits'][0]['packagingUomUuid'] = AMPOULE
+        self.assertEqual(os_.unit_concept(i), AMPOULE)
+        del i['packagingUnits']
+        self.assertEqual(os_.unit_concept(i), 'concept-ml')
+
+
+class Scope(unittest.TestCase):
+    """#773: no Opening Stock scope at the location stops a commit before anything is created."""
+
+    def items(self):
+        return [item('i1', 'Ampoule(s)', AMPOULE)]
+
+    def test_no_scope_stops_commit(self):
+        for scopes in ([], [scope(os_.MUTATE, location='elsewhere'), scope(os_.APPROVE, location='elsewhere')],
+                       [scope(os_.MUTATE, operation_type='other-type')],
+                       [scope('Get Concepts'), scope('App: stockmanagement.stockoperations')]):
+            server = FakeServer(self.items(), scopes, CONCEPTS)
+            with self.assertRaises(SystemExit) as e:
+                run(server, [entry('i1', 'Ampoule(s)')], commit=True)
+            self.assertTrue(str(e.exception).startswith('nothing created'), str(e.exception))
+            self.assertEqual(server.posts, [])
+
+    def test_approval_needs_approve(self):
+        server = FakeServer(self.items(), [scope(os_.MUTATE)], CONCEPTS)
+        with self.assertRaises(SystemExit) as e:
+            run(server, [entry('i1', 'Ampoule(s)')], commit=True)
+        self.assertIn(os_.APPROVE, str(e.exception))
+        self.assertNotIn(os_.MUTATE, str(e.exception))
+        run(server, [entry('i1', 'Ampoule(s)')], commit=True, no_approval=True)
+        self.assertEqual([p for p, _ in server.posts][0], '/stockmanagement/stockoperation')
+
+    def test_dry_run_warns(self):
+        server = FakeServer(self.items(), [], CONCEPTS)
+        out = run(server, [entry('i1', 'Ampoule(s)')], commit=False)
+        self.assertIn('WARNING', out)
+        self.assertIn('DRY RUN: 1 lines', out)
+        self.assertEqual(server.posts, [])
+
+    def test_with_scope(self):
+        server = FakeServer(self.items(), FULL_SCOPE, CONCEPTS)
+        out = run(server, [entry('i1', 'Ampoule(s)')], commit=True)
+        self.assertNotIn('WARNING', out)
+        self.assertEqual([b['name'] for p, b in server.posts[1:]], ['SUBMIT', 'APPROVE'])
+
+    def test_response_without_uuid(self):
+        server = FakeServer(self.items(), FULL_SCOPE, CONCEPTS, created={'results': []})
+        with self.assertRaises(SystemExit) as e:
+            run(server, [entry('i1', 'Ampoule(s)')], commit=True)
+        self.assertIn('without a uuid', str(e.exception))
+        self.assertIn('OUVERTURE-', str(e.exception))
+        self.assertEqual(len(server.posts), 1)  # no SUBMIT on a missing uuid
 
 
 if __name__ == '__main__':

@@ -23,7 +23,20 @@ read as the last day of that month (30/09/2029) and listed as corrected.
 
 Quantities are entered in the stock item's dispensing unit, as the file counts them (tablets,
 ampoules, bottles, pieces). The matching marks as `excluded` the items whose unit differs from
-the file's (for example an item counted in millilitres when the file counts bottles).
+the file's (for example an item counted in millilitres when the file counts bottles). Before
+anything is written, apply checks that each item's dispensing unit on the server is the unit the
+matching names (column stock_item_unit): the same unit concept, so the matching's French name is
+accepted whatever the locale of the signed-in account (« Ampule(s) » for an English account is
+the concept of « Ampoule(s) »); any name of the concept in any locale, accents and case ignored.
+A different unit (Millilitre where the matching says Flacon) stops the run.
+
+apply also checks, through stockmanagement's own session endpoint, that the account's stock
+scopes let it do an Opening Stock at the location: a scope on one of its roles, enabled and in
+its dates, naming Opening Stock and that location (or a parent with its descendants), on a role
+that lists the privilege the module requires (« Task: stockmanagement.stockoperations.mutate »,
+and « ...approve » unless --no-approval). A scope on a role that lists no stock privilege, such as
+a super-user role, grants nothing. The dry run reports a missing scope as a warning; --commit
+stops on it before creating anything.
 
 The file itself is operational data: it stays out of the repository.
 
@@ -52,6 +65,7 @@ import json
 import os
 import re
 import sys
+import unicodedata
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -62,6 +76,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 DEFAULT_MATCHING = os.path.join(HERE, '..', 'sites', 'mugamba', 'requirements', 'opening-stock-matching.csv')
 OPENING_STOCK_TYPE = '99999999-9999-9999-9999-999999999999'  # stockmanagement's « Opening Stock » (initial)
 ENTERED = ('import', 'new-item')
+MUTATE = 'Task: stockmanagement.stockoperations.mutate'    # create, submit, complete
+APPROVE = 'Task: stockmanagement.stockoperations.approve'
 NS = {'m': 'http://schemas.openxmlformats.org/spreadsheetml/2006/main'}
 REL = '{http://schemas.openxmlformats.org/officeDocument/2006/relationships}id'
 HEADERS = {'n°': 'n', 'produit': 'produit', 'forme': 'forme', 'dosage': 'dosage', 'n° de lot': 'lot',
@@ -111,6 +127,11 @@ def cell_text(value):
 
 def norm(text):
     return re.sub(r'\s+', ' ', str(text or '')).strip().casefold()
+
+
+def fold(text):
+    """norm() without accents: « Ampoule(s) », « ampoule(s) » and « AMPOULE(S) » are one name."""
+    return ''.join(c for c in unicodedata.normalize('NFD', norm(text)) if unicodedata.category(c) != 'Mn')
 
 
 def file_lines(rows):
@@ -301,13 +322,69 @@ class OpenMRS:
             page_no += 1
 
 
+def unit_concept(item):
+    """The concept of the unit quantities are entered in: the dispensing packaging unit's, else the
+    item's dispensing unit (the same concept in every UVL seed)."""
+    for pu in item.get('packagingUnits') or []:
+        if pu.get('uuid') == item.get('dispensingUnitPackagingUoMUuid') and pu.get('packagingUomUuid'):
+            return pu['packagingUomUuid']
+    return item.get('dispensingUnitUuid')
+
+
+class Units:
+    """Names of unit concepts in every locale, read once per concept."""
+
+    def __init__(self, om):
+        self.om, self.names = om, {}
+
+    def of(self, concept_uuid):
+        if concept_uuid not in self.names:
+            concept = self.om.get('/concept/%s' % concept_uuid, v='custom:(uuid,names:(name,locale))')
+            self.names[concept_uuid] = [n.get('name') for n in concept.get('names') or [] if n.get('name')]
+        return self.names[concept_uuid]
+
+    def mismatch(self, item, expected):
+        """None when the item's unit is `expected`, else what the server has. The displayed name is in
+        the account's locale, so a different name is checked against every name of the concept."""
+        shown = item.get('dispensingUnitPackagingUoMName') or item.get('dispensingUnitName') or ''
+        if not expected or fold(shown) == fold(expected):
+            return None
+        concept = unit_concept(item)
+        names = self.of(concept) if concept else []
+        if fold(expected) in {fold(n) for n in names}:
+            return None
+        return '%r (concept %s: %s)' % (shown, concept, ', '.join(sorted(set(names))) or 'no names')
+
+
+def scope_problem(om, party, approval):
+    """Why the signed-in account cannot do an Opening Stock at the party's location, or None.
+
+    stockmanagement's GET /stockmanagement/session lists the account's effective privilege scopes,
+    computed as the module computes them when it checks an operation: role scopes of the user that
+    are enabled, not voided, permanent or active today, expanded to descendant locations, crossed
+    with the privileges the scope's role lists (its own and its parents'). A scope on a role that
+    lists no stock privilege therefore yields nothing here, as it grants nothing there."""
+    needed = [MUTATE] + ([APPROVE] if approval else [])
+    scopes = om.get('/stockmanagement/session', v='default').get('privileges') or []
+    held = {s.get('privilege') for s in scopes
+            if s.get('operationTypeUuid') == OPENING_STOCK_TYPE and s.get('locationUuid') == party['locationUuid']}
+    missing = [p for p in needed if p not in held]
+    if not missing:
+        return None
+    return ('the account has no stock scope giving %s for Opening Stock at %s. Give one of its roles a '
+            'stock user role scope (Opening Stock, this location, enabled, in its dates) on a role that lists '
+            'these privileges; a scope on a role without stock privileges, such as a super-user role, grants '
+            'nothing' % (' and '.join('« %s »' % p for p in missing), party['name']))
+
+
 def iso(dt):
     return dt.strftime('%Y-%m-%dT%H:%M:%S.000+0000')
 
 
-def apply(args, entries, op_date):
-    password = os.environ.get('OPENMRS_PASSWORD') or getpass.getpass('Password for %s: ' % args.user)
-    om = OpenMRS(args.url, args.auth_url or args.url.replace('://', '://auth.', 1), args.user, password)
+def apply(args, entries, op_date, om=None):
+    if om is None:
+        password = os.environ.get('OPENMRS_PASSWORD') or getpass.getpass('Password for %s: ' % args.user)
+        om = OpenMRS(args.url, args.auth_url or args.url.replace('://', '://auth.', 1), args.user, password)
     session = om.get('/session', v='custom:(authenticated,user:(uuid,username))')
     if not session.get('authenticated'):
         raise SystemExit('sign-in failed for %s' % args.user)
@@ -316,6 +393,11 @@ def apply(args, entries, op_date):
     if len(parties) != 1:
         raise SystemExit('stock location %r: %d matches' % (args.location, len(parties)))
     party = parties[0]
+    problem = scope_problem(om, party, not args.no_approval)
+    if problem and args.commit:
+        raise SystemExit('nothing created: %s' % problem)
+    if problem:
+        print('WARNING: %s; --commit would stop here.\n' % problem)
     in_stock = {(b.get('stockItemUuid'), (b.get('batchNo') or '').strip())
                 for b in om.all('/stockmanagement/stockbatch', v='default', locationUuid=party['locationUuid'],
                                 excludeEmptyStock='true')}
@@ -336,11 +418,12 @@ def apply(args, entries, op_date):
     print('\n%s: %d lines, %d stock items, %d units in total, at %s, as %s'
           % ('COMMIT' if args.commit else 'DRY RUN', len(lines), len({i['uuid'] for _, i in lines}), total,
              party['name'], args.user))
+    units = Units(om)
     for e, item in lines:
-        unit = item.get('dispensingUnitPackagingUoMName') or item.get('dispensingUnitName') or ''
-        if e['match'].get('stock_item_unit') and unit and norm(unit) != norm(e['match']['stock_item_unit']):
-            raise SystemExit('row %s: the stock item\'s unit is %r on the server, the matching says %r'
-                             % (e['line']['row'], unit, e['match']['stock_item_unit']))
+        other = units.mismatch(item, e['match'].get('stock_item_unit'))
+        if other:
+            raise SystemExit('row %s: the stock item\'s unit is %s on the server, the matching says %r'
+                             % (e['line']['row'], other, e['match']['stock_item_unit']))
     if not args.commit or not lines:
         return
     digest = hashlib.sha1(json.dumps([[i['uuid'], e['lot'], e['qty']] for e, i in lines]).encode()).hexdigest()[:8]
@@ -359,7 +442,15 @@ def apply(args, entries, op_date):
             'expiration': e['expiry'].strftime('%Y-%m-%dT12:00:00.000+0000'),
             'quantity': e['qty'],
         } for e, item in lines]})
-    uuid = operation['uuid']
+    uuid = operation.get('uuid')
+    if not uuid:
+        # stockmanagement 2.1.2-uvl lets a stock administrator (« Task: stockmanagement.userRoleScopes.mutate »,
+        # so any super user) create an operation without a scope; on production the response then came
+        # back without a uuid, after the draft was created. scope_problem stops this case up front.
+        raise SystemExit('the server created the operation but returned it without a uuid: the account most '
+                         'likely has no effective stock scope for Opening Stock at %s. A draft may exist with '
+                         'reference %s: once the scope is given, cancel it in the stock app before running again.'
+                         % (party['name'], 'OUVERTURE-%s' % digest))
     print('created %s (%s)' % (operation.get('operationNumber'), uuid))
     for action in (('COMPLETE',) if args.no_approval else ('SUBMIT', 'APPROVE')):
         om.call('POST', '/stockmanagement/stockoperationaction', {'name': action, 'uuid': uuid})
