@@ -851,6 +851,7 @@
     "Display conditions": {
       "privileges": ["Manage Appointments"]
     },
+    "excludedProviderIdentifiers": ["admin", "service-account-*"],
     "Translation overrides": {
       "fr": {
         "action": "Action",
