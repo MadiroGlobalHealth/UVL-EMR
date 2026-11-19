@@ -4,7 +4,7 @@
   Run from sites/mugamba/pom.xml at prepare-package, against the assembled
   initializer_config, so it sees every layer (distro, country, site).
 
-  Fifteen checks, each for a fault that passes every review of the form JSON and shows only
+  Seventeen checks, each for a fault that passes every review of the form JSON and shows only
   when someone saves or reads the form:
 
   1. A number question that accepts decimals asks a concept that allows them. The form
@@ -98,7 +98,16 @@
      in two diagnosis exports is judged on its newest version, and that version's export must sort (and
      so load) after the older one, or the older names come back. Concepts whose name cannot carry the
      code are listed in diagnosisNameExceptions.
- 15. A fresh install imports every OCL export without an error. When the Initializer checksums are
+ 15. No question label ends with a colon, in the form or in its French translation. The saved-encounter
+     view (the form engine's read view) writes every label followed by a colon, so « Prestataire : »
+     read « Prestataire :: » (#752).
+ 16. No repeating question, and no member of a repeating obs group, is `required: true`. The engine
+     copies the question for every row added with « Ajouter », `required` included, so an added row
+     left empty refused the save: « Diagnostic confirmé » of the outpatient consultation (#789). To
+     require the first row only, the question is required while it is itself empty
+     (`conditionalRequired` on its own id, answers "" and null: the copies read the first row's
+     value) and carries a js_expression validator failing on `isEmpty(<its id>) && isEmpty(myValue)`.
+ 17. A fresh install imports every OCL export without an error. When the Initializer checksums are
      empty (a new server, a restored volume, checksums cleared after a migration) OpenMRS imports
      every export in ocl/ in name order, and the import logged 136 failed mappings and 4 failed
      concepts that hid any new fault (#533). Each export, read in that order, must have: a concept
@@ -194,7 +203,7 @@ Map<String, List> newestDiagnosis = [:]
 Set<String> diagnosisNameExceptions = ['a61f7a7e-be38-4970-b841-3adc2efdb46c'] as Set
 int mappingsChecked = 0
 int labConceptsChecked = 0
-// Check 15, across the exports in load order: concept URLs imported, 'source:code' they map SAME-AS
+// Check 17, across the exports in load order: concept URLs imported, 'source:code' they map SAME-AS
 // to, and the concept each name id belongs to.
 Set<String> importedConcepts = [] as Set
 Set<String> sameAsCodes = [] as Set
@@ -331,6 +340,8 @@ Set<String> namedConcepts = [] as Set
 int answerLabelsChecked = 0
 int expressionValidators = 0
 int newbornMembersChecked = 0
+int labelsChecked = 0
+int repeatingChecked = 0
 // '<form file> <question id>' -> what each answer shows in French: its label, else its concept's French name.
 Map<String, List<String>> answersShown = [:]
 // A newborn's obs group, by its id (newbornMonitoring, nb...), label or concept name.
@@ -372,6 +383,17 @@ formFiles.each { File file ->
             }
         }
 
+        questions.findAll { it.questionOptions?.rendering == 'repeating' }.each { repeated ->
+            ([repeated] + questionsOf(repeated.questions)).each { q ->
+                repeatingChecked++
+                if (isTrue(q.required)) {
+                    faults << ("${file.name}: ${q.id} is required and ${q.id == repeated.id ? 'repeating' : "in the repeating group ${repeated.id}"}, " +
+                            "so every row added is required too and an added row left empty refuses the save. " +
+                            "Require the first row only, as confirmedDiagnosis of the outpatient consultation does (#789)")
+                }
+            }
+        }
+
         questions.each { q ->
             def options = q.questionOptions ?: [:]
             if (options.rendering in ['number', 'numeric'] && !isTrue(options.disallowDecimals)
@@ -387,6 +409,15 @@ formFiles.each { File file ->
             if (q.id && options.answers) {
                 answersShown["${file.name} ${q.id}".toString()] = options.answers.collect { answer ->
                     (answer.label ?: frenchName[cielConcept.getOrDefault(answer.concept, answer.concept)])?.toString()
+                }
+            }
+
+            if (q.label instanceof String) {
+                labelsChecked++
+                [q.label, french[q.label]].findAll { it instanceof String && it.trim().endsWith(':') }.unique().each { label ->
+                    faults << ("${file.name}: ${q.id} is labelled '${label}', but the saved-encounter view adds its own " +
+                            "colon after a label, so it reads '${label}:'. Drop the colon from the label and its " +
+                            "translations (#752)")
                 }
             }
 
@@ -551,4 +582,6 @@ log.info("Forms OK: ${decimalQuestions} decimal number questions on concepts tha
         "${answerLabelsChecked} answer labels the saved-encounter view shows as the entry form does, " +
         "${imagingChecked} imaging procedures that take a result, " +
         "${expressionValidators} js_expression validators with a condition and a message, " +
-        "${newbornMembersChecked} newborn group members on concepts of their own, not the vital signs'")
+        "${newbornMembersChecked} newborn group members on concepts of their own, not the vital signs', " +
+        "${labelsChecked} question labels without a colon of their own, " +
+        "${repeatingChecked} repeating questions and members that do not require every added row")

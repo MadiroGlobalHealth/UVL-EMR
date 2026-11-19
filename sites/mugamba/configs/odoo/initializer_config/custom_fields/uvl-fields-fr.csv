@@ -1,0 +1,6 @@
+"id","name","field_description","model_id","ttype","index","store","readonly","relation","size","related"
+"init.fb0ba0e0-3db1-43c5-b593-611ecf037f19","x_external_identifier","Identifiant du patient","Contact","char","","True","","","",""
+"init.6cd59142-1af4-4bf6-9ab8-3c05f26819ce","x_external_identifier","Identifiant du patient","Sales Order","char","","True","True","","0","partner_id.x_external_identifier"
+"init.898fe991-aea8-4a9f-8e06-13d796128f94","x_customer_dob","Date de naissance","Contact","date","","True","","","",""
+"init.44b2048c-34b9-4fe7-90bd-f5296f335c48","x_customer_dob","Date de naissance du patient","Sales Order","date","","True","True","","0","partner_id.x_customer_dob"
+"init.c018bfa6-6925-4166-9f84-eda9f63b7e6b","x_customer_weight","Poids du patient","Sales Order","char","","True","False","","38",""

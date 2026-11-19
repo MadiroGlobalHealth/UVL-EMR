@@ -4,7 +4,12 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { CardHeader, ErrorState, useConfig } from '@openmrs/esm-framework';
 import dayjs from 'dayjs';
 import { configNamespace, type PartographConfig } from '../config-schema';
-import { type SurveillanceRow, type SurveillanceTableData, useSurveillance } from './surveillance.resource';
+import {
+  formatDecimal,
+  type SurveillanceRow,
+  type SurveillanceTableData,
+  useSurveillance,
+} from './surveillance.resource';
 import styles from './surveillance-table.scss';
 
 interface SurveillanceTableProps {
@@ -40,7 +45,7 @@ const SurveillanceTable: React.FC<SurveillanceTableProps> = ({ patientUuid }) =>
 };
 
 const SurveillanceCard: React.FC<{ title: string; table: SurveillanceTableData }> = ({ title, table }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { columns, motherRows, newbornRows, earlierCount } = table;
 
   const valueRows = (rows: Array<SurveillanceRow>, valuesOf: (index: number) => Record<string, string>) =>
@@ -48,7 +53,11 @@ const SurveillanceCard: React.FC<{ title: string; table: SurveillanceTableData }
       <TableRow key={row.concept}>
         <TableCell className={styles.rowLabel}>{row.label}</TableCell>
         {columns.map((column, index) => (
-          <TableCell key={column.uuid}>{valuesOf(index)[row.concept] ?? '--'}</TableCell>
+          <TableCell key={column.uuid}>
+            {valuesOf(index)[row.concept] !== undefined
+              ? formatDecimal(valuesOf(index)[row.concept], i18n?.language)
+              : '--'}
+          </TableCell>
         ))}
       </TableRow>
     ));

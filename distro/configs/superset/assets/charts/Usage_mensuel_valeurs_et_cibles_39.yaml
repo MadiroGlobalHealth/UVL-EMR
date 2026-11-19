@@ -1,0 +1,46 @@
+slice_name: "Usage mensuel \u2013 valeurs et cibles"
+description: null
+certified_by: null
+certification_details: null
+viz_type: table
+params:
+  datasource: 28__table
+  viz_type: table
+  query_mode: raw
+  groupby: []
+  metrics: []
+  all_columns:
+  - MOIS
+  - INDICATEUR
+  - MODULE
+  - VALEUR
+  - CIBLE
+  - '% DE LA CIBLE'
+  percent_metrics: []
+  temporal_columns_lookup:
+    MOIS: true
+  time_grain_sqla: P1D
+  adhoc_filters:
+  - expressionType: SIMPLE
+    subject: MOIS
+    operator: TEMPORAL_RANGE
+    comparator: previous calendar month
+    clause: WHERE
+    sqlExpression: null
+    isExtra: false
+    isNew: false
+    datasourceWarning: false
+    filterOptionName: filter_ktgm9ka775
+  order_by_cols: []
+  row_limit: 10000
+  server_page_length: 50
+  order_desc: true
+  table_timestamp_format: '%Y-%m'
+  show_cell_bars: false
+  color_pn: true
+  extra_form_data: {}
+query_context: null
+cache_timeout: null
+uuid: c3a930b0-ed74-40b3-aa06-584e45d143f5
+version: 1.0.0
+dataset_uuid: 68f791ec-1a50-4be8-a0b5-e3001898a887

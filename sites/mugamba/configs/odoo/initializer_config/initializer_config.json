@@ -51,6 +51,11 @@
             "field_rules": {}
         },
         {
+            "model_name": "res.users",
+            "folder": "users",
+            "field_rules": {}
+        },
+        {
             "model_name": "product.product",
             "folder": "product_tags",
             "field_rules": {

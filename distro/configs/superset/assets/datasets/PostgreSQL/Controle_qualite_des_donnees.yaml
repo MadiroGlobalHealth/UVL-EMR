@@ -1,0 +1,211 @@
+table_name: "Contr\xF4le qualit\xE9 des donn\xE9es"
+main_dttm_col: MOIS
+description: null
+default_endpoint: null
+offset: 0
+cache_timeout: null
+schema: public
+sql: "WITH pt AS (\n    SELECT p.patient_uuid, p.patient_id, p.birthdate, p.gender,\n\
+  \           TRIM(SPLIT_PART(SUBSTRING(p.identifiers FROM 'UVL ID: ([^,]+)'), ',',\
+  \ 1)) AS idp\n    FROM patients p\n    WHERE COALESCE(p.person_voided, false) =\
+  \ false\n      AND NOT (COALESCE(p.family_name, '') ~* '^(SYNTH-|E2E|QA|TEST|DEMO)'\n\
+  \            OR COALESCE(p.given_name,  '') ~* '^(SYNTH-|E2E|QA|TEST|DEMO)')\n),\n\
+  enc AS (\n    SELECT e.encounter_id, e.encounter_uuid, e.encounter_type_uuid, e.encounter_datetime,\
+  \ e.visit_uuid,\n           e.location, e.location_uuid, pt.idp\n    FROM encounters\
+  \ e\n    JOIN pt ON pt.patient_uuid = e.patient_uuid\n    WHERE COALESCE(e.encounter_voided,\
+  \ false) = false\n      AND e.location_uuid IS DISTINCT FROM '450be362-59a7-4ccd-964d-ebd930a8b30f'\n\
+  ),\nvis AS (\n    SELECT v.visit_id, v.visit_uuid, v.date_started, v.location, v.visit_attributes,\
+  \ pt.idp, pt.birthdate, pt.gender\n    FROM visits v\n    JOIN pt ON pt.patient_uuid\
+  \ = v.patient_uuid\n    WHERE COALESCE(v.visit_voided, false) = false\n      AND\
+  \ v.location_uuid IS DISTINCT FROM '450be362-59a7-4ccd-964d-ebd930a8b30f'\n),\n\
+  dx AS (\n    SELECT ed.encounter_id, ed.diagnosis_coded, ed.diagnosis_non_coded,\
+  \ ed.certainty,\n           c.name AS dx_name, c.concept_mappings_source_codes AS\
+  \ maps\n    FROM encounter_diagnoses ed\n    LEFT JOIN concepts c ON c.concept_id\
+  \ = ed.diagnosis_coded AND c.locale = 'en'\n    WHERE COALESCE(ed.voided, false)\
+  \ = false\n),\ncs_mat AS (   -- C-section recorded in maternity (Delivery Registration:\
+  \ mode of delivery = caesarean)\n    SELECT o.visit_uuid, MIN(o.obs_date_time) AS\
+  \ d\n    FROM observations o\n    WHERE COALESCE(o.obs_voided, false) = false\n\
+  \      AND o.question_uuid = '38eca4cd-21ab-4689-a18b-202a50d34569'\n      AND o.answer_coded_uuid\
+  \ = '4a8e5f2a-da35-4a5d-aefb-ffabe41e6783'\n    GROUP BY o.visit_uuid\n),\ncs_op\
+  \ AS (    -- C-section recorded in theatre (Operation Protocol: caesarean case =\
+  \ elective or emergency)\n    SELECT o.visit_uuid, MIN(o.obs_date_time) AS d\n \
+  \   FROM observations o\n    WHERE COALESCE(o.obs_voided, false) = false\n     \
+  \ AND o.question_uuid = '753be061-2a1e-46de-8575-5a1b5a08725e'\n      AND o.answer_coded_uuid\
+  \ IN ('79a559a9-c7aa-4006-98c2-02c530f6f7db', '90a3cdc3-342e-456f-8154-5e6802166584')\n\
+  \    GROUP BY o.visit_uuid\n),\npayer_start AS (   -- the Payer visit attribute\
+  \ exists only from the first visit that has one\n    SELECT MIN(v.date_started)\
+  \ AS d FROM visits v WHERE v.visit_attributes ~ '(^|/ )Payer: '\n),\npb AS (\n \
+  \   -- 1. Outpatient consultation without a confirmed diagnosis\n    SELECT e.encounter_datetime\
+  \ AS d, '1. Consultation sans diagnostic confirm\xE9' AS controle, e.location AS\
+  \ service,\n           'Consultation ' || e.encounter_id AS reference, e.idp, CAST(NULL\
+  \ AS TEXT) AS detail\n    FROM enc e\n    WHERE e.encounter_type_uuid = '0ff55309-1897-476b-a647-c7c180b102c8'\n\
+  \      AND NOT EXISTS (SELECT 1 FROM dx WHERE dx.encounter_id = e.encounter_id AND\
+  \ UPPER(dx.certainty) = 'CONFIRMED')\n    UNION ALL\n    -- 2. Diagnosis without\
+  \ an ICD-10 code (non-coded, or concept without an ICD-10-WHO mapping)\n    SELECT\
+  \ e.encounter_datetime, '2. Diagnostic sans code CIM-10', e.location,\n        \
+  \   'Rencontre ' || e.encounter_id, e.idp,\n           COALESCE(dx.dx_name, 'Non\
+  \ cod\xE9: ' || dx.diagnosis_non_coded)\n    FROM dx\n    JOIN enc e ON e.encounter_id\
+  \ = dx.encounter_id\n    WHERE dx.diagnosis_coded IS NULL\n       OR COALESCE(dx.maps,\
+  \ '') !~ 'ICD-10-WHO: '\n    UNION ALL\n    -- 3. C-section recorded on one side\
+  \ only (maternity vs theatre), counted by visit (#610)\n    SELECT COALESCE(m.d,\
+  \ o.d), '3. C\xE9sarienne enregistr\xE9e d''un seul c\xF4t\xE9', MIN(e.location),\n\
+  \           'Visite ' || MIN(v.visit_id), MIN(v.idp),\n           CASE WHEN o.visit_uuid\
+  \ IS NULL THEN 'Maternit\xE9 seulement (pas de protocole op\xE9ratoire \xAB c\xE9\
+  sarienne \xBB)'\n                ELSE 'Bloc seulement (pas d''enregistrement d''accouchement\
+  \ \xAB c\xE9sarienne \xBB)' END\n    FROM cs_mat m\n    FULL JOIN cs_op o ON o.visit_uuid\
+  \ = m.visit_uuid\n    JOIN vis v ON v.visit_uuid = COALESCE(m.visit_uuid, o.visit_uuid)\n\
+  \    LEFT JOIN enc e ON e.visit_uuid = v.visit_uuid\n                   AND e.encounter_type_uuid\
+  \ IN ('cbe294b9-8a80-48b0-b65a-db19166a892b', '090a9937-0fb4-4a0e-9487-96ec0c3f9a38')\n\
+  \    WHERE m.visit_uuid IS NULL OR o.visit_uuid IS NULL\n    GROUP BY m.d, o.d,\
+  \ m.visit_uuid, o.visit_uuid\n    UNION ALL\n    -- 4. Outpatient consultation saved\
+  \ at the reception desk instead of the service point (#222)\n    SELECT e.encounter_datetime,\
+  \ '4. Consultation enregistr\xE9e \xE0 l''accueil (point de prestation manquant)',\
+  \ e.location,\n           'Consultation ' || e.encounter_id, e.idp, CAST(NULL AS\
+  \ TEXT)\n    FROM enc e\n    WHERE e.encounter_type_uuid = '0ff55309-1897-476b-a647-c7c180b102c8'\n\
+  \      AND e.location_uuid = 'BB9C7BDC-E654-060E-5E6C-4EEF309C7A04'\n    UNION ALL\n\
+  \    -- 5. Ward discharge without a discharge summary (F07: exit mode)\n    SELECT\
+  \ e.encounter_datetime, '5. Sortie sans r\xE9sum\xE9 de sortie (F07)', e.location,\n\
+  \           'Sortie ' || e.encounter_id, e.idp, CAST(NULL AS TEXT)\n    FROM enc\
+  \ e\n    WHERE e.encounter_type_uuid = '181820aa-88c9-479b-9077-af92f5364329'\n\
+  \      AND NOT EXISTS (SELECT 1 FROM enc f WHERE f.visit_uuid = e.visit_uuid\n \
+  \                                        AND f.encounter_type_uuid = '669262a8-f351-4d5b-8480-3551734eed8f')\n\
+  \    UNION ALL\n    -- 6. Delivery registration without a mode of delivery\n   \
+  \ SELECT e.encounter_datetime, '6. Accouchement sans mode d''accouchement', e.location,\n\
+  \           'Accouchement ' || e.encounter_id, e.idp, CAST(NULL AS TEXT)\n    FROM\
+  \ enc e\n    WHERE e.encounter_type_uuid = 'cbe294b9-8a80-48b0-b65a-db19166a892b'\n\
+  \      AND NOT EXISTS (SELECT 1 FROM observations o\n                      WHERE\
+  \ o.encounter_uuid = e.encounter_uuid\n                        AND o.question_uuid\
+  \ = '38eca4cd-21ab-4689-a18b-202a50d34569'\n                        AND COALESCE(o.obs_voided,\
+  \ false) = false)\n    UNION ALL\n    -- 7. Visit without a payer (only since the\
+  \ Payer attribute exists)\n    SELECT v.date_started, '7. Visite sans payeur', v.location,\n\
+  \           'Visite ' || v.visit_id, v.idp, CAST(NULL AS TEXT)\n    FROM vis v\n\
+  \    CROSS JOIN payer_start ps\n    WHERE v.date_started >= ps.d\n      AND COALESCE(v.visit_attributes,\
+  \ '') !~ '(^|/ )Payer: '\n    UNION ALL\n    -- 8. Visit of a patient with no birth\
+  \ date or no sex (age band and sex columns stay empty)\n    SELECT v.date_started,\
+  \ '8. Patient sans date de naissance ou sexe', v.location,\n           'Visite '\
+  \ || v.visit_id, v.idp,\n           CONCAT_WS(', ', CASE WHEN v.birthdate IS NULL\
+  \ THEN 'date de naissance' END,\n                           CASE WHEN COALESCE(v.gender,\
+  \ '') = '' THEN 'sexe' END)\n    FROM vis v\n    WHERE v.birthdate IS NULL OR COALESCE(v.gender,\
+  \ '') = ''\n)\nSELECT\n    date_trunc('month', pb.d)::date AS \"MOIS\",\n    CAST(pb.d\
+  \ AS DATE) AS \"DATE\",\n    pb.controle AS \"CONTROLE\",\n    COALESCE(pb.service,\
+  \ 'Non renseign\xE9') AS \"LIEU\",\n    pb.reference AS \"REFERENCE\",\n    COALESCE(pb.idp,\
+  \ 'Non renseign\xE9') AS \"IDPERSONNE\",\n    COALESCE(pb.detail, '') AS \"DETAIL\"\
+  ,\n    1 AS \"NOMBRE\"\nFROM pb\nWHERE pb.d IS NOT NULL\nORDER BY \"DATE\" DESC,\
+  \ \"CONTROLE\", \"REFERENCE\"\n"
+params: null
+template_params: null
+filter_select_enabled: true
+fetch_values_predicate: null
+extra: null
+normalize_columns: false
+always_filter_main_dttm: false
+uuid: 6eb8e958-fc54-4c39-b28c-83e31a311c34
+metrics:
+- metric_name: count
+  verbose_name: COUNT(*)
+  metric_type: count
+  expression: COUNT(*)
+  description: null
+  d3format: null
+  currency: null
+  extra: null
+  warning_text: null
+columns:
+- column_name: DATE
+  verbose_name: null
+  is_dttm: true
+  is_active: true
+  type: DATE
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: DETAIL
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: MOIS
+  verbose_name: null
+  is_dttm: true
+  is_active: true
+  type: DATE
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: NOMBRE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: INTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: REFERENCE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: CONTROLE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: IDPERSONNE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: LIEU
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+version: 1.0.0
+database_uuid: 44c13a30-0c14-402c-b81f-1c93972f5fbc

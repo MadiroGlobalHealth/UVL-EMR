@@ -1,0 +1,22 @@
+{
+  "_comment": "UVL Mugamba metadata for synthetic_dataset.py (UVL-EMR#263). Every uuid is checked on the server before anything is written. Sources: UVL-EMR sites/mugamba initializer_config (locations, visittypes, ordertypes), the OCL uvl-procedures and labtests bundles, OpenMRS/O3 core metadata, and the weight and temperature concepts of the vitals app (frontend_config). Checked against UAT on 2026-11-16.",
+  "identifierType": "05a29f94-c0ed-11e2-94be-8c13b969e334",
+  "registrationLocation": "BB9C7BDC-E654-060E-5E6C-4EEF309C7A04",
+  "visitLocation": "44c3efb0-2583-4c80-a79e-1f756a03c0a1",
+  "visitType": "31fe9bef-4b22-4686-acb2-4ecce1fdd8b9",
+  "orderEncounterType": "39da3525-afe4-45ff-8977-c53b7b359158",
+  "encounterRole": "a0b03050-c99b-11e0-9572-0800200c9a66",
+  "careSetting": "6f0c9a92-6f24-11e3-af88-005056821db0",
+  "orders": [
+    {"label": "Generalist consultation (billing)", "orderType": "67a92e56-0f88-11ea-8d71-362b9e155667", "concept": "ed284c29-531f-4666-837c-01345e3dbb5b"},
+    {"label": "BI07 - Hemoglobin (lab)", "orderType": "52a447d3-a64a-11e3-9aeb-50e549534c5e", "concept": "6d792222-d3e8-4b1e-a1b3-7af9bd7b0f2a"},
+    {"label": "RX01 - Chest X-ray (imaging)", "orderType": "67a92e56-0f88-11ea-8d71-362b9e155667", "concept": "e3dea2c8-62c6-4487-bdaa-1d009642f7ad"}
+  ],
+  "vitals": {
+    "encounterType": "67a71486-1a54-468f-ac3e-7091a9a79584",
+    "obs": {
+      "weight_kg": {"concept": "5302aa6f-7528-4aeb-a3e8-0dc16a39b6ce", "min": 3, "max": 95, "decimals": 1},
+      "temperature_c": {"concept": "748f8d43-617a-40ba-9474-20522e73fb8a", "min": 36.0, "max": 39.5, "decimals": 1}
+    }
+  }
+}

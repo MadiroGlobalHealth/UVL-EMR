@@ -5,7 +5,7 @@
         "paginationItemsCount": "{{pageItemsCount}} / {{totalItems}} éléments",
         "paginationOfPages": "sur {{count}} pages",
         "discardUnsavedChangesPromptTitle": "Abandonner les modifications non enregistrées ?",
-        "discardUnsavedChangesPromptBodySingle": "<strong>{{workspaceTitle}}</strong> contient des modifications non enregistrées. Le fermer les abandonnera.",
+        "discardUnsavedChangesPromptBodySingle": "<strong>{{- workspaceTitle}}</strong> contient des modifications non enregistrées. Le fermer les abandonnera.",
         "discardUnsavedChangesPromptBodyMultiple": "{{count}} espaces de travail contiennent des modifications non enregistrées. Les fermer abandonnera ces modifications :",
         "keepEditing": "Continuer la saisie",
         "emptyStateText": "Aucun(e) {{displayText}} à afficher",
@@ -20,7 +20,25 @@
         "yearAbbreviation": "an",
         "yearsAbbreviation": "ans",
         "closeSnackbar": "Fermer la notification",
-        "snackbarNotification": "Notification"
+        "snackbarNotification": "Notification",
+        "batchActionItemSelected": "{{totalSelected}} élément sélectionné",
+        "batchActionsItemsSelected": "{{totalSelected}} éléments sélectionnés",
+        "copied": "Copié !",
+        "copyToClipboard": "Copier dans le presse-papiers",
+        "provisional": "Provisoire",
+        "applicationError": "Erreur de l'application",
+        "actionableNotification": "Notification à traiter",
+        "leftNavigation": "Navigation de gauche",
+        "patientAvatarAlt": "Avatar de {{patientName}}",
+        "patientPhotoAlt": "Photo de {{patientName}}",
+        "patientPhotoPlaceholder": "Emplacement de la photo de {{patientName}}",
+        "errorLoadingLoginLocations": "Impossible de charger les lieux de connexion. Réessayez ou contactez le support si le problème persiste.",
+        "serverStartingUp": "Le serveur démarre",
+        "serverStartingUpExplainer": "Cela peut prendre quelques minutes. OpenMRS s'ouvrira automatiquement quand le serveur sera prêt.",
+        "serverStartingUpSlowExplainer": "Cela prend plus de temps que d'habitude. Le premier démarrage après une mise à jour peut prendre 10 minutes ou plus. Vous pouvez laisser cette page ouverte.",
+        "viewSetupProgress": "Voir l'avancement du démarrage",
+        "waitingForServer": "En attente du serveur",
+        "navigateNonHttp": "Impossible d'ouvrir la page demandée : l'adresse n'est pas sûre"
       }
     }
   },
@@ -141,8 +159,11 @@
       }
     ],
     "restrictByVisitLocationTag": true,
+    "preselectVisitLocation": false,
     "Translation overrides": {
       "fr": {
+        "visitLocation": "Service de la visite",
+        "selectLocation": "Choisir le service où le patient est vu",
         "completedForms": "Formulaires remplis",
         "collapseEncounter": "Réduire la consultation",
         "expandEncounter": "Développer la consultation",
@@ -150,7 +171,22 @@
         "printSelected": "Imprimer la sélection",
         "recordedVia": "Enregistré via {{formName}}",
         "paginationPageText_one": "sur {{count}} page",
-        "paginationPageText_other": "sur {{count}} pages"
+        "paginationPageText_other": "sur {{count}} pages",
+        "noProvider": "Aucun professionnel de santé",
+        "activeVisitExists": "Ce patient a déjà une visite en cours",
+        "deathDateBeforeBirthDate": "La date de décès ne peut pas précéder la date de naissance",
+        "endActiveVisitFirst": "Terminez la visite en cours avant d'en démarrer une nouvelle.",
+        "generating": "Génération...",
+        "generatingPdf": "Génération du PDF",
+        "markDeceasedSuccessfully": "Patient déclaré décédé",
+        "markDeceasedWarning": "Déclarer le patient décédé met à jour ses informations de décès",
+        "noActiveVisitMessage": "visite en cours",
+        "pdfDownloaded": "PDF téléchargé",
+        "thisMayTakeAMoment": "Cela peut prendre un moment.",
+        "visitStartDateBeforeBirthdate": "La date de début ne peut pas précéder la date de naissance du patient",
+        "errorCreatingVisitAttribute": "Erreur lors de la création de l'attribut de visite {{attributeName}}",
+        "printError": "Échec de la génération du PDF. Consultez les journaux du serveur.",
+        "discontinued": "Arrêté"
       }
     }
   },
@@ -249,7 +285,7 @@
         "ON_HOLD": "En attente",
         "RECEIVED": "Reçu",
         "STAT": "Urgent",
-        "ROUTINE": "Routine",
+        "ROUTINE": "De routine",
         "ON_SCHEDULED_DATE": "À la date prévue",
         "testOrders": "demandes d'examen",
         "ordersPlaced": "Prescriptions enregistrées",
@@ -279,7 +315,22 @@
         "ordersCompleted": "Prescriptions terminées",
         "orderedFor": "Prescription enregistrée pour",
         "updated": "Mis à jour",
-        "discontinued": "Arrêté"
+        "discontinued": "Arrêté",
+        "addOrderTests": "Ajouter des examens à cette prescription",
+        "couldNotSaveResultsFor": "Impossible d'enregistrer les résultats de {{tests}}",
+        "editOrderableForOrderType": "Modifier : {{orderTypeDisplay}}",
+        "editTestResults": "Modifier les résultats d'examen",
+        "onDate": "le",
+        "referenceRange": "Valeurs de référence",
+        "saveTests": "Enregistrer les examens",
+        "successSavingDrugOrder": "Prescription enregistrée",
+        "tryReopeningTheForm": "Essayez de rouvrir le formulaire",
+        "errorLoadingClinicians": "Erreur lors du chargement des cliniciens",
+        "errorLoadingMedicationOrders": "Erreur lors du chargement des prescriptions de médicaments",
+        "errorPinningOrder": "Erreur lors de l'épinglage de la prescription",
+        "errorSavingDrugOrder": "Erreur lors de l'enregistrement de la prescription",
+        "errorUnpinningOrder": "Erreur lors du désépinglage de la prescription",
+        "errorUnpinningOrders": "Erreur lors du désépinglage des prescriptions"
       }
     }
   },
@@ -388,7 +439,17 @@
       "fr": {
         "additionalInformationSection": "Informations supplémentaires",
         "Country": "Pays",
-        "Address Detail": "Détail de l'adresse"
+        "Address Detail": "Détail de l'adresse",
+        "noMatchingResults": "Aucun résultat correspondant",
+        "noAddressResults": "Aucune adresse correspondante",
+        "errorFetchingAddresses": "Erreur lors de la recherche des adresses",
+        "errorFetchingResults": "Erreur lors de la recherche des résultats",
+        "searching": "Recherche en cours...",
+        "loading": "Chargement",
+        "deathdayBeforeBirthday": "La date et l'heure du décès ne peuvent pas précéder la date de naissance",
+        "markIdentifierAsPreferred": "Marquer {{identifierName}} comme identifiant préféré",
+        "nonCodedCauseOfDeathRequiredWhenSelected": "La cause de décès non codée est obligatoire",
+        "preferredIdentifierLabel": "Préféré"
       }
     }
   },
@@ -397,7 +458,25 @@
       "14d4f066-15f5-102d-96e4-000c29c2a5d7",
       "c108c6bc-5f23-4e4a-ad34-8c788b86f288",
       "a8122ab5-de1f-4f0a-b882-7c5b375f4faa"
-    ]
+    ],
+    "extensionSlots": {
+      "patient-banner-tags-slot": {
+        "add": ["person-attribute-tag#marital-status", "person-attribute-tag#occupation"],
+        "configure": {
+          "person-attribute-tag#marital-status": {
+            "attributeType": "c65ebb91-0de1-4622-9af4-bf9e19ea569b"
+          },
+          "person-attribute-tag#occupation": {
+            "attributeType": "96a9f1a6-7bd4-4147-a5b3-98b1f6137340"
+          }
+        }
+      }
+    },
+    "Translation overrides": {
+      "fr": {
+        "pastVisitWithDate": "Visite passée : {{date}}"
+      }
+    }
   },
   "@openmrs/esm-billing-app": {
     "serviceTypes": {
@@ -448,7 +527,20 @@
         "ordersCompleted": "Prescriptions terminées",
         "orderedFor": "Prescription enregistrée pour",
         "updated": "Mis à jour",
-        "discontinued": "Arrêté"
+        "discontinued": "Arrêté",
+        "resultDate": "Date du résultat",
+        "dateOrdered": "Date de prescription",
+        "orderDetails": "Détails de la prescription",
+        "orderNumber": "Numéro de prescription",
+        "other": "Autre",
+        "patientDetails": "Informations du patient",
+        "refreshingData": "Actualisation des données",
+        "testResultsData": "les résultats d'examens",
+        "trendlineTooltipRange": "Plage",
+        "trendlineTooltipValue": "Valeur",
+        "unknown": "Inconnu",
+        "confirmEditResults": "Voulez-vous modifier les résultats d'examen de ce patient ?",
+        "errorSavingLabOrder": "Erreur lors de l'enregistrement de la demande d'examen"
       },
       "en": {
         "procedureOrders": "Procedures"
@@ -479,7 +571,10 @@
         "normalRangeHint": "Normale : {{range}}",
         "normalRanges": "Valeurs normales",
         "recordVitalsAndBiometrics": "Signes vitaux et biométrie",
-        "editVitalsAndBiometrics": "Modifier les signes vitaux"
+        "editVitalsAndBiometrics": "Modifier les signes vitaux",
+        "wholeNumberRequired": "Saisir un nombre entier, sans décimales",
+        "decimalsNotAllowed": "Nombres entiers uniquement, sans décimales : {{fields}}",
+        "heartRate": "Pouls"
       }
     }
   },
@@ -517,7 +612,39 @@
         "ordersCompleted": "Prescriptions terminées",
         "orderedFor": "Prescription enregistrée pour",
         "updated": "Mis à jour",
-        "discontinued": "Arrêté"
+        "discontinued": "Arrêté",
+        "medicationDurationAndUnit": "pour \u0024t(uvlDurationWithUnit, {\"count\": {{duration}}, \"context\": \"{{durationUnit}}\"})",
+        "uvlDurationWithUnit_one": "{{count}} {{durationUnit}}",
+        "uvlDurationWithUnit_other": "{{count}} {{durationUnit}}",
+        "uvlDurationWithUnit_secondes_one": "{{count}} seconde",
+        "uvlDurationWithUnit_minutes_one": "{{count}} minute",
+        "uvlDurationWithUnit_heures_one": "{{count}} heure",
+        "uvlDurationWithUnit_jours_one": "{{count}} jour",
+        "uvlDurationWithUnit_semaines_one": "{{count}} semaine",
+        "uvlDurationWithUnit_années_one": "{{count}} année",
+        "actionsMenu": "Menu des actions",
+        "activeMedicationRevisionCannotStartInFuture": "La modification d'un traitement en cours doit commencer aujourd'hui ou avant.",
+        "applyCalculatedQuantity": "Appliquer la quantité calculée ({{quantity}})",
+        "browse": "Parcourir",
+        "browseDrugsByCategory": "Parcourir les médicaments par catégorie",
+        "chooseCategoryToGetStarted": "Choisissez une catégorie pour commencer",
+        "chooseCategoryToGetStartedDescription": "Sélectionnez une catégorie pour voir les médicaments disponibles.",
+        "drugAlreadyPrescribedNotificationBody": "Une prescription active ou programmée existe déjà pour ce médicament",
+        "drugs": "Médicaments",
+        "editDrugOrderWorkspaceTitle": "Modifier la prescription",
+        "loadingCategoryTree": "Chargement des catégories...",
+        "noDrugsInCategory": "Aucun médicament dans cette catégorie",
+        "noDrugsInCategoryDescription": "La catégorie choisie ne contient aucun médicament. Choisissez-en une autre.",
+        "partialDrugResults": "Certains médicaments n'ont pas pu être chargés",
+        "printMedications": "Imprimer les médicaments",
+        "search": "Rechercher",
+        "selectCategory": "Rechercher et choisir une catégorie (ex. Santé mentale)",
+        "subCategories": "Catégories",
+        "dosageGreaterThanZeroErrorMessage": "La dose doit être supérieure à 0",
+        "errorFetchingDrugs": "Erreur lors de la recherche des médicaments",
+        "errorLoadingCategories": "Erreur lors du chargement des catégories de médicaments",
+        "errorLoadingTree": "Erreur lors du chargement de la structure des catégories",
+        "errorSavingDrugOrder": "Erreur lors de l'enregistrement de la prescription"
       }
     }
   },
@@ -548,6 +675,12 @@
     },
     "search": {
       "showRecentlySearchedPatients": false
+    },
+    "Translation overrides": {
+      "fr": {
+        "checkedInPatients": "Patients arrivés",
+        "noCheckedInPatients": "Aucun patient enregistré n'attend d'être ajouté à une file d'attente à ce lieu"
+      }
     }
   },
   "@openmrs/esm-patient-programs-app": {
@@ -600,6 +733,12 @@
         "forms": ["UVL Contact Form"]
       }
     ],
+    "formVisitTypeRestrictions": [
+      {
+        "form": "UVL Outpatient Consultation Form",
+        "visitTypes": ["31fe9bef-4b22-4686-acb2-4ecce1fdd8b9", "32176576-1652-4835-8736-826eb0237482"]
+      }
+    ],
     "Translation overrides": {
       "fr": {
         "backToClinicalForms": "Retour aux formulaires cliniques",
@@ -619,6 +758,13 @@
     }
   },
   "@openmrs/esm-form-engine-app": {
+    "sessionLocationEncounterTypes": [
+      "e22e39fd-7db2-45e7-80f1-60fa0d5a4378",
+      "d3b07384-8d1c-4e6b-9b8e-2f3b8e4a1c9f",
+      "b2c4d5e6-7f8a-4e9b-8c1d-2e3f8e4a3b8f",
+      "181820aa-88c9-479b-9077-af92f5364329"
+    ],
+    "excludedProviderIdentifiers": ["admin", "service-account-*"],
     "Translation overrides": {
       "fr": {
         "submittedForm": "Formulaire enregistré",
@@ -655,7 +801,12 @@
         "invalidFieldsSummary": "{{count}} champs à compléter ou à corriger ; premier : {{- label}}",
         "invalidFieldsSummary_one": "1 champ à compléter ou à corriger : {{- label}}",
         "invalidFieldsSummary_other": "{{count}} champs à compléter ou à corriger ; premier : {{- label}}",
-        "time": "Heure"
+        "time": "Heure",
+        "visitHasEnded": "Cette visite est terminée",
+        "visitEndedSaveToSaveInIt": "La visite a été clôturée le {{- stopDatetime}}. Le formulaire est conservé : cliquez à nouveau sur « Enregistrer » pour l'enregistrer dans cette visite.",
+        "textNotPickedFromList": "« {{- text}} » n'est pas enregistré : choisissez une entrée de la liste, ou videz le champ",
+        "valueAboveAcceptedMaximum": "Une valeur dépasse le maximum accepté pour sa question : vérifiez les nombres saisis dans le formulaire",
+        "valueBelowAcceptedMinimum": "Une valeur est inférieure au minimum accepté pour sa question : vérifiez les nombres saisis dans le formulaire"
       }
     }
   },
@@ -699,6 +850,62 @@
   "@openmrs/esm-appointments-app": {
     "Display conditions": {
       "privileges": ["Manage Appointments"]
+    },
+    "excludedProviderIdentifiers": ["admin", "service-account-*"],
+    "Translation overrides": {
+      "fr": {
+        "action": "Action",
+        "addAppointments": "Ajouter des rendez-vous",
+        "appointmentCheckedInAfterVisitStarted": "La visite a été démarrée et le rendez-vous enregistré",
+        "appointmentCheckedInWithExistingVisit": "Rendez-vous enregistré dans la visite en cours",
+        "appointmentCheckInFailed": "Une erreur est survenue lors de l'enregistrement du rendez-vous",
+        "appointmentCount_one": "{{count}} rendez-vous",
+        "appointmentCount_other": "{{count}} rendez-vous",
+        "appointmentsForDate": "Rendez-vous du {{date}}",
+        "appointmentsUpdated": "Rendez-vous mis à jour",
+        "appointmentsUpdatedMessage": "Les rendez-vous des patients sélectionnés ont été mis à jour",
+        "appointmentsUpdateFailed": "Échec de la mise à jour des rendez-vous",
+        "appointmentsUpdateFailedMessage": "Échec de la mise à jour des rendez-vous de {{patient}}. Motif : {{reason}}",
+        "appt": "rdv",
+        "appts": "rdv",
+        "Cancelled": "Annulé",
+        "female": "Femme",
+        "male": "Homme",
+        "other": "Autre",
+        "unknown": "Inconnu",
+        "changeAppointmentsStatus": "Changer le statut des rendez-vous",
+        "changeStatus": "Changer le statut",
+        "changeStatusForSelectedAppointments": "Changer le statut des rendez-vous suivants.",
+        "CheckedIn": "Enregistré",
+        "checkInFailed": "Échec de l'enregistrement",
+        "close": "Fermer",
+        "Completed": "Terminé",
+        "daily": "Quotidien",
+        "dateTime": "Heure du rendez-vous",
+        "early": "En avance",
+        "failedToEndActiveVisit": "Échec de la clôture de la visite en cours de {{patient}}",
+        "failedToUpdateVisit": "Échec de la mise à jour de la visite",
+        "filterAppointmentsByStatus": "Filtrer les rendez-vous par statut",
+        "invalidAppointmentStatusChange": "Impossible de passer un rendez-vous du statut {{currentStatus}} au statut {{newStatus}}",
+        "loadingAppointments": "Chargement des rendez-vous…",
+        "markAppointmentAsCompletedMessage": "Marquer le rendez-vous comme terminé met fin à la visite en cours du patient",
+        "Missed": "Manqué",
+        "monthly": "Mensuel",
+        "more": "autres",
+        "newAppointment": "Nouveau rendez-vous",
+        "noAppointments": "Aucun rendez-vous prévu",
+        "openDayView": "Ouvrir la vue du jour",
+        "previous": "Précédent",
+        "Requested": "Demandé",
+        "saving": "Enregistrement",
+        "Scheduled": "Programmé",
+        "selectStatus": "Choisir un statut",
+        "THU": "JEU",
+        "todaysAppointment": "Rendez-vous du jour",
+        "Virtual": "Virtuel",
+        "visitStartTime": "Heure de début de la visite",
+        "WalkIn": "Sans rendez-vous"
+      }
     }
   },
   "@openmrs/esm-patient-lists-app": {
@@ -723,7 +930,79 @@
         "waitingListWithCount_other": "Liste d'attente ({{count}})",
         "addAPatientToThisList": "Ajouter un patient à cette liste",
         "noOneBeingAttended": "Aucun patient n'est en cours de prise en charge",
-        "noActiveVisit": "Aucune visite en cours"
+        "noActiveVisit": "Aucune visite en cours",
+        "actionsMenu": "Menu des actions",
+        "activeQueueEntriesUnavailable": "Impossible de vérifier les files d'attente actuelles du patient",
+        "activeQueueEntriesUnavailableDetail": "La liste montre tous les services, y compris les files où ce patient se trouve déjà. Si vous en choisissez une, le système refusera l'entrée à l'enregistrement.",
+        "addNewQueue": "Ajouter une nouvelle file d'attente",
+        "addNewQueueRoom": "Ajouter une nouvelle salle d'attente",
+        "addQueue": "Ajouter une file d'attente",
+        "addQueueRoom": "Ajouter une salle d'attente",
+        "appointmentArrived": "Arrivé",
+        "appointmentCancelled": "Annulé",
+        "appointmentCheckedIn": "Enregistré",
+        "appointmentCompleted": "Terminé",
+        "appointmentMissed": "Manqué",
+        "appointmentRequested": "Demandé",
+        "appointmentScheduled": "Programmé",
+        "appointmentSummary": "{{status}} · {{service}} à {{time}}",
+        "appointmentSummaryWithProvider": "{{status}} · {{service}} à {{time}} avec {{provider}}",
+        "appointmentWaitList": "Liste d'attente",
+        "clinicOverview": "Vue d'ensemble",
+        "delete": "Supprimer",
+        "deleteQueue": "Supprimer la file d'attente",
+        "deleteQueueConfirmation": "Voulez-vous vraiment supprimer la file d'attente « {{name}} » ?",
+        "deleteQueueRoom": "Supprimer la salle d'attente",
+        "deleteQueueRoomConfirmation": "Voulez-vous vraiment supprimer la salle d'attente « {{name}} » ?",
+        "deleting": "Suppression",
+        "editQueue": "Modifier la file d'attente",
+        "editQueueRoom": "Modifier la salle d'attente",
+        "errorCallingPatient": "Erreur lors de l'appel du patient",
+        "errorCreatingQueue": "Erreur lors de la création de la file d'attente",
+        "errorDeletingQueue": "Erreur lors de la suppression de la file d'attente",
+        "errorDeletingQueueRoom": "Erreur lors de la suppression de la salle d'attente",
+        "errorUpdatingQueue": "Erreur lors de la mise à jour de la file d'attente",
+        "errorUpdatingQueueRoom": "Erreur lors de la mise à jour de la salle d'attente",
+        "failedToLoadServices": "Échec du chargement des services",
+        "inService": "En service",
+        "invalidTimeFormat": "Format d'heure invalide",
+        "locationRequired": "Le lieu est obligatoire",
+        "moreProviders_one": "+{{count}} prestataire",
+        "moreProviders_other": "+{{count}} prestataires",
+        "noActiveTickets": "Aucun ticket actif à afficher",
+        "noAppointmentsScheduledToday": "Aucun rendez-vous prévu aujourd'hui",
+        "noCheckedInPatients": "Aucun patient enregistré n'attend d'être ajouté à une file d'attente à ce lieu",
+        "noQueueRoomsToDisplay": "Aucune salle d'attente à afficher",
+        "noQueuesToDisplay": "Aucune file d'attente à afficher",
+        "noStatusConfigured": "Aucun statut configuré",
+        "noTableConfigForQueueAndStatus": "Aucune configuration de tableau pour la file : {{queue}} et le statut : {{status}}",
+        "patientInEveryQueueAtLocation": "Ce patient est déjà dans toutes les files d'attente de ce lieu",
+        "patientMovedButNotCalled": "Le patient a été déplacé dans la file d'attente, mais l'affichage des tickets n'a pas été mis à jour",
+        "priorityRequired": "La priorité est obligatoire",
+        "queueCreated": "File d'attente créée",
+        "queueDeleted": "File d'attente supprimée",
+        "queueEntryAlreadyEnded": "Cette entrée n'est plus active",
+        "queueEntryAlreadyEndedMessage": "Un autre utilisateur a déjà terminé cette entrée. La file d'attente a été actualisée.",
+        "queueEntryError": "Erreur lors de la mise à jour de l'entrée",
+        "queueEntryUpdated": "Entrée mise à jour",
+        "queueEntryUpdatedSuccessfully": "Entrée mise à jour",
+        "queueRequired": "La file d'attente est obligatoire",
+        "queueRoomCreated": "Salle d'attente créée",
+        "queueRoomDeleted": "Salle d'attente supprimée",
+        "queueRooms": "Salles d'attente",
+        "queueRoomUpdated": "Salle d'attente mise à jour",
+        "queueUpdated": "File d'attente mise à jour",
+        "retired": "Retiré",
+        "selectQueue": "Choisir une file d'attente",
+        "serviceQueueViews": "Vues des files d'attente",
+        "serviceRequired": "Le service est obligatoire",
+        "showLess": "Afficher moins",
+        "todaysAppointments": "Rendez-vous du jour",
+        "use12HourFormat": "Utilisez le format 12 heures avec AM/PM (01–12)",
+        "useMidnightFormat": "Pour minuit, saisissez 12:00 AM ; pour midi, 12:00 PM",
+        "viewAll": "Tout voir",
+        "visitNoteForm": "Formulaire de note de visite",
+        "visitRequiredToCreateQueueEntry": "Une visite est nécessaire pour ajouter ce patient à la file d'attente"
       }
     }
   },
@@ -738,7 +1017,19 @@
         "orderReason": "Motif de la demande :",
         "worklist": "Liste des tâches",
         "stat": "Urgent",
-        "scheduled": "Programmé"
+        "scheduled": "Programmé",
+        "orderInstructions": "Instructions :",
+        "routine": "De routine",
+        "receivedStatus": "Reçu",
+        "inProgressStatus": "En cours",
+        "completedStatus": "Terminé",
+        "exceptionStatus": "Exception",
+        "onHoldStatus": "En attente",
+        "declinedStatus": "Refusé",
+        "errorCheckingVisit": "Erreur lors de la vérification de la visite",
+        "startVisitToAddLabTest": "{{patientName}} n'a pas de visite en cours. Cliquez sur « Démarrer la visite » à côté de son nom pour en ouvrir une.",
+        "theSelectedPatient": "Le patient sélectionné",
+        "visitRequired": "Visite requise"
       }
     }
   },
@@ -775,6 +1066,8 @@
       "fr": {
         "medicationDispensed": "Médicament délivré.",
         "medicationDispenseUpdated": "Délivrance du médicament mise à jour.",
+        "medicationDispensePaused": "Délivrance du médicament suspendue.",
+        "medicationDispenseClosed": "Délivrance du médicament clôturée.",
         "orderedMedication": "a prescrit le médicament",
         "stockDispense": "Lot à délivrer (obligatoire)",
         "selectStockDispense": "Choisir un lot pour pouvoir délivrer",

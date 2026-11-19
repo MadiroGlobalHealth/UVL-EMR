@@ -809,12 +809,6 @@
         "default-roles-ozone"
       ],
       "clientRoles": {
-        "superset": [
-          "Admin"
-        ],
-        "senaite": [
-          "Manager"
-        ],
         "openmrs": [
           "System Developer"
         ]

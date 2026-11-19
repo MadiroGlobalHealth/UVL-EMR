@@ -331,6 +331,39 @@ Fails the build on a Keycloak openmrs client role or an inherited role that
           </execution>
           <execution>
             <!--
+              Fails the build on a medicine whose concept is in no OCL export, so Initializer
+              would not create it (#787). See the script.
+            -->
+            <id>Check the drug concepts</id>
+            <goals>
+              <goal>execute</goal>
+            </goals>
+            <phase>prepare-package</phase>
+            <configuration>
+              <scripts>
+                <script>file://${project.basedir}/../../scripts/check-drug-concepts.groovy</script>
+              </scripts>
+            </configuration>
+          </execution>
+          <execution>
+            <!--
+              Fails the build on an insurance coverage file Odoo would reject whole without a
+              word (unknown product or plan, two rows for one plan and product), or an MFP
+              ceiling out of step with the MFP matching (#184). See the script.
+            -->
+            <id>Check the insurance coverage</id>
+            <goals>
+              <goal>execute</goal>
+            </goals>
+            <phase>prepare-package</phase>
+            <configuration>
+              <scripts>
+                <script>file://${project.basedir}/../../scripts/check-insurance-coverage.groovy</script>
+              </scripts>
+            </configuration>
+          </execution>
+          <execution>
+            <!--
               Fails the build on a form question that accepts decimals its concept refuses
               (#488), or a male-only "not applicable" page that can still be saved (#489).
               See the script.
@@ -360,6 +393,23 @@ Fails the build on a Keycloak openmrs client role or an inherited role that
             <configuration>
               <scripts>
                 <script>file://${project.basedir}/../../scripts/check-french-metadata.groovy</script>
+              </scripts>
+            </configuration>
+          </execution>
+          <execution>
+            <!--
+              Fails the build on a Concept attribute in the patient banner's contact details,
+              which cannot render it, or a banner attribute type the site does not define
+              (#753). See the script.
+            -->
+            <id>Check the patient banner attributes</id>
+            <goals>
+              <goal>execute</goal>
+            </goals>
+            <phase>prepare-package</phase>
+            <configuration>
+              <scripts>
+                <script>file://${project.basedir}/../../scripts/check-patient-banner.groovy</script>
               </scripts>
             </configuration>
           </execution>

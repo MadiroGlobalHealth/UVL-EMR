@@ -78,6 +78,26 @@
      - Pharmacist and Doctor read the order basket's price and stock lookups, FHIR
        ChargeItemDefinition and InventoryItem (`Get ChargeItemDefinition`, `Get
        InventoryItem`). Until #351 the Pharmacist did not.
+     - Help Nurse, Nurse, Midwife and Doctor save vitals at triage. The vitals app posts the
+       encounter with its patient, visit, location, encounter type, obs and the signed-in
+       provider under the `vitals.clinicianEncounterRole` encounter role (#347). The REST
+       module resolves each of these by uuid through a service guarded by its Get privilege,
+       and turns a refusal into a 400, not a 403, so the form says the values are invalid.
+       Until #700 Help Nurse lacked `Get Encounter Roles` and no Help Nurse could save vitals
+       (production 2026-11-16). `Authenticated` counts here, as OpenMRS gives it to every
+       signed-in user (`Get Locations` sits on it).
+     - Doctor, Ophtalmologist and Dentist open, save and edit « UVL Outpatient Consultation
+       Form ». The forms panel offers a form only to users holding its encounter type's edit
+       privilege (`Edit Outpatient Consultation`, with `View Outpatient Consultation` to read
+       it back), and the form posts its diagnoses with the encounter, which core saves through
+       DiagnosisService.save, guarded by `Edit Diagnoses`. Until #703 the eye and dental roles
+       inherited only Nurse, so the panel never offered them the consultation and their
+       consultations never reached the PBF consultations register or Fiche 15.
+     - Nurse and Midwife open and save « UVL 24-Hour Surveillance Form ». As above, the forms
+       panel offers it only with its encounter type's edit privilege (`Edit 24-Hour
+       Surveillance`, with `View 24-Hour Surveillance` to read it back and to see the chart's
+       surveillance card). Until #788 only Midwife and Inpatient Consultant held the pair, so
+       the nurses who fill the form were not offered it (UAT 2026-11-18).
 
  10. Only administrators see System Administration. The site frontend config shows
      `@openmrs/esm-system-admin-app` (the « Administration du système » app menu entry) only
@@ -119,6 +139,12 @@
      (OrderService.updateOrderFulfillerStatus). Core authorises saveOrder and discontinueOrder
      with either privilege, so they cannot tell a result from a technician revising or cancelling
      the order; taking either away stops results, not order changes.
+
+ 15. No user in the realm file holds a `superset` or `senaite` client role (#348). The realm
+     taken from production once gave 31 staff, nurses among them, superset Admin and senaite
+     Manager, and a first-install import hands out whatever the file says. Superset sets a
+     user's roles from these at every sign-in; SENAITE is not used at UVL. Staff accounts and
+     their roles come from the roster (LIME-EMR-Tooling keycloak-apply-users.sh).
 */
 
 import groovy.json.JsonSlurper
@@ -142,6 +168,14 @@ List<String> readDrugOrders = ['Get Orders', 'Get Care Settings']
 List<String> readPatientLists = ['View Cohorts In Cohort Module', 'Get Patient Cohorts']
 List<String> stockReports = ['App: stockmanagement.reports', 'Task: stockmanagement.reports.mutate', 'Manage Scheduler']
 List<String> basketLookups = ['Get ChargeItemDefinition', 'Get InventoryItem']
+List<String> saveVitals = ['Add Encounters', 'Edit Encounters', 'Add Observations', 'Edit Observations',
+        'Get Patients', 'Get Visits', 'Get Locations', 'Get Encounter Types', 'Get Concepts', 'Get Providers',
+        'Get Encounter Roles']
+List<String> saveConsultation = ['Edit Outpatient Consultation', 'View Outpatient Consultation', 'Get Forms',
+        'Add Encounters', 'Edit Encounters', 'Add Observations', 'Edit Observations', 'Get Diagnoses',
+        'Edit Diagnoses', 'Get Patients', 'Get Visits', 'Get Locations', 'Get Encounter Types', 'Get Concepts',
+        'Get Providers', 'Get Encounter Roles']
+List<String> saveSurveillance = ['Edit 24-Hour Surveillance', 'View 24-Hour Surveillance', 'Get Forms']
 List<String> clinicalRoles = ['Help Nurse', 'Nurse', 'Midwife', 'Doctor', 'Ophtalmologist', 'Dentist',
         'Anesthesist', 'Lab Technician', 'X-Ray Technician']
 List<String> nonDispensingRoles = ['Central Pharmacist'] + clinicalRoles
@@ -151,10 +185,12 @@ Map<String, List<String>> appMenuUsers = [
         'stock-management-app-menu-item': ['Pharmacist', 'Central Pharmacist'],
 ]
 Map<String, List<String>> requiredOf = [
-        'Help Nurse'        : readDrugOrders + readPatientLists,
-        'Nurse'             : readDrugOrders + readPatientLists,
-        'Midwife'           : readDrugOrders + readPatientLists,
-        'Doctor'            : readDrugOrders + readPatientLists + basketLookups,
+        'Help Nurse'        : readDrugOrders + readPatientLists + saveVitals,
+        'Nurse'             : readDrugOrders + readPatientLists + saveVitals + saveSurveillance,
+        'Midwife'           : readDrugOrders + readPatientLists + saveVitals + saveSurveillance,
+        'Doctor'            : readDrugOrders + readPatientLists + basketLookups + saveVitals + saveConsultation,
+        'Ophtalmologist'    : saveConsultation,
+        'Dentist'           : saveConsultation,
         'Pharmacist'        : stockReports + basketLookups,
         'Central Pharmacist': stockReports,
         'X-Ray Technician'  : ['Add Orders', 'Edit Orders', 'Edit Encounters'],
@@ -290,11 +326,13 @@ requiredOf.each { name, required ->
         problems << "role '${name}' is not defined in any roles CSV; cannot check the privileges its screens need"
         return
     }
-    Set<String> privileges = effectivePrivileges(name, privilegesOf, inheritances)
+    // Every signed-in user holds Authenticated as well as their own roles.
+    Set<String> privileges = effectivePrivileges(name, privilegesOf, inheritances) +
+            effectivePrivileges('Authenticated', privilegesOf, inheritances)
     List<String> missing = required.findAll { !privileges.contains(it) }
     if (missing) {
         problems << "${definedIn[name]}: role '${name}' lacks ${missing.collect { "'${it}'" }.join(', ')}" +
-                " (directly or through an inherited role); its screens would get a 403"
+                " (directly or through an inherited role); its screens would be refused (403, or 400 for a uuid in a POST)"
     }
 }
 
@@ -366,6 +404,14 @@ if (realmFile.isFile()) {
             if (privileges.contains(openChart) && !privileges.contains(readEnrolments)) {
                 problems << "${definedIn[r.name]}: role '${r.name}' has '${openChart}' but not " +
                         "'${readEnrolments}'; the patient chart's program enrolments would return 403"
+            }
+        }
+    }
+    (realm?.users ?: []).each { u ->
+        ['superset', 'senaite'].each { client ->
+            if (u.clientRoles?.get(client)) {
+                problems << "ozone-realm.json: user '${u.username}' holds ${client} client role(s) " +
+                        "${u.clientRoles[client]}; an import would hand them out (#348)"
             }
         }
     }
