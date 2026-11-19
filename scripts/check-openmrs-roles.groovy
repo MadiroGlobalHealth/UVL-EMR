@@ -98,6 +98,18 @@
        Surveillance`, with `View 24-Hour Surveillance` to read it back and to see the chart's
        surveillance card). Until #788 only Midwife and Inpatient Consultant held the pair, so
        the nurses who fill the form were not offered it (UAT 2026-11-18).
+     - Nurse and Midwife place orders (#798): at night no doctor may be there to order the
+       delivery act, and an act that is not ordered is not billed. The order basket posts an
+       encounter that carries the orders. Core saves each order through OrderService.saveOrder,
+       which `Add Orders` or `Edit Orders` authorises, and gives it an order number through
+       getNextOrderNumberSeedSequenceValue, which only `Add Orders` does; the REST module
+       resolves the order's concept, care setting and order type, and the encounter's uuids as
+       for vitals, each by its Get privilege, and the basket reads the active orders back (`Get
+       Orders`). Until #798 neither role held `Add Orders` (the Doctor, Ophtalmologist, Dentist
+       and the lab and X-ray technicians did), so core refused the orders of a nurse's or
+       midwife's basket. The privilege is per order, not per concept or order type: with it the
+       basket saves whatever it offers (medicines, lab tests, every act of « All procedures »),
+       not delivery acts only.
 
  10. Only administrators see System Administration. The site frontend config shows
      `@openmrs/esm-system-admin-app` (the « Administration du système » app menu entry) only
@@ -176,6 +188,9 @@ List<String> saveConsultation = ['Edit Outpatient Consultation', 'View Outpatien
         'Edit Diagnoses', 'Get Patients', 'Get Visits', 'Get Locations', 'Get Encounter Types', 'Get Concepts',
         'Get Providers', 'Get Encounter Roles']
 List<String> saveSurveillance = ['Edit 24-Hour Surveillance', 'View 24-Hour Surveillance', 'Get Forms']
+List<String> placeOrders = ['Add Orders', 'Get Orders', 'Get Care Settings', 'Get Order Types', 'Add Encounters',
+        'Get Patients', 'Get Visits', 'Get Locations', 'Get Encounter Types', 'Get Concepts', 'Get Providers',
+        'Get Encounter Roles']
 List<String> clinicalRoles = ['Help Nurse', 'Nurse', 'Midwife', 'Doctor', 'Ophtalmologist', 'Dentist',
         'Anesthesist', 'Lab Technician', 'X-Ray Technician']
 List<String> nonDispensingRoles = ['Central Pharmacist'] + clinicalRoles
@@ -186,8 +201,8 @@ Map<String, List<String>> appMenuUsers = [
 ]
 Map<String, List<String>> requiredOf = [
         'Help Nurse'        : readDrugOrders + readPatientLists + saveVitals,
-        'Nurse'             : readDrugOrders + readPatientLists + saveVitals + saveSurveillance,
-        'Midwife'           : readDrugOrders + readPatientLists + saveVitals + saveSurveillance,
+        'Nurse'             : readDrugOrders + readPatientLists + saveVitals + saveSurveillance + placeOrders,
+        'Midwife'           : readDrugOrders + readPatientLists + saveVitals + saveSurveillance + placeOrders,
         'Doctor'            : readDrugOrders + readPatientLists + basketLookups + saveVitals + saveConsultation,
         'Ophtalmologist'    : saveConsultation,
         'Dentist'           : saveConsultation,
