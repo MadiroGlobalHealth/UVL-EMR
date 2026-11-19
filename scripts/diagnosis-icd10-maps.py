@@ -27,7 +27,10 @@ current code. `names` gives each a fully specified, preferred name in English an
 starts with the current code (CURRENT_NAMES, "K64.9 Hémorroïdes") and keeps the old names as
 synonyms, so the old code still finds them. It edits the concepts in OCL (uvl-custom); they reach
 OpenMRS in a small collection export, UVL_dx_v4_585_20261112.zip, loaded after UVL_dx_533_20261116.zip
-(uvl-dx v4 without its two mappings that had no target, #533). Each
+(uvl-dx v4 without its two mappings that had no target, #533). That export carries the six at the
+same version as UVL_dx_v4_585: a server that already has the current names would otherwise import
+the May 2025 version again, and the old names with it. `sql` reads their code from the old name,
+now a synonym, so both SQL files stay as generated from uvl-dx v4. Each
 name carries an external_id: the old names the UUID OpenMRS already has for them (OCL_NAMESPACE),
 so the import turns those rows into synonyms instead of voiding and re-adding them; the new names
 a UUID derived from NAMESPACE.
@@ -114,9 +117,14 @@ CODE = re.compile(r'[A-Z]\d\d(\.\d)?')
 
 
 def english_name(concept):
+    """The English name uvl-dx v4 gave the concept. A concept exported with its current-code name
+    (#585) keeps that name as a synonym, which is the one returned."""
     for name in concept['names']:
         if name['locale'] == 'en' and name['name_type'] == 'Fully Specified':
             return name['name']
+    current = {names[0] for names in CURRENT_NAMES.values()}
+    if concept['display_name'] in current:
+        return next(n['name'] for n in concept['names'] if n['locale'] == 'en' and n['name'] not in current)
     return concept['display_name']
 
 

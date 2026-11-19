@@ -180,7 +180,8 @@ Map<String, String> datatypeOf = [:]       // external_id -> datatype of the new
 Map<String, String> cielConcept = [:]      // 'CIEL:<code>' -> external_id of the concept mapped SAME-AS to it
 Map<String, String> vitalSign = [:]        // external_id -> name of every concept of the vital-signs export
 Map<String, String> englishName = [:]      // external_id -> display name, to tell a newborn's obs group
-// Exports re-exported after #520 must have none. UVL_dx_533 is uvl-dx v4 without its 2 (#533).
+// Exports re-exported after #520 must have none. UVL_dx_533 is uvl-dx v4 without its 2, and with
+// the six diagnoses of #585 at the version UVL_dx_v4_585 carries (#533).
 Map<String, Integer> knownMappingFaults = [:]
 List<String> mappingFaults = []
 // #585: the codes WHO ICD-10 no longer has are mapped too (diagnosis_icd10_maps_replaced.sql), so

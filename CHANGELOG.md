@@ -852,11 +852,16 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
   its own name ids (they were copies of « BP01 - Frottis paludéen »'s, so a new server failed on it
   and its 12 mappings), and three mappings are dropped (two diagnosis maps with no target, an
   immunization answer that CIEL has retired and no export carries, a repeated demo-queue set member
-  with no id). Nothing changes on a running server. OCL: uvl-ciel 20261116-533. `UVL_drugs_533`,
+  with no id). Nothing changes on a running server. OCL: uvl-ciel 20261116-533.
   `UVL_labtests_533`, `UVL_dx_533`, `UVL_immunizations_533` and `UVL_demo_queue_533` (all
-  `_20261116`) replace `UVL_drugs_20261023-1`, `UVL_labtests_20261105-5`, `UVL_dx_v4`,
-  `UVL_immunizations_v2` and `OCL Demo Queue Concepts v4 Aug 8 2025`, each changed only in those
-  items. The build now fails on any of these faults (check 17). (#533)
+  `_20261116`) replace `UVL_labtests_20261105-5`, `UVL_dx_v4`, `UVL_immunizations_v2` and
+  `OCL Demo Queue Concepts v4 Aug 8 2025`, each changed only in those items. `UVL_drugs_20261023-1`
+  is removed with no replacement: `UVL_drugs_776_20261118` (#776) is the newer release of the same
+  collection and already carries Chlorpheniramine with its id. `UVL_dx_533` also carries the six
+  diagnoses renamed in #585 at the version of `UVL_dx_v4_585_20261112`: a running server imports a
+  new export file once, and the May 2025 version of those six would have failed on their name ids
+  or brought back the names with the retired codes. The build now fails on any of these faults
+  (check 17). (#533)
 - **Doctors can open the PACS (« Orthanc PACS » in the app menu) to view images.** Orthanc's
   authorization service grants PACS permissions only to the realm roles in
   `distro/configs/orthanc/permissions.json`, and doctors held only the `openmrs` client role
