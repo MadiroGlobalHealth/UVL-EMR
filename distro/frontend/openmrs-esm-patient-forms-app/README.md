@@ -9,11 +9,18 @@ not released upstream yet. Only the built module is here; the source is
 |---|---|---|
 | #518 | New config `formVisitTypeRestrictions`: each entry names a form (name or UUID) and the visit types (UUIDs) it is offered on. While the patient has an active visit, a listed form is only offered if the visit's type is one of them; unlisted forms, and every form when there is no active visit, are offered as before. | not opened yet |
 | #662 | A click anywhere on a row of the forms list opens the form (the name, the « Dernière modification » cell, the padding), not only the form-name link. (`.uvl.2`) | not opened yet |
+| #794 | New config `formSexRestrictions`: each entry names a form (name or UUID) and the sexes (`"male"`, `"female"`) it is offered for. A listed form is only offered to a patient whose sex is one of them; unlisted forms are offered to every patient. It reads the `gender` of the FHIR patient the forms list already has, no extra request. A patient whose sex is other, unknown or not recorded is offered every form (the restriction fails open). A section left with no form is not shown. (`.uvl.3`) | not opened yet |
 
 The site configuration (`uvl-mugamba-frontend-config.json`) restricts only « UVL Outpatient
 Consultation Form », to the « Outpatient visit » and « General » visit types. The inpatient,
 maternity and theatre forms stay on every visit type, because a patient can be admitted on an
 outpatient visit (the visit type does not change on admission) and still needs them.
+
+It also lists the five forms of the « Maternité » section (ANC consultation, maternity
+consultation, gynaecology ultrasound, delivery registration, childbirth record) as female-only, so
+a male patient is not offered that section. The inpatient and theatre forms have no sex
+restriction. The restriction only hides forms from the list; the forms themselves still refuse a
+male patient (#504).
 
 The other patient-chart apps stay on the npm 13.0.2-pre.12863 packages.
 
