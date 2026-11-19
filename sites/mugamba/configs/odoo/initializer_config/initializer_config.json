@@ -56,6 +56,11 @@
             "field_rules": {}
         },
         {
+            "model_name": "ir.default",
+            "folder": "defaults",
+            "field_rules": {}
+        },
+        {
             "model_name": "product.product",
             "folder": "product_tags",
             "field_rules": {
