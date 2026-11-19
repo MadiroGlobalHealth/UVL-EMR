@@ -14,7 +14,7 @@ always wins over the default, so a product a plan excludes needs a row at 0%.
 | MFP | 80%, patient 20% | plan default |
 | MFP | medical supplies and consumables 70%, patient 30% | `mfp-issue184.csv`, rows at 70 |
 | MFP | bandages, compresses and the umbilical band 80%, as MFP's device list shows (18 Nov 2026) | `mfp-issue184.csv`, rows at 80 |
-| MFP | non-sterile gloves, sterile gloves, taking vital signs, the ophthalmology consultation (done by an ophthalmic technician, 18 Nov 2026): not covered, the patient pays the clinic price | `mfp-issue184.csv`, rows at 0 |
+| MFP | non-sterile gloves, sterile gloves, taking vital signs, the ophthalmology consultation (done by an ophthalmic technician, 18 Nov 2026), and four consumables MFP does not reimburse (19 Nov 2026: the 90 cm gauze roll, ultrasound gel, the packaging sachets, « Seringue bilatérale »): not covered, the patient pays the clinic price | `mfp-issue184.csv`, rows at 0 |
 | MSU category B | 70%, patient 30% | plan « MSU catégorie B (70 %) », Payer answer « MSU 70% » |
 | MSU category C | 60%, patient 40% | plan « MSU catégorie C (60 %) », Payer answer « MSU 60% » |
 | Santé Assuré | 80%, patient 20% | plan default |
@@ -23,7 +23,7 @@ always wins over the default, so a product a plan excludes needs a row at 0%.
 | MFP | medicines: 80% of at most MFP's reference price per unit; the patient pays the rest | `mfp-medicines-ceiling-issue184.csv`, `amount` rows |
 | MFP | acts, consultations, bed-days, certificates: 80% of at most MFP's price | `mfp-acts-ceiling-issue184.csv`, `amount` rows |
 | MFP | consumables: 70% (bandages and compresses 80%) of at most MFP's 2011 price per item | `mfp-issue184.csv`, rows in `amount` mode |
-| MFP | laboratory tests: 80% of at most the price of MFP's laboratory list (PRIX 2011) | `mfp-acts-ceiling-issue184.csv`, `amount` rows |
+| MFP | laboratory tests: 80% of at most the nomenclature's price, coefficient B × 300 BIF (19 Nov 2026); the price of MFP's laboratory list (PRIX 2011) only for a test the nomenclature does not have | `mfp-acts-ceiling-issue184.csv`, `amount` rows |
 | PNB (police officers) | everything the base plan leaves: the co-payment, what MFP does not cover, the difference above MFP's price | complementary plan, 100% *of what the base plan leaves* |
 | CMU (MSU members, 13 Nov 2026) | the MSU patient share: 30% in category B, 40% in category C | complementary plan, 100% *of what the base plan leaves* |
 
@@ -51,8 +51,10 @@ back, unretire its mapping in OCL `uvl-custom` (1732 « Assurance privée », 17
 bandages and compresses MFP's device list gives at 80%), the 42 consumables of
 the stock catalogue (product owner, 5 Oct 2026, #437 and #455) and 19 other products that
 are plainly supplies (blood-collection needles and tubes, sample bottles, plain and abdominal
-compresses, catheters, sutures, intubation tube, ...). The three kinds of gloves are rows at 0
-instead. A new consumable product needs a row here, or MFP pays it at 80%.
+compresses, catheters, sutures, intubation tube, ...). The three kinds of gloves, and the four
+consumables MFP does not reimburse, are rows at 0 instead. « Propofol Injection » has a row too:
+it is a medicine, but MFP prices it in its device list, at 70% (19 Nov 2026). A new consumable
+product needs a row here, or MFP pays it at 80%.
 
 ## MFP price ceiling, medicines (`mfp-medicines-ceiling-issue184.csv`)
 
@@ -126,6 +128,10 @@ rules) came back answered. Each answer is kept next to its product in the matchi
   (venous access placement, the incubator night, two of the abscess incisions, « Cathéter
   urinaire », which the clinic does not sell: see below).
 - `yes, value open`: the line is right but the value is not settled (« Ruban adhésif »).
+- `yes, nomenclature` (19 Nov 2026): a laboratory test both sources price differently; the
+  nomenclature's coefficient is the price, and it is loaded.
+- `yes, per unit` (19 Nov 2026): the product is sold as the very unit MFP prices (« 5/Tampon »):
+  the ceiling is the printed price of one unit.
 
 `scripts/mfp-ceiling.py --answers <answers.json> --questions <tab F csv> <tab G csv>` finds
 each answer's product again from the two question files that were sent, prints every pair so
@@ -201,34 +207,84 @@ never loaded. A line of it is referenced as « N:95 » in the matching file's `m
   MFP does not cover anyway). They keep 70% of the clinic price. The list adds no line for any
   act that had none.
 
+### The product owner's answers of 19 Nov 2026 (tab G, G72 to G117)
+
+The questions the complete device list and the laboratory list left open came back answered.
+They were read by hand into the matching file (`answer_ref`, `answer`, `confirmed`, and the
+reading in `reason`); 29 more products get a ceiling, 288 in all.
+
+- **Loaded:** « Cathéter Pédiatrique » as « CATHETER G24 » (2,230 at 70%); the Pogal sutures
+  N° 1 and N° 2 at 3,500 like the other « ETYLON SERTI » lines (the list has no « ETYLON SERTI
+  2 »: the nearest size is referenced), at 70% as the Pogal 2/0 and 3/0; « Pansement Ombilical »
+  as « BANDE OMBILICALE » (1,360 at MFP's own 80%); « Tampon d'ouate », sold per swab, at the
+  5 BIF MFP gives for one (`yes, per unit`); « Propofol Injection » as « DIPRIVAN 200MG »
+  (11,030) at the device list's **70%**, not the medicines' 80%: it is the one medicine with a
+  row in `mfp-issue184.csv`.
+- **Not this line:** « Compresses Abdominales » are not capped as « COMPRESSE SIMPLE » (« non »):
+  no ceiling, 70% of the clinic price.
+- **Not reimbursed by MFP (0%):** « Rouleau de gaze 90 cm x 91 m », « Gel Echographique »,
+  « Sachets pour le conditionnement des MEG » and « Seringue bilatérale ». The question was
+  « MFP le rembourse-t-il, et à quel prix ? » and the answer « non »: their rows of
+  `mfp-issue184.csv` are at 0, set by hand, like the ophthalmology consultation. The MFP patient
+  pays the clinic price, or PNB for a police officer.
+- **Still open, nothing loaded and nothing changed:** « Coton hydrophile 500g » (« oui » to a
+  100 BIF ceiling on a 500 g pack, against the proposed « non »), « Solution de Povidone 100ml »
+  (« par ml à 85bif », where the list prints 15 per ml), « Dettol Solution 1L » (« non », which
+  could mean no ceiling or not reimbursed), « Tulle Gras » (« oui, » with no price), « Suture
+  Non-Absorbable » (« NYLON », no size: 3,700 for most sizes, 5,600 or 1,450 for two), « Fils de
+  Suture Chirurgicaux » (« NON » to « which thread and which size? »: not read as « not
+  reimbursed », so it keeps 70%), « Ruban adhésif » and « Naloxone Injection » (no answer).
+  Each keeps its answer in the matching file and a follow-up question in `question`.
+
 ### Two MFP sources for one laboratory test
 
 The nomenclature prices a laboratory test as a coefficient B × 300 BIF; MFP's laboratory list
 gives a price in francs. For a product both sources price, the matching file keeps the
 nomenclature line in `mfp_ref` and the laboratory-list line in `other_ref` (« L:2.1.1 »). When
-the two prices differ **neither is loaded**, even where the product owner confirmed the
-nomenclature value before the list arrived (stool examination 1,500 against 1,750, pregnancy
-test 7,500 against 3,000, CD4 count 7,500 against 30,000). When they agree (sedimentation
-rate, Emmel test: 1,500) the ceiling is loaded. A test only the laboratory list prices
-(all of biochemistry) is loaded from it when the match is certain and the reading `high`.
+they agree (sedimentation rate, Emmel test: 1,500) the ceiling is loaded. When the two prices
+differ, the script loads neither on its own.
+
+**The rule since 19 Nov 2026 (answer G89, « non, le coefficient », and « consider the prices
+for 2021 »): the nomenclature's coefficient is MFP's price for a laboratory test, not the 2011
+laboratory list.** The 23 tests the two sources priced differently were each answered
+« considérer actes médicaux » and are loaded at the coefficient's price (`confirmed` is
+`yes, nomenclature`): stool examination 1,500 (the list said 1,750), malaria smear 2,250
+(1,750), pregnancy test 7,500 (3,000), Widal 4,500 (4,350), CD4 count 7,500 (30,000), urine
+culture 3,000 (4,800), « Prélèvement » 1,500 (500)... The price is higher than the list's for
+14 of them and lower for 8; the urine examination (3,000) was three bracketed lines in the list.
+Three things the rule does not settle are left as they were and asked:
+
+- « BI07 - Hémoglobine »: its own answer is « LISTE DES EXAMENS », against the rule, and the
+  list's 660 is an uncertain reading. Not loaded.
+- The 22 tests **only the laboratory list prices** (the nomenclature received has no biochemistry,
+  no rapid malaria test, no anti-HCV antibody) keep the ceiling loaded from that list on 18 Nov,
+  when the match is certain and the reading `high`: removing a ceiling is the product owner's to
+  say. `scripts/mfp-ceiling.py --confirm` lists them as one point to confirm.
+- « NFS », bilirubin, the ionogram and « Test d'hémostase » were answered « considérer actes
+  médicaux », but the nomenclature has no line for them as a whole (it prices the blood counts
+  and « T.S », « T.C » apart, and has no biochemistry): no ceiling, and a follow-up question.
+
 Lines MFP bracketed by hand (« NFS » around 1.2 to 1.9, « ECBU » around 5.2.1 to 5.2.3, the
 ionogram's three ions) are referenced together (« L:6.25+6.26+6.27 ») and never added up
 without the product owner. `scripts/mfp-ceiling.py --open-questions <csv>` writes what is
 still open: one general question (does the laboratory list replace the coefficient?), each
 conflict with both values, the uncertain laboratory matches and the open points above.
 
-A medicine that appears in the device list at 70% (« Propofol », « Naloxone ») is not loaded
-either: medicines are paid at 80%, and which rate applies is the product owner's to say. Nor
+A medicine that appears in the device list at 70% is not loaded until the product owner says
+which rate applies, medicines being paid at 80%: 70% for « Propofol » (19 Nov 2026, loaded);
+« Naloxone » is still to be answered. Nor
 is a line priced per ml or per metre (« ALCOOL DENATURE » 7/ml, « ISOBETADINE » 15/ml,
 « DETTOL DILUE » 0,5/ml, « JERSEY » 1000/m): the reading is confirmed, but the ceiling of a
-bottle or a piece sold whole is that price times a content nobody has confirmed.
+bottle or a piece sold whole is that price times a content nobody has confirmed. A product sold
+as the unit itself is different: « Tampon d'ouate », per swab, is capped at « 5/Tampon ».
 
 To change a match, edit the product's row of the matching file (`mfp_ref`, `other_ref`,
 `confidence`, `confirmed`) and run `python3 scripts/mfp-ceiling.py '<workbook>.xlsx'`: it
 rewrites the matching file's values from the workbook, the laboratory list and the device list,
 `mfp-acts-ceiling-issue184.csv` (acts, radiology, laboratory tests), and the consumables'
 rows of `mfp-issue184.csv`. The build (`scripts/check-insurance-coverage.groovy`) fails if the
-coverage files and the matching file disagree, or if a coverage file has a row Odoo would
+coverage files and the matching file disagree (a ceiling, a rate, or a product the matching
+says MFP does not cover whose row is not at 0), or if a coverage file has a row Odoo would
 reject (an unknown product or plan, a second row for the same plan and product).
 
 ## Format
