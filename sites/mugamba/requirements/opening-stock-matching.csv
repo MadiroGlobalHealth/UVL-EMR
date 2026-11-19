@@ -38,7 +38,7 @@ row,produit,forme,dosage,status,stock_item_uuid,stock_item,stock_item_unit,confi
 49,CANDIDERM crème,tube,,import,f2dc1413-cf03-57d8-9801-511b883fb5c0,Candiderm Crème 15g,Conteneur,high,"same product, form and strength"
 50,A-CERUMEN,flacon,,import,52771744-0938-581c-8eec-d0c282ac42d2,A-Cerumen Gouttes Auriculaires,Flacon,high,"product owner, 18 Nov 2026: new item (#776), counted per bottle"
 51,CAPTOPRIL cp,cp,25 mg,import,73073217-3e5b-5faf-a38a-a7d85b67b9ad,Captopril Comprimé 25mg,Comprimé,high,"same product, form and strength"
-52,CARBAMAZEPINE cp,cp,500 mg,confirm,,,,low,#455 M44 left out: CARBAMAZEPINE cp 500 mg vs drug Carbamazepine Comprimé 400mg (no stock item)
+52,CARBAMAZEPINE cp,cp,500 mg,import,2a3155b3-f014-5f3f-bc51-a5fb11755eb9,Carbamazepine Comprimé 200mg,Comprimé,high,"product owner, 19 Nov 2026: the box reads Carbamazepine Tablets BP 200mg, the 500 mg in the file is wrong; new item (#797), counted per tablet"
 54,CEFIXIME cp 400 mg,cp,400 mg,import,8c4803f4-6eb4-5892-9200-bf95438e8ede,Cefixime Comprimé 400mg,Comprimé,high,"same product, form and strength"
 55,CEFIXIME cp 200 mg,cp,200 mg,import,345ed9ae-9ed0-567c-8af6-7e1cb5435b3a,Cefixime Comprimé 200mg,Comprimé,high,"same product, form and strength"
 56,CEFIXIME sp 100 mg,flacon,100 mg,import,ee0abcc3-8a66-5289-836e-b276990d7f34,Cefixime Sirop 100mg,Flacon,high,"same product, form and strength"
@@ -80,7 +80,7 @@ row,produit,forme,dosage,status,stock_item_uuid,stock_item,stock_item_unit,confi
 105,DICLOFENAC pde,tube,,import,05d62e0f-0253-52d1-ac25-30eacca2d759,"Diclofenac Pommade 0,01% 30g",Tube,high,"same product, form and strength"
 106,DICLOFENAC suppositoire 100 mg,sippo,100 mg,import,8339144b-3adf-5ed1-b993-ec8c6042f7cc,Diclofenac Suppositoire 100mg,Suppositoire,high,"same product, form and strength"
 107,DICYNONE inj,amp,,import,c5f673dd-15f1-5e68-aaf2-6848184d684a,Dicynone Injection 250mg/2ml,Ampoule(s),high,"same product, form and strength"
-108,DICYTAM gel,gel,,confirm,,,,low,"#455 M97 left out: DICYTAM capsule, OpenMRS has Dicytam Comprimé 500mg only"
+108,DICYTAM gel,gel,,import,74cf1542-770f-58df-b93a-311e9386993c,Dicytam Comprimé 500mg,Comprimé,high,"product owner, 19 Nov 2026: the box reads Etamsylate Tablets 500mg, the existing tablet; the « gel » in the file is wrong (#797)"
 109,DICYTAM inj,amp,,import,15ef2bbe-c27d-5b1c-a0b4-fea52429a85e,Dicytam Injection,Ampoule(s),high,"same product, form and strength"
 110,DIFENASOL collyre,collyre,,import,a79d0017-fad3-5fb1-a9a0-cf8843e08733,"Difenasol Gouttes oculaires 0,001% 5ml",Flacon,high,"same product, form and strength"
 111,DIPYRONE 500 mg inj,amp,500 mg,import,dfc5c05b-f5b9-5278-84c7-b26fdcf04dfc,Dipyrone Injection 1g/2ml,Ampoule(s),high,"product owner, 18 Nov 2026: the 1g/2ml ampoule"
