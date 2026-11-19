@@ -1796,7 +1796,18 @@
               "label": "Confirmed Diagnosis",
               "type": "diagnosis",
               "id": "confirmedDiagnosis",
-              "required": true,
+              "required": {
+                "type": "conditionalRequired",
+                "referenceQuestionId": "confirmedDiagnosis",
+                "referenceQuestionAnswers": ["", null]
+              },
+              "validators": [
+                {
+                  "type": "js_expression",
+                  "failsWhenExpression": "isEmpty(confirmedDiagnosis) && isEmpty(myValue)",
+                  "message": "Champ obligatoire / Field is mandatory"
+                }
+              ],
               "questionOptions": {
                 "rendering": "repeating",
                 "dataSource": "diagnoses",
