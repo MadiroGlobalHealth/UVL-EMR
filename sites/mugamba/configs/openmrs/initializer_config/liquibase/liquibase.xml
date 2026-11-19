@@ -3248,6 +3248,37 @@
     </changeSet>
 
     <!--
+        #797 - a stock item for Carbamazepine Comprimé 200mg, the tablet the central pharmacy counted
+        in its opening stock: the product owner read the box on 19 Nov 2026 (200 mg; OpenMRS had the
+        400 mg only, and that one has no stock item). Its drug is drugs/uvl-drugs-issue797.csv (and
+        Odoo product_variant/uvl-drugs-issue797.csv), on the Carbamazepine concept the 400 mg drug
+        uses. Counted per Comprimé. Waits for the drug as the #457 and #776 seeds do.
+    -->
+    <changeSet id="add_stock_item_carbamazepine_200mg-20261119" author="Joshua">
+        <preConditions onFail="CONTINUE" onError="CONTINUE"
+                       onFailMessage="WARN (#797): the drug Carbamazepine Comprimé 200mg or the Comprimé unit does not exist yet (drugs or OCL not loaded), or the stockmanagement tables are missing, so its stock item was NOT created; this changeset is retried on every start.">
+            <tableExists tableName="stockmgmt_stock_item"/>
+            <tableExists tableName="stockmgmt_stock_item_packaging_uom"/>
+            <columnExists tableName="stockmgmt_stock_item" columnName="common_name"/>
+            <sqlCheck expectedResult="1">
+                SELECT COUNT(DISTINCT uuid) FROM drug
+                 WHERE uuid IN ('a4e0ea16-0744-5fb7-871a-e3674ab87895')
+            </sqlCheck>
+            <sqlCheck expectedResult="1">
+                SELECT COUNT(DISTINCT uuid) FROM concept
+                 WHERE uuid IN ('391d2a1b-2aec-4bd7-b43b-e294e7f2b9b9')
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            Create a stock item for Carbamazepine Comprimé 200mg (#797).
+        </comment>
+        <sqlFile path="sql/stock_items_carbamazepine_200mg.sql" relativeToChangelogFile="true" stripComments="true"/>
+        <rollback>
+            <sqlFile path="sql/stock_items_carbamazepine_200mg_rollback.sql" relativeToChangelogFile="true" stripComments="true"/>
+        </rollback>
+    </changeSet>
+
+    <!--
         #776 - the product owner's answers of 18 Nov 2026 on the opening-stock count.
         Anamol Sirop is counted per 100 ml bottle and Cimetidine Injection 200mg/2ml per ampoule,
         not per millilitre: their stock and dispensing unit become Flacon and Ampoule, as the
