@@ -100,6 +100,10 @@ The codes come from the configuration, which maps each answer concept of the for
 
 An answer missing from the mapping is shown with its concept name.
 
+Two concepts can carry the same code. Clear liquor was first saved as the shared concept « Normale »
+(CIEL 1115) and is its own concept, « C : clair », since #807: the site config maps both to `C`, so
+readings saved before the change still draw. Keep the old entry.
+
 ## Configuration
 
 The module ships no UUID. The site config (`sites/mugamba/.../uvl-mugamba-frontend-config.json`)

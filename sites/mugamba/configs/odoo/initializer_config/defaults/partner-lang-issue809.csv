@@ -1,0 +1,2 @@
+"id","field_id/id","company_id/id","json_value"
+"init.uvl_default_partner_lang","base.field_res_partner__lang","base.main_company","""fr_FR"""
