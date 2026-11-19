@@ -1,0 +1,570 @@
+dashboard_title: "PBF et rapports Minist\xE8re (M6)"
+description: null
+css: ''
+slug: null
+certified_by: ''
+certification_details: ''
+published: true
+uuid: 3c679454-9c22-4603-8e72-a1fb994ae6ab
+position:
+  CHART-2KjBv338nF:
+    children: []
+    id: CHART-2KjBv338nF
+    meta:
+      chartId: 34
+      height: 50
+      sliceName: "Fiche 15 \u2013 Consultations ambulatoires (MoH)"
+      uuid: 94386fc4-c456-47df-bd61-ee57f399e711
+      width: 12
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-rapports
+    - ROW-lkcW2-ptIZ
+    type: CHART
+  CHART-87Lj81Rs2T:
+    children: []
+    id: CHART-87Lj81Rs2T
+    meta:
+      chartId: 29
+      height: 50
+      sliceName: "PBF \u2013 Registre chirurgie"
+      uuid: e15306e5-f939-4ad0-a9c8-94e43a6eb331
+      width: 12
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-registres
+    - ROW-GtMakn6g5K
+    type: CHART
+  CHART-CMW7UoGW-S:
+    children: []
+    id: CHART-CMW7UoGW-S
+    meta:
+      chartId: 33
+      height: 50
+      sliceName: "PBF \u2013 Synth\xE8se mensuelle"
+      uuid: 3a327726-f564-49c5-9b61-6b31060d1b04
+      width: 12
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-rapports
+    - ROW-XsEr2XSobN
+    type: CHART
+  CHART-IHbheD2vL2:
+    children: []
+    id: CHART-IHbheD2vL2
+    meta:
+      chartId: 30
+      height: 50
+      sliceName: "Fiche 1 \u2013 Activit\xE9 globale par service"
+      uuid: 92483ebd-f69f-4482-a432-65f96872ac60
+      width: 12
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-rapports
+    - ROW-_Xgz7KBTu3
+    type: CHART
+  CHART-explore-28-1:
+    children: []
+    id: CHART-explore-28-1
+    meta:
+      chartId: 28
+      height: 50
+      sliceName: "PBF \u2013 Registre accouchements"
+      uuid: 8a1eeb5b-8fac-4d7d-ae96-2efa289b2c8b
+      width: 12
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-registres
+    - ROW-6lQ-N1D7E
+    type: CHART
+  CHART-explore-31-1:
+    children: []
+    id: CHART-explore-31-1
+    meta:
+      chartId: 31
+      height: 50
+      sliceName: "PBF \u2013 Registre consultations (CONSULTATION SERVICE)"
+      uuid: 627ac8ba-56bc-4ba6-88c0-9e9bfab90a38
+      width: 12
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-registres
+    - ROW-Oji9-u0Nz
+    type: CHART
+  CHART-explore-32-1:
+    children: []
+    id: CHART-explore-32-1
+    meta:
+      chartId: 32
+      height: 50
+      sliceName: "PBF \u2013 Registre journ\xE9es d'hospitalisation"
+      uuid: 265e16f2-51e6-48e1-8eae-7ce296488534
+      width: 12
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-registres
+    - ROW-KhkXpVNaq
+    type: CHART
+  CHART-explore-35-1:
+    children: []
+    id: CHART-explore-35-1
+    meta:
+      chartId: 35
+      height: 50
+      sliceName: Usage hebdomadaire par service et formulaire
+      uuid: 456d36f1-f193-4744-8544-cb309c75f8d9
+      width: 12
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-usage
+    - ROW-06EOFBc8P1
+    type: CHART
+  DASHBOARD_VERSION_KEY: v2
+  GRID_ID:
+    children:
+    - TABS-m6
+    id: GRID_ID
+    parents:
+    - ROOT_ID
+    type: GRID
+  HEADER_ID:
+    id: HEADER_ID
+    meta:
+      text: "PBF et rapports Minist\xE8re (M6)"
+    type: HEADER
+  ROOT_ID:
+    children:
+    - GRID_ID
+    id: ROOT_ID
+    type: ROOT
+  ROW-06EOFBc8P1:
+    children:
+    - CHART-explore-35-1
+    id: ROW-06EOFBc8P1
+    meta:
+      '0': ROOT_ID
+      background: BACKGROUND_TRANSPARENT
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-usage
+    type: ROW
+  ROW-6lQ-N1D7E:
+    children:
+    - CHART-explore-28-1
+    id: ROW-6lQ-N1D7E
+    meta:
+      background: BACKGROUND_TRANSPARENT
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-registres
+    type: ROW
+  ROW-GtMakn6g5K:
+    children:
+    - CHART-87Lj81Rs2T
+    id: ROW-GtMakn6g5K
+    meta:
+      background: BACKGROUND_TRANSPARENT
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-registres
+    type: ROW
+  ROW-KhkXpVNaq:
+    children:
+    - CHART-explore-32-1
+    id: ROW-KhkXpVNaq
+    meta:
+      '0': ROOT_ID
+      background: BACKGROUND_TRANSPARENT
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-registres
+    type: ROW
+  ROW-Oji9-u0Nz:
+    children:
+    - CHART-explore-31-1
+    id: ROW-Oji9-u0Nz
+    meta:
+      background: BACKGROUND_TRANSPARENT
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-registres
+    type: ROW
+  ROW-XsEr2XSobN:
+    children:
+    - CHART-CMW7UoGW-S
+    id: ROW-XsEr2XSobN
+    meta:
+      background: BACKGROUND_TRANSPARENT
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-rapports
+    type: ROW
+  ROW-_Xgz7KBTu3:
+    children:
+    - CHART-IHbheD2vL2
+    id: ROW-_Xgz7KBTu3
+    meta:
+      background: BACKGROUND_TRANSPARENT
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-rapports
+    type: ROW
+  ROW-lkcW2-ptIZ:
+    children:
+    - CHART-2KjBv338nF
+    id: ROW-lkcW2-ptIZ
+    meta:
+      background: BACKGROUND_TRANSPARENT
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-rapports
+    type: ROW
+  TABS-m6:
+    type: TABS
+    id: TABS-m6
+    children:
+    - TAB-m6-rapports
+    - TAB-m6-registres
+    - TAB-m6-usage
+    - TAB-m6-qualite
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    meta: {}
+  TAB-m6-rapports:
+    type: TAB
+    id: TAB-m6-rapports
+    children:
+    - ROW-XsEr2XSobN
+    - ROW-lkcW2-ptIZ
+    - ROW-_Xgz7KBTu3
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    meta:
+      text: Rapports mensuels
+      defaultText: Tab title
+      placeholder: Tab title
+  TAB-m6-registres:
+    type: TAB
+    id: TAB-m6-registres
+    children:
+    - ROW-Oji9-u0Nz
+    - ROW-KhkXpVNaq
+    - ROW-6lQ-N1D7E
+    - ROW-GtMakn6g5K
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    meta:
+      text: Registres PBF
+      defaultText: Tab title
+      placeholder: Tab title
+  TAB-m6-usage:
+    type: TAB
+    id: TAB-m6-usage
+    children:
+    - ROW-06EOFBc8P1
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    meta:
+      text: Usage hebdomadaire
+      defaultText: Tab title
+      placeholder: Tab title
+  TAB-m6-qualite:
+    type: TAB
+    id: TAB-m6-qualite
+    children:
+    - ROW-m6-dq1
+    - ROW-m6-dq2
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    meta:
+      text: "Contr\xF4le qualit\xE9"
+      defaultText: Tab title
+      placeholder: Tab title
+  ROW-m6-dq1:
+    type: ROW
+    id: ROW-m6-dq1
+    children:
+    - CHART-m6-dq-36
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-qualite
+    meta:
+      background: BACKGROUND_TRANSPARENT
+  CHART-m6-dq-36:
+    type: CHART
+    id: CHART-m6-dq-36
+    children: []
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-qualite
+    - ROW-m6-dq1
+    meta:
+      chartId: 36
+      width: 12
+      height: 40
+      sliceName: "Contr\xF4le qualit\xE9 \u2013 synth\xE8se"
+      uuid: 9e4bd27a-1198-4a19-b06e-17511f50089c
+  ROW-m6-dq2:
+    type: ROW
+    id: ROW-m6-dq2
+    children:
+    - CHART-m6-dq-37
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-qualite
+    meta:
+      background: BACKGROUND_TRANSPARENT
+  CHART-m6-dq-37:
+    type: CHART
+    id: CHART-m6-dq-37
+    children: []
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-qualite
+    - ROW-m6-dq2
+    meta:
+      chartId: 37
+      width: 12
+      height: 80
+      sliceName: "Contr\xF4le qualit\xE9 \u2013 d\xE9tail (\xE0 corriger)"
+      uuid: 76caf534-7dbf-4b30-b10c-846a5901c2f9
+metadata:
+  chart_configuration:
+    '28':
+      id: 28
+      crossFilters:
+        scope: global
+        chartsInScope:
+        - 29
+        - 30
+        - 31
+        - 32
+        - 33
+        - 34
+        - 35
+    '29':
+      id: 29
+      crossFilters:
+        scope: global
+        chartsInScope:
+        - 28
+        - 30
+        - 31
+        - 32
+        - 33
+        - 34
+        - 35
+    '30':
+      id: 30
+      crossFilters:
+        scope: global
+        chartsInScope:
+        - 28
+        - 29
+        - 31
+        - 32
+        - 33
+        - 34
+        - 35
+    '31':
+      id: 31
+      crossFilters:
+        scope: global
+        chartsInScope:
+        - 28
+        - 29
+        - 30
+        - 32
+        - 33
+        - 34
+        - 35
+    '32':
+      id: 32
+      crossFilters:
+        scope: global
+        chartsInScope:
+        - 28
+        - 29
+        - 30
+        - 31
+        - 33
+        - 34
+        - 35
+    '33':
+      id: 33
+      crossFilters:
+        scope: global
+        chartsInScope:
+        - 28
+        - 29
+        - 30
+        - 31
+        - 32
+        - 34
+        - 35
+    '34':
+      id: 34
+      crossFilters:
+        scope: global
+        chartsInScope:
+        - 28
+        - 29
+        - 30
+        - 31
+        - 32
+        - 33
+        - 35
+    '35':
+      id: 35
+      crossFilters:
+        scope: global
+        chartsInScope:
+        - 28
+        - 29
+        - 30
+        - 31
+        - 32
+        - 33
+        - 34
+  global_chart_configuration:
+    scope:
+      rootPath:
+      - ROOT_ID
+      excluded: []
+    chartsInScope:
+    - 28
+    - 29
+    - 30
+    - 31
+    - 32
+    - 33
+    - 34
+    - 35
+  color_scheme: ''
+  refresh_frequency: 0
+  shared_label_colors: {}
+  color_scheme_domain: []
+  expanded_slices: {}
+  label_colors: {}
+  timed_refresh_immune_slices: []
+  cross_filters_enabled: true
+  default_filters: '{}'
+  native_filter_configuration:
+  - id: NATIVE_FILTER-K97fsOJvd
+    controlValues:
+      enableEmptyFilter: false
+    name: Mois
+    filterType: filter_time
+    targets:
+    - {}
+    defaultDataMask:
+      extraFormData:
+        time_range: previous calendar month
+      filterState:
+        value: previous calendar month
+    cascadeParentIds: []
+    scope:
+      rootPath:
+      - ROOT_ID
+      excluded:
+      - 35
+    type: NATIVE_FILTER
+    description: ''
+    chartsInScope:
+    - 28
+    - 29
+    - 30
+    - 31
+    - 32
+    - 33
+    - 34
+    - 35
+    - 36
+    - 37
+    tabsInScope: []
+  - id: NATIVE_FILTER-S2BhrN5ik
+    controlValues:
+      enableEmptyFilter: false
+      defaultToFirstItem: false
+      multiSelect: true
+      searchAllOptions: false
+      inverseSelection: false
+    name: Service
+    filterType: filter_select
+    targets:
+    - column:
+        name: SERVICE
+      datasetUuid: 48d1b816-df10-4586-8461-77816c96bc09
+    defaultDataMask:
+      extraFormData: {}
+      filterState: {}
+      ownState: {}
+    cascadeParentIds: []
+    scope:
+      rootPath:
+      - ROOT_ID
+      excluded:
+      - 28
+      - 29
+      - 30
+      - 32
+      - 33
+      - 35
+      - 36
+      - 37
+    type: NATIVE_FILTER
+    description: ''
+    chartsInScope:
+    - 31
+    - 34
+    tabsInScope: []
+version: 1.0.0

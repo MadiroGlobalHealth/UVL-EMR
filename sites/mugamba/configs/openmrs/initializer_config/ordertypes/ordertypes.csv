@@ -4,3 +4,4 @@ f8ae333e-9d1a-423e-a6a8-c3a0687ebcf2,True,Lab Order,,,An order for laboratory te
 52a447d3-a64a-11e3-9aeb-50e549534c5e,,Test Order,Examen de laboratoire,Test Order,Order type for test orders,org.openmrs.TestOrder,Test;LabSet,
 8d2aff07-55e6-4a4a-8878-72b9eb36a3b8,,Imagery Order,Imagerie,Imagery Order, An order type for imaging orders,org.openmrs.TestOrder,,
 67a92e56-0f88-11ea-8d71-362b9e155667,,Procedure,Acte,Procedure,An order for Procedure exams,org.openmrs.TestOrder,Procedure,
+131168f4-15f5-102d-96e4-000c29c2a5d7,,Drug Order,Médicament,Drug Order,An order for a medication to be given to the patient,org.openmrs.DrugOrder,,

@@ -3186,4 +3186,168 @@
         <rollback/>
     </changeSet>
 
+    <!--
+        #684: « commonreports.started = false » on UAT and production, although neither image ships
+        the commonreports module (nor metadatasharing, whose row still says « true »). OpenMRS writes
+        a module's global properties when it first loads it and never deletes them when the omod
+        leaves the distribution, so both modules left behind rows that read like modules that
+        failed to start. UVL prints its documents with patientdocuments, and no UVL configuration,
+        report or analytics query uses either module. Their global properties go; their other
+        leftovers (the « Patient History » report from commonreports) are not touched. A module
+        that is shipped again recreates its global properties with their defaults on load.
+    -->
+    <changeSet id="remove_unshipped_module_properties-20261116" author="Joshua">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT CASE WHEN COUNT(*) > 0 THEN 1 ELSE 0 END FROM global_property
+                WHERE property LIKE 'commonreports.%' OR property LIKE 'metadatasharing.%';
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            Global properties of the commonreports and metadatasharing modules, which UVL no longer ships (#684).
+        </comment>
+        <sql>
+            DELETE FROM global_property
+             WHERE property LIKE 'commonreports.%' OR property LIKE 'metadatasharing.%';
+        </sql>
+        <rollback/>
+    </changeSet>
+
+    <!--
+        #457 - stock items for seven products of the central pharmacy's opening stock (file of
+        16 Nov 2026) whose drug exists but had no stock item: Dynamogen Ampoule 3mg/1g, Halothane
+        Flacon, Aiguille G19/G21/G22/G23 (Prélèvement) and Tissu Jersey 1m. Without an item their
+        opening count cannot be entered. Waits for the drugs and units (onFail CONTINUE, tried
+        again on the next start), as the #455 seeds do.
+    -->
+    <changeSet id="add_stock_items_opening_stock-20261116" author="Joshua">
+        <preConditions onFail="CONTINUE" onError="CONTINUE"
+                       onFailMessage="WARN (#457): the seven drugs of the opening-stock stock items or their units do not all exist yet (drugs or OCL not loaded), or the stockmanagement tables are missing, so their stock items were NOT created; this changeset is retried on every start.">
+            <tableExists tableName="stockmgmt_stock_item"/>
+            <tableExists tableName="stockmgmt_stock_item_packaging_uom"/>
+            <columnExists tableName="stockmgmt_stock_item" columnName="common_name"/>
+            <sqlCheck expectedResult="7">
+                SELECT COUNT(DISTINCT uuid) FROM drug
+                 WHERE uuid IN (
+                                 'd9fb690b-f0ba-4832-bb1e-db8386eba6cb', 'f26cf0e0-cb97-4227-a7dd-dffaf72d9b8d', 'c76c5115-afe7-425f-9e97-d2c8bb6c32dd',
+                                 '1a22d90c-8bf4-45ad-b141-a68cfe976496', 'cfef94fa-ba16-4c1f-b564-30f56d4cddb8', '29260dcc-9dcd-4315-b5ed-bdfe6792706f',
+                                 'df543826-8385-49a6-ac61-25a258f12100')
+            </sqlCheck>
+            <sqlCheck expectedResult="3">
+                SELECT COUNT(DISTINCT uuid) FROM concept
+                 WHERE uuid IN ('d81e10fe-0f6a-4b75-b9c0-a5e72d56f3b2', '04144d11-cfed-4930-8ffc-f1b8be92440b', 'c4b6c7b7-4906-4f76-af51-60ec9a34932e')
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            Create a stock item for each of the seven opening-stock products that had none (#457).
+        </comment>
+        <sqlFile path="sql/stock_items_opening_stock.sql" relativeToChangelogFile="true" stripComments="true"/>
+        <rollback>
+            <sqlFile path="sql/stock_items_opening_stock_rollback.sql" relativeToChangelogFile="true" stripComments="true"/>
+        </rollback>
+    </changeSet>
+
+    <!--
+        #776 - the product owner's answers of 18 Nov 2026 on the opening-stock count.
+        Anamol Sirop is counted per 100 ml bottle and Cimetidine Injection 200mg/2ml per ampoule,
+        not per millilitre: their stock and dispensing unit become Flacon and Ampoule, as the
+        sheet-3 items did (stock_item_units_sheet3-20261023, same statements). Only while neither
+        item has a batch or a transaction: a count in millilitres re-read in bottles would be wrong
+        by a factor of 100, so with stock on hand the changeset waits (WARN) and the unit is changed
+        by a person with the stock in view.
+    -->
+    <changeSet id="stock_item_units_opening_stock-20261118" author="Joshua">
+        <preConditions onFail="CONTINUE" onError="CONTINUE"
+                       onFailMessage="WARN (#776): Anamol Sirop or Cimetidine Injection 200mg/2ml, or the Flacon or Ampoule unit, does not exist yet, or one of the two items already has stock or a transaction, so their unit was NOT changed to Flacon / Ampoule; this changeset is retried on every start.">
+            <tableExists tableName="stockmgmt_stock_item_packaging_uom"/>
+            <tableExists tableName="stockmgmt_stock_batch"/>
+            <tableExists tableName="stockmgmt_stock_item_transaction"/>
+            <sqlCheck expectedResult="2">
+                SELECT COUNT(DISTINCT uuid) FROM stockmgmt_stock_item
+                 WHERE uuid IN ('d9738e95-bc17-5ff5-8353-d1394ea6895e', 'c8b8d121-716e-5652-adf7-c5a56d6ec6eb')
+            </sqlCheck>
+            <sqlCheck expectedResult="2">
+                SELECT COUNT(DISTINCT uuid) FROM concept
+                 WHERE uuid IN ('04144d11-cfed-4930-8ffc-f1b8be92440b', 'd81e10fe-0f6a-4b75-b9c0-a5e72d56f3b2')
+            </sqlCheck>
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM stockmgmt_stock_batch b
+                  JOIN stockmgmt_stock_item si ON si.stock_item_id = b.stock_item_id
+                 WHERE si.uuid IN ('d9738e95-bc17-5ff5-8353-d1394ea6895e', 'c8b8d121-716e-5652-adf7-c5a56d6ec6eb')
+            </sqlCheck>
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM stockmgmt_stock_item_transaction t
+                  JOIN stockmgmt_stock_item si ON si.stock_item_id = t.stock_item_id
+                 WHERE si.uuid IN ('d9738e95-bc17-5ff5-8353-d1394ea6895e', 'c8b8d121-716e-5652-adf7-c5a56d6ec6eb')
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            Count Anamol Sirop per Flacon and Cimetidine Injection 200mg/2ml per Ampoule (#776).
+        </comment>
+        <sqlFile path="sql/stock_item_units_opening_stock.sql" relativeToChangelogFile="true" stripComments="true"/>
+        <rollback>
+            <sqlFile path="sql/stock_item_units_opening_stock_rollback.sql" relativeToChangelogFile="true" stripComments="true"/>
+        </rollback>
+    </changeSet>
+
+    <!--
+        #776 - two more stock items for the central pharmacy's opening stock, which the product owner
+        answered on 18 Nov 2026 (no drug existed): A-Cerumen Gouttes Auriculaires, counted per
+        bottle, and Midazolam Injection 5mg/ml, counted per ampoule. Their drugs are
+        drugs/uvl-drugs-issue776.csv (and Odoo product_variant/uvl-drugs-issue776.csv); the concepts
+        come with the OCL release of the uvl-drugs collection. Waits for the drugs as the #457 seed does.
+    -->
+    <changeSet id="add_stock_items_opening_stock_answered-20261118" author="Joshua">
+        <preConditions onFail="CONTINUE" onError="CONTINUE"
+                       onFailMessage="WARN (#776): the drugs A-Cerumen Gouttes Auriculaires and Midazolam Injection 5mg/ml or their units do not exist yet (drugs or OCL not loaded), or the stockmanagement tables are missing, so their stock items were NOT created; this changeset is retried on every start.">
+            <tableExists tableName="stockmgmt_stock_item"/>
+            <tableExists tableName="stockmgmt_stock_item_packaging_uom"/>
+            <columnExists tableName="stockmgmt_stock_item" columnName="common_name"/>
+            <sqlCheck expectedResult="2">
+                SELECT COUNT(DISTINCT uuid) FROM drug
+                 WHERE uuid IN ('e9638191-c538-5b6e-9dbe-0d3d4bbf1721', '76dfeba4-e78a-5c6d-9bac-4c2c2ade50a0')
+            </sqlCheck>
+            <sqlCheck expectedResult="2">
+                SELECT COUNT(DISTINCT uuid) FROM concept
+                 WHERE uuid IN ('04144d11-cfed-4930-8ffc-f1b8be92440b', 'd81e10fe-0f6a-4b75-b9c0-a5e72d56f3b2')
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            Create a stock item for A-Cerumen Gouttes Auriculaires and Midazolam Injection 5mg/ml (#776).
+        </comment>
+        <sqlFile path="sql/stock_items_opening_stock_answered.sql" relativeToChangelogFile="true" stripComments="true"/>
+        <rollback>
+            <sqlFile path="sql/stock_items_opening_stock_answered_rollback.sql" relativeToChangelogFile="true" stripComments="true"/>
+        </rollback>
+    </changeSet>
+
+    <!--
+        #729 - every user gets a provider account. The order basket's lab test search reads the
+        session's `currentProvider.uuid`, and a user without a provider has a null currentProvider, so
+        adding a test failed with « Cannot read properties of null (reading 'uuid') », from the
+        consultation forms' « Order Tests » button as from the chart. Signing the basket needs the
+        provider as orderer too.
+        Users who sign in through Keycloak get a provider on their first login. The ones left without
+        are the local `admin` (add_admin_provider-202407101630 was MARK_RAN wherever provider_id 1 was
+        already taken, as on UAT) and accounts made before SSO. Each gets one with its username as
+        identifier, as the SSO login creates it. The daemon user is skipped; a user whose provider was
+        retired keeps it retired.
+    -->
+    <changeSet id="add_missing_user_providers-20261117" author="Joshua">
+        <comment>
+            Create a provider for every active user whose person has none (#729).
+        </comment>
+        <sql>
+            INSERT INTO provider (person_id, identifier, creator, date_created, retired, uuid)
+            SELECT u.person_id, MIN(COALESCE(NULLIF(u.username, ''), u.system_id)), 1, NOW(), 0, UUID()
+              FROM users u
+             WHERE u.retired = 0
+               AND u.person_id IS NOT NULL
+               AND u.system_id &lt;&gt; 'daemon'
+               AND NOT EXISTS (SELECT 1 FROM provider p WHERE p.person_id = u.person_id)
+             GROUP BY u.person_id;
+        </sql>
+        <rollback/>
+    </changeSet>
+
 </databaseChangeLog>

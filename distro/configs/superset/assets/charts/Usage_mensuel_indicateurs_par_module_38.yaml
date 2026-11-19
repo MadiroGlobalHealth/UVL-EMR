@@ -1,0 +1,48 @@
+slice_name: "Usage mensuel \u2013 indicateurs par module"
+description: null
+certified_by: null
+certification_details: null
+viz_type: pivot_table_v2
+params:
+  datasource: 28__table
+  viz_type: pivot_table_v2
+  groupbyColumns:
+  - MOIS
+  groupbyRows:
+  - INDICATEUR
+  - MODULE
+  time_grain_sqla: P1M
+  temporal_columns_lookup:
+    MOIS: true
+  metrics:
+  - expressionType: SQL
+    sqlExpression: SUM("VALEUR")
+    label: VALEUR
+    hasCustomLabel: true
+    optionName: metric_i7ejgr4etj
+  metricsLayout: COLUMNS
+  adhoc_filters:
+  - expressionType: SIMPLE
+    subject: MOIS
+    operator: TEMPORAL_RANGE
+    comparator: 'DATEADD(DATETRUNC(DATETIME("today"), month), -5, month) : now'
+    clause: WHERE
+    sqlExpression: null
+    isExtra: false
+    isNew: false
+    datasourceWarning: false
+    filterOptionName: filter_rnfdnhgo7q
+  row_limit: 10000
+  order_desc: true
+  aggregateFunction: Sum
+  valueFormat: SMART_NUMBER
+  date_format: '%Y-%m'
+  rowOrder: key_a_to_z
+  colOrder: key_a_to_z
+  show_cell_bars: false
+  extra_form_data: {}
+query_context: null
+cache_timeout: null
+uuid: 6ab3948b-0b50-4066-9532-0e1b8ddbb3f7
+version: 1.0.0
+dataset_uuid: 68f791ec-1a50-4be8-a0b5-e3001898a887

@@ -1,0 +1,425 @@
+table_name: PBF Registre Accouchements
+main_dttm_col: DATE D'ACCOUCHEMENT
+description: "UVL-EMR \xB7 PBF register \xAB ACCOUCHEMENTS \xBB (Superset virtual\
+  \ dataset)\nhttps://github.com/MadiroGlobalHealth/UVL-EMR/issues/588   (related\
+  \ #586 #587 #582)\nShape: one row per delivery encounter (UVL Delivery Registration\
+  \ form, else\nUVL Childbirth Record form), columns in the order of the PBF template.\n\
+  Sources (13 Nov 2026). The analytics DB has no delivery encounter yet, so the\n\
+  encounter is selected by FORM NAME and the questions by the concept UUIDs found\n\
+  in the analytics \xAB concepts \xBB table (to re-check once the first deliveries\
+  \ sync):\n  * Delivery encounter: encounters.form_name ILIKE '%Delivery Registration%'\n\
+  \    or '%Childbirth Record%'. Several forms in the same visit = one delivery\n\
+  \    (Delivery Registration preferred, earliest).\n  * DATE D'ADMISSION: latest\
+  \ ADT Admission (e22e39fd-7db2-45e7-80f1-60fa0d5a4378)\n    of the same visit at\
+  \ or before the delivery; else the visit start.\n  * ACCOUCHE PAR: \xAB Delivery\
+  \ performed by (profession) \xBB 0c26bb7d-11e0-4d5b-9238-b645f924f29d\n    (profession:\
+  \ Nurse / Doctor / Midwife / Other; the person's name is not captured).\n  * TYPE\
+  \ D'ACCOUCHEMENT (fixed 16 Nov 2026 after the UAT seed): C\xE9sarienne when\n  \
+  \  \xAB Mode of delivery \xBB 38eca4cd-21ab-4689-a18b-202a50d34569 = Caesarean 4a8e5f2a-da35-4a5d-aefb-ffabe41e6783,\n\
+  \    or a Procedure order GO101/GO102/GO103 (86a76e88\u2026 / 455d4174\u2026 / 6060ba72\u2026\
+  ) exists in the visit,\n    or an Operation Protocol of the visit has \xAB Caesarean\
+  \ section case \xBB 753be061\u2026 = programm\xE9e\n    79a559a9\u2026 / non programm\xE9\
+  e 90a3cdc3\u2026 (#610: one row per delivery visit, never counted twice);\n    else\
+  \ \xAB Mode of delivery \xBB 38eca4cd answers Dystocic b08d3e60-2e3c-4d23-906c-9e36cd222bea\
+  \ /\n    Eutocic 3de182b6-f7fe-4185-a7b5-89237593c1f1; older form versions saved\
+  \ those answers under\n    \xAB Other delivery procedures performed \xBB 6af027e5-8737-4ce0-8343-79b024cd1989\
+  \ (still read).\n  * DEROULEMENT: \xAB Delivery complications \xBB 5d214371-cf09-4589-b357-de8b091b66d3\
+  \ (all answers).\n  * ISSUE NOUVEAU-NE: \xAB Stillbirth type \xBB 52325f44-b6dd-470b-a672-97fefbd119e1\
+  \ (frais / mac\xE9r\xE9),\n    else \xAB Newborn status during postpartum monitoring\
+  \ \xBB 238652d6-4aca-451a-9c8e-8336cea6fff4,\n    else \xAB Pregnancy outcome \xBB\
+  \ cd96c0b6-a08f-49eb-94ad-9a914f1612f0 (the current form saves the\n    outcome\
+  \ there: Liveborn 4056a982\u2026 / Stillbirth 63f4b85c\u2026).\n  * ASSURANCE /\
+  \ ASSURANCE COMPLEMENTAIRE: visit attributes Payer / Supplementary insurance.\n\
+  \  * CARTE: person attribute \xAB Num\xE9ro de carte d'assurance \xBB (#582).\n\
+  \  * SERVICE: the delivery encounter's location (#222).\n  * Test patients excluded\
+  \ (SYNTH- / E2E / QA / TEST / DEMO, voided persons,\n    \xAB Locations test \xBB\
+  \ 450be362-59a7-4ccd-964d-ebd930a8b30f).\n(Full annotated SQL: e2e/superset/<register>.annotated.sql;\
+  \ stored SQL is comment-free for speed, 17 Nov 2026.)\n17 Nov 2026: ISSUE NOUVEAU-NE\
+  \ has one outcome per newborn (each newborn obs group), joined with \xAB ; \xBB\
+  \ (twins: \xAB Vivant; Mort-n\xE9 mac\xE9r\xE9 \xBB); extra columns NAISSANCES and\
+  \ NES VIVANTS. A delivery stays one row.\n17 Nov 2026 (no N/A): empty text cells\
+  \ show \xAB Sans assurance \xBB (no payer / no card for Cash, Mobile Money, Free\
+  \ healthcare), \xAB Non applicable \xBB, \xAB En cours \xBB (open stay), \xAB Aucun\
+  \ \xBB (no special status), else \xAB Non renseign\xE9 \xBB; counts show 0."
+default_endpoint: null
+offset: 0
+cache_timeout: null
+schema: public
+sql: "WITH dlv_enc AS (\n    SELECT DISTINCT ON (e.visit_uuid)\n        e.encounter_id,\n\
+  \        e.encounter_uuid,\n        e.visit_uuid,\n        e.patient_uuid,\n   \
+  \     e.encounter_datetime,\n        e.location\n    FROM encounters e\n    WHERE\
+  \ (e.form_name ILIKE '%Delivery Registration%' OR e.form_name ILIKE '%Childbirth\
+  \ Record%')\n      AND COALESCE(e.encounter_voided, false) = false\n      AND e.location_uuid\
+  \ IS DISTINCT FROM '450be362-59a7-4ccd-964d-ebd930a8b30f'\n    ORDER BY e.visit_uuid,\n\
+  \             (e.form_name ILIKE '%Delivery Registration%') DESC,\n            \
+  \ e.encounter_datetime, e.encounter_id\n),\ndlv_obs AS (\n    SELECT DISTINCT ON\
+  \ (o.visit_uuid, o.question_uuid)\n        o.visit_uuid,\n        o.question_uuid,\n\
+  \        o.answer_coded_uuid,\n        COALESCE(o.answer_coded, o.answer_text) AS\
+  \ answer\n    FROM observations o\n    JOIN encounters e\n      ON e.encounter_uuid\
+  \ = o.encounter_uuid\n     AND (e.form_name ILIKE '%Delivery Registration%' OR e.form_name\
+  \ ILIKE '%Childbirth Record%')\n     AND COALESCE(e.encounter_voided, false) = false\n\
+  \    WHERE COALESCE(o.obs_voided, false) = false\n      AND o.question_uuid IN ('0c26bb7d-11e0-4d5b-9238-b645f924f29d',\n\
+  \                              '6af027e5-8737-4ce0-8343-79b024cd1989',\n       \
+  \                       '238652d6-4aca-451a-9c8e-8336cea6fff4',\n              \
+  \                'cd96c0b6-a08f-49eb-94ad-9a914f1612f0',\n                     \
+  \         '52325f44-b6dd-470b-a672-97fefbd119e1')\n    ORDER BY o.visit_uuid, o.question_uuid,\
+  \ o.obs_date_time DESC, o.obs_id DESC\n),\ndlv_mode AS (\n    SELECT\n        o.visit_uuid,\n\
+  \        BOOL_OR(o.answer_coded_uuid = '4a8e5f2a-da35-4a5d-aefb-ffabe41e6783') AS\
+  \ caesarean,\n        BOOL_OR(o.answer_coded_uuid = 'b08d3e60-2e3c-4d23-906c-9e36cd222bea')\
+  \ AS dystocic,\n        BOOL_OR(o.answer_coded_uuid = '3de182b6-f7fe-4185-a7b5-89237593c1f1')\
+  \ AS eutocic\n    FROM observations o\n    WHERE o.question_uuid IN ('38eca4cd-21ab-4689-a18b-202a50d34569',\n\
+  \                              '6af027e5-8737-4ce0-8343-79b024cd1989')\n      AND\
+  \ COALESCE(o.obs_voided, false) = false\n      AND o.visit_uuid IN (SELECT visit_uuid\
+  \ FROM dlv_enc)\n    GROUP BY o.visit_uuid\n),\ndlv_compl AS (\n    SELECT\n   \
+  \     o.visit_uuid,\n        STRING_AGG(DISTINCT o.answer_coded, '; ') AS complications\n\
+  \    FROM observations o\n    WHERE o.question_uuid = '5d214371-cf09-4589-b357-de8b091b66d3'\n\
+  \      AND COALESCE(o.obs_voided, false) = false\n      AND o.visit_uuid IN (SELECT\
+  \ visit_uuid FROM dlv_enc)\n    GROUP BY o.visit_uuid\n),\ncsection AS (\n    SELECT\
+  \ e.visit_uuid\n    FROM orders r\n    JOIN encounters e ON e.encounter_uuid = r.encounter_uuid\n\
+  \    WHERE r.concept_uuid IN ('86a76e88-fde2-4bc8-9da1-80064bf35fbb',\n        \
+  \                     '455d4174-42ba-4819-89b5-f574e54baa42',\n                \
+  \             '6060ba72-90a2-4ed1-9232-d0bc97c607e2')\n      AND COALESCE(r.voided,\
+  \ false) = false\n      AND e.visit_uuid IN (SELECT visit_uuid FROM dlv_enc)\n \
+  \   UNION\n    SELECT o.visit_uuid\n    FROM observations o\n    WHERE o.question_uuid\
+  \ = '753be061-2a1e-46de-8575-5a1b5a08725e'\n      AND o.answer_coded_uuid IN ('79a559a9-c7aa-4006-98c2-02c530f6f7db',\n\
+  \                                  '90a3cdc3-342e-456f-8154-5e6802166584')\n   \
+  \   AND COALESCE(o.obs_voided, false) = false\n      AND o.visit_uuid IN (SELECT\
+  \ visit_uuid FROM dlv_enc)\n),\nnewborn AS (\n    SELECT\n        o.visit_uuid,\n\
+  \        COALESCE(o.obs_group_uuid, o.encounter_uuid) AS nb_key,\n        MIN(o.obs_id)\
+  \ AS first_obs,\n        COALESCE(MAX(o.answer_coded_uuid) FILTER (WHERE o.question_uuid\
+  \ = '52325f44-b6dd-470b-a672-97fefbd119e1'),\n                 MAX(o.answer_coded_uuid)\
+  \ FILTER (WHERE o.question_uuid = '238652d6-4aca-451a-9c8e-8336cea6fff4'),\n   \
+  \              MAX(o.answer_coded_uuid) FILTER (WHERE o.question_uuid = 'cd96c0b6-a08f-49eb-94ad-9a914f1612f0'))\
+  \ AS outcome_uuid,\n        COALESCE(MAX(o.answer_coded) FILTER (WHERE o.question_uuid\
+  \ = '52325f44-b6dd-470b-a672-97fefbd119e1'),\n                 MAX(o.answer_coded)\
+  \ FILTER (WHERE o.question_uuid = '238652d6-4aca-451a-9c8e-8336cea6fff4'),\n   \
+  \              MAX(o.answer_coded) FILTER (WHERE o.question_uuid = 'cd96c0b6-a08f-49eb-94ad-9a914f1612f0'))\
+  \ AS outcome_name\n    FROM observations o\n    JOIN encounters e\n      ON e.encounter_uuid\
+  \ = o.encounter_uuid\n     AND (e.form_name ILIKE '%Delivery Registration%' OR e.form_name\
+  \ ILIKE '%Childbirth Record%')\n     AND COALESCE(e.encounter_voided, false) = false\n\
+  \    WHERE COALESCE(o.obs_voided, false) = false\n      AND o.question_uuid IN ('52325f44-b6dd-470b-a672-97fefbd119e1',\n\
+  \                              '238652d6-4aca-451a-9c8e-8336cea6fff4',\n       \
+  \                       'cd96c0b6-a08f-49eb-94ad-9a914f1612f0')\n      AND o.visit_uuid\
+  \ IN (SELECT visit_uuid FROM dlv_enc)\n    GROUP BY o.visit_uuid, COALESCE(o.obs_group_uuid,\
+  \ o.encounter_uuid)\n),\nnewborns AS (\n    SELECT\n        n.visit_uuid,\n    \
+  \    STRING_AGG(CASE n.outcome_uuid\n                       WHEN '4056a982-6a2d-4062-9514-efcf4e66dd0a'\
+  \ THEN 'Vivant'\n                       WHEN '50e375f7-4d58-46a9-899a-b46a90629599'\
+  \ THEN 'N\xE9 vivant, d\xE9c\xE9d\xE9 < 24h'\n                       WHEN '63f4b85c-de5a-48e9-a9a5-bf2656c10125'\
+  \ THEN 'Mort-n\xE9'\n                       WHEN '8312584c-d0b7-404e-b575-9b93fbe09736'\
+  \ THEN 'Mort-n\xE9 frais'\n                       WHEN 'f5cee4c8-2f54-43ff-8169-c7d64223a4ea'\
+  \ THEN 'Mort-n\xE9 mac\xE9r\xE9'\n                       ELSE n.outcome_name\n \
+  \                  END, '; ' ORDER BY n.first_obs) AS issues,\n        COUNT(*)\
+  \ AS naissances,\n        COUNT(*) FILTER (WHERE n.outcome_uuid IN ('4056a982-6a2d-4062-9514-efcf4e66dd0a',\n\
+  \                                                  '50e375f7-4d58-46a9-899a-b46a90629599'))\
+  \ AS nes_vivants\n    FROM newborn n\n    GROUP BY n.visit_uuid\n),\nadm AS (\n\
+  \    SELECT DISTINCT ON (d.visit_uuid)\n        d.visit_uuid,\n        a.encounter_datetime\
+  \ AS admission_datetime\n    FROM dlv_enc d\n    JOIN encounters a\n      ON a.visit_uuid\
+  \ = d.visit_uuid\n     AND a.encounter_type_uuid = 'e22e39fd-7db2-45e7-80f1-60fa0d5a4378'\n\
+  \     AND COALESCE(a.encounter_voided, false) = false\n     AND a.encounter_datetime\
+  \ <= d.encounter_datetime + INTERVAL '1 hour'\n    ORDER BY d.visit_uuid, a.encounter_datetime\
+  \ DESC\n),\nbase AS (\n    SELECT\n        d.*,\n        v.visit_attributes,\n \
+  \       v.date_started,\n        p.given_name,\n        p.family_name,\n       \
+  \ p.identifiers,\n        p.attributes AS person_attributes,\n        COALESCE(p.birthdate,\
+  \ v.patient_birthdate) AS birthdate,\n        p.address_state_province AS province,\n\
+  \        p.address_county_district AS commune,\n        p.address_1 AS colline\n\
+  \    FROM dlv_enc d\n    LEFT JOIN visits v ON v.visit_uuid = d.visit_uuid\n   \
+  \ JOIN patients p ON p.patient_uuid = d.patient_uuid\n    WHERE COALESCE(v.visit_voided,\
+  \ false) = false\n      AND COALESCE(p.person_voided, false) = false\n      AND\
+  \ NOT (COALESCE(p.family_name, '') ~* '^(SYNTH-|E2E|QA|TEST|DEMO)'\n           \
+  \ OR COALESCE(p.given_name,  '') ~* '^(SYNTH-|E2E|QA|TEST|DEMO)')\n)\n,\nres AS\
+  \ (\nSELECT\n    COALESCE(a.admission_datetime, b.date_started)::date AS \"DATE\
+  \ D'ADMISSION\",\n    b.encounter_datetime::date AS \"DATE D'ACCOUCHEMENT\",\n \
+  \   COALESCE(\n        TRIM(SPLIT_PART(SUBSTRING(b.identifiers FROM 'UVL ID: ([^,]+)'),\
+  \ ',', 1)),\n        TRIM(SPLIT_PART(SUBSTRING(b.identifiers FROM 'Legacy ID: ([^,]+)'),\
+  \ ',', 1))\n    ) AS \"IDPERSONNE\",\n    b.family_name AS \"NOM\",\n    b.given_name\
+  \ AS \"PRENOM\",\n    DATE_PART('year', AGE(b.encounter_datetime::date, b.birthdate))::int\
+  \ AS \"AGE\",\n    b.province AS \"PROVINCE\",\n    b.commune AS \"COMMUNE\",\n\
+  \    b.colline AS \"COLLINE\",\n    CASE by_.answer_coded_uuid\n        WHEN '31c7d379-1191-4823-a970-fdf665792362'\
+  \ THEN 'Infirmier(\xE8re)'\n        WHEN '331be736-309d-4e28-939f-efbd317ba431'\
+  \ THEN 'M\xE9decin'\n        WHEN '96e75bb2-8f26-4a10-99f8-7af041672b62' THEN 'Sage-femme'\n\
+  \        WHEN 'b5c4b807-d3de-40cd-aae9-178df9b40535' THEN 'Autre'\n        ELSE\
+  \ by_.answer\n    END AS \"ACCOUCHE PAR\",\n    CASE\n        WHEN cs.visit_uuid\
+  \ IS NOT NULL OR m.caesarean THEN 'C\xE9sarienne'\n        WHEN m.dystocic THEN\
+  \ 'Dystocique'\n        WHEN m.eutocic THEN 'Eutocique'\n    END AS \"TYPE D'ACCOUCHEMENT\"\
+  ,\n    c.complications AS \"DEROULEMENT\",\n    nn.issues AS \"ISSUE NOUVEAU-NE\"\
+  ,\n    NULLIF(TRIM(SUBSTRING(b.visit_attributes FROM '(?:^|/ )Payer: ((?:[^/]|/(?!\
+  \ ))*)')), '') AS \"ASSURANCE\",\n    NULLIF(TRIM(SUBSTRING(b.person_attributes\
+  \ FROM '(?:^|/ )Num\xE9ro de carte d''assurance: ((?:[^/]|/(?! ))*)')), '') AS \"\
+  CARTE\",\n    NULLIF(TRIM(SUBSTRING(b.visit_attributes FROM '(?:^|/ )Supplementary\
+  \ insurance: ((?:[^/]|/(?! ))*)')), '') AS \"ASSURANCE COMPLEMENTAIRE\",\n    b.location\
+  \ AS \"SERVICE\",\n    nn.naissances AS \"NAISSANCES\",\n    nn.nes_vivants AS \"\
+  NES VIVANTS\"\nFROM base b\nLEFT JOIN adm a ON a.visit_uuid = b.visit_uuid\nLEFT\
+  \ JOIN dlv_obs by_ ON by_.visit_uuid = b.visit_uuid AND by_.question_uuid = '0c26bb7d-11e0-4d5b-9238-b645f924f29d'\n\
+  LEFT JOIN newborns nn ON nn.visit_uuid = b.visit_uuid\nLEFT JOIN dlv_mode m ON m.visit_uuid\
+  \ = b.visit_uuid\nLEFT JOIN dlv_compl c ON c.visit_uuid = b.visit_uuid\nLEFT JOIN\
+  \ csection cs ON cs.visit_uuid = b.visit_uuid\n)\nSELECT\n    r.\"DATE D'ADMISSION\"\
+  \n        AS \"DATE D'ADMISSION\",\n    r.\"DATE D'ACCOUCHEMENT\"\n        AS \"\
+  DATE D'ACCOUCHEMENT\",\n    COALESCE(r.\"IDPERSONNE\", 'Non renseign\xE9')\n   \
+  \     AS \"IDPERSONNE\",\n    COALESCE(r.\"NOM\", 'Non renseign\xE9')\n        AS\
+  \ \"NOM\",\n    COALESCE(r.\"PRENOM\", 'Non renseign\xE9')\n        AS \"PRENOM\"\
+  ,\n    r.\"AGE\"\n        AS \"AGE\",\n    COALESCE(r.\"PROVINCE\", 'Non renseign\xE9\
+  ')\n        AS \"PROVINCE\",\n    COALESCE(r.\"COMMUNE\", 'Non renseign\xE9')\n\
+  \        AS \"COMMUNE\",\n    COALESCE(r.\"COLLINE\", 'Non renseign\xE9')\n    \
+  \    AS \"COLLINE\",\n    COALESCE(r.\"ACCOUCHE PAR\", 'Non renseign\xE9')\n   \
+  \     AS \"ACCOUCHE PAR\",\n    COALESCE(r.\"TYPE D'ACCOUCHEMENT\", 'Non renseign\xE9\
+  ')\n        AS \"TYPE D'ACCOUCHEMENT\",\n    COALESCE(r.\"DEROULEMENT\", 'Non renseign\xE9\
+  ')\n        AS \"DEROULEMENT\",\n    COALESCE(r.\"ISSUE NOUVEAU-NE\", 'Non renseign\xE9\
+  ')\n        AS \"ISSUE NOUVEAU-NE\",\n    COALESCE(r.\"ASSURANCE\", 'Sans assurance')\n\
+  \        AS \"ASSURANCE\",\n    CASE WHEN r.\"CARTE\" IS NOT NULL THEN r.\"CARTE\"\
+  \n         WHEN COALESCE(r.\"ASSURANCE\", '') IN ('', 'Cash', 'Mobile Money', 'Free\
+  \ healthcare') THEN 'Sans assurance'\n         ELSE 'Non renseign\xE9' END\n   \
+  \     AS \"CARTE\",\n    COALESCE(r.\"ASSURANCE COMPLEMENTAIRE\", 'Sans assurance')\n\
+  \        AS \"ASSURANCE COMPLEMENTAIRE\",\n    COALESCE(r.\"SERVICE\", 'Non renseign\xE9\
+  ')\n        AS \"SERVICE\",\n    COALESCE(r.\"NAISSANCES\", 0)\n        AS \"NAISSANCES\"\
+  ,\n    COALESCE(r.\"NES VIVANTS\", 0)\n        AS \"NES VIVANTS\"\nFROM res r\n\
+  ORDER BY \"DATE D'ACCOUCHEMENT\" DESC\n"
+params: null
+template_params: null
+filter_select_enabled: true
+fetch_values_predicate: null
+extra: null
+normalize_columns: false
+always_filter_main_dttm: false
+uuid: 8ca8bdb5-6edd-4933-b06b-e541abbfdac6
+metrics:
+- metric_name: count
+  verbose_name: COUNT(*)
+  metric_type: count
+  expression: COUNT(*)
+  description: null
+  d3format: null
+  currency: null
+  extra:
+    warning_markdown: ''
+  warning_text: null
+columns:
+- column_name: DATE D'ACCOUCHEMENT
+  verbose_name: null
+  is_dttm: true
+  is_active: true
+  type: DATE
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: DATE D'ADMISSION
+  verbose_name: null
+  is_dttm: true
+  is_active: true
+  type: DATE
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: TYPE D'ACCOUCHEMENT
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: ISSUE NOUVEAU-NE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: ASSURANCE COMPLEMENTAIRE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: ACCOUCHE PAR
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: NES VIVANTS
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: ASSURANCE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: CARTE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: AGE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: INTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: SERVICE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: COLLINE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: PROVINCE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: COMMUNE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: DEROULEMENT
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: IDPERSONNE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: PRENOM
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: NOM
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: {}
+- column_name: NAISSANCES
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+version: 1.0.0
+database_uuid: 44c13a30-0c14-402c-b81f-1c93972f5fbc

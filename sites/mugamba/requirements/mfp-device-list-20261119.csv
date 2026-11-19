@@ -1,0 +1,665 @@
+no,name,price,rate,page,reading,note
+1,ABAISSE LANGUE METALLIQUE,40,70,2,high,
+2,ABAISSE LANGUE EN BOIS,40,70,2,high,
+3,AIGUILLE A PONCTION LOMBAIRE G 18,2390,70,2,high,
+4,AIGUILLE A PONCTION LOMBAIRE G 20,3000,70,2,high,
+5,AIGUILLE A PONCTION LOMBAIRE G 22,3140,70,2,high,
+6,AIGUILLE A PONCTION LOMBAIRE G 25,3450,70,2,high,
+7,AIGUILLE A USAGE UNIQUE G 18,70,70,2,high,
+8,AIGUILLE A USAGE UNIQUE G 19,70,70,2,high,
+9,AIGUILLE A USAGE UNIQUE G 20,60,70,2,high,
+10,AIGUILLE A USAGE UNIQUE G 21,60,70,2,high,
+11,AIGUILLE A USAGE UNIQUE G 22,60,70,2,high,
+12,AIGUILLE A USAGE UNIQUE G 23,60,70,2,high,
+13,AIGUILLE A USAGE UNIQUE G 25,60,70,2,high,
+14,AIGUILLE A USAGE UNIQUE G 26,60,70,2,high,
+15,AIGUILLE DE SUTURE RONDE N°12,150,70,2,high,
+16,AIGUILLE DE SUTURE RONDE N°4,150,70,2,high,
+17,AIGUILLE DE SUTURE RONDE N°8,150,70,2,high,
+18,AIGUILLE DE SUTURE TRIANGULAIRE N°12,160,70,2,high,
+19,AIGUILLE DE SUTURE TRIANGULAIRE N°4,160,70,2,high,
+20,AIGUILLE DE SUTURE TRIANGULAIRE N°8,160,70,2,high,
+21,AIGUILLE DENTAIRE 25 G BTE DE 100,380,70,2,high,
+22,AIGUILLE EPICRANIENNE G21,350,70,2,high,
+23,AIGUILLE EPICRANIENNE G23,350,70,2,high,
+24,AIGUILLE EPICRANIENNE G25,350,70,2,high,
+25,AIGUILLE EPICRANIENNE G27,350,70,2,high,
+26,AIGUILLE DENTAIRE G27 LONG,380,70,2,high,
+27,ALCOOL DENATURE(1 ml),7/ml,80,2,high,
+28,ALCOOL IODE(1 ml),5/ml,80,2,high,
+29,ALVOGYL,210,70,2,high,
+30,ATELLE METALLIQUE DE BOWMAN 10CMx60CM,50625,70,2,high,
+31,ATELLE METALLIQUE DE BOWMAN 11CMx1,50625,70,2,high,
+32,ATELLE METALLIQUE DE BOWMAN 12CMx1M,50625,70,2,high,
+33,ATELLE METALLIQUE DE BOWMAN 15CMx1M,50625,70,2,high,
+34,ATELLE METALLIQUE DE BOWMAN 2CMx25CM,50625,70,2,high,
+35,"ATELLE METALLIQUE DE BAWMAN 7,5CMx80CM",50625,70,2,low,foot of the page cut: price and rate read on the half-visible row
+36,ATELLE METALLIQUE DE BAWMAN 7CMx70CM,50625,70,3,high,
+37,BANDE ADHESIVE 6CM,2030,80,3,high,
+38,BANDE ADHESIVE 8CM,2740,80,3,high,
+39,"BANDE DE CREPE 10CMx1,5M",500,80,3,high,
+40,"BANDE DE CREPE 10CMx4,5CM",500,80,3,high,
+41,BANDE DE CREPE 10CMx4M,1960,80,3,high,
+42,BANDE DE CREPE 15CM,1205,80,3,high,
+43,BANDE DE CREPE 20CMx4M,2665,80,3,high,
+44,"BANDE DE CREPE 5CMx4,5M",775,80,3,high,
+45,"BANDE DE CREPE 7,5CMx1,5M",500,80,3,high,
+46,"BANDE DE CREPE 7,5CMx4,5M",1250,80,3,high,
+47,"BANDE DE CREPE 7,5CMx4M",1250,80,3,high,
+48,"BANDE DE CREPE 7,5CMx5M",1175,80,3,high,
+49,BANDE DE CREPE 7CMx4M,1175,80,3,high,
+50,BANDE DE CREPE 8CMx4M,1175,80,3,high,
+51,BANDE DE CREPE 8CMx5M,750,80,3,high,
+52,"BANDE DE CREPE ELASTIQUE 4CMx4,5M",750,80,3,high,
+53,BANDE DE GAZE 10CM,230,80,3,high,
+54,BANDE DE GAZE 15CM,400,80,3,high,
+55,BANDE DE GAZE 5CM,225,80,3,high,
+56,BANDE DE GAZE 7CM,240,80,3,high,
+57,BANDE DE GAZE 8CMx4M,280,80,3,high,
+58,BANDE DE VELPEAU 10CM,900,80,3,high,
+59,BANDE DE VELPEAU 15CM,1480,80,3,high,
+60,BANDE DE VELPEAU 20CM,2515,80,3,high,
+61,BANDE OMBILICALE,1360,80,3,high,
+62,BANDE PLATREE 10CM,3070,80,3,high,
+63,BANDE PLATREE 15CM,4900,80,3,high,
+64,BANDE PLATREE 20CM,4900,80,3,high,
+65,BOUTEILLE DE REDON,4615,70,3,high,
+66,BROCHE DE KURSCHNER,7000,70,3,high,
+67,BROCHE DIAMETRE 1MM,7000,70,3,high,
+68,BROCHE DIAMETRE 2MM,7000,70,3,high,
+69,BROCHE FILETEE,6000,70,3,high,
+70,BROCHE SR X 525MM,1360,70,3,high,
+71,BROSSETTE EN NYLON 835RA,5630,70,3,high,
+72,CANULE DE GUEDEL N°4,3220,70,3,high,
+73,CANULE DE GUEDEL N°8,3220,70,4,high,
+74,CANULE DE MAYO N°00,3220,70,4,high,
+75,CANULE DE MAYO N°1,3220,70,4,high,
+76,CANULE DE MAYO N°2,3220,70,4,high,
+77,CANULE DE MAYO N°4,3220,70,4,high,
+78,CANULE DE MAYO N°5,3220,70,4,high,
+79,CANULE DE MAYO N°3,3220,70,4,high,
+80,CANULE DE PORTMANN N°6,55330,70,4,high,
+81,CANULE POUR POMPE SALIVAIRE,2125,70,4,high,
+82,CATGUT CHROME 2/0,1940,70,4,high,
+83,CATGUT CHROME 3/0,1940,70,4,high,
+84,CATGUT CHROME N°2,1940,70,4,high,
+85,CATGUT CHROME SERTI O (PIECE),2940,70,4,low,doubt on first digit of the price (2 or 1)
+86,CATGUT CHROME SERTI I (PIECE),1600,70,4,high,
+87,CATGUT CHROME SERTI 2 (PIECE),1640,70,4,high,
+88,CATGUT CHROME SERTI 2/0 (PIECE),1940,70,4,high,
+89,CATGUT CHROME SERTI 3/0 (PIECE),1940,70,4,high,
+90,CATGUT SIMPLE SERTI 0 (PIECE),1870,70,4,high,
+91,CATGUT SIMPLE SERTI 1 (PIECE),1870,70,4,high,
+92,CATGUT SIMPLE SERTI 2 (PIECE),1970,70,4,high,
+93,CATGUT SIMPLE SERTI 2/0 (PIECE),1830,70,4,high,
+94,CATHETER G16,2230,70,4,high,
+95,CATHETER G18,2230,70,4,high,
+96,CATHETER G20,2230,70,4,high,
+97,CATHETER G22,2230,70,4,high,
+98,CATHETER G24,2230,70,4,high,
+99,CATHETER JUGULAIRE,10000,70,4,high,
+100,CATHETER CENTRAL CERTOFIX G14 S430,32530,70,4,high,
+101,CATHETER CENTRAL G20 LEADER CATH,32530,70,4,high,
+102,CATHETER VENEUX CENTRAL CH11,16800,70,4,high,
+103,CETAVLON /ML,3/ml,70,4,high,
+108,CISEAUX MOYEN 16CM,4470,70,4,high,numbering jumps from 103 to 108 on the page: no line 104 to 107
+109,CIGARETTES OCULAIRES STERILES,540,70,4,high,
+110,CIMENT DE HAVARD LIQUIDE A PRISE RAPIDE,470,70,4,high,
+111,CIMENT DE HAVARD POUDRE A PRISE RAPIDE,7780,70,4,high,
+112,CLOU CENTRO-MEDULLAIRE 11X345,35000,70,4,high,
+113,CLOU CENTRO-MEDULLAIRE 9X480,35000,70,4,high,
+114,CLOU CENTRO-MEDULLAIRE 9X420,35000,70,5,high,
+115,CLOU CENTRO-MEDULLAIRE 12X440,35000,70,5,high,
+116,CLOU CENTRO-MEDULLAIRE 10X420,35000,70,5,high,
+117,CLOU CENTRO-MEDULLAIRE 10X380,35000,70,5,high,
+118,CLOU CENTRO-MEDULLAIRE 10X360,35000,70,5,high,
+119,CLOU CENTRO-MEDULLAIRE 9X400,35000,70,5,high,
+120,CLOU CENTRO-MEDULLAIRE 9X380,35000,70,5,high,
+121,CLOU CENTRO-MEDULLAIRE 11x300,35000,70,5,high,
+122,CLOU CENTRO-MEDULLAIRE 12x300,35000,70,5,high,
+123,CLOU CENTRO-MEDULLAIRE 13x300,35000,70,5,high,
+124,CLOU CENTRO-MEDULLAIRE 11x320,35000,70,5,high,
+125,CLOU CENTRO-MEDULLAIRE 12x320,35000,70,5,high,
+126,CLOU CENTRO-MEDULLAIRE 13x320,35000,70,5,high,
+127,CLOU CENTRO-MEDULLAIRE 11x340,35000,70,5,high,
+128,CLOU CENTRO-MEDULLAIRE 12x340,35000,70,5,high,
+129,CLOU CENTRO-MEDULLAIRE 13x340,35000,70,5,high,
+130,CLOU CENTRO-MEDULLAIRE 11x360,35000,70,5,high,
+131,CLOU CENTRO-MEDULLAIRE 12x360,35000,70,5,high,
+132,CLOU CENTRO-MEDULLAIRE 13x360,35000,70,5,high,
+133,CLOU CENTRO-MEDULLAIRE 11X380,35000,70,5,high,
+134,CLOU CENTRO-MEDULLAIRE 12X380,35000,70,5,high,
+135,CLOU CENTRO-MEDULLAIRE 13X380,35000,70,5,high,
+136,CLOU CENTRO-MEDULLAIRE 11x400,35000,70,5,high,
+137,CLOU CENTRO-MEDULLAIRE 12x400,35000,70,5,high,
+138,CLOU CENTRO-MEDULLAIRE 13x400,35000,70,5,high,
+139,CLOU CENTRO-MEDULLAIRE 11x420,35000,70,5,high,
+140,CLOU CENTRO-MEDULLAIRE 12x420,35000,70,5,high,
+141,CLOU CENTRO-MEDULLAIRE 13x420,35000,70,5,high,
+142,CLOU CENTRO-MEDULLAIRE 11x440,35000,70,5,high,
+143,CLOU CENTRO-MEDULLAIRE 12x440,35000,70,5,high,
+144,CLOU CENTRO-MEDULLAIRE 13x440,35000,70,5,high,
+145,CLOU CENTRO-MEDULLAIRE 11x460,35000,70,5,high,
+146,CLOU CENTRO-MEDULLAIRE 12x460,35000,70,5,high,
+147,CLOU CENTRO-MEDULLAIRE 13x460,35000,70,5,high,
+148,CLOU DE SMITH PETERSEN 100MM,5740,70,5,high,
+149,CLOU DE SMITH PETERN 105MM,5930,70,5,high,
+150,CLOU DE SMITH PETERSEN 110MM,5930,70,5,high,
+151,CLOU DE SMITH PETERSEN 115MM,5930,70,6,high,
+152,CLOU DE JAMBE 12x330,35000,70,6,high,
+153,CLOU DE JAMBE 12x345,35000,70,6,high,
+154,CLOU DE JAMBE 12x420,35000,70,6,high,
+155,CLOU DE JAMBE 12x400,35000,70,6,high,
+156,CLOU DE JAMBE 12x380,35000,70,6,high,
+157,CLOU DE JAMBE 12x360,35000,70,6,high,
+158,clou kuntscher p/r tibia cde assortis,39120,70,6,high,
+159,clou kuntscher p/r femur assortis,37760,70,6,high,
+160,clou kuntscher p/r tibia cde court ø 9mm/26cm assortis,39120,70,6,high,
+161,CLOU DE KUNTSCHER 10X300,43400,70,6,high,
+162,CLOU DE KUNTSCHER 10X320,43400,70,6,high,
+163,CLOU DE KUNTSCHER 10X330,43400,70,6,high,
+164,CLOU DE KUNTSCHER 10X340,43400,70,6,high,
+165,CLOU DE KUNTSCHER 11X280,43400,70,6,high,
+166,CLOU DE KUNTSCHER 11X330,43400,70,6,high,
+167,CLOU DE KUNTSCHER 12X280,43400,70,6,high,
+168,CLOU DE KUNTSCHER 7X300,35700,70,6,high,
+169,CLOU DE KUNTSCHER 7X330,35700,70,6,high,
+170,CLOU DE KUNTSCHER 7X340,35700,70,6,high,
+171,CLOU DE KUNTSCHER 7X360,35700,70,6,high,
+172,CLOU DE KUNTSCHER 7X380,35700,70,6,high,
+173,CLOU DE KUNTSCHER 7X400,35700,70,6,high,
+174,CLOU DE KUNTSCHER 8X300,40600,70,6,high,
+175,CLOU DE KUNTSCHER 8X330,40600,70,6,high,
+176,CLOU DE KUNTSCHER 8X340,40600,70,6,high,
+177,CLOU DE KUNTSCHER 8X360,40600,70,6,high,
+178,CLOU DE KUNTSCHER 8X380,40600,70,6,high,
+179,CLOU DE KUNTSCHER 8X400,40600,70,6,high,
+180,CLOU DE KUNTSCHER 9X300,40600,70,6,high,page scanned at a slant: price taken by following the ruled row
+181,CLOU DE KUNTSCHER 9X320,40600,70,6,high,page scanned at a slant: price taken by following the ruled row
+182,CLOU DE KUNTSCHER 9X330,40600,70,6,high,page scanned at a slant: price taken by following the ruled row
+183,CLOU DE KUNTSCHER 9X340,40600,70,6,high,page scanned at a slant: price taken by following the ruled row
+184,CLOU DE KUNTSCHER PR FEMUR 7X320,35700,70,6,high,page scanned at a slant: price taken by following the ruled row
+185,CLOU DE KUNTSCHER 10X400,43400,70,6,high,page scanned at a slant: price taken by following the ruled row
+186,CLOU DE KUNTSCHER 10X280,43400,70,6,high,page scanned at a slant: price taken by following the ruled row
+187,CLOU DE KUNTSCHER 8X320,40600,70,6,high,page scanned at a slant: price taken by following the ruled row
+188,COMPOSITE AUTOPOLYMERISANT,2440,80,7,high,
+189,COMPRESSE SIMPLE,185,80,7,high,
+190,CONSULTATION PRE-ANESTHESIQUE,750,70,7,high,
+191,DAKIN 1/ML,1/ML,70,7,high,
+192,DERMALON SERTI O (PIECE),3500,70,7,high,
+193,DERMALON SERTI 1 (PIECE),3500,70,7,high,
+194,DERMALON SERTI 2 (PIECE),3500,70,7,high,
+195,DERMALON SERTI 2/0 (PIECE),4900,70,7,high,
+196,DERMALON SERTI 3/0 (PIECE),4900,70,7,high,
+197,DETTOL DILUE / ML,"0,5/ml",70,7,high,
+198,DEXON SERTI 6/0 (piece),6000,70,7,high,
+199,DEXON SERTI 5/0 (piece),6000,70,7,high,
+200,DEXON SERTI 4/0 (piece),6000,70,7,high,
+201,DEXON SERTI0 (piece),6000,70,7,high,
+202,DEXON SERTI 1 (piece),6000,70,7,high,
+203,DEXON SERTI 2 (piece),6000,70,7,high,
+204,DEXON SERTI 2/0 (piece),6000,70,7,high,
+205,DEXON SERTI 3/0 (piece),6000,70,7,high,
+206,DEXON SERTI 7/0 (piece),6000,70,7,high,
+207,DOSSIER MEDICAL,700,70,7,high,
+208,DIPRIVAN 200MG,11030,70,7,high,
+209,DRAIN A SINUS D'ALBERTINI,390,70,7,high,
+210,DRAIN DE REDON CH.14-DRAIN ABDOMINAL,1470,70,7,high,
+211,DRAIN PLEURAL DE FOLEY N°12,26180,70,7,high,
+212,DRAIN PLEURAL DE FOLEY N°8,14740,70,7,high,
+213,DRAIN PLEURAL DE JOLY CH14,32860,70,7,high,
+214,DRAIN PLEURAL DE JOLY N°10,14740,70,7,high,
+215,DRAIN DE REDON CH.10,860,70,7,high,
+216,DRAIN DE JOLLY CH.10,13850,70,7,high,
+217,DRAIN DE JOLLY CH.8,13850,70,7,high,
+218,DRAIN THORACIQUE AVEC TROCART N°16,42420,70,7,high,
+219,DRAIN THORACIQUE AVEC TROCART N°18,42420,70,7,high,
+220,DRAIN THORACIQUE AVEC TROCART N°24,42420,70,7,high,
+221,DRAIN THORACIQUE AVEC TROCART N°28,42420,70,7,high,
+222,"DRAIN THORACIQUE AVEC TROCART N°28( 9,3mm)",42420,70,7,high,
+223,DRAIN THORACIQUE CH.16,10000,70,7,high,
+224,DRAIN THORACIQUE CH.18,10000,70,7,high,
+225,DRAIN THORACIQUE CH.20,10000,70,8,high,
+226,DRAIN THORACIQUE CH.24,10000,70,8,high,
+227,DRAIN THORACIQUE CH.32,10000,70,8,high,
+228,DRAIN TUBULAIRE EN CAOUCTOU 20M,260,70,8,high,
+229,DYCAL,490,70,8,high,
+230,EAU OXYGENE /ML,15/ml,70,8,high,
+231,ECOUVILLON,450,70,8,high,
+232,ELASTOPLASTE 10CM,12470,70,8,high,
+233,ELASTOPLASTE 6CM,5600,70,8,high,
+234,ELASTOPLASTE 8CM,7280,70,8,high,
+235,ELECTRODES,70,70,8,high,
+236,ENDOMETHASONE LIQUIDE,430,70,8,high,
+237,ENDOMETHAZONE POUDRE,630,70,8,high,
+238,ETUI PENIEN 25 CM,2500,70,8,high,
+239,ETUI PENIEN 30 CM,2500,70,8,high,
+240,ETUI PENIEN 35 CM,2500,70,8,high,
+241,ETYLON SERTI 0,3500,70,8,high,
+242,ETYLON SERTI 1,3500,70,8,high,
+243,ETYLON SERTI 2/0,3500,70,8,high,
+244,ETYLON SERTI 3/0,3500,70,8,high,
+245,EUGENOL /ML,240/ml,70,8,high,
+246,FICHE DE CONSULTATION,200,70,8,high,
+247,FICHE DE RELEVE,120,70,8,high,
+248,FICHE D'HOSPI ET DE T°ET FEUILLE D'OBSERVA° CLINIQUE,1000,70,8,high,
+249,"FIL D'ACIER 0,5 /M",42060,70,8,high,
+250,"FIL D'ACIER 0,3 /M",42060,70,8,high,
+251,"FIL D'ACIER 0,4 /M",42060,70,8,high,
+252,"FIL DE CERCLAGE 1,00MM/IMETRE",4000,70,8,high,
+253,"FIL DE CERCLAGE 1,20MM/IMETRE",4000,70,8,high,
+254,FIL POUR CORDON OMBILICAL,1680,70,8,high,
+255,FILM DENTAIRE ( 3x4 ),1000,70,8,high,
+256,FILM DENTAIRE BITE-WING,150,70,8,high,
+257,FILM RADIO 13x18CM,300,70,8,high,
+258,FILM RADIO 15x14CM,760,70,8,high,
+259,FILM RADIO 18x24CM,870,70,8,high,
+260,FILM RADIO 18x43CM,980,70,8,high,
+261,FILM RADIO 20x40CM,1100,70,8,high,
+262,FILM RADIO 24x30CM,1410,70,9,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+263,FILM RADIO 30x40CM,2170,70,9,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+264,FILM RADIO 35x35CM,1890,70,9,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+265,FILM RADIO 35x43CM,2700,70,9,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+266,FLACON SELLE,500,70,9,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+267,FLACON CRACHOIR,235,70,9,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+268,FLACON URINE (VIDE),500,70,9,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+269,GONIOSOL FL 10ML,1140,70,9,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+270,INJECTIONS INTRA-TUBULURE,400,80,9,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+271,INCISION D'ABCES CHAUD,4000,80,9,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+272,ISOBETADINE / ML,15/ml,70,9,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+273,JERSEY 1M / ML,1000/m,70,9,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+274,LAME DE BISTOURI + MANCHE A USAGE UNIQUE,520,70,9,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+275,"LAME DE BISTOURI N°10, 11, 12, 15",200,70,9,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+276,"LAME DE BISTOURI N°20, 21, 22, 23",200,70,9,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+277,LAMELLE ONDULEE DE DELBERT,10760,70,9,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+278,LAME DE RASOIR,100,70,9,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+279,LEUCOPLASTE,30,70,9,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+280,"MARCAINE 0,5% 20ML",5600,70,9,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+281,MASQUE DE CHIRURGIE A USAGE UNIQUE,,70,9,,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells); price cell empty on the page"
+282,MATRIX STRIP,,70,9,,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells); price cell empty on the page"
+283,MECHE IODOFORMEE ORL,6220,70,9,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+284,MECHE ORL,100,70,9,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+285,MERCURE POUR AMALGAME,2055,70,9,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+286,MICROFUSEUR G19,350,70,9,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+287,MICROFUSEUR G21,350,70,9,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+288,MICROFUSEUR G22,350,70,9,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+289,MICROFUSEUR G23,350,70,9,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+290,MICROFUSEUR G25,350,70,9,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+291,MONITORING FETAL,4000,70,9,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+292,MOUSSE DE FIBRINE /PATIENT,55,70,9,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+293,"MYDRIATICUM 0,5% / ML",210/ml,70,9,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+294,MYOPLEGIN 100MG,3300,70,9,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+295,"NARCAN 0,4mg",7300,70,9,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+296,NECRO,260,70,9,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+297,"NOVESINE COLLYRE 10 ML 0,4% /FL",5600/fl,70,9,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+298,NYLON NON SERTI 0 (piece),3700,70,9,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+299,NYLON SERTI 0 (PIECE),3700,70,10,high,
+300,NYLON SERTI 1 (PIECE),3700,70,10,high,
+301,NYLON SERTI 2/0 (piece),3700,70,10,high,
+302,NYLON SERTI 3/0,3700,70,10,high,
+303,NYLON SERTI 8/0 (PIECE),5600,70,10,high,
+304,NYLON TRESSE SERTI 2/0 (PIECE),1450,70,10,high,
+305,OXYDE DE ZINC LOURD,10,70,10,high,
+306,OXYDE DE ZINC POUDRE,30,70,10,high,
+307,OXYGENE /L,3F/l,70,10,high,
+308,PERMANGANATE DE K 500MG /CES,12/cé,80,10,high,
+309,PLAQUE A 4 TROU,5000,70,10,high,
+310,PLAQUE A 6 TROU,6500,70,10,high,
+311,PLAQUE CONDYLIENNE 95° 12 TROUS LAME 50MM,45000,70,10,high,
+312,PLAQUE CONDYLIENNE 95° 12 TROUS LAME 60MM,45000,70,10,high,
+313,PLAQUE CONDYLIENNE 95° 12 TROUS LAME 70MM,45000,70,10,high,
+314,PLAQUE CONDYLIENNE 95° 5 TROUS LAME 50MM,50000,70,10,high,
+315,PLAQUE CONDYLIENNE 95° 5 TROUS LAME 60MM,50000,70,10,high,
+316,PLAQUE CONDYLIENNE 95° 5 TROUS LAME 70MM,50000,70,10,high,
+317,PLAQUE CONDYLIENNE 95° 7 TROUS LAME 50MM,40000,70,10,high,
+318,PLAQUE CONDYLIENNE 95° 7 TROUS LAME 60MM,40000,70,10,high,
+319,PLAQUE CONDYLIENNE 95° 9 TROUS LAME 70MM,40000,70,10,high,
+320,PLAQUE CONDYLIENNE 95° 9 TROUS LAME 80MM,40000,70,10,high,
+321,PLAQUE CONDYLIENNE 95° 9 TROUS LAME 50MM,40000,70,10,high,
+322,PLAQUE CONDYLIENNE 95° 9 TROUS LAME 60MM,40000,70,10,high,
+323,PLAQUE CONDYLIENNE 95° 9 TROUS LAME 70MM,40000,70,10,high,
+324,PLAQUE CONDYLIENNE 95° 12 TROUS LAME 50MM,40000,70,10,high,
+325,PLAQUE CONDYLIENNE 130° 5TROUS LONG 50MM,57000,70,10,high,
+326,PLAQUE CONDIENNE130°5TROUS LONG 60MM,57000,70,10,high,
+327,PLAQUE CONDYLIENNE130° 5TRS LONG.70MM,57000,70,10,high,
+328,PLAQUE CONDYLIENNE 130° 5TRS LONG.80MM,57000,70,10,high,
+329,PLAQUE CONDYLIENNE 130° 5TRS LONG.90MM,57000,70,10,high,
+330,PLAQUE CONDYLIENE 130° 6TRS LONG.50MM,57000,70,10,high,
+331,PLAQUE CONDYLIENNE 130° 6TRS LONG.60MM,57000,70,10,high,
+332,PLAQUE CONDYLIENNE 130° 6TRS LONG.70MM,57000,70,10,high,
+333,PLAQUE CONDYLIENNE 130° 6TRS LONG.80MM,57000,70,10,high,
+334,PLAQUE CONDIYLIENNE 130° 6TRS LONG.90MM,57000,70,10,high,
+335,PLAQUE CONDYLIENNE 130° 9TRS LONG.50MM,57000,70,10,high,
+336,PLAQUE CONDYLIENNE 130° 9TRS LONG.60MM,57000,70,11,high,
+337,PLAQUE CONDYLIENNE 130° 9TRS LONG 70MM,57000,70,11,high,
+338,PLAQUE CNDYLIENNE 130° 9TRS LONG 80MM,57000,70,11,high,
+339,PLAQUE CONDYLIENNE 130° 9TRS LONG 90MM,62895,70,11,high,
+340,PLAQUE CONDYLIENNE 130° 12TRS LONG.50MM,62895,70,11,high,
+341,PLAQUE CONDYLIENNE 130°12TRS LONG.60MM,62895,70,11,high,
+342,PLAQUE CONDYLIENNE 130° 12TRS LONG 70MM,62895,70,11,high,
+343,PLAQUE CONDYLIENNE 130° 12TRS LONG. 80MM,66350,70,11,high,
+344,PLAQUE CONDYLIENNE 130° 12TRS LONG. 90MM,66350,70,11,high,
+345,PLAQUE CONDYLIENNE 130° 14TRS LONG 50MM,66350,70,11,high,
+346,PLAQUE CONDYLIENNE 130°14TRS LONG.60MM,66350,70,11,high,
+347,PLAQUE CONDYLIENNE 130°14TRS LONG .70MM,66350,70,11,high,
+348,PLAQUE CONDYLIENNE 130° 14TRS LONG. 80MM,66350,70,11,high,
+349,PLAQUE CONDYLIENNE 130° 14TRS LONG.90MM,66350,70,11,high,
+350,PLAQUE COUDEES POUR OSTEOTOMIE INTERTROCHANTERIE…,36000,70,11,high,designation cut by the price column on the page
+351,PLAQUE DE SOUTIEN L PLATEAU TIBIA GAUCHE 4 TROUS DRO…,28000,70,11,high,designation cut by the price column on the page
+352,PLAQUE DEMI-TUBE 4 TROUS,12660,70,11,high,
+353,PLAQUE DEMI-TUBE 5 TROUS,12660,70,11,high,
+354,"PLAQUE DEMI-TUBE 6,7,8 TROUS",15650,70,11,high,
+355,"PLAQUE DCP ETROITE P/VIS 4,5MM 4TRS",15400,70,11,high,
+356,"PLAQUE DCP ETROITE P/VIS 4,5MM 5TRS",15400,70,11,high,
+357,"PLAQUE DCP ETROITE P/VIS 4,5MM 6TRS",15400,70,11,high,
+358,"PLAQUE DCP ETROITE P/VIS 4,5MM 7TRS",15400,70,11,high,
+359,"PLAQUE DCP ETROITE P/VIS 4,5MM 8TRS",15400,70,11,high,
+360,"PLAQUE DCP ETROITE P/VIS 4,5MM 9TRS",15400,70,11,high,
+361,"PLAQUE DCP ETROITE P/VIS 4,5MM 10TRS",15400,70,11,high,
+362,"PLAQUE DCP ETROITE P/VIS 4,5MM 12TRS",15400,70,11,high,
+363,"PLAQUE DCP LARGE P/VIS 4,5MM 4TRS",15400,70,11,high,
+364,"PLAQUE DCP LARGE P/VIS 4,5MM 5TRS",15400,70,11,high,
+365,"PLAQUE DCP LARGE P/VIS 4,5MM 6TRS",15400,70,11,high,
+366,"PLAQUE DCP LARGE P/VIS 4,5MM 7TRS",15400,70,11,high,
+367,"PLAQUE DCP LARGE P/VIS 4,5MM 8TRS",15400,70,11,high,
+368,"PLAQUE DCP LARGE P/VIS 4,5MM 9TRS",15400,70,11,high,
+369,"PLAQUE DCP LARGE P/VIS 4,5MM 10TRS",15400,70,11,high,
+370,"PLAQUE DCP LARGE P/VIS 4,5MM 11TRS",15400,70,11,high,
+371,"PLAQUE DCP LARGE P/VIS 4,5MM 12TRS",15400,70,11,high,
+372,"PLAQUE DCP LARGE P/VIS 4,5MM 14TRS",15400,70,11,high,
+373,PLAQUE COUDEES POUR FRACTURE COL ET PERTROCH 130°4…,35000,70,12,high,designation cut by the price column on the page; line number hidden by the fold of the page: counted from 376
+374,PLAQUE COUDEE POUR FRACTURE COL ET PERTROCH 130°4T…,35000,70,12,high,designation cut by the price column on the page; line number hidden by the fold of the page: counted from 376
+375,PLAQUE COUDEE POUR FRACTURE COL ET PERTROCH 130°4T…,35000,70,12,high,designation cut by the price column on the page; line number hidden by the fold of the page: counted from 376
+376,PLAQUE COUDEE POUR FRACTURE COL ET PERTROCH 130°4T…,35000,70,12,high,designation cut by the price column on the page
+377,PLAQUE COUDEE POUR FRACTURE COL ET PERTROCH 130°6T…,38000,70,12,high,designation cut by the price column on the page
+378,PLAQUE COUDEE POUR FRACTURE COL ET PERTROCH 130°6T…,38000,70,12,high,designation cut by the price column on the page
+379,PLAQUE COUDEE POUR FRACTURE COL ET PERTROCH 130° 9T…,42000,70,12,high,designation cut by the price column on the page
+380,PLAQUE COUDEE POUR FRACTURE COL ET PERTROCH 130° 9T…,42000,70,12,high,designation cut by the price column on the page
+381,PLAQUE COUDEE POUR FRACTURE COL ET PERTROCH 130° 9T…,42000,70,12,high,designation cut by the price column on the page
+382,PLAQUE COUDEE POUR FRACTURE COL ET PERTROCH 130°12…,42000,70,12,high,designation cut by the price column on the page
+383,PLAQUE COUDEE POR FRACTURE COL ET PERTROCH 130° 12T…,42000,70,12,high,designation cut by the price column on the page
+384,PLAQUE COUDEE POUR OSTEOTOMIE TROCHANTERIENNE 90…,36000,70,12,high,designation cut by the price column on the page
+385,PLAQUE COUDEE POUR OSTEOTOMIE TROCHANTERERIENNE…,36000,70,12,high,designation cut by the price column on the page
+386,PLAQUE COUDEE POUR OSTEOTOMIE TROCHANTERERIENNE…,36000,70,12,high,designation cut by the price column on the page
+387,PLAQUE CUILLERES POUR CRETE ANTERIEURE 5 TROUS LAME…,36000,70,12,high,designation cut by the price column on the page
+388,PLAQUE CUILLERES POUR CRETE ANTERIEURE 6 TROUS LAME…,36000,70,12,high,designation cut by the price column on the page
+389,PLAQUE EN T PR TETE HUMERA ET PLATEAU TIBIA 4 TROUS L…,28000,70,12,high,designation cut by the price column on the page
+390,PLAQUE EN T POUR TETE HUMER ET PLATEAU TIBIA 6TROUS…,28000,70,12,high,designation cut by the price column on the page
+391,PLAQUE EN T PR TETE HUMER ET PLATEAU TIBIA 8TROUS LA…,28000,70,12,high,designation cut by the price column on the page
+392,PLAQUE EN T DE SOUTIEN PR TIBIA 4TROUS DROIT,20150,70,12,high,
+393,PLAQUE EN T DE SOUTIEN PR PLATEAU TIBIA GAUCHE 4TROU…,20150,70,12,high,designation cut by the price column on the page
+394,PLAQUE EN L PLATEAU TIBIA GAUCHE 4TROUS,28000,70,12,high,
+395,PLAQUE DE CELESTRES 5 TROUS DEPONT A GAUCHE+,,70,12,,price cell empty on the page
+396,PLAQUE DE CELESTRES 5 TROUS DEPONT A DROITE+,,70,12,,price cell empty on the page
+397,RACCORD EN Y,350,70,12,high,
+398,PLAQUE COUDEE PR FRATURE COL ET PERTROCH.130° 12T LA…,35000,70,12,high,designation cut by the price column on the page
+399,PLAQUE COUDEE PR FRACTURE COL ET PERTROCH.130° 12T L…,35000,70,12,high,designation cut by the price column on the page
+400,PLAQUE COUDEE PR FRACTURE COL ET PERTROCH.130°4T LA…,35000,70,12,high,designation cut by the price column on the page
+401,PLAQUE COUDEE PR FRACTURE COL ET PERTROCH.130°6T LA…,35000,70,12,high,designation cut by the price column on the page
+402,PLAQUE COUDEE PR FRACTURE COL ET PERTROCH.130°9T LA…,35000,70,12,high,designation cut by the price column on the page
+403,PLAQUE EN T DE POUR TETE HUMER ET PLAQUE EN T SOUTIE…,13500,70,12,high,designation cut by the price column on the page
+404,PLAQUE EN T SOUTIEN TIBIA GUCHE 5 TROUS DROITS,13500,70,12,high,
+405,PLAQUE ETROITE A TROUS DE GLISSEMENT 5TROUS 87MM,13500,70,12,high,
+406,PLAQUE ETROITE A TROUS DE GLISSEMENT 5TROUS 103MM,13500,70,12,high,
+407,PLAQUE LARGE A TROUS DE GLISSEMENT 7 TROUS 103MM,13500,70,12,high,
+408,PLAQUE LARGE A TROUS DE GLISSEMENT 8TROUS 135MM,13500,70,12,high,
+409,PLAQUE LARGE A TROUS DE GLISSEMENT 9TROUS 135MM,13500,70,12,high,
+410,PLAQUE LARGE A TROUS DE GLISSEMENT 10TROUS 167MM,13500,70,13,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+411,PLAQUE LARGE A TROUS DE GLISSEMENT 11TROUS 186MM,13500,70,13,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+412,PLAQUE LARGE A TROUS DE GLISSEMENT 12TOURS 199MM,13500,70,13,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+413,PLAQUE LARGE A TROUS DE GLISSEMENT 14TROUS 231MM,13500,70,13,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+414,PLAQUE ETROITE A TROUS DE GLISSEMENT 6TROUS 103MM,13500,70,13,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+415,PLAQUE LONGUE A TROUS DE GLISSEMENT 10TROUS 167MM,13500,70,13,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+416,PLAQUE LONGUE A TROUS DE GLISSEMENT 11TROUS 186MM,13500,70,13,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+417,PLAQUE LONGUE A TROUS DE GLISSEMENT 12TROUS 199MM,13500,70,13,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+418,PLAQUE LONGUE A TROUS DE GLISSEMENT 14TROUS 231MM,13500,70,13,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+419,PLAQUE LONGUE A TROUS DE GLISSEMENT 7TROUS 119MM,13500,70,13,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+420,PLAQUE LONGUE A TROUS DE GLISSEMENT 8TROUS 135MM,13500,70,13,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+421,PLAQUE LONGUE A TROUS DE GLISSEMENT 9TROUS 151MM,13500,70,13,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+422,"PLATEAU TIBIA 4,6,8 TROUS LAME 84MM, 116MM, 148MM",13500,70,13,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+423,POCHE A URINE 750ML,,70,13,,"price cell empty on the page; page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+424,POCHE A URINE AVEC VIDANGE 2L,1500,70,13,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+425,POCHE DE COLOSTOMIE 30MM,11600,70,13,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+426,POCHE DE COLOSTOMIE 32MM,11600,70,13,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+427,POCHE DE COLOSTOMIE 44MM,11600,70,13,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+428,POCHE DE COLOSTOMIE 45MM,11600,70,13,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+429,POCHE DE COLOSTOMIE 33MM,11600,70,13,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+430,PROFIL SERTI 3/0,550,70,13,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+431,PROFIL SORTI 4/0,550,70,13,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+432,PROFIL SORTI 5/0,550,70,13,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+433,PROFIL SORTI 6/0,550,70,13,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+434,PROLENE SERTI O (UNITE),7340,70,13,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+435,PROLENE SERTI 2/0(UNITE),10450,70,13,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+436,PROLENE SERTI 3/0(UNITE),10450,70,13,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+437,PROLENE SERTI 4/0(UNITE),10450,70,13,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+438,PROLENE SERTI 5/0(UNITE),10450,70,13,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+439,PROLONGATEUR -,520,70,13,low,"price handwritten in red ink over the printed cell; page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+440,PROTHESE DE MOORE 51MM+,126900,70,13,low,"price handwritten in red ink over the printed cell; page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+441,PROTHESE DE MOORE 49MM+,164850,70,13,low,"price handwritten in red ink over the printed cell; page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+442,"PROTHESE DE MOORE 47,5MM+",126900,70,13,low,"price handwritten in red ink over the printed cell; page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+443,PROTHESE DE MOORE 46MM+,126900,70,13,low,"price handwritten in red ink over the printed cell; page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+444,"PROTHESE DE MOORE 44,5MM+",126900,70,13,low,"price handwritten in red ink over the printed cell; page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+445,PROTHESE DE MOORE 44MM+,126900,70,13,low,"price handwritten in red ink over the printed cell; page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+446,PROTHESE DE MOORE 43MM+,126900,70,13,low,"price handwritten in red ink over the printed cell; page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+447,PROTHESE DE MOORE 41MM+,126900,70,14,low,"price handwritten in red ink over the printed cell; page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+448,PROTHESE DE MOORE 38MM,202260,70,14,low,"price handwritten in red ink over the printed cell; page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+449,PROTHESE FEMORAL 310MM+,,70,14,,"price cell empty on the page; page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+450,PROTHESE FEMORAL 320MM+,,70,14,,"price cell empty on the page; page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+451,PROTHESE FEMORAL 370MM+,202260,70,14,low,"price handwritten in red ink over the printed cell; page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+452,PROTHESE FEMORAL 410MM+,202250,70,14,low,"price handwritten in red ink over the printed cell; page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+453,PROTHESE FEMORAL 420MM+,202260,70,14,low,"price handwritten in red ink over the printed cell; page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+454,PULPERYL,270,70,14,low,"price handwritten in red ink over the printed cell; page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+455,RX DENTS,,70,14,,"price cell empty on the page; page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+456,REVELATEUR,170,70,14,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+457,ROBINET A 3 VOIES,2050,70,14,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+458,ROCKLES,730,70,14,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+459,ROULEAU DE COTON,100,70,14,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+460,ROULEAU SALIVAIRE,,70,14,,"price cell empty on the page; page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+461,SACHET DE SANG,3500,70,14,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+462,SACHET POUR DENUDATION,1000,70,14,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+463,SAFIL 2/0,3200,70,14,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+464,SAFIL 3/0,3200,70,14,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+465,SAFIL 0,3200,70,14,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+466,SERINGUE A UI 100ML,350,70,14,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+467,SERINGUE A UI 50ML PERFUSOR,2100,70,14,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+468,"SERINGUE A INSULINE 0,3ML",140,70,14,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+469,"SERINGUE A INSULINE 0,5ML",140,70,14,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+470,SERINGUE A INSULINE 1ML,300,70,14,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+471,SERINGUE A U U 20ML,500,70,14,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+472,SERINGUE A U U 2ML,100,70,14,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+473,SERINGUE A U U 5ML,125,70,14,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+474,SERINGUE A U U 10ML,240,70,14,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+475,SOIE SERTI 1 (PIECE),2800,70,14,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+476,SOIE SERTI 2 (PIECE),2800,70,14,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+477,SOIE SERTI 2/0 (PIECE),2800,70,14,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+478,SOIE SERTI 8/0 (PIECE),2800,70,14,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+479,SOIE SERTI O (PIECE),2800,70,14,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+480,SONDE GASTRIQUE TUBAFLEX EN SILICONE N°12-14-16-18,,70,14,,"price cell empty on the page; page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+481,SONDE CANNELEE,2850,70,14,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+482,SONDE D'ASPIRATION CH.10,1660,70,14,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+483,SONDE D'ASPIRATION CH.12,1660,70,14,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+484,SONDE D'ASPIRATION N°8,1660,70,15,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells); line number hidden by the fold of the page: counted from 487"
+485,SONDE D'ASPIRATION N°16,1660,70,15,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells); line number hidden by the fold of the page: counted from 487"
+486,SONDE D'ASPIRATION N°6,1660,70,15,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells); line number hidden by the fold of the page: counted from 487"
+487,SONDE D'ASPIRATION N°18,1660,70,15,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+488,SONDE D'ASPIRATION N°8,1660,70,15,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+489,SONDE DE GAVAGE N°5,1500,70,15,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+490,SONDE DE DUFFOUR SIMPLE COURANT N°18,13530,70,15,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+491,SONDE DE DUFFOUR SIMPLE COURANT N°20,13530,70,15,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+492,SONDE NASO GASTRIQUE CH.6,2290,70,15,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+493,SONDE NASO GASTRIQUE CH.8,2290,70,15,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+494,SONDE NASO GASTRIQUE A USAGE UNIQUE CH.10,2290,70,15,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+495,SONDE NASO GASTRIQUE A USAGE UNIQUE CH.12,2290,70,15,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+496,SONDE NASO GASTRIQUE A USAGE UNIQUE CH.14,2290,70,15,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+497,SONDE NASO GASTRIQUE A USAGE UNIQUE CH.16,2290,70,15,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+498,SONDE NASO GASTRIQUE A USAGE UNIQUE CH.18,2290,70,15,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+499,SONDE NASO GASTRIQUE A USAGE UNIQUE CH.20,2290,70,15,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+500,SONDE NASO GASTRIQUE A USAGE UNIQUE CH.21,2290,70,15,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+501,SONDE SALEM A DOUBLE COURANT CH.10,2290,70,15,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+502,SONDE SALEM A DOUBLE COURANT CH.16,2290,70,15,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+503,SONDE SALEM A DOUBLE COURANT CH.18,2290,70,15,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+504,SONDE SALEM A DOUBLE COURANT CH.20,2290,70,15,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+505,SONDE SALEM A DOUBLE COURANT CH.21,2290,70,15,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+506,SONDE VESICAL A DEMEURE N°8 ( DE FOLEY),2290,70,15,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+507,SONDE VESICAL A DEMEURE N°10 (DE FOLEY),2290,70,15,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+508,SONDE VESICAL A DEMEURE N°12 (DE FOLEY),2290,70,15,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+509,SONDE VESICAL A DEMEURE N°14 (DE FOLEY),2290,70,15,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+510,SONDE VESICAL A DEMEURE N°16 (DE FOLEY),2290,70,15,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+511,SONDE VESICAL A DEMEURE N°18 (DE FOLEY),2290,70,15,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+512,SONDE VESICAL A DEMEURE N°22 (DE FOLEY),2290,70,15,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+513,SONDE VESICAL A DEMEURE N°20 (DE FOLEY),2290,70,15,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+514,SONDE VESICALE SIMPLE CH8 (DE NELATON),1260,70,15,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+515,SONDE VESICALE SIMPLE CH10 (NELATON),1260,70,15,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+516,SONDE VESICALE SIMPLE CH 12 (DE NELATON),1260,70,15,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+517,SONDE VESICALE SIMPLE CH14 (DE NELATON),1260,70,15,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+518,SONDE VESICALE SIMPLE CH18 (DE NELATON),1260,70,15,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+519,SONDE VESICALE SIMPLE CH20 (DE NELATON),1260,70,15,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+520,SONDE VESICALE SIMPLE CH16 (DE NELATON),1260,70,15,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+521,"SONDE D'INTUBATION AVEC BALLON N°6,5",10150,70,16,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+522,SONDE D'INTUBATION AVEC BALLON N°5,10150,70,16,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+523,"SONDE D'INTUBATION AVEC BALLON N°3,5",10150,70,16,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+524,SONDE D'INTUBATION AVEC BALLON N°8,10150,70,16,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+525,"SONDE D'INTUBATION AVEC BALLON N°5,5",10150,70,16,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+526,SONDE D'INTUBATION AVEC BALLON N°6,10150,70,16,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+527,"SONDE D'INTUBATION AVEC BALLON N°7,5",10150,70,16,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+528,"SONDE D'INTUBATION SANS BALLON N°6,5",10150,70,16,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+529,SONDE D'INTUBATION AVEC BALLON N°7,10150,70,16,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+530,SONDE ENDOTRACHEALE A BALLON CH 5,10150,70,16,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+531,"SONDE D'INTUBATION SANS BALLON N°2,5 à 4,5",10150,70,16,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+532,SPARADRAP,"3,4/cm",70,16,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+533,SPATULE A ALGINATE,2220,70,16,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+534,SPATULE CM,2220,70,16,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+535,SPATULE D'AYVES,60,70,16,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+536,TAMPON ALCOOLISE,20,70,16,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+537,TEMPON D'OUATE,5/Tampon,70,16,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+538,TIRE-NERFS N°2,50,70,16,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+539,TIRE-NERFS N°3,50,70,16,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+540,TROUSSE PEDIATRIQUE,500,70,16,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+541,TROUSSE DE PERFUSION,500,70,16,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+542,TROUSSE DE TRANSFUSION,500,70,16,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+543,TUBE A TRACHEOTOMIE,,70,16,,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells); price cell empty on the page"
+544,TUBE DE PRELEVEMENT,500,70,16,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+545,"TUBE CITRATE 3,8%",500,70,16,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+546,TUBE CITRATE HEPARINE,500,70,16,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+547,TUBE CITRATE SEC,500,70,16,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+548,TUBE EDTAK3,500,70,16,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+549,TUBE FLUORURE OXALATE,500,70,16,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+550,VACCINOSTYLE,100,70,16,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+551,VALVE DE HEIMLICH DOUBLE,26000,70,16,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+552,VALVE DE HEIMLICH SIMPLE,26000,70,16,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+553,VASOCONSTRICTEUR,1720,70,16,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+554,VERNIS DENTAIRE,400,70,16,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+555,VICRYL O NS (PIECE),3000,70,16,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+556,VICRYL 1 NS (PIECE),7100,70,16,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+557,VICRYL 2 NS (PIECE),7830,70,16,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+558,VICRYL 2/0 NS (PIECE),8050,70,17,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+559,VICRYL 3/0 NS (PIECE),8050,70,17,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+560,VICRYL 4/0 NS (PIECE),8050,70,17,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+561,VICRYL SERTI 0(PIECE),8500,70,17,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+562,VICRYL SERTI 1(PIECE),8500,70,17,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+563,VICRYL SERTI 2(PIECE),8500,70,17,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+564,VICRYL SERTI 2/0(PIECE),8500,70,17,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+565,VICRYL SERTI 3/0(PIECE),8500,70,17,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+566,VICRYL SERTI 4/0(PIECE),8500,70,17,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+567,"VIS CORT. ø 3,5MM LONG.18MM",3710,70,17,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+568,"VIS CORT. ø 3,5MM LONG.22MM",3710,70,17,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+569,"VIS CORT. ø 3,5MM LONG.26MM",3710,70,17,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+570,"VIS CORT. ø 3,5MM LONG.30MM",3710,70,17,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+571,"VIS CORT. ø 3,5MM LONG.40MM",3710,70,17,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+572,"VIS CORT. ø 3,5MM LONG.46MM",3710,70,17,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+573,"VIS CORT. ø 4,5MM LONG.22MM",3710,70,17,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+574,"VIS CORT. ø 4,5MM LONG.26MM",3710,70,17,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+575,"VIS CORT. ø 4,5MM LONG.32MM",3710,70,17,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+576,"VIS CORT. ø 4,5MM LONG.40MM",3710,70,17,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+577,"VIS CORT. ø 4,5MM LONG.46MM",3710,70,17,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+578,"VIS CORT. ø 4,5MM LONG.50MM",3710,70,17,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+579,"VIS SPONG. ø 3,5MM LONG.16MM",3710,70,17,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+580,"VIS SPONG. ø 3,5MM LONG.22MM",3710,70,17,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+581,"VIS SPONG. ø 3,5MM LONG.30MM",3710,70,17,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+582,"VIS SPONG. ø 3,5MM LONG.45MM",3710,70,17,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+583,VIS SPONG.4MM FIL. CRT.LONG 16MM,3710,70,17,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+584,VIS SPONG.4MM FIL. CRT.LONG 22MM,3710,70,17,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+585,VIS SPONG.4MM FIL. CRT.LONG 28MM,3710,70,17,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+586,VIS SPONG.4MM FIL. CRT.LONG 38MM,3710,70,17,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+587,VIS SPONG.4MM FIL. CRT.LONG 48MM,3710,70,17,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+588,VIS SPONG.4MM FIL. CRT.LONG 16MM,3710,70,17,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+589,VIS SPONG.4MM FIL. CRT.LONG 22MM,3710,70,17,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+590,VIS SPONG.4MM FIL. CRT.LONG 28MM,3710,70,17,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+591,VIS SPONG.4MM FIL. CRT.LONG 36MM,3710,70,17,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+592,VIS SPONG.4MM FIL. CRT.LONG 50MM,3710,70,17,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+593,"VIS A CORTICALE 4,5MM N°14",4875,70,17,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+594,"VIS A CORTICALE 4,5MM N°16",4875,70,17,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+595,"VIS A CORTICALE 4,5MM N°18",4875,70,18,high,line number hidden by the fold of the page: counted from 597
+596,"VIS A CORTICALE 4,5MM N°20",4875,70,18,high,line number hidden by the fold of the page: counted from 597
+597,"VIS A CORTICALE 4,5MM N°22",4875,70,18,high,
+598,"VIS A CORTICALE 4,5MM N°24",4875,70,18,high,
+599,"VIS A CORTICALE 4,5MM N°26",4875,70,18,high,
+600,"VIS A CORTICALE 4,5MM N°28",4875,70,18,high,
+601,"VIS A CORTICALE 4,5MM N°30",4875,70,18,high,
+602,"VIS A CORTICALE 4,5MM N°32",4875,70,18,high,
+603,"VIS A CORTICALE 4,5MM N°34",4875,70,18,high,
+604,"VIS A CORTICALE 4,5MM N°36",4875,70,18,high,
+605,"VIS A CORTICALE 4,5MM N°38",4875,70,18,high,
+606,"VIS A CORTICALE 4,5MM N°40",4875,70,18,high,
+607,"VIS A CORTICALE 4,5MM N°44",4875,70,18,high,
+608,"VIS A CORTICALE D4,5MM N°56",4875,70,18,high,
+609,VIS CORTICALE 48MM,4875,70,18,high,
+610,VIS CORTICALE 52MM,4875,70,18,high,
+611,VIS CORTICALE 46MM,4875,70,18,high,
+612,"VIS CORTICALE D 4,5 50MM",4875,70,18,high,
+613,"VIS CORTICALE D 4,5 56MM",4875,70,18,high,
+614,"VIS CORTICALE D 4,5 60MM",4875,70,18,high,
+615,"VIS CORTICALE D 4,5 64MM",4875,70,18,high,
+616,"VIS CORTICALE D 4,68 , 70MM",4875,70,18,high,
+617,VIS A MALLEOLE 25MM,4875,70,18,high,
+618,VIS A MALLEOLE 30MM,4875,70,18,high,
+619,VIS A MALLEOLE 35MM,4875,70,18,high,
+620,VIS A MALLEOLE 40MM,4875,70,18,high,
+621,VIS A MALLEOLE 50MM,4875,70,18,high,
+622,VIS A MALLEOLE 55MM,4875,70,18,high,
+623,VIS A MALLEOLE 60MM,4875,70,18,high,
+624,VIS A MALLEOLE 65MM,4875,70,18,high,
+625,VIS A MALLEOLE 70MM,4875,70,18,high,
+626,"VIS A SPONGIEUX D6,5FILETAGE COURT 16MM, LONG 30MM",10200,70,18,high,
+627,"VIS A SPONGIEUX D6,5FILETAGE COURT 32MM, LONG 90MM",10200,70,18,high,
+628,"VIS A SPONGIEUX D6,5FILETAGE COURT 16MM, LONG 35MM",10200,70,18,high,
+629,"VIS A SPONGIEUX D6,5FILETAGE COURT 16MM, LONG 40MM",10200,70,18,high,
+630,"VIS A SPONGIEUX D6,5FILETAGE COURT 16MM, LONG 45MM",10200,70,18,high,
+631,"VIS A SPONGIEUX D6,5FILETAGE COURT 16MM, LONG 50MM",10200,70,18,high,
+632,"VIS A SPONGIEUX D6,5FILETAGE COURT 16MM, LONG 55MM",10200,70,19,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+633,"VIS A SPONGIEUX D6,5FILETAGE COURT 16MM, LONG 60MM",10200,70,19,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+634,"VIS A SPONGIEUX D6,5FILETAGE COURT 16MM, LONG 65MM",10200,70,19,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+635,"VIS A SPONGIEUX D6,5FILETAGE COURT 16MM, LONG 70MM",10200,70,19,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+636,"VIS A SPONGIEUX D6,5FILETAGE COURT 16MM, LONG 75MM",10200,70,19,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+637,"VIS A SPONGIEUX D6,5FILETAGE COURT 16MM, LONG 80MM",10200,70,19,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+638,"VIS A SPONGIEUX D6,5FILETAGE COURT 16MM, LONG 85MM",10200,70,19,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+639,"VIS A SPONGIEUX D6,5FILETAGE COURT 16MM, LONG 90MM",10200,70,19,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+640,"VIS A SPONGIEUX D6,5FILETAGE COURT 16MM, LONG 100MM",10200,70,19,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+641,"VIS A SPONGIEUX D6,5FILETAGE COURT 16MM, LONG 105MM",10200,70,19,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+642,"VIS A SPONGIEUX D6,5FILETAGE COURT 16MM, LONG 110MM",10200,70,19,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+643,"VIS A SPONGIEUX D6,5FILETAGE COURT 32MM, LONG 40MM",10200,70,19,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+644,"VIS A SPONGIEUX D6,5FILETAGE COURT 32MM, LONG 45MM",10200,70,19,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+645,"VIS A SPONGIEUX D6,5FILETAGE COURT 32MM, LONG 50MM",10200,70,19,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+646,"VIS A SPONGIEUX D6,5FILETAGE COURT 32MM, LONG 55MM",10200,70,19,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+647,"VIS A SPONGIEUX D6,5FILETAGE COURT 32MM, LONG 60MM",10200,70,19,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+648,"VIS A SPONGIEUX D6,5FILETAGE COURT 32MM, LONG 65MM",10200,70,19,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+649,"VIS A SPONGIEUX D6,5FILETAGE COURT 32MM, LONG 70MM",10200,70,19,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+650,"VIS A SPONGIEUX D6,5FILETAGE COURT 32MM, LONG 80MM",10200,70,19,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+651,"VIS A SPONGIENE D6,5FILETAGE TOTAL LONG 25MM",10200,70,19,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+652,"VIS A SPONGIEUX D6,5 FILETAGE COURT 32MM, LONG 90MM",10200,70,19,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+653,"VIS A SPONGIEUX D6,5 ENT.FIL .LONG 35MM",10200,70,19,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+654,"VIS A SPONGIEUX D6,5 ENT.FIL .LONG 45MM",10200,70,19,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+655,"VIS A SPONGIEUX D6,5 ENT.FIL .LONG 55MM",10200,70,19,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+656,"VIS A SPONGIEUX D6,5 ENT.FIL .LONG 75MM",10200,70,19,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+657,"VIS A SPONGIEUX D6,5 ENT.FIL .LONG 100MM",10200,70,19,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+658,VIS SPONGIEUX FILETAGE L32MM L80MM,10200,70,19,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+659,VIS SPONGIEUX L32MM L70MM,10200,70,19,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+660,VIS SPONGIEUX FILETAGE L32MM L90MM,10200,70,19,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+661,VIS SPONGIEUX FILETAGE TOTAL 30MM,10200,70,19,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+662,VIS SPONGIEUX FILETAGE TOTAL 40MM,10200,70,19,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+663,"VIS SPONGIEUX D6,5 COURT LONG 50MM",10200,70,19,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+664,"VIS SPONGIEUX D6,5 FILETAGE COURT",10200,70,19,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+665,"VIS SPONGIEUX D6,5 FILETAGE COURT",10200,70,19,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+666,VIS PHILIPS,10200,70,19,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+667,VIS SHERMAN,10200,70,19,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"
+668,VIS SPONGIEUX,10200,70,19,high,"page scanned at a slant: price taken by following the ruled row (37 rows, 37 cells)"

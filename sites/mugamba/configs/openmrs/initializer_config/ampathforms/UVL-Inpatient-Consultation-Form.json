@@ -1360,10 +1360,11 @@
               }
             },
             {
-              "label": "Provider:",
+              "label": "Provider",
               "type": "encounterProvider",
               "required": "false",
               "questionOptions": {
+                "isSearchable": "true",
                 "rendering": "ui-select-extended"
               },
               "id": "encProvider "

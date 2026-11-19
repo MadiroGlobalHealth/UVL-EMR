@@ -1288,8 +1288,8 @@
               "validators": [
                 {
                   "type": "js_expression",
-                  "warnsWhenExpression": "!isEmpty(myValue) && myValue >= 120",
-                  "message": "Systolique au-dessus de la normale (< 120 mmHg) / Systolic above the normal range (< 120 mmHg)"
+                  "warnsWhenExpression": "!isEmpty(myValue) && myValue >= 140",
+                  "message": "Systolique au-dessus de la normale (< 140 mmHg) / Systolic above the normal range (< 140 mmHg)"
                 }
               ]
             },
@@ -1307,8 +1307,8 @@
               "validators": [
                 {
                   "type": "js_expression",
-                  "warnsWhenExpression": "!isEmpty(myValue) && myValue >= 80",
-                  "message": "Diastolique au-dessus de la normale (< 80 mmHg) / Diastolic above the normal range (< 80 mmHg)"
+                  "warnsWhenExpression": "!isEmpty(myValue) && myValue >= 90",
+                  "message": "Diastolique au-dessus de la normale (< 90 mmHg) / Diastolic above the normal range (< 90 mmHg)"
                 }
               ]
             },
@@ -1357,6 +1357,7 @@
               "id": "encProvider",
               "required": true,
               "questionOptions": {
+                "isSearchable": "true",
                 "rendering": "ui-select-extended"
               }
             }

@@ -20,6 +20,7 @@
               "label": "Attending physician",
               "type": "obs",
               "id": "attendingPhysician",
+              "required": true,
               "questionOptions": {
                 "rendering": "text",
                 "concept": "caa77817-7440-4cef-8d94-555733f23a5a"
@@ -45,6 +46,9 @@
                     "concept": "da640d8a-8703-4bd7-aceb-2e91a6c1d806"
                   }
                 ]
+              },
+              "hide": {
+                "hideWhenExpression": "sex === 'M'"
               }
             },
             {
@@ -68,7 +72,7 @@
                 ]
               },
               "hide": {
-                "hideWhenExpression": "womanStatus !== 'da446701-d7dd-4d93-89f6-8fe338d48f62'"
+                "hideWhenExpression": "sex === 'M' || womanStatus !== 'da446701-d7dd-4d93-89f6-8fe338d48f62'"
               }
             },
             {
@@ -82,7 +86,7 @@
                 "disallowDecimals": true
               },
               "hide": {
-                "hideWhenExpression": "womanStatus !== 'da446701-d7dd-4d93-89f6-8fe338d48f62'"
+                "hideWhenExpression": "sex === 'M' || womanStatus !== 'da446701-d7dd-4d93-89f6-8fe338d48f62'"
               }
             },
             {
@@ -98,6 +102,10 @@
                   },
                   {
                     "concept": "5c8d6240-9cc2-4bc1-b783-30eb887f950c"
+                  },
+                  {
+                    "concept": "c9be680f-4d74-4098-8682-9cb4416429f7",
+                    "label": "Inconnu"
                   }
                 ]
               }
@@ -205,6 +213,7 @@
               "label": "Consultation Conducted By",
               "type": "obs",
               "id": "consultationConductedBy",
+              "required": true,
               "questionOptions": {
                 "rendering": "radio",
                 "concept": "12ab2425-f04a-466f-adbd-8aa8b1eb99c0",
@@ -243,6 +252,7 @@
               "label": "Reason for Consultation",
               "type": "obs",
               "id": "reasonConsultation",
+              "required": true,
               "questionOptions": {
                 "rendering": "textarea",
                 "concept": "c8523ef7-c18e-46fe-a760-c243fd3a3bd2"
@@ -284,6 +294,7 @@
               "label": "Alcohol Consumption",
               "type": "obs",
               "id": "alcoholConsumption",
+              "required": true,
               "questionOptions": {
                 "rendering": "radio",
                 "concept": "86b0bf2e-4445-4f3f-aae9-dde28a9b0822",
@@ -301,6 +312,7 @@
               "label": "Tobacco Use",
               "type": "obs",
               "id": "tobaccoUse",
+              "required": true,
               "questionOptions": {
                 "rendering": "radio",
                 "concept": "cdc82ddc-1413-4ec1-b891-b0155f8cc7fa",
@@ -1784,6 +1796,18 @@
               "label": "Confirmed Diagnosis",
               "type": "diagnosis",
               "id": "confirmedDiagnosis",
+              "required": {
+                "type": "conditionalRequired",
+                "referenceQuestionId": "confirmedDiagnosis",
+                "referenceQuestionAnswers": ["", null]
+              },
+              "validators": [
+                {
+                  "type": "js_expression",
+                  "failsWhenExpression": "isEmpty(confirmedDiagnosis) && isEmpty(myValue)",
+                  "message": "Champ obligatoire / Field is mandatory"
+                }
+              ],
               "questionOptions": {
                 "rendering": "repeating",
                 "dataSource": "diagnoses",
@@ -1796,16 +1820,6 @@
               }
             },
             {
-              "label": "New Prescription",
-              "type": null,
-              "id": "newPrescription",
-              "questionOptions": {
-                "rendering": "workspace-launcher",
-                "buttonLabel": "Order Prescription",
-                "workspaceName": "order-basket"
-              }
-            },
-            {
               "label": "Treatment / Medications",
               "type": "obs",
               "id": "treatmentPlan",
@@ -1815,10 +1829,11 @@
               }
             },
             {
-              "label": "Provider:",
+              "label": "Provider",
               "type": "encounterProvider",
               "id": "encProvider",
               "questionOptions": {
+                "isSearchable": "true",
                 "rendering": "ui-select-extended"
               }
             }
@@ -1831,6 +1846,7 @@
               "label": "Outcome",
               "type": "obs",
               "id": "outcome",
+              "required": true,
               "questionOptions": {
                 "rendering": "radio",
                 "concept": "b501a1ac-f2ea-4e79-ace4-658c1af45bd2",
