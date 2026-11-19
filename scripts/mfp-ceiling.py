@@ -292,7 +292,8 @@ def refresh(book, matching, lab=None):
                 row['other_source'] += ', printed « %s »' % other['mfp_printed']
         agreed = rates.get(row['product_id'], DEFAULT_PERCENTAGE)
         if agreed == '0':
-            # Gloves and vital signs: MFP pays nothing, so there is no ceiling to apply.
+            # Gloves, vital signs, the ophthalmology consultation: MFP pays nothing, so there is no
+            # ceiling to apply.
             row['decision'] = 'not covered by MFP (0%)'
             continue
         row['decision'] = decide(row, agreed)
@@ -553,17 +554,6 @@ OPEN_LAST = [
      'question': 'Nous avons chargé 10 000 BIF (l’acte seul). Le plafond de ces deux produits doit-il être '
                  '12 500 BIF (10 000 + 25 % d’anesthésie) ? (a) oui, 12 500 · (b) non, 10 000',
      'suggested answer': '(a)'},
-    {'group': 'open point', 'UVL product': 'Consultation ophtalmologique',
-     'source A line + value': 'Votre réponse F30/G10 : technicien ophtalmologue, non pris en charge par MFP',
-     'source B line + value': 'Aujourd’hui : MFP paie 80 % du prix UVL (3 000 BIF), sans plafond',
-     'question': 'MFP doit-il payer 0 % de la consultation ophtalmologique (le patient MFP paie tout) ? '
-                 '(a) oui, 0 % · (b) non, garder 80 %', 'suggested answer': '(a)'},
-    {'group': 'open point', 'UVL product': 'Soins locaux',
-     'source A line + value': 'Actes médicaux · 1.7 · Pansement simple : K 2 = 2 000 BIF',
-     'source B line + value': 'Actes médicaux · 1.8 · Pansement complexe ou multiple : K 3 = 3 000 BIF',
-     'question': 'Vous demandez deux actes à la place de « Soins locaux ». Ils sont à créer (concepts, produits, '
-                 'prix par Finance), puis « Soins locaux » est retiré. Confirmez les noms : « Pansement simple » '
-                 'et « Pansement complexe ou multiple » ?', 'suggested answer': 'oui'},
     {'group': 'open point', 'UVL product': 'Compresses stériles 10cm x 10cm',
      'source A line + value': 'Dispositifs médicaux MFP · 189 · COMPRESSE SIMPLE : 185 BIF, 80 %',
      'source B line + value': 'Vos réponses F11 « non » et G7 « considérer compresse simple dans UVL aussi »',
