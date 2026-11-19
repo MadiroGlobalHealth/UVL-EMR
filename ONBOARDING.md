@@ -118,7 +118,7 @@ good map of where help is needed.
 **This is a live clinical system holding real patient records.** Never put patient data in an
 issue, a pull request, a screenshot or a test fixture; use your local test patients. Access to
 the shared test environment is given separately, once a dataset without real patient data is in
-place (#263).
+place (#263); [who may have it, and on what basis](scripts/uat-dataset/README.md#who-may-have-uat-access-and-on-what-basis).
 
 ## Getting help
 
