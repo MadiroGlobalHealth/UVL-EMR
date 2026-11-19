@@ -40,6 +40,14 @@ Since 18 Nov 2026 there are two more inputs:
     plain « oui » or « non » fills the confirmed column; any other answer is printed and left
     for the confirmed column to be set by hand. A confirmed match and reading is loaded.
 
+Since 19 Nov 2026 the device list is complete: the product owner sent a legible scan of all of
+it (« Tarifs des dispositifs médicaux remboursables par la mutuelle, à partir du 1er juin 2011 »,
+N° 1 to 668, kept off the repository), transcribed by hand into sites/mugamba/requirements/
+mfp-device-list-20261119.csv (no, name, price, rate, page, reading, note). A line is referenced
+as « N:95 » (its N°); a « low » reading is treated like a yellow cell. The workbook's lines
+(« D:… », N° 1 to 72 and 151 to 520) were read again on this scan: when the two readings of a
+line give different prices or rates, neither is loaded.
+
   python3 scripts/mfp-ceiling.py '/path/TARIFS DES ACTES ET CONSOMMABLES MFP.xlsx' \
       [--answers answers.json --questions to-confirm.csv tab-g-questions.csv] \
       [--confirm /path/to-confirm.csv] [--open-questions /path/to-confirm-part3.csv]
@@ -61,6 +69,7 @@ SITE = os.path.join(ROOT, 'sites', 'mugamba')
 ODOO = os.path.join(SITE, 'configs', 'odoo', 'initializer_config')
 MATCHING = os.path.join(SITE, 'requirements', 'mfp-acts-devices-matching-issue184.csv')
 LAB_LIST = os.path.join(SITE, 'requirements', 'mfp-lab-list-20261118.csv')
+DEVICE_LIST = os.path.join(SITE, 'requirements', 'mfp-device-list-20261119.csv')
 ACTS_OUT = os.path.join(ODOO, 'insurance_coverage', 'mfp-acts-ceiling-issue184.csv')
 MFP_RATES = os.path.join(ODOO, 'insurance_coverage', 'mfp-issue184.csv')
 # The site's products only: sites/mugamba/pom.xml leaves the distro's product_variant out.
@@ -183,11 +192,46 @@ def lab_line(lab, codes):
             'source': 'p. ' + ', '.join(sorted({r['page'] for r in rows}))}
 
 
-def mfp_line(book, ref, letters, lab=None):
-    """The MFP line a reference such as 'A:14' or 'L:6.16' points at, with its BIF price."""
+def read_device_list(path=DEVICE_LIST):
+    """{N°: row} of the device list as transcribed from the complete scan of 19 Nov 2026."""
+    lines = {}
+    for r in read_csv(path):
+        if r['no'] in lines:
+            sys.exit('%s: N° %s appears twice' % (path, r['no']))
+        lines[r['no']] = r
+    return lines
+
+
+def device_line(devices, no):
+    """A line of the complete device list; « 3,4/cm » or « 5/Tampon » is printed, but is not a price."""
+    try:
+        r = devices[no]
+    except KeyError:
+        sys.exit('%s: no line %s in the device list' % (MATCHING, no))
+    return {'mfp_sheet': DEVICES, 'mfp_no': no, 'mfp_line': r['name'], 'mfp_printed': r['price'],
+            'mfp_price': r['price'] if r['price'].isdigit() else '', 'mfp_taux': r['rate'],
+            'yellow': '' if r['reading'] == 'high' else 'value',
+            'source': 'p. %s (scan of 19 Nov 2026)' % r['page']}
+
+
+def reread(devices, line):
+    """The same N° on the scan of 19 Nov 2026, when it gives another price or rate than the workbook."""
+    again = (devices or {}).get(line['mfp_no'])
+    if line['mfp_sheet'] != DEVICES or not again or not again['price'].isdigit():
+        return None  # no such line, or nothing there to compare with (an empty cell, « 7/ml »)
+    again = device_line(devices, line['mfp_no'])
+    if (again['mfp_price'], again['mfp_taux']) == (line['mfp_price'], line['mfp_taux']):
+        return None
+    return again
+
+
+def mfp_line(book, ref, letters, lab=None, devices=None):
+    """The MFP line a reference such as 'A:14', 'L:6.16' or 'N:95' points at, with its BIF price."""
     key, row = ref.split(':')
     if key == 'L':
         return lab_line(lab or {}, row)
+    if key == 'N':
+        return device_line(devices or {}, row)
     sheet = SHEETS[key]
     cells = book[sheet][int(row)]
     get = lambda col: cells.get(col, ('', False))
@@ -269,7 +313,7 @@ def products():
     return found
 
 
-def refresh(book, matching, lab=None):
+def refresh(book, matching, lab=None, devices=None):
     letters = letter_values(book)
     known = products()
     rates = {r['product_id/id']: r['coverage_percentage'] for r in read_csv(MFP_RATES)}
@@ -282,9 +326,14 @@ def refresh(book, matching, lab=None):
         for col in FILLED:
             row[col] = ''
         if row['mfp_ref']:
-            row.update(mfp_line(book, row['mfp_ref'], letters, lab))
+            row.update(mfp_line(book, row['mfp_ref'], letters, lab, devices))
+        again = reread(devices, row) if row['mfp_ref'].startswith('D:') and not row['other_ref'] else None
+        if again:
+            row['other_line'] = '%s · %s · %s' % (again['mfp_sheet'], again['mfp_no'], again['mfp_line'])
+            row['other_price'] = again['mfp_price']
+            row['other_source'] = '%s, %s%%' % (again['source'], again['mfp_taux'])
         if row['other_ref']:
-            other = mfp_line(book, row['other_ref'], letters, lab)
+            other = mfp_line(book, row['other_ref'], letters, lab, devices)
             row['other_line'] = '%s · %s · %s' % (other['mfp_sheet'], other['mfp_no'], other['mfp_line'])
             row['other_price'] = other['mfp_price']
             row['other_source'] = other['source'] + (', uncertain reading' if other['yellow'] else '')
@@ -297,6 +346,8 @@ def refresh(book, matching, lab=None):
             row['decision'] = 'not covered by MFP (0%)'
             continue
         row['decision'] = decide(row, agreed)
+        if again and row['decision'] == 'load':
+            row['decision'] = 'two sources disagree'
         # MFP's device list gives its own rate for bandages and compresses (80%); the product
         # owner's answer of 18 Nov 2026 is to follow the list, with or without a ceiling.
         own_rate = row['mfp_taux'] == MFP_OWN_RATE and sure(row) and row['mfp_sheet'] == DEVICES
@@ -339,7 +390,8 @@ def write_coverage(matching):
 GROUPS = ['uncertain match', 'yellow value', 'two sources disagree', 'value to confirm', 'no unit price',
           'rate to confirm', 'no MFP line', 'missing page', 'general rule']
 ANSWERED = ('load', 'not covered by MFP (0%)', 'not this line (product owner)')
-HAND_QUESTION = ('uncertain match', 'yellow value')  # what the hand-written questions were written for
+# what the hand-written questions were written for
+HAND_QUESTION = ('uncertain match', 'yellow value', 'value to confirm', 'no MFP line')
 BILLED = {'high': 0, 'medium': 1, 'low': 2, '': 3}
 
 
@@ -370,7 +422,8 @@ def default_question(row):
         return ('La liste MFP donne %s %% pour « %s » ; nous appliquons un autre taux à « %s ». Quel taux ?'
                 % (row['mfp_taux'], line, p), '')
     if row['kind'] == 'consumable':
-        return 'Quel est le prix MFP de « %s » (absent des pages scannées) ?' % p, ''
+        return ('La liste MFP des dispositifs (N° 1 à 668) n’a pas de ligne pour « %s » : MFP le rembourse-t-il, '
+                'et à quel prix ?' % p), ''
     return 'MFP rembourse-t-il « %s » et à quel prix (aucune ligne dans la nomenclature) ?' % p, ''
 
 
@@ -380,8 +433,6 @@ def confirm_rows(matching):
         if row['decision'] in ANSWERED:
             continue
         group = row['decision']
-        if group == 'no MFP line' and row['kind'] == 'consumable':
-            group = 'missing page'
         question, answer = default_question(row)
         if row['question'] and row['decision'] in HAND_QUESTION:
             question, answer = row['question'], row['suggested_answer']
@@ -402,7 +453,7 @@ GENERAL = [
      'mfp_no': '73–150 ; après 520', 'source': 'pages imprimées 3–4 et 15–17',
      'question': 'Pouvez-vous envoyer les pages 3–4 (N° 73 à 150) et 15–17 (après le N° 520) de la liste MFP des '
                  'dispositifs ? Cathéters, gants, sparadrap, tubes et tulle gras y sont.',
-     'suggested_answer': 'oui'},
+     'suggested_answer': 'oui', 'answer': 'received on 19 Nov 2026: the whole list, N° 1 to 668 (DEVICE_LIST)'},
     {'group': 'general rule', 'billed': 'high', 'product': '(liste des dispositifs)', 'mfp_sheet': DEVICES,
      'source': 'p. 1', 'question': 'Les prix « PRIX 2011 » de la liste des dispositifs sont-ils toujours ceux que '
                                    'MFP applique en 2026 ?', 'suggested_answer': 'oui',
@@ -631,7 +682,7 @@ def main(argv=None):
         with io.open(args.answers, encoding='utf-8') as f:
             answers = json.load(f)
         apply_answers(matching, answers, read_csv(args.questions[0]), read_csv(args.questions[1]))
-    matching = refresh(book, matching, read_lab_list())
+    matching = refresh(book, matching, read_lab_list(), read_device_list())
     write_csv(MATCHING, HAND + FILLED, matching)
     loaded, acts = write_coverage(matching)
     print('%d products loaded (%d in %s, %d in %s)' % (loaded, acts, os.path.basename(ACTS_OUT), loaded - acts,

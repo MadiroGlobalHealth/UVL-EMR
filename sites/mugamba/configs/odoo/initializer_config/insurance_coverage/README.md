@@ -98,7 +98,7 @@ Same rule as for medicines: MFP pays its percentage of at most its own price; th
   answer of 18 Nov 2026 is to follow the list: a product matched with certainty to a line at
   80% is paid at 80%, with the ceiling when it is known and without it otherwise (« Ruban
   adhésif » is a « BANDE ADHESIVE », 6 or 8 cm: the rate is set, the ceiling waits for the
-  width). A bandage or compress with no line in the pages received stays at 70%.
+  width). A bandage or compress with no line in the list stays at 70%.
 - **Laboratory tests:** MFP's « Examens de laboratoire remboursables par la mutuelle »
   (PRIX 2011, 80% on every line), six photographed pages received on 18 Nov 2026 and
   transcribed by hand in `sites/mugamba/requirements/mfp-lab-list-20261118.csv` (code, name,
@@ -168,6 +168,39 @@ invoice, and our anaesthesia products (ANE401 to ANE499) are the same whatever t
 `covered_base_amount` is one fixed price per product, so the rule cannot be written here. Until
 it can, MFP pays 80% of the clinic price of the anaesthesia.
 
+### The complete device list (19 Nov 2026)
+
+The first scan of the device list lacked N° 73 to 150 and everything after 520. On 19 Nov 2026
+the product owner sent a legible scan of all of it, « Tarifs des dispositifs médicaux
+remboursables par la mutuelle, à partir du 1er juin 2011 » (18 pages of lines, N° 1 to 668; the
+page itself jumps from 103 to 108). It is transcribed by hand in
+`sites/mugamba/requirements/mfp-device-list-20261119.csv` (no, name, price, rate, page, reading,
+note); the scan stays off the repository. `reading` is `low` for a cell read with any doubt
+(a digit, a price written by hand over the printed one, the cut foot of a page): such a line is
+never loaded. A line of it is referenced as « N:95 » in the matching file's `mfp_ref`.
+
+- **Read again:** every line the workbook already had (N° 1 to 72 and 151 to 520) gives the same
+  price and the same rate on the new scan, wherever both show a price. No ceiling or rate loaded
+  before changes. `scripts/mfp-ceiling.py` keeps comparing: a workbook line (« D:… ») whose N° has
+  another price or rate in the new list is not loaded (« two sources disagree »).
+- **Rates:** the list's own rate is 80% on the bandages (N° 37 to 64), « COMPRESSE SIMPLE »,
+  « COMPOSITE AUTOPOLYMERISANT », the two alcohols, « INJECTIONS INTRA-TUBULURE », « INCISION
+  D'ABCES CHAUD » and the permanganate; 70% on every other line.
+- **Loaded from it (7 consumables, at 70%):** « Cathéter G18 », « G22 » and « G24 » (2,230 each),
+  « Tube à EDTA » and « Tube sec » (500: every collection tube of the list is 500), « Tube
+  d'intubation » (10,150: every intubation tube of the list), « Jeu de perfusion » (« TROUSSE DE
+  PERFUSION », 500).
+- **Not loaded, asked:** a product that could be several lines. « Ruban adhésif » (« BANDE
+  ADHESIVE » 6 cm 2,030 or 8 cm 2,740; the list also has « SPARADRAP » at 3,4 per cm,
+  « LEUCOPLASTE » and « ELASTOPLASTE »), « Cathéter Pédiatrique », the Pogal sutures N° 1 and 2
+  (Etylon as for 2/0 and 3/0, or Vicryl), « Pansement Ombilical », « Compresses Abdominales »,
+  « Coton hydrophile 500g », « Tampon d'ouate » (MFP prices one tampon, « 5/Tampon »), and the two
+  suture products that name no thread and no size.
+- **No line at all** in the complete list: « Tulle Gras », « Gel Echographique », « Seringue
+  bilatérale », « Rouleau de gaze 90 cm x 91 m », the packaging sachets, and the gloves (which
+  MFP does not cover anyway). They keep 70% of the clinic price. The list adds no line for any
+  act that had none.
+
 ### Two MFP sources for one laboratory test
 
 The nomenclature prices a laboratory test as a coefficient B × 300 BIF; MFP's laboratory list
@@ -192,7 +225,7 @@ bottle or a piece sold whole is that price times a content nobody has confirmed.
 
 To change a match, edit the product's row of the matching file (`mfp_ref`, `other_ref`,
 `confidence`, `confirmed`) and run `python3 scripts/mfp-ceiling.py '<workbook>.xlsx'`: it
-rewrites the matching file's values from the workbook and the laboratory list,
+rewrites the matching file's values from the workbook, the laboratory list and the device list,
 `mfp-acts-ceiling-issue184.csv` (acts, radiology, laboratory tests), and the consumables'
 rows of `mfp-issue184.csv`. The build (`scripts/check-insurance-coverage.groovy`) fails if the
 coverage files and the matching file disagree, or if a coverage file has a row Odoo would

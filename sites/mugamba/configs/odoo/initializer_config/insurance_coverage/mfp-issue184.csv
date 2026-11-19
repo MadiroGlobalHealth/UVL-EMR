@@ -18,9 +18,9 @@ init.coverage_mfp_08da2277-5bc8-497b-8b09-b5cf31f19153,init.insurance_plan_mfp,i
 init.coverage_mfp_f74820f2-ed9d-461f-8f68-9cf173637121,init.insurance_plan_mfp,init.f74820f2-ed9d-461f-8f68-9cf173637121,80,amount,1360
 init.coverage_mfp_fc31500c-117d-4d85-bad3-b7e2214ecb3b,init.insurance_plan_mfp,init.fc31500c-117d-4d85-bad3-b7e2214ecb3b,80,amount,1480
 init.coverage_mfp_997b1d6c-8fac-4d10-b190-1fd81da07ef4,init.insurance_plan_mfp,init.997b1d6c-8fac-4d10-b190-1fd81da07ef4,70,amount,200
-init.coverage_mfp_ca317da9-d60c-4c99-84be-ce8bf9c9e4a0,init.insurance_plan_mfp,init.ca317da9-d60c-4c99-84be-ce8bf9c9e4a0,70,full,
-init.coverage_mfp_b73dae17-d783-4405-aaf9-386d115b4bee,init.insurance_plan_mfp,init.b73dae17-d783-4405-aaf9-386d115b4bee,70,full,
-init.coverage_mfp_5cbd3265-647a-405d-b604-3f01abac28ae,init.insurance_plan_mfp,init.5cbd3265-647a-405d-b604-3f01abac28ae,70,full,
+init.coverage_mfp_ca317da9-d60c-4c99-84be-ce8bf9c9e4a0,init.insurance_plan_mfp,init.ca317da9-d60c-4c99-84be-ce8bf9c9e4a0,70,amount,2230
+init.coverage_mfp_b73dae17-d783-4405-aaf9-386d115b4bee,init.insurance_plan_mfp,init.b73dae17-d783-4405-aaf9-386d115b4bee,70,amount,2230
+init.coverage_mfp_5cbd3265-647a-405d-b604-3f01abac28ae,init.insurance_plan_mfp,init.5cbd3265-647a-405d-b604-3f01abac28ae,70,amount,2230
 init.coverage_mfp_5d8aca5a-b9ad-4a24-86a3-c232aa6c74c1,init.insurance_plan_mfp,init.5d8aca5a-b9ad-4a24-86a3-c232aa6c74c1,70,full,
 init.coverage_mfp_dd3959bc-7671-4e15-a2b5-ed12ecbc154b,init.insurance_plan_mfp,init.dd3959bc-7671-4e15-a2b5-ed12ecbc154b,70,full,
 init.coverage_mfp_c28f96f7-2ea1-4602-9b4d-06f5bd60cbc3,init.insurance_plan_mfp,init.c28f96f7-2ea1-4602-9b4d-06f5bd60cbc3,70,full,
@@ -31,7 +31,7 @@ init.coverage_mfp_772bc40b-14b0-4f75-9a04-888195513815,init.insurance_plan_mfp,i
 init.coverage_mfp_6b561480-3352-46c8-a54c-4d0c5999aef6,init.insurance_plan_mfp,init.6b561480-3352-46c8-a54c-4d0c5999aef6,70,amount,500
 init.coverage_mfp_6078c8fa-2fa7-473d-9c7f-49ea69bd01ce,init.insurance_plan_mfp,init.6078c8fa-2fa7-473d-9c7f-49ea69bd01ce,70,amount,500
 init.coverage_mfp_2913f1b6-5a2a-5a82-910d-0153738bae7d,init.insurance_plan_mfp,init.2913f1b6-5a2a-5a82-910d-0153738bae7d,70,full,
-init.coverage_mfp_4dd363d1-b503-4ce3-ad9b-d5dc0710236e,init.insurance_plan_mfp,init.4dd363d1-b503-4ce3-ad9b-d5dc0710236e,70,full,
+init.coverage_mfp_4dd363d1-b503-4ce3-ad9b-d5dc0710236e,init.insurance_plan_mfp,init.4dd363d1-b503-4ce3-ad9b-d5dc0710236e,70,amount,500
 init.coverage_mfp_fecb6fee-12a6-42d4-9414-a3e607b53e80,init.insurance_plan_mfp,init.fecb6fee-12a6-42d4-9414-a3e607b53e80,70,full,
 init.coverage_mfp_1584d1a8-4f17-4d3b-9709-6c7c4700c2c6,init.insurance_plan_mfp,init.1584d1a8-4f17-4d3b-9709-6c7c4700c2c6,70,full,
 init.coverage_mfp_c8b1c1f7-ef08-49b4-bef9-e3c90612015d,init.insurance_plan_mfp,init.c8b1c1f7-ef08-49b4-bef9-e3c90612015d,70,full,
@@ -58,7 +58,7 @@ init.coverage_mfp_e8d7c1bb-6972-450b-b988-5763d6bf7aef,init.insurance_plan_mfp,i
 init.coverage_mfp_2a843b45-acfc-461a-857e-bd7f010af8ba,init.insurance_plan_mfp,init.2a843b45-acfc-461a-857e-bd7f010af8ba,70,full,
 init.coverage_mfp_4bb01a22-772b-4553-a0c7-21ba66331f17,init.insurance_plan_mfp,init.4bb01a22-772b-4553-a0c7-21ba66331f17,70,full,
 init.coverage_mfp_df543826-8385-49a6-ac61-25a258f12100,init.insurance_plan_mfp,init.df543826-8385-49a6-ac61-25a258f12100,70,full,
-init.coverage_mfp_079364b7-8669-42a1-b737-7bf5a87c8a20,init.insurance_plan_mfp,init.079364b7-8669-42a1-b737-7bf5a87c8a20,70,full,
-init.coverage_mfp_91aa626d-7a1c-4d95-847e-8a7181c19d0f,init.insurance_plan_mfp,init.91aa626d-7a1c-4d95-847e-8a7181c19d0f,70,full,
-init.coverage_mfp_25fa8b99-f200-4e50-9407-630938a82288,init.insurance_plan_mfp,init.25fa8b99-f200-4e50-9407-630938a82288,70,full,
+init.coverage_mfp_079364b7-8669-42a1-b737-7bf5a87c8a20,init.insurance_plan_mfp,init.079364b7-8669-42a1-b737-7bf5a87c8a20,70,amount,10150
+init.coverage_mfp_91aa626d-7a1c-4d95-847e-8a7181c19d0f,init.insurance_plan_mfp,init.91aa626d-7a1c-4d95-847e-8a7181c19d0f,70,amount,500
+init.coverage_mfp_25fa8b99-f200-4e50-9407-630938a82288,init.insurance_plan_mfp,init.25fa8b99-f200-4e50-9407-630938a82288,70,amount,500
 init.coverage_mfp_1bcc87b5-1ae9-426b-b0a4-ad5929c00b02,init.insurance_plan_mfp,init.1bcc87b5-1ae9-426b-b0a4-ad5929c00b02,70,full,
