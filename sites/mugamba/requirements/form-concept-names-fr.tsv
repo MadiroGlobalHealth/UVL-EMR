@@ -974,7 +974,7 @@ concept_uuid	fr_name	sheet_label	note
 8e720b70-f76f-4e20-bf1e-0c545eab9a6e	C53 Tumeur maligne du col de l'uterus		
 8e7b8163-db36-465a-950f-93ec9454261a	I31 Autres maladies du pericarde		
 8ed69c04-13df-465d-947a-2401a0c4b170	L92 Lesions granulomateuses de la peau et du tissu cellulaire sous-cutane		
-8edea3c3-d5de-4772-9d14-abed591bf957	Simple		2 labels in the sheet, most frequent used (tie: closest to the old name)
+8edea3c3-d5de-4772-9d14-abed591bf957	Paludisme simple	Simple	qualified: a Diagnosis concept, so the diagnosis search offers it, and « Simple » alone cannot be understood there; the forms keep their own labels « Simple » and « Accès simple » (#811)
 8ee1cf13-667a-4056-b9f3-08673ea17c31	Q67 Anomalies morphologiques congenitales de la tete de la face du rachis et du thorax		
 8eed93ae-93d4-42f6-a2d9-908e3b936f53	T54 Effet toxique de substances corrosives		
 8f13921a-5e56-4536-b96c-bb0f7c6644f2	N88 Autres affections non inflammatoires du col de l'uterus		
