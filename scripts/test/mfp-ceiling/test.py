@@ -4,7 +4,8 @@ Tests scripts/mfp-ceiling.py (#184) on a small made-up workbook shaped like MFP'
 price is its coefficient times its key letter's value, a yellow cell is never loaded, and
 the lab section's repeated N° do not matter because lines are referenced by row. Since the
 answers of 18 Nov 2026: the laboratory list as a second source, the product owner's answers
-found again from the files that were sent, and MFP's own rate on bandages.
+found again from the files that were sent, MFP's own rate on bandages, and a product MFP does
+not cover (a row at 0%), which never gets a ceiling.
 
   python3 scripts/test/mfp-ceiling/test.py
 """
@@ -256,6 +257,67 @@ class MfpCeilingTest(unittest.TestCase):
                             ('6.17', '2500'), ('2.1.1', '1750'), ('2.3.1', '1200'), ('2.3.2', '1750'),
                             ('4.1.1', '4100'), ('4.2.12', '3000'), ('5.2.4', '4800'), ('6.42', '1500')]:
             self.assertEqual((lab[code]['price'], lab[code]['rate'], lab[code]['reading']), (price, '80', 'high'), code)
+
+    # ---- a product MFP does not cover, and the two dressing acts (answers F12, G8, F30, G10)
+
+    def test_a_product_mfp_does_not_cover_never_gets_a_ceiling(self):
+        products = os.path.join(self.tmp, 'product_variant')
+        os.makedirs(products, exist_ok=True)
+        with io.open(os.path.join(products, 'p.csv'), 'w', encoding='utf-8') as f:
+            f.write('id,name\ninit.tech,Technician consultation\ninit.act,Lumbar puncture\n')
+        rates = os.path.join(self.tmp, 'rates.csv')
+        acts = os.path.join(self.tmp, 'acts.csv')
+        zero = 'init.coverage_mfp_tech,init.insurance_plan_mfp,init.tech,0,full,\n'
+        with io.open(rates, 'w', encoding='utf-8') as f:
+            f.write(','.join(mfp.COVERAGE) + '\n' + zero)
+        saved = mfp.PRODUCT_DIRS, mfp.MFP_RATES, mfp.ACTS_OUT
+        mfp.PRODUCT_DIRS, mfp.MFP_RATES, mfp.ACTS_OUT = [products], rates, acts
+        try:
+            # the technician's consultation names the bed-day line and is even confirmed: 0% still wins
+            matching = mfp.refresh(self.book, [
+                {'product_id': 'init.tech', 'mfp_ref': 'C:4', 'other_ref': '', 'confidence': 'exact',
+                 'confirmed': 'yes', 'answer_ref': 'F1'},
+                {'product_id': 'init.act', 'mfp_ref': 'A:2', 'other_ref': '', 'confidence': 'exact'}])
+            tech, act = matching
+            self.assertEqual((tech['decision'], tech['coverage_percentage']), ('not covered by MFP (0%)', ''))
+            self.assertEqual((act['decision'], act['coverage_percentage'], act['mfp_price']), ('load', '80', '1000'))
+            self.assertEqual(mfp.write_coverage(matching), (1, 1))
+            with io.open(rates, encoding='utf-8') as f:
+                self.assertEqual(f.read().splitlines()[1:], [zero.strip()])  # still 0%, full, no amount
+            self.assertEqual([(r['product_id/id'], r['coverage_percentage'], r['covered_base_mode'],
+                               r['covered_base_amount']) for r in mfp.read_csv(acts)],
+                             [('init.act', '80', 'amount', '1000')])
+        finally:
+            mfp.PRODUCT_DIRS, mfp.MFP_RATES, mfp.ACTS_OUT = saved
+
+    def test_committed_dressing_acts_and_ophthalmology_consultation(self):
+        rows = {r['product']: r for r in mfp.read_csv(mfp.MATCHING)}
+        rates = {r['product_id/id']: r for r in mfp.read_csv(mfp.MFP_RATES)}
+        acts = {r['product_id/id']: r for r in mfp.read_csv(mfp.ACTS_OUT)}
+        # MFP's two dressing acts (nomenclature 1.7 and 1.8) replace « Soins locaux » for MFP
+        for name, no, price in [('Pansement simple', '1.7', '2000'), ('Pansement complexe ou multiple', '1.8', '3000')]:
+            r = rows[name]
+            self.assertEqual((r['mfp_no'], r['mfp_line'], r['mfp_price'], r['decision'], r['coverage_percentage']),
+                             (no, name, price, 'load', '80'))
+            row = acts[r['product_id']]
+            self.assertEqual((row['coverage_percentage'], row['covered_base_mode'], row['covered_base_amount']),
+                             ('80', 'amount', price))
+        # « Soins locaux » stays as it was: the plan's 80% of the clinic price, no row, no ceiling
+        local = rows['Local care']
+        self.assertEqual(local['decision'], 'not this line (product owner)')
+        self.assertNotIn(local['product_id'], rates)
+        self.assertNotIn(local['product_id'], acts)
+        # the ophthalmic technician's consultation: MFP pays nothing
+        oph = rows['Ophthalmologist consultation']
+        self.assertEqual(oph['decision'], 'not covered by MFP (0%)')
+        row = rates[oph['product_id']]
+        self.assertEqual((row['coverage_percentage'], row['covered_base_mode'], row['covered_base_amount']),
+                         ('0', 'full', ''))
+        self.assertNotIn(oph['product_id'], acts)
+        # both were open points of the third part: they are not asked again
+        asked = ' '.join(r['UVL product'] for r in mfp.open_rows(list(rows.values())))
+        self.assertNotIn('Soins locaux', asked)
+        self.assertNotIn('Consultation ophtalmologique', asked)
 
     def test_open_questions_start_with_the_laboratory_rule(self):
         rows = mfp.open_rows(mfp.read_csv(mfp.MATCHING))

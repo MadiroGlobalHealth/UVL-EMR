@@ -44,6 +44,7 @@ init.coverage_mfp_2f9d74fd-9c74-4102-b03b-07abe135b658,init.insurance_plan_mfp,i
 init.coverage_mfp_2fba7ad2-edc1-466d-87ed-656d2758b578,init.insurance_plan_mfp,init.2fba7ad2-edc1-466d-87ed-656d2758b578,80,amount,4000
 init.coverage_mfp_30cdefe7-775b-4302-b165-f2540fa207da,init.insurance_plan_mfp,init.30cdefe7-775b-4302-b165-f2540fa207da,80,amount,20000
 init.coverage_mfp_31ae6684-f2b3-4634-9e86-f4bfd88001a2,init.insurance_plan_mfp,init.31ae6684-f2b3-4634-9e86-f4bfd88001a2,80,amount,1200
+init.coverage_mfp_31fad5e4-32b7-4338-9303-d1f063dcb691,init.insurance_plan_mfp,init.31fad5e4-32b7-4338-9303-d1f063dcb691,80,amount,2000
 init.coverage_mfp_321530c3-545c-45b6-a45e-7da083a8dc7c,init.insurance_plan_mfp,init.321530c3-545c-45b6-a45e-7da083a8dc7c,80,amount,30000
 init.coverage_mfp_3765eebc-1324-4555-99c8-2b9324d5a185,init.insurance_plan_mfp,init.3765eebc-1324-4555-99c8-2b9324d5a185,80,amount,15000
 init.coverage_mfp_3b8d7fcf-ed28-4f91-9205-5fa44fa4e855,init.insurance_plan_mfp,init.3b8d7fcf-ed28-4f91-9205-5fa44fa4e855,80,amount,15000
@@ -133,6 +134,7 @@ init.coverage_mfp_9b941b20-12e0-4b09-ba4b-ceb8a962adb8,init.insurance_plan_mfp,i
 init.coverage_mfp_9d0efd0c-621b-41a5-b94b-6e7d3e27f765,init.insurance_plan_mfp,init.9d0efd0c-621b-41a5-b94b-6e7d3e27f765,80,amount,25000
 init.coverage_mfp_9e5cb1b5-99f4-488e-a541-7c5f16823620,init.insurance_plan_mfp,init.9e5cb1b5-99f4-488e-a541-7c5f16823620,80,amount,4000
 init.coverage_mfp_a60958ec-1dda-4a5c-8ef6-c1648860168c,init.insurance_plan_mfp,init.a60958ec-1dda-4a5c-8ef6-c1648860168c,80,amount,5000
+init.coverage_mfp_a664026f-279e-4b47-98d3-688463ca8772,init.insurance_plan_mfp,init.a664026f-279e-4b47-98d3-688463ca8772,80,amount,3000
 init.coverage_mfp_a68545a2-052a-454f-83a1-278619938641,init.insurance_plan_mfp,init.a68545a2-052a-454f-83a1-278619938641,80,amount,40000
 init.coverage_mfp_a8d698ff-f3d9-4fa8-9ea5-76f0e3be1c4a,init.insurance_plan_mfp,init.a8d698ff-f3d9-4fa8-9ea5-76f0e3be1c4a,80,amount,5000
 init.coverage_mfp_aa7444e6-3919-4326-8f4a-cdbd63066d69,init.insurance_plan_mfp,init.aa7444e6-3919-4326-8f4a-cdbd63066d69,80,amount,10000

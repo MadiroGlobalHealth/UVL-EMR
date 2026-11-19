@@ -1,0 +1,3 @@
+id,name,categ_id/id,type,purchase_ok,sale_ok,invoice_policy
+"init.31fad5e4-32b7-4338-9303-d1f063dcb691","Pansement simple",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.a664026f-279e-4b47-98d3-688463ca8772","Pansement complexe ou multiple",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities

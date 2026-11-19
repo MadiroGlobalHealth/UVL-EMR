@@ -14,7 +14,7 @@ always wins over the default, so a product a plan excludes needs a row at 0%.
 | MFP | 80%, patient 20% | plan default |
 | MFP | medical supplies and consumables 70%, patient 30% | `mfp-issue184.csv`, rows at 70 |
 | MFP | bandages, compresses and the umbilical band 80%, as MFP's device list shows (18 Nov 2026) | `mfp-issue184.csv`, rows at 80 |
-| MFP | non-sterile gloves, sterile gloves, taking vital signs: not covered, the patient pays the clinic price | `mfp-issue184.csv`, rows at 0 |
+| MFP | non-sterile gloves, sterile gloves, taking vital signs, the ophthalmology consultation (done by an ophthalmic technician, 18 Nov 2026): not covered, the patient pays the clinic price | `mfp-issue184.csv`, rows at 0 |
 | MSU category B | 70%, patient 30% | plan « MSU catégorie B (70 %) », Payer answer « MSU 70% » |
 | MSU category C | 60%, patient 40% | plan « MSU catégorie C (60 %) », Payer answer « MSU 60% » |
 | Santé Assuré | 80%, patient 20% | plan default |
@@ -124,7 +124,7 @@ rules) came back answered. Each answer is kept next to its product in the matchi
 - `yes`: the match and the value are the product owner's; the ceiling is loaded.
 - `no`: not this line, and no other; the product keeps its percentage of the clinic price
   (venous access placement, the incubator night, two of the abscess incisions, « Cathéter
-  urinaire », which the clinic does not sell and is to be retired).
+  urinaire », which the clinic does not sell: see below).
 - `yes, value open`: the line is right but the value is not settled (« Ruban adhésif »).
 
 `scripts/mfp-ceiling.py --answers <answers.json> --questions <tab F csv> <tab G csv>` finds
@@ -141,12 +141,26 @@ reading written in `reason`. Read that way on 18 Nov 2026:
   veineuse »; the Pogal sutures 2/0 and 3/0 are capped as « ETYLON SERTI »; the three urinary
   catheters are Foley; circumcision is K 10 for the act alone (the answer adds « + 25 % » for
   the anaesthesia, which is not loaded).
-- « Consultation ophtalmologique » has no MFP ceiling: it is done by an ophthalmic technician,
-  whom MFP does not cover. It still gets the plan's 80%; whether MFP should pay 0% is asked.
-- « Soins locaux » has no ceiling: it is to be replaced by two acts, « Pansement simple »
-  (K 2 = 2,000) and « Pansement complexe ou multiple » (K 3 = 3,000). They need two new
-  procedure concepts in OCL (`uvl-custom`, a release, the export in `openmrs/initializer_config/ocl/`),
-  their rows in `product_variant/`, prices entered by Finance, and the old product retired.
+- « Consultation ophtalmologique » is **not covered by MFP**: it is done by an ophthalmic
+  technician, whom MFP does not cover at present. It has a row at 0% in `mfp-issue184.csv`,
+  like the gloves: the MFP patient pays the clinic price (3,000, unchanged), or PNB for a
+  police officer. The other plans are untouched. When MFP covers the technician, or a
+  specialist does the consultation, remove the row (and delete the coverage line in Odoo).
+- « Soins locaux » is replaced, for MFP, by MFP's own two acts, which are in the catalogue
+  since the fourth part: « Pansement simple » (nomenclature 1.7, K 2 = 2,000) and « Pansement
+  complexe ou multiple » (1.8, K 3 = 3,000), each at 80% of at most that price. They are
+  procedure concepts of OCL `uvl-custom` (7959334 and 7959335, members of « All procedures »,
+  export `openmrs/initializer_config/ocl/UVL_procedures_20261119-184.zip`) with their products in
+  `product_variant/procedures-issue184.csv`. A new product is created at 1 BIF, a placeholder,
+  until Finance enters its price in Odoo. « Soins locaux » therefore stays as it was,
+  orderable, at the plan's 80% without a ceiling: it is to be retired once the two acts have
+  their prices.
+- « Cathéter urinaire » is retired from the catalogue: the clinic's urinary catheters are the
+  three Foley « Sonde urinaire » (N° 14, 16, 18). The drug is retired
+  (`openmrs/initializer_config/drugs/uvl-drugs-issue184-retired.csv`) and its Odoo product
+  archived (`product/uvl-drugs-issue184-archived.csv`), as the duplicates of #478: past
+  documents keep it, it can no longer be prescribed or sold. Its row in `mfp-issue184.csv`
+  (70%, no ceiling) stays, so the file still describes what Odoo holds.
 
 **Anaesthesia is not loaded.** MFP pays the anaesthesia at 25% of the surgical act that
 required it (nomenclature 2.2, confirmed). That is a share of another line of the same
