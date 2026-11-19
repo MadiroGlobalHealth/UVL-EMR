@@ -5,7 +5,8 @@ price is its coefficient times its key letter's value, a yellow cell is never lo
 the lab section's repeated N° do not matter because lines are referenced by row. Since the
 answers of 18 Nov 2026: the laboratory list as a second source, the product owner's answers
 found again from the files that were sent, MFP's own rate on bandages, and a product MFP does
-not cover (a row at 0%), which never gets a ceiling.
+not cover (a row at 0%), which never gets a ceiling. Since 19 Nov 2026: the complete device
+list as a source of its own (« N:95 ») and as a second reading of the workbook's lines.
 
   python3 scripts/test/mfp-ceiling/test.py
 """
@@ -257,6 +258,76 @@ class MfpCeilingTest(unittest.TestCase):
                             ('6.17', '2500'), ('2.1.1', '1750'), ('2.3.1', '1200'), ('2.3.2', '1750'),
                             ('4.1.1', '4100'), ('4.2.12', '3000'), ('5.2.4', '4800'), ('6.42', '1500')]:
             self.assertEqual((lab[code]['price'], lab[code]['rate'], lab[code]['reading']), (price, '80', 'high'), code)
+
+    # ---- the complete device list (scan of 19 Nov 2026)
+
+    def devices(self):
+        path = os.path.join(self.tmp, 'devices.csv')
+        with io.open(path, 'w', encoding='utf-8') as f:
+            f.write('no,name,price,rate,page,reading,note\n'
+                    '2,ABAISSE LANGUE EN BOIS,40,70,2,high,\n'
+                    '95,CATHETER G18,2230,70,4,high,\n'
+                    '85,CATGUT CHROME SERTI O (PIECE),2940,70,4,low,doubt on the first digit\n'
+                    '532,SPARADRAP,"3,4/cm",70,16,high,\n'
+                    '543,TUBE A TRACHEOTOMIE,,70,16,,price cell empty on the page\n')
+        return mfp.read_device_list(path)
+
+    def test_device_list_line_price_rate_and_reading(self):
+        devices = self.devices()
+        line = mfp.mfp_line(self.book, 'N:95', self.letters, devices=devices)
+        self.assertEqual((line['mfp_sheet'], line['mfp_no'], line['mfp_price'], line['mfp_taux'], line['yellow']),
+                         (mfp.DEVICES, '95', '2230', '70', ''))
+        self.assertEqual(line['source'], 'p. 4 (scan of 19 Nov 2026)')
+        self.assertEqual(mfp.decide(dict(line, mfp_ref='N:95', confidence='exact'), '70'), 'load')
+        self.assertEqual(mfp.decide(dict(line, mfp_ref='N:95', confidence='low'), '70'), 'uncertain match')
+        for ref in ('N:85', 'N:532', 'N:543'):  # a doubtful digit, a price per cm, an empty cell
+            unclear = mfp.mfp_line(self.book, ref, self.letters, devices=devices)
+            self.assertEqual(mfp.decide(dict(unclear, mfp_ref=ref, confidence='exact'), '70'), 'yellow value', ref)
+        self.assertEqual(mfp.mfp_line(self.book, 'N:532', self.letters, devices=devices)['mfp_price'], '')
+
+    def test_a_workbook_line_the_new_scan_reads_differently_is_not_loaded(self):
+        devices = self.devices()
+        line = self.line('D:2')  # N° 2: 40 at 70% in the workbook and on the scan
+        self.assertIsNone(mfp.reread(devices, line))
+        self.assertIsNone(mfp.reread(devices, self.line('D:4')))  # N° 70 is not in this small list
+        self.assertIsNone(mfp.reread(devices, self.line('A:2')))  # an act: its N° is not a device's
+        for price, rate in (('45', '70'), ('40', '80')):
+            devices['2'].update(price=price, rate=rate)
+            again = mfp.reread(devices, line)
+            self.assertEqual((again['mfp_price'], again['mfp_taux']), (price, rate))
+        devices['2'].update(price='', rate='80')  # nothing to compare a price with
+        self.assertIsNone(mfp.reread(devices, line))
+
+    def test_committed_device_list(self):
+        rows = mfp.read_csv(mfp.DEVICE_LIST)
+        numbers = [int(r['no']) for r in rows]
+        # N° 1 to 668 in order; the page itself jumps from 103 to 108
+        self.assertEqual(numbers, [n for n in range(1, 669) if not 104 <= n <= 107])
+        self.assertEqual(sorted({int(r['page']) for r in rows}), list(range(2, 20)))
+        for r in rows:
+            self.assertIn(r['rate'], ('70', '80'), r['no'])
+            self.assertEqual(r['reading'] in ('high', 'low'), bool(r['price']), r['no'])
+        devices = mfp.read_device_list()
+        for no, price, rate in [('95', '2230', '70'), ('97', '2230', '70'), ('98', '2230', '70'),
+                                ('37', '2030', '80'), ('38', '2740', '80'), ('189', '185', '80'),
+                                ('541', '500', '70'), ('548', '500', '70'), ('521', '10150', '70')]:
+            self.assertEqual((devices[no]['price'], devices[no]['rate'], devices[no]['reading']),
+                             (price, rate, 'high'), no)
+        # the workbook's readings that are loaded are the scan's: nothing loaded was contradicted
+        matching = mfp.read_csv(mfp.MATCHING)
+        for r in matching:
+            if r['decision'] == 'load' and r['mfp_sheet'] == mfp.DEVICES:
+                again = devices[r['mfp_no']]
+                self.assertEqual((again['price'], again['rate']), (r['mfp_price'], r['mfp_taux']), r['product'])
+        loaded = {r['product']: r for r in matching if r['decision'] == 'load'}
+        for product, price in [('Cathéter G18', '2230'), ('Cathéter G22', '2230'), ('Cathéter G24', '2230'),
+                               ('Tube à EDTA', '500'), ('Tube sec', '500'), ("Tube d'intubation", '10150'),
+                               ('Jeu de perfusion', '500')]:
+            self.assertEqual((loaded[product]['mfp_price'], loaded[product]['coverage_percentage']),
+                             (price, '70'), product)
+        # a product that could be several lines is asked, never loaded
+        for product in ('Ruban adhésif', 'Cathéter Pédiatrique', 'Pogal N° 1', 'Pansement Ombilical'):
+            self.assertNotIn(product, loaded)
 
     # ---- a product MFP does not cover, and the two dressing acts (answers F12, G8, F30, G10)
 
