@@ -4,7 +4,7 @@
   Run from sites/mugamba/pom.xml at prepare-package, against the assembled
   initializer_config, so it sees every layer (distro, country, site).
 
-  Sixteen checks, each for a fault that passes every review of the form JSON and shows only
+  Seventeen checks, each for a fault that passes every review of the form JSON and shows only
   when someone saves or reads the form:
 
   1. A number question that accepts decimals asks a concept that allows them. The form
@@ -107,6 +107,14 @@
      require the first row only, the question is required while it is itself empty
      (`conditionalRequired` on its own id, answers "" and null: the copies read the first row's
      value) and carries a js_expression validator failing on `isEmpty(<its id>) && isEmpty(myValue)`.
+ 17. A fresh install imports every OCL export without an error. When the Initializer checksums are
+     empty (a new server, a restored volume, checksums cleared after a migration) OpenMRS imports
+     every export in ocl/ in name order, and the import logged 136 failed mappings and 4 failed
+     concepts that hid any new fault (#533). Each export, read in that order, must have: a concept
+     id (external_id) on every concept, or the loader makes one from its URL that no server holds;
+     a non-empty name on every concept; no name id that an earlier concept already has; an id on
+     every set member and answer mapping; and a set member or answer that a concept of this or an
+     earlier export defines (or maps SAME-AS to), retired mappings included.
 */
 
 import groovy.io.FileType
@@ -172,9 +180,9 @@ Map<String, String> datatypeOf = [:]       // external_id -> datatype of the new
 Map<String, String> cielConcept = [:]      // 'CIEL:<code>' -> external_id of the concept mapped SAME-AS to it
 Map<String, String> vitalSign = [:]        // external_id -> name of every concept of the vital-signs export
 Map<String, String> englishName = [:]      // external_id -> display name, to tell a newborn's obs group
-// Exports re-exported after #520 must have none. uvl-dx carries 2 from the May 2025 import
-// (retired in OCL); its collection can't be re-exported as is, it would drop 154 concepts (#533).
-Map<String, Integer> knownMappingFaults = ['UVL_dx_v4.zip': 2]
+// Exports re-exported after #520 must have none. UVL_dx_533 is uvl-dx v4 without its 2, and with
+// the six diagnoses of #585 at the version UVL_dx_v4_585 carries (#533).
+Map<String, Integer> knownMappingFaults = [:]
 List<String> mappingFaults = []
 // #585: the codes WHO ICD-10 no longer has are mapped too (diagnosis_icd10_maps_replaced.sql), so
 // every diagnosis must have a row.
@@ -196,6 +204,11 @@ Map<String, List> newestDiagnosis = [:]
 Set<String> diagnosisNameExceptions = ['a61f7a7e-be38-4970-b841-3adc2efdb46c'] as Set
 int mappingsChecked = 0
 int labConceptsChecked = 0
+// Check 17, across the exports in load order: concept URLs imported, 'source:code' they map SAME-AS
+// to, and the concept each name id belongs to.
+Set<String> importedConcepts = [] as Set
+Set<String> sameAsCodes = [] as Set
+Map<String, String> nameIdOwner = [:]
 filesIn(oclDir, '.zip').each { File zip ->
     new ZipFile(zip).withCloseable { ZipFile zf ->
         zf.entries().findAll { it.name.endsWith('.json') }.each { entry ->
@@ -204,6 +217,39 @@ filesIn(oclDir, '.zip').each { File zip ->
                 !isTrue(mapping.retired) && !mapping.to_concept_url && !mapping.to_source_url && !mapping.to_source_name
             }
             mappingsChecked += (export.mappings ?: []).size()
+            export.concepts?.each { concept ->
+                String id = concept.external_id ?: concept.url
+                String fault = !concept.external_id ? 'has no external_id' :
+                        !concept.names?.any { it.name?.toString()?.trim() } ? 'has no name' : null
+                def taken = concept.names?.find { it.external_id && nameIdOwner[it.external_id] && nameIdOwner[it.external_id] != id }
+                if (!fault && taken) {
+                    fault = "has name id ${taken.external_id} ('${taken.name}'), which concept ${nameIdOwner[taken.external_id]} already has"
+                }
+                if (fault) {
+                    mappingFaults << ("${zip.name}: concept ${concept.url} '${concept.display_name}' ${fault}, so a fresh " +
+                            "OCL import fails on it. Fix it in OCL and re-export (#533)")
+                    return
+                }
+                importedConcepts << concept.url?.toString()
+                concept.names?.each { if (it.external_id) nameIdOwner[it.external_id] = id }
+            }
+            (export.mappings ?: []).findAll { !isTrue(it.retired) && it.from_concept_url?.toString() in importedConcepts &&
+                    it.map_type?.toString()?.toUpperCase()?.replaceAll('[\\s_-]', '') == 'SAMEAS' && it.to_source_name }
+                    .each { sameAsCodes << "${it.to_source_name}:${it.to_concept_code}".toString() }
+            (export.mappings ?: []).findAll { it.map_type?.toString()?.toUpperCase() in ['Q-AND-A', 'CONCEPT-SET'] }.each { mapping ->
+                String fault = !mapping.external_id ? 'has no external_id' :
+                        !(mapping.from_concept_url?.toString() in importedConcepts) ? "is from ${mapping.from_concept_url}" :
+                        !(mapping.to_concept_url?.toString() in importedConcepts ||
+                                "${mapping.to_source_name}:${mapping.to_concept_code}".toString() in sameAsCodes) ?
+                                "points to ${mapping.to_concept_url}" : null
+                if (fault?.startsWith('is from') || fault?.startsWith('points to')) {
+                    fault += ', which no export loaded before it defines'
+                }
+                if (fault) {
+                    mappingFaults << ("${zip.name}: ${mapping.map_type} mapping ${mapping.url} ${fault}, so a fresh OCL " +
+                            "import fails on it (retired or not). Fix it in OCL and re-export (#533)")
+                }
+            }
             if (zip.name.startsWith('UVL_labtests_')) {
                 export.concepts?.findAll { !isTrue(it.retired) }?.each { concept ->
                     labConceptsChecked++
