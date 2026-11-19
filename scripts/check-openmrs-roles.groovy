@@ -93,6 +93,11 @@
        DiagnosisService.save, guarded by `Edit Diagnoses`. Until #703 the eye and dental roles
        inherited only Nurse, so the panel never offered them the consultation and their
        consultations never reached the PBF consultations register or Fiche 15.
+     - Nurse and Midwife open and save « UVL 24-Hour Surveillance Form ». As above, the forms
+       panel offers it only with its encounter type's edit privilege (`Edit 24-Hour
+       Surveillance`, with `View 24-Hour Surveillance` to read it back and to see the chart's
+       surveillance card). Until #788 only Midwife and Inpatient Consultant held the pair, so
+       the nurses who fill the form were not offered it (UAT 2026-11-18).
 
  10. Only administrators see System Administration. The site frontend config shows
      `@openmrs/esm-system-admin-app` (the « Administration du système » app menu entry) only
@@ -170,6 +175,7 @@ List<String> saveConsultation = ['Edit Outpatient Consultation', 'View Outpatien
         'Add Encounters', 'Edit Encounters', 'Add Observations', 'Edit Observations', 'Get Diagnoses',
         'Edit Diagnoses', 'Get Patients', 'Get Visits', 'Get Locations', 'Get Encounter Types', 'Get Concepts',
         'Get Providers', 'Get Encounter Roles']
+List<String> saveSurveillance = ['Edit 24-Hour Surveillance', 'View 24-Hour Surveillance', 'Get Forms']
 List<String> clinicalRoles = ['Help Nurse', 'Nurse', 'Midwife', 'Doctor', 'Ophtalmologist', 'Dentist',
         'Anesthesist', 'Lab Technician', 'X-Ray Technician']
 List<String> nonDispensingRoles = ['Central Pharmacist'] + clinicalRoles
@@ -180,8 +186,8 @@ Map<String, List<String>> appMenuUsers = [
 ]
 Map<String, List<String>> requiredOf = [
         'Help Nurse'        : readDrugOrders + readPatientLists + saveVitals,
-        'Nurse'             : readDrugOrders + readPatientLists + saveVitals,
-        'Midwife'           : readDrugOrders + readPatientLists + saveVitals,
+        'Nurse'             : readDrugOrders + readPatientLists + saveVitals + saveSurveillance,
+        'Midwife'           : readDrugOrders + readPatientLists + saveVitals + saveSurveillance,
         'Doctor'            : readDrugOrders + readPatientLists + basketLookups + saveVitals + saveConsultation,
         'Ophtalmologist'    : saveConsultation,
         'Dentist'           : saveConsultation,
