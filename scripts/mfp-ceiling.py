@@ -48,6 +48,17 @@ as « N:95 » (its N°); a « low » reading is treated like a yellow cell. The 
 (« D:… », N° 1 to 72 and 151 to 520) were read again on this scan: when the two readings of a
 line give different prices or rates, neither is loaded.
 
+Since the answers of 19 Nov 2026 (tab G, G72 to G117), read by hand into the matching file:
+
+  - Laboratory tests follow the nomenclature (answer G89, « non, le coefficient », and « consider
+    the prices for 2021 »): where the nomenclature and the laboratory list give different prices,
+    a row confirmed « yes, nomenclature » is loaded at the coefficient's price (mfp_ref). A test
+    only the laboratory list prices keeps that price until the product owner says otherwise.
+  - A product sold as the very unit MFP prices (« 5/Tampon ») is confirmed « yes, per unit »: the
+    ceiling is the printed price of one unit.
+  - A product MFP does not reimburse has its row at 0% in mfp-issue184.csv, set by hand: it is
+    never given a ceiling here.
+
   python3 scripts/mfp-ceiling.py '/path/TARIFS DES ACTES ET CONSOMMABLES MFP.xlsx' \
       [--answers answers.json --questions to-confirm.csv tab-g-questions.csv] \
       [--confirm /path/to-confirm.csv] [--open-questions /path/to-confirm-part3.csv]
@@ -84,6 +95,10 @@ SHEETS = {'A': ACTS, 'C': ORDINANCE, 'D': DEVICES, 'L': LAB}
 LAB_FIRST_ROW = 1545  # « LABORATOIRE DE BIOLOGIE »: its numbering restarts at 1
 LOADABLE = ('exact', 'reviewed')
 MFP_OWN_RATE = '80'  # bandages and compresses in MFP's device list (answer F2, 18 Nov 2026)
+# « confirmed », beyond « yes », « no » and « yes, value open » (answers of 19 Nov 2026)
+NOMENCLATURE = 'yes, nomenclature'  # two sources: the nomenclature's coefficient is the price (G89)
+PER_UNIT = 'yes, per unit'  # sold as the unit MFP prices: « 5/Tampon » is 5 BIF
+READING_CONFIRMED = ('yes', NOMENCLATURE, PER_UNIT)
 
 HAND = ['product_id', 'product', 'kind', 'mfp_ref', 'other_ref', 'confidence', 'reason', 'billed',
         'question', 'suggested_answer', 'answer_ref', 'answer', 'confirmed']
@@ -263,6 +278,12 @@ def mfp_line(book, ref, letters, lab=None, devices=None):
     return line
 
 
+def per_unit(printed):
+    """'5/Tampon' -> '5': the price of one unit; '' for « 3,4/cm » or « 0,5/ml », which are not whole francs."""
+    m = re.match(r'(\d+)/\D', printed)
+    return m.group(1) if m else ''
+
+
 def sure(row):
     """The match is ours (« exact », « reviewed ») or the product owner's (« yes… »)."""
     return row['confidence'] in LOADABLE or row.get('confirmed', '').startswith('yes')
@@ -279,12 +300,12 @@ def decide(row, agreed_rate=DEFAULT_PERCENTAGE):
         return 'uncertain match'
     if confirmed == 'yes, value open':
         return 'value to confirm'
-    if row.get('other_ref') and row.get('other_price') != row['mfp_price']:
+    if row.get('other_ref') and row.get('other_price') != row['mfp_price'] and confirmed != NOMENCLATURE:
         return 'two sources disagree'
     if not row['mfp_price'] or row['mfp_price'] == '0':
         # « 7/ml », « 1000/m »: a confirmed reading that is still not a price per item sold
-        return 'no unit price' if confirmed == 'yes' else 'yellow value'
-    if row['yellow'] and confirmed != 'yes':
+        return 'no unit price' if confirmed in READING_CONFIRMED else 'yellow value'
+    if row['yellow'] and confirmed not in READING_CONFIRMED:
         return 'yellow value'
     if row['mfp_taux'] and row['mfp_taux'] not in (MFP_OWN_RATE, agreed_rate):
         return 'rate to confirm'
@@ -327,6 +348,8 @@ def refresh(book, matching, lab=None, devices=None):
             row[col] = ''
         if row['mfp_ref']:
             row.update(mfp_line(book, row['mfp_ref'], letters, lab, devices))
+            if row['confirmed'] == PER_UNIT and not row['mfp_price']:
+                row['mfp_price'] = per_unit(row['mfp_printed'])
         again = reread(devices, row) if row['mfp_ref'].startswith('D:') and not row['other_ref'] else None
         if again:
             row['other_line'] = '%s · %s · %s' % (again['mfp_sheet'], again['mfp_no'], again['mfp_line'])
@@ -341,8 +364,8 @@ def refresh(book, matching, lab=None, devices=None):
                 row['other_source'] += ', printed « %s »' % other['mfp_printed']
         agreed = rates.get(row['product_id'], DEFAULT_PERCENTAGE)
         if agreed == '0':
-            # Gloves, vital signs, the ophthalmology consultation: MFP pays nothing, so there is no
-            # ceiling to apply.
+            # Gloves, vital signs, the ophthalmology consultation, the consumables MFP does not
+            # reimburse (19 Nov 2026): MFP pays nothing, so there is no ceiling to apply.
             row['decision'] = 'not covered by MFP (0%)'
             continue
         row['decision'] = decide(row, agreed)
@@ -388,10 +411,13 @@ def write_coverage(matching):
 
 
 GROUPS = ['uncertain match', 'yellow value', 'two sources disagree', 'value to confirm', 'no unit price',
-          'rate to confirm', 'no MFP line', 'missing page', 'general rule']
+          'rate to confirm', 'no MFP line', 'missing page', 'general rule', 'open point']
 ANSWERED = ('load', 'not covered by MFP (0%)', 'not this line (product owner)')
-# what the hand-written questions were written for
-HAND_QUESTION = ('uncertain match', 'yellow value', 'value to confirm', 'no MFP line')
+# what the hand-written questions were written for; since 19 Nov 2026 also the follow-up to an
+# answer that did not settle a conflict or a price per ml (the earlier question of such a row is
+# replaced by the follow-up, or emptied)
+HAND_QUESTION = ('uncertain match', 'yellow value', 'value to confirm', 'no MFP line', 'two sources disagree',
+                 'no unit price')
 BILLED = {'high': 0, 'medium': 1, 'low': 2, '': 3}
 
 
@@ -440,9 +466,29 @@ def confirm_rows(matching):
                     'mfp_sheet': row['mfp_sheet'], 'mfp_no': row['mfp_no'], 'mfp_line': row['mfp_line'],
                     'mfp_printed': row['mfp_printed'], 'mfp_price': row['mfp_price'], 'source': row['source'],
                     'question': question, 'suggested_answer': answer, 'reason': row['reason']})
-    out += [g for g in GENERAL if not g.get('answer')]
+    out += [g for g in GENERAL if not g.get('answer')] + lab_list_only(matching)
     out.sort(key=lambda r: (GROUPS.index(r['group']), BILLED.get(r['billed'], 3), r['product']))
     return out
+
+
+def lab_list_only(matching):
+    """One question for the tests still capped by the laboratory list: the rule of 19 Nov 2026 (G89)
+    is the nomenclature's coefficient, and the nomenclature has no line for them."""
+    rows = [r for r in matching if r['decision'] == 'load' and r['mfp_sheet'] == LAB]
+    if not rows:
+        return []
+    names = ', '.join('%s %s' % (r['product'], r['mfp_price']) for r in rows)
+    return [{'group': 'open point', 'billed': 'high', 'product': '(%d examens de laboratoire)' % len(rows),
+             'mfp_sheet': LAB, 'mfp_no': ', '.join(r['mfp_no'] for r in rows), 'mfp_line': names,
+             'mfp_printed': 'PRIX 2011', 'mfp_price': '', 'source': 'p. 2 à 6',
+             'question': 'Vous avez répondu (G89) que le prix MFP d’un examen de laboratoire est le coefficient B '
+                         'de la nomenclature de 2021. Ces %d examens n’ont pas de ligne dans la nomenclature '
+                         '(elle n’a pas de biochimie, ni de test rapide du paludisme, ni d’anticorps HVC) : leur '
+                         'plafond vient de la liste des examens (PRIX 2011). (a) on garde ce plafond · (b) on le '
+                         'retire : MFP paie 80 %% du prix UVL, sans plafond' % len(rows),
+             'suggested_answer': '(a)',
+             'reason': 'loaded on 18 Nov 2026 from the laboratory list, the only source that prices them; '
+                       'left loaded, to confirm under the rule of 19 Nov 2026'}]
 
 
 # The general questions, in the order they were put to the product owner (F1 to F4 after the
@@ -581,7 +627,7 @@ def apply_answers(matching, answers, sent, follow_ups, out=sys.stdout):
 
 OPEN_HEADER = ['group', 'UVL product', 'source A line + value', 'source B line + value', 'question',
                'suggested answer']
-# One question per decision that the price lists and the answers of 18 Nov 2026 leave open.
+# One question per decision that the price lists and the answers leave open; « answer » as in GENERAL.
 OPEN_FIRST = [
     {'group': 'laboratory: general rule', 'UVL product': '(tous les examens de laboratoire)',
      'source A line + value': 'Actes médicaux (ordonnance 2021) : coefficient B x 300 BIF',
@@ -589,7 +635,8 @@ OPEN_FIRST = [
      'question': 'Pour les examens de laboratoire, la liste MFP des examens (PRIX 2011) remplace-t-elle le prix '
                  'calculé avec le coefficient B de la nomenclature ? (a) oui, la liste des examens · (b) non, '
                  'le coefficient · (c) le plus bas des deux',
-     'suggested answer': '(a)'},
+     'suggested answer': '(a)',
+     'answer': '(b) the coefficient (G89, 19 Nov 2026; « consider the prices for 2021 »): NOMENCLATURE'},
 ]
 OPEN_LAST = [
     {'group': 'open point', 'UVL product': '(anesthésie : ANE401 à ANE499)',
@@ -627,12 +674,11 @@ OPEN_LAST = [
      'question': 'MFP donne un prix au ml ou au mètre. Le plafond est-il ce prix multiplié par le contenu vendu '
                  '(ex. Povidone 100 ml = 1 500 BIF, Dettol 1 L = 500 BIF, Jersey 1 m = 1 000 BIF) ? Et quel volume '
                  'pour l’alcool dénaturé ?', 'suggested answer': 'oui'},
-    {'group': 'open point', 'UVL product': 'Propofol Injection, Naloxone Injection',
-     'source A line + value': 'Dispositifs médicaux MFP · 208 DIPRIVAN 200MG : 11 030 BIF, 70 % · 295 NARCAN '
-                              '0,4mg : 7 300 BIF, 70 %',
-     'source B line + value': 'Règle actuelle : médicaments à 80 %',
-     'question': 'Ces deux médicaments sont dans la liste des dispositifs à 70 %. Quel taux MFP ? (a) 70 % comme '
-                 'la liste · (b) 80 % comme les médicaments', 'suggested answer': '(a)'},
+    {'group': 'open point', 'UVL product': 'Naloxone Injection',
+     'source A line + value': 'Dispositifs médicaux MFP · 295 NARCAN 0,4mg : 7 300 BIF, 70 %',
+     'source B line + value': 'Règle actuelle : médicaments à 80 % ; votre réponse G81 pour le Propofol : 70 %',
+     'question': 'Ce médicament est dans la liste des dispositifs à 70 %. Quel taux MFP ? (a) 70 % comme la '
+                 'liste et comme le Propofol · (b) 80 % comme les médicaments', 'suggested answer': '(a)'},
 ]
 
 
@@ -661,7 +707,8 @@ def open_rows(matching):
                               'source A line + value': a, 'source B line + value': '',
                               'question': question, 'suggested answer': answer, 'billed': row['billed']})
     order = lambda r: (BILLED.get(r['billed'], 3), r['UVL product'])
-    return OPEN_FIRST + sorted(conflicts, key=order) + sorted(uncertain, key=order) + OPEN_LAST
+    first = [{k: v for k, v in q.items() if k != 'answer'} for q in OPEN_FIRST if not q.get('answer')]
+    return first + sorted(conflicts, key=order) + sorted(uncertain, key=order) + OPEN_LAST
 
 
 def main(argv=None):

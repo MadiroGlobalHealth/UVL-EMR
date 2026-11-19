@@ -22,8 +22,9 @@
      mfp-acts-devices-matching-issue184.csv) marks « load » has its MFP row at the matched
      price and percentage, and every MFP ceiling on a product of that matching is one it
      loads. A product the matching gives a percentage without loading it (MFP's own 80% on a
-     bandage whose ceiling is still open) has its MFP row at that percentage.
-     scripts/mfp-ceiling.py writes both, so they only drift on a hand edit.
+     bandage whose ceiling is still open) has its MFP row at that percentage. A product the
+     matching marks « not covered by MFP (0%) » has its MFP row at 0, mode full.
+     scripts/mfp-ceiling.py writes or reads them, so they only drift on a hand edit.
 */
 
 File configDir = new File(project.build.directory,
@@ -182,6 +183,15 @@ if (matchingFile.isFile()) {
                         "of at most ${m['mfp_price']} BIF, but insurance_coverage has " +
                         (r == null ? 'no MFP row' : "${r['coverage_percentage']}%, ${r['covered_base_mode']} " +
                                 "${r['covered_base_amount']} (${r['at']})") + ". Run scripts/mfp-ceiling.py")
+            }
+        } else if (m['decision'] == 'not covered by MFP (0%)') {
+            // gloves, the consumables MFP does not reimburse: without the row MFP would pay its default
+            if (r == null || r['covered_base_mode'] != 'full' || !r['coverage_percentage']?.isBigDecimal() ||
+                    r['coverage_percentage'].toBigDecimal() != 0) {
+                faults << ("${m['product']} (${m['product_id']}): the MFP matching says MFP does not cover it, " +
+                        "but insurance_coverage has " +
+                        (r == null ? 'no MFP row' : "${r['coverage_percentage']}%, ${r['covered_base_mode']} " +
+                                "(${r['at']})") + ". Set the row to 0, full")
             }
         } else if (r != null && r['covered_base_mode'] == 'amount') {
             faults << ("${m['product']} (${m['product_id']}): ${r['at']} sets an MFP ceiling the matching does " +
