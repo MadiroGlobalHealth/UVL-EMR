@@ -25,8 +25,8 @@ calls without a context, as before, and the message is « Sales Order créé » 
 
 Because the bridge now works in French:
 
-- customers (`res.partner`) it creates get French as their language, as if created in French
-  screens;
+- customers (`res.partner`) it creates get French as their language once the stored default
+  is French too (`../defaults`, #809): a stored default comes before the request's language;
 - the country of a patient's address is found by its French name (`res.country`). « Burundi »
   is the same in both languages; a country whose French name differs (« Ouganda », not
   « Uganda ») is no longer found by its English name.
