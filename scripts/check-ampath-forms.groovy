@@ -4,7 +4,7 @@
   Run from sites/mugamba/pom.xml at prepare-package, against the assembled
   initializer_config, so it sees every layer (distro, country, site).
 
-  Fifteen checks, each for a fault that passes every review of the form JSON and shows only
+  Sixteen checks, each for a fault that passes every review of the form JSON and shows only
   when someone saves or reads the form:
 
   1. A number question that accepts decimals asks a concept that allows them. The form
@@ -101,6 +101,12 @@
  15. No question label ends with a colon, in the form or in its French translation. The saved-encounter
      view (the form engine's read view) writes every label followed by a colon, so « Prestataire : »
      read « Prestataire :: » (#752).
+ 16. No repeating question, and no member of a repeating obs group, is `required: true`. The engine
+     copies the question for every row added with « Ajouter », `required` included, so an added row
+     left empty refused the save: « Diagnostic confirmé » of the outpatient consultation (#789). To
+     require the first row only, the question is required while it is itself empty
+     (`conditionalRequired` on its own id, answers "" and null: the copies read the first row's
+     value) and carries a js_expression validator failing on `isEmpty(<its id>) && isEmpty(myValue)`.
 */
 
 import groovy.io.FileType
@@ -290,6 +296,7 @@ int answerLabelsChecked = 0
 int expressionValidators = 0
 int newbornMembersChecked = 0
 int labelsChecked = 0
+int repeatingChecked = 0
 // '<form file> <question id>' -> what each answer shows in French: its label, else its concept's French name.
 Map<String, List<String>> answersShown = [:]
 // A newborn's obs group, by its id (newbornMonitoring, nb...), label or concept name.
@@ -327,6 +334,17 @@ formFiles.each { File file ->
                     faults << ("${file.name}: ${member.id} in newborn group ${group.id} asks ${concept} " +
                             "'${vitalSign[concept]}', a vital-signs concept, so the newborn's value shows as the " +
                             "mother's vital sign in her chart. Give the newborn its own concept in OCL (#562)")
+                }
+            }
+        }
+
+        questions.findAll { it.questionOptions?.rendering == 'repeating' }.each { repeated ->
+            ([repeated] + questionsOf(repeated.questions)).each { q ->
+                repeatingChecked++
+                if (isTrue(q.required)) {
+                    faults << ("${file.name}: ${q.id} is required and ${q.id == repeated.id ? 'repeating' : "in the repeating group ${repeated.id}"}, " +
+                            "so every row added is required too and an added row left empty refuses the save. " +
+                            "Require the first row only, as confirmedDiagnosis of the outpatient consultation does (#789)")
                 }
             }
         }
@@ -520,4 +538,5 @@ log.info("Forms OK: ${decimalQuestions} decimal number questions on concepts tha
         "${imagingChecked} imaging procedures that take a result, " +
         "${expressionValidators} js_expression validators with a condition and a message, " +
         "${newbornMembersChecked} newborn group members on concepts of their own, not the vital signs', " +
-        "${labelsChecked} question labels without a colon of their own")
+        "${labelsChecked} question labels without a colon of their own, " +
+        "${repeatingChecked} repeating questions and members that do not require every added row")
