@@ -1265,6 +1265,7 @@
     },
     "liquorCodes": [
       { "concept": "9c4e7be2-47a0-4838-bb24-4b2796844f21", "code": "I" },
+      { "concept": "10c9dcdc-2d9d-43e1-ad19-a9222fa23121", "code": "C" },
       { "concept": "1115AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "code": "C" },
       { "concept": "33b7ef0e-ddff-4557-b363-6e72e859e7a2", "code": "M" },
       { "concept": "6aa7408b-43fa-438a-9bac-994591280fa4", "code": "B" }

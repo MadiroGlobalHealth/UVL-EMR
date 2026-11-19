@@ -111,9 +111,10 @@ concept_uuid	fr_name	sheet_label	note
 10b5a934-39ef-40fd-b3e6-dea077b153af	D57.0 Anemie a hematies falciformes [anemie drepanocytaire]		
 10b5cbbe-97b8-4860-bd73-cf1d804dfad9	M84 Anomalies de la continuite osseuse		
 10c09518-c5b2-4605-90f2-b5de187fa3de	D16 Tumeur benigne des os et du cartilage articulaire		
+10c9dcdc-2d9d-43e1-ad19-a9222fa23121	C : clair	C : clair	clear amniotic fluid, its own concept since #807 (was 1115 Normale)
 10d42ff3-86ed-4870-89e2-7e458d783c20	S61 Plaie ouverte du poignet et de la main		
 10e082bc-0b86-4122-904d-d6c71014a954	I65 Occlusion et stenose des arteres precerebrales n'entraînant pas un infarctus cerebral		
-1115AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA	Normale	Normales (colorées)	kept: shared lab result answer (labtests); three labels once each (Normales (colorées) / Normal / C : clair): no majority
+1115AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA	Normale	Normales (colorées)	kept: shared lab result answer (labtests); two labels once each (Normales (colorées) / Normal): no majority; C : clair has its own concept since #807
 113914e1-eeb2-483f-adb9-a227430cd7ff	K72.9 Insuffisance hepatique sans precision		
 113b5b97-06f2-4f06-9d3a-4f42ca8936b4	O66 Autres dystocies		
 113e4c01-c89b-4ee6-b854-0b9d150a888b	D13 Tumeurs benignes de parties autres et mal definies de l'appareil digestif		
