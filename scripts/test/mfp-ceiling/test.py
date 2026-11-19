@@ -6,7 +6,10 @@ the lab section's repeated N° do not matter because lines are referenced by row
 answers of 18 Nov 2026: the laboratory list as a second source, the product owner's answers
 found again from the files that were sent, MFP's own rate on bandages, and a product MFP does
 not cover (a row at 0%), which never gets a ceiling. Since 19 Nov 2026: the complete device
-list as a source of its own (« N:95 ») and as a second reading of the workbook's lines.
+list as a source of its own (« N:95 ») and as a second reading of the workbook's lines. Since the
+answers of 19 Nov 2026: the nomenclature wins over the laboratory list for a row confirmed so, a
+product sold as the unit MFP prices takes that unit's price, and the products MFP does not
+reimburse are rows at 0%.
 
   python3 scripts/test/mfp-ceiling/test.py
 """
@@ -131,8 +134,8 @@ class MfpCeilingTest(unittest.TestCase):
             if r['decision'] == 'load':
                 self.assertTrue(mfp.sure(r), r['product'])
                 if r['yellow']:  # a doubtful reading is loaded only on the product owner's « oui »
-                    self.assertEqual(r['confirmed'], 'yes', r['product'])
-                if r['other_ref']:
+                    self.assertIn(r['confirmed'], mfp.READING_CONFIRMED, r['product'])
+                if r['other_ref'] and r['confirmed'] != mfp.NOMENCLATURE:
                     self.assertEqual(r['other_price'], r['mfp_price'], r['product'])
                 self.assertTrue(r['mfp_price'].isdigit() and int(r['mfp_price']) > 0, r['product'])
             if r['confirmed']:
@@ -174,6 +177,50 @@ class MfpCeilingTest(unittest.TestCase):
         self.assertEqual(mfp.decide(dict(act, other_ref='L:1.8', other_price='660')), 'two sources disagree')
         self.assertEqual(mfp.decide(dict(act, other_ref='L:6.25+6.26', other_price='')), 'two sources disagree')
         self.assertEqual(mfp.decide(dict(act, other_ref='L:x', other_price='1500')), 'load')
+
+    def test_the_nomenclature_wins_only_where_the_product_owner_said_so(self):
+        act = dict(mfp_ref='A:4', other_ref='L:1.8', other_price='660', confidence='exact', **self.line('A:4'))
+        self.assertEqual(mfp.decide(dict(act, confirmed='yes')), 'two sources disagree')
+        self.assertEqual(mfp.decide(dict(act, confirmed=mfp.NOMENCLATURE)), 'load')  # B 5 = 1500, not 660
+        self.assertEqual(act['mfp_price'], '1500')
+        # it settles the conflict and the reading, not the match: a yellow coefficient is loaded with it
+        yellow = dict(mfp_ref='A:3', other_ref='L:1.8', other_price='660', confidence='medium', **self.line('A:3'))
+        self.assertEqual(mfp.decide(yellow), 'uncertain match')
+        self.assertEqual(mfp.decide(dict(yellow, confirmed=mfp.NOMENCLATURE)), 'load')
+
+    def test_a_product_sold_as_the_unit_mfp_prices(self):
+        self.assertEqual(mfp.per_unit('5/Tampon'), '5')
+        for not_whole_francs in ('3,4/cm', '0,5/ml', '500', '', '-'):
+            self.assertEqual(mfp.per_unit(not_whole_francs), '', not_whole_francs)
+        products = os.path.join(self.tmp, 'unit_products')
+        os.makedirs(products, exist_ok=True)
+        with io.open(os.path.join(products, 'p.csv'), 'w', encoding='utf-8') as f:
+            f.write('id,name\ninit.swab,Swab\ninit.tape,Tape\ninit.bottle,Bottle\n')
+        rates = os.path.join(self.tmp, 'unit_rates.csv')
+        with io.open(rates, 'w', encoding='utf-8') as f:
+            f.write(','.join(mfp.COVERAGE) + '\n' + ''.join(
+                'init.coverage_mfp_%s,init.insurance_plan_mfp,init.%s,70,full,\n' % (x, x)
+                for x in ('swab', 'tape', 'bottle')))
+        path = os.path.join(self.tmp, 'unit_devices.csv')
+        with io.open(path, 'w', encoding='utf-8') as f:
+            f.write('no,name,price,rate,page,reading,note\n537,TEMPON D\'OUATE,5/Tampon,70,16,high,\n'
+                    '532,SPARADRAP,"3,4/cm",70,16,high,\n272,ISOBETADINE / ML,15/ml,70,9,high,\n')
+        saved = mfp.PRODUCT_DIRS, mfp.MFP_RATES
+        mfp.PRODUCT_DIRS, mfp.MFP_RATES = [products], rates
+        try:
+            row = lambda product, ref, confirmed: {'product_id': product, 'mfp_ref': ref, 'other_ref': '',
+                                                   'confidence': 'medium', 'confirmed': confirmed, 'answer_ref': 'G1'}
+            swab, tape, bottle = mfp.refresh(self.book, [row('init.swab', 'N:537', mfp.PER_UNIT),
+                                                         row('init.tape', 'N:532', mfp.PER_UNIT),
+                                                         row('init.bottle', 'N:272', 'yes')],
+                                             devices=mfp.read_device_list(path))
+        finally:
+            mfp.PRODUCT_DIRS, mfp.MFP_RATES = saved
+        self.assertEqual((swab['mfp_printed'], swab['mfp_price'], swab['decision'], swab['coverage_percentage']),
+                         ('5/Tampon', '5', 'load', '70'))
+        self.assertEqual((tape['mfp_price'], tape['decision']), ('', 'no unit price'))  # 3,4 is not whole francs
+        # a price per ml confirmed as a reading only: the bottle is not one ml
+        self.assertEqual((bottle['mfp_price'], bottle['decision']), ('', 'no unit price'))
 
     # ---- the product owner's answers
 
@@ -318,7 +365,8 @@ class MfpCeilingTest(unittest.TestCase):
         for r in matching:
             if r['decision'] == 'load' and r['mfp_sheet'] == mfp.DEVICES:
                 again = devices[r['mfp_no']]
-                self.assertEqual((again['price'], again['rate']), (r['mfp_price'], r['mfp_taux']), r['product'])
+                printed = r['mfp_printed'] if r['confirmed'] == mfp.PER_UNIT else r['mfp_price']  # « 5/Tampon »
+                self.assertEqual((again['price'], again['rate']), (printed, r['mfp_taux']), r['product'])
         loaded = {r['product']: r for r in matching if r['decision'] == 'load'}
         for product, price in [('Cathéter G18', '2230'), ('Cathéter G22', '2230'), ('Cathéter G24', '2230'),
                                ('Tube à EDTA', '500'), ('Tube sec', '500'), ("Tube d'intubation", '10150'),
@@ -326,8 +374,7 @@ class MfpCeilingTest(unittest.TestCase):
             self.assertEqual((loaded[product]['mfp_price'], loaded[product]['coverage_percentage']),
                              (price, '70'), product)
         # a product that could be several lines is asked, never loaded
-        for product in ('Ruban adhésif', 'Cathéter Pédiatrique', 'Pogal N° 1', 'Pansement Ombilical'):
-            self.assertNotIn(product, loaded)
+        self.assertNotIn('Ruban adhésif', loaded)
 
     # ---- a product MFP does not cover, and the two dressing acts (answers F12, G8, F30, G10)
 
@@ -390,13 +437,86 @@ class MfpCeilingTest(unittest.TestCase):
         self.assertNotIn('Soins locaux', asked)
         self.assertNotIn('Consultation ophtalmologique', asked)
 
-    def test_open_questions_start_with_the_laboratory_rule(self):
+    # ---- the answers of 19 Nov 2026 (tab G, G72 to G117)
+
+    def test_committed_answers_on_the_devices(self):
+        rows = {r['product']: r for r in mfp.read_csv(mfp.MATCHING)}
+        rates = {r['product_id/id']: r for r in mfp.read_csv(mfp.MFP_RATES)}
+        coverage = lambda name: tuple(rates[rows[name]['product_id']][k] for k in (
+            'coverage_percentage', 'covered_base_mode', 'covered_base_amount'))
+        for name, ref, line, row in [
+                ('Cathéter Pédiatrique', 'G72', 'CATHETER G24', ('70', 'amount', '2230')),
+                ('Pogal No. 2', 'G74', 'ETYLON SERTI 1', ('70', 'amount', '3500')),
+                ('Pogal N° 1', 'G75', 'ETYLON SERTI 1', ('70', 'amount', '3500')),
+                ('Pansement Ombilical', 'G77', 'BANDE OMBILICALE', ('80', 'amount', '1360')),  # MFP's own rate
+                ("Tampon d'ouate", 'G78', "TEMPON D'OUATE", ('70', 'amount', '5')),
+                ('Propofol Injection', 'F108, G81', 'DIPRIVAN 200MG', ('70', 'amount', '11030'))]:  # the list's 70%
+            r = rows[name]
+            self.assertEqual((r['answer_ref'], r['mfp_line'], r['decision']), (ref, line, 'load'), name)
+            self.assertEqual(coverage(name), row, name)
+        self.assertEqual(coverage('Pogal No. 2'), coverage('Pogal N° 2/0'))  # as the Pogal already loaded
+        # « non »: not « COMPRESSE SIMPLE », so no ceiling and the agreed 70%, not the line's 80%
+        abdominal = rows['Compresses Abdominales']
+        self.assertEqual((abdominal['answer_ref'], abdominal['decision']), ('G76', 'not this line (product owner)'))
+        self.assertEqual(coverage('Compresses Abdominales'), ('70', 'full', ''))
+        # « MFP le rembourse-t-il, et à quel prix ? » « non »: 0%, like the ophthalmology consultation
+        for name, ref in [('Rouleau de gaze 90 cm x 91 m', 'G82'), ('Gel Echographique', 'G85'),
+                          ('Sachets pour le conditionnement des MEG', 'G86'), ('Seringue bilatérale', 'G87')]:
+            self.assertEqual((rows[name]['answer_ref'], rows[name]['decision']), (ref, 'not covered by MFP (0%)'))
+            self.assertEqual(coverage(name), ('0', 'full', ''), name)
+        # an answer that does not settle it is kept with its product and asked again: nothing is loaded
+        asked = {r['product']: r for r in mfp.confirm_rows(list(rows.values()))}
+        for name, ref in [('Coton hydrophile 500g', 'G73'), ('Solution de Povidone 100ml', 'F36, G79'),
+                          ('Dettol Solution 1L', 'F70, G80'), ('Tulle Gras 10cmx10cm', 'G83'),
+                          ('Fils de Suture Chirurgicaux', 'G84'), ('Suture Non-Absorbable', 'G88')]:
+            self.assertEqual(rows[name]['answer_ref'], ref)
+            self.assertIn('(%s)' % ref.split(', ')[-1], asked[name]['question'], name)
+            if rows[name]['product_id'] in rates:
+                self.assertEqual(coverage(name), ('70', 'full', ''), name)  # « NON » on the threads is not 0%
+        for name in ('Ruban adhésif', 'Naloxone Injection'):  # not answered
+            self.assertIn(name, asked)
+
+    def test_committed_laboratory_tests_follow_the_nomenclature(self):
+        matching = mfp.read_csv(mfp.MATCHING)
+        rows = {r['product']: r for r in matching}
+        acts = {r['product_id/id']: r for r in mfp.read_csv(mfp.ACTS_OUT)}
+        resolved = [r for r in matching if r['confirmed'] == mfp.NOMENCLATURE]
+        self.assertEqual(len(resolved), 23)
+        for r in resolved:
+            # the coefficient's price, whose reading was confirmed on 18 Nov; the laboratory list says otherwise
+            self.assertEqual((r['mfp_sheet'], r['decision'], r['coverage_percentage']), (mfp.ACTS, 'load', '80'))
+            self.assertTrue(r['mfp_printed'].startswith('B ') and r['other_ref'].startswith('L:'), r['product'])
+            self.assertNotEqual(r['other_price'], r['mfp_price'], r['product'])
+            first, last = r['answer_ref'].split(', ')
+            self.assertTrue(91 <= int(last[1:]) <= 113 and last[0] == 'G', r['product'])
+            self.assertEqual(acts[r['product_id']]['covered_base_amount'], r['mfp_price'], r['product'])
+        for name, price in [('BP06 - Examen des selles', '1500'), ('HS07 - Test de grossesse', '7500'),
+                            ('HS11 - Numération des CD4', '7500'), ('BP01 - Frottis paludéen', '2250')]:
+            self.assertEqual(rows[name]['mfp_price'], price, name)
+        # haemoglobin: « LISTE DES EXAMENS » contradicts the rule and that reading is uncertain
+        hb = rows['BI07 - Hémoglobine']
+        self.assertEqual((hb['answer_ref'], hb['decision']), ('G13, G90', 'two sources disagree'))
+        self.assertNotIn(hb['product_id'], acts)
+        # the four tests only the laboratory list brackets: the nomenclature has no line, so no ceiling
+        for name in ('HS01 - Numération formule sanguine complète (CBC)', 'BI02 - Bilirubine (conjuguée + totale)',
+                     'BI08 - Ionogramme', 'HS03 - Test d’hémostase'):
+            self.assertTrue(rows[name]['answer_ref'] and rows[name]['decision'] == 'uncertain match', name)
+            self.assertNotIn(rows[name]['product_id'], acts)
+        # the tests only the laboratory list prices stay loaded, and are one point to confirm
+        lab_only = [r for r in matching if r['decision'] == 'load' and r['mfp_sheet'] == mfp.LAB]
+        self.assertEqual(len(lab_only), 22)
+        point = [r for r in mfp.confirm_rows(matching) if r['group'] == 'open point']
+        self.assertEqual(len(point), 1)
+        self.assertIn('22 examens', point[0]['question'])
+
+    def test_open_questions_no_longer_ask_the_laboratory_rule(self):
         rows = mfp.open_rows(mfp.read_csv(mfp.MATCHING))
-        self.assertEqual(rows[0]['group'], 'laboratory: general rule')
+        self.assertNotIn('laboratory: general rule', [r['group'] for r in rows])
         disagree = [r for r in rows if r['group'] == 'laboratory: two sources']
-        self.assertTrue(disagree)
+        self.assertEqual([r['UVL product'] for r in disagree], ['BI07 - Hémoglobine'])
         for r in disagree:
             self.assertTrue(r['source A line + value'] and r['source B line + value'], r['UVL product'])
+            self.assertIn('(G90)', r['question'])
 
 
 if __name__ == '__main__':
