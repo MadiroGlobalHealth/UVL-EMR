@@ -3248,6 +3248,37 @@
     </changeSet>
 
     <!--
+        #797 - a stock item for Carbamazepine Comprimé 200mg, the tablet the central pharmacy counted
+        in its opening stock: the product owner read the box on 19 Nov 2026 (200 mg; OpenMRS had the
+        400 mg only, and that one has no stock item). Its drug is drugs/uvl-drugs-issue797.csv (and
+        Odoo product_variant/uvl-drugs-issue797.csv), on the Carbamazepine concept the 400 mg drug
+        uses. Counted per Comprimé. Waits for the drug as the #457 and #776 seeds do.
+    -->
+    <changeSet id="add_stock_item_carbamazepine_200mg-20261119" author="Joshua">
+        <preConditions onFail="CONTINUE" onError="CONTINUE"
+                       onFailMessage="WARN (#797): the drug Carbamazepine Comprimé 200mg or the Comprimé unit does not exist yet (drugs or OCL not loaded), or the stockmanagement tables are missing, so its stock item was NOT created; this changeset is retried on every start.">
+            <tableExists tableName="stockmgmt_stock_item"/>
+            <tableExists tableName="stockmgmt_stock_item_packaging_uom"/>
+            <columnExists tableName="stockmgmt_stock_item" columnName="common_name"/>
+            <sqlCheck expectedResult="1">
+                SELECT COUNT(DISTINCT uuid) FROM drug
+                 WHERE uuid IN ('a4e0ea16-0744-5fb7-871a-e3674ab87895')
+            </sqlCheck>
+            <sqlCheck expectedResult="1">
+                SELECT COUNT(DISTINCT uuid) FROM concept
+                 WHERE uuid IN ('391d2a1b-2aec-4bd7-b43b-e294e7f2b9b9')
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            Create a stock item for Carbamazepine Comprimé 200mg (#797).
+        </comment>
+        <sqlFile path="sql/stock_items_carbamazepine_200mg.sql" relativeToChangelogFile="true" stripComments="true"/>
+        <rollback>
+            <sqlFile path="sql/stock_items_carbamazepine_200mg_rollback.sql" relativeToChangelogFile="true" stripComments="true"/>
+        </rollback>
+    </changeSet>
+
+    <!--
         #776 - the product owner's answers of 18 Nov 2026 on the opening-stock count.
         Anamol Sirop is counted per 100 ml bottle and Cimetidine Injection 200mg/2ml per ampoule,
         not per millilitre: their stock and dispensing unit become Flacon and Ampoule, as the
@@ -3348,6 +3379,38 @@
              GROUP BY u.person_id;
         </sql>
         <rollback/>
+    </changeSet>
+
+    <!--
+        #796 - stock items for the three medicines #787 made load again: Aerius Sirop 2.5mg/5ml 60ml,
+        counted per bottle, and Aerius Comprimé and Desloratadine Comprimé 5mg, counted per tablet,
+        the units of the Deslova items of the same medicine. Without a stock item they could be
+        prescribed but, with stock dispensing on, not dispensed or billed. Their drugs are in
+        drugs/uvl-drugs.csv. Items only: no batch and no quantity, the opening count of these three
+        is still to come from the pharmacy. Waits for the drugs as the #457 seed does.
+    -->
+    <changeSet id="add_stock_items_aerius_desloratadine-20261119" author="Joshua">
+        <preConditions onFail="CONTINUE" onError="CONTINUE"
+                       onFailMessage="WARN (#796): the drugs Aerius Sirop 2.5mg/5ml 60ml, Aerius Comprimé and Desloratadine Comprimé 5mg or their units do not exist yet (drugs or OCL not loaded), or the stockmanagement tables are missing, so their stock items were NOT created; this changeset is retried on every start.">
+            <tableExists tableName="stockmgmt_stock_item"/>
+            <tableExists tableName="stockmgmt_stock_item_packaging_uom"/>
+            <columnExists tableName="stockmgmt_stock_item" columnName="common_name"/>
+            <sqlCheck expectedResult="3">
+                SELECT COUNT(DISTINCT uuid) FROM drug
+                 WHERE uuid IN ('aa2cc0d6-2c0e-401b-9d77-f68771061a3d', 'df92def0-857f-4b6e-ae3f-e20ab0cf5298', '127fa80c-ff57-48d8-b643-869217524ced')
+            </sqlCheck>
+            <sqlCheck expectedResult="2">
+                SELECT COUNT(DISTINCT uuid) FROM concept
+                 WHERE uuid IN ('04144d11-cfed-4930-8ffc-f1b8be92440b', '391d2a1b-2aec-4bd7-b43b-e294e7f2b9b9')
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            Create a stock item for Aerius Sirop 2.5mg/5ml 60ml, Aerius Comprimé and Desloratadine Comprimé 5mg (#796).
+        </comment>
+        <sqlFile path="sql/stock_items_aerius_desloratadine.sql" relativeToChangelogFile="true" stripComments="true"/>
+        <rollback>
+            <sqlFile path="sql/stock_items_aerius_desloratadine_rollback.sql" relativeToChangelogFile="true" stripComments="true"/>
+        </rollback>
     </changeSet>
 
 </databaseChangeLog>
