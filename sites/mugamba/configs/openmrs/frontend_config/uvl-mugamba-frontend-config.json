@@ -1269,7 +1269,10 @@
       "temperature": "748f8d43-617a-40ba-9474-20522e73fb8a",
       "amnioticFluid": "f571d5d7-34cf-4afd-b876-fa618379e561",
       "headMoulding": "6443292c-1743-418f-8bb9-eb19463bf371",
-      "medicationsGiven": "057723c1-6b41-4e30-9fc0-7a9be2cf2e6f"
+      "medicationsGiven": "057723c1-6b41-4e30-9fc0-7a9be2cf2e6f",
+      "urineProtein": "83902405-40c1-4bac-9c78-3852663058e1",
+      "urineAcetone": "684f4b75-40ad-48ae-95f5-6381b4dd3eb3",
+      "urineVolume": "1d50f82a-01e7-4281-af70-9650a4510b5c"
     },
     "liquorCodes": [
       { "concept": "9c4e7be2-47a0-4838-bb24-4b2796844f21", "code": "I" },
@@ -1280,6 +1283,13 @@
     ],
     "mouldingCodes": [
       { "concept": "01ff87e9-f0b0-4997-b402-7b12862d1784", "code": "0" },
+      { "concept": "e9fa7532-a9dd-447d-9a32-ef2e3750385b", "code": "+" },
+      { "concept": "52506e95-0ae4-4718-b622-d4226b4238dd", "code": "++" },
+      { "concept": "487fb8c7-29c3-4954-937c-090c1a4a4ced", "code": "+++" }
+    ],
+    "urineCodes": [
+      { "concept": "5c8d6240-9cc2-4bc1-b783-30eb887f950c", "code": "Nég" },
+      { "concept": "e9a57d5f-fc37-4e82-9344-d3aadee2e6c9", "code": "Tr" },
       { "concept": "e9fa7532-a9dd-447d-9a32-ef2e3750385b", "code": "+" },
       { "concept": "52506e95-0ae4-4718-b622-d4226b4238dd", "code": "++" },
       { "concept": "487fb8c7-29c3-4954-937c-090c1a4a4ced", "code": "+++" }

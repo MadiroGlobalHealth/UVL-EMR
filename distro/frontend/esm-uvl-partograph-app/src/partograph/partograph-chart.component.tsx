@@ -213,7 +213,10 @@ const PartographCard: React.FC<{
     );
   };
 
-  const codeCells = (key: 'amnioticFluid' | 'headMoulding', mapping: PartographConfig['liquorCodes']) =>
+  const codeCells = (
+    key: 'amnioticFluid' | 'headMoulding' | 'urineProtein' | 'urineAcetone',
+    mapping: PartographConfig['liquorCodes'],
+  ) =>
     readings.flatMap((reading) => {
       const code = partographCode(reading.values[key] as CodedValue, mapping);
       return code ? [{ key: reading.uuid, hour: at(reading), text: code, tooltip: `${when(reading)}: ${code}` }] : [];
@@ -292,6 +295,21 @@ const PartographCard: React.FC<{
   const temperatureLabel = t('temperatureCelsius', 'Temperature (°C)');
   const temperature = series('temperature', temperatureLabel, '°C');
   const temperatureDomain = valueDomain(temperature.map((p) => p.value), 35, 43, 0.5);
+
+  // Urine: the paper sheet's last row, protein, acetone and volume. Each sub-row exists only when its
+  // concept is configured; with none configured the whole row is hidden.
+  const urineCodes = config.urineCodes ?? [];
+  const urineRows: Array<TextRow> = [
+    ...(config.concepts.urineProtein
+      ? [{ label: t('urineProteinShort', 'Prot.'), entries: codeCells('urineProtein', urineCodes) }]
+      : []),
+    ...(config.concepts.urineAcetone
+      ? [{ label: t('urineAcetoneShort', 'Acet.'), entries: codeCells('urineAcetone', urineCodes) }]
+      : []),
+    ...(config.concepts.urineVolume
+      ? [{ label: t('urineVolumeShort', 'Vol.'), entries: numberCells('urineVolume') }]
+      : []),
+  ];
 
   return (
     <div className={styles.widgetCard}>
@@ -518,6 +536,14 @@ const PartographCard: React.FC<{
         >
           {(scales) => <Series points={temperature} scales={scales} color={COLORS.orange} marker="circle" />}
         </ChartPanel>
+
+        {urineRows.length ? (
+          textRowsPanel(
+            t('urine', 'Urine'),
+            urineRows,
+            t('urineNote', 'Protein and acetone: Neg negative, Tr trace, + ++ +++ dipstick result. Volume in ml.'),
+          )
+        ) : null}
 
         {medications.length ? (
           <section className={styles.panel} aria-label={t('medicationsList', 'Medications given, in full')}>

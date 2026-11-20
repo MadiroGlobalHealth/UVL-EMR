@@ -36,6 +36,9 @@ const config: PartographConfig = {
     amnioticFluid: 'liquor',
     headMoulding: 'moulding',
     medicationsGiven: 'medications',
+    urineProtein: '',
+    urineAcetone: '',
+    urineVolume: '',
   },
   liquorCodes: [
     { concept: 'liquor-clear', code: 'C' },
@@ -44,6 +47,11 @@ const config: PartographConfig = {
   mouldingCodes: [
     { concept: 'moulding-none', code: '0' },
     { concept: 'moulding-reducible', code: '++' },
+  ],
+  urineCodes: [
+    { concept: 'urine-negative', code: 'Neg' },
+    { concept: 'urine-trace', code: 'Tr' },
+    { concept: 'urine-two-plus', code: '++' },
   ],
   readingFormUuid: '',
   surveillance: {
@@ -422,5 +430,109 @@ describe('PartographChart: editing a saved reading (#825)', () => {
     withReadings(encounters, { readingFormUuid: '' });
     render(<PartographChart patientUuid="patient-uuid" />);
     expect(screen.queryByRole('region', { name: 'Edit a reading' })).not.toBeInTheDocument();
+  });
+});
+
+describe('PartographChart urine row', () => {
+  const urineConcepts = {
+    ...config.concepts,
+    urineProtein: 'urine-protein',
+    urineAcetone: 'urine-acetone',
+    urineVolume: 'urine-volume',
+  };
+  const urineReadings: Array<PartographEncounter> = [
+    {
+      uuid: 'before-urine',
+      encounterDatetime: '2026-11-04T08:00:00.000+0000',
+      encounterType: { uuid: 'partograph-type' },
+      obs: [obs('dilatation', 4), obs('temperature', 37.2)],
+    },
+    {
+      uuid: 'with-urine',
+      encounterDatetime: '2026-11-04T10:00:00.000+0000',
+      encounterType: { uuid: 'partograph-type' },
+      obs: [
+        obs('dilatation', 5),
+        obs('temperature', 37.5),
+        obs('urine-protein', { uuid: 'urine-trace', display: 'Traces' }),
+        obs('urine-acetone', { uuid: 'urine-negative', display: 'Négatif' }),
+        obs('urine-volume', 250),
+      ],
+    },
+    {
+      uuid: 'unmapped-answer',
+      encounterDatetime: '2026-11-04T12:00:00.000+0000',
+      encounterType: { uuid: 'partograph-type' },
+      obs: [obs('urine-protein', { uuid: 'urine-other', display: 'Trois plus' })],
+    },
+  ];
+
+  it('is hidden while no urine concept is configured', () => {
+    withReadings(urineReadings);
+
+    render(<PartographChart patientUuid="patient-uuid" />);
+
+    expect(screen.queryByRole('img', { name: 'Urine' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('region', { name: 'Urine' })).not.toBeInTheDocument();
+  });
+
+  it('draws the three values of a reading below the temperature, as on the paper sheet', () => {
+    withReadings(urineReadings, { concepts: urineConcepts });
+
+    render(<PartographChart patientUuid="patient-uuid" />);
+
+    const panels = screen.getAllByRole('img').map((chart) => chart.getAttribute('aria-label'));
+    expect(panels.slice(-2)).toEqual(['Temperature', 'Urine']);
+    const urine = screen.getByRole('img', { name: 'Urine' });
+    expect(within(urine).getByText('Prot.')).toBeInTheDocument();
+    expect(within(urine).getByText('Acet.')).toBeInTheDocument();
+    expect(within(urine).getByText('Vol.')).toBeInTheDocument();
+    const rows = [0, 1, 2].map((index) => within(within(urine).getByTestId(`code-row-${index}`)));
+    // Protein: a mapped answer is its code; an answer with no code shows its concept name.
+    expect(rows[0].getByText('Tr')).toBeInTheDocument();
+    expect(rows[0].getByText('Trois plus')).toBeInTheDocument();
+    expect(rows[1].getByText('Neg')).toBeInTheDocument();
+    expect(rows[2].getByText('250')).toBeInTheDocument();
+    // The three values of the 10:00 reading sit in one column; the 08:00 reading, saved before the change, has none.
+    const columns = [rows[0].getByText('Tr'), rows[1].getByText('Neg'), rows[2].getByText('250')].map((el) =>
+      el.getAttribute('x'),
+    );
+    expect(new Set(columns).size).toBe(1);
+  });
+
+  it('still draws every other panel for a reading saved before the urine fields existed', () => {
+    withReadings(urineReadings.slice(0, 1), { concepts: urineConcepts });
+
+    render(<PartographChart patientUuid="patient-uuid" />);
+
+    expect(screen.getByRole('img', { name: 'Temperature' })).toBeInTheDocument();
+    expect(within(screen.getByRole('img', { name: 'Urine' })).getByText('No value recorded')).toBeInTheDocument();
+  });
+
+  it('draws only the sub-rows whose concept is configured', () => {
+    withReadings(urineReadings, { concepts: { ...config.concepts, urineVolume: 'urine-volume' } });
+
+    render(<PartographChart patientUuid="patient-uuid" />);
+
+    const urine = screen.getByRole('img', { name: 'Urine' });
+    expect(within(urine).getByText('Vol.')).toBeInTheDocument();
+    expect(within(urine).queryByText('Prot.')).not.toBeInTheDocument();
+    expect(within(urine).queryByText('Acet.')).not.toBeInTheDocument();
+    expect(within(urine).getByText('250')).toBeInTheDocument();
+  });
+
+  it('copes with a site config that has no urine code map', () => {
+    withReadings(urineReadings, { concepts: urineConcepts, urineCodes: undefined });
+
+    render(<PartographChart patientUuid="patient-uuid" />);
+
+    expect(within(screen.getByRole('img', { name: 'Urine' })).getByText('Traces')).toBeInTheDocument();
+  });
+
+  it('reads the urine obs of a reading by concept', () => {
+    const readings = toReadings(urineReadings, { ...config, concepts: urineConcepts });
+
+    expect(readings[1].values).toMatchObject({ urineVolume: 250, urineProtein: { uuid: 'urine-trace' } });
+    expect(readings[0].values.urineVolume).toBeUndefined();
   });
 });
