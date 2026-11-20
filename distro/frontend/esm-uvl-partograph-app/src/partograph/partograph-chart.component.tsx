@@ -21,6 +21,7 @@ import {
   valueDomain,
   valueTicks,
 } from './partograph-math';
+import EditReadings from './partograph-edit-readings.component';
 import { type PartographReading, usePartographReadings } from './partograph.resource';
 import styles from './partograph-chart.scss';
 
@@ -68,7 +69,7 @@ const PartographChart: React.FC<PartographChartProps> = ({ patientUuid }) => {
   if (!readings?.length) {
     return config.showWhenEmpty ? <EmptyPartograph title={title} /> : null;
   }
-  return <PartographCard title={title} readings={readings} config={config} />;
+  return <PartographCard title={title} readings={readings} config={config} patientUuid={patientUuid} />;
 };
 
 const EmptyPartograph: React.FC<{ title: string }> = ({ title }) => {
@@ -110,11 +111,12 @@ const MINIMUM_CELL_WIDTH = 24;
 /** Height of one line of a code row; a cell holding two readings is two lines high. */
 const LINE_HEIGHT = 16;
 
-const PartographCard: React.FC<{ title: string; readings: Array<PartographReading>; config: PartographConfig }> = ({
-  title,
-  readings: allReadings,
-  config,
-}) => {
+const PartographCard: React.FC<{
+  title: string;
+  readings: Array<PartographReading>;
+  config: PartographConfig;
+  patientUuid: string;
+}> = ({ title, readings: allReadings, config, patientUuid }) => {
   const { t } = useTranslation();
 
   const chart = useMemo(() => {
@@ -531,6 +533,12 @@ const PartographCard: React.FC<{ title: string; readings: Array<PartographReadin
             </ul>
           </section>
         ) : null}
+
+        <EditReadings
+          patientUuid={patientUuid}
+          readingFormUuid={config.readingFormUuid}
+          readings={[...readings].reverse().map((reading) => ({ uuid: reading.uuid, when: when(reading) }))}
+        />
       </div>
     </div>
   );

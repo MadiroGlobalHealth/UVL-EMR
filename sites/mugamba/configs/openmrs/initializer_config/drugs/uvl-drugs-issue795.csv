@@ -1,0 +1,7 @@
+Uuid,Concept Drug,Concept Dosage Form,Strength,Name,Name:fr
+ec4e9ae8-b3c7-5f3c-978f-7be568db349a,e5b3b481-bc93-41c5-9f0b-183ea19c1b09,bf712910-1c7f-4e72-9d50-6eb5453efcfd,300ml,Ababacter 300ml,Ababacter 300ml
+e19e9f80-b35b-592f-9e93-d29f9771c04b,82042c83-2b75-4d94-a747-9fb6d21e2d3c,391d2a1b-2aec-4bd7-b43b-e294e7f2b9b9,50mg,Ataktan 50mg Tablet,Ataktan Comprimé 50mg
+f9a6bad8-25ad-5156-871c-a5d789bc78c3,3b13cda7-261d-4461-b9a4-a3927213dc95,94b2f0e7-0885-430f-8733-e2a93f03095d,500mg,Contam 500mg Capsule,Contam Gélule 500mg
+7ac7eeb5-f841-51d9-966d-a6743e690d3d,569b3cd9-0450-4619-b6ca-31fa12747c44,c4b6c7b7-4906-4f76-af51-60ec9a34932e,0.50,Faux Papillon Glasses +0.50,"Faux Papillon Lunettes +0,50"
+25ff1c17-798b-505d-8600-c666af6273da,569b3cd9-0450-4619-b6ca-31fa12747c44,c4b6c7b7-4906-4f76-af51-60ec9a34932e,0.50,Reading Glasses +0.50,"Lunettes de lecture +0,50"
+6e644091-24cc-5cbc-a88d-bfc1f61ae88c,569b3cd9-0450-4619-b6ca-31fa12747c44,c4b6c7b7-4906-4f76-af51-60ec9a34932e,-0.50,Reading Glasses -0.50,"Lunettes de lecture -0,50"

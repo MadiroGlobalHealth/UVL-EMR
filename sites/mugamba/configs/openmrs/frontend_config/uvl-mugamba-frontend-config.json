@@ -710,7 +710,6 @@
           "UVL Inpatient Consultation Form",
           "UVL Inpatient Follow-up Form",
           "UVL IPD Monitoring Form",
-          "UVL 24-Hour Surveillance Form",
           "UVL Discharge Summary Form"
         ]
       },
@@ -721,7 +720,8 @@
           "UVL Maternity Consultation Form",
           "UVL Gynaecology Ultrasound Form",
           "UVL Delivery Registration Form",
-          "UVL Childbirth Record Form"
+          "UVL Childbirth Record Form",
+          "UVL 24-Hour Surveillance Form"
         ]
       },
       {
@@ -744,7 +744,8 @@
       { "form": "UVL Maternity Consultation Form", "sexes": ["female"] },
       { "form": "UVL Gynaecology Ultrasound Form", "sexes": ["female"] },
       { "form": "UVL Delivery Registration Form", "sexes": ["female"] },
-      { "form": "UVL Childbirth Record Form", "sexes": ["female"] }
+      { "form": "UVL Childbirth Record Form", "sexes": ["female"] },
+      { "form": "UVL 24-Hour Surveillance Form", "sexes": ["female"] }
     ],
     "Translation overrides": {
       "fr": {
