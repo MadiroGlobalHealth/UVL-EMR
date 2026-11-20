@@ -1,0 +1,6 @@
+id,name,categ_id/id,type,purchase_ok,sale_ok,invoice_policy
+"init.8f04ec85-cdc3-4964-931b-35c7dd1e7274","EC03 - Échographie obstétricale",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.ae40e186-fd27-4add-a0ab-51e496d341c3","EC04 - Échographie pelvienne",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.3927a0cb-0cac-487c-8120-355a2efb8f09","EC05 - Échographie rénale",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.04982685-eb77-43c2-9e70-d13090aaacf7","EC06 - Échographie cervicale",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.83c5992f-f0db-4f70-bab8-9ddbf3280216","EC07 - Échographie des tissus mous",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
