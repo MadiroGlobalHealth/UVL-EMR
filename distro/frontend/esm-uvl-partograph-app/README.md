@@ -40,6 +40,7 @@ in the sheet's order and share one time axis; each has its own legend and axis l
 | 7 | Pouls | 40–180 /min | pulse line |
 | 8 | Tension artérielle | 40–200 mmHg | a bar from diastolic to systolic |
 | 9 | Température | 35–43 °C | temperature line |
+| 10 | Urine | rows | « Prot. », « Acét. » (dipstick codes) and « Vol. » (ml) at each reading time; hidden when none of the three concepts is configured (#832, `1.3.0`) |
 
 A value outside a scale (the form accepts, for example, an FHR of 40–250) widens that panel's
 scale rather than being cut off.
@@ -111,7 +112,8 @@ gives, under the key **`@madiro/uvl-partograph`**:
 
 - `encounterTypeUuid`;
 - `concepts`, one per form question;
-- `liquorCodes` and `mouldingCodes`.
+- `liquorCodes` and `mouldingCodes`;
+- `urineCodes`, the codes written in the Urine row for the protein and acetone answers (Nég, Tr, +, ++, +++). The concepts `urineProtein`, `urineAcetone` and `urineVolume` each give one sub-row; an answer with no code shows its concept name.
 
 Without `encounterTypeUuid` the card renders nothing.
 

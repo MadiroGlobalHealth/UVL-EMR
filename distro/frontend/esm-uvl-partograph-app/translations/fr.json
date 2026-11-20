@@ -46,5 +46,10 @@
   "temperatureCelsius": "Température (°C)",
   "timeAxisNote": "L'heure 00 ({{origin}}) est le point de la ligne d'alerte à 4 cm ; chaque heure porte l'heure de l'horloge.",
   "timePoint": "Moment",
+  "urine": "Urine",
+  "urineAcetoneShort": "Acét.",
+  "urineNote": "Protéines et acétone : Nég négatif, Tr traces, + ++ +++ résultat de la bandelette. Volume en ml.",
+  "urineProteinShort": "Prot.",
+  "urineVolumeShort": "Vol.",
   "whoLinesNote": "Ligne d'alerte : de 4 cm à l'heure 00 à 10 cm à l'heure 06 (1 cm par heure). Ligne d'action : de 4 cm à l'heure 04 à 10 cm à l'heure 10."
 }

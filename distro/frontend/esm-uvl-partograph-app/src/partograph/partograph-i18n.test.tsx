@@ -1,6 +1,6 @@
 import React from 'react';
 import { describe, expect, it, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import { useConfig, useOpenmrsFetchAll } from '@openmrs/esm-framework';
 import i18next from 'i18next';
 import fr from '../../translations/fr.json';
@@ -18,7 +18,12 @@ const config = {
   labourGapHours: 24,
   minimumHours: 12,
   showWhenEmpty: false,
-  concepts: { cervicalDilatation: 'dilatation' },
+  concepts: {
+    cervicalDilatation: 'dilatation',
+    urineProtein: 'urine-protein',
+    urineAcetone: 'urine-acetone',
+    urineVolume: 'urine-volume',
+  },
   liquorCodes: [],
   mouldingCodes: [],
 };
@@ -58,5 +63,18 @@ describe('PartographChart in French, with i18next', () => {
     render(<PartographChart patientUuid="patient-uuid" />);
 
     expect(screen.getByText('Première lecture 04/11/2026 11:00 · 2 lectures · dernière 04/11 14:25')).toBeInTheDocument();
+  });
+
+  it('labels the urine row as the paper sheet does', async () => {
+    i18n.instance = i18next.createInstance();
+    await i18n.instance.init({ lng: 'fr', resources: { fr: { translation: fr } } });
+    withEncounters(['2026-11-04T11:00:00.000+0000']);
+
+    render(<PartographChart patientUuid="patient-uuid" />);
+
+    const urine = screen.getByRole('img', { name: 'Urine' });
+    for (const label of ['Prot.', 'Acét.', 'Vol.']) {
+      expect(within(urine).getByText(label)).toBeInTheDocument();
+    }
   });
 });

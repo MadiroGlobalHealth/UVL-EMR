@@ -66,9 +66,13 @@ export const configSchema = {
     amnioticFluid: concept('Amniotic fluid (coded)'),
     headMoulding: concept('Head moulding (coded)'),
     medicationsGiven: concept('Medications given (text)'),
+    urineProtein: concept('Urine protein, dipstick (coded). Without it, with the next two, the Urine row is hidden'),
+    urineAcetone: concept('Urine acetone (ketones), dipstick (coded)'),
+    urineVolume: concept('Urine volume (ml)'),
   },
   liquorCodes: codeMapping('Amniotic fluid answers and their partograph codes (I, C, M, B)'),
   mouldingCodes: codeMapping('Head moulding answers and their partograph codes (0, +, ++, +++)'),
+  urineCodes: codeMapping('Urine protein and acetone dipstick answers and the codes written in the Urine row'),
   readingFormUuid: {
     _type: Type.UUID,
     _default: '',
@@ -122,6 +126,7 @@ export interface PartographConfig {
   concepts: PartographConcepts;
   liquorCodes: Array<CodeMapping>;
   mouldingCodes: Array<CodeMapping>;
+  urineCodes: Array<CodeMapping>;
   readingFormUuid: string;
   surveillance: SurveillanceConfig;
 }
