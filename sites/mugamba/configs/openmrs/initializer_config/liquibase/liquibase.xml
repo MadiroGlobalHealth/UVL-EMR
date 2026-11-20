@@ -3126,6 +3126,56 @@
     </changeSet>
 
     <!--
+        #799 - the two beds of « Soins intensifs » (product owner, 19 Nov 2026: « 2 beds in Soins
+        intensifs, but Césarienne is only the place of operation. After C-section the patients go
+        to Gynéco-obstétrique. »). « Salle de césarienne » therefore gets no bed.
+
+        They are L1 and L2, the ward bed codes of stay_beds_codes_l-20261115, and their type is
+        « Soins intensifs », so a night in one is billed « Lit de soins intensifs (par nuit) » at
+        the rate set in Odoo (EIP_INPATIENT_STAY_BED_TYPE_PRODUCTS), not the shared room rate. A
+        bed on a ventilator is set per bed in the bed management app (« Soins intensifs sous
+        respirateur »), as a semi-private bed is.
+
+        Fixed uuids, and a « Soins intensifs » that already has a bed (created in the bed
+        management app) is left alone, so beds are never doubled. The location and the bed type
+        exist on UAT and production since #246; on a new database the Initializer creates the
+        location after Liquibase, so the changeset waits (onFail CONTINUE) and runs on the next
+        start, as stay_beds_vip-20261115.
+    -->
+    <changeSet id="stay_beds_soins_intensifs-20261119" author="Joshua">
+        <preConditions onFail="CONTINUE" onError="CONTINUE"
+                       onFailMessage="WARN (#799): location 2948f709-8458-40f2-88c0-54f568f0abf7 (Soins intensifs) or the « Soins intensifs » bed type does not exist yet, so its beds were NOT created; this changeset is retried on every start.">
+            <sqlCheck expectedResult="1">
+                SELECT COUNT(*) FROM location WHERE uuid = '2948f709-8458-40f2-88c0-54f568f0abf7' AND retired = 0
+            </sqlCheck>
+            <sqlCheck expectedResult="1">
+                SELECT COUNT(*) FROM bed_type WHERE uuid = '9fceca39-6da6-4588-968c-044c17908f29'
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            2 beds in Soins intensifs, bed type Soins intensifs (#799).
+        </comment>
+        <sql>
+            INSERT INTO bed (bed_number, status, bed_type_id, uuid, creator, date_created, voided)
+            SELECT v.bed_number, 'AVAILABLE', bt.bed_type_id, v.uuid, 1, NOW(), 0
+              FROM (SELECT 'L1' AS bed_number, '8dbaf531-cd2c-4129-bc84-ab0a7c68f992' AS uuid
+                    UNION ALL SELECT 'L2', 'e05bc228-da7e-47a7-819b-2c0daa6035cb') v
+              JOIN bed_type bt ON bt.uuid = '9fceca39-6da6-4588-968c-044c17908f29'
+             WHERE NOT EXISTS (SELECT 1 FROM bed b WHERE b.uuid = v.uuid)
+               AND NOT EXISTS (SELECT 1 FROM bed_location_map m JOIN location l ON l.location_id = m.location_id
+                                WHERE l.uuid = '2948f709-8458-40f2-88c0-54f568f0abf7' AND m.bed_id IS NOT NULL);
+
+            INSERT INTO bed_location_map (location_id, bed_row_number, bed_column_number, bed_id)
+            SELECT l.location_id, 1, CAST(SUBSTRING(b.bed_number, 2) AS UNSIGNED), b.bed_id
+              FROM bed b
+              JOIN location l ON l.uuid = '2948f709-8458-40f2-88c0-54f568f0abf7'
+             WHERE b.uuid IN ('8dbaf531-cd2c-4129-bc84-ab0a7c68f992', 'e05bc228-da7e-47a7-819b-2c0daa6035cb')
+               AND NOT EXISTS (SELECT 1 FROM bed_location_map m WHERE m.bed_id = b.bed_id);
+        </sql>
+        <rollback/>
+    </changeSet>
+
+    <!--
         #246 - repair of the beds bedmanagement 6.2.0-SNAPSHOT rewrote. Its unassign path (every
         transfer, every bed change, the Ward app's « remove from bed ») saved a Bed built from only
         the bed number and id, so the bed the patient LEFT got a new uuid, a new creator and
@@ -3248,6 +3298,37 @@
     </changeSet>
 
     <!--
+        #797 - a stock item for Carbamazepine Comprimé 200mg, the tablet the central pharmacy counted
+        in its opening stock: the product owner read the box on 19 Nov 2026 (200 mg; OpenMRS had the
+        400 mg only, and that one has no stock item). Its drug is drugs/uvl-drugs-issue797.csv (and
+        Odoo product_variant/uvl-drugs-issue797.csv), on the Carbamazepine concept the 400 mg drug
+        uses. Counted per Comprimé. Waits for the drug as the #457 and #776 seeds do.
+    -->
+    <changeSet id="add_stock_item_carbamazepine_200mg-20261119" author="Joshua">
+        <preConditions onFail="CONTINUE" onError="CONTINUE"
+                       onFailMessage="WARN (#797): the drug Carbamazepine Comprimé 200mg or the Comprimé unit does not exist yet (drugs or OCL not loaded), or the stockmanagement tables are missing, so its stock item was NOT created; this changeset is retried on every start.">
+            <tableExists tableName="stockmgmt_stock_item"/>
+            <tableExists tableName="stockmgmt_stock_item_packaging_uom"/>
+            <columnExists tableName="stockmgmt_stock_item" columnName="common_name"/>
+            <sqlCheck expectedResult="1">
+                SELECT COUNT(DISTINCT uuid) FROM drug
+                 WHERE uuid IN ('a4e0ea16-0744-5fb7-871a-e3674ab87895')
+            </sqlCheck>
+            <sqlCheck expectedResult="1">
+                SELECT COUNT(DISTINCT uuid) FROM concept
+                 WHERE uuid IN ('391d2a1b-2aec-4bd7-b43b-e294e7f2b9b9')
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            Create a stock item for Carbamazepine Comprimé 200mg (#797).
+        </comment>
+        <sqlFile path="sql/stock_items_carbamazepine_200mg.sql" relativeToChangelogFile="true" stripComments="true"/>
+        <rollback>
+            <sqlFile path="sql/stock_items_carbamazepine_200mg_rollback.sql" relativeToChangelogFile="true" stripComments="true"/>
+        </rollback>
+    </changeSet>
+
+    <!--
         #776 - the product owner's answers of 18 Nov 2026 on the opening-stock count.
         Anamol Sirop is counted per 100 ml bottle and Cimetidine Injection 200mg/2ml per ampoule,
         not per millilitre: their stock and dispensing unit become Flacon and Ampoule, as the
@@ -3348,6 +3429,38 @@
              GROUP BY u.person_id;
         </sql>
         <rollback/>
+    </changeSet>
+
+    <!--
+        #796 - stock items for the three medicines #787 made load again: Aerius Sirop 2.5mg/5ml 60ml,
+        counted per bottle, and Aerius Comprimé and Desloratadine Comprimé 5mg, counted per tablet,
+        the units of the Deslova items of the same medicine. Without a stock item they could be
+        prescribed but, with stock dispensing on, not dispensed or billed. Their drugs are in
+        drugs/uvl-drugs.csv. Items only: no batch and no quantity, the opening count of these three
+        is still to come from the pharmacy. Waits for the drugs as the #457 seed does.
+    -->
+    <changeSet id="add_stock_items_aerius_desloratadine-20261119" author="Joshua">
+        <preConditions onFail="CONTINUE" onError="CONTINUE"
+                       onFailMessage="WARN (#796): the drugs Aerius Sirop 2.5mg/5ml 60ml, Aerius Comprimé and Desloratadine Comprimé 5mg or their units do not exist yet (drugs or OCL not loaded), or the stockmanagement tables are missing, so their stock items were NOT created; this changeset is retried on every start.">
+            <tableExists tableName="stockmgmt_stock_item"/>
+            <tableExists tableName="stockmgmt_stock_item_packaging_uom"/>
+            <columnExists tableName="stockmgmt_stock_item" columnName="common_name"/>
+            <sqlCheck expectedResult="3">
+                SELECT COUNT(DISTINCT uuid) FROM drug
+                 WHERE uuid IN ('aa2cc0d6-2c0e-401b-9d77-f68771061a3d', 'df92def0-857f-4b6e-ae3f-e20ab0cf5298', '127fa80c-ff57-48d8-b643-869217524ced')
+            </sqlCheck>
+            <sqlCheck expectedResult="2">
+                SELECT COUNT(DISTINCT uuid) FROM concept
+                 WHERE uuid IN ('04144d11-cfed-4930-8ffc-f1b8be92440b', '391d2a1b-2aec-4bd7-b43b-e294e7f2b9b9')
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            Create a stock item for Aerius Sirop 2.5mg/5ml 60ml, Aerius Comprimé and Desloratadine Comprimé 5mg (#796).
+        </comment>
+        <sqlFile path="sql/stock_items_aerius_desloratadine.sql" relativeToChangelogFile="true" stripComments="true"/>
+        <rollback>
+            <sqlFile path="sql/stock_items_aerius_desloratadine_rollback.sql" relativeToChangelogFile="true" stripComments="true"/>
+        </rollback>
     </changeSet>
 
 </databaseChangeLog>

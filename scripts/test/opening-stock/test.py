@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Tests scripts/opening-stock.py (#457, #773, #776) on a small made-up count file, and checks that the
+Tests scripts/opening-stock.py (#457, #773, #776, #797) on a small made-up count file, and checks that the
 product matching (sites/mugamba/requirements/opening-stock-matching.csv) only names stock items
 the Liquibase seeds create, so the same matching holds on every server. The server side of apply
 (unit check by concept, stock scope check) runs against a fake stockmanagement REST API.
@@ -264,11 +264,6 @@ class AnsweredLines776(unittest.TestCase):
                     '60,X,,,import,u,X,Flacon,high,test\n')
         self.assertIn('x', os_.load_matching(matching))
 
-    def test_only_the_two_other_lines_of_the_issue_stay_to_confirm(self):
-        with open(os_.DEFAULT_MATCHING, newline='', encoding='utf-8') as f:
-            rows = {r['row']: r for r in csv.DictReader(f)}
-        self.assertEqual((rows['52']['status'], rows['108']['status']), ('confirm', 'confirm'))
-
 
 class AnsweredSeeds776(unittest.TestCase):
     """#776: the two new items, the two unit changes and the two new drugs fit together."""
@@ -339,6 +334,89 @@ class AnsweredSeeds776(unittest.TestCase):
         self.assertEqual(changeset.count('expectedResult="0"'), 2)
         # a packaging unit that something refers to is never rewritten in place
         self.assertIn('NOT EXISTS (SELECT 1 FROM stockmgmt_stock_item_transaction', seed)
+
+
+class AnsweredLines797(unittest.TestCase):
+    """#797: the two lines the product owner answered on 19 Nov 2026 from the boxes. Carbamazepine is a new
+    200 mg tablet (drug, Odoo product, stock item); Dicytam is the existing 500 mg tablet. Both keep the
+    expiry of the count file."""
+
+    DRUG, ITEM, UNIT = 'a4e0ea16-0744-5fb7-871a-e3674ab87895', '2a3155b3-f014-5f3f-bc51-a5fb11755eb9', '391d2a1b-2aec-4bd7-b43b-e294e7f2b9b9'
+    NAME = 'Carbamazepine Comprimé 200mg'
+    ANSWERS = {
+        # produit: (worksheet row, stock item uuid, stock item, lot, expiry of the file, quantity)
+        'CARBAMAZEPINE cp': (52, ITEM, NAME, '5815145A', datetime.date(2028, 9, 30), 330),
+        'DICYTAM gel': (108, '74cf1542-770f-58df-b93a-311e9386993c', 'Dicytam Comprimé 500mg', 'EYT-102501', datetime.date(2028, 9, 30), 2000),
+    }
+    INIT = os.path.join(LIQUIBASE, '..')
+
+    def test_planned_as_entered_with_the_expiry_of_the_file(self):
+        d = tempfile.mkdtemp()
+        path = os.path.join(d, 'stock.xlsx')
+        rows = [['N°', 'PRODUIT', 'Forme', 'Dosage', 'N° de Lot', 'Date de peremption', 'Stock', 'Prix Unitaire']]
+        for p, (_, _, _, lot, exp, qty) in self.ANSWERS.items():
+            rows.append([1.0, p, None, None, lot, serial(exp), float(qty), 1.0])
+        xlsx(path, rows)
+        file = os_.file_lines(os_.read_xlsx(path))
+        for line, p in zip(file, self.ANSWERS):
+            line['row'] = self.ANSWERS[p][0]
+        entries = os_.plan(file, os_.load_matching(os_.DEFAULT_MATCHING), datetime.date(2026, 11, 19))
+        self.assertEqual(len(entries), 2)
+        for e in entries:
+            row, uuid, name, lot, exp, qty = self.ANSWERS[e['line']['produit']]
+            m = e['match']
+            self.assertTrue(e['entered'], (e['line']['produit'], e['note']))
+            self.assertEqual((m['row'], m['stock_item_uuid'], m['stock_item'], m['stock_item_unit']), (str(row), uuid, name, 'Comprimé'))
+            self.assertEqual((m['status'], m['confidence'], m.get('expiry') or ''), ('import', 'high', ''))  # no override
+            self.assertTrue(m['reason'].startswith('product owner, 19 Nov 2026'), m['reason'])
+            self.assertEqual((e['lot'], e['qty'], e['expiry'], e['date_note']), (lot, qty, exp, ''))
+
+    def test_dicytam_is_the_existing_tablet_item(self):
+        seed = read(os.path.join(LIQUIBASE, 'sql', 'stock_items_catalogue_alignment.sql'))
+        self.assertIn("'75264f61-a28e-4670-aa0c-1fdaf148207e', '%s', 1, '74cf1542-770f-58df-b93a-311e9386993c'" % self.UNIT, seed)
+
+    def test_new_drug_follows_the_400mg_one_in_openmrs_and_odoo(self):
+        with open(os.path.join(self.INIT, 'drugs', 'uvl-drugs-issue797.csv'), newline='', encoding='utf-8') as f:
+            new = list(csv.DictReader(f))
+        with open(os.path.join(self.INIT, 'drugs', 'uvl-drugs.csv'), newline='', encoding='utf-8') as f:
+            old = next(r for r in csv.DictReader(f) if r['Name:fr'] == 'Carbamazepine Comprimé 400mg')
+        self.assertEqual(len(new), 1)
+        self.assertEqual(new[0], dict(old, Uuid=self.DRUG, Strength='200mg', Name='Carbamazepine 200mg Tablet', **{'Name:fr': self.NAME}))
+        odoo = os.path.join(ROOT, 'sites', 'mugamba', 'configs', 'odoo', 'initializer_config', 'product_variant', 'uvl-drugs.csv')
+        with open(odoo, newline='', encoding='utf-8') as f:
+            products = {r['name']: r for r in csv.DictReader(f)}
+        self.assertEqual(products[self.NAME], dict(products['Carbamazepine Comprimé 400mg'], id='init.' + self.DRUG, name=self.NAME))
+        self.assertNotIn('lst_price', products[self.NAME])  # Finance enters the price in Odoo
+
+    def test_its_concept_is_in_an_ocl_export(self):
+        """No new concept: the drug loads only if the Carbamazepine concept comes with an OCL export in the
+        repository (a drugs CSV that fails its first load keeps its checksum)."""
+        import json
+        with open(os.path.join(self.INIT, 'drugs', 'uvl-drugs-issue797.csv'), newline='', encoding='utf-8') as f:
+            concept = next(csv.DictReader(f))['Concept Drug']
+        found = []
+        for path in glob.glob(os.path.join(self.INIT, 'ocl', '*.zip')):
+            with zipfile.ZipFile(path) as z:
+                found += [c for c in json.load(z.open('export.json'))['concepts'] if c['external_id'] == concept]
+        self.assertTrue(found)
+        for c in found:
+            self.assertEqual((c['concept_class'], c['retired']), ('Drug', False))
+            self.assertIn('Carbamazepine', [n['name'] for n in c['names']])
+
+    def test_stock_item_and_its_changeset(self):
+        seed = read(os.path.join(LIQUIBASE, 'sql', 'stock_items_carbamazepine_200mg.sql'))
+        rollback = read(os.path.join(LIQUIBASE, 'sql', 'stock_items_carbamazepine_200mg_rollback.sql'))
+        changelog = read(os.path.join(LIQUIBASE, 'liquibase.xml'))
+        self.assertEqual(changelog.count('id="add_stock_item_carbamazepine_200mg-20261119"'), 1)
+        start = changelog.index('id="add_stock_item_carbamazepine_200mg-20261119"')
+        changeset = changelog[start:changelog.index('</changeSet>', start)]
+        self.assertIn("'%s', '%s', 1, '%s'" % (self.DRUG, self.UNIT, self.ITEM), seed)
+        self.assertIn("'%s'" % self.NAME, seed)
+        self.assertIn(self.ITEM, rollback)
+        self.assertIn(self.DRUG, changeset)  # waits for the drug
+        self.assertIn(self.UNIT, changeset)  # and for the Comprimé unit
+        self.assertIn('onFail="CONTINUE"', changeset)
+        self.assertIn('stock_items_carbamazepine_200mg_rollback.sql', changeset)
 
 
 class FakeServer:

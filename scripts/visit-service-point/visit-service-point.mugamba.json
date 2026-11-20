@@ -1,0 +1,25 @@
+{
+  "_comment": "UVL Mugamba metadata for visit_service_point.py (UVL-EMR#222). Every uuid is checked on the server before anything is read or written. Sources: sites/mugamba initializer_config (locations, encountertypes), OpenMRS core (Unknown Location), and the visits report (Patient_Analytics_Query_V4.yaml) for the consultation types and their order.",
+  "consultationEncounterTypes": [
+    {"uuid": "0ff55309-1897-476b-a647-c7c180b102c8", "label": "Outpatient Consultation (preferred)"},
+    {"uuid": "43f383ec-90fd-4273-be45-9c1906dda9aa", "label": "Inpatient Consultation"}
+  ],
+  "notAService": [
+    {"uuid": "BB9C7BDC-E654-060E-5E6C-4EEF309C7A04", "label": "Accueil-Triage (REG-TRI)"},
+    {"uuid": "EBE3BE01-BA1C-0FDD-0B19-9DB2F07EA7DB", "label": "Caisse (BIL)"},
+    {"uuid": "D2C9F784-6537-EDBC-FD0E-860C2931D0A3", "label": "Laboratoire (LAB)"},
+    {"uuid": "DE75F927-AC03-1C74-4A09-9216194B2A1A", "label": "Pharmacie (Rx)"},
+    {"uuid": "c5d8ef5b-a109-4681-0d7c-9fecb1f2da08", "label": "Pharmacie - Dispensation (Rx-DISP)"},
+    {"uuid": "7b6364f2-c2e8-432c-92e9-e560feec7e28", "label": "Pharmacie - Dispensation Box 1 (Rx-DISP-1)"},
+    {"uuid": "068b1fde-3394-4e12-9108-e61f329c9f18", "label": "Pharmacie - Dispensation Box 2 (Rx-DISP-2)"},
+    {"uuid": "b7824502-1d56-4203-9ece-62ec69487263", "label": "Pharmacie - Dispensation Box 3 (Rx-DISP-3)"},
+    {"uuid": "C458A0DB-A405-4DBC-96D2-F95B46EBDA43", "label": "Salle d'imagerie (X-Ray)"},
+    {"uuid": "8d6c993e-c2cc-11de-8d13-0010c6dffd0f", "label": "Unknown Location"}
+  ],
+  "ignored": [
+    {"uuid": "450be362-59a7-4ccd-964d-ebd930a8b30f", "label": "Locations test (test data, left out of the reports)"}
+  ],
+  "windowDays": 30,
+  "minShare": 0.9,
+  "minEvidence": 5
+}
