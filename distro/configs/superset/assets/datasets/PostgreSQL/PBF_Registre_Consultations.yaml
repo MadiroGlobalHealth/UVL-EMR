@@ -68,12 +68,11 @@ sql: "WITH opd AS (\n    SELECT\n        e.encounter_id,\n        e.encounter_uu
   \ ed.encounter_id\n    LEFT JOIN concepts c\n           ON c.concept_id = ed.diagnosis_coded\n\
   \          AND c.locale = 'en'\n    WHERE COALESCE(ed.voided, false) = false\n \
   \     AND UPPER(ed.certainty) = 'CONFIRMED'\n    GROUP BY ed.encounter_id\n),\n\
-  chronic AS (\n    -- MALADIE_CHRONIQUE: the patient's condition list (OpenMRS Conditions),\
-  \ active on the consultation date\n    SELECT\n        opd.encounter_uuid,\n   \
-  \     STRING_AGG(DISTINCT COALESCE(cc.name, c.condition_non_coded), '; ') AS chronic\n\
+  chronic AS (\n    -- MALADIE_CHRONIQUE: 'Oui' when the patient's condition list (OpenMRS Conditions)\
+  \ has a condition active on the consultation date, 'Non' otherwise\n    SELECT\n        opd.encounter_uuid,\n   \
+  \     'Oui' AS chronic\n\
   \    FROM opd\n    JOIN patients pc ON pc.patient_uuid = opd.patient_uuid\n    JOIN\
-  \ conditions c ON c.patient_id = pc.patient_id\n    LEFT JOIN concepts cc ON cc.concept_id\
-  \ = c.condition_coded AND cc.locale = 'en'\n    WHERE COALESCE(c.voided, false)\
+  \ conditions c ON c.patient_id = pc.patient_id\n    WHERE COALESCE(c.voided, false)\
   \ = false\n      AND (c.onset_date IS NULL OR CAST(c.onset_date AS DATE) <= opd.consult_date)\n\
   \      AND (CAST(c.end_date AS DATE) >= opd.consult_date\n           OR (c.end_date\
   \ IS NULL AND UPPER(COALESCE(c.clinical_status, 'ACTIVE')) NOT IN ('INACTIVE', 'RESOLVED',\
@@ -181,7 +180,7 @@ sql: "WITH opd AS (\n    SELECT\n        e.encounter_id,\n        e.encounter_uu
   \        AS \"ASSURANCE COMPLEMENTAIRE\",\n    COALESCE(r.\"NOUVEAU_CAS\", 'Non\
   \ renseign\xE9')\n        AS \"NOUVEAU_CAS\",\n    COALESCE(r.\"EVOLUTION\", 'Non\
   \ renseign\xE9')\n        AS \"EVOLUTION\",\n    COALESCE(r.\"MALADIE_CHRONIQUE\"\
-  , 'Non renseign\xE9')\n        AS \"MALADIE_CHRONIQUE\",\n    r.\"DATE DE CONSULTATION\"\
+  , 'Non')\n        AS \"MALADIE_CHRONIQUE\",\n    r.\"DATE DE CONSULTATION\"\
   \n        AS \"DATE DE CONSULTATION\",\n    COALESCE(r.\"SERVICE\", 'Non renseign\xE9\
   ')\n        AS \"SERVICE\",\n    COALESCE(r.\"TRANCHE D'AGE\", 'Non renseign\xE9\
   ')\n        AS \"TRANCHE D'AGE\",\n    r.\"ID CONSULTATION\"\n        AS \"ID CONSULTATION\"\
