@@ -1437,6 +1437,11 @@ Merged to UVL-EMR `main` and verified on UAT. **Not in production.**
 - ~~When several orders are signed together, OpenMRS's own billing module can log "Duplicate entry …
   for key cashier_bill_receipt_number_idx".~~ Fixed by billing 2.4.0 (#840). Orders already left without a bill stay
   without one: `scripts/billing/orders-without-bill.sql` lists them. Odoo billing was unaffected.
+- **The first orders signed together after an OpenMRS start can miss their OpenMRS bill** (« Cannot invoke
+  …getGroupingType() because "this.model" is null » in the log). The billing module sets up its receipt
+  number generator on first use with no lock, so a burst that is the first billing since the start can use
+  it before it is ready; seen on UAT, 2 orders of 260. Present in billing 2.3.0 to 2.5.0. One single billable
+  order placed after each start avoids it. Odoo billing is unaffected. (#846)
 - **H. pylori and albuminuria** can be billed but not yet ordered or resulted: H. pylori's test method
   (serology or stool antigen) and the albuminuria result fields wait for the product owner. (#371)
 - Vitals from the chart box are saved without a visit when the user's location differs from the
