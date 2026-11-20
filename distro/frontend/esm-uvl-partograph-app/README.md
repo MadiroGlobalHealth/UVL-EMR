@@ -174,7 +174,18 @@ patient chart's right-hand panel, like the Visit Note, instead of from the clini
   patient. The form entry workspace's own revalidation filters SWR keys by URL, and SWR skips
   `useSWRInfinite` keys (those of `useOpenmrsFetchAll`) in such filters. Without the event, the chart
   kept its old readings until the page was reloaded. A reading saved from elsewhere (editing an
-  encounter) shows the next time the summary is opened.
+  encounter in the visit's encounter list) shows the next time the summary is opened.
+
+## Editing a saved reading
+
+Since [#825](https://github.com/MadiroGlobalHealth/UVL-EMR/issues/825) (`1.2.0`) the card ends with
+« Modifier une lecture »: every reading of the current labour, newest first, with an « Edit » button.
+It shows only with `Edit Partograph Reading` (the encounter type's edit privilege) and `readingFormUuid`.
+The button opens `uvl-partograph-reading-workspace`, the same workspace as the side-panel button, on
+that encounter (`encounterUuid`), as the visit's encounter list does for « Modifier »; it needs no
+visit. The form saves over the encounter (OpenMRS records changed-by and date-changed) and its
+`handlePostResponse` sends `uvl-partograph-reading-saved`, so the chart redraws. The visit's encounter
+list keeps its own « Modifier » (the same privilege; `encounterEditableDuration` is unset, so no time limit).
 
 ## 24-hour surveillance table
 
