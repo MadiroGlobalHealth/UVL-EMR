@@ -814,7 +814,8 @@
         "visitEndedSaveToSaveInIt": "La visite a été clôturée le {{- stopDatetime}}. Le formulaire est conservé : cliquez à nouveau sur « Enregistrer » pour l'enregistrer dans cette visite.",
         "textNotPickedFromList": "« {{- text}} » n'est pas enregistré : choisissez une entrée de la liste, ou videz le champ",
         "valueAboveAcceptedMaximum": "Une valeur dépasse le maximum accepté pour sa question : vérifiez les nombres saisis dans le formulaire",
-        "valueBelowAcceptedMinimum": "Une valeur est inférieure au minimum accepté pour sa question : vérifiez les nombres saisis dans le formulaire"
+        "valueBelowAcceptedMinimum": "Une valeur est inférieure au minimum accepté pour sa question : vérifiez les nombres saisis dans le formulaire",
+        "encounterDatetimeOutsideVisit": "La date du formulaire est en dehors de sa visite (la visite est terminée, ou la date précède son début). Choisissez une date comprise dans la visite, ou démarrez une nouvelle visite."
       }
     }
   },
