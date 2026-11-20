@@ -1,4 +1,4 @@
--- #795: rollback of sql/stock_items_795.sql (changeset add_stock_items_795-20261120).
+-- #795: rollback of sql/stock_items_795.sql (changeset add_stock_items_795-20261120b).
 --
 -- Removes the stock items that file created, by its fixed uuid, with its packaging unit.
 -- An item the pharmacy has already used (any batch or transaction) is left in place.

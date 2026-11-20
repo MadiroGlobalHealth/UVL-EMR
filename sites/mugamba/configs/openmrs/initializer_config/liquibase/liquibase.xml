@@ -3468,9 +3468,11 @@
         (counted per Comprimé, as Ataktan 100mg) and Contam Gélule 500mg (per Gélule; the suspension
         is counted in millilitres). Their drugs are drugs/uvl-drugs-issue795.csv (and Odoo
         product_variant/uvl-drugs.csv), on the concepts of their siblings. Waits for the drugs as the
-        #797 seed does.
+        #797 seed does. Id with a « b »: the first version (-20261120) had no INSERT into
+        stockmgmt_stock_item and was recorded EXECUTED on UAT having created nothing; it was removed,
+        and this one runs once on a server that ran it and on one that did not (the SQL is idempotent).
     -->
-    <changeSet id="add_stock_items_795-20261120" author="Joshua">
+    <changeSet id="add_stock_items_795-20261120b" author="Joshua">
         <preConditions onFail="CONTINUE" onError="CONTINUE"
                        onFailMessage="WARN (#795): the drugs Ataktan Comprimé 50mg and Contam Gélule 500mg, or the Comprimé and Gélule units, do not exist yet (drugs or OCL not loaded), or the stockmanagement tables are missing, so their stock items were NOT created; this changeset is retried on every start.">
             <tableExists tableName="stockmgmt_stock_item"/>

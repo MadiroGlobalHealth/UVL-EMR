@@ -16,6 +16,10 @@ import importlib.util
 import io
 import os
 import tempfile
+import re
+import shutil
+import subprocess
+import time
 import unittest
 import uuid as uuid_
 import zipfile
@@ -468,8 +472,8 @@ class NewItems795(unittest.TestCase):
         seed = read(os.path.join(LIQUIBASE, 'sql', 'stock_items_795.sql'))
         rollback = read(os.path.join(LIQUIBASE, 'sql', 'stock_items_795_rollback.sql'))
         changelog = read(os.path.join(LIQUIBASE, 'liquibase.xml'))
-        self.assertEqual(changelog.count('id="add_stock_items_795-20261120"'), 1)
-        start = changelog.index('id="add_stock_items_795-20261120"')
+        self.assertEqual(changelog.count('id="add_stock_items_795-20261120b"'), 1)
+        start = changelog.index('id="add_stock_items_795-20261120b"')
         changeset = changelog[start:changelog.index('</changeSet>', start)]
         self.assertEqual(seed.count("', 1, '"), len(self.STOCKED))
         for name, unit in self.STOCKED.items():
@@ -482,6 +486,23 @@ class NewItems795(unittest.TestCase):
         self.assertIn('onFail="CONTINUE"', changeset)
         self.assertIn('stock_items_795_rollback.sql', changeset)
 
+    def test_seed_inserts_the_stock_items(self):
+        """The first version of the seed (UAT build b50-four) kept its temp table, the packaging unit INSERT
+        and the UPDATE but lost the INSERT into stockmgmt_stock_item, so it created nothing and the changeset
+        still ran EXECUTED. test_stock_items_and_their_changeset only looked for the seed's values and the
+        uuids in the rollback, never for the statements that write the items: this one checks them, and
+        the MariaDB test below runs them."""
+        seed = re.sub(r'--[^\n]*', '', read(os.path.join(LIQUIBASE, 'sql', 'stock_items_795.sql')))
+        statements = [' '.join(x.split()) for x in seed.split(';') if x.strip()]
+        kinds = [x.split(' (')[0].split(' SELECT')[0].split(' SET')[0] for x in statements]
+        self.assertEqual(kinds, ['CREATE TEMPORARY TABLE uvl_stock_item_seed',
+                                 'INSERT INTO uvl_stock_item_seed',
+                                 'INSERT INTO stockmgmt_stock_item',
+                                 'INSERT INTO stockmgmt_stock_item_packaging_uom',
+                                 'UPDATE stockmgmt_stock_item si JOIN uvl_stock_item_seed s ON s.stock_item_uuid = si.uuid JOIN stockmgmt_stock_item_packaging_uom p ON p.uuid = s.packaging_uom_uuid',
+                                 'DROP TEMPORARY TABLE uvl_stock_item_seed'])
+
+
     def test_concepts_are_in_an_ocl_export(self):
         import json
         wanted = {r['Concept Drug'] for r in self.rows('drugs', 'uvl-drugs-issue795.csv')}
@@ -491,6 +512,96 @@ class NewItems795(unittest.TestCase):
                 found |= {c['external_id'] for c in json.load(z.open('export.json'))['concepts'] if not c['retired']}
         self.assertEqual(wanted - found, set())
 
+
+@unittest.skipUnless(shutil.which('docker'), 'needs docker for a throwaway MariaDB')
+class SeedOnMariaDB795(unittest.TestCase):
+    """Runs the seed and its rollback (comments stripped, as Liquibase does) on a MariaDB with only the
+    tables they touch: the two items are created with their unit, a second run changes nothing, a server
+    where the first (empty) version ran gets the items too, and the rollback removes only unused items."""
+
+    IMAGE = 'mariadb:10.11'
+    SCHEMA = """
+    CREATE TABLE concept (concept_id INT AUTO_INCREMENT PRIMARY KEY, uuid CHAR(38) NOT NULL);
+    CREATE TABLE drug (drug_id INT AUTO_INCREMENT PRIMARY KEY, concept_id INT NOT NULL, uuid CHAR(38) NOT NULL);
+    CREATE TABLE stockmgmt_stock_item (stock_item_id INT AUTO_INCREMENT PRIMARY KEY, drug_id INT, concept_id INT,
+      item_type INT, is_drug TINYINT(1), has_expiration TINYINT(1), dispensing_unit_id INT, common_name VARCHAR(255),
+      dispensing_unit_packaging_uom_id INT NULL, default_stock_operations_uom_id INT NULL,
+      creator INT, date_created DATETIME, voided TINYINT(1), uuid CHAR(38) NOT NULL);
+    CREATE TABLE stockmgmt_stock_item_packaging_uom (stock_item_packaging_uom_id INT AUTO_INCREMENT PRIMARY KEY,
+      stock_item_id INT, packaging_uom_id INT, factor DOUBLE, creator INT, date_created DATETIME, voided TINYINT(1),
+      uuid CHAR(38) NOT NULL);
+    CREATE TABLE stockmgmt_stock_batch (stock_batch_id INT AUTO_INCREMENT PRIMARY KEY, stock_item_id INT);
+    CREATE TABLE stockmgmt_stock_item_transaction (stock_item_transaction_id INT AUTO_INCREMENT PRIMARY KEY, stock_item_id INT);
+    """
+    DRUGS = {'e19e9f80-b35b-592f-9e93-d29f9771c04b': 'Ataktan Comprimé 50mg', 'f9a6bad8-25ad-5156-871c-a5d789bc78c3': 'Contam Gélule 500mg'}
+    ITEMS = ('92731684-2c74-5f9a-a413-be8748ef6366', '78526bee-df0a-5d70-830e-1370c37055f9')
+    UNITS = ('391d2a1b-2aec-4bd7-b43b-e294e7f2b9b9', '94b2f0e7-0885-430f-8733-e2a93f03095d')
+
+    @classmethod
+    def setUpClass(cls):
+        cls.name = 'uvl795-mariadb-%d' % os.getpid()
+        out = subprocess.run(['docker', 'run', '-d', '--rm', '--name', cls.name, '-e', 'MARIADB_ROOT_PASSWORD=t', '-e', 'MARIADB_DATABASE=t', cls.IMAGE],
+                             capture_output=True, text=True)
+        if out.returncode:
+            raise unittest.SkipTest('cannot start ' + cls.IMAGE + ': ' + out.stderr.strip()[:200])
+        for _ in range(90):
+            if subprocess.run(['docker', 'exec', cls.name, 'mariadb', '-uroot', '-pt', '-e', 'SELECT 1'], capture_output=True).returncode == 0:
+                return
+            time.sleep(1)
+        cls.tearDownClass()
+        raise unittest.SkipTest('MariaDB did not start')
+
+    @classmethod
+    def tearDownClass(cls):
+        subprocess.run(['docker', 'rm', '-f', cls.name], capture_output=True)
+
+    def sql(self, text, query=False):
+        out = subprocess.run(['docker', 'exec', '-i', self.name, 'mariadb', '-uroot', '-pt', 't', '--default-character-set=utf8mb4', '-N', '-B'],
+                             input=text.encode('utf-8'), capture_output=True)
+        self.assertEqual(out.returncode, 0, out.stderr.decode())
+        return [tuple(l.split('\t')) for l in out.stdout.decode().splitlines()]
+
+    def file(self, name):
+        return re.sub(r'--[^\n]*', '', read(os.path.join(LIQUIBASE, 'sql', name)))
+
+    def setUp(self):
+        self.sql('DROP TABLE IF EXISTS concept, drug, stockmgmt_stock_item, stockmgmt_stock_item_packaging_uom, '
+                 'stockmgmt_stock_batch, stockmgmt_stock_item_transaction;' + self.SCHEMA)
+        self.sql("INSERT INTO concept (uuid) VALUES %s;" % ','.join("('%s')" % u for u in self.UNITS)
+                 + "".join("INSERT INTO concept (uuid) VALUES ('c-%s'); INSERT INTO drug (concept_id, uuid) VALUES (LAST_INSERT_ID(), '%s');" % (d[:8], d) for d in self.DRUGS))
+
+    def state(self):
+        return self.sql("SELECT si.uuid, d.uuid, si.common_name, c.uuid, si.has_expiration, p.uuid, p.factor, "
+                        "si.dispensing_unit_packaging_uom_id = p.stock_item_packaging_uom_id, si.default_stock_operations_uom_id = p.stock_item_packaging_uom_id "
+                        "FROM stockmgmt_stock_item si JOIN drug d ON d.drug_id = si.drug_id JOIN concept c ON c.concept_id = si.dispensing_unit_id "
+                        "LEFT JOIN stockmgmt_stock_item_packaging_uom p ON p.stock_item_id = si.stock_item_id ORDER BY si.uuid")
+
+    def test_creates_the_two_items_once(self):
+        self.assertEqual(self.state(), [])
+        self.sql(self.file('stock_items_795.sql'))
+        first = self.state()
+        self.assertEqual([r[0] for r in first], sorted(self.ITEMS))
+        by_item = {r[0]: r for r in first}
+        for item, drug, unit in zip(self.ITEMS, self.DRUGS, self.UNITS):
+            r = by_item[item]
+            self.assertEqual((r[1], r[2], r[3], r[4], r[6], r[7], r[8]), (drug, self.DRUGS[drug], unit, '1', '1', '1', '1'))
+        self.sql(self.file('stock_items_795.sql'))
+        self.assertEqual(self.state(), first)  # a second run changes nothing
+        self.assertEqual(self.sql('SELECT COUNT(*) FROM stockmgmt_stock_item'), [('2',)])
+
+    def test_a_server_that_ran_the_empty_version_gets_the_items(self):
+        """What the first version left on UAT: no item, hence no packaging unit (its INSERT joins the items)."""
+        broken = ''.join(x for x in re.split(r'(?<=;)', self.file('stock_items_795.sql')) if 'INSERT INTO stockmgmt_stock_item (' not in x)
+        self.sql(broken)
+        self.assertEqual(self.state(), [])
+        self.sql(self.file('stock_items_795.sql'))
+        self.assertEqual(len(self.state()), 2)
+
+    def test_rollback_removes_unused_items_only(self):
+        self.sql(self.file('stock_items_795.sql'))
+        self.sql("INSERT INTO stockmgmt_stock_batch (stock_item_id) SELECT stock_item_id FROM stockmgmt_stock_item WHERE uuid = '%s'" % self.ITEMS[1])
+        self.sql(self.file('stock_items_795_rollback.sql'))
+        self.assertEqual([r[0] for r in self.state()], [self.ITEMS[1]])  # the one with a batch stays
 
 class FakeServer:
     """The stockmanagement REST calls apply makes, with one stock location and its stock items."""
