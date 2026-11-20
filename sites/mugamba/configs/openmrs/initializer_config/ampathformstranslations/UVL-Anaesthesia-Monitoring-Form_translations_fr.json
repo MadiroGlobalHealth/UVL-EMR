@@ -1,0 +1,20 @@
+{
+  "uuid": "f4f0fa5c-ec50-4436-bfe5-32ff3551a9d5",
+  "form": "UVL Anaesthesia Monitoring Form",
+  "form_name_translation": "Surveillance pendant l'anesthésie",
+  "description": "Fr Translations for 'UVL Anaesthesia Monitoring Form'",
+  "language": "fr",
+  "translations": {
+    "Anaesthesia Monitoring": "Surveillance pendant l'anesthésie",
+    "Readings during the operation": "Mesures pendant l'opération",
+    "Reading": "Mesure",
+    "Time of reading": "Heure",
+    "Systolic BP (mmHg)": "TA Sys (mmHg)",
+    "Diastolic BP (mmHg)": "TA Dias (mmHg)",
+    "Pulse (/min)": "Pouls (/min)",
+    "Stage": "Stade",
+    "Respiration (/min)": "Respiration (/min)",
+    "SpO2 (%)": "Sa O2 (%)",
+    "Medication": "Médication"
+  }
+}

@@ -105,6 +105,11 @@
        and returns the readings only with its view privilege. Until #825 only Midwife and
        Inpatient Consultant (so Doctor) held the pair: a nurse could neither enter, see nor
        correct a reading.
+     - Anesthesist and Doctor record and correct the readings taken during an operation (#833, « UVL
+       Anaesthesia Monitoring Form »). As above, the forms panel offers the form only with its encounter
+       type's edit privilege (`Edit Anaesthesia Monitoring`), and the visit's encounter list offers
+       « Modifier » and returns the readings only with the pair; they are held by the roles that hold
+       the Anaesthesia Report pair.
      - Nurse and Midwife place orders (#798): at night no doctor may be there to order the
        delivery act, and an act that is not ordered is not billed. The order basket posts an
        encounter that carries the orders. Core saves each order through OrderService.saveOrder,
@@ -196,6 +201,7 @@ List<String> saveConsultation = ['Edit Outpatient Consultation', 'View Outpatien
         'Get Providers', 'Get Encounter Roles']
 List<String> saveSurveillance = ['Edit 24-Hour Surveillance', 'View 24-Hour Surveillance', 'Get Forms']
 List<String> savePartograph = ['Edit Partograph Reading', 'View Partograph Reading', 'Get Forms']
+List<String> saveAnaesthesiaMonitoring = ['Edit Anaesthesia Monitoring', 'View Anaesthesia Monitoring', 'Get Forms']
 List<String> placeOrders = ['Add Orders', 'Get Orders', 'Get Care Settings', 'Get Order Types', 'Add Encounters',
         'Get Patients', 'Get Visits', 'Get Locations', 'Get Encounter Types', 'Get Concepts', 'Get Providers',
         'Get Encounter Roles']
@@ -211,7 +217,8 @@ Map<String, List<String>> requiredOf = [
         'Help Nurse'        : readDrugOrders + readPatientLists + saveVitals,
         'Nurse'             : readDrugOrders + readPatientLists + saveVitals + saveSurveillance + savePartograph + placeOrders,
         'Midwife'           : readDrugOrders + readPatientLists + saveVitals + saveSurveillance + savePartograph + placeOrders,
-        'Doctor'            : readDrugOrders + readPatientLists + basketLookups + saveVitals + saveConsultation + savePartograph,
+        'Doctor'            : readDrugOrders + readPatientLists + basketLookups + saveVitals + saveConsultation + savePartograph + saveAnaesthesiaMonitoring,
+        'Anesthesist'       : saveAnaesthesiaMonitoring,
         'Ophtalmologist'    : saveConsultation,
         'Dentist'           : saveConsultation,
         'Pharmacist'        : stockReports + basketLookups,

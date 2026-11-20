@@ -1,0 +1,20 @@
+{
+  "uuid": "f1ac5197-5797-4e3f-b429-a083b9844814",
+  "form": "UVL Anaesthesia Monitoring Form",
+  "form_name_translation": "UVL Anaesthesia Monitoring Form",
+  "description": "En Translations for 'UVL Anaesthesia Monitoring Form'",
+  "language": "en",
+  "translations": {
+    "Anaesthesia Monitoring": "Anaesthesia Monitoring",
+    "Readings during the operation": "Readings during the operation",
+    "Reading": "Reading",
+    "Time of reading": "Time of reading",
+    "Systolic BP (mmHg)": "Systolic BP (mmHg)",
+    "Diastolic BP (mmHg)": "Diastolic BP (mmHg)",
+    "Pulse (/min)": "Pulse (/min)",
+    "Stage": "Stage",
+    "Respiration (/min)": "Respiration (/min)",
+    "SpO2 (%)": "SpO2 (%)",
+    "Medication": "Medication"
+  }
+}
