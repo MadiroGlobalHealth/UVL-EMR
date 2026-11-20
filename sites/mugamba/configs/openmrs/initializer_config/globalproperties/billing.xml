@@ -1,0 +1,18 @@
+<config>
+    <globalProperties>
+        <!--
+          #840. Receipt numbers are reserved in blocks by billing 2.4.0, under a row lock, so
+          that orders signed together no longer draw the same number. The module's default is
+          100: a restart then skips the unused rest of the block, up to 99 receipt numbers. The
+          hospital prefers small gaps, so UVL asks for one number at a time (the smallest value
+          the module accepts; 0 or a non-number is ignored and the default 100 applies). The cost
+          is one short extra transaction per bill, which a hospital's bill rate does not notice.
+          A bill that fails and rolls back still skips its number whatever this says. If the
+          extra transaction ever shows as contention, 5 is the next step.
+        -->
+        <globalProperty>
+            <property>billing.sequenceBlockSize</property>
+            <value>1</value>
+        </globalProperty>
+    </globalProperties>
+</config>
