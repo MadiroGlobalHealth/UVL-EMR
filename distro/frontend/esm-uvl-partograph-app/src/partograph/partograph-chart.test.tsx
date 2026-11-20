@@ -1,10 +1,16 @@
 import React from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import { act, render, screen, within } from '@testing-library/react';
-import { useConfig, useOpenmrsFetchAll } from '@openmrs/esm-framework';
+import userEvent from '@testing-library/user-event';
+import { launchWorkspace2, useConfig, useOpenmrsFetchAll, userHasAccess } from '@openmrs/esm-framework';
+import { getPatientChartWindowProps } from '@openmrs/esm-patient-common-lib';
 import type { PartographConfig } from '../config-schema';
 import PartographChart from './partograph-chart.component';
 import { notifyPartographSaved, partographUrl, toReadings, type PartographEncounter } from './partograph.resource';
+
+vi.mock('@openmrs/esm-patient-common-lib', () => ({
+  getPatientChartWindowProps: vi.fn(),
+}));
 
 const mockUseConfig = vi.mocked(useConfig);
 const mockUseOpenmrsFetchAll = vi.mocked(useOpenmrsFetchAll);
@@ -368,5 +374,53 @@ describe('PartographChart after a reading is saved from the side panel', () => {
     const keys = new Set(mockUseOpenmrsFetchAll.mock.calls.map(([url]) => url));
     expect([...keys]).toEqual([partographUrl('patient-uuid', 'partograph-type')]);
     expect(mutate).not.toHaveBeenCalled();
+  });
+});
+
+describe('PartographChart: editing a saved reading (#825)', () => {
+  it('offers « Modifier » on each reading, newest first, to a holder of Edit Partograph Reading', async () => {
+    vi.mocked(userHasAccess).mockImplementation((privilege) => privilege === 'Edit Partograph Reading');
+    withReadings(encounters, { readingFormUuid: 'reading-form' });
+
+    render(<PartographChart patientUuid="patient-uuid" />);
+
+    const section = screen.getByRole('region', { name: 'Edit a reading' });
+    expect(within(section).getAllByRole('button', { name: 'Edit' })).toHaveLength(3);
+  });
+
+  it('opens the reading form on that encounter and reloads the chart after the save', async () => {
+    vi.mocked(userHasAccess).mockReturnValue(true);
+    const windowProps = { patientUuid: 'patient-uuid', patient: null, visitContext: null };
+    vi.mocked(getPatientChartWindowProps).mockReturnValue(windowProps as any);
+    const mutate = vi.fn();
+    withReadings(encounters, { readingFormUuid: 'reading-form' });
+    mockUseOpenmrsFetchAll.mockReturnValue({ data: encounters, error: undefined, isLoading: false, mutate } as any);
+
+    render(<PartographChart patientUuid="patient-uuid" />);
+    // Newest first: reading-3 (12:00) heads the list.
+    const section = screen.getByRole('region', { name: 'Edit a reading' });
+    await userEvent.click(within(section).getAllByRole('button', { name: 'Edit' })[0]);
+
+    expect(launchWorkspace2).toHaveBeenCalledWith(
+      'uvl-partograph-reading-workspace',
+      expect.objectContaining({ form: expect.objectContaining({ uuid: 'reading-form' }), encounterUuid: 'reading-3' }),
+      windowProps,
+    );
+    const saved = vi.mocked(launchWorkspace2).mock.calls[0][1] as { handlePostResponse: () => void };
+    act(() => saved.handlePostResponse());
+    expect(mutate).toHaveBeenCalled();
+  });
+
+  it('offers nothing without the edit privilege or without the form uuid', () => {
+    vi.mocked(userHasAccess).mockReturnValue(false);
+    withReadings(encounters, { readingFormUuid: 'reading-form' });
+    const { unmount } = render(<PartographChart patientUuid="patient-uuid" />);
+    expect(screen.queryByRole('region', { name: 'Edit a reading' })).not.toBeInTheDocument();
+    unmount();
+
+    vi.mocked(userHasAccess).mockReturnValue(true);
+    withReadings(encounters, { readingFormUuid: '' });
+    render(<PartographChart patientUuid="patient-uuid" />);
+    expect(screen.queryByRole('region', { name: 'Edit a reading' })).not.toBeInTheDocument();
   });
 });

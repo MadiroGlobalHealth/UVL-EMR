@@ -15,6 +15,8 @@
   "earlierReadings_other": "{{count}} earlier readings (previous labour) are not shown",
   "earlierSurveillance_one": "{{count}} earlier form (previous delivery) is not shown",
   "earlierSurveillance_other": "{{count}} earlier forms (previous delivery) are not shown",
+  "edit": "Edit",
+  "editReadings": "Edit a reading",
   "fetalHeartRate": "Fetal heart rate",
   "fetalHeartRateBpm": "Fetal heart rate (bpm)",
   "fhrReferenceLines": "Reference lines 100 and 180 /min",

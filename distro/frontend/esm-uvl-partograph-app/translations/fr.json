@@ -15,6 +15,8 @@
   "earlierReadings_other": "{{count}} lectures antérieures (travail précédent) ne sont pas affichées",
   "earlierSurveillance_one": "{{count}} formulaire antérieur (accouchement précédent) n'est pas affiché",
   "earlierSurveillance_other": "{{count}} formulaires antérieurs (accouchement précédent) ne sont pas affichés",
+  "edit": "Modifier",
+  "editReadings": "Modifier une lecture",
   "fetalHeartRate": "Fréquence cardiaque fœtale",
   "fetalHeartRateBpm": "Fréquence cardiaque fœtale (bpm)",
   "fhrReferenceLines": "Lignes de référence 100 et 180 /min",
