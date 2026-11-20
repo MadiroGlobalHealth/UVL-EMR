@@ -320,6 +320,82 @@
               }
             }
           ]
+        },
+        {
+          "label": "Urine",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Urine protein (dipstick)",
+              "type": "obs",
+              "id": "urineProtein",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "83902405-40c1-4bac-9c78-3852663058e1",
+                "answers": [
+                  {
+                    "concept": "5c8d6240-9cc2-4bc1-b783-30eb887f950c"
+                  },
+                  {
+                    "concept": "e9a57d5f-fc37-4e82-9344-d3aadee2e6c9"
+                  },
+                  {
+                    "concept": "e9fa7532-a9dd-447d-9a32-ef2e3750385b",
+                    "label": "+"
+                  },
+                  {
+                    "concept": "52506e95-0ae4-4718-b622-d4226b4238dd",
+                    "label": "++"
+                  },
+                  {
+                    "concept": "487fb8c7-29c3-4954-937c-090c1a4a4ced",
+                    "label": "+++"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Urine acetone (dipstick)",
+              "type": "obs",
+              "id": "urineAcetone",
+              "questionOptions": {
+                "rendering": "radio",
+                "concept": "684f4b75-40ad-48ae-95f5-6381b4dd3eb3",
+                "answers": [
+                  {
+                    "concept": "5c8d6240-9cc2-4bc1-b783-30eb887f950c"
+                  },
+                  {
+                    "concept": "e9a57d5f-fc37-4e82-9344-d3aadee2e6c9"
+                  },
+                  {
+                    "concept": "e9fa7532-a9dd-447d-9a32-ef2e3750385b",
+                    "label": "+"
+                  },
+                  {
+                    "concept": "52506e95-0ae4-4718-b622-d4226b4238dd",
+                    "label": "++"
+                  },
+                  {
+                    "concept": "487fb8c7-29c3-4954-937c-090c1a4a4ced",
+                    "label": "+++"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Urine volume (ml)",
+              "type": "obs",
+              "id": "urineVolume",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "1d50f82a-01e7-4281-af70-9650a4510b5c",
+                "min": "0",
+                "max": "5000",
+                "disallowDecimals": true
+              }
+            }
+          ]
         }
       ],
       "hide": {

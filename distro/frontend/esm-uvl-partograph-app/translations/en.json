@@ -46,5 +46,10 @@
   "temperatureCelsius": "Temperature (°C)",
   "timeAxisNote": "Hour 00 ({{origin}}) is where the alert line is at 4 cm; each hour shows its clock time.",
   "timePoint": "Time point",
+  "urine": "Urine",
+  "urineAcetoneShort": "Acet.",
+  "urineNote": "Protein and acetone: Neg negative, Tr trace, + ++ +++ dipstick result. Volume in ml.",
+  "urineProteinShort": "Prot.",
+  "urineVolumeShort": "Vol.",
   "whoLinesNote": "Alert line: 4 cm at hour 00 to 10 cm at hour 06 (1 cm per hour). Action line: 4 cm at hour 04 to 10 cm at hour 10."
 }

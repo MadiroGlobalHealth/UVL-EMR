@@ -1,6 +1,6 @@
 {
   "name": "@madiro/esm-uvl-partograph-app",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "license": "MPL-2.0",
   "private": true,
   "description": "UVL maternity charting: the partograph of the patient's Partograph Reading encounters (WHO alert and action lines, UVL-EMR #498), a side-panel button that opens the Partograph Reading form, and the 24-Hour Surveillance table (UVL-EMR #565)",
