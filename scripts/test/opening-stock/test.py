@@ -17,6 +17,7 @@ import io
 import os
 import tempfile
 import unittest
+import uuid as uuid_
 import zipfile
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..'))
@@ -417,6 +418,78 @@ class AnsweredLines797(unittest.TestCase):
         self.assertIn(self.UNIT, changeset)  # and for the Comprimé unit
         self.assertIn('onFail="CONTINUE"', changeset)
         self.assertIn('stock_items_carbamazepine_200mg_rollback.sql', changeset)
+
+
+class NewItems795(unittest.TestCase):
+    """#795: six hand-made Odoo products became real items, each modelled on its sibling. The drug uuids
+    are uuid5 (URL namespace) of .../issues/795/drug/<French name>, as in #797."""
+
+    INIT = os.path.join(LIQUIBASE, '..')
+    BASE = 'https://github.com/MadiroGlobalHealth/UVL-EMR/issues/795/'
+    # French name: (sibling, strength, English name)
+    NEW = {
+        'Ababacter 300ml': ('Ababacter 125ml', '300ml', 'Ababacter 300ml'),
+        'Ataktan Comprimé 50mg': ('Ataktan Comprimé 100mg', '50mg', 'Ataktan 50mg Tablet'),
+        'Contam Gélule 500mg': ('Contam Suspension 250mg/ml 60ml', '500mg', 'Contam 500mg Capsule'),
+        'Faux Papillon Lunettes +0,50': ('Faux Papillon Lunettes +0.25', '0.50', 'Faux Papillon Glasses +0.50'),
+        'Lunettes de lecture +0,50': ('Lunettes de lecture +0,25', '0.50', 'Reading Glasses +0.50'),
+        'Lunettes de lecture -0,50': ('Lunettes de lecture -0,25', '-0.50', 'Reading Glasses -0.50'),
+    }
+    CAPSULE = '94b2f0e7-0885-430f-8733-e2a93f03095d'
+    STOCKED = {'Ataktan Comprimé 50mg': '391d2a1b-2aec-4bd7-b43b-e294e7f2b9b9', 'Contam Gélule 500mg': CAPSULE}
+
+    def rows(self, *path):
+        with open(os.path.join(self.INIT, *path), newline='', encoding='utf-8') as f:
+            return list(csv.DictReader(f))
+
+    def uuid(self, name):
+        return str(uuid_.uuid5(uuid_.NAMESPACE_URL, self.BASE + 'drug/' + name))
+
+    def test_drugs_follow_their_sibling_on_its_concept(self):
+        new = {r['Name:fr']: r for r in self.rows('drugs', 'uvl-drugs-issue795.csv')}
+        old = {r['Name:fr']: r for r in self.rows('drugs', 'uvl-drugs.csv')}
+        self.assertEqual(sorted(new), sorted(self.NEW))
+        for name, (sibling, strength, english) in self.NEW.items():
+            expected = dict(old[sibling], Uuid=self.uuid(name), Strength=strength, Name=english, **{'Name:fr': name})
+            if name in self.STOCKED and self.STOCKED[name] == self.CAPSULE:
+                expected['Concept Dosage Form'] = self.CAPSULE  # the sibling is a suspension
+            self.assertEqual(new[name], expected, name)
+
+    def test_odoo_products_follow_their_sibling_without_a_price(self):
+        products = {r['name']: r for r in self.rows('..', '..', 'odoo', 'initializer_config', 'product_variant', 'uvl-drugs.csv')}
+        for name, (sibling, _, _) in self.NEW.items():
+            expected = dict(products[sibling], id='init.' + self.uuid(name), name=name)
+            if name in self.STOCKED and self.STOCKED[name] == self.CAPSULE:
+                expected.update({'uom_id/id': 'init.' + self.CAPSULE, 'uom_po_id/id': 'init.' + self.CAPSULE})
+            self.assertEqual(products[name], expected, name)
+            self.assertNotIn('lst_price', products[name])  # Finance enters the price in Odoo
+
+    def test_stock_items_only_where_the_sibling_has_one(self):
+        seed = read(os.path.join(LIQUIBASE, 'sql', 'stock_items_795.sql'))
+        rollback = read(os.path.join(LIQUIBASE, 'sql', 'stock_items_795_rollback.sql'))
+        changelog = read(os.path.join(LIQUIBASE, 'liquibase.xml'))
+        self.assertEqual(changelog.count('id="add_stock_items_795-20261120"'), 1)
+        start = changelog.index('id="add_stock_items_795-20261120"')
+        changeset = changelog[start:changelog.index('</changeSet>', start)]
+        self.assertEqual(seed.count("', 1, '"), len(self.STOCKED))
+        for name, unit in self.STOCKED.items():
+            drug = self.uuid(name)
+            item = str(uuid_.uuid5(uuid_.NAMESPACE_URL, self.BASE + 'stock-item/' + drug))
+            pack = str(uuid_.uuid5(uuid_.NAMESPACE_URL, self.BASE + 'stock-item-packaging-uom/' + drug))
+            self.assertIn("('%s', '%s', 1, '%s', '%s', '%s')" % (drug, unit, item, pack, name), seed)
+            self.assertIn(item, rollback)
+            self.assertIn(drug, changeset)
+        self.assertIn('onFail="CONTINUE"', changeset)
+        self.assertIn('stock_items_795_rollback.sql', changeset)
+
+    def test_concepts_are_in_an_ocl_export(self):
+        import json
+        wanted = {r['Concept Drug'] for r in self.rows('drugs', 'uvl-drugs-issue795.csv')}
+        found = set()
+        for path in glob.glob(os.path.join(self.INIT, 'ocl', '*.zip')):
+            with zipfile.ZipFile(path) as z:
+                found |= {c['external_id'] for c in json.load(z.open('export.json'))['concepts'] if not c['retired']}
+        self.assertEqual(wanted - found, set())
 
 
 class FakeServer:
