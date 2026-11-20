@@ -726,7 +726,7 @@
       },
       {
         "name": "Bloc opératoire",
-        "forms": ["UVL Pre-operative Record Form", "UVL Anaesthesia Report Form", "UVL Operation Protocol Form"]
+        "forms": ["UVL Pre-operative Record Form", "UVL Anaesthesia Report Form", "UVL Anaesthesia Monitoring Form", "UVL Operation Protocol Form"]
       },
       {
         "name": "Autres",

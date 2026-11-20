@@ -1,0 +1,1443 @@
+{
+  "uuid": "4659de6f-c462-47a6-b13a-05a1642e0add",
+  "name": "UVL Anaesthesia Monitoring Form",
+  "description": "UVL anaesthesia monitoring (Surveillance pendant l'anesthésie): readings taken during the operation, twelve numbered rows",
+  "version": "2",
+  "published": true,
+  "retired": false,
+  "encounter": "Anaesthesia Monitoring",
+  "processor": "EncounterFormProcessor",
+  "referencedForms": [],
+  "encounterType": "2ad4bc92-8157-4974-96f2-f3f518612ae6",
+  "pages": [
+    {
+      "label": "Readings 1 to 6",
+      "sections": [
+        {
+          "label": "Operation",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Date of the operation",
+              "type": "encounterDatetime",
+              "id": "operationDatetime",
+              "required": true,
+              "datePickerFormat": "both",
+              "questionOptions": {
+                "rendering": "date"
+              },
+              "validators": [
+                {
+                  "type": "date",
+                  "allowFutureDates": "false"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "Readings during the operation",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Reading 1",
+              "type": "obsGroup",
+              "id": "reading1",
+              "questionOptions": {
+                "rendering": "group",
+                "concept": "60afc96d-ec86-482b-b93c-0a28687d2574"
+              },
+              "questions": [
+                {
+                  "label": "Time of the reading",
+                  "type": "obs",
+                  "id": "readingTime1",
+                  "questionOptions": {
+                    "rendering": "datetime",
+                    "concept": "d3f21e28-7677-4c27-812d-aa510c9afc6c"
+                  }
+                },
+                {
+                  "label": "Systolic BP (mmHg)",
+                  "type": "obs",
+                  "id": "readingSystolic1",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "4302c8cc-026e-42ec-ad35-c40cbc63f316",
+                    "min": 0,
+                    "max": 300,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Diastolic BP (mmHg)",
+                  "type": "obs",
+                  "id": "readingDiastolic1",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "09aa2c0d-a3c4-43ec-a61a-0dc5966f2882",
+                    "min": 0,
+                    "max": 200,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Pulse (/min)",
+                  "type": "obs",
+                  "id": "readingPulse1",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "4118079a-4165-4fbd-a1aa-58d9986ae7b0",
+                    "min": 0,
+                    "max": 300,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Stage",
+                  "type": "obs",
+                  "id": "readingStage1",
+                  "questionOptions": {
+                    "rendering": "select",
+                    "concept": "4f10b625-6156-4500-9fbd-d8f0b7389f41",
+                    "answers": [
+                      {
+                        "concept": "f328dc10-7eaf-4c34-8528-4590aec53bc7"
+                      },
+                      {
+                        "concept": "122c79cc-b60b-49a0-9a87-b433cc5fe90b"
+                      },
+                      {
+                        "concept": "4a81eaf4-14e6-42f7-af6d-6f496d4cefb2"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "label": "Respiration (/min)",
+                  "type": "obs",
+                  "id": "readingRespiration1",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "d4cd9b33-c4f2-4393-8058-ea9ed215720e",
+                    "min": 0,
+                    "max": 99,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "SpO2 (%)",
+                  "type": "obs",
+                  "id": "readingSpO21",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "c29ee197-968f-4a43-aa1c-fd35551412e9",
+                    "min": 0,
+                    "max": 100,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Medication",
+                  "type": "obs",
+                  "id": "readingMedication1",
+                  "questionOptions": {
+                    "rendering": "text",
+                    "concept": "ef949c7e-1e37-4843-8146-50b3898fb4a9"
+                  }
+                }
+              ]
+            },
+            {
+              "label": "Reading 2",
+              "type": "obsGroup",
+              "id": "reading2",
+              "questionOptions": {
+                "rendering": "group",
+                "concept": "60afc96d-ec86-482b-b93c-0a28687d2574"
+              },
+              "questions": [
+                {
+                  "label": "Time of the reading",
+                  "type": "obs",
+                  "id": "readingTime2",
+                  "questionOptions": {
+                    "rendering": "datetime",
+                    "concept": "d3f21e28-7677-4c27-812d-aa510c9afc6c"
+                  },
+                  "validators": [
+                    {
+                      "type": "js_expression",
+                      "failsWhenExpression": "!isEmpty(myValue) && ((!isEmpty(readingTime1) && myValue < readingTime1))",
+                      "message": "L'heure doit être postérieure à celle de la mesure précédente / The time must be after the previous reading's"
+                    }
+                  ]
+                },
+                {
+                  "label": "Systolic BP (mmHg)",
+                  "type": "obs",
+                  "id": "readingSystolic2",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "4302c8cc-026e-42ec-ad35-c40cbc63f316",
+                    "min": 0,
+                    "max": 300,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Diastolic BP (mmHg)",
+                  "type": "obs",
+                  "id": "readingDiastolic2",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "09aa2c0d-a3c4-43ec-a61a-0dc5966f2882",
+                    "min": 0,
+                    "max": 200,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Pulse (/min)",
+                  "type": "obs",
+                  "id": "readingPulse2",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "4118079a-4165-4fbd-a1aa-58d9986ae7b0",
+                    "min": 0,
+                    "max": 300,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Stage",
+                  "type": "obs",
+                  "id": "readingStage2",
+                  "questionOptions": {
+                    "rendering": "select",
+                    "concept": "4f10b625-6156-4500-9fbd-d8f0b7389f41",
+                    "answers": [
+                      {
+                        "concept": "f328dc10-7eaf-4c34-8528-4590aec53bc7"
+                      },
+                      {
+                        "concept": "122c79cc-b60b-49a0-9a87-b433cc5fe90b"
+                      },
+                      {
+                        "concept": "4a81eaf4-14e6-42f7-af6d-6f496d4cefb2"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "label": "Respiration (/min)",
+                  "type": "obs",
+                  "id": "readingRespiration2",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "d4cd9b33-c4f2-4393-8058-ea9ed215720e",
+                    "min": 0,
+                    "max": 99,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "SpO2 (%)",
+                  "type": "obs",
+                  "id": "readingSpO22",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "c29ee197-968f-4a43-aa1c-fd35551412e9",
+                    "min": 0,
+                    "max": 100,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Medication",
+                  "type": "obs",
+                  "id": "readingMedication2",
+                  "questionOptions": {
+                    "rendering": "text",
+                    "concept": "ef949c7e-1e37-4843-8146-50b3898fb4a9"
+                  }
+                }
+              ]
+            },
+            {
+              "label": "Reading 3",
+              "type": "obsGroup",
+              "id": "reading3",
+              "questionOptions": {
+                "rendering": "group",
+                "concept": "60afc96d-ec86-482b-b93c-0a28687d2574"
+              },
+              "questions": [
+                {
+                  "label": "Time of the reading",
+                  "type": "obs",
+                  "id": "readingTime3",
+                  "questionOptions": {
+                    "rendering": "datetime",
+                    "concept": "d3f21e28-7677-4c27-812d-aa510c9afc6c"
+                  },
+                  "validators": [
+                    {
+                      "type": "js_expression",
+                      "failsWhenExpression": "!isEmpty(myValue) && ((!isEmpty(readingTime1) && myValue < readingTime1) || (!isEmpty(readingTime2) && myValue < readingTime2))",
+                      "message": "L'heure doit être postérieure à celle de la mesure précédente / The time must be after the previous reading's"
+                    }
+                  ]
+                },
+                {
+                  "label": "Systolic BP (mmHg)",
+                  "type": "obs",
+                  "id": "readingSystolic3",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "4302c8cc-026e-42ec-ad35-c40cbc63f316",
+                    "min": 0,
+                    "max": 300,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Diastolic BP (mmHg)",
+                  "type": "obs",
+                  "id": "readingDiastolic3",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "09aa2c0d-a3c4-43ec-a61a-0dc5966f2882",
+                    "min": 0,
+                    "max": 200,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Pulse (/min)",
+                  "type": "obs",
+                  "id": "readingPulse3",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "4118079a-4165-4fbd-a1aa-58d9986ae7b0",
+                    "min": 0,
+                    "max": 300,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Stage",
+                  "type": "obs",
+                  "id": "readingStage3",
+                  "questionOptions": {
+                    "rendering": "select",
+                    "concept": "4f10b625-6156-4500-9fbd-d8f0b7389f41",
+                    "answers": [
+                      {
+                        "concept": "f328dc10-7eaf-4c34-8528-4590aec53bc7"
+                      },
+                      {
+                        "concept": "122c79cc-b60b-49a0-9a87-b433cc5fe90b"
+                      },
+                      {
+                        "concept": "4a81eaf4-14e6-42f7-af6d-6f496d4cefb2"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "label": "Respiration (/min)",
+                  "type": "obs",
+                  "id": "readingRespiration3",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "d4cd9b33-c4f2-4393-8058-ea9ed215720e",
+                    "min": 0,
+                    "max": 99,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "SpO2 (%)",
+                  "type": "obs",
+                  "id": "readingSpO23",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "c29ee197-968f-4a43-aa1c-fd35551412e9",
+                    "min": 0,
+                    "max": 100,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Medication",
+                  "type": "obs",
+                  "id": "readingMedication3",
+                  "questionOptions": {
+                    "rendering": "text",
+                    "concept": "ef949c7e-1e37-4843-8146-50b3898fb4a9"
+                  }
+                }
+              ]
+            },
+            {
+              "label": "Reading 4",
+              "type": "obsGroup",
+              "id": "reading4",
+              "questionOptions": {
+                "rendering": "group",
+                "concept": "60afc96d-ec86-482b-b93c-0a28687d2574"
+              },
+              "questions": [
+                {
+                  "label": "Time of the reading",
+                  "type": "obs",
+                  "id": "readingTime4",
+                  "questionOptions": {
+                    "rendering": "datetime",
+                    "concept": "d3f21e28-7677-4c27-812d-aa510c9afc6c"
+                  },
+                  "validators": [
+                    {
+                      "type": "js_expression",
+                      "failsWhenExpression": "!isEmpty(myValue) && ((!isEmpty(readingTime1) && myValue < readingTime1) || (!isEmpty(readingTime2) && myValue < readingTime2) || (!isEmpty(readingTime3) && myValue < readingTime3))",
+                      "message": "L'heure doit être postérieure à celle de la mesure précédente / The time must be after the previous reading's"
+                    }
+                  ]
+                },
+                {
+                  "label": "Systolic BP (mmHg)",
+                  "type": "obs",
+                  "id": "readingSystolic4",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "4302c8cc-026e-42ec-ad35-c40cbc63f316",
+                    "min": 0,
+                    "max": 300,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Diastolic BP (mmHg)",
+                  "type": "obs",
+                  "id": "readingDiastolic4",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "09aa2c0d-a3c4-43ec-a61a-0dc5966f2882",
+                    "min": 0,
+                    "max": 200,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Pulse (/min)",
+                  "type": "obs",
+                  "id": "readingPulse4",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "4118079a-4165-4fbd-a1aa-58d9986ae7b0",
+                    "min": 0,
+                    "max": 300,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Stage",
+                  "type": "obs",
+                  "id": "readingStage4",
+                  "questionOptions": {
+                    "rendering": "select",
+                    "concept": "4f10b625-6156-4500-9fbd-d8f0b7389f41",
+                    "answers": [
+                      {
+                        "concept": "f328dc10-7eaf-4c34-8528-4590aec53bc7"
+                      },
+                      {
+                        "concept": "122c79cc-b60b-49a0-9a87-b433cc5fe90b"
+                      },
+                      {
+                        "concept": "4a81eaf4-14e6-42f7-af6d-6f496d4cefb2"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "label": "Respiration (/min)",
+                  "type": "obs",
+                  "id": "readingRespiration4",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "d4cd9b33-c4f2-4393-8058-ea9ed215720e",
+                    "min": 0,
+                    "max": 99,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "SpO2 (%)",
+                  "type": "obs",
+                  "id": "readingSpO24",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "c29ee197-968f-4a43-aa1c-fd35551412e9",
+                    "min": 0,
+                    "max": 100,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Medication",
+                  "type": "obs",
+                  "id": "readingMedication4",
+                  "questionOptions": {
+                    "rendering": "text",
+                    "concept": "ef949c7e-1e37-4843-8146-50b3898fb4a9"
+                  }
+                }
+              ]
+            },
+            {
+              "label": "Reading 5",
+              "type": "obsGroup",
+              "id": "reading5",
+              "questionOptions": {
+                "rendering": "group",
+                "concept": "60afc96d-ec86-482b-b93c-0a28687d2574"
+              },
+              "questions": [
+                {
+                  "label": "Time of the reading",
+                  "type": "obs",
+                  "id": "readingTime5",
+                  "questionOptions": {
+                    "rendering": "datetime",
+                    "concept": "d3f21e28-7677-4c27-812d-aa510c9afc6c"
+                  },
+                  "validators": [
+                    {
+                      "type": "js_expression",
+                      "failsWhenExpression": "!isEmpty(myValue) && ((!isEmpty(readingTime1) && myValue < readingTime1) || (!isEmpty(readingTime2) && myValue < readingTime2) || (!isEmpty(readingTime3) && myValue < readingTime3) || (!isEmpty(readingTime4) && myValue < readingTime4))",
+                      "message": "L'heure doit être postérieure à celle de la mesure précédente / The time must be after the previous reading's"
+                    }
+                  ]
+                },
+                {
+                  "label": "Systolic BP (mmHg)",
+                  "type": "obs",
+                  "id": "readingSystolic5",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "4302c8cc-026e-42ec-ad35-c40cbc63f316",
+                    "min": 0,
+                    "max": 300,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Diastolic BP (mmHg)",
+                  "type": "obs",
+                  "id": "readingDiastolic5",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "09aa2c0d-a3c4-43ec-a61a-0dc5966f2882",
+                    "min": 0,
+                    "max": 200,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Pulse (/min)",
+                  "type": "obs",
+                  "id": "readingPulse5",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "4118079a-4165-4fbd-a1aa-58d9986ae7b0",
+                    "min": 0,
+                    "max": 300,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Stage",
+                  "type": "obs",
+                  "id": "readingStage5",
+                  "questionOptions": {
+                    "rendering": "select",
+                    "concept": "4f10b625-6156-4500-9fbd-d8f0b7389f41",
+                    "answers": [
+                      {
+                        "concept": "f328dc10-7eaf-4c34-8528-4590aec53bc7"
+                      },
+                      {
+                        "concept": "122c79cc-b60b-49a0-9a87-b433cc5fe90b"
+                      },
+                      {
+                        "concept": "4a81eaf4-14e6-42f7-af6d-6f496d4cefb2"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "label": "Respiration (/min)",
+                  "type": "obs",
+                  "id": "readingRespiration5",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "d4cd9b33-c4f2-4393-8058-ea9ed215720e",
+                    "min": 0,
+                    "max": 99,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "SpO2 (%)",
+                  "type": "obs",
+                  "id": "readingSpO25",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "c29ee197-968f-4a43-aa1c-fd35551412e9",
+                    "min": 0,
+                    "max": 100,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Medication",
+                  "type": "obs",
+                  "id": "readingMedication5",
+                  "questionOptions": {
+                    "rendering": "text",
+                    "concept": "ef949c7e-1e37-4843-8146-50b3898fb4a9"
+                  }
+                }
+              ]
+            },
+            {
+              "label": "Reading 6",
+              "type": "obsGroup",
+              "id": "reading6",
+              "questionOptions": {
+                "rendering": "group",
+                "concept": "60afc96d-ec86-482b-b93c-0a28687d2574"
+              },
+              "questions": [
+                {
+                  "label": "Time of the reading",
+                  "type": "obs",
+                  "id": "readingTime6",
+                  "questionOptions": {
+                    "rendering": "datetime",
+                    "concept": "d3f21e28-7677-4c27-812d-aa510c9afc6c"
+                  },
+                  "validators": [
+                    {
+                      "type": "js_expression",
+                      "failsWhenExpression": "!isEmpty(myValue) && ((!isEmpty(readingTime1) && myValue < readingTime1) || (!isEmpty(readingTime2) && myValue < readingTime2) || (!isEmpty(readingTime3) && myValue < readingTime3) || (!isEmpty(readingTime4) && myValue < readingTime4) || (!isEmpty(readingTime5) && myValue < readingTime5))",
+                      "message": "L'heure doit être postérieure à celle de la mesure précédente / The time must be after the previous reading's"
+                    }
+                  ]
+                },
+                {
+                  "label": "Systolic BP (mmHg)",
+                  "type": "obs",
+                  "id": "readingSystolic6",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "4302c8cc-026e-42ec-ad35-c40cbc63f316",
+                    "min": 0,
+                    "max": 300,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Diastolic BP (mmHg)",
+                  "type": "obs",
+                  "id": "readingDiastolic6",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "09aa2c0d-a3c4-43ec-a61a-0dc5966f2882",
+                    "min": 0,
+                    "max": 200,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Pulse (/min)",
+                  "type": "obs",
+                  "id": "readingPulse6",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "4118079a-4165-4fbd-a1aa-58d9986ae7b0",
+                    "min": 0,
+                    "max": 300,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Stage",
+                  "type": "obs",
+                  "id": "readingStage6",
+                  "questionOptions": {
+                    "rendering": "select",
+                    "concept": "4f10b625-6156-4500-9fbd-d8f0b7389f41",
+                    "answers": [
+                      {
+                        "concept": "f328dc10-7eaf-4c34-8528-4590aec53bc7"
+                      },
+                      {
+                        "concept": "122c79cc-b60b-49a0-9a87-b433cc5fe90b"
+                      },
+                      {
+                        "concept": "4a81eaf4-14e6-42f7-af6d-6f496d4cefb2"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "label": "Respiration (/min)",
+                  "type": "obs",
+                  "id": "readingRespiration6",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "d4cd9b33-c4f2-4393-8058-ea9ed215720e",
+                    "min": 0,
+                    "max": 99,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "SpO2 (%)",
+                  "type": "obs",
+                  "id": "readingSpO26",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "c29ee197-968f-4a43-aa1c-fd35551412e9",
+                    "min": 0,
+                    "max": 100,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Medication",
+                  "type": "obs",
+                  "id": "readingMedication6",
+                  "questionOptions": {
+                    "rendering": "text",
+                    "concept": "ef949c7e-1e37-4843-8146-50b3898fb4a9"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Readings 7 to 12",
+      "sections": [
+        {
+          "label": "Readings during the operation",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Reading 7",
+              "type": "obsGroup",
+              "id": "reading7",
+              "questionOptions": {
+                "rendering": "group",
+                "concept": "60afc96d-ec86-482b-b93c-0a28687d2574"
+              },
+              "questions": [
+                {
+                  "label": "Time of the reading",
+                  "type": "obs",
+                  "id": "readingTime7",
+                  "questionOptions": {
+                    "rendering": "datetime",
+                    "concept": "d3f21e28-7677-4c27-812d-aa510c9afc6c"
+                  },
+                  "validators": [
+                    {
+                      "type": "js_expression",
+                      "failsWhenExpression": "!isEmpty(myValue) && ((!isEmpty(readingTime1) && myValue < readingTime1) || (!isEmpty(readingTime2) && myValue < readingTime2) || (!isEmpty(readingTime3) && myValue < readingTime3) || (!isEmpty(readingTime4) && myValue < readingTime4) || (!isEmpty(readingTime5) && myValue < readingTime5) || (!isEmpty(readingTime6) && myValue < readingTime6))",
+                      "message": "L'heure doit être postérieure à celle de la mesure précédente / The time must be after the previous reading's"
+                    }
+                  ]
+                },
+                {
+                  "label": "Systolic BP (mmHg)",
+                  "type": "obs",
+                  "id": "readingSystolic7",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "4302c8cc-026e-42ec-ad35-c40cbc63f316",
+                    "min": 0,
+                    "max": 300,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Diastolic BP (mmHg)",
+                  "type": "obs",
+                  "id": "readingDiastolic7",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "09aa2c0d-a3c4-43ec-a61a-0dc5966f2882",
+                    "min": 0,
+                    "max": 200,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Pulse (/min)",
+                  "type": "obs",
+                  "id": "readingPulse7",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "4118079a-4165-4fbd-a1aa-58d9986ae7b0",
+                    "min": 0,
+                    "max": 300,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Stage",
+                  "type": "obs",
+                  "id": "readingStage7",
+                  "questionOptions": {
+                    "rendering": "select",
+                    "concept": "4f10b625-6156-4500-9fbd-d8f0b7389f41",
+                    "answers": [
+                      {
+                        "concept": "f328dc10-7eaf-4c34-8528-4590aec53bc7"
+                      },
+                      {
+                        "concept": "122c79cc-b60b-49a0-9a87-b433cc5fe90b"
+                      },
+                      {
+                        "concept": "4a81eaf4-14e6-42f7-af6d-6f496d4cefb2"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "label": "Respiration (/min)",
+                  "type": "obs",
+                  "id": "readingRespiration7",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "d4cd9b33-c4f2-4393-8058-ea9ed215720e",
+                    "min": 0,
+                    "max": 99,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "SpO2 (%)",
+                  "type": "obs",
+                  "id": "readingSpO27",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "c29ee197-968f-4a43-aa1c-fd35551412e9",
+                    "min": 0,
+                    "max": 100,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Medication",
+                  "type": "obs",
+                  "id": "readingMedication7",
+                  "questionOptions": {
+                    "rendering": "text",
+                    "concept": "ef949c7e-1e37-4843-8146-50b3898fb4a9"
+                  }
+                }
+              ]
+            },
+            {
+              "label": "Reading 8",
+              "type": "obsGroup",
+              "id": "reading8",
+              "questionOptions": {
+                "rendering": "group",
+                "concept": "60afc96d-ec86-482b-b93c-0a28687d2574"
+              },
+              "questions": [
+                {
+                  "label": "Time of the reading",
+                  "type": "obs",
+                  "id": "readingTime8",
+                  "questionOptions": {
+                    "rendering": "datetime",
+                    "concept": "d3f21e28-7677-4c27-812d-aa510c9afc6c"
+                  },
+                  "validators": [
+                    {
+                      "type": "js_expression",
+                      "failsWhenExpression": "!isEmpty(myValue) && ((!isEmpty(readingTime1) && myValue < readingTime1) || (!isEmpty(readingTime2) && myValue < readingTime2) || (!isEmpty(readingTime3) && myValue < readingTime3) || (!isEmpty(readingTime4) && myValue < readingTime4) || (!isEmpty(readingTime5) && myValue < readingTime5) || (!isEmpty(readingTime6) && myValue < readingTime6) || (!isEmpty(readingTime7) && myValue < readingTime7))",
+                      "message": "L'heure doit être postérieure à celle de la mesure précédente / The time must be after the previous reading's"
+                    }
+                  ]
+                },
+                {
+                  "label": "Systolic BP (mmHg)",
+                  "type": "obs",
+                  "id": "readingSystolic8",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "4302c8cc-026e-42ec-ad35-c40cbc63f316",
+                    "min": 0,
+                    "max": 300,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Diastolic BP (mmHg)",
+                  "type": "obs",
+                  "id": "readingDiastolic8",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "09aa2c0d-a3c4-43ec-a61a-0dc5966f2882",
+                    "min": 0,
+                    "max": 200,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Pulse (/min)",
+                  "type": "obs",
+                  "id": "readingPulse8",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "4118079a-4165-4fbd-a1aa-58d9986ae7b0",
+                    "min": 0,
+                    "max": 300,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Stage",
+                  "type": "obs",
+                  "id": "readingStage8",
+                  "questionOptions": {
+                    "rendering": "select",
+                    "concept": "4f10b625-6156-4500-9fbd-d8f0b7389f41",
+                    "answers": [
+                      {
+                        "concept": "f328dc10-7eaf-4c34-8528-4590aec53bc7"
+                      },
+                      {
+                        "concept": "122c79cc-b60b-49a0-9a87-b433cc5fe90b"
+                      },
+                      {
+                        "concept": "4a81eaf4-14e6-42f7-af6d-6f496d4cefb2"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "label": "Respiration (/min)",
+                  "type": "obs",
+                  "id": "readingRespiration8",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "d4cd9b33-c4f2-4393-8058-ea9ed215720e",
+                    "min": 0,
+                    "max": 99,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "SpO2 (%)",
+                  "type": "obs",
+                  "id": "readingSpO28",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "c29ee197-968f-4a43-aa1c-fd35551412e9",
+                    "min": 0,
+                    "max": 100,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Medication",
+                  "type": "obs",
+                  "id": "readingMedication8",
+                  "questionOptions": {
+                    "rendering": "text",
+                    "concept": "ef949c7e-1e37-4843-8146-50b3898fb4a9"
+                  }
+                }
+              ]
+            },
+            {
+              "label": "Reading 9",
+              "type": "obsGroup",
+              "id": "reading9",
+              "questionOptions": {
+                "rendering": "group",
+                "concept": "60afc96d-ec86-482b-b93c-0a28687d2574"
+              },
+              "questions": [
+                {
+                  "label": "Time of the reading",
+                  "type": "obs",
+                  "id": "readingTime9",
+                  "questionOptions": {
+                    "rendering": "datetime",
+                    "concept": "d3f21e28-7677-4c27-812d-aa510c9afc6c"
+                  },
+                  "validators": [
+                    {
+                      "type": "js_expression",
+                      "failsWhenExpression": "!isEmpty(myValue) && ((!isEmpty(readingTime1) && myValue < readingTime1) || (!isEmpty(readingTime2) && myValue < readingTime2) || (!isEmpty(readingTime3) && myValue < readingTime3) || (!isEmpty(readingTime4) && myValue < readingTime4) || (!isEmpty(readingTime5) && myValue < readingTime5) || (!isEmpty(readingTime6) && myValue < readingTime6) || (!isEmpty(readingTime7) && myValue < readingTime7) || (!isEmpty(readingTime8) && myValue < readingTime8))",
+                      "message": "L'heure doit être postérieure à celle de la mesure précédente / The time must be after the previous reading's"
+                    }
+                  ]
+                },
+                {
+                  "label": "Systolic BP (mmHg)",
+                  "type": "obs",
+                  "id": "readingSystolic9",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "4302c8cc-026e-42ec-ad35-c40cbc63f316",
+                    "min": 0,
+                    "max": 300,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Diastolic BP (mmHg)",
+                  "type": "obs",
+                  "id": "readingDiastolic9",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "09aa2c0d-a3c4-43ec-a61a-0dc5966f2882",
+                    "min": 0,
+                    "max": 200,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Pulse (/min)",
+                  "type": "obs",
+                  "id": "readingPulse9",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "4118079a-4165-4fbd-a1aa-58d9986ae7b0",
+                    "min": 0,
+                    "max": 300,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Stage",
+                  "type": "obs",
+                  "id": "readingStage9",
+                  "questionOptions": {
+                    "rendering": "select",
+                    "concept": "4f10b625-6156-4500-9fbd-d8f0b7389f41",
+                    "answers": [
+                      {
+                        "concept": "f328dc10-7eaf-4c34-8528-4590aec53bc7"
+                      },
+                      {
+                        "concept": "122c79cc-b60b-49a0-9a87-b433cc5fe90b"
+                      },
+                      {
+                        "concept": "4a81eaf4-14e6-42f7-af6d-6f496d4cefb2"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "label": "Respiration (/min)",
+                  "type": "obs",
+                  "id": "readingRespiration9",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "d4cd9b33-c4f2-4393-8058-ea9ed215720e",
+                    "min": 0,
+                    "max": 99,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "SpO2 (%)",
+                  "type": "obs",
+                  "id": "readingSpO29",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "c29ee197-968f-4a43-aa1c-fd35551412e9",
+                    "min": 0,
+                    "max": 100,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Medication",
+                  "type": "obs",
+                  "id": "readingMedication9",
+                  "questionOptions": {
+                    "rendering": "text",
+                    "concept": "ef949c7e-1e37-4843-8146-50b3898fb4a9"
+                  }
+                }
+              ]
+            },
+            {
+              "label": "Reading 10",
+              "type": "obsGroup",
+              "id": "reading10",
+              "questionOptions": {
+                "rendering": "group",
+                "concept": "60afc96d-ec86-482b-b93c-0a28687d2574"
+              },
+              "questions": [
+                {
+                  "label": "Time of the reading",
+                  "type": "obs",
+                  "id": "readingTime10",
+                  "questionOptions": {
+                    "rendering": "datetime",
+                    "concept": "d3f21e28-7677-4c27-812d-aa510c9afc6c"
+                  },
+                  "validators": [
+                    {
+                      "type": "js_expression",
+                      "failsWhenExpression": "!isEmpty(myValue) && ((!isEmpty(readingTime1) && myValue < readingTime1) || (!isEmpty(readingTime2) && myValue < readingTime2) || (!isEmpty(readingTime3) && myValue < readingTime3) || (!isEmpty(readingTime4) && myValue < readingTime4) || (!isEmpty(readingTime5) && myValue < readingTime5) || (!isEmpty(readingTime6) && myValue < readingTime6) || (!isEmpty(readingTime7) && myValue < readingTime7) || (!isEmpty(readingTime8) && myValue < readingTime8) || (!isEmpty(readingTime9) && myValue < readingTime9))",
+                      "message": "L'heure doit être postérieure à celle de la mesure précédente / The time must be after the previous reading's"
+                    }
+                  ]
+                },
+                {
+                  "label": "Systolic BP (mmHg)",
+                  "type": "obs",
+                  "id": "readingSystolic10",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "4302c8cc-026e-42ec-ad35-c40cbc63f316",
+                    "min": 0,
+                    "max": 300,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Diastolic BP (mmHg)",
+                  "type": "obs",
+                  "id": "readingDiastolic10",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "09aa2c0d-a3c4-43ec-a61a-0dc5966f2882",
+                    "min": 0,
+                    "max": 200,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Pulse (/min)",
+                  "type": "obs",
+                  "id": "readingPulse10",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "4118079a-4165-4fbd-a1aa-58d9986ae7b0",
+                    "min": 0,
+                    "max": 300,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Stage",
+                  "type": "obs",
+                  "id": "readingStage10",
+                  "questionOptions": {
+                    "rendering": "select",
+                    "concept": "4f10b625-6156-4500-9fbd-d8f0b7389f41",
+                    "answers": [
+                      {
+                        "concept": "f328dc10-7eaf-4c34-8528-4590aec53bc7"
+                      },
+                      {
+                        "concept": "122c79cc-b60b-49a0-9a87-b433cc5fe90b"
+                      },
+                      {
+                        "concept": "4a81eaf4-14e6-42f7-af6d-6f496d4cefb2"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "label": "Respiration (/min)",
+                  "type": "obs",
+                  "id": "readingRespiration10",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "d4cd9b33-c4f2-4393-8058-ea9ed215720e",
+                    "min": 0,
+                    "max": 99,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "SpO2 (%)",
+                  "type": "obs",
+                  "id": "readingSpO210",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "c29ee197-968f-4a43-aa1c-fd35551412e9",
+                    "min": 0,
+                    "max": 100,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Medication",
+                  "type": "obs",
+                  "id": "readingMedication10",
+                  "questionOptions": {
+                    "rendering": "text",
+                    "concept": "ef949c7e-1e37-4843-8146-50b3898fb4a9"
+                  }
+                }
+              ]
+            },
+            {
+              "label": "Reading 11",
+              "type": "obsGroup",
+              "id": "reading11",
+              "questionOptions": {
+                "rendering": "group",
+                "concept": "60afc96d-ec86-482b-b93c-0a28687d2574"
+              },
+              "questions": [
+                {
+                  "label": "Time of the reading",
+                  "type": "obs",
+                  "id": "readingTime11",
+                  "questionOptions": {
+                    "rendering": "datetime",
+                    "concept": "d3f21e28-7677-4c27-812d-aa510c9afc6c"
+                  },
+                  "validators": [
+                    {
+                      "type": "js_expression",
+                      "failsWhenExpression": "!isEmpty(myValue) && ((!isEmpty(readingTime1) && myValue < readingTime1) || (!isEmpty(readingTime2) && myValue < readingTime2) || (!isEmpty(readingTime3) && myValue < readingTime3) || (!isEmpty(readingTime4) && myValue < readingTime4) || (!isEmpty(readingTime5) && myValue < readingTime5) || (!isEmpty(readingTime6) && myValue < readingTime6) || (!isEmpty(readingTime7) && myValue < readingTime7) || (!isEmpty(readingTime8) && myValue < readingTime8) || (!isEmpty(readingTime9) && myValue < readingTime9) || (!isEmpty(readingTime10) && myValue < readingTime10))",
+                      "message": "L'heure doit être postérieure à celle de la mesure précédente / The time must be after the previous reading's"
+                    }
+                  ]
+                },
+                {
+                  "label": "Systolic BP (mmHg)",
+                  "type": "obs",
+                  "id": "readingSystolic11",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "4302c8cc-026e-42ec-ad35-c40cbc63f316",
+                    "min": 0,
+                    "max": 300,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Diastolic BP (mmHg)",
+                  "type": "obs",
+                  "id": "readingDiastolic11",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "09aa2c0d-a3c4-43ec-a61a-0dc5966f2882",
+                    "min": 0,
+                    "max": 200,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Pulse (/min)",
+                  "type": "obs",
+                  "id": "readingPulse11",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "4118079a-4165-4fbd-a1aa-58d9986ae7b0",
+                    "min": 0,
+                    "max": 300,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Stage",
+                  "type": "obs",
+                  "id": "readingStage11",
+                  "questionOptions": {
+                    "rendering": "select",
+                    "concept": "4f10b625-6156-4500-9fbd-d8f0b7389f41",
+                    "answers": [
+                      {
+                        "concept": "f328dc10-7eaf-4c34-8528-4590aec53bc7"
+                      },
+                      {
+                        "concept": "122c79cc-b60b-49a0-9a87-b433cc5fe90b"
+                      },
+                      {
+                        "concept": "4a81eaf4-14e6-42f7-af6d-6f496d4cefb2"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "label": "Respiration (/min)",
+                  "type": "obs",
+                  "id": "readingRespiration11",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "d4cd9b33-c4f2-4393-8058-ea9ed215720e",
+                    "min": 0,
+                    "max": 99,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "SpO2 (%)",
+                  "type": "obs",
+                  "id": "readingSpO211",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "c29ee197-968f-4a43-aa1c-fd35551412e9",
+                    "min": 0,
+                    "max": 100,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Medication",
+                  "type": "obs",
+                  "id": "readingMedication11",
+                  "questionOptions": {
+                    "rendering": "text",
+                    "concept": "ef949c7e-1e37-4843-8146-50b3898fb4a9"
+                  }
+                }
+              ]
+            },
+            {
+              "label": "Reading 12",
+              "type": "obsGroup",
+              "id": "reading12",
+              "questionOptions": {
+                "rendering": "group",
+                "concept": "60afc96d-ec86-482b-b93c-0a28687d2574"
+              },
+              "questions": [
+                {
+                  "label": "Time of the reading",
+                  "type": "obs",
+                  "id": "readingTime12",
+                  "questionOptions": {
+                    "rendering": "datetime",
+                    "concept": "d3f21e28-7677-4c27-812d-aa510c9afc6c"
+                  },
+                  "validators": [
+                    {
+                      "type": "js_expression",
+                      "failsWhenExpression": "!isEmpty(myValue) && ((!isEmpty(readingTime1) && myValue < readingTime1) || (!isEmpty(readingTime2) && myValue < readingTime2) || (!isEmpty(readingTime3) && myValue < readingTime3) || (!isEmpty(readingTime4) && myValue < readingTime4) || (!isEmpty(readingTime5) && myValue < readingTime5) || (!isEmpty(readingTime6) && myValue < readingTime6) || (!isEmpty(readingTime7) && myValue < readingTime7) || (!isEmpty(readingTime8) && myValue < readingTime8) || (!isEmpty(readingTime9) && myValue < readingTime9) || (!isEmpty(readingTime10) && myValue < readingTime10) || (!isEmpty(readingTime11) && myValue < readingTime11))",
+                      "message": "L'heure doit être postérieure à celle de la mesure précédente / The time must be after the previous reading's"
+                    }
+                  ]
+                },
+                {
+                  "label": "Systolic BP (mmHg)",
+                  "type": "obs",
+                  "id": "readingSystolic12",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "4302c8cc-026e-42ec-ad35-c40cbc63f316",
+                    "min": 0,
+                    "max": 300,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Diastolic BP (mmHg)",
+                  "type": "obs",
+                  "id": "readingDiastolic12",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "09aa2c0d-a3c4-43ec-a61a-0dc5966f2882",
+                    "min": 0,
+                    "max": 200,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Pulse (/min)",
+                  "type": "obs",
+                  "id": "readingPulse12",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "4118079a-4165-4fbd-a1aa-58d9986ae7b0",
+                    "min": 0,
+                    "max": 300,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Stage",
+                  "type": "obs",
+                  "id": "readingStage12",
+                  "questionOptions": {
+                    "rendering": "select",
+                    "concept": "4f10b625-6156-4500-9fbd-d8f0b7389f41",
+                    "answers": [
+                      {
+                        "concept": "f328dc10-7eaf-4c34-8528-4590aec53bc7"
+                      },
+                      {
+                        "concept": "122c79cc-b60b-49a0-9a87-b433cc5fe90b"
+                      },
+                      {
+                        "concept": "4a81eaf4-14e6-42f7-af6d-6f496d4cefb2"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "label": "Respiration (/min)",
+                  "type": "obs",
+                  "id": "readingRespiration12",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "d4cd9b33-c4f2-4393-8058-ea9ed215720e",
+                    "min": 0,
+                    "max": 99,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "SpO2 (%)",
+                  "type": "obs",
+                  "id": "readingSpO212",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "c29ee197-968f-4a43-aa1c-fd35551412e9",
+                    "min": 0,
+                    "max": 100,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Medication",
+                  "type": "obs",
+                  "id": "readingMedication12",
+                  "questionOptions": {
+                    "rendering": "text",
+                    "concept": "ef949c7e-1e37-4843-8146-50b3898fb4a9"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

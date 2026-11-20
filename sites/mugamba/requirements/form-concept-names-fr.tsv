@@ -1743,3 +1743,15 @@ ffcbbf6d-b2e8-4895-95ff-d6f7bca0a540	B08.5 Pharyngite vesiculaire due a un enter
 ffd3a0b5-6f86-4129-ae36-122361700b20	S74 Lesion traumatique de nerfs au niveau de la hanche et de la cuisse		
 ffedbeac-c77c-466b-af8c-f7a4d542fe29	D32 Tumeur benigne des meninges		
 ffeefdf4-fae7-465c-9167-cbbe25f80914	I50.0 Insuffisance cardiaque congestive		
+60afc96d-ec86-482b-b93c-0a28687d2574	Mesure de surveillance de l'anesthésie		#833: new concept for « Surveillance pendant l'anesthésie »
+d3f21e28-7677-4c27-812d-aa510c9afc6c	Heure de la mesure (anesthésie)	Heure	#833: new concept for « Surveillance pendant l'anesthésie »
+4302c8cc-026e-42ec-ad35-c40cbc63f316	TA systolique (anesthésie)	TA Sys	#833: the form's own concept, not the vital-signs one (so the vitals header is untouched); qualified with (anesthésie); label from the product owner's screenshot of 20 Nov 2026
+09aa2c0d-a3c4-43ec-a61a-0dc5966f2882	TA diastolique (anesthésie)	TA Dias	#833: the form's own concept, not the vital-signs one (so the vitals header is untouched); qualified with (anesthésie); label from the product owner's screenshot of 20 Nov 2026
+4118079a-4165-4fbd-a1aa-58d9986ae7b0	Pouls (anesthésie)	Pouls (/min)	#833: the form's own concept, not the vital-signs one (so the vitals header is untouched); qualified with (anesthésie); label from the product owner's screenshot of 20 Nov 2026
+4f10b625-6156-4500-9fbd-d8f0b7389f41	Stade de l'anesthésie	Stade	#833: the form's own concept, not the vital-signs one (so the vitals header is untouched); qualified with (anesthésie); label from the product owner's screenshot of 20 Nov 2026
+d4cd9b33-c4f2-4393-8058-ea9ed215720e	Respiration (anesthésie)	Respiration (/min)	#833: the form's own concept, not the vital-signs one (so the vitals header is untouched); qualified with (anesthésie); label from the product owner's screenshot of 20 Nov 2026
+c29ee197-968f-4a43-aa1c-fd35551412e9	Sa O2 (anesthésie)	Sa O2 (%)	#833: the form's own concept, not the vital-signs one (so the vitals header is untouched); qualified with (anesthésie); label from the product owner's screenshot of 20 Nov 2026
+ef949c7e-1e37-4843-8146-50b3898fb4a9	Médication (anesthésie)	Médication	#833: the form's own concept, not the vital-signs one (so the vitals header is untouched); qualified with (anesthésie); label from the product owner's screenshot of 20 Nov 2026
+f328dc10-7eaf-4c34-8528-4590aec53bc7	Induction		#833: new concept for « Surveillance pendant l'anesthésie »; stage choices proposed, to confirm with the product owner
+122c79cc-b60b-49a0-9a87-b433cc5fe90b	Entretien		#833: new concept for « Surveillance pendant l'anesthésie »; stage choices proposed, to confirm with the product owner
+4a81eaf4-14e6-42f7-af6d-6f496d4cefb2	Réveil		#833: new concept for « Surveillance pendant l'anesthésie »; stage choices proposed, to confirm with the product owner
