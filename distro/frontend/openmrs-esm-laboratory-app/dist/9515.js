@@ -1,1 +1,1 @@
-"use strict";(globalThis.webpackChunk_openmrs_esm_laboratory_app=globalThis.webpackChunk_openmrs_esm_laboratory_app||[]).push([["9515"],{1820(a,e,l){l.r(e),l.d(e,{default:()=>p});var r=l(7586),s=l.n(r),t=l(3136);let p=()=>s().createElement(t.A,{fulfillerStatus:"IN_PROGRESS"})}}]);
+"use strict";(globalThis.webpackChunk_openmrs_esm_laboratory_app=globalThis.webpackChunk_openmrs_esm_laboratory_app||[]).push([["9515"],{1820(a,e,l){l.r(e),l.d(e,{default:()=>p});var r=l(5556),s=l.n(r),t=l(3136);let p=()=>s().createElement(t.A,{fulfillerStatus:"IN_PROGRESS"})}}]);

@@ -1,6 +1,6 @@
 {
   "name": "@openmrs/esm-laboratory-app",
-  "version": "1.6.0-uvl.1",
+  "version": "1.6.0-uvl.2",
   "license": "MPL-2.0",
   "description": "An O3 frontend module for managing laboratory requests and queues",
   "browser": "dist/openmrs-esm-laboratory-app.js",
