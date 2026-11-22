@@ -256,6 +256,8 @@ position:
     id: TABS-m6
     children:
     - TAB-m6-rapports
+    - TAB-m6-consultations
+    - TAB-m6-diagnostics
     - TAB-m6-registres
     - TAB-m6-usage
     - TAB-m6-qualite
@@ -377,6 +379,293 @@ position:
       height: 80
       sliceName: "Contr\xF4le qualit\xE9 \u2013 d\xE9tail (\xE0 corriger)"
       uuid: 76caf534-7dbf-4b30-b10c-846a5901c2f9
+  TAB-m6-consultations:
+    type: TAB
+    id: TAB-m6-consultations
+    children:
+    - ROW-m6-c0
+    - ROW-m6-c1
+    - ROW-m6-c2
+    - ROW-m6-c3
+    - ROW-m6-c4
+    - ROW-m6-c5
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    meta:
+      text: 'Consultations : nouveaux et anciens cas'
+      defaultText: Tab title
+      placeholder: Tab title
+  ROW-m6-c0:
+    type: ROW
+    id: ROW-m6-c0
+    children:
+    - MARKDOWN-m6-c0
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-consultations
+    meta:
+      background: BACKGROUND_TRANSPARENT
+  MARKDOWN-m6-c0:
+    type: MARKDOWN
+    id: MARKDOWN-m6-c0
+    children: []
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-consultations
+    - ROW-m6-c0
+    meta:
+      code: |-
+        **Nouveau cas ou ancien cas : deux définitions côte à côte.**
+
+        « Déclaré » est ce que le personnel a indiqué à la consultation. « Calculé » est la première consultation connue du patient (l'historique commence le 8 septembre 2025) ; toute consultation suivante est un ancien cas. Les deux divergent pour environ une consultation sur cinq : la définition retenue reste à choisir par le propriétaire du produit. Filtres : mois et service. L'origine par centre de santé ou par district n'est pas enregistrée.
+      height: 22
+      width: 12
+  ROW-m6-c1:
+    type: ROW
+    id: ROW-m6-c1
+    children:
+    - CHART-m6-c1-42
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-consultations
+    meta:
+      background: BACKGROUND_TRANSPARENT
+  CHART-m6-c1-42:
+    type: CHART
+    id: CHART-m6-c1-42
+    children: []
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-consultations
+    - ROW-m6-c1
+    meta:
+      chartId: 42
+      width: 12
+      height: 40
+      sliceName: Consultations – cas déclaré contre cas calculé
+      uuid: 0c3f8540-7473-4cb7-8b0c-ae839772a0ec
+  ROW-m6-c2:
+    type: ROW
+    id: ROW-m6-c2
+    children:
+    - CHART-m6-c2-40
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-consultations
+    meta:
+      background: BACKGROUND_TRANSPARENT
+  CHART-m6-c2-40:
+    type: CHART
+    id: CHART-m6-c2-40
+    children: []
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-consultations
+    - ROW-m6-c2
+    meta:
+      chartId: 40
+      width: 12
+      height: 80
+      sliceName: Consultations – âge × sexe × cas déclaré
+      uuid: 811a172c-2fe2-4455-bc1f-d6d99ad7aade
+  ROW-m6-c3:
+    type: ROW
+    id: ROW-m6-c3
+    children:
+    - CHART-m6-c3-41
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-consultations
+    meta:
+      background: BACKGROUND_TRANSPARENT
+  CHART-m6-c3-41:
+    type: CHART
+    id: CHART-m6-c3-41
+    children: []
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-consultations
+    - ROW-m6-c3
+    meta:
+      chartId: 41
+      width: 12
+      height: 80
+      sliceName: Consultations – âge × sexe × cas calculé
+      uuid: 8e7baea9-3bea-41cd-8b69-9516ffda914c
+  ROW-m6-c4:
+    type: ROW
+    id: ROW-m6-c4
+    children:
+    - CHART-m6-c4-43
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-consultations
+    meta:
+      background: BACKGROUND_TRANSPARENT
+  CHART-m6-c4-43:
+    type: CHART
+    id: CHART-m6-c4-43
+    children: []
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-consultations
+    - ROW-m6-c4
+    meta:
+      chartId: 43
+      width: 12
+      height: 70
+      sliceName: Consultations – origine des patients × cas déclaré
+      uuid: 88888980-ce12-40ef-9179-217c10bb2721
+  ROW-m6-c5:
+    type: ROW
+    id: ROW-m6-c5
+    children:
+    - CHART-m6-c5-44
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-consultations
+    meta:
+      background: BACKGROUND_TRANSPARENT
+  CHART-m6-c5-44:
+    type: CHART
+    id: CHART-m6-c5-44
+    children: []
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-consultations
+    - ROW-m6-c5
+    meta:
+      chartId: 44
+      width: 12
+      height: 70
+      sliceName: Consultations – origine des patients × cas calculé
+      uuid: 94ec2559-5ad2-49b2-8a41-41347117a988
+  TAB-m6-diagnostics:
+    type: TAB
+    id: TAB-m6-diagnostics
+    children:
+    - ROW-m6-d0
+    - ROW-m6-d1
+    - ROW-m6-d2
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    meta:
+      text: Diagnostics
+      defaultText: Tab title
+      placeholder: Tab title
+  ROW-m6-d0:
+    type: ROW
+    id: ROW-m6-d0
+    children:
+    - MARKDOWN-m6-d0
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-diagnostics
+    meta:
+      background: BACKGROUND_TRANSPARENT
+  MARKDOWN-m6-d0:
+    type: MARKDOWN
+    id: MARKDOWN-m6-d0
+    children: []
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-diagnostics
+    - ROW-m6-d0
+    meta:
+      code: |-
+        **Notification des diagnostics.**
+
+        Diagnostics confirmés saisis pendant les consultations et les séjours du mois ; le code CIM-10 vient du dictionnaire de concepts. Un cas est un diagnostic saisi, pas un patient. Filtres : mois et service.
+      height: 18
+      width: 12
+  ROW-m6-d1:
+    type: ROW
+    id: ROW-m6-d1
+    children:
+    - CHART-m6-d1-45
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-diagnostics
+    meta:
+      background: BACKGROUND_TRANSPARENT
+  CHART-m6-d1-45:
+    type: CHART
+    id: CHART-m6-d1-45
+    children: []
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-diagnostics
+    - ROW-m6-d1
+    meta:
+      chartId: 45
+      width: 12
+      height: 60
+      sliceName: Diagnostics – les 10 principaux (CIM-10)
+      uuid: 4982179c-786f-4386-8735-5bc3e8d9cd5b
+  ROW-m6-d2:
+    type: ROW
+    id: ROW-m6-d2
+    children:
+    - CHART-m6-d2-46
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-diagnostics
+    meta:
+      background: BACKGROUND_TRANSPARENT
+  CHART-m6-d2-46:
+    type: CHART
+    id: CHART-m6-d2-46
+    children: []
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-diagnostics
+    - ROW-m6-d2
+    meta:
+      chartId: 46
+      width: 12
+      height: 80
+      sliceName: Diagnostics – âge × sexe
+      uuid: 8bc7db2b-5c85-465a-aa58-21af555d7153
 metadata:
   chart_configuration:
     '28':
@@ -530,6 +819,13 @@ metadata:
     - 35
     - 36
     - 37
+    - 40
+    - 41
+    - 42
+    - 43
+    - 44
+    - 45
+    - 46
     tabsInScope: []
   - id: NATIVE_FILTER-S2BhrN5ik
     controlValues:
@@ -566,5 +862,12 @@ metadata:
     chartsInScope:
     - 31
     - 34
+    - 40
+    - 41
+    - 42
+    - 43
+    - 44
+    - 45
+    - 46
     tabsInScope: []
 version: 1.0.0
