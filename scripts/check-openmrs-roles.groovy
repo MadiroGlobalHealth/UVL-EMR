@@ -122,6 +122,13 @@
        midwife's basket. The privilege is per order, not per concept or order type: with it the
        basket saves whatever it offers (medicines, lab tests, every act of « All procedures »),
        not delivery acts only.
+     - Help Nurse places orders too (#851): the patient pays the consultation, a Procedure
+       order (« Consultation généraliste »), before seeing the doctor, so reception orders it.
+       Help Nurse already held the encounter, patient, visit and encounter role privileges
+       (through Register patients and its own list) but not `Add Orders` or `Get Order Types`,
+       so core refused the basket's order. Nurse inherits Help Nurse, so Midwife, Doctor and
+       the rest keep what they had. Same limit as above: the privilege is per order, not per
+       act.
 
  10. Only administrators see System Administration. The site frontend config shows
      `@openmrs/esm-system-admin-app` (the « Administration du système » app menu entry) only
@@ -214,7 +221,7 @@ Map<String, List<String>> appMenuUsers = [
         'stock-management-app-menu-item': ['Pharmacist', 'Central Pharmacist'],
 ]
 Map<String, List<String>> requiredOf = [
-        'Help Nurse'        : readDrugOrders + readPatientLists + saveVitals,
+        'Help Nurse'        : readDrugOrders + readPatientLists + saveVitals + placeOrders,
         'Nurse'             : readDrugOrders + readPatientLists + saveVitals + saveSurveillance + savePartograph + placeOrders,
         'Midwife'           : readDrugOrders + readPatientLists + saveVitals + saveSurveillance + savePartograph + placeOrders,
         'Doctor'            : readDrugOrders + readPatientLists + basketLookups + saveVitals + saveConsultation + savePartograph + saveAnaesthesiaMonitoring,

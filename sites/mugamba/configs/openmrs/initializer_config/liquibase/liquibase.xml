@@ -3496,4 +3496,88 @@
         </rollback>
     </changeSet>
 
+    <!--
+        #848 - one maternity ward. « Soins maternels (accouchement normal) » (30081A32-...) is
+        renamed « Gynéco-Obstétrique » by the Initializer (locations.csv, same uuid, so its beds,
+        visits and encounters follow with no move). « Salle de césarienne » (EF741FF1-...) is
+        retired: it had no bed, and the product owner (21 Nov 2026) made the caesarean room part
+        of the one ward. Everything that points at it is moved to the merged ward, so it reads
+        under « Gynéco-Obstétrique »: its visits, encounters, observations, appointments, the
+        queue entries of its queue (« Consultation de césarienne », retired; its queue entries move
+        to « Consultation d'accouchement »), and a user's default location. Theatre records are at
+        « Bloc opératoire (OR) » and are not touched. Its tags are removed, so it is offered
+        neither for admission nor to start a visit.
+
+        runAlways, runOnChange and written as joins on the two uuids: where either location does
+        not exist (a new database, where locations.csv no longer creates the caesarean room) no row
+        matches and nothing happens; once done nothing matches again. It does not depend on drugs
+        or on the Initializer having run, so there is nothing for a first start to skip. A table
+        that is missing (queue module not yet migrated) makes the changeset retry on the next
+        start (onError CONTINUE).
+    -->
+    <changeSet id="maternity_one_ward-20261122" author="Joshua" runAlways="true" runOnChange="true">
+        <preConditions onFail="MARK_RAN" onError="CONTINUE"
+                       onErrorMessage="WARN (#848): a table the merge of « Salle de césarienne » into « Gynéco-Obstétrique » needs does not exist yet; it is retried on the next start.">
+            <tableExists tableName="queue_entry"/>
+            <tableExists tableName="patient_appointment"/>
+        </preConditions>
+        <comment>
+            Move what points at « Salle de césarienne » to the maternity ward, then retire it (#848).
+        </comment>
+        <sql>
+            UPDATE visit v
+              JOIN location s ON s.uuid = 'EF741FF1-EAAB-4DED-BC4B-EBEFE08BA7A6' AND v.location_id = s.location_id
+              JOIN location t ON t.uuid = '30081A32-690B-484E-A3C0-7B8E46126250'
+               SET v.location_id = t.location_id, v.changed_by = 1, v.date_changed = NOW();
+
+            UPDATE encounter e
+              JOIN location s ON s.uuid = 'EF741FF1-EAAB-4DED-BC4B-EBEFE08BA7A6' AND e.location_id = s.location_id
+              JOIN location t ON t.uuid = '30081A32-690B-484E-A3C0-7B8E46126250'
+               SET e.location_id = t.location_id, e.changed_by = 1, e.date_changed = NOW();
+
+            UPDATE obs o
+              JOIN location s ON s.uuid = 'EF741FF1-EAAB-4DED-BC4B-EBEFE08BA7A6' AND o.location_id = s.location_id
+              JOIN location t ON t.uuid = '30081A32-690B-484E-A3C0-7B8E46126250'
+               SET o.location_id = t.location_id;
+
+            UPDATE patient_appointment a
+              JOIN location s ON s.uuid = 'EF741FF1-EAAB-4DED-BC4B-EBEFE08BA7A6' AND a.location_id = s.location_id
+              JOIN location t ON t.uuid = '30081A32-690B-484E-A3C0-7B8E46126250'
+               SET a.location_id = t.location_id, a.changed_by = 1, a.date_changed = NOW();
+
+            UPDATE queue_entry qe
+              JOIN queue sq ON sq.uuid = 'f1b8c449-4935-4c8f-ba69-3ebbab511675' AND qe.queue_id = sq.queue_id
+              JOIN queue tq ON tq.uuid = '22acb55a-f062-4070-b212-0702abbddd76'
+               SET qe.queue_id = tq.queue_id, qe.changed_by = 1, qe.date_changed = NOW();
+
+            UPDATE queue_entry qe
+              JOIN location s ON s.uuid = 'EF741FF1-EAAB-4DED-BC4B-EBEFE08BA7A6' AND qe.location_waiting_for = s.location_id
+              JOIN location t ON t.uuid = '30081A32-690B-484E-A3C0-7B8E46126250'
+               SET qe.location_waiting_for = t.location_id;
+
+            UPDATE queue sq
+              JOIN queue tq ON tq.uuid = '22acb55a-f062-4070-b212-0702abbddd76'
+               SET sq.retired = 1, sq.retired_by = 1, sq.date_retired = NOW(),
+                   sq.retire_reason = 'Merged into the maternity ward (#848)'
+             WHERE sq.uuid = 'f1b8c449-4935-4c8f-ba69-3ebbab511675' AND sq.retired = 0;
+
+            UPDATE user_property p
+              JOIN location t ON t.uuid = '30081A32-690B-484E-A3C0-7B8E46126250'
+               SET p.property_value = t.uuid
+             WHERE p.property = 'defaultLocation'
+               AND p.property_value = 'EF741FF1-EAAB-4DED-BC4B-EBEFE08BA7A6';
+
+            DELETE m FROM location_tag_map m
+              JOIN location s ON s.uuid = 'EF741FF1-EAAB-4DED-BC4B-EBEFE08BA7A6' AND m.location_id = s.location_id
+              JOIN location t ON t.uuid = '30081A32-690B-484E-A3C0-7B8E46126250';
+
+            UPDATE location s
+              JOIN location t ON t.uuid = '30081A32-690B-484E-A3C0-7B8E46126250'
+               SET s.retired = 1, s.retired_by = 1, s.date_retired = NOW(),
+                   s.retire_reason = 'Merged into the maternity ward Gynéco-Obstétrique (#848)'
+             WHERE s.uuid = 'EF741FF1-EAAB-4DED-BC4B-EBEFE08BA7A6' AND s.retired = 0;
+        </sql>
+        <rollback/>
+    </changeSet>
+
 </databaseChangeLog>
