@@ -33,26 +33,6 @@
           "isExpanded": "true",
           "questions": [
             {
-              "label": "Doctor Called At",
-              "type": "obs",
-              "id": "doctorCalledAt",
-              "questionOptions": {
-                "rendering": "datetime",
-                "concept": "e828f49d-d47c-4774-94bc-56c60712be88",
-                "datePickerFormat": "both"
-              }
-            },
-            {
-              "label": "Doctor Arrived At",
-              "type": "obs",
-              "id": "doctorArrivedAt",
-              "questionOptions": {
-                "rendering": "datetime",
-                "concept": "16f8d29e-75bb-41ae-9592-ee7bf4f80523",
-                "datePickerFormat": "both"
-              }
-            },
-            {
               "label": "Neurological Signs",
               "type": "obs",
               "id": "neurologicalSigns",
@@ -459,6 +439,32 @@
               "questionOptions": {
                 "isSearchable": "true",
                 "rendering": "ui-select-extended"
+              }
+            }
+          ]
+        },
+        {
+          "label": "Doctor call",
+          "isExpanded": "false",
+          "questions": [
+            {
+              "label": "Doctor Called At",
+              "type": "obs",
+              "id": "doctorCalledAt",
+              "questionOptions": {
+                "rendering": "datetime",
+                "concept": "e828f49d-d47c-4774-94bc-56c60712be88",
+                "datePickerFormat": "both"
+              }
+            },
+            {
+              "label": "Doctor Arrived At",
+              "type": "obs",
+              "id": "doctorArrivedAt",
+              "questionOptions": {
+                "rendering": "datetime",
+                "concept": "16f8d29e-75bb-41ae-9592-ee7bf4f80523",
+                "datePickerFormat": "both"
               }
             }
           ]
