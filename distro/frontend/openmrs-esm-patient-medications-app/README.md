@@ -3,7 +3,7 @@
 The pinned pre-release 13.0.2-pre.12863 (built from openmrs-esm-patient-chart `2eeffea`, the
 commit CI run 12863 published; its source is identical to the npm package) with fixes that are not
 released upstream yet. Only the built module is here; the source is
-`jnsereko/openmrs-esm-patient-chart`, branch `uvl/767-medications-dose-prefill` (on top of `uvl/752-medications-french`,
+`jnsereko/openmrs-esm-patient-chart`, branch `uvl/869-medications-duration-unit` (on top of `uvl/767-medications-dose-prefill`, `uvl/752-medications-french`,
 `uvl/727-medications-decimal-separator` and `uvl/medications-13.0.2-pre.12863-patched`).
 
 | UVL-EMR | Fix | Upstream PR |
@@ -12,6 +12,7 @@ released upstream yet. Only the built module is here; the source is
 | #727 | Dose, duration, quantity to dispense and refills are text fields (`inputMode="decimal"`) instead of `<input type="number">`, which a French-locale Windows browser empties at a typed dot (a dose of « 2.5 » was saved as 5). « 2.5 » and « 2,5 » both save 2.5; whole numbers stay whole; letters, a minus sign and a second separator are ignored. The form's checks are unchanged; a dose of 0 now reaches them on save, so it is also listed by the save button. The field is the app's own `src/components/decimal-text-input.component.tsx`, not common-lib (`.uvl.2`) | not yet |
 | #752 | Decimals are written with the session language's mark, « DOSE 2,5 » in French: the order basket tile (dose, quantity), the drug order form's header and the medications table (dose, duration, quantity). The drug order form's header names the patient's gender in the session language (« Femme »), with the module's own keys as the medications table does, instead of the capitalised FHIR code (« Female ») (`.uvl.3`) | not yet |
 | #767 | Modifying a drug order pre-fills the dose (and any value the form sets, such as a calculated quantity) with the session language's decimal mark, « 2,5 » in French instead of « 2.5 »; what is typed is kept as typed, and a dot or a comma still both read as the decimal point (`.uvl.4`) | none yet |
+| #869 | A duration needs its duration unit and a quantity to dispense its quantity unit: the form shows « Choisissez l'unité de durée » (the existing « L'unité de la quantité est requise » for the quantity) under the field and lists it by the save button, instead of the server refusing the order (`DrugOrder.error.durationUnitsRequiredWithDuration`) with only « Invalid Submission » in the basket. Both checks hold for the free-text dosage too (the server asks the same) and are not zod refinements, which do not run while another field is invalid: `getUnitErrors` in `drug-order-form.resource.ts`, added to the form's resolver. Typing a duration with no unit offers the unit the site names as days (`daysDurationUnit.uuid`, found among the server's duration units; no match, no default); the unit menu lists every unit even with one selected (`.uvl.5`) | none yet |
 
 The upstream config has no key for a refills default: the only switch is the global property
 `drugOrder.requireOutpatientQuantity`, which would also make the quantity to dispense optional.
