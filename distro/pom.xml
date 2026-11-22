@@ -30,13 +30,14 @@
          billing 2.4.0 reserves receipt numbers under a row lock, so orders signed together no
          longer draw the same number (#840). It is 2.3.0 plus that fix only: same required
          modules, byte-identical liquibase.xml. Not 2.5.0, which carries more than that.
-         overridden by distro/binaries/openmrs/modules/stockmanagement-2.1.2-uvl5.omod until a
+         overridden by distro/binaries/openmrs/modules/stockmanagement-2.1.2-uvl6.omod until a
          release without the stock operation permission cache (O3-6248,
          openmrs/openmrs-module-stockmanagement#57), with role scopes checked on stock
          operation create and update (UVL-EMR#447), with the operation items' own received
          quantity in the full representation (UVL-EMR#638) and with stock issued from an
          approved requisition, which its Stock Issue completes (UVL-EMR#641), and with concept
-         names (units, categories, reasons) in the user's locale (UVL-EMR#529), is taken -->
+         names (units, categories, reasons) in the user's locale (UVL-EMR#529), and with the
+         location-less report batch jobs listed (UVL-EMR#862), is taken -->
     <stockmanagement.version>2.1.2</stockmanagement.version>
     <billing.version>2.4.0</billing.version>
     <initializer.version>2.12.0</initializer.version>
