@@ -4,7 +4,6 @@
     "@openmrs/esm-cohort-builder-app": "4.0.7",
     "@openmrs/esm-home-app": "12.1.1",
     "@openmrs/esm-system-admin-app": "4.6.1",
-    "@openmrs/esm-devtools-app": "11.0.0",
     "@openmrs/esm-patient-flags-app": "13.0.2-pre.12863",
     "@openmrs/esm-openconceptlab-app": "4.6.1",
     "@openmrs/esm-patient-search-app": "12.1.1",
@@ -38,7 +37,6 @@
     "@openmrs/esm-implementer-tools-app": "11.0.0",
     "@openmrs/esm-form-builder-app": "3.6.0",
     "@openmrs/esm-service-queues-app": "file:openmrs-esm-service-queues-app.tgz",
-    "@openmrs/esm-user-onboarding-app": "4.1.1",
     "@openmrs/esm-ward-app": "file:openmrs-esm-ward-app.tgz",
     "@openmrs/esm-bed-management-app": "12.1.1",
     "@openmrs/esm-reports-app": "4.6.1",
@@ -46,10 +44,12 @@
     "@madiro/esm-uvl-imaging-app": "file:madiro-esm-uvl-imaging-app.tgz",
     "@madiro/esm-uvl-partograph-app": "file:madiro-esm-uvl-partograph-app.tgz"
   },
-  "__comment": "Excluding modules some default modules to ensure we are using the specified versions. Every module here is pinned to a release that requires @openmrs/esm-framework 11.x, which is what coreVersion provides -- keep it that way when bumping any single entry. The patient-chart monorepo apps (including esm-form-engine-app) share one build number and move together; 13.0.2-pre.12863 is the first build that bundles esm-form-engine-lib with the fix for duplicated obs on re-save (#490). \"file:\" entries are UVL's own modules from distro/frontend: distro/pom.xml packs each into target/uvl-frontend-modules and anchors the name there (#494). Some \"file:\" entries are patched builds of upstream modules, waiting for upstream releases: esm-dispensing-app is 1.11.2 plus #541 and #394, esm-patient-vitals-app is 13.0.2-pre.12863 plus #347, #564, #752 and #761, esm-patient-tests-app is 13.0.2-pre.12863 plus #548, #529 and #779, esm-patient-forms-app is 13.0.2-pre.12863 plus #518, #662 and #794, esm-patient-chart-app is 13.0.2-pre.12863 plus #222 and #677, esm-patient-orders-app is 13.0.2-pre.12863 plus #677, #683, #691, #727, #752, #838 and #869, esm-patient-notes-app is 13.0.2-pre.12863 plus #691, esm-patient-medications-app is 13.0.2-pre.12863 plus #679, #727, #752 and #869, esm-ward-app is 12.1.1 plus #246 and #529, esm-stock-management-app is 3.3.1 plus #447, esm-laboratory-app is 1.6.0 plus #737 and #847, esm-service-queues-app is 12.1.1 plus #737, esm-appointments-app is 12.1.1 plus #766 (see each README in distro/frontend).",
+  "__comment": "Excluding modules some default modules to ensure we are using the specified versions. Every module here is pinned to a release that requires @openmrs/esm-framework 11.x, which is what coreVersion provides -- keep it that way when bumping any single entry. The patient-chart monorepo apps (including esm-form-engine-app) share one build number and move together; 13.0.2-pre.12863 is the first build that bundles esm-form-engine-lib with the fix for duplicated obs on re-save (#490). \"file:\" entries are UVL's own modules from distro/frontend: distro/pom.xml packs each into target/uvl-frontend-modules and anchors the name there (#494). Some \"file:\" entries are patched builds of upstream modules, waiting for upstream releases: esm-dispensing-app is 1.11.2 plus #541 and #394, esm-patient-vitals-app is 13.0.2-pre.12863 plus #347, #564, #752 and #761, esm-patient-tests-app is 13.0.2-pre.12863 plus #548, #529 and #779, esm-patient-forms-app is 13.0.2-pre.12863 plus #518, #662 and #794, esm-patient-chart-app is 13.0.2-pre.12863 plus #222 and #677, esm-patient-orders-app is 13.0.2-pre.12863 plus #677, #683, #691, #727, #752, #838 and #869, esm-patient-notes-app is 13.0.2-pre.12863 plus #691, esm-patient-medications-app is 13.0.2-pre.12863 plus #679, #727, #752 and #869, esm-ward-app is 12.1.1 plus #246 and #529, esm-stock-management-app is 3.3.1 plus #447, esm-laboratory-app is 1.6.0 plus #737 and #847, esm-service-queues-app is 12.1.1 plus #737, esm-appointments-app is 12.1.1 plus #766 (see each README in distro/frontend). Excluding a module only removes the entry inherited from the Ozone base: `openmrs assemble` applies the excludes of a config first and then adds that same config's frontendModules, so a module listed in both stays (@openmrs/esm-help-menu-app is one). To drop one, take it out of frontendModules too. esm-devtools-app (import-map-overrides panel for developers) and esm-user-onboarding-app (first-login tutorials) are dropped (#806): nothing else uses their pages or modals and they register no slot others fill; esm-implementer-tools-app stays because it is where feature flags such as patient-flags are switched.",
   "frontendModuleExcludes": [
     "@openmrs/esm-help-menu-app",
     "@openmrs/esm-billing-app",
-    "@openmrs/esm-patient-labs-app"
+    "@openmrs/esm-patient-labs-app",
+    "@openmrs/esm-devtools-app",
+    "@openmrs/esm-user-onboarding-app"
   ]
 }

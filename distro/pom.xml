@@ -1205,6 +1205,64 @@
                           message="scripts/bundled-docker/openmrs/patch-startup-init.sh is missing; the OpenMRS Dockerfile COPYs it (#305)."/>
                     <echo level="info" message="Verified: openmrs Dockerfile runs patch-startup-init.sh"/>
 
+                    <!--
+                      Request duration in the Tomcat access log (#806). The stock pattern
+                      (%h %l %u %t "%r" %s %b, Tomcat's "common") has no duration, so a slow
+                      screen cannot be traced to the call behind it. %D is the time Tomcat
+                      took to process the request, in milliseconds, and goes last so the
+                      first fields read as before.
+
+                      Edited in the upstream tomcat/server.xml, because the Dockerfile ADDs
+                      that file over the image's own server.xml (a sed in an earlier layer
+                      is overwritten, as the first attempt showed). A second run finds
+                      nothing to change, so the step is idempotent; the assertion fails the
+                      build if the upstream pattern changes and the match goes silent.
+                    -->
+                    <echo level="info" message="Adding the request duration (%D) to the Tomcat access log"/>
+                    <replaceregexp file="${project.build.directory}/bundled-docker-tmp/bundled-docker/openmrs/tomcat/server.xml"
+                                            match="pattern=&quot;%h %l %u %t &amp;quot;%r&amp;quot; %s %b&quot;"
+                                            replace="pattern=&quot;%h %l %u %t &amp;quot;%r&amp;quot; %s %b %D&quot;" />
+                    <loadfile property="tomcat.server.xml.contents"
+                              srcFile="${project.build.directory}/bundled-docker-tmp/bundled-docker/openmrs/tomcat/server.xml" />
+                    <fail message="The Tomcat access log has no request duration: the stock AccessLogValve pattern was not found in bundled-docker/openmrs/tomcat/server.xml (#806).">
+                      <condition>
+                        <not>
+                          <contains string="${tomcat.server.xml.contents}" substring="%s %b %D&quot;" />
+                        </not>
+                      </condition>
+                    </fail>
+
+                    <!--
+                      Serve the precompressed .br and .gz files of the frontend (#806).
+                      The upstream frontend nginx serves neither, so every chunk was
+                      compressed again on the fly by Traefik, and to gzip even for a
+                      browser that accepts brotli. The file replaces /etc/nginx/nginx.conf
+                      of the base image; it says what differs from upstream and why.
+                      Stripped first, then re-added, as above.
+                    -->
+                    <echo level="info" message="Using the UVL frontend nginx config (precompressed files, cache headers, request time)"/>
+                    <replaceregexp file="${project.build.directory}/bundled-docker-tmp/bundled-docker/frontend/Dockerfile"
+                                            match="[\r\n]+[^\r\n]*bundled-docker/frontend/nginx\.conf[^\r\n]*"
+                                            replace=""
+                                            flags="g" />
+                    <replaceregexp file="${project.build.directory}/bundled-docker-tmp/bundled-docker/frontend/Dockerfile"
+                                            byline="true"
+                                            match="^(FROM .*)$"
+                                            replace="\1${line.separator}COPY bundled-docker/frontend/nginx.conf /etc/nginx/nginx.conf" />
+                    <loadfile property="frontend.dockerfile.contents"
+                              srcFile="${project.build.directory}/bundled-docker-tmp/bundled-docker/frontend/Dockerfile" />
+                    <fail message="The frontend Dockerfile does not copy the UVL nginx.conf, so the image would serve nothing precompressed (#806). Dockerfile contents:${line.separator}${frontend.dockerfile.contents}">
+                      <condition>
+                        <not>
+                          <contains string="${frontend.dockerfile.contents}"
+                                    substring="COPY bundled-docker/frontend/nginx.conf /etc/nginx/nginx.conf" />
+                        </not>
+                      </condition>
+                    </fail>
+                    <available file="${project.basedir}/../scripts/bundled-docker/frontend/nginx.conf" property="frontend.nginx.conf.present"/>
+                    <fail unless="frontend.nginx.conf.present"
+                          message="scripts/bundled-docker/frontend/nginx.conf is missing; the frontend Dockerfile COPYs it (#806)."/>
+
                     <echo level="info" message="Adding msf MYSQL docker image version"/>
                     <!--
                       Allow modules that ship trigger or stored-function DDL to migrate.
