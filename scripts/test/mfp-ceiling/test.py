@@ -373,8 +373,9 @@ class MfpCeilingTest(unittest.TestCase):
                                ('Jeu de perfusion', '500')]:
             self.assertEqual((loaded[product]['mfp_price'], loaded[product]['coverage_percentage']),
                              (price, '70'), product)
-        # a product that could be several lines is asked, never loaded
-        self.assertNotIn('Ruban adhésif', loaded)
+        # « Ruban adhésif »: the width answered (G11, « 8 cm : 2 740 »), so BANDE ADHESIVE 8CM at MFP's 80%
+        self.assertEqual((loaded['Ruban adhésif']['mfp_ref'], loaded['Ruban adhésif']['mfp_price'],
+                          loaded['Ruban adhésif']['coverage_percentage']), ('N:38', '2740', '80'))
 
     # ---- a product MFP does not cover, and the two dressing acts (answers F12, G8, F30, G10)
 
@@ -473,8 +474,8 @@ class MfpCeilingTest(unittest.TestCase):
             self.assertIn('(%s)' % ref.split(', ')[-1], asked[name]['question'], name)
             if rows[name]['product_id'] in rates:
                 self.assertEqual(coverage(name), ('70', 'full', ''), name)  # « NON » on the threads is not 0%
-        for name in ('Ruban adhésif', 'Naloxone Injection'):  # not answered
-            self.assertIn(name, asked)
+        self.assertIn('Naloxone Injection', asked)  # the rate is not answered
+        self.assertNotIn('Ruban adhésif', asked)  # G11 answered
 
     def test_committed_laboratory_tests_follow_the_nomenclature(self):
         matching = mfp.read_csv(mfp.MATCHING)
