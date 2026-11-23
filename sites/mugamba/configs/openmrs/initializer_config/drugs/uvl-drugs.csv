@@ -12,10 +12,10 @@ e9d0579d-65b5-4214-8dd0-757b2cf76153,07646223-9074-4487-b53e-9d4938c6b2d7,72262e
 8a65d9d5-f488-42cc-a46a-f8f4d47a114e,cd49fcf4-7d66-4558-8f23-31d3cc253443,391d2a1b-2aec-4bd7-b43b-e294e7f2b9b9,100mg,Aminophylline 100mg Tablet,Aminophylline Comprimé 100mg
 607e7ab9-15ff-4419-bc14-0d33a12233c4,cd49fcf4-7d66-4558-8f23-31d3cc253443,bf712910-1c7f-4e72-9d50-6eb5453efcfd,250mg/10ml,Aminophylline Injection 250mg/10ml,Aminophylline Injection 250mg/10ml
 67900371-599c-42e7-953d-c553d996eaeb,98dd04de-4fe1-44b1-80b0-bfacdd5feb17,391d2a1b-2aec-4bd7-b43b-e294e7f2b9b9,250mg,Aminosidine 250mg Tablet,Aminosidine Comprimé 250mg
-072054ee-b1d3-433b-9808-b4a29f482e63,58239a4c-955c-4f77-832b-586d84ca5ab1,bf712910-1c7f-4e72-9d50-6eb5453efcfd,125mg/5ml,Amoxicilline Sirop 125mg/5ml,Amoxicilline Sirop 125mg/5ml
+072054ee-b1d3-433b-9808-b4a29f482e63,58239a4c-955c-4f77-832b-586d84ca5ab1,bf712910-1c7f-4e72-9d50-6eb5453efcfd,125mg/5ml,Amoxicilline Sirop 125mg/5ml 100ml,Amoxicilline Sirop 125mg/5ml 100ml
 4165a730-89e3-47bb-a3e2-ba523771dce0,58239a4c-955c-4f77-832b-586d84ca5ab1,bf712910-1c7f-4e72-9d50-6eb5453efcfd,250mg/5ml,Amoxicillin 250mg/5ml Syrup 80ml,Amoxicillin Sirop 250mg/5ml 80ml
 25ef1ac8-f926-4ff8-af12-d4317b06f9b7,58239a4c-955c-4f77-832b-586d84ca5ab1,94b2f0e7-0885-430f-8733-e2a93f03095d,500mg,Amoxicilline Gélule 500mg,Amoxicilline Gélule 500mg
-5a45d516-4cf9-4393-9c41-d659084ca491,58239a4c-955c-4f77-832b-586d84ca5ab1,bf712910-1c7f-4e72-9d50-6eb5453efcfd,250mg/5ml,Amoxicillin Suspension 250mg/5ml 100ml,Amoxicillin Suspension 250mg/5ml 100ml
+5a45d516-4cf9-4393-9c41-d659084ca491,58239a4c-955c-4f77-832b-586d84ca5ab1,bf712910-1c7f-4e72-9d50-6eb5453efcfd,250mg/5ml,Amoxicilline Sirop 250mg/5ml 100ml,Amoxicilline Sirop 250mg/5ml 100ml
 da3140b7-0e61-4782-b732-1e73940ffec0,58239a4c-955c-4f77-832b-586d84ca5ab1,bf712910-1c7f-4e72-9d50-6eb5453efcfd,250mg/5ml,Amoxicillin Suspension 250mg/5ml 60ml,Amoxicillin Suspension 250mg/5ml 60ml
 c0b992fd-cc53-4b51-a77f-7908634b5d12,4accf0d9-7e53-447f-ae98-2b7f250086c7,d4c0ebf9-7a3b-42c0-bbf0-2599efbb2965,1g/200mg,Amoxicillin+Clavulanic Acid 1g/200mg Injection,Amoxicillin+Acide Clavulanique 1g/200mg Injection
 54f24ddc-2a49-49bf-931e-f437ba1507e1,4accf0d9-7e53-447f-ae98-2b7f250086c7,391d2a1b-2aec-4bd7-b43b-e294e7f2b9b9,500/62.5mg,Amoxicillin+Clavulanic Acid 500/62.5mg Tablet,Amoxicillin+Clavulanic Acid 500/62.5mg Comprimé
@@ -159,7 +159,7 @@ a5890a9b-ce92-44a9-a929-b33709bd5d8a,3ea35456-3f32-4588-aea3-d2b22d1b1f7b,391d2a
 c273b18a-8e47-45f2-ac39-352e96ad68c7,ae999966-db86-46cd-ad74-5ee26d155057,391d2a1b-2aec-4bd7-b43b-e294e7f2b9b9,400mg,Ibuprofen 400mg Tablet,Ibuprofène Comprimé 400mg
 30d8f5ce-89ba-4805-8d80-e3571ca38ba2,ae999966-db86-46cd-ad74-5ee26d155057,bf712910-1c7f-4e72-9d50-6eb5453efcfd,100mg/5ml,Ibuprofen Suspension 100mg/5ml 100ml,Ibuprofen Suspension 100mg/5ml 100ml
 c848954c-078b-4ad3-8fcb-114f27c9c43d,ae999966-db86-46cd-ad74-5ee26d155057,bf712910-1c7f-4e72-9d50-6eb5453efcfd,100mg/5ml,Ibuprofen Suspension 100mg/5ml 60ml,Ibuprofen Suspension 100mg/5ml 60ml
-4dd363d1-b503-4ce3-ad9b-d5dc0710236e,c9fbe79d-56c9-49ca-ada5-27fde167e266,c4b6c7b7-4906-4f76-af51-60ec9a34932e,,Infusion Set,Jeu de perfusion
+4dd363d1-b503-4ce3-ad9b-d5dc0710236e,c9fbe79d-56c9-49ca-ada5-27fde167e266,c4b6c7b7-4906-4f76-af51-60ec9a34932e,,Infusion Set,Set de perfusion
 a1661e95-7897-4038-86cb-954d386fa8f9,f1ed3b71-d459-4997-87e0-9d4aa0d4afcd,9a169d53-360a-47db-9cfd-26bdbe2bff1b,1ml,Insulin Syringe 1ml,Seringue à insuline 1ml
 df543826-8385-49a6-ac61-25a258f12100,a88a967b-923b-4e57-b3a3-e6cc4915319c,c4b6c7b7-4906-4f76-af51-60ec9a34932e,,Jersey Fabric 1m,Tissu Jersey 1m
 0b273e54-5dc0-4718-ac57-6c13dcbb961d,b24cb2c7-a8b7-44c6-9efb-d035a0b28044,94b2f0e7-0885-430f-8733-e2a93f03095d,250/250mg,Kemoxyl+F Gélule 250/250mg,Kemoxyl+F Gélule 250/250mg
@@ -270,8 +270,8 @@ db7df9f0-3d00-4ace-8143-1254b7b674c2,380d2d39-bfe4-4eac-beeb-fd79c9291ce9,391d2a
 4f8bc2b5-a761-4780-b074-13cbabc42ebb,569b3cd9-0450-4619-b6ca-31fa12747c44,c4b6c7b7-4906-4f76-af51-60ec9a34932e,0.25,Turkey Glasses +0.25,Lunettes Turkey +0.25
 7a88fe4d-3e6b-415c-aedc-69317daaddc1,569b3cd9-0450-4619-b6ca-31fa12747c44,c4b6c7b7-4906-4f76-af51-60ec9a34932e,Planon,Turkey Glasses Planon,Lunettes Turkey Planon
 fecb6fee-12a6-42d4-9414-a3e607b53e80,a88a967b-923b-4e57-b3a3-e6cc4915319c,c4b6c7b7-4906-4f76-af51-60ec9a34932e,,Umbilical Bandage,Pansement Ombilical
-3830c927-c9c9-4cfe-b07f-f546d2f756c7,45af47b2-3047-4b9b-9e41-d439afebdda9,c4b6c7b7-4906-4f76-af51-60ec9a34932e,,Urine Bag,Sac à urines
-08da2277-5bc8-497b-8b09-b5cf31f19153,a88a967b-923b-4e57-b3a3-e6cc4915319c,c4b6c7b7-4906-4f76-af51-60ec9a34932e,,Velpeau Bandage 10cmx4m,Bandage Velpeau 10cmx4m
+3830c927-c9c9-4cfe-b07f-f546d2f756c7,45af47b2-3047-4b9b-9e41-d439afebdda9,c4b6c7b7-4906-4f76-af51-60ec9a34932e,,Urine Collection Bag,Sac collecteur à urines
+08da2277-5bc8-497b-8b09-b5cf31f19153,a88a967b-923b-4e57-b3a3-e6cc4915319c,c4b6c7b7-4906-4f76-af51-60ec9a34932e,,Velpeau Bandage 10cmx4m,Bande Velpeau 10cmx4m
 192d569a-8772-45c0-b6b7-f52d267588bf,c2b4527f-be1e-4c21-86d3-ba3dc6083738,391d2a1b-2aec-4bd7-b43b-e294e7f2b9b9,Multiple,Vitamin B Complex Tablet,Comprimé de Complexe de Vitamines B
 fd74b4d5-db14-466e-bea8-e211e655dcf7,cdefea99-fa70-4e82-bf8f-06410d13faa8,bf712910-1c7f-4e72-9d50-6eb5453efcfd,10mg,Vitamin K Injection 10mg,Injection de Vitamine K 10mg
 9c2c5a67-a300-4f57-ab28-dfaab8edd6b3,787c4343-fc2f-4640-80f3-3f5ca658580c,bf712910-1c7f-4e72-9d50-6eb5453efcfd,,Eau Distillée Flacon 10ml,Eau Distillée Flacon 10ml
