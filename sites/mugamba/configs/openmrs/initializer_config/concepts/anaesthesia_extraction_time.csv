@@ -1,0 +1,2 @@
+Uuid,Void/Retire,Fully specified name:en,Fully specified name:fr,Description:en,Data class,Data type,_version:1,_order:1000
+c14c3966-5747-4021-aa40-137c3c7e996b,,Baby's extraction time,Heure d'extraction du bébé,"Date and time the baby is extracted at a caesarean section, as noted in the anaesthesia report (UVL-EMR#894). Not the birth record: the baby's date and time of birth stay on the delivery registration.",Question,Datetime,,

@@ -49,9 +49,7 @@
     "Patient Identification": "Patient Identification",
     "Patient Position": "Patient Position",
     "Pediatrics": "Pediatrics",
-    "Post-operative Diagnosis": "Post-operative Diagnosis",
     "Post-operative Drug Vigilance & Coding": "Post-operative Drug Vigilance & Coding",
-    "Pre-operative Diagnosis": "Pre-operative Diagnosis",
     "Procedure Performed": "Procedure Performed",
     "Referring Service": "Referring Service",
     "Scrub Nurse": "Scrub Nurse",
@@ -85,6 +83,10 @@
     "Rachianesthésie": "Spinal anaesthesia",
     "Péridurale": "Epidural anaesthesia",
     "Bloc nerveux périphérique": "Peripheral nerve block",
-    "Sédation": "Sedation"
+    "Sédation": "Sedation",
+    "Baby's extraction time": "Baby's extraction time",
+    "For caesarean sections": "For caesarean sections",
+    "Perioperative Notes": "Perioperative Notes",
+    "Postoperative Notes": "Postoperative Notes"
   }
 }

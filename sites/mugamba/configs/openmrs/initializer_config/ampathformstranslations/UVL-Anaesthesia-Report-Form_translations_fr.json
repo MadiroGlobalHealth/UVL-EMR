@@ -49,9 +49,7 @@
     "Patient Identification": "Identification administrative du patient",
     "Patient Position": "Position du patient",
     "Pediatrics": "Pédiatrie",
-    "Post-operative Diagnosis": "Diagnostic post-opératoire",
     "Post-operative Drug Vigilance & Coding": "Pharmacovigilance post-opératoire et codification",
-    "Pre-operative Diagnosis": "Diagnostic pré-opératoire",
     "Procedure Performed": "Intervention / acte pratiqué",
     "Referring Service": "Service émetteur",
     "Scrub Nurse": "Instrumentiste",
@@ -71,6 +69,10 @@
     "Rachianesthésie": "Rachianesthésie",
     "Péridurale": "Péridurale",
     "Bloc nerveux périphérique": "Bloc nerveux périphérique",
-    "Sédation": "Sédation"
+    "Sédation": "Sédation",
+    "Baby's extraction time": "Heure d'extraction du bébé",
+    "For caesarean sections": "Pour les césariennes",
+    "Perioperative Notes": "Notes peropératoires",
+    "Postoperative Notes": "Notes postopératoires"
   }
 }
