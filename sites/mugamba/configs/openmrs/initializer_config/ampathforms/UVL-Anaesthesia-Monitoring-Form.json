@@ -30,6 +30,11 @@
                 {
                   "type": "date",
                   "allowFutureDates": "false"
+                },
+                {
+                  "type": "js_expression",
+                  "failsWhenExpression": "!isEmpty(myValue) && isBeforeVisitStart(myValue)",
+                  "message": "L'heure de l'intervention ne peut pas précéder le début de la visite / The intervention time cannot be earlier than the start of the visit"
                 }
               ]
             }
@@ -49,7 +54,7 @@
               },
               "questions": [
                 {
-                  "label": "Time of the reading",
+                  "label": "Date of the reading",
                   "type": "obs",
                   "id": "readingTime1",
                   "questionOptions": {
@@ -158,7 +163,7 @@
               },
               "questions": [
                 {
-                  "label": "Time of the reading",
+                  "label": "Date of the reading",
                   "type": "obs",
                   "id": "readingTime2",
                   "questionOptions": {
@@ -274,7 +279,7 @@
               },
               "questions": [
                 {
-                  "label": "Time of the reading",
+                  "label": "Date of the reading",
                   "type": "obs",
                   "id": "readingTime3",
                   "questionOptions": {
@@ -390,7 +395,7 @@
               },
               "questions": [
                 {
-                  "label": "Time of the reading",
+                  "label": "Date of the reading",
                   "type": "obs",
                   "id": "readingTime4",
                   "questionOptions": {
@@ -506,7 +511,7 @@
               },
               "questions": [
                 {
-                  "label": "Time of the reading",
+                  "label": "Date of the reading",
                   "type": "obs",
                   "id": "readingTime5",
                   "questionOptions": {
@@ -622,7 +627,7 @@
               },
               "questions": [
                 {
-                  "label": "Time of the reading",
+                  "label": "Date of the reading",
                   "type": "obs",
                   "id": "readingTime6",
                   "questionOptions": {
@@ -749,7 +754,7 @@
               },
               "questions": [
                 {
-                  "label": "Time of the reading",
+                  "label": "Date of the reading",
                   "type": "obs",
                   "id": "readingTime7",
                   "questionOptions": {
@@ -865,7 +870,7 @@
               },
               "questions": [
                 {
-                  "label": "Time of the reading",
+                  "label": "Date of the reading",
                   "type": "obs",
                   "id": "readingTime8",
                   "questionOptions": {
@@ -981,7 +986,7 @@
               },
               "questions": [
                 {
-                  "label": "Time of the reading",
+                  "label": "Date of the reading",
                   "type": "obs",
                   "id": "readingTime9",
                   "questionOptions": {
@@ -1097,7 +1102,7 @@
               },
               "questions": [
                 {
-                  "label": "Time of the reading",
+                  "label": "Date of the reading",
                   "type": "obs",
                   "id": "readingTime10",
                   "questionOptions": {
@@ -1213,7 +1218,7 @@
               },
               "questions": [
                 {
-                  "label": "Time of the reading",
+                  "label": "Date of the reading",
                   "type": "obs",
                   "id": "readingTime11",
                   "questionOptions": {
@@ -1329,7 +1334,7 @@
               },
               "questions": [
                 {
-                  "label": "Time of the reading",
+                  "label": "Date of the reading",
                   "type": "obs",
                   "id": "readingTime12",
                   "questionOptions": {
