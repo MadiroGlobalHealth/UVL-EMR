@@ -1,0 +1,62 @@
+slice_name: Diagnostics – âge × sexe
+description:
+certified_by:
+certification_details:
+viz_type: pivot_table_v2
+params:
+  datasource: 30__table
+  viz_type: pivot_table_v2
+  groupbyColumns:
+  - SEXE
+  groupbyRows:
+  - ORDRE_AGE
+  - TRANCHE D'AGE
+  time_grain_sqla: P1D
+  temporal_columns_lookup:
+    MOIS: true
+  metrics:
+  - expressionType: SQL
+    sqlExpression: SUM("CAS")
+    label: Cas
+    hasCustomLabel: true
+    optionName: metric_a6d347af9c
+  metricsLayout: COLUMNS
+  adhoc_filters:
+  - expressionType: SIMPLE
+    subject: MOIS
+    operator: TEMPORAL_RANGE
+    comparator: previous calendar month
+    clause: WHERE
+    sqlExpression:
+    isExtra: false
+    isNew: false
+    datasourceWarning: false
+    filterOptionName: filter_c46
+  - expressionType: SIMPLE
+    subject: CERTITUDE
+    operator: "=="
+    comparator: Confirmé
+    clause: WHERE
+    sqlExpression:
+    isExtra: false
+    isNew: false
+    datasourceWarning: false
+    filterOptionName: filter_dx_confirme
+  row_limit: 10000
+  order_desc: true
+  aggregateFunction: Sum
+  valueFormat: SMART_NUMBER
+  date_format: smart_date
+  rowOrder: key_a_to_z
+  colOrder: key_a_to_z
+  colTotals: true
+  rowTotals: true
+  transposePivot: false
+  combineMetric: false
+  show_cell_bars: false
+  extra_form_data: {}
+query_context:
+cache_timeout:
+uuid: 8bc7db2b-5c85-465a-aa58-21af555d7153
+version: 1.0.0
+dataset_uuid: 5ae37188-7cad-46d6-956f-6fdf1b74b318

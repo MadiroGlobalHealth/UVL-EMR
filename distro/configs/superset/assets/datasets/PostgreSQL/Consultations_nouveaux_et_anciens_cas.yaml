@@ -1,0 +1,272 @@
+table_name: Consultations nouveaux et anciens cas
+main_dttm_col: MOIS
+description: |
+  UVL-EMR · Consultations ambulatoires : nouveaux et anciens cas, âge, sexe, origine (#854). One row per MOIS × SERVICE × age band × sex × declared case × computed case × SITUATION × province (counts only, no patient data).
+  Rows are the outpatient consultation encounters of the PBF consultation register (#586) and of Fiche 15 (#242): same filters, same SERVICE, same MoH age bands, same SITUATION. CONSULTATIONS summed over a month and a service equals Fiche 15 « TOTAL » (checked on production, Oct and Nov 2026).
+  Two definitions of « nouveau cas » are shown side by side, because the product owner has not chosen yet:
+    * CAS_DECLARE = what staff declared (visit attribute « Case Type », else the consultation form answer): « Nouveau cas (déclaré) » / « Ancien cas (déclaré) » / « Non renseigné ». Same rule as NOUVEAU_CAS in the register and in Fiche 15.
+    * CAS_CALCULE = computed from the history: « Nouveau cas (calculé) » is the patient's first outpatient consultation on record (ranked by encounter date and id), « Ancien cas (calculé) » any later one. The history in the analytics database starts on 8 Sep 2025 and holds outpatient consultations only, so a patient first seen before that date, or only as an inpatient, is counted new.
+    * CAS_CALCULE_ANNEE = same, within the calendar year (the Ministry's « nouveau cas de l'année »). In the dataset, in no chart yet.
+  The two disagree for about one consultation in five (69 of 309 consultations in Oct and Nov 2026).
+  PROVINCE_NORM = the patient's address province upper-cased and trimmed, the spellings folded to BURUNGA, GITEGA, BUJUMBURA, BURURI, MATANA, MWARO; anything else « AUTRE (à vérifier) », empty « Non renseigné ». Origin by health centre or district is not recorded anywhere.
+  Month filter: temporal column MOIS. Service filter: SERVICE. Test patients excluded as in the register (SYNTH- / E2E / QA / TEST / DEMO, voided persons, the « Locations test » location).
+default_endpoint:
+offset: 0
+cache_timeout:
+schema: public
+sql: |-
+  WITH opd AS (
+      SELECT e.encounter_id, e.encounter_uuid, e.patient_uuid, e.encounter_datetime,
+             e.encounter_datetime::date AS d, e.location, e.location_uuid,
+             v.visit_attributes,
+             COALESCE(p.gender, v.patient_gender) AS sexe,
+             COALESCE(p.birthdate, v.patient_birthdate) AS bd,
+             p.address_state_province AS province
+      FROM encounters e
+      LEFT JOIN visits v ON v.visit_uuid = e.visit_uuid
+      JOIN patients p ON p.patient_uuid = e.patient_uuid
+      WHERE e.encounter_type_uuid = '0ff55309-1897-476b-a647-c7c180b102c8'
+        AND COALESCE(e.encounter_voided, false) = false
+        AND e.location_uuid IS DISTINCT FROM '450be362-59a7-4ccd-964d-ebd930a8b30f'
+        AND COALESCE(v.visit_voided, false) = false
+        AND COALESCE(p.person_voided, false) = false
+        AND NOT (COALESCE(p.family_name, '') ~* '^(SYNTH-|E2E|QA|TEST|DEMO)'
+              OR COALESCE(p.given_name,  '') ~* '^(SYNTH-|E2E|QA|TEST|DEMO)')
+  ),
+  ob AS (
+      SELECT o.encounter_uuid,
+          (ARRAY_AGG(o.answer_coded ORDER BY o.obs_date_time DESC) FILTER (WHERE o.question_uuid = '23ceec98-f1c5-42ce-8b11-60b5be1c2acf'))[1] AS case_obs
+      FROM observations o
+      WHERE COALESCE(o.obs_voided, false) = false
+        AND o.question_uuid = '23ceec98-f1c5-42ce-8b11-60b5be1c2acf'
+        AND o.encounter_uuid IN (SELECT encounter_uuid FROM opd)
+      GROUP BY o.encounter_uuid
+  ),
+  x AS (
+      SELECT
+          c.*,
+          ob.case_obs,
+          ROW_NUMBER() OVER (PARTITION BY c.patient_uuid ORDER BY c.encounter_datetime, c.encounter_id) AS rang_vie,
+          ROW_NUMBER() OVER (PARTITION BY c.patient_uuid, DATE_PART('year', c.d) ORDER BY c.encounter_datetime, c.encounter_id) AS rang_annee
+      FROM opd c
+      LEFT JOIN ob ON ob.encounter_uuid = c.encounter_uuid
+  ),
+  y AS (
+      SELECT x.*,
+          CASE
+          WHEN x.bd IS NULL THEN 'Non renseigné'
+          WHEN x.d - x.bd <= 28 THEN '0-28 jours'
+          WHEN (DATE_PART('year', AGE(x.d, x.bd)) * 12 + DATE_PART('month', AGE(x.d, x.bd))) < 12 THEN '29 jours-11 mois'
+          WHEN (DATE_PART('year', AGE(x.d, x.bd)) * 12 + DATE_PART('month', AGE(x.d, x.bd))) < 60 THEN '12-59 mois'
+          WHEN DATE_PART('year', AGE(x.d, x.bd)) <= 9 THEN '5-9 ans'
+          WHEN DATE_PART('year', AGE(x.d, x.bd)) <= 14 THEN '10-14 ans'
+          WHEN DATE_PART('year', AGE(x.d, x.bd)) <= 17 THEN '15-17 ans'
+          WHEN DATE_PART('year', AGE(x.d, x.bd)) <= 19 THEN '18-19 ans'
+          WHEN DATE_PART('year', AGE(x.d, x.bd)) <= 64 THEN
+               (20 + 5 * ((DATE_PART('year', AGE(x.d, x.bd))::int - 20) / 5))::text || '-'
+               || (24 + 5 * ((DATE_PART('year', AGE(x.d, x.bd))::int - 20) / 5))::text || ' ans'
+          WHEN DATE_PART('year', AGE(x.d, x.bd)) <= 70 THEN '65-70 ans'
+          ELSE '71 ans et +'
+      END AS tr
+      FROM x
+  )
+  SELECT
+      DATE_TRUNC('month', y.d)::date AS "MOIS",
+      CASE y.location_uuid
+          WHEN '44c3efb0-2583-4c80-a79e-1f756a03c0a1' THEN 'Consultation externe'
+          WHEN '9D062929-CC4F-7A51-C700-2B968AADEC34' THEN 'Urgences'
+          WHEN 'e1f4ab17-6dc5-4249-cf38-5bae7dbe9c64' THEN 'Ophtalmologie'
+          WHEN 'f2a5bc28-7ed6-435a-da49-6cbf8ecfad75' THEN 'Dentisterie'
+          ELSE y.location
+      END AS "SERVICE",
+      y.tr AS "TRANCHE D'AGE",
+      CASE y.tr
+          WHEN '0-28 jours' THEN '01' WHEN '29 jours-11 mois' THEN '02' WHEN '12-59 mois' THEN '03'
+          WHEN '5-9 ans' THEN '04' WHEN '10-14 ans' THEN '05' WHEN '15-17 ans' THEN '06' WHEN '18-19 ans' THEN '07'
+          WHEN '20-24 ans' THEN '08' WHEN '25-29 ans' THEN '09' WHEN '30-34 ans' THEN '10' WHEN '35-39 ans' THEN '11'
+          WHEN '40-44 ans' THEN '12' WHEN '45-49 ans' THEN '13' WHEN '50-54 ans' THEN '14' WHEN '55-59 ans' THEN '15'
+          WHEN '60-64 ans' THEN '16' WHEN '65-70 ans' THEN '17' WHEN '71 ans et +' THEN '18' ELSE '99'
+      END AS "ORDRE_AGE",
+      CASE y.sexe WHEN 'M' THEN 'Homme' WHEN 'F' THEN 'Femme' ELSE 'Non renseigné' END AS "SEXE",
+      CASE COALESCE(NULLIF(TRIM(SUBSTRING(y.visit_attributes FROM '(?:^|/ )Case Type: ([^/]*)')), ''), y.case_obs)
+          WHEN 'New Case' THEN 'Nouveau cas (déclaré)'
+          WHEN 'Follow-Up Case' THEN 'Ancien cas (déclaré)'
+          ELSE 'Non renseigné'
+      END AS "CAS_DECLARE",
+      CASE WHEN y.rang_vie = 1 THEN 'Nouveau cas (calculé)' ELSE 'Ancien cas (calculé)' END AS "CAS_CALCULE",
+      CASE WHEN y.rang_annee = 1 THEN 'Nouveau cas de l''année (calculé)' ELSE 'Ancien cas de l''année (calculé)' END AS "CAS_CALCULE_ANNEE",
+      COALESCE(CASE NULLIF(TRIM(SUBSTRING(y.visit_attributes FROM '(?:^|/ )Patient location: ([^/]*)')), '')
+          WHEN 'Outside Burundi' THEN 'Hors Burundi'
+          WHEN 'Outside Province' THEN 'Hors Province'
+          WHEN 'Outside District' THEN 'Hors District'
+          WHEN 'Outside Municipality' THEN 'Hors Commune'
+          WHEN 'Same Municipality' THEN 'Commune'
+      END, 'Non renseigné') AS "SITUATION",
+      CASE
+          WHEN NULLIF(TRIM(y.province), '') IS NULL THEN 'Non renseigné'
+          WHEN UPPER(TRIM(y.province)) ~ '^B.?U.?R.?U.?N' OR UPPER(TRIM(y.province)) ~ '^B ?U[A-Z]*N?GA$' OR UPPER(TRIM(y.province)) ~ '^BVURUNGA' THEN 'BURUNGA'
+          WHEN UPPER(TRIM(y.province)) ~ '^(GI|GU|GT)[A-Z]*(EGA|TGA|GA)$' OR UPPER(TRIM(y.province)) LIKE 'GITEG%' THEN 'GITEGA'
+          WHEN UPPER(TRIM(y.province)) LIKE 'BUJUMBURA%' THEN 'BUJUMBURA'
+          WHEN UPPER(TRIM(y.province)) LIKE 'BURURI%' THEN 'BURURI'
+          WHEN UPPER(TRIM(y.province)) LIKE 'MATANA%' THEN 'MATANA'
+          WHEN UPPER(TRIM(y.province)) LIKE 'MWARO%' THEN 'MWARO'
+          ELSE 'AUTRE (à vérifier)'
+      END AS "PROVINCE_NORM",
+      COUNT(*) AS "CONSULTATIONS"
+  FROM y
+  GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+  ORDER BY 1 DESC, 2, 3, 4
+params:
+template_params:
+filter_select_enabled: true
+fetch_values_predicate:
+extra:
+normalize_columns: false
+always_filter_main_dttm: false
+uuid: cca54217-3d2b-4dd1-b512-e06ac744971d
+metrics:
+- metric_name: count
+  verbose_name: COUNT(*)
+  metric_type: count
+  expression: COUNT(*)
+  description:
+  d3format:
+  currency:
+  extra:
+  warning_text:
+columns:
+- column_name: MOIS
+  verbose_name: Mois
+  is_dttm: true
+  is_active: true
+  type: DATE
+  advanced_data_type:
+  groupby: true
+  filterable: true
+  expression: ''
+  description:
+  python_date_format:
+  extra: {}
+- column_name: SERVICE
+  verbose_name: Service
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type:
+  groupby: true
+  filterable: true
+  expression: ''
+  description:
+  python_date_format:
+  extra: {}
+- column_name: TRANCHE D'AGE
+  verbose_name: Tranche d'âge
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type:
+  groupby: true
+  filterable: true
+  expression: ''
+  description:
+  python_date_format:
+  extra: {}
+- column_name: ORDRE_AGE
+  verbose_name: N°
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type:
+  groupby: true
+  filterable: true
+  expression: ''
+  description: Rang de la tranche d'âge (01 = 0-28 jours ... 18 = 71 ans et +, 99
+    = non renseigné). Sert à ranger les tranches dans l'ordre du Ministère.
+  python_date_format:
+  extra: {}
+- column_name: SEXE
+  verbose_name: Sexe
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type:
+  groupby: true
+  filterable: true
+  expression: ''
+  description:
+  python_date_format:
+  extra: {}
+- column_name: CAS_DECLARE
+  verbose_name: Cas déclaré par le personnel
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type:
+  groupby: true
+  filterable: true
+  expression: ''
+  description:
+  python_date_format:
+  extra: {}
+- column_name: CAS_CALCULE
+  verbose_name: Cas calculé (première consultation connue)
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type:
+  groupby: true
+  filterable: true
+  expression: ''
+  description:
+  python_date_format:
+  extra: {}
+- column_name: CAS_CALCULE_ANNEE
+  verbose_name: Cas calculé dans l'année
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type:
+  groupby: true
+  filterable: true
+  expression: ''
+  description:
+  python_date_format:
+  extra: {}
+- column_name: SITUATION
+  verbose_name: Situation (origine du patient)
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type:
+  groupby: true
+  filterable: true
+  expression: ''
+  description:
+  python_date_format:
+  extra: {}
+- column_name: PROVINCE_NORM
+  verbose_name: Province (normalisée)
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type:
+  groupby: true
+  filterable: true
+  expression: ''
+  description:
+  python_date_format:
+  extra: {}
+- column_name: CONSULTATIONS
+  verbose_name: Consultations
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type:
+  groupby: true
+  filterable: true
+  expression: ''
+  description:
+  python_date_format:
+  extra: {}
+version: 1.0.0
+database_uuid: 44c13a30-0c14-402c-b81f-1c93972f5fbc

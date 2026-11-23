@@ -1,0 +1,63 @@
+slice_name: Diagnostics – les 10 principaux (CIM-10)
+description:
+certified_by:
+certification_details:
+viz_type: table
+params:
+  datasource: 30__table
+  viz_type: table
+  query_mode: aggregate
+  groupby:
+  - CIM10
+  - DIAGNOSTIC
+  metrics:
+  - expressionType: SQL
+    sqlExpression: SUM("CAS")
+    label: Cas
+    hasCustomLabel: true
+    optionName: metric_23083faf73
+  all_columns: []
+  percent_metrics: []
+  temporal_columns_lookup:
+    MOIS: true
+  time_grain_sqla: P1D
+  timeseries_limit_metric:
+    expressionType: SQL
+    sqlExpression: SUM("CAS")
+    label: Cas
+    hasCustomLabel: true
+    optionName: metric_23083faf73
+  adhoc_filters:
+  - expressionType: SIMPLE
+    subject: MOIS
+    operator: TEMPORAL_RANGE
+    comparator: previous calendar month
+    clause: WHERE
+    sqlExpression:
+    isExtra: false
+    isNew: false
+    datasourceWarning: false
+    filterOptionName: filter_c45
+  - expressionType: SIMPLE
+    subject: CERTITUDE
+    operator: "=="
+    comparator: Confirmé
+    clause: WHERE
+    sqlExpression:
+    isExtra: false
+    isNew: false
+    datasourceWarning: false
+    filterOptionName: filter_dx_confirme
+  order_by_cols: []
+  row_limit: 10
+  server_page_length: 10
+  order_desc: true
+  table_timestamp_format: smart_date
+  show_cell_bars: false
+  color_pn: true
+  extra_form_data: {}
+query_context:
+cache_timeout:
+uuid: 4982179c-786f-4386-8735-5bc3e8d9cd5b
+version: 1.0.0
+dataset_uuid: 5ae37188-7cad-46d6-956f-6fdf1b74b318

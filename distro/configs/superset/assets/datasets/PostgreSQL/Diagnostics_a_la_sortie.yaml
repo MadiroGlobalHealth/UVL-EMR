@@ -1,0 +1,196 @@
+table_name: Diagnostics à la sortie
+main_dttm_col: MOIS
+description: |
+  UVL-EMR · Notification des diagnostics (#854). One row per MOIS × SERVICE × SEXE × age band × CIM10 × DIAGNOSTIC × CERTITUDE; CAS = number of coded diagnoses (counts only, no patient data). One diagnosis row = one diagnosis entered on an encounter (not one patient).
+  Source: encounter_diagnoses + encounters + patients + concepts (locale en). Voided diagnoses, voided encounters and persons, the « Locations test » location and test patients (SYNTH- / E2E / QA / TEST / DEMO) are excluded.
+  CIM10 is read from concepts.concept_mappings_source_codes (« ICD-10-WHO: X ») with a regular expression that stops at the next comma or at the end of the text, so the code is found even when ICD-10-WHO is the last mapping. (The older dataset encounter_diagnoses_with_names of the sample dashboard returned an empty code in that case.) « Non renseigné » = no ICD-10 mapping (free-text diagnosis).
+  SERVICE = the encounter location, named as in the PBF register (Consultation externe, Urgences, Ophtalmologie, Dentisterie, else the location name). Every encounter type counts, outpatient or inpatient: a diagnosis is attributed to the month and service of the encounter where it was entered, not to the discharge date. CERTITUDE: « Confirmé » or « Présomptif ».
+  Month filter: temporal column MOIS. Service filter: SERVICE.
+default_endpoint:
+offset: 0
+cache_timeout:
+schema: public
+sql: |-
+  WITH dx AS (
+      SELECT
+          DATE_TRUNC('month', e.encounter_datetime)::date AS "MOIS",
+          CASE e.location_uuid
+              WHEN '44c3efb0-2583-4c80-a79e-1f756a03c0a1' THEN 'Consultation externe'
+              WHEN '9D062929-CC4F-7A51-C700-2B968AADEC34' THEN 'Urgences'
+              WHEN 'e1f4ab17-6dc5-4249-cf38-5bae7dbe9c64' THEN 'Ophtalmologie'
+              WHEN 'f2a5bc28-7ed6-435a-da49-6cbf8ecfad75' THEN 'Dentisterie'
+              ELSE COALESCE(e.location, 'Non renseigné')
+          END AS "SERVICE",
+          CASE p.gender WHEN 'M' THEN 'Homme' WHEN 'F' THEN 'Femme' ELSE 'Non renseigné' END AS "SEXE",
+          CASE
+              WHEN p.birthdate IS NULL THEN 'Non renseigné'
+              WHEN (e.encounter_datetime::date - p.birthdate) <= 28 THEN '0-28 jours'
+              WHEN AGE(e.encounter_datetime, p.birthdate) < INTERVAL '1 year' THEN '29 jours-11 mois'
+              WHEN AGE(e.encounter_datetime, p.birthdate) < INTERVAL '5 years' THEN '12-59 mois'
+              WHEN DATE_PART('year', AGE(e.encounter_datetime, p.birthdate)) <= 9 THEN '5-9 ans'
+              WHEN DATE_PART('year', AGE(e.encounter_datetime, p.birthdate)) <= 14 THEN '10-14 ans'
+              WHEN DATE_PART('year', AGE(e.encounter_datetime, p.birthdate)) <= 17 THEN '15-17 ans'
+              WHEN DATE_PART('year', AGE(e.encounter_datetime, p.birthdate)) <= 19 THEN '18-19 ans'
+              WHEN DATE_PART('year', AGE(e.encounter_datetime, p.birthdate)) <= 64 THEN
+                   (20 + 5 * ((DATE_PART('year', AGE(e.encounter_datetime, p.birthdate))::int - 20) / 5))::text || '-' ||
+                   (24 + 5 * ((DATE_PART('year', AGE(e.encounter_datetime, p.birthdate))::int - 20) / 5))::text || ' ans'
+              WHEN DATE_PART('year', AGE(e.encounter_datetime, p.birthdate)) <= 70 THEN '65-70 ans'
+              ELSE '71 ans et +'
+          END AS "TRANCHE D'AGE",
+          COALESCE(NULLIF(TRIM(SUBSTRING(c.concept_mappings_source_codes FROM 'ICD-10-WHO: ([^,]+)')), ''), 'Non renseigné') AS "CIM10",
+          COALESCE(c.name, ed.diagnosis_non_coded, 'Non renseigné') AS "DIAGNOSTIC",
+          CASE UPPER(ed.certainty) WHEN 'CONFIRMED' THEN 'Confirmé' WHEN 'PROVISIONAL' THEN 'Présomptif'
+                                   ELSE COALESCE(ed.certainty, 'Non renseigné') END AS "CERTITUDE",
+          e.patient_uuid
+      FROM encounter_diagnoses ed
+      JOIN encounters e ON e.encounter_id = ed.encounter_id AND COALESCE(e.encounter_voided, false) = false
+      JOIN patients p ON p.patient_id = ed.patient_id AND COALESCE(p.person_voided, false) = false
+      LEFT JOIN concepts c ON c.concept_id = ed.diagnosis_coded AND c.locale = 'en'
+      WHERE COALESCE(ed.voided, false) = false
+        AND e.location_uuid IS DISTINCT FROM '450be362-59a7-4ccd-964d-ebd930a8b30f'
+        AND NOT (COALESCE(p.family_name, '') ~* '^(SYNTH-|E2E|QA|TEST|DEMO)'
+              OR COALESCE(p.given_name,  '') ~* '^(SYNTH-|E2E|QA|TEST|DEMO)')
+  )
+  SELECT "MOIS", "SERVICE", "SEXE", "TRANCHE D'AGE",
+      CASE "TRANCHE D'AGE"
+          WHEN '0-28 jours' THEN '01' WHEN '29 jours-11 mois' THEN '02' WHEN '12-59 mois' THEN '03'
+          WHEN '5-9 ans' THEN '04' WHEN '10-14 ans' THEN '05' WHEN '15-17 ans' THEN '06' WHEN '18-19 ans' THEN '07'
+          WHEN '20-24 ans' THEN '08' WHEN '25-29 ans' THEN '09' WHEN '30-34 ans' THEN '10' WHEN '35-39 ans' THEN '11'
+          WHEN '40-44 ans' THEN '12' WHEN '45-49 ans' THEN '13' WHEN '50-54 ans' THEN '14' WHEN '55-59 ans' THEN '15'
+          WHEN '60-64 ans' THEN '16' WHEN '65-70 ans' THEN '17' WHEN '71 ans et +' THEN '18' ELSE '99'
+      END AS "ORDRE_AGE",
+         "CIM10", "DIAGNOSTIC", "CERTITUDE",
+         COUNT(*) AS "CAS"
+  FROM dx
+  GROUP BY 1, 2, 3, 4, 5, 6, 7, 8
+  ORDER BY 1 DESC, "CAS" DESC
+params:
+template_params:
+filter_select_enabled: true
+fetch_values_predicate:
+extra:
+normalize_columns: false
+always_filter_main_dttm: false
+uuid: 5ae37188-7cad-46d6-956f-6fdf1b74b318
+metrics:
+- metric_name: count
+  verbose_name: COUNT(*)
+  metric_type: count
+  expression: COUNT(*)
+  description:
+  d3format:
+  currency:
+  extra:
+  warning_text:
+columns:
+- column_name: MOIS
+  verbose_name: Mois
+  is_dttm: true
+  is_active: true
+  type: DATE
+  advanced_data_type:
+  groupby: true
+  filterable: true
+  expression: ''
+  description:
+  python_date_format:
+  extra: {}
+- column_name: SERVICE
+  verbose_name: Service
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type:
+  groupby: true
+  filterable: true
+  expression: ''
+  description:
+  python_date_format:
+  extra: {}
+- column_name: SEXE
+  verbose_name: Sexe
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type:
+  groupby: true
+  filterable: true
+  expression: ''
+  description:
+  python_date_format:
+  extra: {}
+- column_name: TRANCHE D'AGE
+  verbose_name: Tranche d'âge
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type:
+  groupby: true
+  filterable: true
+  expression: ''
+  description:
+  python_date_format:
+  extra: {}
+- column_name: ORDRE_AGE
+  verbose_name: N°
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type:
+  groupby: true
+  filterable: true
+  expression: ''
+  description: Rang de la tranche d'âge (01 = 0-28 jours ... 18 = 71 ans et +, 99
+    = non renseigné). Sert à ranger les tranches dans l'ordre du Ministère.
+  python_date_format:
+  extra: {}
+- column_name: CIM10
+  verbose_name: CIM-10
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type:
+  groupby: true
+  filterable: true
+  expression: ''
+  description:
+  python_date_format:
+  extra: {}
+- column_name: DIAGNOSTIC
+  verbose_name: Diagnostic
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type:
+  groupby: true
+  filterable: true
+  expression: ''
+  description:
+  python_date_format:
+  extra: {}
+- column_name: CERTITUDE
+  verbose_name: Certitude
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type:
+  groupby: true
+  filterable: true
+  expression: ''
+  description:
+  python_date_format:
+  extra: {}
+- column_name: CAS
+  verbose_name: Cas
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type:
+  groupby: true
+  filterable: true
+  expression: ''
+  description:
+  python_date_format:
+  extra: {}
+version: 1.0.0
+database_uuid: 44c13a30-0c14-402c-b81f-1c93972f5fbc

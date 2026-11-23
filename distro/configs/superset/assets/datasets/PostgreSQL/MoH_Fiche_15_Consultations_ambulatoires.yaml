@@ -17,7 +17,7 @@ description: "UVL-EMR \xB7 Minist\xE8re \xAB Fiche 15 \xBB Consultations ambulat
 default_endpoint: null
 offset: 0
 cache_timeout: null
-schema: null
+schema: public
 sql: "WITH opd AS (\n    SELECT e.encounter_id, e.encounter_uuid, e.visit_uuid, e.encounter_datetime::date\
   \ AS d, e.location, e.location_uuid,\n           v.visit_attributes,\n         \
   \  COALESCE(p.gender, v.patient_gender) AS sexe,\n           COALESCE(p.birthdate,\
