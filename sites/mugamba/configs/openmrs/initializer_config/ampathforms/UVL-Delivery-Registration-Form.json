@@ -124,12 +124,35 @@
                     "concept": "3de182b6-f7fe-4185-a7b5-89237593c1f1"
                   },
                   {
+                    "concept": "4a8e5f2a-da35-4a5d-aefb-ffabe41e6783"
+                  },
+                  {
+                    "concept": "fd601163-7e6f-4e26-91bc-28f94f76ac7f",
+                    "label": "Accouchement par forceps"
+                  },
+                  {
+                    "concept": "628fd5bc-250d-43fa-b285-e31d8888ebf3",
+                    "label": "Accouchement par ventouse"
+                  },
+                  {
                     "concept": "b08d3e60-2e3c-4d23-906c-9e36cd222bea"
                   },
                   {
-                    "concept": "4a8e5f2a-da35-4a5d-aefb-ffabe41e6783"
+                    "concept": "b5c4b807-d3de-40cd-aae9-178df9b40535"
                   }
                 ]
+              }
+            },
+            {
+              "label": "Dystocia (specify type)",
+              "type": "obs",
+              "id": "dystociaType",
+              "questionOptions": {
+                "rendering": "text",
+                "concept": "fc343f72-be55-4eba-a376-c92d5a78dbb4"
+              },
+              "hide": {
+                "hideWhenExpression": "deliveryMode !== 'b08d3e60-2e3c-4d23-906c-9e36cd222bea'"
               }
             },
             {
@@ -300,6 +323,15 @@
               "questionOptions": {
                 "rendering": "textarea",
                 "concept": "fc4877d6-4976-4e2a-8dca-6e4abbb30bc9"
+              }
+            },
+            {
+              "label": "Description",
+              "type": "obs",
+              "id": "deliveryDescription",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "6424784e-dbe3-4122-a1c5-5e7c908e724b"
               }
             }
           ]
