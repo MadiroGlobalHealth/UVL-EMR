@@ -3609,4 +3609,57 @@
         <rollback/>
     </changeSet>
 
+    <!--
+        Product names as proposed by the pharmacy (product owner, #895). The drugs CSV renames the
+        drug and the Odoo CSV its product (same uuid), but the stock item's common name was copied
+        from the old drug name (#463) and that changeset never overwrites a name. Same pattern as
+        stock_item_common_name_kemoxyl_gelule-20261123: only an empty common name or one of the old
+        names is changed, so a name typed in the stock app is kept. The new names are written here,
+        not copied from the drugs, because this file runs before the drugs domain.
+        runAlways so an item created later is renamed on the next start; runOnChange so editing it
+        does not stop OpenMRS on a checksum. Idempotent. No rollback.
+    -->
+    <changeSet id="stock_item_common_name_pharmacy_names-20261124" author="Joshua" runAlways="true" runOnChange="true">
+        <preConditions onFail="CONTINUE" onError="CONTINUE"
+                       onFailMessage="WARN (#895): the stockmanagement table stockmgmt_stock_item does not exist yet, so the stock items of the five renamed products were NOT renamed; this changeset runs again on every start.">
+            <tableExists tableName="stockmgmt_stock_item"/>
+            <columnExists tableName="stockmgmt_stock_item" columnName="common_name"/>
+        </preConditions>
+        <comment>
+            Give the stock items of the five products renamed by the pharmacy their new name (#895).
+        </comment>
+        <sql>
+            UPDATE stockmgmt_stock_item si
+              JOIN drug d ON d.drug_id = si.drug_id
+               SET si.common_name = 'Amoxicilline Sirop 125mg/5ml 100ml'
+             WHERE d.uuid = '072054ee-b1d3-433b-9808-b4a29f482e63'
+               AND (si.common_name IS NULL OR TRIM(si.common_name) IN ('', 'Amoxicilline Sirop 125mg/5ml', 'Amoxicillin 125mg/5ml Sirop 60ml'));
+
+            UPDATE stockmgmt_stock_item si
+              JOIN drug d ON d.drug_id = si.drug_id
+               SET si.common_name = 'Amoxicilline Sirop 250mg/5ml 100ml'
+             WHERE d.uuid = '5a45d516-4cf9-4393-9c41-d659084ca491'
+               AND (si.common_name IS NULL OR TRIM(si.common_name) IN ('', 'Amoxicillin Suspension 250mg/5ml 100ml'));
+
+            UPDATE stockmgmt_stock_item si
+              JOIN drug d ON d.drug_id = si.drug_id
+               SET si.common_name = 'Bande Velpeau 10cmx4m'
+             WHERE d.uuid = '08da2277-5bc8-497b-8b09-b5cf31f19153'
+               AND (si.common_name IS NULL OR TRIM(si.common_name) IN ('', 'Bandage Velpeau 10cmx4m', 'Velpeau Bandage 10cmx4m'));
+
+            UPDATE stockmgmt_stock_item si
+              JOIN drug d ON d.drug_id = si.drug_id
+               SET si.common_name = 'Sac collecteur à urines'
+             WHERE d.uuid = '3830c927-c9c9-4cfe-b07f-f546d2f756c7'
+               AND (si.common_name IS NULL OR TRIM(si.common_name) IN ('', 'Sac à urines', 'Urine Bag'));
+
+            UPDATE stockmgmt_stock_item si
+              JOIN drug d ON d.drug_id = si.drug_id
+               SET si.common_name = 'Set de perfusion'
+             WHERE d.uuid = '4dd363d1-b503-4ce3-ad9b-d5dc0710236e'
+               AND (si.common_name IS NULL OR TRIM(si.common_name) IN ('', 'Jeu de perfusion', 'Infusion Set'));
+        </sql>
+        <rollback/>
+    </changeSet>
+
 </databaseChangeLog>
