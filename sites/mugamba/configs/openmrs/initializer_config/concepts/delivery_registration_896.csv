@@ -1,0 +1,5 @@
+Uuid,Void/Retire,Fully specified name:en,Fully specified name:fr,Description:en,Data class,Data type,Members,_version:1,_order:1000
+fd601163-7e6f-4e26-91bc-28f94f76ac7f,,"Forceps delivery, mode of delivery",Accouchement par forceps,Answer of Mode of delivery: delivery assisted by forceps (UVL-EMR#896).,Misc,N/A,,,
+628fd5bc-250d-43fa-b285-e31d8888ebf3,,"Vacuum extraction delivery, mode of delivery",Accouchement par ventouse,Answer of Mode of delivery: delivery assisted by vacuum extraction (UVL-EMR#896).,Misc,N/A,,,
+fc343f72-be55-4eba-a376-c92d5a78dbb4,,"Dystocia type, specify",Dystocie à préciser,"Free text: type of dystocia, asked when the mode of delivery is dystocic (UVL-EMR#896).",Question,Text,,,
+6424784e-dbe3-4122-a1c5-5e7c908e724b,,"Delivery description, free text",Description de l'accouchement,Free-text description of the delivery in the Delivery Registration form (UVL-EMR#896).,Question,Text,,,
