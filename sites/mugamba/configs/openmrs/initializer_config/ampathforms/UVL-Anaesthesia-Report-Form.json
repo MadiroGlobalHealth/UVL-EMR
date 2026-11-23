@@ -110,6 +110,16 @@
               }
             },
             {
+              "label": "Baby's extraction time",
+              "type": "obs",
+              "id": "babyExtractionTime",
+              "questionInfo": "For caesarean sections",
+              "questionOptions": {
+                "rendering": "datetime",
+                "concept": "c14c3966-5747-4021-aa40-137c3c7e996b"
+              }
+            },
+            {
               "label": "End of the Procedure",
               "type": "obs",
               "id": "surgeryEnd",
@@ -148,7 +158,7 @@
           "isExpanded": "true",
           "questions": [
             {
-              "label": "Pre-operative Diagnosis",
+              "label": "Perioperative Notes",
               "type": "obs",
               "id": "preopDiagnosis",
               "questionOptions": {
@@ -157,7 +167,7 @@
               }
             },
             {
-              "label": "Post-operative Diagnosis",
+              "label": "Postoperative Notes",
               "type": "obs",
               "id": "postopDiagnosis",
               "questionOptions": {
