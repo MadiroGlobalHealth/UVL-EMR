@@ -53,7 +53,7 @@ params:
   server_page_length: 10
   order_desc: true
   table_timestamp_format: smart_date
-  show_cell_bars: true
+  show_cell_bars: false
   color_pn: true
   extra_form_data: {}
 query_context:

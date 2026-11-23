@@ -680,6 +680,8 @@ metadata:
         - 33
         - 34
         - 35
+        - 36
+        - 37
     '29':
       id: 29
       crossFilters:
@@ -692,6 +694,8 @@ metadata:
         - 33
         - 34
         - 35
+        - 36
+        - 37
     '30':
       id: 30
       crossFilters:
@@ -704,6 +708,8 @@ metadata:
         - 33
         - 34
         - 35
+        - 36
+        - 37
     '31':
       id: 31
       crossFilters:
@@ -716,6 +722,8 @@ metadata:
         - 33
         - 34
         - 35
+        - 36
+        - 37
     '32':
       id: 32
       crossFilters:
@@ -728,6 +736,8 @@ metadata:
         - 33
         - 34
         - 35
+        - 36
+        - 37
     '33':
       id: 33
       crossFilters:
@@ -740,6 +750,8 @@ metadata:
         - 32
         - 34
         - 35
+        - 36
+        - 37
     '34':
       id: 34
       crossFilters:
@@ -752,6 +764,8 @@ metadata:
         - 32
         - 33
         - 35
+        - 36
+        - 37
     '35':
       id: 35
       crossFilters:
@@ -764,6 +778,36 @@ metadata:
         - 32
         - 33
         - 34
+        - 36
+        - 37
+    '36':
+      id: 36
+      crossFilters:
+        scope: global
+        chartsInScope:
+        - 28
+        - 29
+        - 30
+        - 31
+        - 32
+        - 33
+        - 34
+        - 35
+        - 37
+    '37':
+      id: 37
+      crossFilters:
+        scope: global
+        chartsInScope:
+        - 28
+        - 29
+        - 30
+        - 31
+        - 32
+        - 33
+        - 34
+        - 35
+        - 36
   global_chart_configuration:
     scope:
       rootPath:
@@ -778,6 +822,8 @@ metadata:
     - 33
     - 34
     - 35
+    - 36
+    - 37
   color_scheme: ''
   refresh_frequency: 0
   shared_label_colors: {}
@@ -797,9 +843,9 @@ metadata:
     - {}
     defaultDataMask:
       extraFormData:
-        time_range: previous calendar month
+        time_range: Last month
       filterState:
-        value: previous calendar month
+        value: Last month
     cascadeParentIds: []
     scope:
       rootPath:
@@ -816,7 +862,6 @@ metadata:
     - 32
     - 33
     - 34
-    - 35
     - 36
     - 37
     - 40
@@ -826,7 +871,12 @@ metadata:
     - 44
     - 45
     - 46
-    tabsInScope: []
+    tabsInScope:
+    - TAB-m6-rapports
+    - TAB-m6-consultations
+    - TAB-m6-diagnostics
+    - TAB-m6-registres
+    - TAB-m6-qualite
   - id: NATIVE_FILTER-S2BhrN5ik
     controlValues:
       enableEmptyFilter: false

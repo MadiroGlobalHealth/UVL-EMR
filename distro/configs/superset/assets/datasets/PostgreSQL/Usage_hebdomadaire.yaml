@@ -19,7 +19,7 @@ description: "UVL-EMR \xB7 \xAB Usage hebdomadaire \xBB \u2014 adoption evidence
 default_endpoint: null
 offset: 0
 cache_timeout: null
-schema: null
+schema: public
 sql: "WITH pt AS (\n    SELECT p.patient_uuid\n    FROM patients p\n    WHERE COALESCE(p.person_voided,\
   \ false) = false\n      AND NOT (COALESCE(p.family_name, '') ~* '^(SYNTH-|E2E|QA|TEST|DEMO)'\n\
   \            OR COALESCE(p.given_name,  '') ~* '^(SYNTH-|E2E|QA|TEST|DEMO)')\n),\n\
