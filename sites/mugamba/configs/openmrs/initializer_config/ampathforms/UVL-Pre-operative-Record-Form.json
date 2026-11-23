@@ -11,7 +11,7 @@
   "encounterType": "f0a19a36-4c36-496a-87f5-cd47f4c2f5b4",
   "pages": [
     {
-      "label": "Pre-operative Record",
+      "label": "Pre-anesthetic consultation",
       "sections": [
         {
           "label": "Procedure Details",
@@ -623,7 +623,7 @@
               }
             },
             {
-              "label": "Anaesthesia Protocol",
+              "label": "Conclusion",
               "type": "obs",
               "id": "anaesthesiaProtocol",
               "questionOptions": {

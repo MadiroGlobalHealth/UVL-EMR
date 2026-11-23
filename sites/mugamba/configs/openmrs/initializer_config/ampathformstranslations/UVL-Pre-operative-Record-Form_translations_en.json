@@ -1,7 +1,7 @@
 {
   "uuid": "57f2bcd1-f631-4a50-8fc3-9ad4ba9e4a5f",
   "form": "UVL Pre-operative Record Form",
-  "form_name_translation": "UVL Pre-operative Record Form",
+  "form_name_translation": "Pre-anesthetic consultation",
   "description": "En Translations for 'UVL Pre-operative Record Form'",
   "language": "en",
   "translations": {
@@ -12,7 +12,7 @@
     "ASA IV": "ASA IV",
     "ASA V": "ASA V",
     "Allergy": "Allergy",
-    "Anaesthesia Protocol": "Anaesthesia Protocol",
+    "Conclusion": "Conclusion",
     "Anticipated Difficult Intubation": "Anticipated Difficult Intubation",
     "Asthma": "Asthma",
     "Blood Glucose": "Blood Glucose",
@@ -64,7 +64,7 @@
     "Planned Anaesthesia Type": "Planned Anaesthesia Type",
     "Planned Procedure": "Planned Procedure",
     "Platelets": "Platelets",
-    "Pre-operative Record": "Pre-operative Record",
+    "Pre-anesthetic consultation": "Pre-anesthetic consultation",
     "Premedication": "Premedication",
     "Previous Anaesthesia": "Previous Anaesthesia",
     "Procedure Details": "Procedure Details",
