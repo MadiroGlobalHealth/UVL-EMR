@@ -3580,4 +3580,33 @@
         <rollback/>
     </changeSet>
 
+    <!--
+        « Kemoxyl+F Capsule 250/250mg » becomes « Kemoxyl+F Gélule 250/250mg » (product owner, #887).
+        The drugs CSV renames the drug and the Odoo CSV its product, but the stock item's common
+        name was copied from the old drug name (#463) and that changeset never overwrites a name.
+        Same pattern as stock_item_common_name_renamed_drugs-20261029: only an empty common name
+        or one of the old names is changed, so a name typed in the stock app is kept. The new name
+        is written here, not copied from the drug, because this file runs before the drugs domain.
+        runAlways so an item created later is renamed on the next start; runOnChange so editing it
+        does not stop OpenMRS on a checksum. Idempotent. No rollback.
+    -->
+    <changeSet id="stock_item_common_name_kemoxyl_gelule-20261123" author="Joshua" runAlways="true" runOnChange="true">
+        <preConditions onFail="CONTINUE" onError="CONTINUE"
+                       onFailMessage="WARN (#887): the stockmanagement table stockmgmt_stock_item does not exist yet, so the stock item of Kemoxyl+F Gélule 250/250mg was NOT renamed; this changeset runs again on every start.">
+            <tableExists tableName="stockmgmt_stock_item"/>
+            <columnExists tableName="stockmgmt_stock_item" columnName="common_name"/>
+        </preConditions>
+        <comment>
+            Give the stock item of Kemoxyl+F 250/250mg its new name (#887).
+        </comment>
+        <sql>
+            UPDATE stockmgmt_stock_item si
+              JOIN drug d ON d.drug_id = si.drug_id
+               SET si.common_name = 'Kemoxyl+F Gélule 250/250mg'
+             WHERE d.uuid = '0b273e54-5dc0-4718-ac57-6c13dcbb961d'
+               AND (si.common_name IS NULL OR TRIM(si.common_name) IN ('', 'Kemoxyl+F Capsule 250/250mg', 'Kemoxyl+F 250/250mg Capsule'));
+        </sql>
+        <rollback/>
+    </changeSet>
+
 </databaseChangeLog>
