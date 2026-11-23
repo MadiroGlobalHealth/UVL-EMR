@@ -662,11 +662,6 @@ OPEN_LAST = [
      'source B line + value': 'Votre réponse F27 : non, considérer IM, IV, ID, S/C',
      'question': 'Nous avons compris : l’injection, quelle que soit la voie (IM, IV, ID, S/C), est plafonnée à '
                  '1 000 BIF. Est-ce bien cela ?', 'suggested answer': 'oui'},
-    {'group': 'open point', 'UVL product': 'Ruban adhésif',
-     'source A line + value': 'Dispositifs médicaux MFP · 37 · BANDE ADHESIVE 6CM : 2 030 BIF, 80 %',
-     'source B line + value': 'Dispositifs médicaux MFP · 38 · BANDE ADHESIVE 8CM : 2 740 BIF, 80 %',
-     'question': 'Quelle largeur vend la pharmacie ? (a) 6 cm : 2 030 · (b) 8 cm : 2 740 (question G11, restée '
-                 'sans réponse ; le taux est déjà passé à 80 %)', 'suggested answer': '(a)'},
     {'group': 'open point', 'UVL product': 'Alcool dénaturé 98%, Solution de Povidone 100ml, Dettol Solution 1L, '
                                            'Tissu Jersey 1m',
      'source A line + value': 'Dispositifs médicaux MFP · 27, 272, 197, 273 : 7/ml, 15/ml, 0,5/ml, 1000/m',

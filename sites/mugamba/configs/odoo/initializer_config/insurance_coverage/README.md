@@ -127,7 +127,7 @@ rules) came back answered. Each answer is kept next to its product in the matchi
 - `no`: not this line, and no other; the product keeps its percentage of the clinic price
   (venous access placement, the incubator night, two of the abscess incisions, « Cathéter
   urinaire », which the clinic does not sell: see below).
-- `yes, value open`: the line is right but the value is not settled (« Ruban adhésif »).
+- `yes, value open`: the line is right but the value is not settled (none today; « Ruban adhésif » was one until G11 was answered on 23 Nov 2026).
 - `yes, nomenclature` (19 Nov 2026): a laboratory test both sources price differently; the
   nomenclature's coefficient is the price, and it is loaded.
 - `yes, per unit` (19 Nov 2026): the product is sold as the very unit MFP prices (« 5/Tampon »):
@@ -196,9 +196,7 @@ never loaded. A line of it is referenced as « N:95 » in the matching file's `m
   « Tube à EDTA » and « Tube sec » (500: every collection tube of the list is 500), « Tube
   d'intubation » (10,150: every intubation tube of the list), « Jeu de perfusion » (« TROUSSE DE
   PERFUSION », 500).
-- **Not loaded, asked:** a product that could be several lines. « Ruban adhésif » (« BANDE
-  ADHESIVE » 6 cm 2,030 or 8 cm 2,740; the list also has « SPARADRAP » at 3,4 per cm,
-  « LEUCOPLASTE » and « ELASTOPLASTE »), « Cathéter Pédiatrique », the Pogal sutures N° 1 and 2
+- **Not loaded, asked:** a product that could be several lines. « Cathéter Pédiatrique », the Pogal sutures N° 1 and 2
   (Etylon as for 2/0 and 3/0, or Vicryl), « Pansement Ombilical », « Compresses Abdominales »,
   « Coton hydrophile 500g », « Tampon d'ouate » (MFP prices one tampon, « 5/Tampon »), and the two
   suture products that name no thread and no size.
@@ -233,7 +231,7 @@ reading in `reason`); 29 more products get a ceiling, 288 in all.
   could mean no ceiling or not reimbursed), « Tulle Gras » (« oui, » with no price), « Suture
   Non-Absorbable » (« NYLON », no size: 3,700 for most sizes, 5,600 or 1,450 for two), « Fils de
   Suture Chirurgicaux » (« NON » to « which thread and which size? »: not read as « not
-  reimbursed », so it keeps 70%), « Ruban adhésif » and « Naloxone Injection » (no answer).
+  reimbursed », so it keeps 70%) and « Naloxone Injection » (no answer on the rate).
   Each keeps its answer in the matching file and a follow-up question in `question`.
 
 ### Two MFP sources for one laboratory test
@@ -286,6 +284,14 @@ rows of `mfp-issue184.csv`. The build (`scripts/check-insurance-coverage.groovy`
 coverage files and the matching file disagree (a ceiling, a rate, or a product the matching
 says MFP does not cover whose row is not at 0), or if a coverage file has a row Odoo would
 reject (an unknown product or plan, a second row for the same plan and product).
+
+### « Ruban adhésif » (answer G11, 23 Nov 2026)
+
+« Quelle largeur vend la pharmacie ? » was answered « (b) 8 cm : 2 740 »: « Ruban adhésif » is
+MFP's « BANDE ADHESIVE 8CM » (N° 38 of the device list), 80% of at most 2,740 BIF. Its row in
+`mfp-issue184.csv` was at 80% without a ceiling; it is now in `amount` mode. The price is not
+changed. The other adhesive lines of the list (« SPARADRAP », « LEUCOPLASTE », « ELASTOPLASTE »)
+were not retained by the answer.
 
 ## Format
 
