@@ -1,0 +1,177 @@
+{
+  "uuid": "96168118-3f58-438a-9db8-8e2f02ed020a",
+  "name": "UVL IPD Follow-up (Nurse) Form",
+  "description": "UVL inpatient follow-up by the nurse: time point, therapeutic, blood pressure of both arms, respiratory rate, SpO2 and temperature (reviewed sheet of 24 Nov 2026, replaces the follow-up note for new entries)",
+  "version": "1",
+  "published": true,
+  "retired": false,
+  "encounter": "Inpatient Follow-up",
+  "processor": "EncounterFormProcessor",
+  "referencedForms": [],
+  "encounterType": "f699c98a-5561-4f8d-b135-95f1992ccd18",
+  "pages": [
+    {
+      "label": "IPD Follow-up (Nurse)",
+      "sections": [
+        {
+          "label": "Context",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Follow-up date and time",
+              "type": "encounterDatetime",
+              "id": "encDatetime",
+              "required": true,
+              "datePickerFormat": "both",
+              "questionOptions": {
+                "rendering": "date"
+              },
+              "validators": [
+                {
+                  "type": "date",
+                  "allowFutureDates": "false"
+                },
+                {
+                  "type": "js_expression",
+                  "failsWhenExpression": "!isEmpty(myValue) && isBeforeVisitStart(myValue)",
+                  "message": "L'heure du suivi ne peut pas précéder le début de la visite / The follow-up time cannot be earlier than the start of the visit"
+                }
+              ]
+            },
+            {
+              "label": "Time point",
+              "type": "obs",
+              "id": "timePoint",
+              "questionOptions": {
+                "rendering": "select",
+                "concept": "3b6f0d52-6c2e-4d0b-9a57-6a1f3a0c926a",
+                "answers": [
+                  {
+                    "concept": "7dd06052-3e8b-4721-b9a2-5c1361115a4b",
+                    "label": "Matin"
+                  },
+                  {
+                    "concept": "034dea03-6741-4f65-bc22-838085ea377a",
+                    "label": "Midi"
+                  },
+                  {
+                    "concept": "e2cf2a07-1c10-4e17-bf1d-45a4452a85ae",
+                    "label": "Soir"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "label": "General information",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Therapeutic",
+              "type": "obs",
+              "id": "therapeutic",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "8c1e47a9-2d5b-4f63-b1c8-0e92f6d3926b"
+              }
+            },
+            {
+              "label": "Blood pressure, left arm (mmHg)",
+              "type": "obsGroup",
+              "id": "bpLeftArm",
+              "questionOptions": {
+                "rendering": "group",
+                "concept": "f8f990f9-6249-4451-abc7-396733830011"
+              },
+              "questions": [
+                {
+                  "label": "Systolic (mmHg)",
+                  "type": "obs",
+                  "id": "bpLeftArmSystolic",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "6d0b8551-feb8-4d57-892a-d75398181b3f",
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Diastolic (mmHg)",
+                  "type": "obs",
+                  "id": "bpLeftArmDiastolic",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "c46fcfdd-a785-4416-80bc-2d9e2edf5a45",
+                    "disallowDecimals": true
+                  }
+                }
+              ]
+            },
+            {
+              "label": "Blood pressure, right arm (mmHg)",
+              "type": "obsGroup",
+              "id": "bpRightArm",
+              "questionOptions": {
+                "rendering": "group",
+                "concept": "4e887505-0db7-40be-b375-cc19965207f6"
+              },
+              "questions": [
+                {
+                  "label": "Systolic (mmHg)",
+                  "type": "obs",
+                  "id": "bpRightArmSystolic",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "6d0b8551-feb8-4d57-892a-d75398181b3f",
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Diastolic (mmHg)",
+                  "type": "obs",
+                  "id": "bpRightArmDiastolic",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "c46fcfdd-a785-4416-80bc-2d9e2edf5a45",
+                    "disallowDecimals": true
+                  }
+                }
+              ]
+            },
+            {
+              "label": "Respiratory rate (/min)",
+              "type": "obs",
+              "id": "respiratoryRate",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "b39db318-d563-4114-bec0-31ad3d254b24",
+                "disallowDecimals": true
+              },
+              "questionInfo": "Normal: 16–20"
+            },
+            {
+              "label": "SpO2 (%)",
+              "type": "obs",
+              "id": "oxygenSaturation",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "46091095-b138-465e-9a7d-17a243932812",
+                "disallowDecimals": true
+              },
+              "questionInfo": "Normal: > 97"
+            },
+            {
+              "label": "Temperature (°C)",
+              "type": "obs",
+              "id": "temperature",
+              "questionOptions": {
+                "rendering": "number",
+                "concept": "748f8d43-617a-40ba-9474-20522e73fb8a"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

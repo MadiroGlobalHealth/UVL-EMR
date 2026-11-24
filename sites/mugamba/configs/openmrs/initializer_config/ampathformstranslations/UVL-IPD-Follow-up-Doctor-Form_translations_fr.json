@@ -1,0 +1,22 @@
+{
+  "uuid": "5f7483dd-813d-434b-9a1b-32e6cac26925",
+  "form": "UVL IPD Follow-up (Doctor) Form",
+  "form_name_translation": "Suivi d'hospitalisation (médecin)",
+  "description": "Fr Translations for 'UVL IPD Follow-up (Doctor) Form'",
+  "language": "fr",
+  "translations": {
+    "Complaints": "Plaintes",
+    "Context": "Contexte",
+    "Decision": "Décision",
+    "Diagnostic hypothesis": "Hypothèse diagnostique",
+    "Follow-up date and time": "Date et heure du suivi",
+    "General information": "Informations générales",
+    "IPD Follow-up (Doctor)": "Suivi d'hospitalisation (médecin)",
+    "Lab tests to be done": "Examens de laboratoire à faire",
+    "On-going treatment": "Traitement en cours",
+    "Other recommendations": "Autres recommandations",
+    "Performed by": "Réalisé par",
+    "Results of the physical examination (inspection, palpation, auscultation)": "Résultats de l'examen physique (inspection, palpation, auscultation)",
+    "Treatment to administer": "Traitement à administrer"
+  }
+}
