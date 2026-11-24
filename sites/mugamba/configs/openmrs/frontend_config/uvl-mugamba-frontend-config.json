@@ -97,11 +97,16 @@
               "privileges": ["Edit Partograph Reading"],
               "expression": "groupProps?.patient?.gender === 'female'"
             }
+          },
+          "uvl-anaesthesia-reading": {
+            "Display conditions": {
+              "privileges": ["Edit Anaesthesia Monitoring"]
+            }
           }
         }
       },
       "patient-chart-summary-dashboard-slot": {
-        "add": ["uvl-partograph-chart-widget", "uvl-24h-surveillance-widget"],
+        "add": ["uvl-partograph-chart-widget", "uvl-24h-surveillance-widget", "uvl-anaesthesia-chart-widget"],
         "configure": {
           "uvl-partograph-chart-widget": {
             "Display conditions": {
@@ -111,6 +116,11 @@
           "uvl-24h-surveillance-widget": {
             "Display conditions": {
               "privileges": ["View 24-Hour Surveillance"]
+            }
+          },
+          "uvl-anaesthesia-chart-widget": {
+            "Display conditions": {
+              "privileges": ["View Anaesthesia Monitoring"]
             }
           }
         }
@@ -726,7 +736,7 @@
       },
       {
         "name": "Bloc opératoire",
-        "forms": ["UVL Pre-operative Record Form", "UVL Anaesthesia Report Form", "UVL Anaesthesia Monitoring Form", "UVL Operation Protocol Form"]
+        "forms": ["UVL Pre-operative Record Form", "UVL Anaesthesia Report Form", "UVL Anaesthesia Reading Form", "UVL Anaesthesia Monitoring Form", "UVL Operation Protocol Form"]
       },
       {
         "name": "Autres",
@@ -1296,6 +1306,21 @@
       { "concept": "487fb8c7-29c3-4954-937c-090c1a4a4ced", "code": "+++" }
     ],
     "readingFormUuid": "c734e7b1-1c78-3fc9-867f-bf44b0e354a5",
+    "anaesthesia": {
+      "encounterTypeUuid": "2ad4bc92-8157-4974-96f2-f3f518612ae6",
+      "readingGroupConcept": "60afc96d-ec86-482b-b93c-0a28687d2574",
+      "readingTimeConcept": "d3f21e28-7677-4c27-812d-aa510c9afc6c",
+      "concepts": {
+        "systolicBp": "4302c8cc-026e-42ec-ad35-c40cbc63f316",
+        "diastolicBp": "09aa2c0d-a3c4-43ec-a61a-0dc5966f2882",
+        "pulse": "4118079a-4165-4fbd-a1aa-58d9986ae7b0",
+        "respiration": "d4cd9b33-c4f2-4393-8058-ea9ed215720e",
+        "spo2": "c29ee197-968f-4a43-aa1c-fd35551412e9",
+        "stage": "4f10b625-6156-4500-9fbd-d8f0b7389f41",
+        "medication": "ef949c7e-1e37-4843-8146-50b3898fb4a9"
+      },
+      "readingFormUuid": "cfeba05c-ebb2-305b-af84-41938f5428e2"
+    },
     "surveillance": {
       "encounterTypeUuid": "79f5e229-1a46-471d-9c14-0092959a7650",
       "timePointConcept": "4169c767-e76c-4920-b092-dd038a6108d4",

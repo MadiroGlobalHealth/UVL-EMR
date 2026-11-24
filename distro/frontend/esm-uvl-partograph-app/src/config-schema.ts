@@ -30,6 +30,41 @@ export const configNamespace = '@madiro/uvl-partograph';
  * module ships none. With no encounter type configured the chart renders nothing.
  */
 export const configSchema = {
+  anaesthesia: {
+    encounterTypeUuid: {
+      _type: Type.UUID,
+      _default: '',
+      _description: 'Encounter type of the anaesthesia monitoring readings. Without it the chart renders nothing.',
+    },
+    readingGroupConcept: concept('Obs group holding one reading (the group of the Anaesthesia Monitoring forms)'),
+    readingTimeConcept: concept('Time of a reading inside a group. Old 12-reading records carry it; one-reading records use the encounter time'),
+    concepts: {
+      systolicBp: concept('Systolic blood pressure (mmHg)'),
+      diastolicBp: concept('Diastolic blood pressure (mmHg)'),
+      pulse: concept('Pulse (/min)'),
+      respiration: concept('Respiration (/min)'),
+      spo2: concept('SpO2 (%)'),
+      stage: concept('Stage of the operation (coded)'),
+      medication: concept('Medication (text)'),
+    },
+    readingFormUuid: {
+      _type: Type.UUID,
+      _default: '',
+      _description:
+        'Form opened by the "Anaesthesia reading" button of the patient chart\'s side panel (one reading per encounter). Without it the button is not shown.',
+    },
+    gapHours: {
+      _type: Type.Number,
+      _default: 12,
+      _description:
+        'Only the latest operation is charted: readings before a gap longer than this many hours belong to an earlier operation',
+    },
+    minimumHours: {
+      _type: Type.Number,
+      _default: 2,
+      _description: 'Shortest time axis, in hours from the first reading',
+    },
+  },
   encounterTypeUuid: {
     _type: Type.UUID,
     _default: '',
@@ -119,6 +154,7 @@ export interface SurveillanceConfig {
 export type PartographConcepts = { [K in keyof (typeof configSchema)['concepts']]: string };
 
 export interface PartographConfig {
+  anaesthesia?: AnaesthesiaConfig;
   encounterTypeUuid: string;
   labourGapHours: number;
   minimumHours: number;
@@ -129,4 +165,16 @@ export interface PartographConfig {
   urineCodes: Array<CodeMapping>;
   readingFormUuid: string;
   surveillance: SurveillanceConfig;
+}
+
+export type AnaesthesiaConcepts = { [K in keyof (typeof configSchema)['anaesthesia']['concepts']]: string };
+
+export interface AnaesthesiaConfig {
+  encounterTypeUuid: string;
+  readingGroupConcept: string;
+  readingTimeConcept: string;
+  concepts: AnaesthesiaConcepts;
+  readingFormUuid: string;
+  gapHours: number;
+  minimumHours: number;
 }
