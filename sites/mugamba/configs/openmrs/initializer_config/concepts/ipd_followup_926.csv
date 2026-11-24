@@ -1,0 +1,3 @@
+Uuid,Void/Retire,Fully specified name:en,Fully specified name:fr,Description:en,Data class,Data type,Members,_version:1,_order:1000
+3b6f0d52-6c2e-4d0b-9a57-6a1f3a0c926a,,Inpatient follow-up time point,Période du suivi d'hospitalisation,"Time of day of an inpatient nursing follow-up: morning, midday or evening (UVL-EMR#926). Answers: Matin, Midi and Soir, already loaded.",Question,Coded,,,
+8c1e47a9-2d5b-4f63-b1c8-0e92f6d3926b,,Therapeutic (nursing follow-up),Thérapeutique (suivi infirmier),Free text: the care and treatment given by the nurse at an inpatient follow-up (UVL-EMR#926). Distinct from the doctor's on-going treatment.,Question,Text,,,
