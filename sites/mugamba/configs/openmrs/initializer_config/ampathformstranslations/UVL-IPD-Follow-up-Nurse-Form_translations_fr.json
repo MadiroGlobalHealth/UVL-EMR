@@ -1,0 +1,27 @@
+{
+  "uuid": "f9acb890-1202-43ae-953d-d06c43746082",
+  "form": "UVL IPD Follow-up (Nurse) Form",
+  "form_name_translation": "Suivi d'hospitalisation (infirmier)",
+  "description": "Fr Translations for 'UVL IPD Follow-up (Nurse) Form'",
+  "language": "fr",
+  "translations": {
+    "Blood pressure, left arm (mmHg)": "Tension artérielle, bras gauche (mmHg)",
+    "Blood pressure, right arm (mmHg)": "Tension artérielle, bras droit (mmHg)",
+    "Context": "Contexte",
+    "Diastolic (mmHg)": "Diastolique (mmHg)",
+    "Follow-up date and time": "Date et heure du suivi",
+    "General information": "Informations générales",
+    "IPD Follow-up (Nurse)": "Suivi d'hospitalisation (infirmier)",
+    "Matin": "Matin",
+    "Midi": "Midi",
+    "Normal: 16–20": "Normale : 16–20",
+    "Normal: > 97": "Normale : > 97",
+    "Respiratory rate (/min)": "Fréquence respiratoire (/min)",
+    "Soir": "Soir",
+    "SpO2 (%)": "SpO2 (%)",
+    "Systolic (mmHg)": "Systolique (mmHg)",
+    "Temperature (°C)": "Température (°C)",
+    "Therapeutic": "Thérapeutique",
+    "Time point": "Période"
+  }
+}

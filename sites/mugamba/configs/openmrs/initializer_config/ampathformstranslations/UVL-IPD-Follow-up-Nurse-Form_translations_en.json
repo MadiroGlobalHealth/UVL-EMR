@@ -1,0 +1,27 @@
+{
+  "uuid": "042954eb-2cd9-4da5-b7c3-88a24523a20d",
+  "form": "UVL IPD Follow-up (Nurse) Form",
+  "form_name_translation": "UVL IPD Follow-up (Nurse) Form",
+  "description": "En Translations for 'UVL IPD Follow-up (Nurse) Form'",
+  "language": "en",
+  "translations": {
+    "Blood pressure, left arm (mmHg)": "Blood pressure, left arm (mmHg)",
+    "Blood pressure, right arm (mmHg)": "Blood pressure, right arm (mmHg)",
+    "Context": "Context",
+    "Diastolic (mmHg)": "Diastolic (mmHg)",
+    "Follow-up date and time": "Follow-up date and time",
+    "General information": "General information",
+    "IPD Follow-up (Nurse)": "IPD Follow-up (Nurse)",
+    "Matin": "Morning",
+    "Midi": "Midday",
+    "Normal: 16–20": "Normal: 16–20",
+    "Normal: > 97": "Normal: > 97",
+    "Respiratory rate (/min)": "Respiratory rate (/min)",
+    "Soir": "Evening",
+    "SpO2 (%)": "SpO2 (%)",
+    "Systolic (mmHg)": "Systolic (mmHg)",
+    "Temperature (°C)": "Temperature (°C)",
+    "Therapeutic": "Therapeutic",
+    "Time point": "Time point"
+  }
+}

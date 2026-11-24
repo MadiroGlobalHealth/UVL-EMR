@@ -1,0 +1,22 @@
+{
+  "uuid": "540c4a5f-88e6-4738-b608-7cbcbe7c8ff1",
+  "form": "UVL IPD Follow-up (Doctor) Form",
+  "form_name_translation": "UVL IPD Follow-up (Doctor) Form",
+  "description": "En Translations for 'UVL IPD Follow-up (Doctor) Form'",
+  "language": "en",
+  "translations": {
+    "Complaints": "Complaints",
+    "Context": "Context",
+    "Decision": "Decision",
+    "Diagnostic hypothesis": "Diagnostic hypothesis",
+    "Follow-up date and time": "Follow-up date and time",
+    "General information": "General information",
+    "IPD Follow-up (Doctor)": "IPD Follow-up (Doctor)",
+    "Lab tests to be done": "Lab tests to be done",
+    "On-going treatment": "On-going treatment",
+    "Other recommendations": "Other recommendations",
+    "Performed by": "Performed by",
+    "Results of the physical examination (inspection, palpation, auscultation)": "Results of the physical examination (inspection, palpation, auscultation)",
+    "Treatment to administer": "Treatment to administer"
+  }
+}
