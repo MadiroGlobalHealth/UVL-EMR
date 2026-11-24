@@ -124,21 +124,10 @@
                     "concept": "3de182b6-f7fe-4185-a7b5-89237593c1f1"
                   },
                   {
-                    "concept": "4a8e5f2a-da35-4a5d-aefb-ffabe41e6783"
-                  },
-                  {
-                    "concept": "fd601163-7e6f-4e26-91bc-28f94f76ac7f",
-                    "label": "Accouchement par forceps"
-                  },
-                  {
-                    "concept": "628fd5bc-250d-43fa-b285-e31d8888ebf3",
-                    "label": "Accouchement par ventouse"
-                  },
-                  {
                     "concept": "b08d3e60-2e3c-4d23-906c-9e36cd222bea"
                   },
                   {
-                    "concept": "b5c4b807-d3de-40cd-aae9-178df9b40535"
+                    "concept": "4a8e5f2a-da35-4a5d-aefb-ffabe41e6783"
                   }
                 ]
               }
@@ -147,6 +136,7 @@
               "label": "Dystocia (specify type)",
               "type": "obs",
               "id": "dystociaType",
+              "questionInfo": "Specify: forceps, vacuum extraction, shoulder dystocia…",
               "questionOptions": {
                 "rendering": "text",
                 "concept": "fc343f72-be55-4eba-a376-c92d5a78dbb4"
