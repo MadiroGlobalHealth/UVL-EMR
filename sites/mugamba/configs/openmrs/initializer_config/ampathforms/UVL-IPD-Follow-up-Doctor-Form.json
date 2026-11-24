@@ -1,0 +1,139 @@
+{
+  "uuid": "264737e1-2707-46b8-81e1-97881e183aae",
+  "name": "UVL IPD Follow-up (Doctor) Form",
+  "description": "UVL inpatient follow-up by the doctor: complaints, physical examination, diagnostic hypothesis, on-going treatment and decisions (reviewed sheet of 24 Nov 2026, replaces the follow-up note for new entries)",
+  "version": "1",
+  "published": true,
+  "retired": false,
+  "encounter": "Inpatient Follow-up",
+  "processor": "EncounterFormProcessor",
+  "referencedForms": [],
+  "encounterType": "f699c98a-5561-4f8d-b135-95f1992ccd18",
+  "pages": [
+    {
+      "label": "IPD Follow-up (Doctor)",
+      "sections": [
+        {
+          "label": "Context",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Follow-up date and time",
+              "type": "encounterDatetime",
+              "id": "encDatetime",
+              "required": true,
+              "datePickerFormat": "both",
+              "questionOptions": {
+                "rendering": "date"
+              },
+              "validators": [
+                {
+                  "type": "date",
+                  "allowFutureDates": "false"
+                },
+                {
+                  "type": "js_expression",
+                  "failsWhenExpression": "!isEmpty(myValue) && isBeforeVisitStart(myValue)",
+                  "message": "L'heure du suivi ne peut pas précéder le début de la visite / The follow-up time cannot be earlier than the start of the visit"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "General information",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Complaints",
+              "type": "obs",
+              "id": "complaints",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "c8523ef7-c18e-46fe-a760-c243fd3a3bd2"
+              }
+            },
+            {
+              "label": "Results of the physical examination (inspection, palpation, auscultation)",
+              "type": "obs",
+              "id": "physicalExam",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "f3401215-8c2f-4cf4-acab-9d524fbbf6c6"
+              }
+            },
+            {
+              "label": "Diagnostic hypothesis",
+              "type": "diagnosis",
+              "id": "diagnosticHypothesis",
+              "questionOptions": {
+                "rendering": "repeating",
+                "dataSource": "diagnoses",
+                "isSearchable": "true",
+                "diagnosis": {
+                  "isConfirmed": false,
+                  "rank": 1,
+                  "conceptClasses": [
+                    "8d4918b0-c2cc-11de-8d13-0010c6dffd0f"
+                  ]
+                }
+              }
+            },
+            {
+              "label": "On-going treatment",
+              "type": "obs",
+              "id": "currentTreatment",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "1deb77a2-9fa1-4e0f-a0a0-6f4f751f728f"
+              }
+            }
+          ]
+        },
+        {
+          "label": "Decision",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Lab tests to be done",
+              "type": "obs",
+              "id": "testsRequested",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "5eedb588-cf20-4b73-a2d4-37cb5ecaf3dd"
+              }
+            },
+            {
+              "label": "Treatment to administer",
+              "type": "obs",
+              "id": "newTreatment",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "29ff306b-5a2a-48c1-affa-8fa4620a8fda"
+              }
+            },
+            {
+              "label": "Other recommendations",
+              "type": "obs",
+              "id": "recommendations",
+              "questionOptions": {
+                "rendering": "textarea",
+                "concept": "9af39f47-d3bd-418a-84e9-968863430578"
+              }
+            },
+            {
+              "label": "Performed by",
+              "type": "encounterProvider",
+              "id": "encProvider",
+              "required": true,
+              "questionOptions": {
+                "isSearchable": "true",
+                "rendering": "ui-select-extended"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

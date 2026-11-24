@@ -718,7 +718,8 @@
           "Ward Admission",
           "UVL Admission Note Form",
           "UVL Inpatient Consultation Form",
-          "UVL Inpatient Follow-up Form",
+          "UVL IPD Follow-up (Doctor) Form",
+          "UVL IPD Follow-up (Nurse) Form",
           "UVL IPD Monitoring Form",
           "UVL Discharge Summary Form"
         ]
