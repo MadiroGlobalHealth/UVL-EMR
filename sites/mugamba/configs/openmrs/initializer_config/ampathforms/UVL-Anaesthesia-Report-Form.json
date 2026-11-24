@@ -80,7 +80,7 @@
                 {
                   "type": "js_expression",
                   "failsWhenExpression": "!isEmpty(myValue) && !isEmpty(anaesthesiaStart) && new Date(myValue) - new Date(anaesthesiaStart) < 0",
-                  "message": "The end of anaesthesia must be after its start"
+                  "message": "La fin de l'anesthésie doit être postérieure à son début / The end of anaesthesia must be after its start"
                 }
               ]
             },
@@ -131,7 +131,7 @@
                 {
                   "type": "js_expression",
                   "failsWhenExpression": "!isEmpty(myValue) && !isEmpty(surgeryStart) && new Date(myValue) - new Date(surgeryStart) < 0",
-                  "message": "The end of the procedure must be after its start"
+                  "message": "La fin de l'intervention doit être postérieure à son début / The end of the procedure must be after its start"
                 }
               ]
             },
