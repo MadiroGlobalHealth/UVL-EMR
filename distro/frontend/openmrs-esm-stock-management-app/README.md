@@ -48,6 +48,7 @@ with fixes that are not released upstream yet. Only the built module is here; th
 | uvl.12: « Validation error / You must add at least one item » (and the batch information message) translatable, and it closes by itself like other snackbars | not yet |
 | uvl.12: a line's « Available » before a batch is chosen is the sum of the batches the batch picker offers (same request), not the location's net total | not yet |
 | uvl.12: the operation type names stockmanagement seeds (« Requisition », « Stock Issue », ...) are translatable wherever the app shows them; a type the site added or renamed keeps its own name | not yet |
+| uvl.13: new config `hiddenOperationTypes` (operation-type codes, default none): the listed types are left out of « Start New » and the Operations « Operation » filter only; existing operations, « Issue Stock » and the related-requisition link are unchanged | not yet |
 
 The list's refresh after Complete and other status changes is already in 3.3.1 (3.2.1 revalidated a
 cache the app did not read); the branch only adds a test for it.
