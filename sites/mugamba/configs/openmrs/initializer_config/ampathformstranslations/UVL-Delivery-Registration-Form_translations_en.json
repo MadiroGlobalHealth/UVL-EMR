@@ -153,7 +153,6 @@
     "Caesarean section: fill in the Delivery Registration (maternity) and the Operation Protocol (theatre) in this same visit. Reports identify the caesarean section by the visit and count it once.": "Caesarean section: fill in the Delivery Registration (maternity) and the Operation Protocol (theatre) in this same visit. Reports identify the caesarean section by the visit and count it once.",
     "Dystocia (specify type)": "Dystocia (specify type)",
     "Description": "Description",
-    "Accouchement par forceps": "Forceps delivery",
-    "Accouchement par ventouse": "Vacuum extraction delivery"
+    "Specify: forceps, vacuum extraction, shoulder dystocia…": "Specify: forceps, vacuum extraction, shoulder dystocia…"
   }
 }
