@@ -1,0 +1,305 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+                        http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+	<!-- Ministry pharmacy and finance sheets (24 Nov 2026): the OpenMRS stock module (stock_items,
+	     stock_batches, stock_operations, stock_operation_items, stock_transactions) and the Odoo accounting
+	     data (invoices, invoice_lines, payments, payment_allocations, journals, ledger_accounts). Filled by the
+	     flattening queries of the same names. No patient names: a patient dispense keeps the patient uuid only.
+	     Deployment needs: the OpenMRS (MySQL) Debezium connector with "decimal.handling.mode": "double" (stock
+	     quantities are DECIMAL and otherwise reach Flink as base64), the Kafka topics emr.openmrs.stockmgmt_* and
+	     erp.public.account_* (auto-created, or listed in CREATE_TOPICS), the Odoo publication covering the account_*
+	     tables (FOR ALL TABLES today) and TASK_MANAGER_SLOTS >= 30 (one Flink job per query). -->
+	<changeSet id="1795500001" author="jnsereko">
+		<preConditions onFail="MARK_RAN">
+			<not><tableExists tableName="stock_items"/></not>
+		</preConditions>
+		<createTable tableName="stock_items">
+			<column name="stock_item_id" type="BIGINT">
+				<constraints nullable="false" primaryKey="true" primaryKeyName="stock_items_pkey"/>
+			</column>
+			<column name="stock_item_uuid" type="VARCHAR"/>
+			<column name="drug_id" type="BIGINT"/>
+			<column name="drug_uuid" type="VARCHAR"/>
+			<column name="drug_name" type="VARCHAR"/>
+			<column name="concept_id" type="BIGINT"/>
+			<column name="common_name" type="VARCHAR"/>
+			<column name="acronym" type="VARCHAR"/>
+			<column name="is_drug" type="BOOLEAN"/>
+			<column name="has_expiration" type="BOOLEAN"/>
+			<column name="expiry_notice_days" type="INTEGER"/>
+			<column name="reorder_level" type="DOUBLE PRECISION"/>
+			<column name="purchase_price" type="DOUBLE PRECISION"/>
+			<column name="dispensing_unit_concept_id" type="BIGINT"/>
+			<column name="dispensing_unit" type="VARCHAR"/>
+			<column name="category_concept_id" type="BIGINT"/>
+			<column name="level_of_use" type="VARCHAR"/>
+			<column name="voided" type="BOOLEAN"/>
+		</createTable>
+		<createIndex tableName="stock_items" indexName="idx_stock_items_concept_id">
+			<column name="concept_id"/>
+		</createIndex>
+	</changeSet>
+	<changeSet id="1795500002" author="jnsereko">
+		<preConditions onFail="MARK_RAN">
+			<not><tableExists tableName="stock_batches"/></not>
+		</preConditions>
+		<createTable tableName="stock_batches">
+			<column name="stock_batch_id" type="BIGINT">
+				<constraints nullable="false" primaryKey="true" primaryKeyName="stock_batches_pkey"/>
+			</column>
+			<column name="stock_batch_uuid" type="VARCHAR"/>
+			<column name="stock_item_id" type="BIGINT"/>
+			<column name="batch_no" type="VARCHAR"/>
+			<column name="expiration" type="DATE"/>
+			<column name="voided" type="BOOLEAN"/>
+		</createTable>
+		<createIndex tableName="stock_batches" indexName="idx_stock_batches_stock_item_id">
+			<column name="stock_item_id"/>
+		</createIndex>
+	</changeSet>
+	<changeSet id="1795500003" author="jnsereko">
+		<preConditions onFail="MARK_RAN">
+			<not><tableExists tableName="stock_operations"/></not>
+		</preConditions>
+		<createTable tableName="stock_operations">
+			<column name="stock_operation_id" type="BIGINT">
+				<constraints nullable="false" primaryKey="true" primaryKeyName="stock_operations_pkey"/>
+			</column>
+			<column name="stock_operation_uuid" type="VARCHAR"/>
+			<column name="operation_number" type="VARCHAR"/>
+			<column name="operation_type" type="VARCHAR"/>
+			<column name="operation_type_code" type="VARCHAR"/>
+			<column name="status" type="VARCHAR"/>
+			<column name="operation_date" type="TIMESTAMP"/>
+			<column name="location_id" type="BIGINT"/>
+			<column name="location" type="VARCHAR"/>
+			<column name="source" type="VARCHAR"/>
+			<column name="destination" type="VARCHAR"/>
+			<column name="reason_concept_id" type="BIGINT"/>
+			<column name="completed_date" type="TIMESTAMP"/>
+			<column name="cancelled_date" type="TIMESTAMP"/>
+			<column name="date_created" type="TIMESTAMP"/>
+			<column name="voided" type="BOOLEAN"/>
+		</createTable>
+		<createIndex tableName="stock_operations" indexName="idx_stock_operations_operation_date">
+			<column name="operation_date"/>
+		</createIndex>
+	</changeSet>
+	<changeSet id="1795500004" author="jnsereko">
+		<preConditions onFail="MARK_RAN">
+			<not><tableExists tableName="stock_operation_items"/></not>
+		</preConditions>
+		<createTable tableName="stock_operation_items">
+			<column name="stock_operation_item_id" type="BIGINT">
+				<constraints nullable="false" primaryKey="true" primaryKeyName="stock_operation_items_pkey"/>
+			</column>
+			<column name="stock_operation_id" type="BIGINT"/>
+			<column name="stock_item_id" type="BIGINT"/>
+			<column name="stock_batch_id" type="BIGINT"/>
+			<column name="quantity" type="DOUBLE PRECISION"/>
+			<column name="quantity_received" type="DOUBLE PRECISION"/>
+			<column name="quantity_requested" type="DOUBLE PRECISION"/>
+			<column name="purchase_price" type="DOUBLE PRECISION"/>
+			<column name="packaging_factor" type="DOUBLE PRECISION"/>
+			<column name="packaging_unit" type="VARCHAR"/>
+			<column name="voided" type="BOOLEAN"/>
+		</createTable>
+		<createIndex tableName="stock_operation_items" indexName="idx_stock_operation_items_stock_operation_id">
+			<column name="stock_operation_id"/>
+		</createIndex>
+		<createIndex tableName="stock_operation_items" indexName="idx_stock_operation_items_stock_item_id">
+			<column name="stock_item_id"/>
+		</createIndex>
+	</changeSet>
+	<changeSet id="1795500005" author="jnsereko">
+		<preConditions onFail="MARK_RAN">
+			<not><tableExists tableName="stock_transactions"/></not>
+		</preConditions>
+		<createTable tableName="stock_transactions">
+			<column name="stock_transaction_id" type="BIGINT">
+				<constraints nullable="false" primaryKey="true" primaryKeyName="stock_transactions_pkey"/>
+			</column>
+			<column name="stock_transaction_uuid" type="VARCHAR"/>
+			<column name="stock_operation_id" type="BIGINT"/>
+			<column name="operation_number" type="VARCHAR"/>
+			<column name="operation_type" type="VARCHAR"/>
+			<column name="operation_type_code" type="VARCHAR"/>
+			<column name="operation_status" type="VARCHAR"/>
+			<column name="operation_date" type="TIMESTAMP"/>
+			<column name="transaction_date" type="TIMESTAMP"/>
+			<column name="stock_operation_item_id" type="BIGINT"/>
+			<column name="stock_item_id" type="BIGINT"/>
+			<column name="stock_batch_id" type="BIGINT"/>
+			<column name="party_id" type="BIGINT"/>
+			<column name="location_id" type="BIGINT"/>
+			<column name="location" type="VARCHAR"/>
+			<column name="quantity" type="DOUBLE PRECISION"/>
+			<column name="packaging_factor" type="DOUBLE PRECISION"/>
+			<column name="quantity_in_dispensing_unit" type="DOUBLE PRECISION"/>
+			<column name="is_patient_dispense" type="BOOLEAN"/>
+			<column name="patient_uuid" type="VARCHAR"/>
+			<column name="order_id" type="BIGINT"/>
+			<column name="encounter_uuid" type="VARCHAR"/>
+			<column name="unfulfillment_reason" type="VARCHAR"/>
+		</createTable>
+		<createIndex tableName="stock_transactions" indexName="idx_stock_transactions_stock_item_id">
+			<column name="stock_item_id"/>
+		</createIndex>
+		<createIndex tableName="stock_transactions" indexName="idx_stock_transactions_operation_date">
+			<column name="operation_date"/>
+		</createIndex>
+		<createIndex tableName="stock_transactions" indexName="idx_stock_transactions_location_id">
+			<column name="location_id"/>
+		</createIndex>
+	</changeSet>
+	<changeSet id="1795500006" author="jnsereko">
+		<preConditions onFail="MARK_RAN">
+			<not><tableExists tableName="invoices"/></not>
+		</preConditions>
+		<createTable tableName="invoices">
+			<column name="invoice_id" type="BIGINT">
+				<constraints nullable="false" primaryKey="true" primaryKeyName="invoices_pkey"/>
+			</column>
+			<column name="invoice_number" type="VARCHAR"/>
+			<column name="move_type" type="VARCHAR"/>
+			<column name="state" type="VARCHAR"/>
+			<column name="payment_state" type="VARCHAR"/>
+			<column name="invoice_date" type="DATE"/>
+			<column name="accounting_date" type="DATE"/>
+			<column name="due_date" type="DATE"/>
+			<column name="invoice_origin" type="VARCHAR"/>
+			<column name="journal_code" type="VARCHAR"/>
+			<column name="partner_id" type="BIGINT"/>
+			<column name="partner_ref" type="VARCHAR"/>
+			<column name="payer_name" type="VARCHAR"/>
+			<column name="amount_untaxed" type="DOUBLE PRECISION"/>
+			<column name="amount_total" type="DOUBLE PRECISION"/>
+			<column name="amount_residual" type="DOUBLE PRECISION"/>
+			<column name="amount_paid" type="DOUBLE PRECISION"/>
+			<column name="insurance_payer_role" type="VARCHAR"/>
+			<column name="insurance_source_invoice_id" type="BIGINT"/>
+			<column name="create_date" type="TIMESTAMP"/>
+			<column name="write_date" type="TIMESTAMP"/>
+		</createTable>
+		<createIndex tableName="invoices" indexName="idx_invoices_invoice_date">
+			<column name="invoice_date"/>
+		</createIndex>
+		<createIndex tableName="invoices" indexName="idx_invoices_state">
+			<column name="state"/>
+		</createIndex>
+	</changeSet>
+	<changeSet id="1795500007" author="jnsereko">
+		<preConditions onFail="MARK_RAN">
+			<not><tableExists tableName="invoice_lines"/></not>
+		</preConditions>
+		<createTable tableName="invoice_lines">
+			<column name="invoice_line_id" type="BIGINT">
+				<constraints nullable="false" primaryKey="true" primaryKeyName="invoice_lines_pkey"/>
+			</column>
+			<column name="invoice_id" type="BIGINT"/>
+			<column name="invoice_number" type="VARCHAR"/>
+			<column name="move_type" type="VARCHAR"/>
+			<column name="state" type="VARCHAR"/>
+			<column name="payment_state" type="VARCHAR"/>
+			<column name="invoice_date" type="DATE"/>
+			<column name="insurance_payer_role" type="VARCHAR"/>
+			<column name="product_id" type="BIGINT"/>
+			<column name="product_name" type="VARCHAR"/>
+			<column name="product_code" type="VARCHAR"/>
+			<column name="product_category" type="VARCHAR"/>
+			<column name="account_id" type="BIGINT"/>
+			<column name="account_code" type="VARCHAR"/>
+			<column name="quantity" type="DOUBLE PRECISION"/>
+			<column name="unit_price" type="DOUBLE PRECISION"/>
+			<column name="discount" type="DOUBLE PRECISION"/>
+			<column name="subtotal" type="DOUBLE PRECISION"/>
+			<column name="total" type="DOUBLE PRECISION"/>
+			<column name="insurance_base_amount" type="DOUBLE PRECISION"/>
+			<column name="insurance_complementary_amount" type="DOUBLE PRECISION"/>
+			<column name="insurance_patient_amount" type="DOUBLE PRECISION"/>
+			<column name="insurance_copay_amount" type="DOUBLE PRECISION"/>
+		</createTable>
+		<createIndex tableName="invoice_lines" indexName="idx_invoice_lines_invoice_id">
+			<column name="invoice_id"/>
+		</createIndex>
+		<createIndex tableName="invoice_lines" indexName="idx_invoice_lines_invoice_date">
+			<column name="invoice_date"/>
+		</createIndex>
+	</changeSet>
+	<changeSet id="1795500008" author="jnsereko">
+		<preConditions onFail="MARK_RAN">
+			<not><tableExists tableName="payments"/></not>
+		</preConditions>
+		<createTable tableName="payments">
+			<column name="payment_id" type="BIGINT">
+				<constraints nullable="false" primaryKey="true" primaryKeyName="payments_pkey"/>
+			</column>
+			<column name="payment_move_id" type="BIGINT"/>
+			<column name="payment_number" type="VARCHAR"/>
+			<column name="payment_date" type="DATE"/>
+			<column name="state" type="VARCHAR"/>
+			<column name="payment_type" type="VARCHAR"/>
+			<column name="partner_type" type="VARCHAR"/>
+			<column name="partner_id" type="BIGINT"/>
+			<column name="partner_ref" type="VARCHAR"/>
+			<column name="amount" type="DOUBLE PRECISION"/>
+			<column name="journal_code" type="VARCHAR"/>
+			<column name="journal_type" type="VARCHAR"/>
+			<column name="is_reconciled" type="BOOLEAN"/>
+		</createTable>
+		<createIndex tableName="payments" indexName="idx_payments_payment_date">
+			<column name="payment_date"/>
+		</createIndex>
+	</changeSet>
+	<changeSet id="1795500009" author="jnsereko">
+		<preConditions onFail="MARK_RAN">
+			<not><tableExists tableName="payment_allocations"/></not>
+		</preConditions>
+		<createTable tableName="payment_allocations">
+			<column name="allocation_id" type="BIGINT">
+				<constraints nullable="false" primaryKey="true" primaryKeyName="payment_allocations_pkey"/>
+			</column>
+			<column name="invoice_id" type="BIGINT"/>
+			<column name="payment_id" type="BIGINT"/>
+			<column name="amount" type="DOUBLE PRECISION"/>
+			<column name="allocation_date" type="DATE"/>
+		</createTable>
+		<createIndex tableName="payment_allocations" indexName="idx_payment_allocations_invoice_id">
+			<column name="invoice_id"/>
+		</createIndex>
+		<createIndex tableName="payment_allocations" indexName="idx_payment_allocations_payment_id">
+			<column name="payment_id"/>
+		</createIndex>
+	</changeSet>
+	<changeSet id="1795500010" author="jnsereko">
+		<preConditions onFail="MARK_RAN">
+			<not><tableExists tableName="journals"/></not>
+		</preConditions>
+		<createTable tableName="journals">
+			<column name="journal_id" type="BIGINT">
+				<constraints nullable="false" primaryKey="true" primaryKeyName="journals_pkey"/>
+			</column>
+			<column name="code" type="VARCHAR"/>
+			<column name="name" type="VARCHAR"/>
+			<column name="type" type="VARCHAR"/>
+		</createTable>
+	</changeSet>
+	<changeSet id="1795500011" author="jnsereko">
+		<preConditions onFail="MARK_RAN">
+			<not><tableExists tableName="ledger_accounts"/></not>
+		</preConditions>
+		<createTable tableName="ledger_accounts">
+			<column name="account_id" type="BIGINT">
+				<constraints nullable="false" primaryKey="true" primaryKeyName="ledger_accounts_pkey"/>
+			</column>
+			<column name="code" type="VARCHAR"/>
+			<column name="name" type="VARCHAR"/>
+			<column name="account_type" type="VARCHAR"/>
+			<column name="reconcile" type="BOOLEAN"/>
+		</createTable>
+	</changeSet>
+</databaseChangeLog>

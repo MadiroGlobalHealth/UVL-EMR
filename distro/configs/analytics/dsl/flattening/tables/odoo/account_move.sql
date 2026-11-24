@@ -1,0 +1,21 @@
+CREATE TABLE account_move (
+    `id` INT,
+    `name` VARCHAR,
+    `move_type` VARCHAR,
+    `state` VARCHAR,
+    `payment_state` VARCHAR,
+    `date` DATE,
+    `invoice_date` DATE,
+    `invoice_date_due` DATE,
+    `invoice_origin` VARCHAR,
+    `journal_id` INT,
+    `partner_id` INT,
+    `amount_untaxed` DOUBLE,
+    `amount_total` DOUBLE,
+    `amount_residual` DOUBLE,
+    `insurance_source_move_id` INT,
+    `insurance_payer_role` VARCHAR,
+    `create_date` TIMESTAMP,
+    `write_date` TIMESTAMP,
+    PRIMARY KEY (`id`) NOT ENFORCED
+)

@@ -1,0 +1,22 @@
+CREATE TABLE account_move_line (
+    `id` INT,
+    `move_id` INT,
+    `display_type` VARCHAR,
+    `account_id` INT,
+    `product_id` INT,
+    `partner_id` INT,
+    `name` VARCHAR,
+    `quantity` DOUBLE,
+    `price_unit` DOUBLE,
+    `discount` DOUBLE,
+    `price_subtotal` DOUBLE,
+    `price_total` DOUBLE,
+    `debit` DOUBLE,
+    `credit` DOUBLE,
+    `reconciled` BOOLEAN,
+    `insurance_base_amount` DOUBLE,
+    `insurance_complementary_amount` DOUBLE,
+    `insurance_patient_amount` DOUBLE,
+    `insurance_copay_amount` DOUBLE,
+    PRIMARY KEY (`id`) NOT ENFORCED
+)

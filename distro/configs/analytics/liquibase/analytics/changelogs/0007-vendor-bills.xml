@@ -1,0 +1,29 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+                        http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+	<!-- 24 Nov 2026: vendor bills and vendor refunds (move_type in_invoice / in_refund) now reach `invoices` and
+	     `invoice_lines` (expenses and supplier debts of Fiche 20), and `payment_allocations` also links outbound
+	     payments to vendor bills. Two columns are added, at the END of the tables because the Flink sink inserts by
+	     position: `invoices.supplier_name` (the vendor, only for vendor bills; customer partners are never named) and
+	     `invoice_lines.account_name` (the account of the line, e.g. the expense account). -->
+	<changeSet id="1795600001" author="jnsereko">
+		<preConditions onFail="MARK_RAN">
+			<not><columnExists tableName="invoices" columnName="supplier_name"/></not>
+		</preConditions>
+		<addColumn tableName="invoices">
+			<column name="supplier_name" type="VARCHAR"/>
+		</addColumn>
+	</changeSet>
+	<changeSet id="1795600002" author="jnsereko">
+		<preConditions onFail="MARK_RAN">
+			<not><columnExists tableName="invoice_lines" columnName="account_name"/></not>
+		</preConditions>
+		<addColumn tableName="invoice_lines">
+			<column name="account_name" type="VARCHAR"/>
+		</addColumn>
+	</changeSet>
+</databaseChangeLog>
