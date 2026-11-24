@@ -139,6 +139,7 @@ position:
   GRID_ID:
     children:
     - TABS-m6
+    - ROW-N-Q6K7CAJ3
     id: GRID_ID
     parents:
     - ROOT_ID
@@ -272,6 +273,9 @@ position:
     - ROW-XsEr2XSobN
     - ROW-lkcW2-ptIZ
     - ROW-_Xgz7KBTu3
+    - ROW-m6-r3
+    - ROW-m6-r4
+    - ROW-m6-r5
     parents:
     - ROOT_ID
     - GRID_ID
@@ -573,6 +577,8 @@ position:
     - ROW-m6-d0
     - ROW-m6-d1
     - ROW-m6-d2
+    - ROW-m6-d3
+    - ROW-m6-d4
     parents:
     - ROOT_ID
     - GRID_ID
@@ -666,6 +672,204 @@ position:
       height: 80
       sliceName: Diagnostics – âge × sexe
       uuid: 8bc7db2b-5c85-465a-aa58-21af555d7153
+  ROW-m6-d3:
+    type: ROW
+    id: ROW-m6-d3
+    children:
+    - MARKDOWN-m6-d3
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-diagnostics
+    meta:
+      background: BACKGROUND_TRANSPARENT
+  MARKDOWN-m6-d3:
+    type: MARKDOWN
+    id: MARKDOWN-m6-d3
+    children: []
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-diagnostics
+    - ROW-m6-d3
+    meta:
+      code: "**Fiche 4 : diagnostics \xE0 la sortie (consultations ambulatoires et\
+        \ urgences).**\n\nUne ligne par service, code CIM-10 et diagnostic, par tranche\
+        \ d'\xE2ge et sexe. Chaque diagnostic confirm\xE9 est compt\xE9 une fois :\
+        \ le diagnostic principal n'est pas enregistr\xE9, le total peut donc d\xE9\
+        passer le nombre de consultations. Les s\xE9jours d'hospitalisation ne sont\
+        \ pas inclus. Filtres : mois et service."
+      height: 20
+      width: 12
+  ROW-m6-d4:
+    type: ROW
+    id: ROW-m6-d4
+    children:
+    - CHART-m6-d4-fiche4
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-diagnostics
+    meta:
+      background: BACKGROUND_TRANSPARENT
+  CHART-m6-d4-fiche4:
+    type: CHART
+    id: CHART-m6-d4-fiche4
+    children: []
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-diagnostics
+    - ROW-m6-d4
+    meta:
+      chartId: 55
+      width: 12
+      height: 80
+      sliceName: "Fiche 4 \u2013 Diagnostics \xE0 la sortie (MoH)"
+  ROW-m6-r3:
+    type: ROW
+    id: ROW-m6-r3
+    children:
+    - MARKDOWN-m6-r3
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-rapports
+    meta:
+      background: BACKGROUND_TRANSPARENT
+  MARKDOWN-m6-r3:
+    type: MARKDOWN
+    id: MARKDOWN-m6-r3
+    children: []
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-rapports
+    - ROW-m6-r3
+    meta:
+      code: "**Fiche 5 : actes techniques et infections post-actes.**\n\nActes : commandes\
+        \ de type Proc\xE9dure (hors consultations et imagerie), par service, code,\
+        \ tranche d'\xE2ge et sexe. \xAB D\xE9c\xE8s durant l'acte \xBB n'est pas\
+        \ enregistr\xE9 (colonne vide). Infections : les 4 lignes du mod\xE8le, d\xE9\
+        clar\xE9es sur la consultation ambulatoire ou le r\xE9sum\xE9 de sortie. Filtres\
+        \ : mois et service."
+      height: 20
+      width: 12
+  ROW-m6-r4:
+    type: ROW
+    id: ROW-m6-r4
+    children:
+    - CHART-m6-r4-fiche5a
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-rapports
+    meta:
+      background: BACKGROUND_TRANSPARENT
+  CHART-m6-r4-fiche5a:
+    type: CHART
+    id: CHART-m6-r4-fiche5a
+    children: []
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-rapports
+    - ROW-m6-r4
+    meta:
+      chartId: 56
+      width: 12
+      height: 60
+      sliceName: "Fiche 5 \u2013 Actes techniques (MoH)"
+  ROW-m6-r5:
+    type: ROW
+    id: ROW-m6-r5
+    children:
+    - CHART-m6-r5-fiche5i
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-rapports
+    meta:
+      background: BACKGROUND_TRANSPARENT
+  CHART-m6-r5-fiche5i:
+    type: CHART
+    id: CHART-m6-r5-fiche5i
+    children: []
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-rapports
+    - ROW-m6-r5
+    meta:
+      chartId: 57
+      width: 12
+      height: 40
+      sliceName: "Fiche 5 \u2013 Infections post-actes (MoH)"
+  ROW-N-Q6K7CAJ3:
+    children:
+    - CHART-2B45TS6M
+    - CHART-1QG6ZAUD
+    - CHART-QQVRNWJW
+    id: ROW-N-Q6K7CAJ3
+    meta:
+      '0': ROOT_ID
+      background: BACKGROUND_TRANSPARENT
+    type: ROW
+    parents:
+    - ROOT_ID
+    - GRID_ID
+  CHART-2B45TS6M:
+    children: []
+    id: CHART-2B45TS6M
+    meta:
+      chartId: 55
+      height: 50
+      sliceName: "Fiche 4 \u2013 Diagnostics \xE0 la sortie (MoH)"
+      uuid: 57f07052-9d97-4f59-a069-a2006259cfd2
+      width: 4
+    type: CHART
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-N-Q6K7CAJ3
+  CHART-1QG6ZAUD:
+    children: []
+    id: CHART-1QG6ZAUD
+    meta:
+      chartId: 57
+      height: 50
+      sliceName: "Fiche 5 \u2013 Infections post-actes (MoH)"
+      uuid: c7edab50-09b2-45e5-a5ab-88d7c870e507
+      width: 4
+    type: CHART
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-N-Q6K7CAJ3
+  CHART-QQVRNWJW:
+    children: []
+    id: CHART-QQVRNWJW
+    meta:
+      chartId: 56
+      height: 50
+      sliceName: "Fiche 5 \u2013 Actes techniques (MoH)"
+      uuid: 31dadd28-203e-477e-9dd7-20ad1d375b8f
+      width: 4
+    type: CHART
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-N-Q6K7CAJ3
 metadata:
   chart_configuration:
     '28':
@@ -843,9 +1047,9 @@ metadata:
     - {}
     defaultDataMask:
       extraFormData:
-        time_range: Last month
+        time_range: previous calendar month
       filterState:
-        value: Last month
+        value: previous calendar month
     cascadeParentIds: []
     scope:
       rootPath:
@@ -871,6 +1075,9 @@ metadata:
     - 44
     - 45
     - 46
+    - 55
+    - 56
+    - 57
     tabsInScope:
     - TAB-m6-rapports
     - TAB-m6-consultations
@@ -919,5 +1126,8 @@ metadata:
     - 44
     - 45
     - 46
+    - 55
+    - 56
+    - 57
     tabsInScope: []
 version: 1.0.0
