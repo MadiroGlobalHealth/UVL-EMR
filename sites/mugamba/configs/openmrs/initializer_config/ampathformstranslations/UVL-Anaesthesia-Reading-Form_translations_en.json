@@ -1,0 +1,18 @@
+{
+  "uuid": "fd44a684-67b8-4e04-a7ec-24e71312cb72",
+  "form": "UVL Anaesthesia Reading Form",
+  "form_name_translation": "UVL Anaesthesia Reading Form",
+  "description": "En Translations for 'UVL Anaesthesia Reading Form'",
+  "language": "en",
+  "translations": {
+    "Reading": "Reading",
+    "Date and time of the reading": "Date and time of the reading",
+    "Systolic BP (mmHg)": "Systolic BP (mmHg)",
+    "Diastolic BP (mmHg)": "Diastolic BP (mmHg)",
+    "Pulse (/min)": "Pulse (/min)",
+    "Stage": "Stage",
+    "Respiration (/min)": "Respiration (/min)",
+    "SpO2 (%)": "SpO2 (%)",
+    "Medication": "Medication"
+  }
+}

@@ -22,3 +22,10 @@ export const partographActionButton = getAsyncLifecycle(
 );
 
 export const surveillanceTable = getAsyncLifecycle(() => import('./surveillance/surveillance-table.component'), options);
+
+export const anaesthesiaChart = getAsyncLifecycle(() => import('./anaesthesia/anaesthesia-chart.component'), options);
+
+export const anaesthesiaActionButton = getAsyncLifecycle(
+  () => import('./anaesthesia/anaesthesia-action-button.component'),
+  options,
+);

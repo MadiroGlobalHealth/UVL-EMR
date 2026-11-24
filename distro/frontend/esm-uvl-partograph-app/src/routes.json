@@ -11,6 +11,10 @@
     {
       "name": "uvl-24h-surveillance-widget",
       "component": "surveillanceTable"
+    },
+    {
+      "name": "uvl-anaesthesia-chart-widget",
+      "component": "anaesthesiaChart"
     }
   ],
   "workspaces2": [
@@ -18,6 +22,11 @@
       "name": "uvl-partograph-reading-workspace",
       "component": "@openmrs/esm-patient-forms-app#exportedPatientFormEntryWorkspace",
       "window": "uvl-partograph-reading"
+    },
+    {
+      "name": "uvl-anaesthesia-reading-workspace",
+      "component": "@openmrs/esm-patient-forms-app#exportedPatientFormEntryWorkspace",
+      "window": "uvl-anaesthesia-reading"
     }
   ],
   "workspaceWindows2": [
@@ -25,6 +34,14 @@
       "name": "uvl-partograph-reading",
       "icon": "partographActionButton",
       "order": 3,
+      "width": "extra-wide",
+      "group": "patient-chart",
+      "canMaximize": true
+    },
+    {
+      "name": "uvl-anaesthesia-reading",
+      "icon": "anaesthesiaActionButton",
+      "order": 4,
       "width": "extra-wide",
       "group": "patient-chart",
       "canMaximize": true

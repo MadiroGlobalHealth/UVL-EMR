@@ -217,6 +217,21 @@ generic partograph table. This table places each value by where it sits in the e
   config adds it to `patient-chart-summary-dashboard-slot` with `privileges: ["View 24-Hour
   Surveillance"]`, the encounter type's view privilege.
 
+## Anaesthesia monitoring chart
+
+UVL-EMR [#907](https://github.com/MadiroGlobalHealth/UVL-EMR/issues/907). A second card on the
+summary dashboard (`uvl-anaesthesia-chart-widget`) and a side-panel button (`uvl-anaesthesia-reading`,
+opens the one-reading Anaesthesia form, `anaesthesia.readingFormUuid`), built like the partograph
+from the saved encounters of the Anaesthesia Monitoring type, with the same SVG panels. It shares the
+`@madiro/uvl-partograph` configuration namespace, under `anaesthesia`:
+`encounterTypeUuid`, `readingGroupConcept`, `readingTimeConcept`, `concepts` (systolicBp, diastolicBp,
+pulse, respiration, spo2, stage, medication), `readingFormUuid`, `gapHours` (12: a longer gap starts a
+new operation) and `minimumHours` (2).
+
+A reading is an obs group. The one-reading form saves one group per encounter, timed by the
+encounter; the older twelve-reading form saves up to twelve per encounter, each with its own time
+(`readingTimeConcept`). Both are charted. Hour 00 is the first reading of the latest operation.
+
 ## Build and ship
 
 The same as `esm-uvl-imaging-app`.

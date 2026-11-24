@@ -1,0 +1,146 @@
+{
+  "uuid": "785e5adb-3051-48b7-a438-110afc4e747a",
+  "name": "UVL Anaesthesia Reading Form",
+  "description": "UVL anaesthesia monitoring (Surveillance pendant l'anesthésie): one reading per encounter, charted over time on the patient summary",
+  "version": "1",
+  "published": true,
+  "retired": false,
+  "encounter": "Anaesthesia Monitoring",
+  "processor": "EncounterFormProcessor",
+  "referencedForms": [],
+  "encounterType": "2ad4bc92-8157-4974-96f2-f3f518612ae6",
+  "pages": [
+    {
+      "label": "Reading",
+      "sections": [
+        {
+          "label": "Reading",
+          "isExpanded": "true",
+          "questions": [
+            {
+              "label": "Date and time of the reading",
+              "type": "encounterDatetime",
+              "id": "readingDatetime",
+              "required": true,
+              "datePickerFormat": "both",
+              "questionOptions": {
+                "rendering": "date"
+              },
+              "validators": [
+                {
+                  "type": "date",
+                  "allowFutureDates": "false"
+                },
+                {
+                  "type": "js_expression",
+                  "failsWhenExpression": "!isEmpty(myValue) && isBeforeVisitStart(myValue)",
+                  "message": "L'heure de la mesure ne peut pas précéder le début de la visite / The reading time cannot be earlier than the start of the visit"
+                }
+              ]
+            },
+            {
+              "label": "Reading",
+              "type": "obsGroup",
+              "id": "reading",
+              "questionOptions": {
+                "rendering": "group",
+                "concept": "60afc96d-ec86-482b-b93c-0a28687d2574"
+              },
+              "questions": [
+                {
+                  "label": "Systolic BP (mmHg)",
+                  "type": "obs",
+                  "id": "readingSystolic",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "4302c8cc-026e-42ec-ad35-c40cbc63f316",
+                    "min": 0,
+                    "max": 300,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Diastolic BP (mmHg)",
+                  "type": "obs",
+                  "id": "readingDiastolic",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "09aa2c0d-a3c4-43ec-a61a-0dc5966f2882",
+                    "min": 0,
+                    "max": 200,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Pulse (/min)",
+                  "type": "obs",
+                  "id": "readingPulse",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "4118079a-4165-4fbd-a1aa-58d9986ae7b0",
+                    "min": 0,
+                    "max": 300,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Stage",
+                  "type": "obs",
+                  "id": "readingStage",
+                  "questionOptions": {
+                    "rendering": "select",
+                    "concept": "4f10b625-6156-4500-9fbd-d8f0b7389f41",
+                    "answers": [
+                      {
+                        "concept": "f328dc10-7eaf-4c34-8528-4590aec53bc7"
+                      },
+                      {
+                        "concept": "122c79cc-b60b-49a0-9a87-b433cc5fe90b"
+                      },
+                      {
+                        "concept": "4a81eaf4-14e6-42f7-af6d-6f496d4cefb2"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "label": "Respiration (/min)",
+                  "type": "obs",
+                  "id": "readingRespiration",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "d4cd9b33-c4f2-4393-8058-ea9ed215720e",
+                    "min": 0,
+                    "max": 99,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "SpO2 (%)",
+                  "type": "obs",
+                  "id": "readingSpO2",
+                  "questionOptions": {
+                    "rendering": "number",
+                    "concept": "c29ee197-968f-4a43-aa1c-fd35551412e9",
+                    "min": 0,
+                    "max": 100,
+                    "disallowDecimals": true
+                  }
+                },
+                {
+                  "label": "Medication",
+                  "type": "obs",
+                  "id": "readingMedication",
+                  "questionOptions": {
+                    "rendering": "text",
+                    "concept": "ef949c7e-1e37-4843-8146-50b3898fb4a9"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "uuid": "edf8f2fa-5f8b-489f-bf7d-97ef676c935b",
+  "form": "UVL Anaesthesia Reading Form",
+  "form_name_translation": "Mesure d'anesthésie (une à la fois)",
+  "description": "Fr Translations for 'UVL Anaesthesia Reading Form'",
+  "language": "fr",
+  "translations": {
+    "Reading": "Mesure",
+    "Date and time of the reading": "Date et heure de la mesure",
+    "Systolic BP (mmHg)": "TA Sys (mmHg)",
+    "Diastolic BP (mmHg)": "TA Dias (mmHg)",
+    "Pulse (/min)": "Pouls (/min)",
+    "Stage": "Stade",
+    "Respiration (/min)": "Respiration (/min)",
+    "SpO2 (%)": "Sa O2 (%)",
+    "Medication": "Médication"
+  }
+}
