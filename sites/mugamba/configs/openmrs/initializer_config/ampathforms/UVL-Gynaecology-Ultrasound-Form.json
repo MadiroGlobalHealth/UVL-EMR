@@ -54,7 +54,7 @@
       ]
     },
     {
-      "label": "Gynaecology Ultrasound Examination",
+      "label": "Obstetric ultrasound",
       "sections": [
         {
           "label": "Gestational Age",
@@ -211,6 +211,10 @@
                         "label": "Actif"
                       },
                       {
+                        "concept": "1b2eadd0-d101-4014-9f13-2f1e710b9444",
+                        "label": "Vivant et actif"
+                      },
+                      {
                         "concept": "80e3e98b-65e7-482b-8487-f20d8609796f",
                         "label": "Mort fœtale in utero (MFIU)"
                       }
@@ -341,6 +345,10 @@
                       {
                         "concept": "ae30027b-e84c-425e-82bc-f55411630a37",
                         "label": "Actif"
+                      },
+                      {
+                        "concept": "1b2eadd0-d101-4014-9f13-2f1e710b9444",
+                        "label": "Vivant et actif"
                       },
                       {
                         "concept": "80e3e98b-65e7-482b-8487-f20d8609796f",
@@ -494,6 +502,10 @@
                       {
                         "concept": "ae30027b-e84c-425e-82bc-f55411630a37",
                         "label": "Actif"
+                      },
+                      {
+                        "concept": "1b2eadd0-d101-4014-9f13-2f1e710b9444",
+                        "label": "Vivant et actif"
                       },
                       {
                         "concept": "80e3e98b-65e7-482b-8487-f20d8609796f",

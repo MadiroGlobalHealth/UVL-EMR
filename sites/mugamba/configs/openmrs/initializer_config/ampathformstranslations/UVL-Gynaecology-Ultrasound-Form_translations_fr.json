@@ -1,7 +1,7 @@
 {
   "uuid": "df564bc2-2a7a-4eca-ad49-3e088bf55aae",
   "form": "UVL Gynaecology Ultrasound Form",
-  "form_name_translation": "Échographie gynécologique",
+  "form_name_translation": "Échographie obstétricale",
   "description": "Fr Translations for 'UVL Gynaecology Ultrasound Form'",
   "language": "fr",
   "translations": {
@@ -23,7 +23,6 @@
     "Fetus(es)": "Fœtus",
     "General": "Généralités",
     "Gestational Age": "Âge gestationnel",
-    "Gynaecology Ultrasound Examination": "Échographie gynécologique",
     "Head Presentation": "Présentation",
     "Intrauterine fetal death (IUFD)": "Mort fœtale in utero (MFIU)",
     "Last Menstrual Period (LMP)": "Date des dernières règles (DDR)",
@@ -32,6 +31,7 @@
     "Normal": "Normal",
     "Not applicable": "Non applicable",
     "Number of Fetuses": "Nombre de fœtus",
+    "Obstetric ultrasound": "Échographie obstétricale",
     "Observation": "Observation",
     "Oligohydramnios": "Oligoamnios",
     "Placenta": "Placenta",
