@@ -1125,6 +1125,7 @@
     "stockTakeReasonUUID": "2973a766-bdb8-56c3-a5d2-d101a611a770",
     "useItemCommonNameAsDisplay": false,
     "responsiblePersonExcludedRoles": ["System Developer"],
+    "hiddenOperationTypes": ["requisition"],
     "Translation overrides": {
       "fr": {
         "overview": "Vue d'ensemble",
