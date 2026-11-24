@@ -1,0 +1,401 @@
+table_name: "MoH Fiche 15 Consultations gabarit tranches d'\xE2ge"
+main_dttm_col: MOIS
+description: "UVL-EMR \xB7 Minist\xE8re \xAB Fiche 15 \xBB (version 2023, page 18)\
+  \ dans la disposition du mod\xE8le: un bloc par service, 18 tranches d'\xE2ge puis\
+  \ \xAB Tot Cons \xBB; nouveaux cas, anciens cas, total des cas (H, F); nouveaux\
+  \ cas par r\xE9sidence (Comm = m\xEAme commune, HC = hors commune, HD = hors district,\
+  \ HP = hors province, HB = hors Burundi). Tot Cons = total des cas = nouveaux cas\
+  \ + anciens cas."
+default_endpoint: null
+offset: 0
+cache_timeout: null
+schema: public
+sql: "-- Fiche 15 gabarit, table 1 (UVL-EMR#905): Fiche 15 \xAB Consultations ambulatoires\
+  \ \xBB (template v2023 p.18), one row per MOIS x SERVICE x age band, then TOTAL.\n\
+  -- Same definitions as dataset 24 (MoH Fiche 15): Outpatient Consultation encounters;\
+  \ test patients (SYNTH-/E2E/QA/TEST/DEMO), voided persons/visits/encounters and\
+  \ location \xAB Locations test \xBB excluded.\n-- Only the 4 services of the template\
+  \ (Urgences, Consultation externe, Ophtalmologie, Dentisterie). NOUVEAU = form yes/no\
+  \ (visit attribute Case Type, else the Case Type observation); no answer -> NON\
+  \ PRECISE.\n-- COMM/HC/HD/HP/HB = RESIDENCE of the patient (visit attribute \xAB\
+  \ Patient location \xBB: same commune / outside the commune / outside the district\
+  \ / outside the province / outside Burundi), as dataset 24. Confirmed by the product\
+  \ owner, 24 Nov 2026.\n-- Tot Cons = total cases = new cases + returning (old) cases\
+  \ (a case whose sex is not recorded is counted in the \xAB SEXE NON RENSEIGNE \xBB\
+  \ columns, so every total adds up). New cases = total by residence (+ residence\
+  \ not stated) = total by sex. Consultations without a case type are shown apart\
+  \ (CAS NON PRECISE).\nWITH c AS (\nSELECT e.encounter_uuid, e.encounter_datetime::date\
+  \ AS d, e.location_uuid, v.visit_attributes,\nCOALESCE(p.gender, v.patient_gender)\
+  \ AS sexe,\nCOALESCE(p.birthdate, v.patient_birthdate) AS bd,\n(SELECT o.answer_coded\
+  \ FROM observations o WHERE o.encounter_uuid = e.encounter_uuid AND o.question_uuid\
+  \ = '23ceec98-f1c5-42ce-8b11-60b5be1c2acf' AND COALESCE(o.obs_voided, false) = false\
+  \ ORDER BY o.obs_date_time DESC LIMIT 1) AS case_obs\nFROM encounters e\nLEFT JOIN\
+  \ visits v ON v.visit_uuid = e.visit_uuid\nJOIN patients p ON p.patient_uuid = e.patient_uuid\n\
+  WHERE e.encounter_type_uuid = '0ff55309-1897-476b-a647-c7c180b102c8'\nAND COALESCE(e.encounter_voided,\
+  \ false) = false\nAND e.location_uuid IS DISTINCT FROM '450be362-59a7-4ccd-964d-ebd930a8b30f'\n\
+  AND COALESCE(v.visit_voided, false) = false\nAND COALESCE(p.person_voided, false)\
+  \ = false\nAND NOT (COALESCE(p.family_name, '') ~* '^(SYNTH-|E2E|QA|TEST|DEMO)'\
+  \ OR COALESCE(p.given_name, '') ~* '^(SYNTH-|E2E|QA|TEST|DEMO)')\n),\nx AS (\nSELECT\
+  \ DATE_TRUNC('month', c.d)::date AS mois, c.sexe,\nCASE c.location_uuid WHEN '44c3efb0-2583-4c80-a79e-1f756a03c0a1'\
+  \ THEN 'Consultation externe' WHEN '9D062929-CC4F-7A51-C700-2B968AADEC34' THEN 'Urgences'\
+  \ WHEN 'e1f4ab17-6dc5-4249-cf38-5bae7dbe9c64' THEN 'Ophtalmologie' WHEN 'f2a5bc28-7ed6-435a-da49-6cbf8ecfad75'\
+  \ THEN 'Dentisterie' END AS service,\nCASE WHEN c.bd IS NULL THEN NULL WHEN c.d\
+  \ - c.bd <= 28 THEN 1\nWHEN (DATE_PART('year', AGE(c.d, c.bd)) * 12 + DATE_PART('month',\
+  \ AGE(c.d, c.bd))) < 12 THEN 2\nWHEN (DATE_PART('year', AGE(c.d, c.bd)) * 12 + DATE_PART('month',\
+  \ AGE(c.d, c.bd))) < 60 THEN 3\nWHEN DATE_PART('year', AGE(c.d, c.bd)) <= 9 THEN\
+  \ 4 WHEN DATE_PART('year', AGE(c.d, c.bd)) <= 14 THEN 5\nWHEN DATE_PART('year',\
+  \ AGE(c.d, c.bd)) <= 17 THEN 6 WHEN DATE_PART('year', AGE(c.d, c.bd)) <= 19 THEN\
+  \ 7\nWHEN DATE_PART('year', AGE(c.d, c.bd)) <= 64 THEN 8 + (DATE_PART('year', AGE(c.d,\
+  \ c.bd))::int - 20) / 5\nWHEN DATE_PART('year', AGE(c.d, c.bd)) <= 70 THEN 17 ELSE\
+  \ 18 END AS bnd,\nCASE NULLIF(TRIM(SUBSTRING(c.visit_attributes FROM '(?:^|/ )Patient\
+  \ location: ([^/]*)')), '')\nWHEN 'Same Municipality' THEN 'COMM' WHEN 'Outside\
+  \ Municipality' THEN 'HC' WHEN 'Outside District' THEN 'HD' WHEN 'Outside Province'\
+  \ THEN 'HP' WHEN 'Outside Burundi' THEN 'HB' END AS orig,\nCASE COALESCE(NULLIF(TRIM(SUBSTRING(c.visit_attributes\
+  \ FROM '(?:^|/ )Case Type: ([^/]*)')), ''), c.case_obs) WHEN 'New Case' THEN 'N'\
+  \ WHEN 'Follow-Up Case' THEN 'A' END AS cas\nFROM c\n),\nx2 AS (SELECT * FROM x\
+  \ WHERE service IS NOT NULL),\ng AS (\nSELECT m.mois, s.service, s.sord FROM (SELECT\
+  \ DISTINCT mois FROM x2) m\nCROSS JOIN (VALUES ('Urgences',1),('Consultation externe',2),('Ophtalmologie',3),('Dentisterie',4))\
+  \ s(service, sord)\n),\nb AS (SELECT * FROM (VALUES\n(1,'(A1) 0-28 jours'),(2,'(A2)\
+  \ 29 jours-11 mois'),(3,'(B) 12-59 mois'),(4,'(C) 5-9 ans'),(5,'(D) 10-14 ans'),(6,'(E)\
+  \ 15-17 ans'),\n(7,'(F) 18-19 ans'),(8,'(G) 20-24 ans'),(9,'(H) 25-29 ans'),(10,'(I)\
+  \ 30-34 ans'),(11,'(J) 35-39 ans'),(12,'(K) 40-44 ans'),\n(13,'(L) 45-49 ans'),(14,'(M)\
+  \ 50-54 ans'),(15,'(N) 55-59 ans'),(16,'(O) 60-64 ans'),(17,'(P) 65-70 ans'),(18,'(Q)\
+  \ 71 ans et plus'),\n(19,'\xC2ge non renseign\xE9'),(20,'Tot Cons')) t(ord, lab)),\n\
+  r AS (\nSELECT g.mois, g.service, g.sord, b.ord, b.lab,\nCOUNT(x2.*) FILTER (WHERE\
+  \ x2.cas = 'N' AND x2.sexe = 'M') AS nh,\nCOUNT(x2.*) FILTER (WHERE x2.cas = 'N'\
+  \ AND x2.sexe = 'F') AS nf,\nCOUNT(x2.*) FILTER (WHERE x2.cas = 'A' AND x2.sexe\
+  \ = 'M') AS ah,\nCOUNT(x2.*) FILTER (WHERE x2.cas = 'A' AND x2.sexe = 'F') AS af,\n\
+  COUNT(x2.*) FILTER (WHERE x2.cas = 'N' AND x2.sexe IS DISTINCT FROM 'M' AND x2.sexe\
+  \ IS DISTINCT FROM 'F') AS nn,\nCOUNT(x2.*) FILTER (WHERE x2.cas = 'A' AND x2.sexe\
+  \ IS DISTINCT FROM 'M' AND x2.sexe IS DISTINCT FROM 'F') AS an,\nCOUNT(x2.*) FILTER\
+  \ (WHERE x2.cas IS NULL) AS np,\nCOUNT(x2.*) AS tot,\nCOUNT(x2.*) FILTER (WHERE\
+  \ x2.cas = 'N' AND x2.orig = 'COMM') AS o_comm,\nCOUNT(x2.*) FILTER (WHERE x2.cas\
+  \ = 'N' AND x2.orig = 'HC') AS o_hc,\nCOUNT(x2.*) FILTER (WHERE x2.cas = 'N' AND\
+  \ x2.orig = 'HD') AS o_hd,\nCOUNT(x2.*) FILTER (WHERE x2.cas = 'N' AND x2.orig =\
+  \ 'HP') AS o_hp,\nCOUNT(x2.*) FILTER (WHERE x2.cas = 'N' AND x2.orig = 'HB') AS\
+  \ o_hb,\nCOUNT(x2.*) FILTER (WHERE x2.cas = 'N' AND x2.orig IS NULL) AS o_nr\nFROM\
+  \ g CROSS JOIN b\nLEFT JOIN x2 ON x2.mois = g.mois AND x2.service = g.service\n\
+  AND (b.ord = 20 OR (b.ord = 19 AND x2.bnd IS NULL) OR x2.bnd = b.ord)\nGROUP BY\
+  \ g.mois, g.service, g.sord, b.ord, b.lab\n)\nSELECT\nr.mois AS \"MOIS\",\nr.service\
+  \ AS \"SERVICE\",\nr.lab AS \"TRANCHE D'AGE\",\nr.nh AS \"NOUVEAUX CAS H\",\nr.nf\
+  \ AS \"NOUVEAUX CAS F\",\nr.ah AS \"ANCIENS CAS H\",\nr.af AS \"ANCIENS CAS F\"\
+  ,\nr.nn AS \"NOUVEAUX CAS SEXE NON RENSEIGNE\",\nr.an AS \"ANCIENS CAS SEXE NON\
+  \ RENSEIGNE\",\nr.nh + r.nf + r.nn AS \"NOUVEAUX CAS TOTAL\",\nr.ah + r.af + r.an\
+  \ AS \"ANCIENS CAS TOTAL\",\nr.nh + r.ah AS \"TOTAL CAS H\",\nr.nf + r.af AS \"\
+  TOTAL CAS F\",\nr.nh + r.nf + r.nn + r.ah + r.af + r.an AS \"Tot Cons\",\nr.o_comm\
+  \ AS \"NOUVEAUX CAS COMM (MEME COMMUNE)\",\nr.o_hc AS \"NOUVEAUX CAS HC (HORS COMMUNE)\"\
+  ,\nr.o_hd AS \"NOUVEAUX CAS HD (HORS DISTRICT)\",\nr.o_hp AS \"NOUVEAUX CAS HP (HORS\
+  \ PROVINCE)\",\nr.o_hb AS \"NOUVEAUX CAS HB (HORS BURUNDI)\",\nr.o_nr AS \"NOUVEAUX\
+  \ CAS RESIDENCE NON PRECISEE\",\nr.np AS \"CAS NON PRECISE (NOUVEAU OU ANCIEN)\"\
+  ,\nr.tot AS \"TOTAL CONSULTATIONS (CAS NON PRECISE INCLUS)\",\nr.sord AS \"ORDRE_SERVICE\"\
+  ,\nr.ord AS \"ORDRE\"\nFROM r\nWHERE NOT (r.ord = 19 AND r.tot = 0)\nORDER BY r.mois\
+  \ DESC, r.sord, r.ord\n"
+params: null
+template_params: null
+filter_select_enabled: true
+fetch_values_predicate: null
+extra: null
+normalize_columns: false
+always_filter_main_dttm: false
+uuid: 858c1d73-5330-4e36-a755-951f9090a333
+metrics:
+- metric_name: count
+  verbose_name: COUNT(*)
+  metric_type: count
+  expression: COUNT(*)
+  description: null
+  d3format: null
+  currency: null
+  extra: null
+  warning_text: null
+columns:
+- column_name: TOTAL CONSULTATIONS (CAS NON PRECISE INCLUS)
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: CAS NON PRECISE (NOUVEAU OU ANCIEN)
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: NOUVEAUX CAS HB (HORS BURUNDI)
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: NOUVEAUX CAS COMM (MEME COMMUNE)
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: NOUVEAUX CAS HC (HORS COMMUNE)
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: NOUVEAUX CAS HD (HORS DISTRICT)
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: NOUVEAUX CAS HP (HORS PROVINCE)
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: NOUVEAUX CAS RESIDENCE NON PRECISEE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: ANCIENS CAS SEXE NON RENSEIGNE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: NOUVEAUX CAS SEXE NON RENSEIGNE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: ANCIENS CAS TOTAL
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: NOUVEAUX CAS TOTAL
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: ANCIENS CAS F
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: ANCIENS CAS H
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: NOUVEAUX CAS F
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: NOUVEAUX CAS H
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: TOTAL CAS F
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: TOTAL CAS H
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: TRANCHE D'AGE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: Tot Cons
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: MOIS
+  verbose_name: null
+  is_dttm: true
+  is_active: true
+  type: DATE
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: ORDRE_SERVICE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: INTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: SERVICE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: ORDRE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: INTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+version: 1.0.0
+database_uuid: 44c13a30-0c14-402c-b81f-1c93972f5fbc

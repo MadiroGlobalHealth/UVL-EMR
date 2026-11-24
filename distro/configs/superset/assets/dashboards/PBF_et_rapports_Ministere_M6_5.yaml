@@ -139,7 +139,7 @@ position:
   GRID_ID:
     children:
     - TABS-m6
-    - ROW-N-Q6K7CAJ3
+    - ROW-N-OKM4F4TD
     id: GRID_ID
     parents:
     - ROOT_ID
@@ -272,10 +272,23 @@ position:
     children:
     - ROW-XsEr2XSobN
     - ROW-lkcW2-ptIZ
+    - ROW-m6b-f15n
+    - ROW-m6b-f15a
+    - ROW-m6b-f15b
     - ROW-_Xgz7KBTu3
     - ROW-m6-r3
     - ROW-m6-r4
     - ROW-m6-r5
+    - ROW-m6b-f8n
+    - ROW-m6b-f8u
+    - ROW-m6b-f8t
+    - ROW-m6b-f3n
+    - ROW-m6b-f3
+    - ROW-m6b-f6n
+    - ROW-m6b-f6
+    - ROW-m6b-f19n
+    - ROW-m6b-f19h
+    - ROW-m6b-f19l
     parents:
     - ROOT_ID
     - GRID_ID
@@ -319,6 +332,8 @@ position:
     children:
     - ROW-m6-dq1
     - ROW-m6-dq2
+    - ROW-m6b-qn
+    - ROW-m6b-q
     parents:
     - ROOT_ID
     - GRID_ID
@@ -424,10 +439,14 @@ position:
     - TAB-m6-consultations
     - ROW-m6-c0
     meta:
-      code: |-
-        **Nouveau cas ou ancien cas : deux définitions côte à côte.**
-
-        « Déclaré » est ce que le personnel a indiqué à la consultation. « Calculé » est la première consultation connue du patient (l'historique commence le 8 septembre 2025) ; toute consultation suivante est un ancien cas. Les deux divergent pour environ une consultation sur cinq : la définition retenue reste à choisir par le propriétaire du produit. Filtres : mois et service. L'origine par centre de santé ou par district n'est pas enregistrée.
+      code: "**Nouveau cas ou ancien cas : deux d\xE9finitions c\xF4te \xE0 c\xF4\
+        te.**\n\n\xAB D\xE9clar\xE9 \xBB est ce que le personnel a indiqu\xE9 \xE0\
+        \ la consultation. \xAB Calcul\xE9 \xBB est la premi\xE8re consultation connue\
+        \ du patient (l'historique commence le 8 septembre 2025) ; toute consultation\
+        \ suivante est un ancien cas. Les deux divergent pour environ une consultation\
+        \ sur cinq : la d\xE9finition retenue reste \xE0 choisir par le propri\xE9\
+        taire du produit. Filtres : mois et service. L'origine par centre de sant\xE9\
+        \ ou par district n'est pas enregistr\xE9e."
       height: 22
       width: 12
   ROW-m6-c1:
@@ -453,10 +472,10 @@ position:
     - TAB-m6-consultations
     - ROW-m6-c1
     meta:
-      chartId: 42
+      chartId: 46
       width: 12
       height: 40
-      sliceName: Consultations – cas déclaré contre cas calculé
+      sliceName: "Consultations \u2013 cas d\xE9clar\xE9 contre cas calcul\xE9"
       uuid: 0c3f8540-7473-4cb7-8b0c-ae839772a0ec
   ROW-m6-c2:
     type: ROW
@@ -481,10 +500,10 @@ position:
     - TAB-m6-consultations
     - ROW-m6-c2
     meta:
-      chartId: 40
+      chartId: 45
       width: 12
       height: 80
-      sliceName: Consultations – âge × sexe × cas déclaré
+      sliceName: "Consultations \u2013 \xE2ge \xD7 sexe \xD7 cas d\xE9clar\xE9"
       uuid: 811a172c-2fe2-4455-bc1f-d6d99ad7aade
   ROW-m6-c3:
     type: ROW
@@ -512,7 +531,7 @@ position:
       chartId: 41
       width: 12
       height: 80
-      sliceName: Consultations – âge × sexe × cas calculé
+      sliceName: "Consultations \u2013 \xE2ge \xD7 sexe \xD7 cas calcul\xE9"
       uuid: 8e7baea9-3bea-41cd-8b69-9516ffda914c
   ROW-m6-c4:
     type: ROW
@@ -537,10 +556,10 @@ position:
     - TAB-m6-consultations
     - ROW-m6-c4
     meta:
-      chartId: 43
+      chartId: 44
       width: 12
       height: 70
-      sliceName: Consultations – origine des patients × cas déclaré
+      sliceName: "Consultations \u2013 origine des patients \xD7 cas d\xE9clar\xE9"
       uuid: 88888980-ce12-40ef-9179-217c10bb2721
   ROW-m6-c5:
     type: ROW
@@ -565,10 +584,10 @@ position:
     - TAB-m6-consultations
     - ROW-m6-c5
     meta:
-      chartId: 44
+      chartId: 42
       width: 12
       height: 70
-      sliceName: Consultations – origine des patients × cas calculé
+      sliceName: "Consultations \u2013 origine des patients \xD7 cas calcul\xE9"
       uuid: 94ec2559-5ad2-49b2-8a41-41347117a988
   TAB-m6-diagnostics:
     type: TAB
@@ -579,6 +598,8 @@ position:
     - ROW-m6-d2
     - ROW-m6-d3
     - ROW-m6-d4
+    - ROW-m6b-f2n
+    - ROW-m6b-f2
     parents:
     - ROOT_ID
     - GRID_ID
@@ -610,10 +631,10 @@ position:
     - TAB-m6-diagnostics
     - ROW-m6-d0
     meta:
-      code: |-
-        **Notification des diagnostics.**
-
-        Diagnostics confirmés saisis pendant les consultations et les séjours du mois ; le code CIM-10 vient du dictionnaire de concepts. Un cas est un diagnostic saisi, pas un patient. Filtres : mois et service.
+      code: "**Notification des diagnostics.**\n\nDiagnostics confirm\xE9s saisis\
+        \ pendant les consultations et les s\xE9jours du mois ; le code CIM-10 vient\
+        \ du dictionnaire de concepts. Un cas est un diagnostic saisi, pas un patient.\
+        \ Filtres : mois et service."
       height: 18
       width: 12
   ROW-m6-d1:
@@ -639,10 +660,10 @@ position:
     - TAB-m6-diagnostics
     - ROW-m6-d1
     meta:
-      chartId: 45
+      chartId: 40
       width: 12
       height: 60
-      sliceName: Diagnostics – les 10 principaux (CIM-10)
+      sliceName: "Diagnostics \u2013 les 10 principaux (CIM-10)"
       uuid: 4982179c-786f-4386-8735-5bc3e8d9cd5b
   ROW-m6-d2:
     type: ROW
@@ -667,10 +688,10 @@ position:
     - TAB-m6-diagnostics
     - ROW-m6-d2
     meta:
-      chartId: 46
+      chartId: 43
       width: 12
       height: 80
-      sliceName: Diagnostics – âge × sexe
+      sliceName: "Diagnostics \u2013 \xE2ge \xD7 sexe"
       uuid: 8bc7db2b-5c85-465a-aa58-21af555d7153
   ROW-m6-d3:
     type: ROW
@@ -815,12 +836,506 @@ position:
       width: 12
       height: 40
       sliceName: "Fiche 5 \u2013 Infections post-actes (MoH)"
-  ROW-N-Q6K7CAJ3:
+  ROW-m6b-f15n:
+    type: ROW
+    id: ROW-m6b-f15n
     children:
-    - CHART-2B45TS6M
-    - CHART-1QG6ZAUD
-    - CHART-QQVRNWJW
-    id: ROW-N-Q6K7CAJ3
+    - MARKDOWN-m6b-f15n
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-rapports
+    meta:
+      background: BACKGROUND_TRANSPARENT
+  MARKDOWN-m6b-f15n:
+    type: MARKDOWN
+    id: MARKDOWN-m6b-f15n
+    children: []
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-rapports
+    - ROW-m6b-f15n
+    meta:
+      code: "**Fiche 15 : consultations ambulatoires, disposition du mod\xE8le.**\
+        \ Une consultation = une rencontre \xAB Consultation ambulatoire \xBB des\
+        \ 4 services. \xAB Tot Cons \xBB = total des cas = nouveaux cas + anciens\
+        \ cas; Comm, HC, HD, HP, HB = r\xE9sidence du patient (m\xEAme commune, hors\
+        \ commune, hors district, hors province, hors Burundi). Cas sans type: colonne\
+        \ \xE0 part. Aucune ligne \xAB non enregistr\xE9 \xBB."
+      height: 18
+      width: 12
+  ROW-m6b-f15a:
+    type: ROW
+    id: ROW-m6b-f15a
+    children:
+    - CHART-m6b-f15a
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-rapports
+    meta:
+      background: BACKGROUND_TRANSPARENT
+  CHART-m6b-f15a:
+    type: CHART
+    id: CHART-m6b-f15a
+    children: []
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-rapports
+    - ROW-m6b-f15a
+    meta:
+      chartId: 75
+      width: 12
+      height: 100
+      sliceName: "Fiche 15 \u2013 Consultations ambulatoires, disposition du mod\xE8\
+        le (MoH)"
+  ROW-m6b-f15b:
+    type: ROW
+    id: ROW-m6b-f15b
+    children:
+    - CHART-m6b-f15b
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-rapports
+    meta:
+      background: BACKGROUND_TRANSPARENT
+  CHART-m6b-f15b:
+    type: CHART
+    id: CHART-m6b-f15b
+    children: []
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-rapports
+    - ROW-m6b-f15b
+    meta:
+      chartId: 76
+      width: 12
+      height: 80
+      sliceName: "Fiche 15 \u2013 Lignes sp\xE9ciales (MoH)"
+  ROW-m6b-f8n:
+    type: ROW
+    id: ROW-m6b-f8n
+    children:
+    - MARKDOWN-m6b-f8n
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-rapports
+    meta:
+      background: BACKGROUND_TRANSPARENT
+  MARKDOWN-m6b-f8n:
+    type: MARKDOWN
+    id: MARKDOWN-m6b-f8n
+    children: []
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-rapports
+    - ROW-m6b-f8n
+    meta:
+      code: "**Fiche 8 : type de patient \xE0 l'arriv\xE9e (d\xE9bout, couch\xE9s,\
+        \ d\xE9c\xE9d\xE9s).** Une unit\xE9 = une visite. Le mod\xE8le ne concerne\
+        \ que les urgences; le second tableau montre tous les services. \xAB Non renseign\xE9\
+        \ \xBB = visite sans r\xE9ponse."
+      height: 18
+      width: 12
+  ROW-m6b-f8u:
+    type: ROW
+    id: ROW-m6b-f8u
+    children:
+    - CHART-m6b-f8u
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-rapports
+    meta:
+      background: BACKGROUND_TRANSPARENT
+  CHART-m6b-f8u:
+    type: CHART
+    id: CHART-m6b-f8u
+    children: []
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-rapports
+    - ROW-m6b-f8u
+    meta:
+      chartId: 73
+      width: 12
+      height: 40
+      sliceName: "Fiche 8 \u2013 Type de patient \xE0 l'arriv\xE9e aux urgences (MoH)"
+  ROW-m6b-f8t:
+    type: ROW
+    id: ROW-m6b-f8t
+    children:
+    - CHART-m6b-f8t
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-rapports
+    meta:
+      background: BACKGROUND_TRANSPARENT
+  CHART-m6b-f8t:
+    type: CHART
+    id: CHART-m6b-f8t
+    children: []
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-rapports
+    - ROW-m6b-f8t
+    meta:
+      chartId: 74
+      width: 12
+      height: 50
+      sliceName: "Fiche 8 \u2013 Type de patient \xE0 l'arriv\xE9e, tous les services\
+        \ (MoH)"
+  ROW-m6b-f3n:
+    type: ROW
+    id: ROW-m6b-f3n
+    children:
+    - MARKDOWN-m6b-f3n
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-rapports
+    meta:
+      background: BACKGROUND_TRANSPARENT
+  MARKDOWN-m6b-f3n:
+    type: MARKDOWN
+    id: MARKDOWN-m6b-f3n
+    children: []
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-rapports
+    - ROW-m6b-f3n
+    meta:
+      code: "**Fiche 3 : d\xE9c\xE8s par pathologie (hospitalisation et urgences).**\
+        \ Un d\xE9c\xE8s par visite (r\xE9sum\xE9 de sortie, sinon issue de la consultation);\
+        \ pathologie = premier diagnostic confirm\xE9 de la rencontre, sinon \xAB\
+        \ Sans diagnostic enregistr\xE9 \xBB. Tableau vide tant qu'aucun d\xE9c\xE8\
+        s n'est enregistr\xE9."
+      height: 18
+      width: 12
+  ROW-m6b-f3:
+    type: ROW
+    id: ROW-m6b-f3
+    children:
+    - CHART-m6b-f3
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-rapports
+    meta:
+      background: BACKGROUND_TRANSPARENT
+  CHART-m6b-f3:
+    type: CHART
+    id: CHART-m6b-f3
+    children: []
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-rapports
+    - ROW-m6b-f3
+    meta:
+      chartId: 71
+      width: 12
+      height: 60
+      sliceName: "Fiche 3 \u2013 D\xE9c\xE8s par pathologie, hospitalisation et urgences\
+        \ (MoH)"
+  ROW-m6b-f6n:
+    type: ROW
+    id: ROW-m6b-f6n
+    children:
+    - MARKDOWN-m6b-f6n
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-rapports
+    meta:
+      background: BACKGROUND_TRANSPARENT
+  MARKDOWN-m6b-f6n:
+    type: MARKDOWN
+    id: MARKDOWN-m6b-f6n
+    children: []
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-rapports
+    - ROW-m6b-f6n
+    meta:
+      code: "**Fiche 6 : transfusions (bloc 1 seulement).** Transfusions ENREGISTR\xC9\
+        ES (formulaire d'accouchement, suivi hospitalier) par sexe et tranche d'\xE2\
+        ge. Non enregistr\xE9: demandes de sang, poches et complications (aucun formulaire\
+        \ \xE0 ce jour)."
+      height: 18
+      width: 12
+  ROW-m6b-f6:
+    type: ROW
+    id: ROW-m6b-f6
+    children:
+    - CHART-m6b-f6
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-rapports
+    meta:
+      background: BACKGROUND_TRANSPARENT
+  CHART-m6b-f6:
+    type: CHART
+    id: CHART-m6b-f6
+    children: []
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-rapports
+    - ROW-m6b-f6
+    meta:
+      chartId: 72
+      width: 12
+      height: 50
+      sliceName: "Fiche 6 \u2013 Transfusions enregistr\xE9es, bloc 1 (MoH)"
+  ROW-m6b-f19n:
+    type: ROW
+    id: ROW-m6b-f19n
+    children:
+    - MARKDOWN-m6b-f19n
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-rapports
+    meta:
+      background: BACKGROUND_TRANSPARENT
+  MARKDOWN-m6b-f19n:
+    type: MARKDOWN
+    id: MARKDOWN-m6b-f19n
+    children: []
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-rapports
+    - ROW-m6b-f19n
+    meta:
+      code: "**Fiche 19 : pharmacie (m\xE9dicaments, r\xE9actifs, dispositifs), niveau\
+        \ h\xF4pital puis par lieu.** Consomm\xE9e/distribu\xE9e = dispensation aux\
+        \ patients + sorties vers un service ou l'ext\xE9rieur (les transferts de\
+        \ la pharmacie centrale vers les boxes ne comptent pas); CMM/DMM = moyenne\
+        \ mensuelle sur 6 mois. Non enregistr\xE9: sorties vers la communaut\xE9."
+      height: 18
+      width: 12
+  ROW-m6b-f19h:
+    type: ROW
+    id: ROW-m6b-f19h
+    children:
+    - CHART-m6b-f19h
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-rapports
+    meta:
+      background: BACKGROUND_TRANSPARENT
+  CHART-m6b-f19h:
+    type: CHART
+    id: CHART-m6b-f19h
+    children: []
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-rapports
+    - ROW-m6b-f19h
+    meta:
+      chartId: 63
+      width: 12
+      height: 80
+      sliceName: "Fiche 19 \u2013 M\xE9dicaments, r\xE9actifs et dispositifs, h\xF4\
+        pital (MoH)"
+  ROW-m6b-f19l:
+    type: ROW
+    id: ROW-m6b-f19l
+    children:
+    - CHART-m6b-f19l
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-rapports
+    meta:
+      background: BACKGROUND_TRANSPARENT
+  CHART-m6b-f19l:
+    type: CHART
+    id: CHART-m6b-f19l
+    children: []
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-rapports
+    - ROW-m6b-f19l
+    meta:
+      chartId: 64
+      width: 12
+      height: 80
+      sliceName: "Fiche 19 \u2013 M\xE9dicaments, r\xE9actifs et dispositifs, par\
+        \ lieu (MoH)"
+  ROW-m6b-f2n:
+    type: ROW
+    id: ROW-m6b-f2n
+    children:
+    - MARKDOWN-m6b-f2n
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-diagnostics
+    meta:
+      background: BACKGROUND_TRANSPARENT
+  MARKDOWN-m6b-f2n:
+    type: MARKDOWN
+    id: MARKDOWN-m6b-f2n
+    children: []
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-diagnostics
+    - ROW-m6b-f2n
+    meta:
+      code: "**Fiche 2 : paludisme, diarrh\xE9e et pneumonie.** Cases coch\xE9es sur\
+        \ la consultation ambulatoire et le r\xE9sum\xE9 de sortie; \xAB Paludisme\
+        \ trait\xE9 malgr\xE9 un test n\xE9gatif \xBB = case \xAB Without Test \xBB\
+        . Non enregistr\xE9: blisters d'Art\xE9m\xE9ther-Lum\xE9fantrine par poids\
+        \ (lignes vides)."
+      height: 18
+      width: 12
+  ROW-m6b-f2:
+    type: ROW
+    id: ROW-m6b-f2
+    children:
+    - CHART-m6b-f2
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-diagnostics
+    meta:
+      background: BACKGROUND_TRANSPARENT
+  CHART-m6b-f2:
+    type: CHART
+    id: CHART-m6b-f2
+    children: []
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-diagnostics
+    - ROW-m6b-f2
+    meta:
+      chartId: 70
+      width: 12
+      height: 100
+      sliceName: "Fiche 2 \u2013 Paludisme, diarrh\xE9e et pneumonie (MoH)"
+  ROW-m6b-qn:
+    type: ROW
+    id: ROW-m6b-qn
+    children:
+    - MARKDOWN-m6b-qn
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-qualite
+    meta:
+      background: BACKGROUND_TRANSPARENT
+  MARKDOWN-m6b-qn:
+    type: MARKDOWN
+    id: MARKDOWN-m6b-qn
+    children: []
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-qualite
+    - ROW-m6b-qn
+    meta:
+      code: "**Consultations enregistr\xE9es hors des 4 services de la Fiche 15**\
+        \ (Accueil-Triage, Bureau m\xE9dical, Laboratoire...): elles n'entrent pas\
+        \ dans la Fiche 15. Indicateur de qualit\xE9 \xE0 corriger \xE0 la saisie;\
+        \ rien n'est \xAB non enregistr\xE9 \xBB."
+      height: 18
+      width: 12
+  ROW-m6b-q:
+    type: ROW
+    id: ROW-m6b-q
+    children:
+    - CHART-m6b-q
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-qualite
+    meta:
+      background: BACKGROUND_TRANSPARENT
+  CHART-m6b-q:
+    type: CHART
+    id: CHART-m6b-q
+    children: []
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-m6
+    - TAB-m6-qualite
+    - ROW-m6b-q
+    meta:
+      chartId: 77
+      width: 12
+      height: 40
+      sliceName: "Contr\xF4le qualit\xE9 \u2013 consultations hors des 4 services\
+        \ (Fiche 15)"
+  ROW-N-OKM4F4TD:
+    children:
+    - CHART-N3IWLFTK
+    - CHART-4WRO2MAH
+    - CHART-FWHTT5AW
+    - CHART-0Y0ATU3R
+    - CHART-BQGPJTXN
+    - CHART-C5BA2CCA
+    - CHART-PUS9X2V6
+    - CHART-QGEMNNX1
+    - CHART-7Q6KDH92
+    - CHART-FYFARGK1
+    - CHART-G5E1HJ68
+    - CHART-2LLELTN0
+    - CHART-PFPSGISU
+    id: ROW-N-OKM4F4TD
     meta:
       '0': ROOT_ID
       background: BACKGROUND_TRANSPARENT
@@ -828,37 +1343,68 @@ position:
     parents:
     - ROOT_ID
     - GRID_ID
-  CHART-2B45TS6M:
+  CHART-N3IWLFTK:
     children: []
-    id: CHART-2B45TS6M
+    id: CHART-N3IWLFTK
     meta:
-      chartId: 55
+      chartId: 74
       height: 50
-      sliceName: "Fiche 4 \u2013 Diagnostics \xE0 la sortie (MoH)"
-      uuid: 57f07052-9d97-4f59-a069-a2006259cfd2
+      sliceName: "Fiche 8 \u2013 Type de patient \xE0 l'arriv\xE9e, tous les services\
+        \ (MoH)"
+      uuid: 51ccbb6f-67bb-44af-a7d6-66bd8ad393f2
       width: 4
     type: CHART
     parents:
     - ROOT_ID
     - GRID_ID
-    - ROW-N-Q6K7CAJ3
-  CHART-1QG6ZAUD:
+    - ROW-N-OKM4F4TD
+  CHART-4WRO2MAH:
     children: []
-    id: CHART-1QG6ZAUD
+    id: CHART-4WRO2MAH
     meta:
-      chartId: 57
+      chartId: 75
       height: 50
-      sliceName: "Fiche 5 \u2013 Infections post-actes (MoH)"
-      uuid: c7edab50-09b2-45e5-a5ab-88d7c870e507
+      sliceName: "Fiche 15 \u2013 Consultations ambulatoires, disposition du mod\xE8\
+        le (MoH)"
+      uuid: ba537a29-5544-434c-bddd-e52cb9e4bd41
       width: 4
     type: CHART
     parents:
     - ROOT_ID
     - GRID_ID
-    - ROW-N-Q6K7CAJ3
-  CHART-QQVRNWJW:
+    - ROW-N-OKM4F4TD
+  CHART-FWHTT5AW:
     children: []
-    id: CHART-QQVRNWJW
+    id: CHART-FWHTT5AW
+    meta:
+      chartId: 72
+      height: 50
+      sliceName: "Fiche 6 \u2013 Transfusions enregistr\xE9es, bloc 1 (MoH)"
+      uuid: 4bbe0640-f646-45ec-af7e-3d71d0813b38
+      width: 4
+    type: CHART
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-N-OKM4F4TD
+  CHART-0Y0ATU3R:
+    children: []
+    id: CHART-0Y0ATU3R
+    meta:
+      chartId: 77
+      height: 50
+      sliceName: "Contr\xF4le qualit\xE9 \u2013 consultations hors des 4 services\
+        \ (Fiche 15)"
+      uuid: bb338338-18b3-44f2-afd4-6935942556ec
+      width: 4
+    type: CHART
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-N-OKM4F4TD
+  CHART-BQGPJTXN:
+    children: []
+    id: CHART-BQGPJTXN
     meta:
       chartId: 56
       height: 50
@@ -869,7 +1415,122 @@ position:
     parents:
     - ROOT_ID
     - GRID_ID
-    - ROW-N-Q6K7CAJ3
+    - ROW-N-OKM4F4TD
+  CHART-C5BA2CCA:
+    children: []
+    id: CHART-C5BA2CCA
+    meta:
+      chartId: 57
+      height: 50
+      sliceName: "Fiche 5 \u2013 Infections post-actes (MoH)"
+      uuid: c7edab50-09b2-45e5-a5ab-88d7c870e507
+      width: 4
+    type: CHART
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-N-OKM4F4TD
+  CHART-PUS9X2V6:
+    children: []
+    id: CHART-PUS9X2V6
+    meta:
+      chartId: 55
+      height: 50
+      sliceName: "Fiche 4 \u2013 Diagnostics \xE0 la sortie (MoH)"
+      uuid: 57f07052-9d97-4f59-a069-a2006259cfd2
+      width: 4
+    type: CHART
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-N-OKM4F4TD
+  CHART-QGEMNNX1:
+    children: []
+    id: CHART-QGEMNNX1
+    meta:
+      chartId: 76
+      height: 50
+      sliceName: "Fiche 15 \u2013 Lignes sp\xE9ciales (MoH)"
+      uuid: f9247050-f4d5-4acc-82f7-8d3aac69ddab
+      width: 4
+    type: CHART
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-N-OKM4F4TD
+  CHART-7Q6KDH92:
+    children: []
+    id: CHART-7Q6KDH92
+    meta:
+      chartId: 63
+      height: 50
+      sliceName: "Fiche 19 \u2013 M\xE9dicaments, r\xE9actifs et dispositifs, h\xF4\
+        pital (MoH)"
+      uuid: 4bf50bb0-a56a-482c-a25e-3d3c6b2dd025
+      width: 4
+    type: CHART
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-N-OKM4F4TD
+  CHART-FYFARGK1:
+    children: []
+    id: CHART-FYFARGK1
+    meta:
+      chartId: 64
+      height: 50
+      sliceName: "Fiche 19 \u2013 M\xE9dicaments, r\xE9actifs et dispositifs, par\
+        \ lieu (MoH)"
+      uuid: 05a8ee0d-47a9-4a65-bcaf-84ebedbf911e
+      width: 4
+    type: CHART
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-N-OKM4F4TD
+  CHART-G5E1HJ68:
+    children: []
+    id: CHART-G5E1HJ68
+    meta:
+      chartId: 70
+      height: 50
+      sliceName: "Fiche 2 \u2013 Paludisme, diarrh\xE9e et pneumonie (MoH)"
+      uuid: ab6a1731-8a85-4922-9fc5-56d8f6c8fb99
+      width: 4
+    type: CHART
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-N-OKM4F4TD
+  CHART-2LLELTN0:
+    children: []
+    id: CHART-2LLELTN0
+    meta:
+      chartId: 73
+      height: 50
+      sliceName: "Fiche 8 \u2013 Type de patient \xE0 l'arriv\xE9e aux urgences (MoH)"
+      uuid: 80d1d456-b017-4e06-924a-5b6632fb0e4d
+      width: 4
+    type: CHART
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-N-OKM4F4TD
+  CHART-PFPSGISU:
+    children: []
+    id: CHART-PFPSGISU
+    meta:
+      chartId: 71
+      height: 50
+      sliceName: "Fiche 3 \u2013 D\xE9c\xE8s par pathologie, hospitalisation et urgences\
+        \ (MoH)"
+      uuid: 3105a716-a830-43bc-b9a5-6f6d4929337a
+      width: 4
+    type: CHART
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-N-OKM4F4TD
 metadata:
   chart_configuration:
     '28':
@@ -1078,6 +1739,16 @@ metadata:
     - 55
     - 56
     - 57
+    - 63
+    - 64
+    - 70
+    - 71
+    - 72
+    - 73
+    - 74
+    - 75
+    - 76
+    - 77
     tabsInScope:
     - TAB-m6-rapports
     - TAB-m6-consultations
@@ -1114,6 +1785,9 @@ metadata:
       - 35
       - 36
       - 37
+      - 63
+      - 64
+      - 77
     type: NATIVE_FILTER
     description: ''
     chartsInScope:
@@ -1129,5 +1803,12 @@ metadata:
     - 55
     - 56
     - 57
+    - 70
+    - 71
+    - 72
+    - 73
+    - 74
+    - 75
+    - 76
     tabsInScope: []
 version: 1.0.0

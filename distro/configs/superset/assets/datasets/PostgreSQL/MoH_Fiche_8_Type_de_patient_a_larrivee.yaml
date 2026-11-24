@@ -1,0 +1,186 @@
+table_name: "MoH Fiche 8 Type de patient \xE0 l'arriv\xE9e"
+main_dttm_col: MOIS
+description: "UVL-EMR \xB7 Minist\xE8re \xAB Fiche 8 \xBB: type de patient \xE0 l'arriv\xE9\
+  e (d\xE9bout, couch\xE9s, d\xE9c\xE9d\xE9s), par mois et service. Une unit\xE9 =\
+  \ une visite."
+default_endpoint: null
+offset: 0
+cache_timeout: null
+schema: public
+sql: "-- Fiche 8 (MoH, #910): type de patient a l'arrivee \n-- One row per MOIS x\
+  \ SERVICE. Unit = one visit (one arrival). Visits counted: those with an Outpatient\
+  \ Consultation encounter,\n-- plus visits that carry the visit attribute \xAB Patient\
+  \ status on arrival \xBB even without a consultation.\n-- Status = form observation\
+  \ \xAB Patient Status on Arrival \xBB (latest non-voided answer on the visit) if\
+  \ any, else the visit attribute.\n--   Ambulatory -> D\xC9BOUT, Bedridden -> COUCH\xC9\
+  S, Deceased -> D\xC9C\xC9D\xC9S.\n-- SERVICE and MOIS = those of the visit's first\
+  \ Outpatient Consultation encounter, else the visit's own location and start date.\n\
+  -- Filters as the M6 datasets: test patients (SYNTH-/E2E/QA/TEST/DEMO), voided persons/visits/encounters/obs,\
+  \ location \xAB Locations test \xBB.\nWITH pt AS (\nSELECT p.patient_uuid\nFROM\
+  \ patients p\nWHERE COALESCE(p.person_voided, false) = false\nAND NOT (COALESCE(p.family_name,\
+  \ '') ~* '^(SYNTH-|E2E|QA|TEST|DEMO)'\nOR COALESCE(p.given_name,  '') ~* '^(SYNTH-|E2E|QA|TEST|DEMO)')\n\
+  ),\ncons AS (\nSELECT DISTINCT ON (e.visit_uuid) e.visit_uuid, e.encounter_datetime::date\
+  \ AS d, e.location_uuid, e.location\nFROM encounters e\nWHERE e.encounter_type_uuid\
+  \ = '0ff55309-1897-476b-a647-c7c180b102c8'\nAND COALESCE(e.encounter_voided, false)\
+  \ = false\nAND e.location_uuid IS DISTINCT FROM '450be362-59a7-4ccd-964d-ebd930a8b30f'\n\
+  ORDER BY e.visit_uuid, e.encounter_id\n),\nvis AS (\nSELECT v.visit_uuid, v.date_started::date\
+  \ AS ds, v.location_uuid, v.location,\nCASE NULLIF(TRIM(SUBSTRING(v.visit_attributes\
+  \ FROM '(?:^|/ )Patient status on arrival: ([^/]*)')), '')\nWHEN 'Ambulatory' THEN\
+  \ 'D' WHEN 'Bedridden' THEN 'C' WHEN 'Deceased' THEN 'X' END AS st_attr\nFROM visits\
+  \ v\nJOIN pt ON pt.patient_uuid = v.patient_uuid\nWHERE COALESCE(v.visit_voided,\
+  \ false) = false\nAND v.location_uuid IS DISTINCT FROM '450be362-59a7-4ccd-964d-ebd930a8b30f'\n\
+  ),\nob AS (\nSELECT DISTINCT ON (o.visit_uuid) o.visit_uuid,\nCASE o.answer_coded\
+  \ WHEN 'Ambulatory' THEN 'D' WHEN 'Bedridden' THEN 'C' WHEN 'Deceased' THEN 'X'\
+  \ END AS st_obs\nFROM observations o\nWHERE o.question_uuid = '72e22610-8888-48b6-b182-d235000a7600'\n\
+  AND COALESCE(o.obs_voided, false) = false\nAND o.visit_uuid IN (SELECT visit_uuid\
+  \ FROM vis)\nORDER BY o.visit_uuid, o.obs_date_time DESC\n),\nx AS (\nSELECT DATE_TRUNC('month',\
+  \ COALESCE(c.d, vis.ds))::date AS mois,\nCASE COALESCE(c.location_uuid, vis.location_uuid)\n\
+  WHEN '44c3efb0-2583-4c80-a79e-1f756a03c0a1' THEN 'Consultation externe'\nWHEN '9D062929-CC4F-7A51-C700-2B968AADEC34'\
+  \ THEN 'Urgences'\nWHEN 'e1f4ab17-6dc5-4249-cf38-5bae7dbe9c64' THEN 'Ophtalmologie'\n\
+  WHEN 'f2a5bc28-7ed6-435a-da49-6cbf8ecfad75' THEN 'Dentisterie'\nELSE COALESCE(c.location,\
+  \ vis.location, 'Non renseign\xE9')\nEND AS service,\nCOALESCE(ob.st_obs, vis.st_attr)\
+  \ AS st,\n(ob.st_obs IS NULL AND vis.st_attr IS NOT NULL) AS from_attr\nFROM vis\n\
+  LEFT JOIN cons c ON c.visit_uuid = vis.visit_uuid\nLEFT JOIN ob ON ob.visit_uuid\
+  \ = vis.visit_uuid\nWHERE c.visit_uuid IS NOT NULL OR vis.st_attr IS NOT NULL OR\
+  \ ob.st_obs IS NOT NULL\n),\nagg AS (\nSELECT x.mois, x.service,\nCOUNT(*) FILTER\
+  \ (WHERE x.st = 'D') AS d,\nCOUNT(*) FILTER (WHERE x.st = 'C') AS c,\nCOUNT(*) FILTER\
+  \ (WHERE x.st = 'X') AS dc,\nCOUNT(*) FILTER (WHERE x.st IS NULL) AS nr,\nCOUNT(*)\
+  \ FILTER (WHERE x.st IS NOT NULL AND x.from_attr) AS fa\nFROM x\nGROUP BY x.mois,\
+  \ x.service\n),\ngrid AS (\nSELECT mois, service FROM agg\nUNION\nSELECT DISTINCT\
+  \ mois, 'Urgences' FROM agg   -- the emergency block always exists, even with nothing\
+  \ recorded\n)\nSELECT\ng.mois AS \"MOIS\",\ng.service AS \"SERVICE\",\nCOALESCE(a.d,\
+  \ 0) AS \"D\xC9BOUT\",\nCOALESCE(a.c, 0) AS \"COUCH\xC9S\",\nCOALESCE(a.dc, 0) AS\
+  \ \"D\xC9C\xC9D\xC9S\",\nCOALESCE(a.d + a.c + a.dc, 0) AS \"TOTAL\",\nCOALESCE(a.nr,\
+  \ 0) AS \"NON RENSEIGN\xC9\",\nCOALESCE(a.fa, 0) AS \"DONT ATTRIBUT DE VISITE\"\
+  ,\nCASE g.service WHEN 'Urgences' THEN 1 ELSE 2 END AS \"ORDRE\"\nFROM grid g\n\
+  LEFT JOIN agg a ON a.mois = g.mois AND a.service = g.service\nORDER BY g.mois DESC,\
+  \ 9, g.service\n"
+params: null
+template_params: null
+filter_select_enabled: true
+fetch_values_predicate: null
+extra: null
+normalize_columns: false
+always_filter_main_dttm: false
+uuid: d0141e8e-dc23-4d22-80e5-4bfc203f8786
+metrics:
+- metric_name: count
+  verbose_name: COUNT(*)
+  metric_type: count
+  expression: COUNT(*)
+  description: null
+  d3format: null
+  currency: null
+  extra: null
+  warning_text: null
+columns:
+- column_name: DONT ATTRIBUT DE VISITE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: "NON RENSEIGN\xC9"
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: MOIS
+  verbose_name: null
+  is_dttm: true
+  is_active: true
+  type: DATE
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: TOTAL
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: "D\xC9BOUT"
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: "COUCH\xC9S"
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: "D\xC9C\xC9D\xC9S"
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: SERVICE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: ORDRE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: INTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+version: 1.0.0
+database_uuid: 44c13a30-0c14-402c-b81f-1c93972f5fbc

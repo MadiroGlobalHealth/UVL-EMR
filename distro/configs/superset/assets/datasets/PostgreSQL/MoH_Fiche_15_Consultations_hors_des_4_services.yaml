@@ -1,0 +1,101 @@
+table_name: MoH Fiche 15 Consultations hors des 4 services
+main_dttm_col: MOIS
+description: "UVL-EMR \xB7 Indicateur de qualit\xE9 des donn\xE9es: consultations\
+  \ ambulatoires enregistr\xE9es dans un lieu qui n'est pas l'un des 4 services de\
+  \ la Fiche 15 (Urgences, Consultation externe, Ophtalmologie, Dentisterie)."
+default_endpoint: null
+offset: 0
+cache_timeout: null
+schema: public
+sql: "-- Quality: consultations recorded outside the 4 services of the template, per\
+  \ MOIS x location\n-- Fiche 15 (MoH, #905), data-quality indicator. Same base filters\
+  \ as dataset 24 (MoH Fiche 15): Outpatient Consultation encounters, test patients\
+  \ (SYNTH-/E2E/QA/TEST/DEMO),\n-- voided persons/visits/encounters and location \xAB\
+  \ Locations test \xBB excluded. One consultation = one encounter.\n-- Only the locations\
+  \ that are NOT one of the 4 services of the template (Urgences, Consultation externe,\
+  \ Ophtalmologie, Dentisterie).\nWITH opd AS (\nSELECT e.encounter_uuid, e.encounter_datetime::date\
+  \ AS d, e.location, e.location_uuid, v.visit_attributes\nFROM encounters e\nLEFT\
+  \ JOIN visits v ON v.visit_uuid = e.visit_uuid\nJOIN patients p ON p.patient_uuid\
+  \ = e.patient_uuid\nWHERE e.encounter_type_uuid = '0ff55309-1897-476b-a647-c7c180b102c8'\n\
+  AND COALESCE(e.encounter_voided, false) = false\nAND e.location_uuid IS DISTINCT\
+  \ FROM '450be362-59a7-4ccd-964d-ebd930a8b30f'\nAND COALESCE(v.visit_voided, false)\
+  \ = false\nAND COALESCE(p.person_voided, false) = false\nAND NOT (COALESCE(p.family_name,\
+  \ '') ~* '^(SYNTH-|E2E|QA|TEST|DEMO)'\nOR COALESCE(p.given_name,  '') ~* '^(SYNTH-|E2E|QA|TEST|DEMO)')\n\
+  )\nSELECT\nDATE_TRUNC('month', opd.d)::date AS \"MOIS\",\nopd.location AS \"LIEU\"\
+  ,\nCOUNT(*) AS \"CONSULTATIONS\",\nCOUNT(*) FILTER (WHERE COALESCE(NULLIF(TRIM(SUBSTRING(opd.visit_attributes\
+  \ FROM '(?:^|/ )Case Type: ([^/]*)')), ''),\n(SELECT o.answer_coded FROM observations\
+  \ o WHERE o.encounter_uuid = opd.encounter_uuid\nAND o.question_uuid = '23ceec98-f1c5-42ce-8b11-60b5be1c2acf'\
+  \ AND COALESCE(o.obs_voided, false) = false\nORDER BY o.obs_date_time DESC LIMIT\
+  \ 1)) IS NULL) AS \"CAS NON PRECISE (NOUVEAU OU ANCIEN)\"\nFROM opd\nWHERE opd.location_uuid\
+  \ NOT IN ('44c3efb0-2583-4c80-a79e-1f756a03c0a1', '9D062929-CC4F-7A51-C700-2B968AADEC34',\n\
+  'e1f4ab17-6dc5-4249-cf38-5bae7dbe9c64', 'f2a5bc28-7ed6-435a-da49-6cbf8ecfad75')\n\
+  GROUP BY DATE_TRUNC('month', opd.d), opd.location\nORDER BY 1 DESC, 2\n"
+params: null
+template_params: null
+filter_select_enabled: true
+fetch_values_predicate: null
+extra: null
+normalize_columns: false
+always_filter_main_dttm: false
+uuid: 276ffa56-7b15-4305-a948-7d1d44ea5f4d
+metrics:
+- metric_name: count
+  verbose_name: COUNT(*)
+  metric_type: count
+  expression: COUNT(*)
+  description: null
+  d3format: null
+  currency: null
+  extra: null
+  warning_text: null
+columns:
+- column_name: CAS NON PRECISE (NOUVEAU OU ANCIEN)
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: CONSULTATIONS
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: MOIS
+  verbose_name: null
+  is_dttm: true
+  is_active: true
+  type: DATE
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: LIEU
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+version: 1.0.0
+database_uuid: 44c13a30-0c14-402c-b81f-1c93972f5fbc

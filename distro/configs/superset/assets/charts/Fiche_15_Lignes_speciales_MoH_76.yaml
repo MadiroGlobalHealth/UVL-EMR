@@ -1,0 +1,55 @@
+slice_name: "Fiche 15 \u2013 Lignes sp\xE9ciales (MoH)"
+description: "Fiche 15 du Minist\xE8re (pages 18-19): femmes enceintes, post-partum,\
+  \ PVVIH, petite chirurgie, mode d'arriv\xE9e, consultations par prestataire, mode\
+  \ de sortie, alcool, tabac, col de l'ut\xE9rus, par service."
+certified_by: null
+certification_details: null
+viz_type: table
+params:
+  datasource: 58__table
+  viz_type: table
+  query_mode: raw
+  groupby: []
+  time_grain_sqla: P1D
+  temporal_columns_lookup:
+    MOIS: true
+  all_columns:
+  - MOIS
+  - SERVICE
+  - RUBRIQUE
+  - LIGNE
+  - H
+  - F
+  - TOTAL
+  - DONT MOINS DE 5 ANS
+  - DONT 5 ANS ET PLUS
+  - DONNEE
+  percent_metrics: []
+  adhoc_filters:
+  - expressionType: SIMPLE
+    subject: MOIS
+    operator: TEMPORAL_RANGE
+    comparator: previous calendar month
+    clause: WHERE
+    sqlExpression: null
+    isExtra: false
+    isNew: false
+    datasourceWarning: false
+    filterOptionName: filter_905b_f15b
+  order_by_cols:
+  - '["MOIS", false]'
+  - '["ORDRE_SERVICE", true]'
+  - '["ORDRE", true]'
+  row_limit: 10000
+  server_page_length: 20
+  order_desc: true
+  table_timestamp_format: smart_date
+  show_cell_bars: false
+  color_pn: false
+  include_search: false
+  extra_form_data: {}
+query_context: null
+cache_timeout: null
+uuid: f9247050-f4d5-4acc-82f7-8d3aac69ddab
+version: 1.0.0
+dataset_uuid: 0691cf77-ee2c-4f97-94a9-120756546834

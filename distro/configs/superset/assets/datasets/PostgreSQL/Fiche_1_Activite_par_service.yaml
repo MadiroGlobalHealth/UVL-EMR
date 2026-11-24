@@ -228,7 +228,8 @@ sql: "WITH pt AS (\n    SELECT p.patient_uuid\n    FROM patients p\n    WHERE CO
   \          AND COALESCE(e.encounter_voided, false) = false\n          AND COALESCE(o.obs_voided,\
   \ false) = false\n          AND e.location_uuid IS DISTINCT FROM '450be362-59a7-4ccd-964d-ebd930a8b30f'\n\
   \          AND o.question_uuid IN ('52325f44-b6dd-470b-a672-97fefbd119e1', '238652d6-4aca-451a-9c8e-8336cea6fff4',\n\
-  \                                  'cd96c0b6-a08f-49eb-94ad-9a914f1612f0')\n   \
+  \                                  'cd96c0b6-a08f-49eb-94ad-9a914f1612f0',\n\
+  \                                  '829a7576-06e2-42b3-aa7d-30dfa73250fc')\n   \
   \     GROUP BY o.visit_uuid, COALESCE(o.obs_group_uuid, o.encounter_uuid)\n    )\
   \ nb\n    GROUP BY mois, ward\n    HAVING COUNT(*) FILTER (WHERE dead) > 0\n),\n\
   lits AS (\n    SELECT bd.location_uuid, COUNT(*) AS lits\n    FROM beds bd\n   \

@@ -1,0 +1,52 @@
+slice_name: "Fiche 6 \u2013 Transfusions enregistr\xE9es, bloc 1 (MoH)"
+description: "Fiche 6 du Minist\xE8re, bloc 1: transfusions ENREGISTR\xC9ES par sexe\
+  \ et tranche d'\xE2ge. Non enregistr\xE9: demandes de sang, poches, complications\
+  \ (aucun formulaire)."
+certified_by: null
+certification_details: null
+viz_type: table
+params:
+  datasource: 54__table
+  viz_type: table
+  query_mode: raw
+  groupby: []
+  time_grain_sqla: P1D
+  temporal_columns_lookup:
+    MOIS: true
+  all_columns:
+  - MOIS
+  - SERVICE
+  - TRANCHE D'AGE
+  - M
+  - F
+  - TOTAL
+  - ORDRE
+  percent_metrics: []
+  adhoc_filters:
+  - expressionType: SIMPLE
+    subject: MOIS
+    operator: TEMPORAL_RANGE
+    comparator: previous calendar month
+    clause: WHERE
+    sqlExpression: null
+    isExtra: false
+    isNew: false
+    datasourceWarning: false
+    filterOptionName: filter_909b_f6
+  order_by_cols:
+  - '["MOIS", false]'
+  - '["SERVICE", true]'
+  - '["ORDRE", true]'
+  row_limit: 10000
+  server_page_length: 25
+  order_desc: true
+  table_timestamp_format: smart_date
+  show_cell_bars: false
+  color_pn: false
+  include_search: true
+  extra_form_data: {}
+query_context: null
+cache_timeout: null
+uuid: 4bbe0640-f646-45ec-af7e-3d71d0813b38
+version: 1.0.0
+dataset_uuid: 3e068fa6-a6e6-49af-91c2-683a97794540

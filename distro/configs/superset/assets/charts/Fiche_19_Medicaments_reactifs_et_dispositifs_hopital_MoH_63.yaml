@@ -1,0 +1,103 @@
+slice_name: "Fiche 19 \u2013 M\xE9dicaments, r\xE9actifs et dispositifs, h\xF4pital\
+  \ (MoH)"
+description: "Fiche 19 (7.1), niveau h\xF4pital: une ligne par produit. Consomm\xE9\
+  e/distribu\xE9e = dispensation aux patients + sorties vers un service, un d\xE9\
+  partement ou l'ext\xE9rieur; les transferts de la pharmacie centrale vers les boxes\
+  \ de dispensation ne sont pas compt\xE9s. CMM/DMM = moyenne mensuelle sur les 6\
+  \ derniers mois. Sorties vers communaut\xE9: non enregistr\xE9."
+certified_by: null
+certification_details: null
+viz_type: table
+params:
+  datasource: 49__table
+  viz_type: table
+  query_mode: raw
+  groupby: []
+  time_grain_sqla: P1D
+  temporal_columns_lookup:
+    MOIS: true
+  all_columns:
+  - MOIS
+  - SECTION
+  - DCI
+  - LIGNE MODELE MOH
+  - PRODUIT UVL
+  - QUANTITE AU DEBUT DU MOIS
+  - QUANTITE RECUE DURANT LE MOIS
+  - QUANTITE CONSOMMEE / DISTRIBUEE
+  - DONT DISPENSEE AUX PATIENTS
+  - DONT SORTIES VERS D'AUTRES SERVICES OU LIEUX
+  - SORTIES VERS COMMUNAUTE
+  - STOCK INITIAL SAISI
+  - QUANTITE PERDUE OU VOLEE
+  - QUANTITE DETERIOREE (ENDOMMAGEE, CASSEE)
+  - QUANTITE PERIMEE (SORTIES, MOTIF EXPIRE)
+  - AUTRES AJUSTEMENTS (NET)
+  - ECART D'INVENTAIRE
+  - QUANTITE FIN DU MOIS
+  - QUANTITE A DUREE DE VIE < 3 MOIS
+  - QUANTITE PERIMEE EN STOCK
+  - QUANTITE PERIMEE ENCORE EN STOCK (CUMUL)
+  - NB DE JOURS DE RUPTURE DE STOCK
+  - JOURS-LIEUX EN RUPTURE (SOMME DES LIEUX)
+  - CMM / DMM (MOYENNE MENSUELLE SUR 6 MOIS)
+  - MOIS DE STOCK (FIN DE MOIS / CMM)
+  percent_metrics: []
+  adhoc_filters:
+  - expressionType: SIMPLE
+    subject: MOIS
+    operator: TEMPORAL_RANGE
+    comparator: previous calendar month
+    clause: WHERE
+    sqlExpression: null
+    isExtra: false
+    isNew: false
+    datasourceWarning: false
+    filterOptionName: filter_910_f19h
+  - expressionType: SIMPLE
+    subject: LIEU
+    operator: ==
+    comparator: TOUS LES LIEUX
+    clause: WHERE
+    sqlExpression: null
+    isExtra: false
+    isNew: false
+    datasourceWarning: false
+    filterOptionName: filter_910_f19h_0
+  order_by_cols:
+  - '["SECTION",true]'
+  - '["DCI",true]'
+  row_limit: 10000
+  server_page_length: 25
+  order_desc: true
+  table_timestamp_format: smart_date
+  show_cell_bars: false
+  color_pn: false
+  include_search: true
+  extra_form_data: {}
+query_context: '{"datasource":{"id":49,"type":"table"},"force":false,"queries":[{"filters":[{"col":"MOIS","op":"TEMPORAL_RANGE","val":"previous
+  calendar month"},{"col":"LIEU","op":"==","val":"TOUS LES LIEUX"}],"extras":{"time_grain_sqla":"P1D","having":"","where":""},"applied_time_extras":{},"columns":["MOIS","SECTION","DCI","LIGNE
+  MODELE MOH","PRODUIT UVL","QUANTITE AU DEBUT DU MOIS","QUANTITE RECUE DURANT LE
+  MOIS","QUANTITE CONSOMMEE / DISTRIBUEE","DONT DISPENSEE AUX PATIENTS","DONT SORTIES
+  VERS D''AUTRES SERVICES OU LIEUX","SORTIES VERS COMMUNAUTE","STOCK INITIAL SAISI","QUANTITE
+  PERDUE OU VOLEE","QUANTITE DETERIOREE (ENDOMMAGEE, CASSEE)","QUANTITE PERIMEE (SORTIES,
+  MOTIF EXPIRE)","AUTRES AJUSTEMENTS (NET)","ECART D''INVENTAIRE","QUANTITE FIN DU
+  MOIS","QUANTITE A DUREE DE VIE < 3 MOIS","QUANTITE PERIMEE EN STOCK","QUANTITE PERIMEE
+  ENCORE EN STOCK (CUMUL)","NB DE JOURS DE RUPTURE DE STOCK","JOURS-LIEUX EN RUPTURE
+  (SOMME DES LIEUX)","CMM / DMM (MOYENNE MENSUELLE SUR 6 MOIS)","MOIS DE STOCK (FIN
+  DE MOIS / CMM)"],"orderby":[["SECTION",true],["DCI",true]],"annotation_layers":[],"row_limit":10000,"series_limit":0,"order_desc":true,"url_params":{},"custom_params":{},"custom_form_data":{},"post_processing":[]}],"form_data":{"adhoc_filters":[{"clause":"WHERE","comparator":"previous
+  calendar month","datasourceWarning":false,"expressionType":"SIMPLE","filterOptionName":"filter_910_f19h","isExtra":false,"isNew":false,"operator":"TEMPORAL_RANGE","sqlExpression":null,"subject":"MOIS"},{"clause":"WHERE","comparator":"TOUS
+  LES LIEUX","datasourceWarning":false,"expressionType":"SIMPLE","filterOptionName":"filter_910_f19h_0","isExtra":false,"isNew":false,"operator":"==","sqlExpression":null,"subject":"LIEU"}],"all_columns":["MOIS","SECTION","DCI","LIGNE
+  MODELE MOH","PRODUIT UVL","QUANTITE AU DEBUT DU MOIS","QUANTITE RECUE DURANT LE
+  MOIS","QUANTITE CONSOMMEE / DISTRIBUEE","DONT DISPENSEE AUX PATIENTS","DONT SORTIES
+  VERS D''AUTRES SERVICES OU LIEUX","SORTIES VERS COMMUNAUTE","STOCK INITIAL SAISI","QUANTITE
+  PERDUE OU VOLEE","QUANTITE DETERIOREE (ENDOMMAGEE, CASSEE)","QUANTITE PERIMEE (SORTIES,
+  MOTIF EXPIRE)","AUTRES AJUSTEMENTS (NET)","ECART D''INVENTAIRE","QUANTITE FIN DU
+  MOIS","QUANTITE A DUREE DE VIE < 3 MOIS","QUANTITE PERIMEE EN STOCK","QUANTITE PERIMEE
+  ENCORE EN STOCK (CUMUL)","NB DE JOURS DE RUPTURE DE STOCK","JOURS-LIEUX EN RUPTURE
+  (SOMME DES LIEUX)","CMM / DMM (MOYENNE MENSUELLE SUR 6 MOIS)","MOIS DE STOCK (FIN
+  DE MOIS / CMM)"],"color_pn":false,"datasource":"49__table","extra_form_data":{},"groupby":[],"include_search":true,"order_by_cols":["[\"SECTION\",true]","[\"DCI\",true]"],"order_desc":true,"percent_metrics":[],"query_mode":"raw","row_limit":10000,"server_page_length":25,"show_cell_bars":false,"slice_id":63,"table_timestamp_format":"smart_date","temporal_columns_lookup":{"MOIS":true},"time_grain_sqla":"P1D","viz_type":"table","force":false,"result_format":"json","result_type":"full","include_time":false},"result_format":"json","result_type":"full"}'
+cache_timeout: null
+uuid: 4bf50bb0-a56a-482c-a25e-3d3c6b2dd025
+version: 1.0.0
+dataset_uuid: a9f46733-feb1-4e8a-9e5d-8673109c0e2b

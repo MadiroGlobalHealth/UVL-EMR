@@ -1,0 +1,742 @@
+table_name: "MoH Fiche 2 Paludisme diarrh\xE9e pneumonie"
+main_dttm_col: MOIS
+description: "UVL-EMR \xB7 Minist\xE8re \xAB Fiche 2 \xBB: paludisme, diarrh\xE9e\
+  \ et pneumonie \xE0 la sortie (consultation ambulatoire et r\xE9sum\xE9 de sortie),\
+  \ 23 lignes du mod\xE8le, par tranche d'\xE2ge et sexe. On compte les cases coch\xE9\
+  es sur les formulaires, telles que construites. \xAB Paludisme trait\xE9 malgr\xE9\
+  \ un test n\xE9gatif \xBB = case \xAB Without Test \xBB. Les blisters d'Art\xE9\
+  m\xE9ther-Lum\xE9fantrine par poids ne sont pas enregistr\xE9s."
+default_endpoint: null
+offset: 0
+cache_timeout: null
+schema: public
+sql: "-- Fiche 2 (MoH, #909): paludisme, diarrh\xE9e et pneumonie \xE0 la sortie (consultation\
+  \ et hospitalisation)\n-- One row per MOIS x SERVICE x template line (23 lines,\
+  \ the pre-printed ones plus 3 marked 'ligne ajout\xE9e'); 18 age bands x H/F; Total.\n\
+  -- Product owner, 24 Nov 2026: count the boxes staff tick on the form, as built.\
+  \ Malaria lines: simple test\xE9 positif (box \xAB Rapid Test (Positive) \xBB /\
+  \ \xAB Test\xE9 positif \xBB); trait\xE9 malgr\xE9 un test n\xE9gatif (box \xAB\
+  \ Without Test \xBB, REPLACES the former \xAB trait\xE9 sans test \xBB wording);\n\
+  --   grave confirm\xE9; avec an\xE9mie s\xE9v\xE8re. Line 2 counts the discharge-summary\
+  \ box \xAB Simple \xBB (test not stated): not one of the four lines named by the\
+  \ product owner, kept as an added line.\n-- A case = one Outpatient Consultation\
+  \ (0ff55309-...) or Discharge Summary (669262a8-...) encounter whose form answers\
+  \ say so (concepts: malaria a2bfe9b7 / treatment 29778367 / pregnancy 1ec6ce6a,\n\
+  -- diarrhoea 5841a760 / treated 2c10adc6, pneumonia 186dfb2f / antibiotic fdde8fc7).\
+  \ Month and age band at the encounter date. SERVICE = encounter location.\n-- Lines\
+  \ not recorded (AL blisters by weight) have DISPONIBLE = 'Non enregistr\xE9' and\
+  \ empty counts.\nWITH pt AS (\n    SELECT p.patient_uuid, p.gender, p.birthdate\n\
+  \    FROM patients p\n    WHERE COALESCE(p.person_voided, false) = false\n     \
+  \ AND NOT (COALESCE(p.family_name, '') ~* '^(SYNTH-|E2E|QA|TEST|DEMO)'\n       \
+  \     OR COALESCE(p.given_name,  '') ~* '^(SYNTH-|E2E|QA|TEST|DEMO)')\n),\nenc AS\
+  \ (\n    SELECT e.encounter_id, e.encounter_uuid, e.visit_uuid, e.patient_uuid,\
+  \ e.encounter_datetime AS dt,\n           DATE_TRUNC('month', e.encounter_datetime)::date\
+  \ AS mois,\n           CASE e.location_uuid WHEN '44c3efb0-2583-4c80-a79e-1f756a03c0a1'\
+  \ THEN 'Consultation externe' WHEN '9D062929-CC4F-7A51-C700-2B968AADEC34' THEN 'Urgences'\
+  \ WHEN 'e1f4ab17-6dc5-4249-cf38-5bae7dbe9c64' THEN 'Ophtalmologie' WHEN 'f2a5bc28-7ed6-435a-da49-6cbf8ecfad75'\
+  \ THEN 'Dentisterie' ELSE COALESCE(e.location, 'Non renseign\xE9') END AS service,\n\
+  \           pt.gender AS sexe,\n           CASE WHEN a.dd IS NULL THEN NULL WHEN\
+  \ a.dd <= 28 THEN 1 WHEN a.m < 12 THEN 2 WHEN a.m < 60 THEN 3 WHEN a.y <= 9 THEN\
+  \ 4 WHEN a.y <= 14 THEN 5 WHEN a.y <= 17 THEN 6 WHEN a.y <= 19 THEN 7 WHEN a.y <=\
+  \ 64 THEN 8 + (a.y::int - 20) / 5 WHEN a.y <= 70 THEN 17 ELSE 18 END AS b,\n   \
+  \        COALESCE(pt.birthdate, v.patient_birthdate) AS bd\n    FROM encounters\
+  \ e\n    JOIN pt ON pt.patient_uuid = e.patient_uuid\n    LEFT JOIN visits v ON\
+  \ v.visit_uuid = e.visit_uuid\n    CROSS JOIN LATERAL (SELECT (e.encounter_datetime)::date\
+  \ - COALESCE(pt.birthdate, v.patient_birthdate) AS dd, DATE_PART('year', AGE((e.encounter_datetime)::date,\
+  \ COALESCE(pt.birthdate, v.patient_birthdate))) AS y, DATE_PART('year', AGE((e.encounter_datetime)::date,\
+  \ COALESCE(pt.birthdate, v.patient_birthdate))) * 12 + DATE_PART('month', AGE((e.encounter_datetime)::date,\
+  \ COALESCE(pt.birthdate, v.patient_birthdate))) AS m) a\n    WHERE e.encounter_type_uuid\
+  \ IN ('0ff55309-1897-476b-a647-c7c180b102c8', '669262a8-f351-4d5b-8480-3551734eed8f')\n\
+  \      AND COALESCE(e.encounter_voided, false) = false\n      AND e.location_uuid\
+  \ IS DISTINCT FROM '450be362-59a7-4ccd-964d-ebd930a8b30f'\n      AND COALESCE(v.visit_voided,\
+  \ false) = false\n),\nob AS (\n    SELECT o.encounter_uuid,\n        (ARRAY_AGG(o.answer_coded_uuid\
+  \ ORDER BY o.obs_date_time DESC) FILTER (WHERE o.question_uuid = 'a2bfe9b7-c373-4805-96c9-16e1039eac04'))[1]\
+  \ AS mal,\n        (ARRAY_AGG(o.answer_coded_uuid ORDER BY o.obs_date_time DESC)\
+  \ FILTER (WHERE o.question_uuid = '29778367-63f7-47f7-a02a-d17c9643578a'))[1] AS\
+  \ mal_tx,\n        (ARRAY_AGG(o.answer_coded_uuid ORDER BY o.obs_date_time DESC)\
+  \ FILTER (WHERE o.question_uuid = '1ec6ce6a-607a-4b6a-af5d-e14911fe98c5'))[1] AS\
+  \ preg,\n        (ARRAY_AGG(o.answer_coded_uuid ORDER BY o.obs_date_time DESC) FILTER\
+  \ (WHERE o.question_uuid = '5841a760-ac78-4c75-8d31-9df9af3891ec'))[1] AS diar,\n\
+  \        (ARRAY_AGG(o.answer_coded_uuid ORDER BY o.obs_date_time DESC) FILTER (WHERE\
+  \ o.question_uuid = '2c10adc6-9bdf-4ff8-a36e-6166ea66e2c8'))[1] AS diar_tx,\n  \
+  \      (ARRAY_AGG(o.answer_coded_uuid ORDER BY o.obs_date_time DESC) FILTER (WHERE\
+  \ o.question_uuid = '186dfb2f-be92-41ca-bd3d-3997462c53f4'))[1] AS pneu,\n     \
+  \   (ARRAY_AGG(o.answer_coded_uuid ORDER BY o.obs_date_time DESC) FILTER (WHERE\
+  \ o.question_uuid = 'fdde8fc7-b854-49ab-8b01-08ba156a779e'))[1] AS pneu_tx\n   \
+  \ FROM observations o\n    WHERE COALESCE(o.obs_voided, false) = false\n      AND\
+  \ o.question_uuid IN ('a2bfe9b7-c373-4805-96c9-16e1039eac04', '29778367-63f7-47f7-a02a-d17c9643578a',\
+  \ '1ec6ce6a-607a-4b6a-af5d-e14911fe98c5', '5841a760-ac78-4c75-8d31-9df9af3891ec',\
+  \ '2c10adc6-9bdf-4ff8-a36e-6166ea66e2c8', '186dfb2f-be92-41ca-bd3d-3997462c53f4',\
+  \ 'fdde8fc7-b854-49ab-8b01-08ba156a779e')\n      AND o.encounter_uuid IN (SELECT\
+  \ encounter_uuid FROM enc)\n    GROUP BY o.encounter_uuid\n),\nx AS (\n    SELECT\
+  \ enc.mois, enc.service, enc.sexe, enc.b, enc.encounter_id,\n           ob.mal,\
+  \ ob.mal_tx, ob.preg, ob.diar, ob.diar_tx, ob.pneu, ob.pneu_tx\n    FROM enc JOIN\
+  \ ob ON ob.encounter_uuid = enc.encounter_uuid\n),\ncnt AS (\n    SELECT 1 AS ordre,\
+  \ x.* FROM x WHERE x.mal = '9692ddcf-09ef-45d4-ae1a-da644e387ae0'\n    UNION ALL\n\
+  \    SELECT 2 AS ordre, x.* FROM x WHERE x.mal = '8edea3c3-d5de-4772-9d14-abed591bf957'\n\
+  \    UNION ALL\n    SELECT 3 AS ordre, x.* FROM x WHERE x.mal = '11cd65c5-0175-47fa-af4e-c7f125faeb58'\n\
+  \    UNION ALL\n    SELECT 4 AS ordre, x.* FROM x WHERE x.mal = '7906e56e-4729-4a54-970c-3e199f407992'\n\
+  \    UNION ALL\n    SELECT 5 AS ordre, x.* FROM x WHERE x.mal = '6cb1ed22-bdd2-4a18-985c-3bb56400a911'\n\
+  \    UNION ALL\n    SELECT 6 AS ordre, x.* FROM x WHERE x.mal IS NOT NULL AND x.preg\
+  \ = 'f9022461-c5fd-4fcb-a12f-075471cb5e8c'\n    UNION ALL\n    SELECT 7 AS ordre,\
+  \ x.* FROM x WHERE x.mal IS NOT NULL AND x.preg = 'ae846c0d-ab46-4a87-9c5d-f48285f26d6e'\n\
+  \    UNION ALL\n    SELECT 8 AS ordre, x.* FROM x WHERE x.mal_tx = 'bf4b4034-5331-461e-b839-fc71add06420'\n\
+  \    UNION ALL\n    SELECT 13 AS ordre, x.* FROM x WHERE x.mal_tx = 'eb44b2cc-48e7-4bbf-9f05-bb5462e8408f'\n\
+  \    UNION ALL\n    SELECT 14 AS ordre, x.* FROM x WHERE x.mal_tx = 'c14d15fa-838d-4af6-a802-9d53fc782669'\n\
+  \    UNION ALL\n    SELECT 15 AS ordre, x.* FROM x WHERE x.mal_tx = '834c9ecb-be7a-4b8f-962c-9a5a52d3908d'\n\
+  \    UNION ALL\n    SELECT 16 AS ordre, x.* FROM x WHERE x.mal_tx = 'da7e3699-9a19-4f9f-bbe5-5ab3d33a861d'\n\
+  \    UNION ALL\n    SELECT 17 AS ordre, x.* FROM x WHERE x.mal_tx = '19c3ae10-f224-468c-9d42-26fcc16cc190'\n\
+  \    UNION ALL\n    SELECT 18 AS ordre, x.* FROM x WHERE x.diar = 'b88b4fa9-3216-4531-b9fe-502713468fbe'\n\
+  \    UNION ALL\n    SELECT 19 AS ordre, x.* FROM x WHERE x.diar = 'b88b4fa9-3216-4531-b9fe-502713468fbe'\
+  \ AND x.diar_tx = '2f20b5d3-ce71-4b89-a3b4-388f416fc62e'\n    UNION ALL\n    SELECT\
+  \ 20 AS ordre, x.* FROM x WHERE x.diar = '3ad826e0-e1c3-4eae-b910-9698e65e9553'\n\
+  \    UNION ALL\n    SELECT 21 AS ordre, x.* FROM x WHERE x.diar = '3ad826e0-e1c3-4eae-b910-9698e65e9553'\
+  \ AND x.diar_tx = '2f20b5d3-ce71-4b89-a3b4-388f416fc62e'\n    UNION ALL\n    SELECT\
+  \ 22 AS ordre, x.* FROM x WHERE x.pneu = '2f20b5d3-ce71-4b89-a3b4-388f416fc62e'\n\
+  \    UNION ALL\n    SELECT 23 AS ordre, x.* FROM x WHERE x.pneu = '2f20b5d3-ce71-4b89-a3b4-388f416fc62e'\
+  \ AND x.pneu_tx = '2f20b5d3-ce71-4b89-a3b4-388f416fc62e'\n),\nlines (ordre, groupe,\
+  \ libelle, dispo) AS (\n    VALUES\n        (1, 'Paludisme', 'Paludisme simple test\xE9\
+  \ positif', true),\n        (2, 'Paludisme', 'Paludisme simple, test non pr\xE9\
+  cis\xE9 (r\xE9sum\xE9 de sortie, case \xAB Simple \xBB)  [ligne ajout\xE9e]', true),\n\
+  \        (3, 'Paludisme', 'Paludisme trait\xE9 malgr\xE9 un test n\xE9gatif', true),\n\
+  \        (4, 'Paludisme', 'Paludisme grave confirm\xE9', true),\n        (5, 'Paludisme',\
+  \ 'Paludisme avec an\xE9mie s\xE9v\xE8re', true),\n        (6, 'Paludisme', 'Paludisme\
+  \ chez les femmes enceintes (grossesse <= 3 mois)', true),\n        (7, 'Paludisme',\
+  \ 'Paludisme chez les femmes enceintes (grossesse > 3 mois)', true),\n        (8,\
+  \ 'Traitement', 'Paludisme trait\xE9 par Art\xE9m\xE9ther-Lum\xE9fantrine, toutes\
+  \ pr\xE9sentations  [ligne ajout\xE9e]', true),\n        (9, 'Traitement', 'Art\xE9\
+  m\xE9ther-Lum\xE9fantrine, blister de 6 cp (5-14 kg)', false),\n        (10, 'Traitement',\
+  \ 'Art\xE9m\xE9ther-Lum\xE9fantrine, blister de 12 cp (15-24 kg)', false),\n   \
+  \     (11, 'Traitement', 'Art\xE9m\xE9ther-Lum\xE9fantrine, blister de 18 cp (25-34\
+  \ kg)', false),\n        (12, 'Traitement', 'Art\xE9m\xE9ther-Lum\xE9fantrine, blister\
+  \ de 24 cp (35 kg et +)', false),\n        (13, 'Traitement', 'Paludisme trait\xE9\
+  \ par Dihydroart\xE9misinine + Pip\xE9raquine cp', true),\n        (14, 'Traitement',\
+  \ 'Paludisme trait\xE9 par Quinine comprim\xE9s + clindamycine cp', true),\n   \
+  \     (15, 'Traitement', 'Paludisme trait\xE9 par Quinine comprim\xE9s', true),\n\
+  \        (16, 'Traitement', 'Paludisme trait\xE9 par Art\xE9sunate inj', true),\n\
+  \        (17, 'Traitement', 'Paludisme trait\xE9 par quinine inj', true),\n    \
+  \    (18, 'Diarrh\xE9e', 'Diarrh\xE9e avec d\xE9shydratation: diagnostiqu\xE9e',\
+  \ true),\n        (19, 'Diarrh\xE9e', 'Diarrh\xE9e avec d\xE9shydratation: trait\xE9\
+  e', true),\n        (20, 'Diarrh\xE9e', 'Diarrh\xE9e sans d\xE9shydratation: diagnostiqu\xE9\
+  e', true),\n        (21, 'Diarrh\xE9e', 'Diarrh\xE9e sans d\xE9shydratation: trait\xE9\
+  e  [ligne ajout\xE9e, voir question]', true),\n        (22, 'Pneumonie', 'Pneumonie:\
+  \ diagnostiqu\xE9e', true),\n        (23, 'Pneumonie', 'Pneumonie: trait\xE9e par\
+  \ antibiotique', true)\n),\nms AS (SELECT DISTINCT mois, service FROM cnt)\nSELECT\n\
+  \    ms.mois AS \"MOIS\",\n    ms.service AS \"SERVICE\",\n    l.groupe AS \"GROUPE\"\
+  ,\n    l.libelle AS \"LIBELLE\",\n    CASE WHEN l.dispo THEN 'Enregistr\xE9' ELSE\
+  \ 'Non enregistr\xE9' END AS \"DISPONIBLE\",\n    CASE WHEN l.dispo THEN COUNT(c.ordre)\
+  \ FILTER (WHERE c.b = 1 AND c.sexe = 'M') END AS \"0-28 jours H\",\n    CASE WHEN\
+  \ l.dispo THEN COUNT(c.ordre) FILTER (WHERE c.b = 1 AND c.sexe = 'F') END AS \"\
+  0-28 jours F\",\n    CASE WHEN l.dispo THEN COUNT(c.ordre) FILTER (WHERE c.b = 2\
+  \ AND c.sexe = 'M') END AS \"29 jours-11 mois H\",\n    CASE WHEN l.dispo THEN COUNT(c.ordre)\
+  \ FILTER (WHERE c.b = 2 AND c.sexe = 'F') END AS \"29 jours-11 mois F\",\n    CASE\
+  \ WHEN l.dispo THEN COUNT(c.ordre) FILTER (WHERE c.b = 3 AND c.sexe = 'M') END AS\
+  \ \"12-59 mois H\",\n    CASE WHEN l.dispo THEN COUNT(c.ordre) FILTER (WHERE c.b\
+  \ = 3 AND c.sexe = 'F') END AS \"12-59 mois F\",\n    CASE WHEN l.dispo THEN COUNT(c.ordre)\
+  \ FILTER (WHERE c.b = 4 AND c.sexe = 'M') END AS \"5-9 ans H\",\n    CASE WHEN l.dispo\
+  \ THEN COUNT(c.ordre) FILTER (WHERE c.b = 4 AND c.sexe = 'F') END AS \"5-9 ans F\"\
+  ,\n    CASE WHEN l.dispo THEN COUNT(c.ordre) FILTER (WHERE c.b = 5 AND c.sexe =\
+  \ 'M') END AS \"10-14 ans H\",\n    CASE WHEN l.dispo THEN COUNT(c.ordre) FILTER\
+  \ (WHERE c.b = 5 AND c.sexe = 'F') END AS \"10-14 ans F\",\n    CASE WHEN l.dispo\
+  \ THEN COUNT(c.ordre) FILTER (WHERE c.b = 6 AND c.sexe = 'M') END AS \"15-17 ans\
+  \ H\",\n    CASE WHEN l.dispo THEN COUNT(c.ordre) FILTER (WHERE c.b = 6 AND c.sexe\
+  \ = 'F') END AS \"15-17 ans F\",\n    CASE WHEN l.dispo THEN COUNT(c.ordre) FILTER\
+  \ (WHERE c.b = 7 AND c.sexe = 'M') END AS \"18-19 ans H\",\n    CASE WHEN l.dispo\
+  \ THEN COUNT(c.ordre) FILTER (WHERE c.b = 7 AND c.sexe = 'F') END AS \"18-19 ans\
+  \ F\",\n    CASE WHEN l.dispo THEN COUNT(c.ordre) FILTER (WHERE c.b = 8 AND c.sexe\
+  \ = 'M') END AS \"20-24 ans H\",\n    CASE WHEN l.dispo THEN COUNT(c.ordre) FILTER\
+  \ (WHERE c.b = 8 AND c.sexe = 'F') END AS \"20-24 ans F\",\n    CASE WHEN l.dispo\
+  \ THEN COUNT(c.ordre) FILTER (WHERE c.b = 9 AND c.sexe = 'M') END AS \"25-29 ans\
+  \ H\",\n    CASE WHEN l.dispo THEN COUNT(c.ordre) FILTER (WHERE c.b = 9 AND c.sexe\
+  \ = 'F') END AS \"25-29 ans F\",\n    CASE WHEN l.dispo THEN COUNT(c.ordre) FILTER\
+  \ (WHERE c.b = 10 AND c.sexe = 'M') END AS \"30-34 ans H\",\n    CASE WHEN l.dispo\
+  \ THEN COUNT(c.ordre) FILTER (WHERE c.b = 10 AND c.sexe = 'F') END AS \"30-34 ans\
+  \ F\",\n    CASE WHEN l.dispo THEN COUNT(c.ordre) FILTER (WHERE c.b = 11 AND c.sexe\
+  \ = 'M') END AS \"35-39 ans H\",\n    CASE WHEN l.dispo THEN COUNT(c.ordre) FILTER\
+  \ (WHERE c.b = 11 AND c.sexe = 'F') END AS \"35-39 ans F\",\n    CASE WHEN l.dispo\
+  \ THEN COUNT(c.ordre) FILTER (WHERE c.b = 12 AND c.sexe = 'M') END AS \"40-44 ans\
+  \ H\",\n    CASE WHEN l.dispo THEN COUNT(c.ordre) FILTER (WHERE c.b = 12 AND c.sexe\
+  \ = 'F') END AS \"40-44 ans F\",\n    CASE WHEN l.dispo THEN COUNT(c.ordre) FILTER\
+  \ (WHERE c.b = 13 AND c.sexe = 'M') END AS \"45-49 ans H\",\n    CASE WHEN l.dispo\
+  \ THEN COUNT(c.ordre) FILTER (WHERE c.b = 13 AND c.sexe = 'F') END AS \"45-49 ans\
+  \ F\",\n    CASE WHEN l.dispo THEN COUNT(c.ordre) FILTER (WHERE c.b = 14 AND c.sexe\
+  \ = 'M') END AS \"50-54 ans H\",\n    CASE WHEN l.dispo THEN COUNT(c.ordre) FILTER\
+  \ (WHERE c.b = 14 AND c.sexe = 'F') END AS \"50-54 ans F\",\n    CASE WHEN l.dispo\
+  \ THEN COUNT(c.ordre) FILTER (WHERE c.b = 15 AND c.sexe = 'M') END AS \"55-59 ans\
+  \ H\",\n    CASE WHEN l.dispo THEN COUNT(c.ordre) FILTER (WHERE c.b = 15 AND c.sexe\
+  \ = 'F') END AS \"55-59 ans F\",\n    CASE WHEN l.dispo THEN COUNT(c.ordre) FILTER\
+  \ (WHERE c.b = 16 AND c.sexe = 'M') END AS \"60-64 ans H\",\n    CASE WHEN l.dispo\
+  \ THEN COUNT(c.ordre) FILTER (WHERE c.b = 16 AND c.sexe = 'F') END AS \"60-64 ans\
+  \ F\",\n    CASE WHEN l.dispo THEN COUNT(c.ordre) FILTER (WHERE c.b = 17 AND c.sexe\
+  \ = 'M') END AS \"65-70 ans H\",\n    CASE WHEN l.dispo THEN COUNT(c.ordre) FILTER\
+  \ (WHERE c.b = 17 AND c.sexe = 'F') END AS \"65-70 ans F\",\n    CASE WHEN l.dispo\
+  \ THEN COUNT(c.ordre) FILTER (WHERE c.b = 18 AND c.sexe = 'M') END AS \"71 ans et\
+  \ + H\",\n    CASE WHEN l.dispo THEN COUNT(c.ordre) FILTER (WHERE c.b = 18 AND c.sexe\
+  \ = 'F') END AS \"71 ans et + F\",\n    CASE WHEN l.dispo THEN COUNT(c.ordre) FILTER\
+  \ (WHERE c.sexe = 'M') END AS \"TOTAL H\",\n    CASE WHEN l.dispo THEN COUNT(c.ordre)\
+  \ FILTER (WHERE c.sexe = 'F') END AS \"TOTAL F\",\n    CASE WHEN l.dispo THEN COUNT(c.ordre)\
+  \ END AS \"TOTAL\",\n    l.ordre AS \"ORDRE\"\nFROM ms\nCROSS JOIN lines l\nLEFT\
+  \ JOIN cnt c ON c.ordre = l.ordre AND c.mois = ms.mois AND c.service = ms.service\n\
+  GROUP BY ms.mois, ms.service, l.groupe, l.libelle, l.dispo, l.ordre\nORDER BY ms.mois\
+  \ DESC, ms.service, l.ordre\n"
+params: null
+template_params: null
+filter_select_enabled: true
+fetch_values_predicate: null
+extra: null
+normalize_columns: false
+always_filter_main_dttm: false
+uuid: fa38bd31-d488-4071-adaa-81017ad238d1
+metrics:
+- metric_name: count
+  verbose_name: COUNT(*)
+  metric_type: count
+  expression: COUNT(*)
+  description: null
+  d3format: null
+  currency: null
+  extra: null
+  warning_text: null
+columns:
+- column_name: 71 ans et + F
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 71 ans et + H
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 29 jours-11 mois F
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 29 jours-11 mois H
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 10-14 ans F
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 10-14 ans H
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 20-24 ans F
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 20-24 ans H
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 0-28 jours F
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 0-28 jours H
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 30-34 ans F
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 30-34 ans H
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 40-44 ans F
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 40-44 ans H
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 50-54 ans F
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 50-54 ans H
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 60-64 ans F
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 60-64 ans H
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 65-70 ans F
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 65-70 ans H
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 15-17 ans F
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 15-17 ans H
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 18-19 ans F
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 18-19 ans H
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 12-59 mois F
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 12-59 mois H
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 25-29 ans F
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 25-29 ans H
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 35-39 ans F
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 35-39 ans H
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 45-49 ans F
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 45-49 ans H
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 55-59 ans F
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 55-59 ans H
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 5-9 ans F
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 5-9 ans H
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: TOTAL F
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: TOTAL H
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: MOIS
+  verbose_name: null
+  is_dttm: true
+  is_active: true
+  type: DATE
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: TOTAL
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: DISPONIBLE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: LIBELLE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: SERVICE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: ORDRE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: INTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: GROUPE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+version: 1.0.0
+database_uuid: 44c13a30-0c14-402c-b81f-1c93972f5fbc

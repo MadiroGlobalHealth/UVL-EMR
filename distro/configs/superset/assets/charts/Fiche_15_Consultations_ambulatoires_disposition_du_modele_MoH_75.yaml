@@ -1,0 +1,70 @@
+slice_name: "Fiche 15 \u2013 Consultations ambulatoires, disposition du mod\xE8le\
+  \ (MoH)"
+description: "Fiche 15 du Minist\xE8re (version 2023, page 18): un bloc par service,\
+  \ 18 tranches d'\xE2ge puis \xAB Tot Cons \xBB (total des cas = nouveaux cas + anciens\
+  \ cas); nouveaux cas par r\xE9sidence: Comm (m\xEAme commune), HC (hors commune),\
+  \ HD (hors district), HP (hors province), HB (hors Burundi). Cas non pr\xE9cis\xE9\
+  : colonne s\xE9par\xE9e."
+certified_by: null
+certification_details: null
+viz_type: table
+params:
+  datasource: 57__table
+  viz_type: table
+  query_mode: raw
+  groupby: []
+  time_grain_sqla: P1D
+  temporal_columns_lookup:
+    MOIS: true
+  all_columns:
+  - MOIS
+  - SERVICE
+  - TRANCHE D'AGE
+  - NOUVEAUX CAS H
+  - NOUVEAUX CAS F
+  - ANCIENS CAS H
+  - ANCIENS CAS F
+  - TOTAL CAS H
+  - TOTAL CAS F
+  - Tot Cons
+  - NOUVEAUX CAS COMM (MEME COMMUNE)
+  - NOUVEAUX CAS HC (HORS COMMUNE)
+  - NOUVEAUX CAS HD (HORS DISTRICT)
+  - NOUVEAUX CAS HP (HORS PROVINCE)
+  - NOUVEAUX CAS HB (HORS BURUNDI)
+  - NOUVEAUX CAS RESIDENCE NON PRECISEE
+  - NOUVEAUX CAS SEXE NON RENSEIGNE
+  - ANCIENS CAS SEXE NON RENSEIGNE
+  - NOUVEAUX CAS TOTAL
+  - ANCIENS CAS TOTAL
+  - CAS NON PRECISE (NOUVEAU OU ANCIEN)
+  - TOTAL CONSULTATIONS (CAS NON PRECISE INCLUS)
+  percent_metrics: []
+  adhoc_filters:
+  - expressionType: SIMPLE
+    subject: MOIS
+    operator: TEMPORAL_RANGE
+    comparator: previous calendar month
+    clause: WHERE
+    sqlExpression: null
+    isExtra: false
+    isNew: false
+    datasourceWarning: false
+    filterOptionName: filter_905b_f15a
+  order_by_cols:
+  - '["MOIS", false]'
+  - '["ORDRE_SERVICE", true]'
+  - '["ORDRE", true]'
+  row_limit: 10000
+  server_page_length: 19
+  order_desc: true
+  table_timestamp_format: smart_date
+  show_cell_bars: false
+  color_pn: false
+  include_search: false
+  extra_form_data: {}
+query_context: null
+cache_timeout: null
+uuid: ba537a29-5544-434c-bddd-e52cb9e4bd41
+version: 1.0.0
+dataset_uuid: 858c1d73-5330-4e36-a755-951f9090a333

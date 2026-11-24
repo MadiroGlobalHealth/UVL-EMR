@@ -1,0 +1,275 @@
+table_name: "MoH Fiche 15 Consultations gabarit lignes sp\xE9ciales"
+main_dttm_col: MOIS
+description: "UVL-EMR \xB7 Minist\xE8re \xAB Fiche 15 \xBB (version 2023, pages 18-19):\
+  \ lignes sp\xE9ciales par service (femmes enceintes, post-partum, PVVIH, petite\
+  \ chirurgie, mode d'arriv\xE9e, consultations par prestataire, mode de sortie, alcool,\
+  \ tabac, col de l'ut\xE9rus). Le total \xAB Tot Cons \xBB est dans le tableau par\
+  \ tranches d'\xE2ge."
+default_endpoint: null
+offset: 0
+cache_timeout: null
+schema: public
+sql: "-- Fiche 15 gabarit, table 2 (UVL-EMR#905): special lines of Fiche 15 (template\
+  \ v2023 pp.18-19), one row per MOIS x SERVICE x line.\n-- Same definitions as dataset\
+  \ 24 (MoH Fiche 15): Outpatient Consultation encounters; test patients (SYNTH-/E2E/QA/TEST/DEMO),\
+  \ voided persons/visits/encounters and location \xAB Locations test \xBB excluded.\
+  \ Only the 4 services of the template.\n-- The \xAB Tot Cons \xBB total (total cases\
+  \ = new + old) is a column and a row of table 1 (dataset \xAB MoH Fiche 15 Consultations\
+  \ (gabarit) tranches d'\xE2ge \xBB), not a line here.\n-- A line with no recorded\
+  \ data shows DONNEE = \xAB non enregistr\xE9 \xBB and empty counts. Petite chirurgie\
+  \ = procedure orders (codes xx3nn) of the visit, counted on its first consultation,\
+  \ as dataset 24.\nWITH c AS (\nSELECT e.encounter_id, e.encounter_uuid, e.visit_uuid,\
+  \ e.encounter_datetime::date AS d, e.location_uuid, v.visit_attributes,\nCOALESCE(p.gender,\
+  \ v.patient_gender) AS sexe, COALESCE(p.birthdate, v.patient_birthdate) AS bd,\n\
+  ROW_NUMBER() OVER (PARTITION BY e.visit_uuid ORDER BY e.encounter_id) AS rn\nFROM\
+  \ encounters e\nLEFT JOIN visits v ON v.visit_uuid = e.visit_uuid\nJOIN patients\
+  \ p ON p.patient_uuid = e.patient_uuid\nWHERE e.encounter_type_uuid = '0ff55309-1897-476b-a647-c7c180b102c8'\n\
+  AND COALESCE(e.encounter_voided, false) = false\nAND e.location_uuid IS DISTINCT\
+  \ FROM '450be362-59a7-4ccd-964d-ebd930a8b30f'\nAND COALESCE(v.visit_voided, false)\
+  \ = false\nAND COALESCE(p.person_voided, false) = false\nAND NOT (COALESCE(p.family_name,\
+  \ '') ~* '^(SYNTH-|E2E|QA|TEST|DEMO)' OR COALESCE(p.given_name, '') ~* '^(SYNTH-|E2E|QA|TEST|DEMO)')\n\
+  ),\nob AS (\nSELECT o.encounter_uuid,\n(ARRAY_AGG(o.answer_coded ORDER BY o.obs_date_time\
+  \ DESC) FILTER (WHERE o.question_uuid = 'c61917f2-08dd-475b-ba03-af03cbb7ae06'))[1]\
+  \ AS woman,\n(ARRAY_AGG(o.answer_coded ORDER BY o.obs_date_time DESC) FILTER (WHERE\
+  \ o.question_uuid = 'd9a94f49-412b-41fe-ac47-437dbc66ffda'))[1] AS hiv,\n(ARRAY_AGG(o.answer_coded\
+  \ ORDER BY o.obs_date_time DESC) FILTER (WHERE o.question_uuid = 'b501a1ac-f2ea-4e79-ace4-658c1af45bd2'))[1]\
+  \ AS outcome,\nBOOL_OR(o.question_uuid = '86b0bf2e-4445-4f3f-aae9-dde28a9b0822'\
+  \ AND o.answer_coded_uuid = '2f20b5d3-ce71-4b89-a3b4-388f416fc62e') AS alcool,\n\
+  BOOL_OR(o.question_uuid = 'cdc82ddc-1413-4ec1-b891-b0155f8cc7fa' AND o.answer_coded_uuid\
+  \ = '2f20b5d3-ce71-4b89-a3b4-388f416fc62e') AS tabac,\nBOOL_OR(o.question_uuid =\
+  \ '99e6c785-4aeb-4ca4-8de4-5fe90f78f790') AS depistee,\nBOOL_OR(o.question_uuid\
+  \ = '99e6c785-4aeb-4ca4-8de4-5fe90f78f790' AND o.answer_coded_uuid = '2c10adc6-9bdf-4ff8-a36e-6166ea66e2c8')\
+  \ AS traitee,\nBOOL_OR(o.question_uuid = '99e6c785-4aeb-4ca4-8de4-5fe90f78f790'\
+  \ AND o.answer_coded_uuid = '5ebcf822-0398-43ef-8d70-117e363541da') AS positive,\n\
+  BOOL_OR(o.question_uuid = '12ab2425-f04a-466f-adbd-8aa8b1eb99c0' AND o.answer_coded_uuid\
+  \ = '331be736-309d-4e28-939f-efbd317ba431') AS medecin,\nBOOL_OR(o.question_uuid\
+  \ = '12ab2425-f04a-466f-adbd-8aa8b1eb99c0' AND o.answer_coded_uuid = '31c7d379-1191-4823-a970-fdf665792362')\
+  \ AS infirmier\nFROM observations o\nWHERE COALESCE(o.obs_voided, false) = false\n\
+  AND o.question_uuid IN ('c61917f2-08dd-475b-ba03-af03cbb7ae06', 'd9a94f49-412b-41fe-ac47-437dbc66ffda',\
+  \ 'b501a1ac-f2ea-4e79-ace4-658c1af45bd2', '86b0bf2e-4445-4f3f-aae9-dde28a9b0822',\
+  \ 'cdc82ddc-1413-4ec1-b891-b0155f8cc7fa', '99e6c785-4aeb-4ca4-8de4-5fe90f78f790',\
+  \ '12ab2425-f04a-466f-adbd-8aa8b1eb99c0')\nAND o.encounter_uuid IN (SELECT encounter_uuid\
+  \ FROM c)\nGROUP BY o.encounter_uuid\n),\npr AS (\nSELECT e.visit_uuid, COUNT(*)\
+  \ AS n_actes\nFROM orders o JOIN encounters e ON e.encounter_uuid = o.encounter_uuid\n\
+  WHERE o.order_type_uuid = '67a92e56-0f88-11ea-8d71-362b9e155667' AND COALESCE(o.voided,\
+  \ false) = false\nAND o.order_name ~ '^[A-Z]{2,3}3[0-9]{2} ' AND e.visit_uuid IN\
+  \ (SELECT visit_uuid FROM c)\nGROUP BY e.visit_uuid\n),\nx AS (\nSELECT DATE_TRUNC('month',\
+  \ c.d)::date AS mois, c.sexe, DATE_PART('year', AGE(c.d, c.bd))::int AS age, c.rn,\
+  \ ob.*, COALESCE(pr.n_actes, 0) AS n_actes,\nCASE c.location_uuid WHEN '44c3efb0-2583-4c80-a79e-1f756a03c0a1'\
+  \ THEN 'Consultation externe' WHEN '9D062929-CC4F-7A51-C700-2B968AADEC34' THEN 'Urgences'\
+  \ WHEN 'e1f4ab17-6dc5-4249-cf38-5bae7dbe9c64' THEN 'Ophtalmologie' WHEN 'f2a5bc28-7ed6-435a-da49-6cbf8ecfad75'\
+  \ THEN 'Dentisterie' END AS service,\nCOALESCE(\nCASE NULLIF(TRIM(SUBSTRING(c.visit_attributes\
+  \ FROM '(?:^|/ )Origin: ((?:[^/]|/(?! ))*)')), '')\nWHEN 'Referred by Health Center\
+  \ (CDS)' THEN 'CDS' WHEN 'Referred by Another Hospital' THEN 'HOPITAL' END,\n(SELECT\
+  \ CASE o2.answer_coded_uuid WHEN 'aa4aba23-865b-4b95-98b1-6abb86126b09' THEN 'CDS'\
+  \ WHEN '1cf31ac9-1763-4f89-836b-078d0afd79a1' THEN 'HOPITAL' END\nFROM observations\
+  \ o2 WHERE o2.visit_uuid = c.visit_uuid AND o2.question_uuid = 'c110605a-e601-40bc-ae07-e1f261d317fa'\
+  \ AND COALESCE(o2.obs_voided, false) = false\nORDER BY o2.obs_date_time DESC LIMIT\
+  \ 1)) AS arrivee\nFROM c LEFT JOIN ob ON ob.encounter_uuid = c.encounter_uuid LEFT\
+  \ JOIN pr ON pr.visit_uuid = c.visit_uuid\n),\nx2 AS (SELECT * FROM x WHERE service\
+  \ IS NOT NULL),\nl AS (SELECT * FROM (VALUES\n(1,'Populations particuli\xE8res','Femmes\
+  \ en post-partum < 42 jours',true),(2,'Populations particuli\xE8res','Femmes enceintes',true),(3,'Populations\
+  \ particuli\xE8res','PVVIH',true),\n(4,'Petite chirurgie','Nb total d''actes de\
+  \ petite chirurgie',true),(5,'Petite chirurgie','Nb de personnes ayant subi l''acte',true),\n\
+  (6,'Mode d''arriv\xE9e','Nb de cas r\xE9f\xE9r\xE9s par CS',true),(7,'Mode d''arriv\xE9\
+  e','Nb de cas r\xE9f\xE9r\xE9s par autres h\xF4pitaux',true),\n(8,'Consultations\
+  \ par prestataire','Total des consultations par des m\xE9decins',true),(9,'Consultations\
+  \ par prestataire','Total des consultations par des infirmiers',true),\n(10,'Mode\
+  \ de sortie','Ambulatoires',true),(11,'Mode de sortie','Contre-r\xE9f\xE9rences',true),(12,'Mode\
+  \ de sortie','Transferts intra-hospitaliers',true),\n(13,'Mode de sortie','Transferts\
+  \ niv. inf\xE9rieur',true),(14,'Mode de sortie','Transferts niv. sup\xE9rieur',true),\n\
+  (15,'Consommation','Nb de consommateurs d''alcool',true),(16,'Consommation','Nb\
+  \ de consommateurs du tabac',true),\n(17,'Col de l''ut\xE9rus','Fe d\xE9pist\xE9\
+  es pour l\xE9sions pr\xE9canc\xE9reuses du col',true),(18,'Col de l''ut\xE9rus','Fe\
+  \ d\xE9pist\xE9es + pour l\xE9sions pr\xE9canc\xE9reuses du col',true),\n(19,'Col\
+  \ de l''ut\xE9rus','Fe trait\xE9es pour l\xE9sions pr\xE9canc\xE9reuses du col',true))\
+  \ t(ord, rubrique, ligne, enreg)),\ng AS (\nSELECT m.mois, s.service, s.sord, l.*\
+  \ FROM (SELECT DISTINCT mois FROM x2) m\nCROSS JOIN (VALUES ('Urgences',1),('Consultation\
+  \ externe',2),('Ophtalmologie',3),('Dentisterie',4)) s(service, sord) CROSS JOIN\
+  \ l\n),\nh AS (\nSELECT x2.mois, x2.service, v.ord, x2.sexe, x2.age, v.w\nFROM x2\
+  \ CROSS JOIN LATERAL (VALUES\n(1, x2.woman = 'Postpartum', 1), (2, x2.woman = 'Pregnant',\
+  \ 1), (3, x2.hiv = 'Positive', 1),\n(4, x2.rn = 1 AND x2.n_actes > 0, x2.n_actes),\
+  \ (5, x2.rn = 1 AND x2.n_actes > 0, 1),\n(6, x2.arrivee = 'CDS', 1), (7, x2.arrivee\
+  \ = 'HOPITAL', 1), (8, COALESCE(x2.medecin, false), 1), (9, COALESCE(x2.infirmier,\
+  \ false), 1),\n(10, x2.outcome = 'Outpatient', 1), (11, x2.outcome = 'Counter-Referral',\
+  \ 1), (12, x2.outcome = 'Intra-Hospital Transfer', 1),\n(13, x2.outcome = 'Transfer\
+  \ to Lower-Level Facility', 1), (14, x2.outcome = 'Transfer to Higher-Level Facility',\
+  \ 1),\n(15, COALESCE(x2.alcool, false), 1), (16, COALESCE(x2.tabac, false), 1),\
+  \ (17, COALESCE(x2.depistee, false), 1), (18, COALESCE(x2.positive, false), 1),\
+  \ (19, COALESCE(x2.traitee, false), 1)\n) v(ord, ok, w)\nWHERE v.ok\n)\nSELECT\n\
+  g.mois AS \"MOIS\",\ng.service AS \"SERVICE\",\ng.rubrique AS \"RUBRIQUE\",\ng.ligne\
+  \ AS \"LIGNE\",\nCASE WHEN g.enreg THEN COALESCE(SUM(h.w) FILTER (WHERE h.sexe =\
+  \ 'M'), 0) END AS \"H\",\nCASE WHEN g.enreg THEN COALESCE(SUM(h.w) FILTER (WHERE\
+  \ h.sexe = 'F'), 0) END AS \"F\",\nCASE WHEN g.enreg THEN COALESCE(SUM(h.w), 0)\
+  \ END AS \"TOTAL\",\nCASE WHEN g.enreg THEN COALESCE(SUM(h.w) FILTER (WHERE h.age\
+  \ < 5), 0) END AS \"DONT MOINS DE 5 ANS\",\nCASE WHEN g.enreg THEN COALESCE(SUM(h.w)\
+  \ FILTER (WHERE h.age >= 5), 0) END AS \"DONT 5 ANS ET PLUS\",\nCASE WHEN g.enreg\
+  \ THEN 'enregistr\xE9' ELSE 'non enregistr\xE9' END AS \"DONNEE\",\ng.sord AS \"\
+  ORDRE_SERVICE\",\ng.ord AS \"ORDRE\"\nFROM g\nLEFT JOIN h ON h.mois = g.mois AND\
+  \ h.service = g.service AND h.ord = g.ord\nGROUP BY g.mois, g.service, g.sord, g.ord,\
+  \ g.rubrique, g.ligne, g.enreg\nORDER BY g.mois DESC, g.sord, g.ord\n\n"
+params: null
+template_params: null
+filter_select_enabled: true
+fetch_values_predicate: null
+extra: null
+normalize_columns: false
+always_filter_main_dttm: false
+uuid: 0691cf77-ee2c-4f97-94a9-120756546834
+metrics:
+- metric_name: count
+  verbose_name: COUNT(*)
+  metric_type: count
+  expression: COUNT(*)
+  description: null
+  d3format: null
+  currency: null
+  extra: null
+  warning_text: null
+columns:
+- column_name: DONT MOINS DE 5 ANS
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: DECIMAL
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: DONT 5 ANS ET PLUS
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: DECIMAL
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: TOTAL
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: DECIMAL
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: F
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: DECIMAL
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: H
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: DECIMAL
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: MOIS
+  verbose_name: null
+  is_dttm: true
+  is_active: true
+  type: DATE
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: RUBRIQUE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: ORDRE_SERVICE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: INTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: SERVICE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: ORDRE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: INTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: DONNEE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: LIGNE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+version: 1.0.0
+database_uuid: 44c13a30-0c14-402c-b81f-1c93972f5fbc
