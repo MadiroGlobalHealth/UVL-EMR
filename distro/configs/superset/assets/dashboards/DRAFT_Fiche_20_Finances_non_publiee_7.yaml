@@ -1,0 +1,209 @@
+dashboard_title: "DRAFT \u2013 Fiche 20 Finances (non publi\xE9e)"
+description: null
+css: null
+slug: null
+certified_by: null
+certification_details: null
+published: false
+uuid: accc21bf-7e77-4897-99d3-b1a8a53ba86d
+position:
+  DASHBOARD_VERSION_KEY: v2
+  ROOT_ID:
+    type: ROOT
+    id: ROOT_ID
+    children:
+    - GRID_ID
+  GRID_ID:
+    type: GRID
+    id: GRID_ID
+    children:
+    - ROW-note
+    - ROW-17
+    - ROW-18
+    - ROW-19
+    - ROW-20
+    - ROW-21
+    parents:
+    - ROOT_ID
+  HEADER_ID:
+    id: HEADER_ID
+    type: HEADER
+    meta:
+      text: "DRAFT \u2013 Fiches Minist\xE8re (909)"
+  ROW-17:
+    type: ROW
+    id: ROW-17
+    children:
+    - CHART-17
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    meta:
+      background: BACKGROUND_TRANSPARENT
+  CHART-17:
+    type: CHART
+    id: CHART-17
+    children: []
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-17
+    meta:
+      width: 12
+      height: 70
+      chartId: 65
+      sliceName: "Fiche 20 \u2013 Recettes (MoH)"
+      uuid: d4387b7d-ecfb-43a9-9a8c-938ce2c30248
+  ROW-18:
+    type: ROW
+    id: ROW-18
+    children:
+    - CHART-18
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    meta:
+      background: BACKGROUND_TRANSPARENT
+  CHART-18:
+    type: CHART
+    id: CHART-18
+    children: []
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-18
+    meta:
+      width: 12
+      height: 50
+      chartId: 66
+      sliceName: "Fiche 20 \u2013 Cr\xE9ances (MoH)"
+      uuid: 828a1e41-1b92-4043-af82-e0bce8041e77
+  ROW-19:
+    type: ROW
+    id: ROW-19
+    children:
+    - CHART-19
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    meta:
+      background: BACKGROUND_TRANSPARENT
+  CHART-19:
+    type: CHART
+    id: CHART-19
+    children: []
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-19
+    meta:
+      width: 12
+      height: 40
+      chartId: 67
+      sliceName: "Fiche 20 \u2013 Encaissements par caisse et banque (MoH)"
+      uuid: f3cbeb51-3704-484c-bc72-9722cab066c3
+  ROW-20:
+    type: ROW
+    id: ROW-20
+    children:
+    - CHART-20
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    meta:
+      background: BACKGROUND_TRANSPARENT
+  CHART-20:
+    type: CHART
+    id: CHART-20
+    children: []
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-20
+    meta:
+      width: 12
+      height: 90
+      chartId: 68
+      sliceName: "Fiche 20 \u2013 D\xE9penses (MoH)"
+      uuid: 1ca33052-12e4-4130-bfbd-8aa0dcf640c5
+  ROW-21:
+    type: ROW
+    id: ROW-21
+    children:
+    - CHART-21
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    meta:
+      background: BACKGROUND_TRANSPARENT
+  CHART-21:
+    type: CHART
+    id: CHART-21
+    children: []
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-21
+    meta:
+      width: 12
+      height: 60
+      chartId: 69
+      sliceName: "Fiche 20 \u2013 Dettes aux fournisseurs (MoH)"
+      uuid: 0c67c57e-680e-4dd6-8ea4-9be5983da029
+  ROW-note:
+    type: ROW
+    id: ROW-note
+    children:
+    - MARKDOWN-note
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    meta:
+      background: BACKGROUND_TRANSPARENT
+  MARKDOWN-note:
+    type: MARKDOWN
+    id: MARKDOWN-note
+    children: []
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - ROW-note
+    meta:
+      code: "**Brouillon : Fiche 20 (finances), non publi\xE9e.** D\xE9cision du propri\xE9\
+        taire du produit (24 novembre 2026): laisser ce formulaire pour l'instant,\
+        \ \xE0 d\xE9velopper quand les d\xE9penses seront saisies dans Odoo. Les autres\
+        \ fiches sont sur le tableau de bord \xAB PBF et rapports Minist\xE8re (M6)\
+        \ \xBB."
+      height: 18
+      width: 12
+metadata:
+  refresh_frequency: 0
+  color_scheme: ''
+  label_colors: {}
+  shared_label_colors: {}
+  color_scheme_domain: []
+  native_filter_configuration:
+  - id: NATIVE_FILTER-D7mois
+    name: Mois
+    filterType: filter_time
+    type: NATIVE_FILTER
+    targets:
+    - {}
+    scope:
+      rootPath:
+      - ROOT_ID
+      excluded: []
+    defaultDataMask:
+      extraFormData:
+        time_range: previous calendar month
+      filterState:
+        value: previous calendar month
+      ownState: {}
+    cascadeParentIds: []
+    controlValues:
+      enableEmptyFilter: false
+    description: ''
+  timed_refresh_immune_slices: []
+  expanded_slices: {}
+  cross_filters_enabled: true
+version: 1.0.0

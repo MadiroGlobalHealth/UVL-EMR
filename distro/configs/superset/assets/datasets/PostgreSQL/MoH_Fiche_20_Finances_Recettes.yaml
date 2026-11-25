@@ -1,0 +1,293 @@
+table_name: MoH Fiche 20 Finances Recettes
+main_dttm_col: MOIS
+description: "UVL-EMR \xB7 Minist\xE8re \xAB Fiche 20 \xBB (#910), section 7.3 Gestion\
+  \ financi\xE8re, recettes. MONTANT FACTURE = lignes des factures clients valid\xE9\
+  es du mois (date de facture). MONTANT ENCAISSE = paiements valid\xE9s du mois (date\
+  \ de paiement r\xE9elle) r\xE9partis au prorata des lignes; DONT ESPECES/BANQUE\
+  \ selon le journal. ENCAISSE A CE JOUR = pay\xE9 \xE0 ce jour sur les factures du\
+  \ mois. Ligne 3 Vente des m\xE9dicaments = factur\xE9 (cat\xE9gorie M\xE9dicaments),\
+  \ son encaiss\xE9 est sur les lignes 4b-4l par payeur; 5a-5j = autres lignes par\
+  \ service (table svc_map). STATUT \xAB non enregistr\xE9 \xBB = absent d'Odoo (soldes,\
+  \ d\xE9penses, subsides, dettes, loyers): montants vides, jamais 0. Les patients\
+  \ de test sont exclus."
+default_endpoint: null
+offset: 0
+cache_timeout: null
+schema: public
+sql: "-- Fiche 20 (MoH, #910): 7.3 Gestion financiere, RECETTES. One row per MOIS\
+  \ x printed line. Source: Odoo posted customer invoices, payments, payment_allocations.\n\
+  -- FACTURE by invoice date; ENCAISSE by real payment date (posted payments), spread\
+  \ over invoice lines pro rata. 'non enregistr\xE9' lines are left empty, never 0.\n\
+  -- DEPENSES (comptes de charges) and DETTES (fournisseurs) are now computed in the\
+  \ datasets \xAB Fiche 20 Finances D\xE9penses \xBB and \xAB Dettes \xBB (24 Nov\
+  \ 2026): their placeholder lines were removed here.\n-- payer_map / svc_map = explicit\
+  \ payer and service mappings (first match wins). Test patients (found by partner_ref)\
+  \ are left out. Definitions: see the dataset description.\nWITH cfg AS (SELECT date_trunc('month',\
+  \ current_date)::date AS cur_m),\ntest_pt AS (\n  SELECT p.patient_uuid FROM patients\
+  \ p\n  WHERE COALESCE(p.family_name, '') ~* '^(SYNTH-|E2E|QA|TEST|DEMO)' OR COALESCE(p.given_name,\
+  \ '') ~* '^(SYNTH-|E2E|QA|TEST|DEMO)'\n),\npayer_map AS (SELECT * FROM (VALUES\n\
+  \  (1, 'MFP|Fonction Publique', '4b'), (2, 'PNB', '4c'), (3, 'FDN', '4d'), (4, 'retrait',\
+  \ '4e'),\n  (5, '\xE2g\xE9|ag\xE9|aged|elderly', '4f'), (6, '\\mCAM\\M|Assistance\
+  \ M\xE9dicale', '4g'), (7, 'personnel de sant', '4h'),\n  (8, 'indigent', '4i'),\
+  \ (9, 'MSU|CMU|Mutuel|Mutualit', '4j')\n) v(prio, motif, code)),\nsvc_map AS (SELECT\
+  \ * FROM (VALUES\n  (1, '^Laboratory ', '5d'), (2, 'dentist|dentaire|DEN[0-9]{3}\
+  \ ', '5g'),\n  (3, 'consultation', '5a'), (4, 'cesarean|c\xE9sarienne|accouchement|delivery|GO101',\
+  \ '5b'),\n  (5, '(: |^|\")lit |hospitalis|observation', '5c'), (6, '^Radiology |x-ray|radiograph|ultrasound|echograph|\xE9\
+  chograph|scan', '5i'),\n  (7, 'injection', '5e'),\n  (8, 'pansement|local care|plaster|splint|syring|suture|ORT[0-9]{3}|URG[0-9]{3}|GO3[0-9]{2}|DIG[0-9]{3}|minor|surgery|reduction|prise\
+  \ pv', '5f')\n) v(prio, motif, code)),\ninv AS (\n  SELECT i.invoice_id, i.invoice_date,\
+  \ i.amount_untaxed, i.amount_paid, CASE WHEN i.move_type = 'out_refund' THEN -1\
+  \ ELSE 1 END AS sg,\n         CASE WHEN i.payer_name IS NULL AND COALESCE(i.insurance_payer_role,\
+  \ '') NOT IN ('base', 'complementary') THEN '4k'\n              ELSE COALESCE((SELECT\
+  \ pm.code FROM payer_map pm WHERE COALESCE(i.payer_name, '') ~* pm.motif ORDER BY\
+  \ pm.prio LIMIT 1), '4l') END AS code_p\n  FROM invoices i\n  WHERE i.state = 'posted'\
+  \ AND i.move_type IN ('out_invoice', 'out_refund')\n    AND NOT EXISTS (SELECT 1\
+  \ FROM test_pt t WHERE t.patient_uuid = i.partner_ref)\n),\nln AS (\n  SELECT l.invoice_id,\
+  \ inv.invoice_date, inv.code_p, inv.amount_paid * inv.sg AS amount_paid, l.subtotal\
+  \ * inv.sg AS subtotal,\n         CASE WHEN inv.amount_untaxed <> 0 THEN l.subtotal\
+  \ / inv.amount_untaxed ELSE 0 END AS part,\n         CASE WHEN l.product_category\
+  \ = 'Drugs' THEN '3'\n              ELSE COALESCE((SELECT sm.code FROM svc_map sm\
+  \ WHERE (l.product_category || ' ' || l.product_name) ~* sm.motif ORDER BY sm.prio\
+  \ LIMIT 1), '5j') END AS code_s\n  FROM invoice_lines l JOIN inv ON inv.invoice_id\
+  \ = l.invoice_id\n),\nmv AS (\n  SELECT date_trunc('month', invoice_date)::date\
+  \ AS m, code_s, code_p, subtotal AS facture, 0::float8 AS enc, 0::float8 AS esp,\
+  \ 0::float8 AS ban,\n         amount_paid * part AS enc_jour\n  FROM ln\n  UNION\
+  \ ALL\n  SELECT date_trunc('month', p.payment_date)::date, ln.code_s, ln.code_p,\
+  \ 0, a.amount * ln.part,\n         CASE WHEN p.journal_type = 'cash' THEN a.amount\
+  \ * ln.part ELSE 0 END,\n         CASE WHEN p.journal_type = 'bank' THEN a.amount\
+  \ * ln.part ELSE 0 END, 0\n  FROM payment_allocations a\n  JOIN payments p ON p.payment_id\
+  \ = a.payment_id AND p.state = 'posted' AND p.payment_type = 'inbound'\n  JOIN ln\
+  \ ON ln.invoice_id = a.invoice_id\n),\nagg AS (   -- one row per printed line code\n\
+  \  SELECT m, code, SUM(facture) AS facture, SUM(enc) AS enc, SUM(esp) AS esp, SUM(ban)\
+  \ AS ban, SUM(enc_jour) AS enc_jour FROM (\n    SELECT m, '3' AS code, facture,\
+  \ 0::float8 AS enc, 0::float8 AS esp, 0::float8 AS ban, enc_jour FROM mv WHERE code_s\
+  \ = '3'\n    UNION ALL SELECT m, code_p, facture, enc, esp, ban, enc_jour FROM mv\
+  \ WHERE code_s = '3'\n    UNION ALL SELECT m, '4', facture, enc, esp, ban, enc_jour\
+  \ FROM mv WHERE code_s = '3'\n    UNION ALL SELECT m, code_s, facture, enc, esp,\
+  \ ban, enc_jour FROM mv WHERE code_s <> '3'\n    UNION ALL SELECT m, '5', facture,\
+  \ enc, esp, ban, enc_jour FROM mv WHERE code_s <> '3'\n  ) u GROUP BY m, code\n\
+  ),\nlib AS (SELECT * FROM (VALUES\n  ('1. COMPTE MEDICAMENTS', 'RECETTES', '1',\
+  \  '1. Solde en banque d\xE9but du mois', 'non enregistr\xE9'),\n  ('1. COMPTE MEDICAMENTS',\
+  \ 'RECETTES', '2',  '2. Solde en caisse m\xE9dicament au d\xE9but du mois', 'non\
+  \ enregistr\xE9'),\n  ('1. COMPTE MEDICAMENTS', 'RECETTES', '3',  '3. Vente des\
+  \ m\xE9dicaments', 'calcul\xE9'),\n  ('1. COMPTE MEDICAMENTS', 'RECETTES', '4',\
+  \  '4. Recouvrement/Remboursement des cr\xE9ances (a \xE0 k)', 'calcul\xE9'),\n\
+  \  ('1. COMPTE MEDICAMENTS', 'RECETTES', '4a', '   a. Subsides de contractualisation',\
+  \ 'non enregistr\xE9'),\n  ('1. COMPTE MEDICAMENTS', 'RECETTES', '4b', '   b. MFP',\
+  \ 'calcul\xE9'),\n  ('1. COMPTE MEDICAMENTS', 'RECETTES', '4c', '   c. PNB', 'calcul\xE9\
+  '),\n  ('1. COMPTE MEDICAMENTS', 'RECETTES', '4d', '   d. FDN', 'calcul\xE9'),\n\
+  \  ('1. COMPTE MEDICAMENTS', 'RECETTES', '4e', '   e. RETRAITE', 'calcul\xE9'),\n\
+  \  ('1. COMPTE MEDICAMENTS', 'RECETTES', '4f', '   f. PERSONNES AGEES', 'calcul\xE9\
+  '),\n  ('1. COMPTE MEDICAMENTS', 'RECETTES', '4g', '   g. CAM', 'calcul\xE9'),\n\
+  \  ('1. COMPTE MEDICAMENTS', 'RECETTES', '4h', '   h. Participation aux soins du\
+  \ personnel de sant\xE9', 'calcul\xE9'),\n  ('1. COMPTE MEDICAMENTS', 'RECETTES',\
+  \ '4i', '   i. Indigents', 'calcul\xE9'),\n  ('1. COMPTE MEDICAMENTS', 'RECETTES',\
+  \ '4j', '   j. Mutualit\xE9s de sant\xE9', 'calcul\xE9'),\n  ('1. COMPTE MEDICAMENTS',\
+  \ 'RECETTES', '4k', '   k. Payant cash', 'calcul\xE9'),\n  ('1. COMPTE MEDICAMENTS',\
+  \ 'RECETTES', '4l', '   Autres payeurs (hors lignes du mod\xE8le)', 'calcul\xE9\
+  '),\n  ('1. COMPTE MEDICAMENTS', 'RECETTES', '5',  '5. Transferts re\xE7us du compte\
+  \ Fonctionnement', 'non enregistr\xE9'),\n  ('1. COMPTE MEDICAMENTS', 'RECETTES',\
+  \ '6',  '6. Autres recettes', 'non enregistr\xE9'),\n  ('1. COMPTE MEDICAMENTS',\
+  \ 'RECETTES', 'A',  'A. Total Recettes compte m\xE9dicaments (1+2+3+4+5+6)', 'non\
+  \ enregistr\xE9'),\n  ('1. COMPTE MEDICAMENTS', 'DEPENSES', 'C',  'C. Solde compte\
+  \ m\xE9dicaments : A-B', 'non enregistr\xE9'),\n  ('2. COMPTE FONCTIONNEMENT', 'RECETTES',\
+  \ 'F1', '1. Solde en banque d\xE9but du mois', 'non enregistr\xE9'),\n  ('2. COMPTE\
+  \ FONCTIONNEMENT', 'RECETTES', 'F2', '2. Solde en caisse recette d\xE9but du mois',\
+  \ 'non enregistr\xE9'),\n  ('2. COMPTE FONCTIONNEMENT', 'RECETTES', 'F3', '3. Solde\
+  \ en caisse d\xE9pense d\xE9but du mois', 'non enregistr\xE9'),\n  ('2. COMPTE FONCTIONNEMENT',\
+  \ 'RECETTES', 'F4', '4. Subsides de la contractualisation', 'non enregistr\xE9'),\n\
+  \  ('2. COMPTE FONCTIONNEMENT', 'RECETTES', '5',  '5. Recouvrement des co\xFBts\
+  \ (a \xE0 h)', 'calcul\xE9'),\n  ('2. COMPTE FONCTIONNEMENT', 'RECETTES', '5a',\
+  \ '   a. Consultation curative', 'calcul\xE9'),\n  ('2. COMPTE FONCTIONNEMENT',\
+  \ 'RECETTES', '5b', '   b. Accouchement', 'calcul\xE9'),\n  ('2. COMPTE FONCTIONNEMENT',\
+  \ 'RECETTES', '5c', '   c. Mise en observation', 'calcul\xE9'),\n  ('2. COMPTE FONCTIONNEMENT',\
+  \ 'RECETTES', '5d', '   d. Laboratoire', 'calcul\xE9'),\n  ('2. COMPTE FONCTIONNEMENT',\
+  \ 'RECETTES', '5e', '   e. Injection', 'calcul\xE9'),\n  ('2. COMPTE FONCTIONNEMENT',\
+  \ 'RECETTES', '5f', '   f. Petite chirurgie', 'calcul\xE9'),\n  ('2. COMPTE FONCTIONNEMENT',\
+  \ 'RECETTES', '5g', '   g. Dentisterie', 'calcul\xE9'),\n  ('2. COMPTE FONCTIONNEMENT',\
+  \ 'RECETTES', '5h', '   h. Revenu locatif', 'non enregistr\xE9'),\n  ('2. COMPTE\
+  \ FONCTIONNEMENT', 'RECETTES', '5i', '   Imagerie (ligne absente du mod\xE8le imprim\xE9\
+  )', 'calcul\xE9'),\n  ('2. COMPTE FONCTIONNEMENT', 'RECETTES', '5j', '   Autres\
+  \ recettes de soins non rattach\xE9es \xE0 une ligne', 'calcul\xE9'),\n  ('2. COMPTE\
+  \ FONCTIONNEMENT', 'RECETTES', 'F6', '6. Transferts re\xE7us du compte m\xE9dicament',\
+  \ 'non enregistr\xE9'),\n  ('2. COMPTE FONCTIONNEMENT', 'RECETTES', 'D', 'D. Total\
+  \ Recettes compte Fonctionnement', 'non enregistr\xE9'),\n  ('2. COMPTE FONCTIONNEMENT',\
+  \ 'DEPENSES', 'FS', 'F. Solde compte Fonctionnement : D-E', 'non enregistr\xE9'),\n\
+  \  ('5. SITUATION FINANCIERE', 'SITUATION', 'S1', 'Montant du livre banque apr\xE8\
+  s rapprochement (compte m\xE9dicament et compte fonctionnement)', 'non enregistr\xE9\
+  '),\n  ('5. SITUATION FINANCIERE', 'SITUATION', 'S2', 'Caisse recettes physique\
+  \ / Caisse d\xE9penses physique', 'non enregistr\xE9'),\n  ('5. SITUATION FINANCIERE',\
+  \ 'SITUATION', 'S3', 'Valeur du stock des m\xE9dicaments au co\xFBt d''achat y compris\
+  \ les dons', 'non enregistr\xE9'),\n  ('5. SITUATION FINANCIERE', 'SITUATION', 'S4',\
+  \ 'Valeur du stock du mat\xE9riel et fournitures de bureau', 'non enregistr\xE9\
+  '),\n  ('6. CAISSES CAM ET AMBULANCE', 'CAISSES', 'C1', 'Vente CAM : montant en\
+  \ caisse, entr\xE9, vers\xE9 au BDS/BPS, solde', 'non enregistr\xE9'),\n  ('6. CAISSES\
+  \ CAM ET AMBULANCE', 'CAISSES', 'C2', 'Contribution au fonctionnement Ambulance\
+  \ : montant en caisse, entr\xE9, vers\xE9, solde', 'non enregistr\xE9')\n) v(compte,\
+  \ section, code, libelle, statut)),\nlib_n AS (SELECT l.*, ROW_NUMBER() OVER ()\
+  \ AS ordre FROM lib l),\nmonths AS (SELECT gs::date AS m FROM generate_series((SELECT\
+  \ MIN(m) FROM mv), GREATEST((SELECT cur_m FROM cfg), (SELECT MAX(m) FROM mv)), interval\
+  \ '1 month') gs)\nSELECT\n  mo.m AS \"MOIS\",\n  l.compte AS \"COMPTE\",\n  l.section\
+  \ AS \"SECTION\",\n  l.libelle AS \"LIBELLE\",\n  CASE WHEN l.statut = 'calcul\xE9\
+  ' THEN ROUND(COALESCE(a.facture, 0)::numeric, 2) END AS \"MONTANT FACTURE\",\n \
+  \ CASE WHEN l.statut = 'calcul\xE9' AND l.code <> '3' THEN ROUND(COALESCE(a.enc,\
+  \ 0)::numeric, 2) END AS \"MONTANT ENCAISSE DANS LE MOIS\",\n  CASE WHEN l.statut\
+  \ = 'calcul\xE9' AND l.code <> '3' THEN ROUND(COALESCE(a.esp, 0)::numeric, 2) END\
+  \ AS \"DONT ESPECES (CAISSE)\",\n  CASE WHEN l.statut = 'calcul\xE9' AND l.code\
+  \ <> '3' THEN ROUND(COALESCE(a.ban, 0)::numeric, 2) END AS \"DONT BANQUE\",\n  CASE\
+  \ WHEN l.statut = 'calcul\xE9' THEN ROUND(COALESCE(a.enc_jour, 0)::numeric, 2) END\
+  \ AS \"ENCAISSE A CE JOUR SUR LES FACTURES DU MOIS\",\n  l.statut AS \"STATUT\"\
+  ,\n  l.ordre::int AS \"ORDRE\"\nFROM months mo\nCROSS JOIN lib_n l\nLEFT JOIN agg\
+  \ a ON a.m = mo.m AND a.code = l.code\nORDER BY mo.m DESC, l.ordre"
+params: null
+template_params: null
+filter_select_enabled: true
+fetch_values_predicate: null
+extra: null
+normalize_columns: false
+always_filter_main_dttm: false
+uuid: 91fd2e3a-e274-40f2-a08c-b445b8274f8e
+metrics:
+- metric_name: count
+  verbose_name: COUNT(*)
+  metric_type: count
+  expression: COUNT(*)
+  description: null
+  d3format: null
+  currency: null
+  extra: null
+  warning_text: null
+columns:
+- column_name: ENCAISSE A CE JOUR SUR LES FACTURES DU MOIS
+  verbose_name: ENCAISSE A CE JOUR SUR LES FACTURES DU MOIS
+  is_dttm: false
+  is_active: true
+  type: DECIMAL
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: MONTANT ENCAISSE DANS LE MOIS
+  verbose_name: MONTANT ENCAISSE DANS LE MOIS
+  is_dttm: false
+  is_active: true
+  type: DECIMAL
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: DONT ESPECES (CAISSE)
+  verbose_name: DONT ESPECES (CAISSE)
+  is_dttm: false
+  is_active: true
+  type: DECIMAL
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: MONTANT FACTURE
+  verbose_name: MONTANT FACTURE
+  is_dttm: false
+  is_active: true
+  type: DECIMAL
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: DONT BANQUE
+  verbose_name: DONT BANQUE
+  is_dttm: false
+  is_active: true
+  type: DECIMAL
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: STATUT
+  verbose_name: STATUT
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: MOIS
+  verbose_name: MOIS
+  is_dttm: true
+  is_active: true
+  type: DATE
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: LIBELLE
+  verbose_name: LIBELLE
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: SECTION
+  verbose_name: SECTION
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: COMPTE
+  verbose_name: COMPTE
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: ORDRE
+  verbose_name: ORDRE
+  is_dttm: false
+  is_active: true
+  type: INTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+version: 1.0.0
+database_uuid: 44c13a30-0c14-402c-b81f-1c93972f5fbc

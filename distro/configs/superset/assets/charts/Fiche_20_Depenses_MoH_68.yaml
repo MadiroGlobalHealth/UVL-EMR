@@ -1,0 +1,52 @@
+slice_name: "Fiche 20 \u2013 D\xE9penses (MoH)"
+description: "Fiche 20 (7.3) DEPENSES des comptes M\xE9dicaments et Fonctionnement:\
+  \ factur\xE9, pay\xE9 dans le mois (esp\xE8ces / banque), par ligne du mod\xE8le\
+  \ (correspondance compte \u2192 ligne)."
+certified_by: null
+certification_details: null
+viz_type: table
+params:
+  datasource: 50__table
+  viz_type: table
+  query_mode: raw
+  groupby: []
+  time_grain_sqla: P1D
+  temporal_columns_lookup:
+    MOIS: true
+  all_columns:
+  - MOIS
+  - COMPTE
+  - LIBELLE
+  - MONTANT FACTURE
+  - MONTANT PAYE DANS LE MOIS
+  - DONT ESPECES (CAISSE)
+  - DONT BANQUE
+  - PAYE A CE JOUR SUR LES FACTURES DU MOIS
+  - STATUT
+  percent_metrics: []
+  adhoc_filters:
+  - expressionType: SIMPLE
+    subject: MOIS
+    operator: TEMPORAL_RANGE
+    comparator: previous calendar month
+    clause: WHERE
+    sqlExpression: null
+    isExtra: false
+    isNew: false
+    datasourceWarning: false
+    filterOptionName: filter_910_p5_50
+  order_by_cols:
+  - '["ORDRE",true]'
+  row_limit: 10000
+  server_page_length: 25
+  order_desc: true
+  table_timestamp_format: smart_date
+  show_cell_bars: false
+  color_pn: false
+  include_search: true
+  extra_form_data: {}
+query_context: null
+cache_timeout: null
+uuid: 1ca33052-12e4-4130-bfbd-8aa0dcf640c5
+version: 1.0.0
+dataset_uuid: 093695dd-d15c-46ae-bf45-5c984312f07f

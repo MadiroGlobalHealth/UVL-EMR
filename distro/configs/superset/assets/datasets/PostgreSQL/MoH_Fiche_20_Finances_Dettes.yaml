@@ -1,0 +1,185 @@
+table_name: MoH Fiche 20 Finances Dettes
+main_dttm_col: MOIS
+description: "UVL-EMR \xB7 Minist\xE8re \xAB Fiche 20 \xBB (#910), bloc 4 Dettes:\
+  \ par fournisseur (liste du mod\xE8le, autres = non list\xE9s), dette au d\xE9but\
+  \ du mois, augmentation (factures fournisseurs du mois, avoirs en n\xE9gatif), diminution\
+  \ (paiements valid\xE9s du mois), dette \xE0 la fin du mois."
+default_endpoint: null
+offset: 0
+cache_timeout: null
+schema: public
+sql: "-- Fiche 20 (MoH, #910): 7.3 Gestion financiere, bloc 4. DETTES (par fournisseur).\
+  \ One row per MOIS x supplier line of the printed list.\n-- Debt = POSTED vendor\
+  \ bills (in_invoice) and vendor refunds (in_refund) not yet paid.\n--   DETTE AU\
+  \ DEBUT DU MOIS   = debt at the end of the month before.\n--   AUGMENTATION DE LA\
+  \ DETTE = bills dated in the month (amount_total; a vendor refund is negative).\n\
+  --   DIMINUTION DE LA DETTE   = outbound payments POSTED in the month (real payment\
+  \ date) allocated to those bills (payment_allocations).\n--   DETTE A LA FIN DU\
+  \ MOIS   = debut + augmentation - diminution. Today it equals the sum of the signed\
+  \ amount_residual of the bills (an open refund lowers the debt).\n-- Supplier line\
+  \ = explicit name patterns (sup_map, first match wins) on the supplier name of the\
+  \ bill; any other supplier = \xAB Autres fournisseurs des biens et services non\
+  \ list\xE9s \xBB.\n-- Customer invoices and inbound payments never enter this dataset.\
+  \ Test patients are left out through the partner uuid (a vendor has none).\nWITH\
+  \ cfg AS (SELECT date_trunc('month', current_date)::date AS cur_m),\ntest_pt AS\
+  \ (\n  SELECT p.patient_uuid FROM patients p\n  WHERE COALESCE(p.family_name, '')\
+  \ ~* '^(SYNTH-|E2E|QA|TEST|DEMO)' OR COALESCE(p.given_name, '') ~* '^(SYNTH-|E2E|QA|TEST|DEMO)'\n\
+  ),\nsup_map AS (SELECT * FROM (VALUES\n  (1, 'district sanitaire', 'F01'), (2, '^CDS(\
+  \ |$)', 'F02'), (3, 'CAMEBU', 'F03'), (4, 'ALCHEM', 'F04'), (5, 'BOLENA', 'F05'),\n\
+  \  (6, 'CHIMIO', 'F06'), (7, 'SURYA', 'F07'), (8, 'LIFE PHARMA', 'F08'),\n  (9,\
+  \ 'ABACUS', 'P1'), (10, 'MULTIPHAR', 'P2'), (11, 'SHAMA', 'P3'), (12, 'UNI PHARMA|UNIPHARMA',\
+  \ 'P4'), (13, 'NEVILAB', 'P5'),\n  (14, '\\mCNTS\\M', 'G1'), (15, '\\mHMS\\M', 'G2')\n\
+  ) v(prio, motif, code)),\nbill AS (\n  SELECT i.invoice_id, i.invoice_date, i.amount_total\
+  \ * (CASE WHEN i.move_type = 'in_refund' THEN -1 ELSE 1 END) AS amount_total,\n\
+  \         COALESCE((SELECT sm.code FROM sup_map sm WHERE COALESCE(i.supplier_name,\
+  \ '') ~* sm.motif ORDER BY sm.prio LIMIT 1),\n                  CASE WHEN i.supplier_name\
+  \ IS NULL THEN 'G3' ELSE 'G3' END) AS code\n  FROM invoices i\n  WHERE i.state =\
+  \ 'posted' AND i.move_type IN ('in_invoice', 'in_refund')\n    AND NOT EXISTS (SELECT\
+  \ 1 FROM test_pt t WHERE t.patient_uuid = i.partner_ref)\n),\nmv AS (\n  SELECT\
+  \ code, date_trunc('month', invoice_date)::date AS m, SUM(amount_total) AS aug,\
+  \ 0::float8 AS dim FROM bill GROUP BY 1, 2\n  UNION ALL\n  SELECT bill.code, date_trunc('month',\
+  \ p.payment_date)::date, 0, SUM(a.amount)\n  FROM payment_allocations a\n  JOIN\
+  \ payments p ON p.payment_id = a.payment_id AND p.state = 'posted' AND p.payment_type\
+  \ = 'outbound'\n  JOIN bill ON bill.invoice_id = a.invoice_id\n  GROUP BY 1, 2\n\
+  ),\nmvs AS (SELECT code, m, SUM(aug) AS aug, SUM(dim) AS dim FROM mv GROUP BY code,\
+  \ m),\nlib AS (SELECT * FROM (VALUES\n  ('F01', 'District sanitaire'), ('F02', 'CDS'),\
+  \ ('F03', 'CAMEBU'), ('F04', 'ALCHEM'), ('F05', 'BOLENA'), ('F06', 'CHIMIO'), ('F07',\
+  \ 'SURYA'), ('F08', 'LIFE PHARMA'),\n  ('P1', 'Autres pharmacies priv\xE9es : 1.\
+  \ ABACUS'), ('P2', 'Autres pharmacies priv\xE9es : 2. MULTIPHAR'), ('P3', 'Autres\
+  \ pharmacies priv\xE9es : 3. SHAMA PHARMA'),\n  ('P4', 'Autres pharmacies priv\xE9\
+  es : 4. UNI PHARMA'), ('P5', 'Autres pharmacies priv\xE9es : 5. NEVILAB'),\n  ('G1',\
+  \ 'Autres fournisseurs des biens et services : 1. CNTS'), ('G2', 'Autres fournisseurs\
+  \ des biens et services : 2. HMS'),\n  ('G3', 'Autres fournisseurs des biens et\
+  \ services non list\xE9s (dont pharmacies priv\xE9es non list\xE9es)')\n) v(code,\
+  \ libelle)),\nlib_n AS (SELECT l.*, ROW_NUMBER() OVER () AS ordre FROM lib l),\n\
+  months AS (SELECT gs::date AS m FROM generate_series((SELECT MIN(m) FROM mvs), GREATEST((SELECT\
+  \ cur_m FROM cfg), (SELECT MAX(m) FROM mvs)), interval '1 month') gs),\ncalc AS\
+  \ (\n  SELECT l.code, l.libelle, l.ordre, mo.m, COALESCE(x.aug, 0) AS aug, COALESCE(x.dim,\
+  \ 0) AS dim,\n         SUM(COALESCE(x.aug, 0) - COALESCE(x.dim, 0)) OVER (PARTITION\
+  \ BY l.code ORDER BY mo.m) AS fin\n  FROM lib_n l CROSS JOIN months mo LEFT JOIN\
+  \ mvs x ON x.code = l.code AND x.m = mo.m\n)\nSELECT c.m AS \"MOIS\", c.libelle\
+  \ AS \"FOURNISSEUR\",\n       ROUND((c.fin - c.aug + c.dim)::numeric, 2) AS \"DETTE\
+  \ AU DEBUT DU MOIS\",\n       ROUND(c.aug::numeric, 2) AS \"AUGMENTATION DE LA DETTE\"\
+  ,\n       ROUND(c.dim::numeric, 2) AS \"DIMINUTION DE LA DETTE\",\n       ROUND(c.fin::numeric,\
+  \ 2) AS \"DETTE A LA FIN DU MOIS\",\n       'calcul\xE9' AS \"STATUT\", c.ordre::int\
+  \ AS \"ORDRE\"\nFROM calc c\nUNION ALL\nSELECT c.m, 'H. Total des dettes',\n   \
+  \    ROUND(SUM(c.fin - c.aug + c.dim)::numeric, 2), ROUND(SUM(c.aug)::numeric, 2),\
+  \ ROUND(SUM(c.dim)::numeric, 2), ROUND(SUM(c.fin)::numeric, 2),\n       'calcul\xE9\
+  ', 100\nFROM calc c GROUP BY c.m\nORDER BY 1 DESC, 8\n"
+params: null
+template_params: null
+filter_select_enabled: true
+fetch_values_predicate: null
+extra: null
+normalize_columns: false
+always_filter_main_dttm: false
+uuid: 97b0cab5-b2a4-4f85-bb4f-764c5d679898
+metrics:
+- metric_name: count
+  verbose_name: COUNT(*)
+  metric_type: count
+  expression: COUNT(*)
+  description: null
+  d3format: null
+  currency: null
+  extra: null
+  warning_text: null
+columns:
+- column_name: DETTE A LA FIN DU MOIS
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: DECIMAL
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: DETTE AU DEBUT DU MOIS
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: DECIMAL
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: AUGMENTATION DE LA DETTE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: DECIMAL
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: DIMINUTION DE LA DETTE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: DECIMAL
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: MOIS
+  verbose_name: null
+  is_dttm: true
+  is_active: true
+  type: DATE
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: STATUT
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: ORDRE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: INTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: FOURNISSEUR
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+version: 1.0.0
+database_uuid: 44c13a30-0c14-402c-b81f-1c93972f5fbc

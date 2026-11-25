@@ -1,0 +1,147 @@
+table_name: MoH Fiche 20 Finances Encaissements par journal
+main_dttm_col: MOIS
+description: "UVL-EMR \xB7 Minist\xE8re \xAB Fiche 20 \xBB (#910), section 7.3 Gestion\
+  \ financi\xE8re: encaissements du mois par caisse et par banque (paiements clients\
+  \ valid\xE9s, date de paiement r\xE9elle). Les soldes d'ouverture et de cl\xF4ture\
+  \ ne sont pas enregistr\xE9s dans Odoo."
+default_endpoint: null
+offset: 0
+cache_timeout: null
+schema: public
+sql: "-- Fiche 20 (MoH, #910): 7.3 Gestion financiere, encaissements par caisse et\
+  \ par banque (flux du mois)\n-- One row per MOIS x journal de paiement. Source:\
+  \ payments POSTED, inbound, customer (real payment date). Draft payments are not\
+  \ counted.\n-- Opening and closing balances of the cash desks and the bank (livre\
+  \ de banque, caisse physique) are NOT recorded in Odoo: columns 'non enregistre'.\n\
+  -- TEST DATA: payments of test patients (SYNTH-/E2E/QA/TEST/DEMO, through the patient\
+  \ uuid kept as partner_ref) are left out.\nWITH test_pt AS (\n  SELECT p.patient_uuid\
+  \ FROM patients p\n  WHERE COALESCE(p.family_name, '') ~* '^(SYNTH-|E2E|QA|TEST|DEMO)'\
+  \ OR COALESCE(p.given_name, '') ~* '^(SYNTH-|E2E|QA|TEST|DEMO)'\n)\nSELECT date_trunc('month',\
+  \ p.payment_date)::date AS \"MOIS\",\n       p.journal_code || ' - ' || COALESCE(j.name,\
+  \ '') AS \"JOURNAL\",\n       CASE p.journal_type WHEN 'cash' THEN 'Caisse' WHEN\
+  \ 'bank' THEN 'Banque' ELSE p.journal_type END AS \"TYPE\",\n       COUNT(*) AS\
+  \ \"NB DE PAIEMENTS\",\n       ROUND(SUM(p.amount)::numeric, 2) AS \"MONTANT ENCAISSE\"\
+  ,\n       COUNT(*) FILTER (WHERE NOT EXISTS (SELECT 1 FROM payment_allocations a\
+  \ WHERE a.payment_id = p.payment_id)) AS \"DONT PAIEMENTS NON RAPPROCHES D'UNE FACTURE\"\
+  ,\n       'non enregistr\xE9'::text AS \"SOLDE A L'OUVERTURE\",\n       'non enregistr\xE9\
+  '::text AS \"SOLDE A LA CLOTURE\"\nFROM payments p\nLEFT JOIN journals j ON j.code\
+  \ = p.journal_code\nWHERE p.state = 'posted' AND p.payment_type = 'inbound'\n  AND\
+  \ NOT EXISTS (SELECT 1 FROM test_pt t WHERE t.patient_uuid = p.partner_ref)\nGROUP\
+  \ BY 1, 2, 3\nORDER BY 1 DESC, 2\n"
+params: null
+template_params: null
+filter_select_enabled: true
+fetch_values_predicate: null
+extra: null
+normalize_columns: false
+always_filter_main_dttm: false
+uuid: 436e93f9-6d81-4361-8d15-1cc3ce9db066
+metrics:
+- metric_name: count
+  verbose_name: COUNT(*)
+  metric_type: count
+  expression: COUNT(*)
+  description: null
+  d3format: null
+  currency: null
+  extra: null
+  warning_text: null
+columns:
+- column_name: DONT PAIEMENTS NON RAPPROCHES D'UNE FACTURE
+  verbose_name: DONT PAIEMENTS NON RAPPROCHES D'UNE FACTURE
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: SOLDE A LA CLOTURE
+  verbose_name: SOLDE A LA CLOTURE
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: SOLDE A L'OUVERTURE
+  verbose_name: SOLDE A L'OUVERTURE
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: NB DE PAIEMENTS
+  verbose_name: NB DE PAIEMENTS
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: MONTANT ENCAISSE
+  verbose_name: MONTANT ENCAISSE
+  is_dttm: false
+  is_active: true
+  type: DECIMAL
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: JOURNAL
+  verbose_name: JOURNAL
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: MOIS
+  verbose_name: MOIS
+  is_dttm: true
+  is_active: true
+  type: DATE
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: TYPE
+  verbose_name: TYPE
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+version: 1.0.0
+database_uuid: 44c13a30-0c14-402c-b81f-1c93972f5fbc

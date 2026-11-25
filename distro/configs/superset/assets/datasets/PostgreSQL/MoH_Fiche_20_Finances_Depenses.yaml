@@ -1,0 +1,273 @@
+table_name: "MoH Fiche 20 Finances D\xE9penses"
+main_dttm_col: MOIS
+description: "UVL-EMR \xB7 Minist\xE8re \xAB Fiche 20 \xBB (#910), DEPENSES: factures\
+  \ fournisseurs valid\xE9es (comptes de charges Odoo) rattach\xE9es aux lignes du\
+  \ mod\xE8le par une correspondance compte \u2192 ligne explicite; montant factur\xE9\
+  , pay\xE9 dans le mois (esp\xE8ces / banque). Les comptes non associ\xE9s sont list\xE9\
+  s. Subsides, loyers per\xE7us, soldes de banque et de caisse ne sont pas enregistr\xE9\
+  s dans Odoo."
+default_endpoint: null
+offset: 0
+cache_timeout: null
+schema: public
+sql: "-- Fiche 20 (MoH, #910): 7.3 Gestion financiere, DEPENSES (comptes Medicaments\
+  \ et Fonctionnement). One row per MOIS x printed line.\n-- Source: Odoo POSTED vendor\
+  \ bills and vendor refunds (invoices / invoice_lines, move_type in_invoice / in_refund),\
+  \ outbound payments (payments), payment_allocations.\n-- MONTANT FACTURE = bill\
+  \ lines by bill date (a vendor refund is negative). MONTANT PAYE = outbound payments\
+  \ POSTED in the month, allocated to bills (real payment date),\n-- spread over the\
+  \ bill lines pro rata; ESPECES / BANQUE = the type of the payment journal. A line\
+  \ is 'calcule' only when an account is mapped to it (acc_map, explicit):\n-- otherwise\
+  \ 'non enregistre' (empty, never 0). Accounts that carry amounts but are not in\
+  \ acc_map are listed one per row under 'Comptes non associes a une ligne'.\n-- Odoo\
+  \ does not tell the Medicaments account from the Fonctionnement account: everything\
+  \ is Fonctionnement except account 500000 (achat medicaments).\n-- Test patients\
+  \ (SYNTH-/E2E/QA/TEST/DEMO) are left out through the partner uuid (a vendor has\
+  \ none).\nWITH cfg AS (SELECT date_trunc('month', current_date)::date AS cur_m),\n\
+  test_pt AS (\n  SELECT p.patient_uuid FROM patients p\n  WHERE COALESCE(p.family_name,\
+  \ '') ~* '^(SYNTH-|E2E|QA|TEST|DEMO)' OR COALESCE(p.given_name, '') ~* '^(SYNTH-|E2E|QA|TEST|DEMO)'\n\
+  ),\nacc_map AS (SELECT * FROM (VALUES\n  ('500000', 'D1'),\n  ('611000', 'I7'),\n\
+  \  ('630000', 'X1'),\n  ('620000', 'X19'),\n  ('641000', 'X29'), ('642000', 'X29'),\n\
+  \  ('600000', 'X31'), ('612000', 'X31'), ('961000', 'X31'), ('962000', 'X31')\n\
+  ) v(account_code, code)),\nbill AS (\n  SELECT i.invoice_id, i.invoice_date, i.amount_untaxed,\
+  \ CASE WHEN i.move_type = 'in_refund' THEN -1 ELSE 1 END AS sg\n  FROM invoices\
+  \ i\n  WHERE i.state = 'posted' AND i.move_type IN ('in_invoice', 'in_refund')\n\
+  \    AND NOT EXISTS (SELECT 1 FROM test_pt t WHERE t.patient_uuid = i.partner_ref)\n\
+  ),\nln AS (\n  SELECT l.invoice_id, b.invoice_date, l.account_code, l.account_name,\
+  \ l.subtotal * b.sg AS subtotal,\n         CASE WHEN b.amount_untaxed <> 0 THEN\
+  \ l.subtotal / b.amount_untaxed ELSE 0 END AS part,\n         m.code AS code_m\n\
+  \  FROM invoice_lines l\n  JOIN bill b ON b.invoice_id = l.invoice_id\n  LEFT JOIN\
+  \ acc_map m ON m.account_code = l.account_code\n  WHERE l.move_type IN ('in_invoice',\
+  \ 'in_refund')\n),\nmv AS (\n  SELECT date_trunc('month', invoice_date)::date AS\
+  \ m, code_m, account_code, account_name, subtotal AS facture, 0::float8 AS pay,\
+  \ 0::float8 AS esp, 0::float8 AS ban,\n         0::float8 AS pay_jour\n  FROM ln\n\
+  \  UNION ALL\n  SELECT date_trunc('month', p.payment_date)::date, ln.code_m, ln.account_code,\
+  \ ln.account_name, 0, a.amount * ln.part,\n         CASE WHEN p.journal_type = 'cash'\
+  \ THEN a.amount * ln.part ELSE 0 END,\n         CASE WHEN p.journal_type = 'bank'\
+  \ THEN a.amount * ln.part ELSE 0 END, 0\n  FROM payment_allocations a\n  JOIN payments\
+  \ p ON p.payment_id = a.payment_id AND p.state = 'posted' AND p.payment_type = 'outbound'\n\
+  \  JOIN ln ON ln.invoice_id = a.invoice_id\n),\n-- paid to date on the bills of\
+  \ the month (all payments, any month): amount_paid of the bill spread over its lines\n\
+  paid_to_date AS (\n  SELECT date_trunc('month', b.invoice_date)::date AS m, ln.code_m,\
+  \ ln.account_code, ln.account_name,\n         (i.amount_total - i.amount_residual)\
+  \ * ln.part AS pay_jour\n  FROM ln JOIN bill b ON b.invoice_id = ln.invoice_id JOIN\
+  \ invoices i ON i.invoice_id = b.invoice_id WHERE i.move_type = 'in_invoice'\n),\n\
+  mv2 AS (\n  SELECT m, code_m, account_code, account_name, facture, pay, esp, ban,\
+  \ pay_jour FROM mv\n  UNION ALL SELECT m, code_m, account_code, account_name, 0,\
+  \ 0, 0, 0, pay_jour FROM paid_to_date\n),\nagg AS (   -- one row per mapped printed\
+  \ line code\n  SELECT m, code, SUM(facture) AS facture, SUM(pay) AS pay, SUM(esp)\
+  \ AS esp, SUM(ban) AS ban, SUM(pay_jour) AS pay_jour FROM (\n    SELECT m, code_m\
+  \ AS code, facture, pay, esp, ban, pay_jour FROM mv2 WHERE code_m IS NOT NULL\n\
+  \    UNION ALL SELECT m, 'B', facture, pay, esp, ban, pay_jour FROM mv2 WHERE code_m\
+  \ = 'D1'\n    UNION ALL SELECT m, 'E', facture, pay, esp, ban, pay_jour FROM mv2\
+  \ WHERE COALESCE(code_m, 'XU') <> 'D1'\n    UNION ALL SELECT m, 'FN', facture, pay,\
+  \ esp, ban, pay_jour FROM mv2 WHERE COALESCE(code_m, 'XU') <> 'D1' AND LEFT(COALESCE(code_m,\
+  \ 'X'), 1) = 'I'\n    UNION ALL SELECT m, 'FX', facture, pay, esp, ban, pay_jour\
+  \ FROM mv2 WHERE COALESCE(code_m, 'XU') <> 'D1' AND LEFT(COALESCE(code_m, 'X'),\
+  \ 1) <> 'I'\n  ) u GROUP BY m, code\n),\nunm AS (   -- accounts with amounts and\
+  \ no mapped line\n  SELECT m, account_code, account_name, SUM(facture) AS facture,\
+  \ SUM(pay) AS pay, SUM(esp) AS esp, SUM(ban) AS ban, SUM(pay_jour) AS pay_jour\n\
+  \  FROM mv2 WHERE code_m IS NULL GROUP BY m, account_code, account_name\n),\nlib\
+  \ AS (SELECT * FROM (VALUES\n  ('1. COMPTE MEDICAMENTS',   'D1', 'Achat m\xE9dicaments\
+  \ (compte 500000)', 'calcul\xE9'),\n  ('1. COMPTE MEDICAMENTS',   'D2', 'Transferts\
+  \ sur le compte Fonctionnement', 'non enregistr\xE9'),\n  ('1. COMPTE MEDICAMENTS',\
+  \   'D3', 'Frais de tenue de compte M\xE9dicaments', 'non enregistr\xE9'),\n  ('1.\
+  \ COMPTE MEDICAMENTS',   'D4', 'Transfert des subsides PBF aux FOSA secondaires',\
+  \ 'non enregistr\xE9'),\n  ('1. COMPTE MEDICAMENTS',   'D5', 'Remboursement des\
+  \ dettes m\xE9dicaments', 'non enregistr\xE9'),\n  ('1. COMPTE MEDICAMENTS',   'D6',\
+  \ 'Autres d\xE9penses', 'non enregistr\xE9'),\n  ('1. COMPTE MEDICAMENTS',   'B',\
+  \  'B. D\xE9penses compte MEDICAMENTS (lignes calcul\xE9es)', 'calcul\xE9'),\n \
+  \ ('2. COMPTE FONCTIONNEMENT', 'I1', 'Investissements : Construction b\xE2timents',\
+  \ 'non enregistr\xE9'),\n  ('2. COMPTE FONCTIONNEMENT', 'I2', 'Investissements :\
+  \ Achat mat\xE9riels roulants', 'non enregistr\xE9'),\n  ('2. COMPTE FONCTIONNEMENT',\
+  \ 'I3', 'Investissements : Equipements informatiques', 'non enregistr\xE9'),\n \
+  \ ('2. COMPTE FONCTIONNEMENT', 'I4', 'Investissements : Equipements m\xE9dicaux',\
+  \ 'non enregistr\xE9'),\n  ('2. COMPTE FONCTIONNEMENT', 'I5', 'Investissements :\
+  \ Achat mobilier', 'non enregistr\xE9'),\n  ('2. COMPTE FONCTIONNEMENT', 'I6', 'Investissements\
+  \ : Achat lames de papiers', 'non enregistr\xE9'),\n  ('2. COMPTE FONCTIONNEMENT',\
+  \ 'I7', 'Investissements : Autres investissements (compte 611000)', 'calcul\xE9\
+  '),\n  ('2. COMPTE FONCTIONNEMENT', 'X1', 'Frais de fonctionnement : 1. Salaires\
+  \ du personnel sous contrat local (compte 630000)', 'calcul\xE9'),\n  ('2. COMPTE\
+  \ FONCTIONNEMENT', 'X2', 'Frais de fonctionnement : 2. Contribution au fonctionnement\
+  \ de l''ambulance (5% des subsides FBP)', 'non enregistr\xE9'),\n  ('2. COMPTE FONCTIONNEMENT',\
+  \ 'X3', 'Frais de fonctionnement : 3. Prime de contractualisation', 'non enregistr\xE9\
+  '),\n  ('2. COMPTE FONCTIONNEMENT', 'X4', 'Frais de fonctionnement : 4. Frais de\
+  \ mission et/ou de d\xE9placement', 'non enregistr\xE9'),\n  ('2. COMPTE FONCTIONNEMENT',\
+  \ 'X5', 'Frais de fonctionnement : 5 \xE0 18 (imprim\xE9s, p\xE9trole, carburant,\
+  \ hygi\xE8ne, bureau, plomberie, eau et \xE9lectricit\xE9, formations, entretiens,\
+  \ r\xE9union du comit\xE9, communication)', 'non enregistr\xE9'),\n  ('2. COMPTE\
+  \ FONCTIONNEMENT', 'X19', 'Frais de fonctionnement : 19. Frais bancaires (compte\
+  \ 620000)', 'calcul\xE9'),\n  ('2. COMPTE FONCTIONNEMENT', 'X20', 'Frais de fonctionnement\
+  \ : 20 \xE0 28 (transport des m\xE9dicaments, INSS, MFP, IRE, paiements des dettes,\
+  \ festivit\xE9, transferts aux FOSA, lingerie, assurances)', 'non enregistr\xE9\
+  '),\n  ('2. COMPTE FONCTIONNEMENT', 'X29', 'Frais de fonctionnement : 29. Charges\
+  \ et pertes diverses (comptes 641000, 642000)', 'calcul\xE9'),\n  ('2. COMPTE FONCTIONNEMENT',\
+  \ 'X30', 'Frais de fonctionnement : 30. Location main d''oeuvre', 'non enregistr\xE9\
+  '),\n  ('2. COMPTE FONCTIONNEMENT', 'X31', 'Frais de fonctionnement : 31. Autres\
+  \ d\xE9penses (comptes 600000, 612000, 961000, 962000)', 'calcul\xE9'),\n  ('2.\
+  \ COMPTE FONCTIONNEMENT', 'X32', 'Frais de fonctionnement : 32. Transferts sur le\
+  \ compte m\xE9dicament', 'non enregistr\xE9'),\n  ('2. COMPTE FONCTIONNEMENT', 'FN',\
+  \ 'Total investissements (lignes calcul\xE9es)', 'calcul\xE9'),\n  ('2. COMPTE FONCTIONNEMENT',\
+  \ 'FX', 'Total frais de fonctionnement (lignes calcul\xE9es et comptes non associ\xE9\
+  s)', 'calcul\xE9'),\n  ('2. COMPTE FONCTIONNEMENT', 'E',  'E. Total d\xE9penses\
+  \ compte Fonctionnement (investissements + frais de fonctionnement)', 'calcul\xE9\
+  ')\n) v(compte, code, libelle, statut)),\nlib_n AS (SELECT l.*, ROW_NUMBER() OVER\
+  \ () AS ordre FROM lib l),\nmonths AS (SELECT gs::date AS m FROM generate_series((SELECT\
+  \ MIN(m) FROM mv2), GREATEST((SELECT cur_m FROM cfg), (SELECT MAX(m) FROM mv2)),\
+  \ interval '1 month') gs)\nSELECT mo.m AS \"MOIS\", l.compte AS \"COMPTE\", l.libelle\
+  \ AS \"LIBELLE\",\n  CASE WHEN l.statut = 'calcul\xE9' THEN ROUND(COALESCE(a.facture,\
+  \ 0)::numeric, 2) END AS \"MONTANT FACTURE\",\n  CASE WHEN l.statut = 'calcul\xE9\
+  ' THEN ROUND(COALESCE(a.pay, 0)::numeric, 2) END AS \"MONTANT PAYE DANS LE MOIS\"\
+  ,\n  CASE WHEN l.statut = 'calcul\xE9' THEN ROUND(COALESCE(a.esp, 0)::numeric, 2)\
+  \ END AS \"DONT ESPECES (CAISSE)\",\n  CASE WHEN l.statut = 'calcul\xE9' THEN ROUND(COALESCE(a.ban,\
+  \ 0)::numeric, 2) END AS \"DONT BANQUE\",\n  CASE WHEN l.statut = 'calcul\xE9' THEN\
+  \ ROUND(COALESCE(a.pay_jour, 0)::numeric, 2) END AS \"PAYE A CE JOUR SUR LES FACTURES\
+  \ DU MOIS\",\n  l.statut AS \"STATUT\", l.ordre::int AS \"ORDRE\"\nFROM months mo\
+  \ CROSS JOIN lib_n l LEFT JOIN agg a ON a.m = mo.m AND a.code = l.code\nUNION ALL\n\
+  SELECT u.m, '2. COMPTE FONCTIONNEMENT', 'Compte non associ\xE9 \xE0 une ligne du\
+  \ mod\xE8le : ' || COALESCE(u.account_code, '?') || ' ' || COALESCE(u.account_name,\
+  \ ''),\n  ROUND(u.facture::numeric, 2), ROUND(u.pay::numeric, 2), ROUND(u.esp::numeric,\
+  \ 2), ROUND(u.ban::numeric, 2), ROUND(u.pay_jour::numeric, 2),\n  'calcul\xE9 (compte\
+  \ non associ\xE9)', 1000 + DENSE_RANK() OVER (ORDER BY u.account_code)::int\nFROM\
+  \ unm u\nORDER BY 1 DESC, 10\n"
+params: null
+template_params: null
+filter_select_enabled: true
+fetch_values_predicate: null
+extra: null
+normalize_columns: false
+always_filter_main_dttm: false
+uuid: 093695dd-d15c-46ae-bf45-5c984312f07f
+metrics:
+- metric_name: count
+  verbose_name: COUNT(*)
+  metric_type: count
+  expression: COUNT(*)
+  description: null
+  d3format: null
+  currency: null
+  extra: null
+  warning_text: null
+columns:
+- column_name: PAYE A CE JOUR SUR LES FACTURES DU MOIS
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: DECIMAL
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: MONTANT PAYE DANS LE MOIS
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: DECIMAL
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: DONT ESPECES (CAISSE)
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: DECIMAL
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: MONTANT FACTURE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: DECIMAL
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: DONT BANQUE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: DECIMAL
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: MOIS
+  verbose_name: null
+  is_dttm: true
+  is_active: true
+  type: DATE
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: STATUT
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: LIBELLE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: COMPTE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: ORDRE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: INTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+version: 1.0.0
+database_uuid: 44c13a30-0c14-402c-b81f-1c93972f5fbc

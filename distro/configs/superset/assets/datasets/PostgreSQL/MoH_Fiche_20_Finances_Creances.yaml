@@ -1,0 +1,188 @@
+table_name: "MoH Fiche 20 Finances Cr\xE9ances"
+main_dttm_col: MOIS
+description: "UVL-EMR \xB7 Minist\xE8re \xAB Fiche 20 \xBB (#910), bloc 3 Cr\xE9ances:\
+  \ par cr\xE9ancier (payeur de la facture), cr\xE9ance au d\xE9but du mois, augmentation\
+  \ (factures du mois), diminution (paiements valid\xE9s du mois), cr\xE9ance \xE0\
+  \ la fin du mois. Subsides, MSPLS et revenus locatifs ne sont pas enregistr\xE9\
+  s dans Odoo."
+default_endpoint: null
+offset: 0
+cache_timeout: null
+schema: public
+sql: "-- Fiche 20 (MoH, #910): 7.3 Gestion financiere, bloc 3. CREANCES (par creancier)\n\
+  -- One row per MOIS x creancier (printed list). Receivable = posted customer invoices\
+  \ not yet paid, by payer.\n--   CREANCE AU DEBUT DU MOIS  = receivable at the end\
+  \ of the month before.\n--   AUGMENTATION DE LA CREANCE = invoices dated in the\
+  \ month (amount_total; credit notes are negative).\n--   DIMINUTION DE LA CREANCE\
+  \  = payments POSTED in the month (real payment date) allocated to those invoices\
+  \ (payment_allocations).\n--   CREANCE A LA FIN DU MOIS  = debut + augmentation\
+  \ - diminution. For the current month it equals the sum of amount_residual of the\
+  \ invoices.\n-- Creditor = the payer of the invoice: the insurer partner of the\
+  \ split invoice (table payer_map, first match wins); patients and invoices\n-- without\
+  \ payer = PAYANT CASH; any other insurer = AUTRES CREANCES. Lines with no equivalent\
+  \ in Odoo (subsidies, MSPLS, rent) = 'non enregistre', empty.\n-- TEST DATA: invoices\
+  \ of test patients (SYNTH-/E2E/QA/TEST/DEMO, through the patient uuid kept as partner_ref)\
+  \ are left out.\nWITH cfg AS (SELECT date_trunc('month', current_date)::date AS\
+  \ cur_m),\ntest_pt AS (\n  SELECT p.patient_uuid FROM patients p\n  WHERE COALESCE(p.family_name,\
+  \ '') ~* '^(SYNTH-|E2E|QA|TEST|DEMO)' OR COALESCE(p.given_name, '') ~* '^(SYNTH-|E2E|QA|TEST|DEMO)'\n\
+  ),\npayer_map AS (SELECT * FROM (VALUES\n  (1, 'MFP|Fonction Publique', '4b'), (2,\
+  \ 'PNB', '4c'), (3, 'FDN', '4d'), (4, 'retrait', '4e'),\n  (5, '\xE2g\xE9|ag\xE9\
+  |aged|elderly', '4f'), (6, '\\mCAM\\M|Assistance M\xE9dicale', '4g'), (7, 'personnel\
+  \ de sant', '4h'),\n  (8, 'indigent', '4i'), (9, 'MSU|CMU|Mutuel|Mutualit', '4j')\n\
+  ) v(prio, motif, code)),\ninv AS (\n  SELECT i.invoice_id, i.invoice_date, i.amount_total\
+  \ * (CASE WHEN i.move_type = 'out_refund' THEN -1 ELSE 1 END) AS amount_total,\n\
+  \         CASE WHEN i.payer_name IS NULL AND COALESCE(i.insurance_payer_role, '')\
+  \ NOT IN ('base', 'complementary') THEN '4k'\n              ELSE COALESCE((SELECT\
+  \ pm.code FROM payer_map pm WHERE COALESCE(i.payer_name, '') ~* pm.motif ORDER BY\
+  \ pm.prio LIMIT 1), '4l') END AS code\n  FROM invoices i\n  WHERE i.state = 'posted'\
+  \ AND i.move_type IN ('out_invoice', 'out_refund')\n    AND NOT EXISTS (SELECT 1\
+  \ FROM test_pt t WHERE t.patient_uuid = i.partner_ref)\n),\nmv AS (\n  SELECT code,\
+  \ date_trunc('month', invoice_date)::date AS m, SUM(amount_total) AS aug, 0::float8\
+  \ AS dim FROM inv GROUP BY 1, 2\n  UNION ALL\n  SELECT inv.code, date_trunc('month',\
+  \ p.payment_date)::date, 0, SUM(a.amount)\n  FROM payment_allocations a\n  JOIN\
+  \ payments p ON p.payment_id = a.payment_id AND p.state = 'posted' AND p.payment_type\
+  \ = 'inbound'\n  JOIN inv ON inv.invoice_id = a.invoice_id\n  GROUP BY 1, 2\n),\n\
+  mvs AS (SELECT code, m, SUM(aug) AS aug, SUM(dim) AS dim FROM mv GROUP BY code,\
+  \ m),\nlib AS (SELECT * FROM (VALUES\n  ('4a', 'Subsides de la contractualisation',\
+  \ 'non enregistr\xE9'),\n  ('4b', 'MFP', 'calcul\xE9'),\n  ('4m', 'Participation\
+  \ aux soins de sant\xE9 (MSPLS)', 'non enregistr\xE9'),\n  ('4c', 'PNB', 'calcul\xE9\
+  '),\n  ('4d', 'FDN', 'calcul\xE9'),\n  ('4g', 'CAM', 'calcul\xE9'),\n  ('4i', 'INDIGENTS',\
+  \ 'calcul\xE9'),\n  ('4e', 'RETRAITE', 'calcul\xE9'),\n  ('4f', 'PERSONNES AGEES',\
+  \ 'calcul\xE9'),\n  ('4j', 'MUTUALITES COMMUNAUTAIRES', 'calcul\xE9'),\n  ('4k',\
+  \ 'PAYANT CASH', 'calcul\xE9'),\n  ('4n', 'REVENUS LOCATIFS', 'non enregistr\xE9\
+  '),\n  ('4l', 'AUTRES CREANCES (payeurs hors liste)', 'calcul\xE9')\n) v(code, libelle,\
+  \ statut)),\nlib_n AS (SELECT l.*, ROW_NUMBER() OVER () AS ordre FROM lib l),\n\
+  months AS (SELECT gs::date AS m FROM generate_series((SELECT MIN(m) FROM mvs), GREATEST((SELECT\
+  \ cur_m FROM cfg), (SELECT MAX(m) FROM mvs)), interval '1 month') gs),\ncalc AS\
+  \ (\n  SELECT l.code, l.libelle, l.ordre, mo.m,\n         COALESCE(x.aug, 0) AS\
+  \ aug, COALESCE(x.dim, 0) AS dim,\n         SUM(COALESCE(x.aug, 0) - COALESCE(x.dim,\
+  \ 0)) OVER (PARTITION BY l.code ORDER BY mo.m) AS fin\n  FROM lib_n l CROSS JOIN\
+  \ months mo LEFT JOIN mvs x ON x.code = l.code AND x.m = mo.m\n  WHERE l.statut\
+  \ = 'calcul\xE9'\n)\nSELECT c.m AS \"MOIS\", c.libelle AS \"CREANCIER\",\n     \
+  \  ROUND((c.fin - c.aug + c.dim)::numeric, 2) AS \"CREANCE AU DEBUT DU MOIS\",\n\
+  \       ROUND(c.aug::numeric, 2) AS \"AUGMENTATION DE LA CREANCE\",\n       ROUND(c.dim::numeric,\
+  \ 2) AS \"DIMINUTION DE LA CREANCE\",\n       ROUND(c.fin::numeric, 2) AS \"CREANCE\
+  \ A LA FIN DU MOIS\",\n       'calcul\xE9' AS \"STATUT\", c.ordre::int AS \"ORDRE\"\
+  \nFROM calc c\nUNION ALL\nSELECT mo.m, l.libelle, NULL, NULL, NULL, NULL, 'non enregistr\xE9\
+  ', l.ordre::int\nFROM lib_n l CROSS JOIN months mo WHERE l.statut <> 'calcul\xE9\
+  '\nUNION ALL\nSELECT c.m, 'G. Total des cr\xE9ances (lignes calcul\xE9es)',\n  \
+  \     ROUND(SUM(c.fin - c.aug + c.dim)::numeric, 2), ROUND(SUM(c.aug)::numeric,\
+  \ 2), ROUND(SUM(c.dim)::numeric, 2), ROUND(SUM(c.fin)::numeric, 2),\n       'calcul\xE9\
+  ', 100\nFROM calc c GROUP BY c.m\nORDER BY 1 DESC, 8\n"
+params: null
+template_params: null
+filter_select_enabled: true
+fetch_values_predicate: null
+extra: null
+normalize_columns: false
+always_filter_main_dttm: false
+uuid: 7b302cf8-67e6-41c3-9d41-f86a2aeeac7e
+metrics:
+- metric_name: count
+  verbose_name: COUNT(*)
+  metric_type: count
+  expression: COUNT(*)
+  description: null
+  d3format: null
+  currency: null
+  extra: null
+  warning_text: null
+columns:
+- column_name: CREANCE A LA FIN DU MOIS
+  verbose_name: CREANCE A LA FIN DU MOIS
+  is_dttm: false
+  is_active: true
+  type: DECIMAL
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: CREANCE AU DEBUT DU MOIS
+  verbose_name: CREANCE AU DEBUT DU MOIS
+  is_dttm: false
+  is_active: true
+  type: DECIMAL
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: AUGMENTATION DE LA CREANCE
+  verbose_name: AUGMENTATION DE LA CREANCE
+  is_dttm: false
+  is_active: true
+  type: DECIMAL
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: DIMINUTION DE LA CREANCE
+  verbose_name: DIMINUTION DE LA CREANCE
+  is_dttm: false
+  is_active: true
+  type: DECIMAL
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: CREANCIER
+  verbose_name: CREANCIER
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: STATUT
+  verbose_name: STATUT
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: MOIS
+  verbose_name: MOIS
+  is_dttm: true
+  is_active: true
+  type: DATE
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: ORDRE
+  verbose_name: ORDRE
+  is_dttm: false
+  is_active: true
+  type: INTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+version: 1.0.0
+database_uuid: 44c13a30-0c14-402c-b81f-1c93972f5fbc
