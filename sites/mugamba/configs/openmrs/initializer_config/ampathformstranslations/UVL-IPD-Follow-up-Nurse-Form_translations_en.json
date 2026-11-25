@@ -7,7 +7,9 @@
   "translations": {
     "Blood pressure, left arm (mmHg)": "Blood pressure, left arm (mmHg)",
     "Blood pressure, right arm (mmHg)": "Blood pressure, right arm (mmHg)",
+    "Blood product": "Blood product",
     "Context": "Context",
+    "Description of the reaction or complication": "Description of the reaction or complication",
     "Diastolic (mmHg)": "Diastolic (mmHg)",
     "Follow-up date and time": "Follow-up date and time",
     "General information": "General information",
@@ -16,12 +18,17 @@
     "Midi": "Midday",
     "Normal: 16–20": "Normal: 16–20",
     "Normal: > 97": "Normal: > 97",
+    "Number of bags transfused": "Number of bags transfused",
+    "Reaction or complication": "Reaction or complication",
     "Respiratory rate (/min)": "Respiratory rate (/min)",
     "Soir": "Evening",
     "SpO2 (%)": "SpO2 (%)",
     "Systolic (mmHg)": "Systolic (mmHg)",
     "Temperature (°C)": "Temperature (°C)",
     "Therapeutic": "Therapeutic",
-    "Time point": "Time point"
+    "Time point": "Time point",
+    "Transfusion": "Transfusion",
+    "Transfusion given": "Transfusion given",
+    "Transfusion volume (ml)": "Transfusion volume (ml)"
   }
 }

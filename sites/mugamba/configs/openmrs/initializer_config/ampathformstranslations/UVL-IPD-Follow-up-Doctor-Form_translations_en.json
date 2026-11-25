@@ -5,6 +5,7 @@
   "description": "En Translations for 'UVL IPD Follow-up (Doctor) Form'",
   "language": "en",
   "translations": {
+    "Blood product": "Blood product",
     "Complaints": "Complaints",
     "Context": "Context",
     "Decision": "Decision",
@@ -13,10 +14,14 @@
     "General information": "General information",
     "IPD Follow-up (Doctor)": "IPD Follow-up (Doctor)",
     "Lab tests to be done": "Lab tests to be done",
+    "Number of bags requested": "Number of bags requested",
     "On-going treatment": "On-going treatment",
     "Other recommendations": "Other recommendations",
     "Performed by": "Performed by",
+    "Reason / indication": "Reason / indication",
     "Results of the physical examination (inspection, palpation, auscultation)": "Results of the physical examination (inspection, palpation, auscultation)",
+    "Transfusion request": "Transfusion request",
+    "Transfusion requested": "Transfusion requested",
     "Treatment to administer": "Treatment to administer"
   }
 }
