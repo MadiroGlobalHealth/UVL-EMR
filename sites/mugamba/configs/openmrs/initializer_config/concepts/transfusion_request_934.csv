@@ -1,0 +1,13 @@
+Uuid,Void/Retire,Fully specified name:en,Fully specified name:fr,Description:en,Data class,Data type,Members,_version:1,_order:1000
+a27a8fde-df50-4f85-86ee-8b8046846c08,,Blood transfusion requested (inpatient follow-up),Transfusion sanguine demandée (suivi d'hospitalisation),"Question: the doctor requested a blood transfusion at an inpatient follow-up. Answers Yes and No, already loaded (UVL-EMR#934).",Question,Coded,,,
+3dce9f13-05f5-4e10-9c14-23d6b9384292,,Blood product (transfusion),Produit sanguin (transfusion),"Question: the blood product requested or transfused. Answers: whole blood, packed red cells, plasma, platelets (UVL-EMR#934).",Question,Coded,,,
+9c41dedb-9955-4036-9768-14521b591438,,Whole blood (blood product),Sang total (produit sanguin),Answer of Blood product: whole blood (UVL-EMR#934).,Misc,N/A,,,
+fc636440-3fab-4de8-a495-3b6a5a35c6d4,,Packed red cells (blood product),Culot globulaire (produit sanguin),Answer of Blood product: packed red blood cells (UVL-EMR#934).,Misc,N/A,,,
+43aaa54c-ec7f-49cb-8ebb-572eeeef4cf7,,Plasma (blood product),Plasma (produit sanguin),Answer of Blood product: plasma (UVL-EMR#934).,Misc,N/A,,,
+6b24d6fa-13c5-4525-a50a-e5f15dc2c969,,Platelets (blood product),Plaquettes (produit sanguin),Answer of Blood product: platelets (UVL-EMR#934).,Misc,N/A,,,
+a8fbcac3-a4db-4066-9226-8bcf287519fb,,Number of blood bags requested,Nombre de poches de sang demandées,Number of blood bags the doctor requested at an inpatient follow-up (UVL-EMR#934).,Question,Numeric,,,
+c4b11d12-d275-4d77-84f6-3372aaa95e21,,Reason for the blood transfusion request,Motif de la demande de transfusion,Free text: the indication for the blood transfusion request (UVL-EMR#934).,Question,Text,,,
+8b4dbd54-e99f-4183-84d2-99db6a2c99a3,,Blood transfusion given (inpatient follow-up),Transfusion sanguine administrée (suivi d'hospitalisation),"Question: a blood transfusion was given at an inpatient follow-up. Answers Yes and No, already loaded (UVL-EMR#934).",Question,Coded,,,
+3a036c48-337f-4475-b38d-b0b29e804484,,Number of blood bags transfused,Nombre de poches de sang transfusées,Number of blood bags transfused at an inpatient follow-up (UVL-EMR#934).,Question,Numeric,,,
+1b6a42c3-9877-4d26-ab15-58e3a626e44f,,Transfusion reaction or complication,Réaction ou complication de la transfusion,"Question: the patient had a reaction or complication to the transfusion. Answers Yes and No, already loaded (UVL-EMR#934).",Question,Coded,,,
+427d1e69-aef3-4e00-8b4c-a8e0920c0e16,,Description of the transfusion reaction or complication,Description de la réaction ou complication de la transfusion,Free text: the reaction or complication that followed the transfusion (UVL-EMR#934).,Question,Text,,,
