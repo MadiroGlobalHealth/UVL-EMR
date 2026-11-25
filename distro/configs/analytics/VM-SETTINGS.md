@@ -42,3 +42,12 @@ otherwise reach Flink as base64.
 
 ## 6. Kafka topics
 `CREATE_TOPICS` lists the `emr.openmrs.stockmgmt_*` and `erp.public.account_*` topics (they are also auto-created).
+
+## 7. Kafka Connect task watchdog (cron on the analytics VM)
+Script: `scripts/connect-task-watchdog.sh`, installed as `/home/ubuntu/ANALYTICS/uvl-analytics/connect-task-watchdog.sh`.
+Why: a normal deploy recreates the source database containers; afterwards `odoo-connector` reports RUNNING while its task 0 is FAILED, so invoices and payments silently stop flowing.
+What it does: for every connector from `GET /connectors` (through `docker exec ozone-analytics-connect-1 curl`), it reads `/status`. A FAILED task is logged (UTC time, connector, task id, first line of the trace with everything after `jdbc:` or `password` cut), restarted with `POST /connectors/<name>/tasks/<id>/restart`, and its state re-read after 20 s. A FAILED connector gets `POST /connectors/<name>/restart?includeTasks=true&onlyFailed=true`. It never deletes, pauses or reconfigures anything and never touches replication slots.
+Limit: at most 3 restarts per task (or connector) per hour, tracked in `.connect-task-watchdog.state` next to the script; after that it logs `giving up, needs a human` (once an hour) so a broken source does not loop. If the Connect REST API does not answer it logs once and skips.
+Cron (ubuntu): `*/5 * * * * /home/ubuntu/ANALYTICS/uvl-analytics/connect-task-watchdog.sh >/dev/null 2>&1`
+Log: `/home/ubuntu/ANALYTICS/logs/connect-task-watchdog.log` (the script trims it to the last 2000 lines; one heartbeat line per hour when all is RUNNING).
+Disable: comment the cron line. Test without touching a real task: `WATCHDOG_DRY_RUN=1 WATCHDOG_STATUS_FILE=<json {name: status}> WATCHDOG_STATE_FILE=<tmp> WATCHDOG_LOG=<tmp> WATCHDOG_LOCK=<tmp> ./connect-task-watchdog.sh`.
