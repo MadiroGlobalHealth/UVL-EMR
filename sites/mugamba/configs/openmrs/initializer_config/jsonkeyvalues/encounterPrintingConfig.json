@@ -4,5 +4,6 @@
   "report.encounterPrinting.header.location": "true",
   "report.encounterPrinting.header.encounterDate": "true",
   "report.encounterPrinting.header.patientIdentifiers": "true",
-  "report.encounterPrinting.footer.customText": "Ubuntu Village of Life"
+  "report.encounterPrinting.footer.customText": "Ubuntu Village of Life",
+  "report.encounterPrinting.stylesheetPath": "configuration/printing/ozone-uvl-mugamba/encounterFormFopStylesheet.xsl"
 }
