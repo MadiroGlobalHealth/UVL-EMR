@@ -2,7 +2,10 @@
 <!-- UVL: French version of the module's defaultEncounterFormFopStylesheet.xsl (patientdocuments 1.2.0), #940.
      Differences: header and footer labels in French; form title from the form French translation;
      "Printed by" shows the print time only (the module names the daemon user of the async job);
-     unanswered questions and groups whose questions are all unanswered are left out. -->
+     unanswered questions and groups whose questions are all unanswered are left out;
+     standalone info texts (markdown/label questions that head no question, e.g. a hidden-message
+     shown only when a condition holds, which the module cannot evaluate) and sections or pages with
+     no question at all are left out; whole-number answers print without a trailing ,0 / .0. -->
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:fo="http://www.w3.org/1999/XSL/Format">
@@ -235,6 +238,7 @@
     </xsl:template>
 
     <xsl:template match="page">
+        <xsl:if test="section/question">
         <fo:block margin-bottom="5mm">
             <xsl:if test="@label">
                 <fo:block font-size="13pt" font-weight="bold" color="#005f87" margin-top="4mm" margin-bottom="2mm"
@@ -245,9 +249,11 @@
 
             <xsl:apply-templates select="section"/>
         </fo:block>
+        </xsl:if>
     </xsl:template>
 
     <xsl:template match="section">
+        <xsl:if test="question">
         <fo:block margin-left="2mm" margin-bottom="4mm">
             <xsl:if test="@label != ''">
                 <fo:block font-size="11pt" font-weight="bold" background-color="#eef" padding="1mm" margin-bottom="2mm"
@@ -257,7 +263,7 @@
             </xsl:if>
 
             <xsl:choose>
-                <xsl:when test="question[not(. = 'No data recorded')] or (markdown and not(question))">
+                <xsl:when test="question[not(. = 'No data recorded')]">
                     <fo:table width="100%" table-layout="fixed">
                         <fo:table-column column-width="60%"/>
                         <fo:table-column column-width="40%"/>
@@ -273,6 +279,23 @@
                 </xsl:otherwise>
             </xsl:choose>
         </fo:block>
+        </xsl:if>
+    </xsl:template>
+
+    <!-- 28,0 / 1250,0 / 28.0 -> 28 / 1250 / 28; real decimals and any other text are kept as is -->
+    <xsl:template name="plainNumber">
+        <xsl:param name="v"/>
+        <xsl:choose>
+            <xsl:when test="$v != '' and translate($v, '0123456789', '') = ',' and substring($v, 1, 1) != ','
+                            and substring-after($v, ',') != '' and translate(substring-after($v, ','), '0', '') = ''">
+                <xsl:value-of select="substring-before($v, ',')"/>
+            </xsl:when>
+            <xsl:when test="$v != '' and translate($v, '0123456789', '') = '.' and substring($v, 1, 1) != '.'
+                            and substring-after($v, '.') = '0'">
+                <xsl:value-of select="substring-before($v, '.')"/>
+            </xsl:when>
+            <xsl:otherwise><xsl:value-of select="$v"/></xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
 
     <xsl:template match="question">
@@ -285,7 +308,7 @@
 
             <fo:table-cell padding="1.5mm" border-bottom="0.5pt solid #eee" background-color="#fafafa">
                 <fo:block font-size="10pt" font-weight="bold" color="black">
-                    <xsl:value-of select="."/>
+                    <xsl:call-template name="plainNumber"><xsl:with-param name="v" select="string(.)"/></xsl:call-template>
                 </fo:block>
             </fo:table-cell>
         </fo:table-row>
@@ -295,7 +318,7 @@
         <xsl:variable name="me" select="generate-id()"/>
         <xsl:variable name="inGroup" select="count(following-sibling::question[generate-id(preceding-sibling::markdown[1]) = $me])"/>
         <xsl:variable name="answered" select="count(following-sibling::question[generate-id(preceding-sibling::markdown[1]) = $me][not(. = 'No data recorded')])"/>
-        <xsl:if test="$inGroup = 0 or $answered &gt; 0">
+        <xsl:if test="$answered &gt; 0">
         <fo:table-row>
             <fo:table-cell number-columns-spanned="2" padding="2mm">
                 <fo:block font-size="9pt" font-style="italic" color="#666" background-color="#ffffee" border="0.5pt dashed #ccc" padding="2mm">
