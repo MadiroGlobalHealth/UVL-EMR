@@ -3732,4 +3732,134 @@
         <rollback/>
     </changeSet>
 
+    <!--
+        #950 - the direct urine examination (BP07) shows the paper result form: macroscopic and
+        microscopic parts.
+
+        The product owner, 25 Nov 2026, after asking the lab technicians: BP07 keeps part 2
+        (macroscopic) and part 4 (microscopic) of the hospital's form; the strip test and the
+        culture (ECBU, BP09) are other result forms. concepts/direct_urine_examination_950.csv
+        creates the ten fields and the comment, conceptsets/direct_urine_examination_950.csv makes
+        them the members of BP07 (ac930dc2-3328-4225-98af-f387787b04e9), in the order of the form.
+
+        The seven components BP07 had since #209 are not on the paper form. Removing them is
+        done here because the Initializer adds set members but never removes one. Their old
+        results are kept: each stays on its obs group, and the second changeset copies them as one
+        line of text into the new comment, because the Results page and the lab app read a set
+        only through its current members.
+    -->
+    <changeSet id="urine_examination_remove_old_components-20261125" author="Joshua">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT CASE WHEN COUNT(*) &gt; 0 THEN 1 ELSE 0 END FROM concept_set s
+                  JOIN concept p ON p.concept_id = s.concept_set
+                  JOIN concept m ON m.concept_id = s.concept_id
+                 WHERE p.uuid = 'ac930dc2-3328-4225-98af-f387787b04e9'
+                   AND m.uuid IN ('33745bc0-6368-47c8-b616-ecca8da25eaa', '31c54aa9-a0c9-4a2c-bece-0a4ba1623b6d',
+                                  'c1825d0a-00f0-4b31-9810-b4b9552772c7', '9c24062e-7a62-47e0-ae62-7ee3d969041b',
+                                  'd3481cff-5c32-4fe7-8e8c-ce72f52cb6c1', '949a8c67-39b9-4c1e-9f13-4c6fd5134bd4',
+                                  '4b1abb2b-3411-441a-8aa4-f669fa29bec8')
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            Remove the seven #209 components from BP07 Urine examination; the paper-form fields replace them (#950). The concepts and any result recorded on them stay.
+        </comment>
+        <sql>
+            DELETE s FROM concept_set s
+              JOIN concept p ON p.concept_id = s.concept_set
+              JOIN concept m ON m.concept_id = s.concept_id
+             WHERE p.uuid = 'ac930dc2-3328-4225-98af-f387787b04e9'
+               AND m.uuid IN ('33745bc0-6368-47c8-b616-ecca8da25eaa', '31c54aa9-a0c9-4a2c-bece-0a4ba1623b6d',
+                              'c1825d0a-00f0-4b31-9810-b4b9552772c7', '9c24062e-7a62-47e0-ae62-7ee3d969041b',
+                              'd3481cff-5c32-4fe7-8e8c-ce72f52cb6c1', '949a8c67-39b9-4c1e-9f13-4c6fd5134bd4',
+                              '4b1abb2b-3411-441a-8aa4-f669fa29bec8');
+        </sql>
+        <rollback/>
+    </changeSet>
+
+    <!--
+        BP07 results entered before #950: show them on the Results page and in the lab app.
+
+        A BP07 result is a group obs of BP07 whose members are the old components. Those are no
+        longer members of the set, so the page would show an empty BP07. Nothing is converted:
+        the old answers (none / moderate / high, positive / negative...) have no equivalent in the
+        paper form's choices, and mapping them would invent data. Each such group gets one more
+        member, the "Direct urine examination comment" (b2fe23ad-3273-4943-ae6f-6c77795f3334), whose text lists the old
+        components and answers: « Résultat antérieur : Aspect urinaire : ... ; ... ». The old
+        member obs are not touched. Rollback deletes those comments.
+
+        The precondition fails with CONTINUE, not MARK_RAN, because Liquibase is the Initializer's
+        first domain: on the start that creates the comment concept the changeset is skipped and
+        runs on the next start, as for #415.
+    -->
+    <changeSet id="urine_examination_keep_old_results-20261125" author="Joshua">
+        <preConditions onFail="CONTINUE">
+            <sqlCheck expectedResult="1">
+                SELECT CASE WHEN COUNT(*) &gt; 0 THEN 1 ELSE 0 END
+                  FROM obs g
+                  JOIN concept bp ON bp.concept_id = g.concept_id AND bp.uuid = 'ac930dc2-3328-4225-98af-f387787b04e9'
+                 WHERE g.voided = 0
+                   AND EXISTS (SELECT 1 FROM concept WHERE uuid = 'b2fe23ad-3273-4943-ae6f-6c77795f3334')
+                   AND EXISTS (SELECT 1 FROM obs ch JOIN concept cc ON cc.concept_id = ch.concept_id
+                                WHERE ch.obs_group_id = g.obs_id AND ch.voided = 0
+                                  AND cc.uuid IN ('33745bc0-6368-47c8-b616-ecca8da25eaa', '31c54aa9-a0c9-4a2c-bece-0a4ba1623b6d',
+                                                  'c1825d0a-00f0-4b31-9810-b4b9552772c7', '9c24062e-7a62-47e0-ae62-7ee3d969041b',
+                                                  'd3481cff-5c32-4fe7-8e8c-ce72f52cb6c1', '949a8c67-39b9-4c1e-9f13-4c6fd5134bd4',
+                                                  '4b1abb2b-3411-441a-8aa4-f669fa29bec8'))
+                   AND NOT EXISTS (SELECT 1 FROM obs ch JOIN concept cc ON cc.concept_id = ch.concept_id
+                                    WHERE ch.obs_group_id = g.obs_id AND ch.voided = 0 AND cc.uuid = 'b2fe23ad-3273-4943-ae6f-6c77795f3334')
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            Keep the BP07 results recorded before #950 visible: one comment member per old result group, listing the old components and answers (#950).
+        </comment>
+        <sql>
+            INSERT INTO obs (person_id, concept_id, encounter_id, order_id, obs_datetime, location_id,
+                             obs_group_id, value_text, status, creator, date_created, voided, uuid)
+            SELECT g.person_id, cm.concept_id, g.encounter_id, g.order_id, g.obs_datetime, g.location_id,
+                   g.obs_id,
+                   CONCAT('Résultat antérieur : ',
+                          (SELECT GROUP_CONCAT(CONCAT(COALESCE((SELECT cn.name FROM concept_name cn
+                                         WHERE cn.concept_id = ch.concept_id AND cn.locale = 'fr' AND cn.voided = 0
+                                         ORDER BY cn.locale_preferred DESC LIMIT 1),
+                                       (SELECT cn.name FROM concept_name cn
+                                         WHERE cn.concept_id = ch.concept_id AND cn.voided = 0
+                                         ORDER BY cn.locale_preferred DESC LIMIT 1)), ' : ',
+                                                      COALESCE(COALESCE((SELECT cn.name FROM concept_name cn
+                                         WHERE cn.concept_id = ch.value_coded AND cn.locale = 'fr' AND cn.voided = 0
+                                         ORDER BY cn.locale_preferred DESC LIMIT 1),
+                                       (SELECT cn.name FROM concept_name cn
+                                         WHERE cn.concept_id = ch.value_coded AND cn.voided = 0
+                                         ORDER BY cn.locale_preferred DESC LIMIT 1)), ch.value_text, ch.value_numeric))
+                                               ORDER BY ch.obs_id SEPARATOR ' ; ')
+                             FROM obs ch
+                             JOIN concept cc ON cc.concept_id = ch.concept_id
+                            WHERE ch.obs_group_id = g.obs_id AND ch.voided = 0
+                              AND cc.uuid IN ('33745bc0-6368-47c8-b616-ecca8da25eaa', '31c54aa9-a0c9-4a2c-bece-0a4ba1623b6d',
+                                              'c1825d0a-00f0-4b31-9810-b4b9552772c7', '9c24062e-7a62-47e0-ae62-7ee3d969041b',
+                                              'd3481cff-5c32-4fe7-8e8c-ce72f52cb6c1', '949a8c67-39b9-4c1e-9f13-4c6fd5134bd4',
+                                              '4b1abb2b-3411-441a-8aa4-f669fa29bec8'))),
+                   g.status, 1, NOW(), 0, UUID()
+              FROM obs g
+              JOIN concept bp ON bp.concept_id = g.concept_id AND bp.uuid = 'ac930dc2-3328-4225-98af-f387787b04e9'
+              JOIN concept cm ON cm.uuid = 'b2fe23ad-3273-4943-ae6f-6c77795f3334'
+             WHERE g.voided = 0
+               AND EXISTS (SELECT 1 FROM obs ch JOIN concept cc ON cc.concept_id = ch.concept_id
+                            WHERE ch.obs_group_id = g.obs_id AND ch.voided = 0
+                              AND cc.uuid IN ('33745bc0-6368-47c8-b616-ecca8da25eaa', '31c54aa9-a0c9-4a2c-bece-0a4ba1623b6d',
+                                              'c1825d0a-00f0-4b31-9810-b4b9552772c7', '9c24062e-7a62-47e0-ae62-7ee3d969041b',
+                                              'd3481cff-5c32-4fe7-8e8c-ce72f52cb6c1', '949a8c67-39b9-4c1e-9f13-4c6fd5134bd4',
+                                              '4b1abb2b-3411-441a-8aa4-f669fa29bec8'))
+               AND NOT EXISTS (SELECT 1 FROM obs ch
+                                WHERE ch.obs_group_id = g.obs_id AND ch.voided = 0 AND ch.concept_id = cm.concept_id);
+        </sql>
+        <rollback>
+            <sql>
+                DELETE o FROM obs o
+                  JOIN concept cm ON cm.concept_id = o.concept_id AND cm.uuid = 'b2fe23ad-3273-4943-ae6f-6c77795f3334'
+                 WHERE o.value_text LIKE 'Résultat antérieur : %' AND o.obs_group_id IS NOT NULL;
+            </sql>
+        </rollback>
+    </changeSet>
+
 </databaseChangeLog>
