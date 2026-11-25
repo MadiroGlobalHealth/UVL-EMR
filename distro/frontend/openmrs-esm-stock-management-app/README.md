@@ -51,6 +51,7 @@ with fixes that are not released upstream yet. Only the built module is here; th
 | uvl.13: new config `hiddenOperationTypes` (operation-type codes, default none): the listed types are left out of « Start New » and the Operations « Operation » filter only; existing operations, « Issue Stock » and the related-requisition link are unchanged | not yet |
 | uvl.14: the Transactions tab of a stock item has a start and an end date next to the location filter (`dateMin` / `dateMax`, local days, end day included; back on page 1; « Clear dates »); the bin card prints the displayed transactions, so it follows the period | not yet |
 | uvl.15: a completed stock report is downloaded through the app and re-encoded for Excel (UTF-16LE with byte-order mark, tab-separated, same `.csv` name) so accents and columns are right on French and English Excel; the server file is unchanged | not yet |
+| uvl.16: on a stock item's Transactions tab the Location filter narrows the list (the location is sent as its stock party, the only location parameter the transactions endpoint reads) and « All locations » removes it; « items per page » refetches with the new limit from page 1; the pager label follows the page; the filters wrap at a narrow width instead of covering the table header | not yet |
 
 The list's refresh after Complete and other status changes is already in 3.3.1 (3.2.1 revalidated a
 cache the app did not read); the branch only adds a test for it.
