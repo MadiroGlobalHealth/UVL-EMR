@@ -1,0 +1,8 @@
+{
+  "report.encounterPrinting.header.patientName": "true",
+  "report.encounterPrinting.header.formName": "true",
+  "report.encounterPrinting.header.location": "true",
+  "report.encounterPrinting.header.encounterDate": "true",
+  "report.encounterPrinting.header.patientIdentifiers": "true",
+  "report.encounterPrinting.footer.customText": "Ubuntu Village of Life"
+}
