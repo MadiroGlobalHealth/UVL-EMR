@@ -3663,6 +3663,76 @@
     </changeSet>
 
     <!--
+        HS24 sedimentation rate (VS) takes a result at one hour and a result at two hours (#949). The
+        orderable concept keeps its UUID, so the Odoo product, the billable service and the order
+        stay as they are (one order, one price). It becomes a LabSet of two numeric members, « VS 1re
+        heure (mm) » and « VS 2e heure (mm) », which OCL creates (UVL_labtests_vs_949_20261125.zip).
+        As in #209, OCL cannot change the datatype of a concept that already has results, so the
+        conversion is done here; the earlier single values are carried over by the second changeset.
+    -->
+    <changeSet id="vs_esr_labset-20261125" author="Joshua">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT COUNT(*) FROM concept c JOIN concept_datatype d ON d.concept_datatype_id = c.datatype_id
+                WHERE c.uuid = '27a280c7-5754-49a6-99a9-915608ee8f58' AND d.uuid = '8d4a4488-c2cc-11de-8d13-0010c6dffd0f'
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            HS24 ESR: Numeric test to a LabSet of its hour readings (#949). Earlier single values stay in the
+            obs table until vs_esr_carry_old_results-20261125 turns each into a 1st-hour reading.
+        </comment>
+        <sql>
+            DELETE FROM concept_numeric
+             WHERE concept_id = (SELECT concept_id FROM concept WHERE uuid = '27a280c7-5754-49a6-99a9-915608ee8f58');
+            UPDATE concept
+               SET datatype_id = (SELECT concept_datatype_id FROM concept_datatype WHERE uuid = '8d4a4c94-c2cc-11de-8d13-0010c6dffd0f'),
+                   class_id = (SELECT concept_class_id FROM concept_class WHERE uuid = '8d492026-c2cc-11de-8d13-0010c6dffd0f'),
+                   is_set = 1,
+                   changed_by = 1,
+                   date_changed = NOW()
+             WHERE uuid = '27a280c7-5754-49a6-99a9-915608ee8f58';
+        </sql>
+    </changeSet>
+
+    <!--
+        The members only exist once the OCL import has run, which is after this file on the first boot
+        that carries #949. onFail="CONTINUE" leaves the changeset un-run so the next boot retries it;
+        MARK_RAN would skip it for good. Once the old results are carried over the precondition no longer
+        holds and the changeset is just skipped.
+    -->
+    <changeSet id="vs_esr_carry_old_results-20261125" author="Joshua">
+        <preConditions onFail="CONTINUE" onError="CONTINUE">
+            <sqlCheck expectedResult="1">
+                SELECT CASE WHEN COUNT(*) &gt; 0 THEN 1 ELSE 0 END FROM obs o
+                WHERE o.concept_id = (SELECT concept_id FROM concept WHERE uuid = '27a280c7-5754-49a6-99a9-915608ee8f58')
+                  AND o.value_numeric IS NOT NULL
+                  AND EXISTS (SELECT 1 FROM concept WHERE uuid = 'aa965af8-c28e-4f9f-8774-a5ba394b319c')
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            Each earlier single ESR value (one reading, taken as the 1st hour) becomes the obs group of a
+            « VS 1re heure » value, so the lab app and the chart show it in the new layout (#949). The value
+            moves to the child; the group obs carries no value, as the order's result obs of a set does.
+        </comment>
+        <sql>
+            INSERT INTO obs (person_id, concept_id, encounter_id, order_id, obs_datetime, location_id, obs_group_id,
+                             value_numeric, creator, date_created, voided, voided_by, date_voided, void_reason, uuid, status)
+            SELECT o.person_id,
+                   (SELECT concept_id FROM concept WHERE uuid = 'aa965af8-c28e-4f9f-8774-a5ba394b319c'),
+                   o.encounter_id, o.order_id, o.obs_datetime, o.location_id, o.obs_id,
+                   o.value_numeric, o.creator, o.date_created, o.voided, o.voided_by, o.date_voided, o.void_reason, UUID(), 'FINAL'
+              FROM obs o
+             WHERE o.concept_id = (SELECT concept_id FROM concept WHERE uuid = '27a280c7-5754-49a6-99a9-915608ee8f58')
+               AND o.value_numeric IS NOT NULL;
+            UPDATE obs o
+               SET o.value_numeric = NULL
+             WHERE o.concept_id = (SELECT concept_id FROM concept WHERE uuid = '27a280c7-5754-49a6-99a9-915608ee8f58')
+               AND o.value_numeric IS NOT NULL;
+        </sql>
+        <rollback/>
+    </changeSet>
+
+    <!--
         #950 - the direct urine examination (BP07) shows the paper result form: macroscopic and
         microscopic parts.
 
