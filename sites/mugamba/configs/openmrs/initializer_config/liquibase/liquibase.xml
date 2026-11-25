@@ -3662,4 +3662,35 @@
         <rollback/>
     </changeSet>
 
+    <!--
+        #953 - stock items for Vaccinostyl and Tube à glycémie (drugs/uvl-drugs.csv, Odoo
+        product_variant/uvl-drugs.csv), consumables counted per Unité as Bande Velpeau, Sac collecteur
+        à urines and Set de perfusion. Their concepts are concepts/consumables_953.csv. Waits for the
+        drugs as the #795 and #797 seeds do: on a server where the drugs load after this runs, the
+        changeset is retried on the next start (restart OpenMRS once after the first deploy).
+    -->
+    <changeSet id="add_stock_items_953-20261125" author="Joshua">
+        <preConditions onFail="CONTINUE" onError="CONTINUE"
+                       onFailMessage="WARN (#953): the drugs Vaccinostyl and Tube à glycémie, or the Unité unit, do not exist yet (drugs not loaded), or the stockmanagement tables are missing, so their stock items were NOT created; this changeset is retried on every start.">
+            <tableExists tableName="stockmgmt_stock_item"/>
+            <tableExists tableName="stockmgmt_stock_item_packaging_uom"/>
+            <columnExists tableName="stockmgmt_stock_item" columnName="common_name"/>
+            <sqlCheck expectedResult="2">
+                SELECT COUNT(DISTINCT uuid) FROM drug
+                 WHERE uuid IN ('c4dee2dd-0629-5c3c-9d65-f3d8eb246f60', '1e63368f-b03a-5b1a-bcaa-1e45d6bce7fb')
+            </sqlCheck>
+            <sqlCheck expectedResult="1">
+                SELECT COUNT(DISTINCT uuid) FROM concept
+                 WHERE uuid = 'c4b6c7b7-4906-4f76-af51-60ec9a34932e'
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            Create a stock item for Vaccinostyl and Tube à glycémie (#953).
+        </comment>
+        <sqlFile path="sql/stock_items_953.sql" relativeToChangelogFile="true" stripComments="true"/>
+        <rollback>
+            <sqlFile path="sql/stock_items_953_rollback.sql" relativeToChangelogFile="true" stripComments="true"/>
+        </rollback>
+    </changeSet>
+
 </databaseChangeLog>
