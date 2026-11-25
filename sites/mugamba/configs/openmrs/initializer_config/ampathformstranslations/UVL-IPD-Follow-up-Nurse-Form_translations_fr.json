@@ -7,7 +7,9 @@
   "translations": {
     "Blood pressure, left arm (mmHg)": "Tension artérielle, bras gauche (mmHg)",
     "Blood pressure, right arm (mmHg)": "Tension artérielle, bras droit (mmHg)",
+    "Blood product": "Produit sanguin",
     "Context": "Contexte",
+    "Description of the reaction or complication": "Description de la réaction ou complication",
     "Diastolic (mmHg)": "Diastolique (mmHg)",
     "Follow-up date and time": "Date et heure du suivi",
     "General information": "Informations générales",
@@ -16,12 +18,17 @@
     "Midi": "Midi",
     "Normal: 16–20": "Normale : 16–20",
     "Normal: > 97": "Normale : > 97",
+    "Number of bags transfused": "Nombre de poches transfusées",
+    "Reaction or complication": "Réaction ou complication",
     "Respiratory rate (/min)": "Fréquence respiratoire (/min)",
     "Soir": "Soir",
     "SpO2 (%)": "SpO2 (%)",
     "Systolic (mmHg)": "Systolique (mmHg)",
     "Temperature (°C)": "Température (°C)",
     "Therapeutic": "Thérapeutique",
-    "Time point": "Période"
+    "Time point": "Période",
+    "Transfusion": "Transfusion",
+    "Transfusion given": "Transfusion administrée",
+    "Transfusion volume (ml)": "Volume transfusé (ml)"
   }
 }
