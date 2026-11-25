@@ -1,7 +1,7 @@
-slice_name: Diagnostics – les 10 principaux (CIM-10)
-description:
-certified_by:
-certification_details:
+slice_name: "Diagnostics \u2013 les 10 principaux (CIM-10)"
+description: null
+certified_by: null
+certification_details: null
 viz_type: table
 params:
   datasource: 30__table
@@ -31,19 +31,19 @@ params:
   - expressionType: SIMPLE
     subject: MOIS
     operator: TEMPORAL_RANGE
-    comparator: previous calendar month
+    comparator: No filter
     clause: WHERE
-    sqlExpression:
+    sqlExpression: null
     isExtra: false
     isNew: false
     datasourceWarning: false
     filterOptionName: filter_c45
   - expressionType: SIMPLE
     subject: CERTITUDE
-    operator: "=="
-    comparator: Confirmé
+    operator: ==
+    comparator: "Confirm\xE9"
     clause: WHERE
-    sqlExpression:
+    sqlExpression: null
     isExtra: false
     isNew: false
     datasourceWarning: false
@@ -56,8 +56,9 @@ params:
   show_cell_bars: false
   color_pn: true
   extra_form_data: {}
-query_context:
-cache_timeout:
+  annotation_layers: []
+query_context: null
+cache_timeout: null
 uuid: 4982179c-786f-4386-8735-5bc3e8d9cd5b
 version: 1.0.0
 dataset_uuid: 5ae37188-7cad-46d6-956f-6fdf1b74b318

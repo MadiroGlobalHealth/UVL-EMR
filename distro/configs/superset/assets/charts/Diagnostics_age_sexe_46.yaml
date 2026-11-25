@@ -1,7 +1,7 @@
-slice_name: Diagnostics – âge × sexe
-description:
-certified_by:
-certification_details:
+slice_name: "Diagnostics \u2013 \xE2ge \xD7 sexe"
+description: null
+certified_by: null
+certification_details: null
 viz_type: pivot_table_v2
 params:
   datasource: 30__table
@@ -25,19 +25,19 @@ params:
   - expressionType: SIMPLE
     subject: MOIS
     operator: TEMPORAL_RANGE
-    comparator: previous calendar month
+    comparator: No filter
     clause: WHERE
-    sqlExpression:
+    sqlExpression: null
     isExtra: false
     isNew: false
     datasourceWarning: false
     filterOptionName: filter_c46
   - expressionType: SIMPLE
     subject: CERTITUDE
-    operator: "=="
-    comparator: Confirmé
+    operator: ==
+    comparator: "Confirm\xE9"
     clause: WHERE
-    sqlExpression:
+    sqlExpression: null
     isExtra: false
     isNew: false
     datasourceWarning: false
@@ -55,8 +55,9 @@ params:
   combineMetric: false
   show_cell_bars: false
   extra_form_data: {}
-query_context:
-cache_timeout:
+  annotation_layers: []
+query_context: null
+cache_timeout: null
 uuid: 8bc7db2b-5c85-465a-aa58-21af555d7153
 version: 1.0.0
 dataset_uuid: 5ae37188-7cad-46d6-956f-6fdf1b74b318

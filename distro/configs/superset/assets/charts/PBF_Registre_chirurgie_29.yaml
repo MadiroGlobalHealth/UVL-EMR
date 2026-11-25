@@ -33,7 +33,7 @@ params:
   - expressionType: SIMPLE
     subject: DATE
     operator: TEMPORAL_RANGE
-    comparator: Last month
+    comparator: No filter
     clause: WHERE
     sqlExpression: null
     isExtra: false
@@ -49,6 +49,7 @@ params:
   show_cell_bars: false
   color_pn: true
   extra_form_data: {}
+  annotation_layers: []
 query_context: '{"datasource":{"id":20,"type":"table"},"force":false,"queries":[{"filters":[{"col":"DATE","op":"TEMPORAL_RANGE","val":"Last
   month"}],"extras":{"time_grain_sqla":"P1D","having":"","where":""},"applied_time_extras":{},"columns":["DATE","IDPERSONNE","NOM","PRENOM","SEXE","AGE","TYPE
   D''INTERVENTION","TYPE D''ANESTHESIE","CHIRURGIEN","TYPE DE CHIRURGIE","CIM10","DIAGNOSTIC","ASSURANCE","CARTE","ASSURANCE

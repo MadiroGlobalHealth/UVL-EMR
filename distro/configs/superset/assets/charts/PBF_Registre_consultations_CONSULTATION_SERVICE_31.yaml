@@ -48,7 +48,7 @@ params:
   - expressionType: SIMPLE
     subject: DATE DE CONSULTATION
     operator: TEMPORAL_RANGE
-    comparator: Last month
+    comparator: No filter
     clause: WHERE
     sqlExpression: null
     isExtra: false
@@ -67,6 +67,7 @@ params:
   allow_rearrange_columns: true
   conditional_formatting: []
   extra_form_data: {}
+  annotation_layers: []
 query_context: '{"datasource":{"id":22,"type":"table"},"force":false,"queries":[{"filters":[{"col":"DATE
   DE CONSULTATION","op":"TEMPORAL_RANGE","val":"Last month"}],"extras":{"time_grain_sqla":"P1D","having":"","where":""},"applied_time_extras":{},"columns":["DATE","SITUATION","IDPERSONNE","PRENOM","NOM","SEXE","AGE","NAISSANCE","CHEF_FAMILLE","PROVINCE","COMMUNE","ZONE","COLLINE","NOM
   DU MEDECIN","CIM10","MOTIF DE CONSULTATION","DIAGNOSTIC CONFIRME","TRAITEMENT","STATUT","DUREE_GROSSESSE","ASSURANCE","CARTE","ASSURANCE

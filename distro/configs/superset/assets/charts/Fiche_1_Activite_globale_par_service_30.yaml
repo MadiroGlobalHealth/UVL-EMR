@@ -51,7 +51,7 @@ params:
   - expressionType: SIMPLE
     subject: MOIS
     operator: TEMPORAL_RANGE
-    comparator: previous calendar month
+    comparator: No filter
     clause: WHERE
     sqlExpression: null
     isExtra: false
@@ -66,6 +66,7 @@ params:
   show_cell_bars: false
   color_pn: true
   extra_form_data: {}
+  annotation_layers: []
 query_context: '{"datasource":{"id":21,"type":"table"},"force":false,"queries":[{"filters":[{"col":"MOIS","op":"TEMPORAL_RANGE","val":"previous
   calendar month"}],"extras":{"time_grain_sqla":"P1D","having":"","where":""},"applied_time_extras":{},"columns":["MOIS","SERVICE","LITS
   MONTES","ENTREES","ENTREES DOMICILE","ENTREES REFERE PAR CDS","ENTREES AUTRE HOPITAL","ENTREES

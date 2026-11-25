@@ -23,7 +23,7 @@ params:
   - expressionType: SIMPLE
     subject: MOIS
     operator: TEMPORAL_RANGE
-    comparator: previous calendar month
+    comparator: No filter
     clause: WHERE
     sqlExpression: null
     isExtra: false
@@ -38,6 +38,7 @@ params:
   show_cell_bars: false
   color_pn: true
   extra_form_data: {}
+  annotation_layers: []
 query_context: '{"datasource":{"id":25,"type":"table"},"force":false,"queries":[{"filters":[{"col":"MOIS","op":"TEMPORAL_RANGE","val":"previous
   calendar month"}],"extras":{"time_grain_sqla":"P1D","having":"","where":""},"applied_time_extras":{},"columns":["MOIS","REGISTRE","CATEGORIE","ASSURANCE","VALEUR"],"orderby":[],"annotation_layers":[],"row_limit":10000,"series_limit":0,"order_desc":true,"url_params":{},"custom_params":{},"custom_form_data":{},"post_processing":[]}],"form_data":{"datasource":"25__table","viz_type":"table","query_mode":"raw","groupby":[],"time_grain_sqla":"P1D","temporal_columns_lookup":{"MOIS":true},"metrics":[],"all_columns":["MOIS","REGISTRE","CATEGORIE","ASSURANCE","VALEUR"],"percent_metrics":[],"adhoc_filters":[{"expressionType":"SIMPLE","subject":"MOIS","operator":"TEMPORAL_RANGE","comparator":"previous
   calendar month","clause":"WHERE","sqlExpression":null,"isExtra":false,"isNew":false,"datasourceWarning":false,"filterOptionName":"filter_b106gx31874_3a5mvtm8i46"}],"order_by_cols":[],"row_limit":10000,"server_page_length":10,"order_desc":true,"table_timestamp_format":"smart_date","show_cell_bars":false,"color_pn":true,"extra_form_data":{},"force":false,"result_format":"json","result_type":"full","include_time":false},"result_format":"json","result_type":"full"}'

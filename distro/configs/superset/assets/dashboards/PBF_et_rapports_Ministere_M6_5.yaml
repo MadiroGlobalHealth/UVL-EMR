@@ -139,7 +139,6 @@ position:
   GRID_ID:
     children:
     - TABS-m6
-    - ROW-N-OKM4F4TD
     id: GRID_ID
     parents:
     - ROOT_ID
@@ -751,6 +750,7 @@ position:
       width: 12
       height: 80
       sliceName: "Fiche 4 \u2013 Diagnostics \xE0 la sortie (MoH)"
+      uuid: 57f07052-9d97-4f59-a069-a2006259cfd2
   ROW-m6-r3:
     type: ROW
     id: ROW-m6-r3
@@ -809,6 +809,7 @@ position:
       width: 12
       height: 60
       sliceName: "Fiche 5 \u2013 Actes techniques (MoH)"
+      uuid: 31dadd28-203e-477e-9dd7-20ad1d375b8f
   ROW-m6-r5:
     type: ROW
     id: ROW-m6-r5
@@ -836,6 +837,7 @@ position:
       width: 12
       height: 40
       sliceName: "Fiche 5 \u2013 Infections post-actes (MoH)"
+      uuid: c7edab50-09b2-45e5-a5ab-88d7c870e507
   ROW-m6b-f15n:
     type: ROW
     id: ROW-m6b-f15n
@@ -895,6 +897,7 @@ position:
       height: 100
       sliceName: "Fiche 15 \u2013 Consultations ambulatoires, disposition du mod\xE8\
         le (MoH)"
+      uuid: ba537a29-5544-434c-bddd-e52cb9e4bd41
   ROW-m6b-f15b:
     type: ROW
     id: ROW-m6b-f15b
@@ -922,6 +925,7 @@ position:
       width: 12
       height: 80
       sliceName: "Fiche 15 \u2013 Lignes sp\xE9ciales (MoH)"
+      uuid: f9247050-f4d5-4acc-82f7-8d3aac69ddab
   ROW-m6b-f8n:
     type: ROW
     id: ROW-m6b-f8n
@@ -978,6 +982,7 @@ position:
       width: 12
       height: 40
       sliceName: "Fiche 8 \u2013 Type de patient \xE0 l'arriv\xE9e aux urgences (MoH)"
+      uuid: 80d1d456-b017-4e06-924a-5b6632fb0e4d
   ROW-m6b-f8t:
     type: ROW
     id: ROW-m6b-f8t
@@ -1006,6 +1011,7 @@ position:
       height: 50
       sliceName: "Fiche 8 \u2013 Type de patient \xE0 l'arriv\xE9e, tous les services\
         \ (MoH)"
+      uuid: 51ccbb6f-67bb-44af-a7d6-66bd8ad393f2
   ROW-m6b-f3n:
     type: ROW
     id: ROW-m6b-f3n
@@ -1064,6 +1070,7 @@ position:
       height: 60
       sliceName: "Fiche 3 \u2013 D\xE9c\xE8s par pathologie, hospitalisation et urgences\
         \ (MoH)"
+      uuid: 3105a716-a830-43bc-b9a5-6f6d4929337a
   ROW-m6b-f6n:
     type: ROW
     id: ROW-m6b-f6n
@@ -1120,6 +1127,7 @@ position:
       width: 12
       height: 50
       sliceName: "Fiche 6 \u2013 Transfusions enregistr\xE9es, bloc 1 (MoH)"
+      uuid: 4bbe0640-f646-45ec-af7e-3d71d0813b38
   ROW-m6b-f19n:
     type: ROW
     id: ROW-m6b-f19n
@@ -1178,6 +1186,7 @@ position:
       height: 80
       sliceName: "Fiche 19 \u2013 M\xE9dicaments, r\xE9actifs et dispositifs, h\xF4\
         pital (MoH)"
+      uuid: 4bf50bb0-a56a-482c-a25e-3d3c6b2dd025
   ROW-m6b-f19l:
     type: ROW
     id: ROW-m6b-f19l
@@ -1206,6 +1215,7 @@ position:
       height: 80
       sliceName: "Fiche 19 \u2013 M\xE9dicaments, r\xE9actifs et dispositifs, par\
         \ lieu (MoH)"
+      uuid: 05a8ee0d-47a9-4a65-bcaf-84ebedbf911e
   ROW-m6b-f2n:
     type: ROW
     id: ROW-m6b-f2n
@@ -1263,6 +1273,7 @@ position:
       width: 12
       height: 100
       sliceName: "Fiche 2 \u2013 Paludisme, diarrh\xE9e et pneumonie (MoH)"
+      uuid: ab6a1731-8a85-4922-9fc5-56d8f6c8fb99
   ROW-m6b-qn:
     type: ROW
     id: ROW-m6b-qn
@@ -1320,217 +1331,7 @@ position:
       height: 40
       sliceName: "Contr\xF4le qualit\xE9 \u2013 consultations hors des 4 services\
         \ (Fiche 15)"
-  ROW-N-OKM4F4TD:
-    children:
-    - CHART-N3IWLFTK
-    - CHART-4WRO2MAH
-    - CHART-FWHTT5AW
-    - CHART-0Y0ATU3R
-    - CHART-BQGPJTXN
-    - CHART-C5BA2CCA
-    - CHART-PUS9X2V6
-    - CHART-QGEMNNX1
-    - CHART-7Q6KDH92
-    - CHART-FYFARGK1
-    - CHART-G5E1HJ68
-    - CHART-2LLELTN0
-    - CHART-PFPSGISU
-    id: ROW-N-OKM4F4TD
-    meta:
-      '0': ROOT_ID
-      background: BACKGROUND_TRANSPARENT
-    type: ROW
-    parents:
-    - ROOT_ID
-    - GRID_ID
-  CHART-N3IWLFTK:
-    children: []
-    id: CHART-N3IWLFTK
-    meta:
-      chartId: 74
-      height: 50
-      sliceName: "Fiche 8 \u2013 Type de patient \xE0 l'arriv\xE9e, tous les services\
-        \ (MoH)"
-      uuid: 51ccbb6f-67bb-44af-a7d6-66bd8ad393f2
-      width: 4
-    type: CHART
-    parents:
-    - ROOT_ID
-    - GRID_ID
-    - ROW-N-OKM4F4TD
-  CHART-4WRO2MAH:
-    children: []
-    id: CHART-4WRO2MAH
-    meta:
-      chartId: 75
-      height: 50
-      sliceName: "Fiche 15 \u2013 Consultations ambulatoires, disposition du mod\xE8\
-        le (MoH)"
-      uuid: ba537a29-5544-434c-bddd-e52cb9e4bd41
-      width: 4
-    type: CHART
-    parents:
-    - ROOT_ID
-    - GRID_ID
-    - ROW-N-OKM4F4TD
-  CHART-FWHTT5AW:
-    children: []
-    id: CHART-FWHTT5AW
-    meta:
-      chartId: 72
-      height: 50
-      sliceName: "Fiche 6 \u2013 Transfusions enregistr\xE9es, bloc 1 (MoH)"
-      uuid: 4bbe0640-f646-45ec-af7e-3d71d0813b38
-      width: 4
-    type: CHART
-    parents:
-    - ROOT_ID
-    - GRID_ID
-    - ROW-N-OKM4F4TD
-  CHART-0Y0ATU3R:
-    children: []
-    id: CHART-0Y0ATU3R
-    meta:
-      chartId: 77
-      height: 50
-      sliceName: "Contr\xF4le qualit\xE9 \u2013 consultations hors des 4 services\
-        \ (Fiche 15)"
       uuid: bb338338-18b3-44f2-afd4-6935942556ec
-      width: 4
-    type: CHART
-    parents:
-    - ROOT_ID
-    - GRID_ID
-    - ROW-N-OKM4F4TD
-  CHART-BQGPJTXN:
-    children: []
-    id: CHART-BQGPJTXN
-    meta:
-      chartId: 56
-      height: 50
-      sliceName: "Fiche 5 \u2013 Actes techniques (MoH)"
-      uuid: 31dadd28-203e-477e-9dd7-20ad1d375b8f
-      width: 4
-    type: CHART
-    parents:
-    - ROOT_ID
-    - GRID_ID
-    - ROW-N-OKM4F4TD
-  CHART-C5BA2CCA:
-    children: []
-    id: CHART-C5BA2CCA
-    meta:
-      chartId: 57
-      height: 50
-      sliceName: "Fiche 5 \u2013 Infections post-actes (MoH)"
-      uuid: c7edab50-09b2-45e5-a5ab-88d7c870e507
-      width: 4
-    type: CHART
-    parents:
-    - ROOT_ID
-    - GRID_ID
-    - ROW-N-OKM4F4TD
-  CHART-PUS9X2V6:
-    children: []
-    id: CHART-PUS9X2V6
-    meta:
-      chartId: 55
-      height: 50
-      sliceName: "Fiche 4 \u2013 Diagnostics \xE0 la sortie (MoH)"
-      uuid: 57f07052-9d97-4f59-a069-a2006259cfd2
-      width: 4
-    type: CHART
-    parents:
-    - ROOT_ID
-    - GRID_ID
-    - ROW-N-OKM4F4TD
-  CHART-QGEMNNX1:
-    children: []
-    id: CHART-QGEMNNX1
-    meta:
-      chartId: 76
-      height: 50
-      sliceName: "Fiche 15 \u2013 Lignes sp\xE9ciales (MoH)"
-      uuid: f9247050-f4d5-4acc-82f7-8d3aac69ddab
-      width: 4
-    type: CHART
-    parents:
-    - ROOT_ID
-    - GRID_ID
-    - ROW-N-OKM4F4TD
-  CHART-7Q6KDH92:
-    children: []
-    id: CHART-7Q6KDH92
-    meta:
-      chartId: 63
-      height: 50
-      sliceName: "Fiche 19 \u2013 M\xE9dicaments, r\xE9actifs et dispositifs, h\xF4\
-        pital (MoH)"
-      uuid: 4bf50bb0-a56a-482c-a25e-3d3c6b2dd025
-      width: 4
-    type: CHART
-    parents:
-    - ROOT_ID
-    - GRID_ID
-    - ROW-N-OKM4F4TD
-  CHART-FYFARGK1:
-    children: []
-    id: CHART-FYFARGK1
-    meta:
-      chartId: 64
-      height: 50
-      sliceName: "Fiche 19 \u2013 M\xE9dicaments, r\xE9actifs et dispositifs, par\
-        \ lieu (MoH)"
-      uuid: 05a8ee0d-47a9-4a65-bcaf-84ebedbf911e
-      width: 4
-    type: CHART
-    parents:
-    - ROOT_ID
-    - GRID_ID
-    - ROW-N-OKM4F4TD
-  CHART-G5E1HJ68:
-    children: []
-    id: CHART-G5E1HJ68
-    meta:
-      chartId: 70
-      height: 50
-      sliceName: "Fiche 2 \u2013 Paludisme, diarrh\xE9e et pneumonie (MoH)"
-      uuid: ab6a1731-8a85-4922-9fc5-56d8f6c8fb99
-      width: 4
-    type: CHART
-    parents:
-    - ROOT_ID
-    - GRID_ID
-    - ROW-N-OKM4F4TD
-  CHART-2LLELTN0:
-    children: []
-    id: CHART-2LLELTN0
-    meta:
-      chartId: 73
-      height: 50
-      sliceName: "Fiche 8 \u2013 Type de patient \xE0 l'arriv\xE9e aux urgences (MoH)"
-      uuid: 80d1d456-b017-4e06-924a-5b6632fb0e4d
-      width: 4
-    type: CHART
-    parents:
-    - ROOT_ID
-    - GRID_ID
-    - ROW-N-OKM4F4TD
-  CHART-PFPSGISU:
-    children: []
-    id: CHART-PFPSGISU
-    meta:
-      chartId: 71
-      height: 50
-      sliceName: "Fiche 3 \u2013 D\xE9c\xE8s par pathologie, hospitalisation et urgences\
-        \ (MoH)"
-      uuid: 3105a716-a830-43bc-b9a5-6f6d4929337a
-      width: 4
-    type: CHART
-    parents:
-    - ROOT_ID
-    - GRID_ID
-    - ROW-N-OKM4F4TD
 metadata:
   chart_configuration:
     '28':
