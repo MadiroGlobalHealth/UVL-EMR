@@ -36,7 +36,7 @@ params:
   percent_metrics: []
   adhoc_filters:
   - clause: WHERE
-    comparator: Last month
+    comparator: No filter
     datasourceWarning: false
     expressionType: SIMPLE
     filterOptionName: filter_fznjtk4hw1p_iq19w1aauwn
@@ -54,6 +54,7 @@ params:
   show_cell_bars: false
   color_pn: true
   extra_form_data: {}
+  annotation_layers: []
 query_context: '{"datasource":{"id":19,"type":"table"},"force":false,"queries":[{"filters":[{"col":"DATE
   D''ACCOUCHEMENT","op":"TEMPORAL_RANGE","val":"Last month"}],"extras":{"time_grain_sqla":"P1D","having":"","where":""},"applied_time_extras":{},"columns":["DATE
   D''ADMISSION","DATE D''ACCOUCHEMENT","IDPERSONNE","NOM","PRENOM","AGE","PROVINCE","COMMUNE","COLLINE","ACCOUCHE

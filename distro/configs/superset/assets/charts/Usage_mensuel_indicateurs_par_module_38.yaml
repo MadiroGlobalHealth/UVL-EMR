@@ -32,7 +32,7 @@ params:
     isNew: false
     datasourceWarning: false
     filterOptionName: filter_rnfdnhgo7q
-  row_limit: 10000
+  row_limit: 50000
   order_desc: true
   aggregateFunction: Sum
   valueFormat: SMART_NUMBER

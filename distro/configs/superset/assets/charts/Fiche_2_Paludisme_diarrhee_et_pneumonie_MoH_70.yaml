@@ -1,0 +1,91 @@
+slice_name: "Fiche 2 \u2013 Paludisme, diarrh\xE9e et pneumonie (MoH)"
+description: "Fiche 2 du Minist\xE8re: paludisme, diarrh\xE9e et pneumonie \xE0 la\
+  \ sortie (consultations ambulatoires et r\xE9sum\xE9s de sortie), 23 lignes par\
+  \ tranche d'\xE2ge et sexe. On compte les cases coch\xE9es sur les formulaires.\
+  \ Non enregistr\xE9: blisters d'Art\xE9m\xE9ther-Lum\xE9fantrine par poids."
+certified_by: null
+certification_details: null
+viz_type: table
+params:
+  datasource: 52__table
+  viz_type: table
+  query_mode: raw
+  groupby: []
+  time_grain_sqla: P1D
+  temporal_columns_lookup:
+    MOIS: true
+  all_columns:
+  - MOIS
+  - 65-70 ans F
+  - 71 ans et + H
+  - 71 ans et + F
+  - TOTAL H
+  - TOTAL F
+  - TOTAL
+  - ORDRE
+  - SERVICE
+  - GROUPE
+  - LIBELLE
+  - DISPONIBLE
+  - 0-28 jours H
+  - 0-28 jours F
+  - 29 jours-11 mois H
+  - 29 jours-11 mois F
+  - 12-59 mois H
+  - 12-59 mois F
+  - 5-9 ans H
+  - 5-9 ans F
+  - 10-14 ans H
+  - 10-14 ans F
+  - 15-17 ans H
+  - 15-17 ans F
+  - 18-19 ans H
+  - 18-19 ans F
+  - 20-24 ans H
+  - 20-24 ans F
+  - 25-29 ans H
+  - 25-29 ans F
+  - 30-34 ans H
+  - 30-34 ans F
+  - 35-39 ans H
+  - 35-39 ans F
+  - 40-44 ans H
+  - 40-44 ans F
+  - 45-49 ans H
+  - 45-49 ans F
+  - 50-54 ans H
+  - 50-54 ans F
+  - 55-59 ans H
+  - 55-59 ans F
+  - 60-64 ans H
+  - 60-64 ans F
+  - 65-70 ans H
+  percent_metrics: []
+  adhoc_filters:
+  - expressionType: SIMPLE
+    subject: MOIS
+    operator: TEMPORAL_RANGE
+    comparator: previous calendar month
+    clause: WHERE
+    sqlExpression: null
+    isExtra: false
+    isNew: false
+    datasourceWarning: false
+    filterOptionName: filter_909b_f2
+  order_by_cols:
+  - '["MOIS", false]'
+  - '["SERVICE", true]'
+  - '["ORDRE", true]'
+  row_limit: 10000
+  server_page_length: 25
+  order_desc: true
+  table_timestamp_format: smart_date
+  show_cell_bars: false
+  color_pn: false
+  include_search: true
+  extra_form_data: {}
+query_context: null
+cache_timeout: null
+uuid: ab6a1731-8a85-4922-9fc5-56d8f6c8fb99
+version: 1.0.0
+dataset_uuid: fa38bd31-d488-4071-adaa-81017ad238d1

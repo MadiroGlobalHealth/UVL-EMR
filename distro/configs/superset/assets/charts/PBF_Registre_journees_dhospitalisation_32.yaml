@@ -40,7 +40,7 @@ params:
   - expressionType: SIMPLE
     subject: DATE DE SORTIE
     operator: TEMPORAL_RANGE
-    comparator: Last month
+    comparator: No filter
     clause: WHERE
     sqlExpression: null
     isExtra: false
@@ -59,6 +59,7 @@ params:
   allow_rearrange_columns: true
   conditional_formatting: []
   extra_form_data: {}
+  annotation_layers: []
 query_context: '{"datasource":{"id":23,"type":"table"},"force":false,"queries":[{"filters":[{"col":"DATE
   DE SORTIE","op":"TEMPORAL_RANGE","val":"Last month"}],"extras":{"time_grain_sqla":"P1D","having":"","where":""},"applied_time_extras":{},"columns":["IDPERSONNE","NOM","PRENOM","SEXE","NAISSANCE","AGE","PROVINCE","COMMUNE","ZONE","COLLINE","DATE
   D''ENTREE","ORIGINE","DATE DE SORTIE","DUREE","EVOLUTION","CIM10_ENTREE","CIM10_SORTIE","ASSURANCE","NUMERO_ASSURANCE","ASSURANCE

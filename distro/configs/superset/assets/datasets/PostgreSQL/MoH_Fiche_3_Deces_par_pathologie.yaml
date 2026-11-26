@@ -1,0 +1,666 @@
+table_name: "MoH Fiche 3 D\xE9c\xE8s par pathologie"
+main_dttm_col: MOIS
+description: "UVL-EMR \xB7 Minist\xE8re \xAB Fiche 3 \xBB: d\xE9c\xE8s (issue de la\
+  \ consultation ou du r\xE9sum\xE9 de sortie) par pathologie, tranche d'\xE2ge et\
+  \ sexe. Aucun d\xE9c\xE8s enregistr\xE9 en production avant le 23 novembre."
+default_endpoint: null
+offset: 0
+cache_timeout: null
+schema: public
+sql: "-- Fiche 3 (MoH, #909): notification des d\xE9c\xE8s par pathologie (hospitalisation\
+  \ et urgences)\n-- One row per MOIS x SERVICE x CODE x LIBELLE; 18 age bands x H/F;\
+  \ Total.\n-- A death = (a) Outpatient Consultation / ER encounter with Outcome (b501a1ac-...)\
+  \ = 'd\xE9c\xE8s' (5f60e9b0-...), or\n--           (b) Discharge Summary (F07, 669262a8-...)\
+  \ Outcome at Discharge (160433AAA...) = death <24h (2071f21d), >=24h (442b409b)\
+  \ or deceased (5f60e9b0).\n-- One death per visit (discharge summary wins over the\
+  \ consultation outcome). Month and age band at the death (discharge: 'Date and time\
+  \ of death' 533c19af if filled).\n-- Pathology = the confirmed diagnosis of that\
+  \ encounter (the first entered; else the first of any certainty); no diagnosis ->\
+  \ 'Sans diagnostic enregistr\xE9'.\n-- Not recorded: cause-of-death code list (the\
+  \ Ministry code list is pending), ward-of-death vs ward-of-stay for transfers.\n\
+  WITH pt AS (\n    SELECT p.patient_uuid, p.gender, p.birthdate\n    FROM patients\
+  \ p\n    WHERE COALESCE(p.person_voided, false) = false\n      AND NOT (COALESCE(p.family_name,\
+  \ '') ~* '^(SYNTH-|E2E|QA|TEST|DEMO)'\n            OR COALESCE(p.given_name,  '')\
+  \ ~* '^(SYNTH-|E2E|QA|TEST|DEMO)')\n),\nenc AS (\n    SELECT e.encounter_id, e.encounter_uuid,\
+  \ e.visit_uuid, e.patient_uuid, e.encounter_datetime AS dt,\n           DATE_TRUNC('month',\
+  \ e.encounter_datetime)::date AS mois,\n           CASE e.location_uuid WHEN '44c3efb0-2583-4c80-a79e-1f756a03c0a1'\
+  \ THEN 'Consultation externe' WHEN '9D062929-CC4F-7A51-C700-2B968AADEC34' THEN 'Urgences'\
+  \ WHEN 'e1f4ab17-6dc5-4249-cf38-5bae7dbe9c64' THEN 'Ophtalmologie' WHEN 'f2a5bc28-7ed6-435a-da49-6cbf8ecfad75'\
+  \ THEN 'Dentisterie' ELSE COALESCE(e.location, 'Non renseign\xE9') END AS service,\n\
+  \           pt.gender AS sexe,\n           CASE WHEN a.dd IS NULL THEN NULL WHEN\
+  \ a.dd <= 28 THEN 1 WHEN a.m < 12 THEN 2 WHEN a.m < 60 THEN 3 WHEN a.y <= 9 THEN\
+  \ 4 WHEN a.y <= 14 THEN 5 WHEN a.y <= 17 THEN 6 WHEN a.y <= 19 THEN 7 WHEN a.y <=\
+  \ 64 THEN 8 + (a.y::int - 20) / 5 WHEN a.y <= 70 THEN 17 ELSE 18 END AS b,\n   \
+  \        COALESCE(pt.birthdate, v.patient_birthdate) AS bd, e.encounter_type_uuid\
+  \ AS etype\n    FROM encounters e\n    JOIN pt ON pt.patient_uuid = e.patient_uuid\n\
+  \    LEFT JOIN visits v ON v.visit_uuid = e.visit_uuid\n    CROSS JOIN LATERAL (SELECT\
+  \ (e.encounter_datetime)::date - COALESCE(pt.birthdate, v.patient_birthdate) AS\
+  \ dd, DATE_PART('year', AGE((e.encounter_datetime)::date, COALESCE(pt.birthdate,\
+  \ v.patient_birthdate))) AS y, DATE_PART('year', AGE((e.encounter_datetime)::date,\
+  \ COALESCE(pt.birthdate, v.patient_birthdate))) * 12 + DATE_PART('month', AGE((e.encounter_datetime)::date,\
+  \ COALESCE(pt.birthdate, v.patient_birthdate))) AS m) a\n    WHERE e.encounter_type_uuid\
+  \ IN ('0ff55309-1897-476b-a647-c7c180b102c8', '669262a8-f351-4d5b-8480-3551734eed8f')\n\
+  \      AND COALESCE(e.encounter_voided, false) = false\n      AND e.location_uuid\
+  \ IS DISTINCT FROM '450be362-59a7-4ccd-964d-ebd930a8b30f'\n      AND COALESCE(v.visit_voided,\
+  \ false) = false\n),\nob AS (\n    SELECT o.encounter_uuid,\n        (ARRAY_AGG(o.answer_coded_uuid\
+  \ ORDER BY o.obs_date_time DESC) FILTER (WHERE o.question_uuid = 'b501a1ac-f2ea-4e79-ace4-658c1af45bd2'))[1]\
+  \ AS opd_outcome,\n        (ARRAY_AGG(o.answer_coded_uuid ORDER BY o.obs_date_time\
+  \ DESC) FILTER (WHERE o.question_uuid = '160433AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'))[1]\
+  \ AS f07_outcome,\n        (ARRAY_AGG(o.answer_datetime ORDER BY o.obs_date_time\
+  \ DESC) FILTER (WHERE o.question_uuid = '533c19af-9bb5-4981-9876-5d638bb39e14'))[1]\
+  \ AS death_dt\n    FROM observations o\n    WHERE COALESCE(o.obs_voided, false)\
+  \ = false\n      AND o.question_uuid IN ('b501a1ac-f2ea-4e79-ace4-658c1af45bd2',\
+  \ '160433AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', '533c19af-9bb5-4981-9876-5d638bb39e14')\n\
+  \      AND o.encounter_uuid IN (SELECT encounter_uuid FROM enc)\n    GROUP BY o.encounter_uuid\n\
+  ),\ndth AS (\n    SELECT DISTINCT ON (COALESCE(enc.visit_uuid, enc.encounter_uuid))\n\
+  \           enc.*, COALESCE(ob.death_dt, enc.dt) AS dod\n    FROM enc JOIN ob ON\
+  \ ob.encounter_uuid = enc.encounter_uuid\n    WHERE (enc.etype = '0ff55309-1897-476b-a647-c7c180b102c8'\
+  \ AND ob.opd_outcome = '5f60e9b0-50e1-473c-b155-68a2a670559e')\n       OR (enc.etype\
+  \ = '669262a8-f351-4d5b-8480-3551734eed8f'\n           AND ob.f07_outcome IN ('2071f21d-0ad9-42c7-908c-f5ff0efa034b',\
+  \ '442b409b-705f-4374-ae49-44ce83053209', '5f60e9b0-50e1-473c-b155-68a2a670559e'))\n\
+  \    ORDER BY COALESCE(enc.visit_uuid, enc.encounter_uuid), (enc.etype = '669262a8-f351-4d5b-8480-3551734eed8f')\
+  \ DESC, enc.dt DESC\n),\nx AS (\n    SELECT DATE_TRUNC('month', d.dod)::date AS\
+  \ mois, d.service, d.sexe,\n           CASE WHEN a.dd IS NULL THEN NULL WHEN a.dd\
+  \ <= 28 THEN 1 WHEN a.m < 12 THEN 2 WHEN a.m < 60 THEN 3 WHEN a.y <= 9 THEN 4 WHEN\
+  \ a.y <= 14 THEN 5 WHEN a.y <= 17 THEN 6 WHEN a.y <= 19 THEN 7 WHEN a.y <= 64 THEN\
+  \ 8 + (a.y::int - 20) / 5 WHEN a.y <= 70 THEN 17 ELSE 18 END AS b,\n           COALESCE(dx.code,\
+  \ 'Sans diagnostic enregistr\xE9') AS code,\n           COALESCE(dx.libelle, 'Sans\
+  \ diagnostic enregistr\xE9') AS libelle\n    FROM dth d\n    CROSS JOIN LATERAL\
+  \ (SELECT d.dod::date - d.bd AS dd, DATE_PART('year', AGE(d.dod::date, d.bd)) AS\
+  \ y, DATE_PART('year', AGE(d.dod::date, d.bd)) * 12 + DATE_PART('month', AGE(d.dod::date,\
+  \ d.bd)) AS m) a\n    LEFT JOIN LATERAL (\n        SELECT COALESCE(NULLIF(TRIM(SUBSTRING(c.concept_mappings_source_codes\
+  \ FROM 'ICD-10-WHO: ([^,]+)')), ''), 'Sans code CIM-10') AS code,\n            \
+  \   COALESCE(c.name, ed.diagnosis_non_coded) AS libelle\n        FROM encounter_diagnoses\
+  \ ed\n        LEFT JOIN concepts c ON c.concept_id = ed.diagnosis_coded AND c.locale\
+  \ = 'en'\n        WHERE ed.encounter_id = d.encounter_id AND COALESCE(ed.voided,\
+  \ false) = false\n        ORDER BY (UPPER(ed.certainty) = 'CONFIRMED') DESC, ed.diagnosis_id\n\
+  \        LIMIT 1\n    ) dx ON true\n)\nSELECT\n    x.mois AS \"MOIS\",\n    x.service\
+  \ AS \"SERVICE\",\n    x.code AS \"CODE\",\n    x.libelle AS \"LIBELLE\",\n    COUNT(*)\
+  \ FILTER (WHERE x.b = 1 AND x.sexe = 'M') AS \"0-28 jours H\",\n    COUNT(*) FILTER\
+  \ (WHERE x.b = 1 AND x.sexe = 'F') AS \"0-28 jours F\",\n    COUNT(*) FILTER (WHERE\
+  \ x.b = 2 AND x.sexe = 'M') AS \"29 jours-11 mois H\",\n    COUNT(*) FILTER (WHERE\
+  \ x.b = 2 AND x.sexe = 'F') AS \"29 jours-11 mois F\",\n    COUNT(*) FILTER (WHERE\
+  \ x.b = 3 AND x.sexe = 'M') AS \"12-59 mois H\",\n    COUNT(*) FILTER (WHERE x.b\
+  \ = 3 AND x.sexe = 'F') AS \"12-59 mois F\",\n    COUNT(*) FILTER (WHERE x.b = 4\
+  \ AND x.sexe = 'M') AS \"5-9 ans H\",\n    COUNT(*) FILTER (WHERE x.b = 4 AND x.sexe\
+  \ = 'F') AS \"5-9 ans F\",\n    COUNT(*) FILTER (WHERE x.b = 5 AND x.sexe = 'M')\
+  \ AS \"10-14 ans H\",\n    COUNT(*) FILTER (WHERE x.b = 5 AND x.sexe = 'F') AS \"\
+  10-14 ans F\",\n    COUNT(*) FILTER (WHERE x.b = 6 AND x.sexe = 'M') AS \"15-17\
+  \ ans H\",\n    COUNT(*) FILTER (WHERE x.b = 6 AND x.sexe = 'F') AS \"15-17 ans\
+  \ F\",\n    COUNT(*) FILTER (WHERE x.b = 7 AND x.sexe = 'M') AS \"18-19 ans H\"\
+  ,\n    COUNT(*) FILTER (WHERE x.b = 7 AND x.sexe = 'F') AS \"18-19 ans F\",\n  \
+  \  COUNT(*) FILTER (WHERE x.b = 8 AND x.sexe = 'M') AS \"20-24 ans H\",\n    COUNT(*)\
+  \ FILTER (WHERE x.b = 8 AND x.sexe = 'F') AS \"20-24 ans F\",\n    COUNT(*) FILTER\
+  \ (WHERE x.b = 9 AND x.sexe = 'M') AS \"25-29 ans H\",\n    COUNT(*) FILTER (WHERE\
+  \ x.b = 9 AND x.sexe = 'F') AS \"25-29 ans F\",\n    COUNT(*) FILTER (WHERE x.b\
+  \ = 10 AND x.sexe = 'M') AS \"30-34 ans H\",\n    COUNT(*) FILTER (WHERE x.b = 10\
+  \ AND x.sexe = 'F') AS \"30-34 ans F\",\n    COUNT(*) FILTER (WHERE x.b = 11 AND\
+  \ x.sexe = 'M') AS \"35-39 ans H\",\n    COUNT(*) FILTER (WHERE x.b = 11 AND x.sexe\
+  \ = 'F') AS \"35-39 ans F\",\n    COUNT(*) FILTER (WHERE x.b = 12 AND x.sexe = 'M')\
+  \ AS \"40-44 ans H\",\n    COUNT(*) FILTER (WHERE x.b = 12 AND x.sexe = 'F') AS\
+  \ \"40-44 ans F\",\n    COUNT(*) FILTER (WHERE x.b = 13 AND x.sexe = 'M') AS \"\
+  45-49 ans H\",\n    COUNT(*) FILTER (WHERE x.b = 13 AND x.sexe = 'F') AS \"45-49\
+  \ ans F\",\n    COUNT(*) FILTER (WHERE x.b = 14 AND x.sexe = 'M') AS \"50-54 ans\
+  \ H\",\n    COUNT(*) FILTER (WHERE x.b = 14 AND x.sexe = 'F') AS \"50-54 ans F\"\
+  ,\n    COUNT(*) FILTER (WHERE x.b = 15 AND x.sexe = 'M') AS \"55-59 ans H\",\n \
+  \   COUNT(*) FILTER (WHERE x.b = 15 AND x.sexe = 'F') AS \"55-59 ans F\",\n    COUNT(*)\
+  \ FILTER (WHERE x.b = 16 AND x.sexe = 'M') AS \"60-64 ans H\",\n    COUNT(*) FILTER\
+  \ (WHERE x.b = 16 AND x.sexe = 'F') AS \"60-64 ans F\",\n    COUNT(*) FILTER (WHERE\
+  \ x.b = 17 AND x.sexe = 'M') AS \"65-70 ans H\",\n    COUNT(*) FILTER (WHERE x.b\
+  \ = 17 AND x.sexe = 'F') AS \"65-70 ans F\",\n    COUNT(*) FILTER (WHERE x.b = 18\
+  \ AND x.sexe = 'M') AS \"71 ans et + H\",\n    COUNT(*) FILTER (WHERE x.b = 18 AND\
+  \ x.sexe = 'F') AS \"71 ans et + F\",\n    COUNT(*) FILTER (WHERE x.sexe = 'M')\
+  \ AS \"TOTAL H\",\n    COUNT(*) FILTER (WHERE x.sexe = 'F') AS \"TOTAL F\",\n  \
+  \  COUNT(*) AS \"TOTAL\",\n    COUNT(*) FILTER (WHERE x.b IS NULL OR x.sexe IS NULL\
+  \ OR x.sexe NOT IN ('M', 'F')) AS \"AGE OU SEXE NON RENSEIGNE\"\nFROM x\nGROUP BY\
+  \ x.mois, x.service, x.code, x.libelle\nORDER BY x.mois DESC, x.service, \"TOTAL\"\
+  \ DESC, x.code\n"
+params: null
+template_params: null
+filter_select_enabled: true
+fetch_values_predicate: null
+extra: null
+normalize_columns: false
+always_filter_main_dttm: false
+uuid: 9d626574-3f14-4bcf-babe-11f5363f8f43
+metrics:
+- metric_name: count
+  verbose_name: COUNT(*)
+  metric_type: count
+  expression: COUNT(*)
+  description: null
+  d3format: null
+  currency: null
+  extra: null
+  warning_text: null
+columns:
+- column_name: 71 ans et + F
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 71 ans et + H
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: AGE OU SEXE NON RENSEIGNE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 29 jours-11 mois F
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 29 jours-11 mois H
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 10-14 ans F
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 10-14 ans H
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 20-24 ans F
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 20-24 ans H
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 0-28 jours F
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 0-28 jours H
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 30-34 ans F
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 30-34 ans H
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 40-44 ans F
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 40-44 ans H
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 50-54 ans F
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 50-54 ans H
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 60-64 ans F
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 60-64 ans H
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 65-70 ans F
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 65-70 ans H
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 15-17 ans F
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 15-17 ans H
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 18-19 ans F
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 18-19 ans H
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 12-59 mois F
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 12-59 mois H
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 25-29 ans F
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 25-29 ans H
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 35-39 ans F
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 35-39 ans H
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 45-49 ans F
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 45-49 ans H
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 55-59 ans F
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 55-59 ans H
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 5-9 ans F
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: 5-9 ans H
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: TOTAL F
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: TOTAL H
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: MOIS
+  verbose_name: null
+  is_dttm: true
+  is_active: true
+  type: DATE
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: TOTAL
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: LIBELLE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: CODE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: SERVICE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+version: 1.0.0
+database_uuid: 44c13a30-0c14-402c-b81f-1c93972f5fbc

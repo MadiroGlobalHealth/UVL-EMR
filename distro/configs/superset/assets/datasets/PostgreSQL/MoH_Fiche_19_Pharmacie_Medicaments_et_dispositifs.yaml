@@ -1,0 +1,554 @@
+table_name: "MoH Fiche 19 Pharmacie M\xE9dicaments et dispositifs"
+main_dttm_col: MOIS
+description: "UVL-EMR \xB7 Minist\xE8re \xAB Fiche 19 \xBB, section 7.1 M\xE9dicaments,\
+  \ r\xE9actifs et dispositifs m\xE9dicaux. Une ligne par mois, produit et lieu (TOUS\
+  \ LES LIEUX = l'h\xF4pital, ou pharmacie centrale / box de dispensation). Source:\
+  \ registre des mouvements de stock (OpenMRS, module stock). PHARMACIE = les lieux\
+  \ (Rx), (Rx-DISP), (Rx-DISP-n); le stock de l'h\xF4pital = ces lieux. CONSOMM\xC9\
+  E/DISTRIBU\xC9E = TOUTES les sorties d'un produit. Niveau h\xF4pital: dispensation\
+  \ aux patients + sorties vers un service, un d\xE9partement ou l'ext\xE9rieur (destination\
+  \ qui n'est pas un lieu de la pharmacie); une sortie de la pharmacie centrale vers\
+  \ un box de dispensation est un transfert interne, NON compt\xE9e (sinon double\
+  \ compte avec la dispensation du box). Niveau lieu: sa dispensation + ses sorties\
+  \ vers d'autres lieux. CMM/DMM (distribution moyenne mensuelle) = moyenne mensuelle\
+  \ de la consomm\xE9e/distribu\xE9e sur les 6 derniers mois (mois courant inclus;\
+  \ moins de mois si le produit bouge depuis moins de six mois). Mois de stock = fin\
+  \ de mois / CMM. Dates: re\xE7u, sorti, perdu, ajust\xE9, inventaire et stock initial\
+  \ au jour de l'op\xE9ration saisie par le pharmacien; dispensation au jour du mouvement.\
+  \ Perdue/D\xE9t\xE9rior\xE9e/P\xE9rim\xE9e = ajustements par motif; Rupture = jours\
+  \ dont la fin de journ\xE9e est \xE0 0 apr\xE8s le premier stock. Sorties vers communaut\xE9\
+  : non enregistr\xE9. Les patients de test sont exclus de la dispensation."
+default_endpoint: null
+offset: 0
+cache_timeout: null
+schema: public
+sql: "-- Fiche 19 (MoH, #910): 7.1 Medicaments, reactifs et dispositifs medicaux.\
+  \ One row per MOIS x produit x LIEU (TOUS LES LIEUX or one location).\n-- Source:\
+  \ stock ledger stock_transactions. Operations (receipt, issue, adjustment, stock\
+  \ take, opening) are dated by operation_date (+3 h, local day);\n-- patient dispensing\
+  \ by its transaction date. Stock levels = running sum of the ledger. Definitions:\
+  \ see the dataset description.\n-- Product-owner definition (24 Nov 2026): CONSOMMEE\
+  \ / DISTRIBUEE = ALL outflows of a product.\n--   TOUS LES LIEUX (hospital) = patient\
+  \ dispensing + issues to a destination that is NOT a stock location of the hospital\
+  \ pharmacy chain (wards, departments, outside).\n--   An issue from the central\
+  \ pharmacy to a dispensing box (chain location) is an internal transfer: NOT counted\
+  \ at hospital level (the box's dispensing counts).\n--   One LIEU = its patient\
+  \ dispensing + its issues to other locations (internal or not).\n--   Pharmacy chain\
+  \ = locations named (Rx), (Rx-DISP), (Rx-DISP-n). Hospital stock = the chain locations\
+  \ only.\n--   CMM / DMM = average monthly CONSOMMEE / DISTRIBUEE over the last six\
+  \ months (current month included; fewer months when the product has moved for less\
+  \ than six months).\n-- moh_map = explicit product -> printed line mapping (others\
+  \ keep their own name, LIGNE MODELE MOH = 'non rattach\xE9'). Test patients are\
+  \ left out of dispensing.\nWITH cfg AS (\n  SELECT current_date AS today, date_trunc('month',\
+  \ current_date)::date AS cur_m\n),\nmoh_map AS (SELECT * FROM (VALUES\n  ('Amoxicilline\
+  \ G\xE9lule 500mg', 'Amoxicilline 500mg (sous forme de trihydrate) Gelule', '1a.\
+  \ Comprim\xE9s et autres non injectables'),\n  ('Amoxicilline Sirop 125mg/5ml 100ml',\
+  \ 'Amoxicilline Poudre pour suspension buvable 125mg/5ml Flacon', '1a. Comprim\xE9\
+  s et autres non injectables'),\n  ('Amoxicilline Sirop 250mg/5ml 100ml', 'Amoxicilline\
+  \ Poudre pour suspension buvable 250mg/5ml Flacon', '1a. Comprim\xE9s et autres\
+  \ non injectables'),\n  ('Cotrimoxazole Comprim\xE9 160/800mg', 'Cotrimoxazole 960mg\
+  \ ces', '1a. Comprim\xE9s et autres non injectables'),\n  ('Furos\xE9mide Comprim\xE9\
+  \ 40mg', 'Furosemide 40mg ces', '1a. Comprim\xE9s et autres non injectables'),\n\
+  \  ('Ibuprof\xE8ne Comprim\xE9 400mg', 'Ibuprofene 400mg ces', '1a. Comprim\xE9\
+  s et autres non injectables'),\n  ('Metronidazole Comprim\xE9 250mg', 'Metronidazole\
+  \ 250mg ces', '1a. Comprim\xE9s et autres non injectables'),\n  ('Omeprazole G\xE9\
+  lule 20mg', 'Omeprazole 20mg Gelule', '1a. Comprim\xE9s et autres non injectables'),\n\
+  \  ('Paracetamol Comprim\xE9 500mg', 'Paracetamol 500mg ces', '1a. Comprim\xE9s\
+  \ et autres non injectables'),\n  ('Parac\xE9tamol Sirop 125mg/5ml 100ml', 'Paracetamol\
+  \ Forme buvable 125mg/5ml flacon de', '1a. Comprim\xE9s et autres non injectables'),\n\
+  \  ('Diclofenac Injection 75mg/3ml', 'Diclofenac Solution injectable 75mg/ml amp\
+  \ de 3ml Ampoule', '1c. Injectables'),\n  ('Gentamicin Injection 80mg/2ml', 'Gentamycine\
+  \ Poudre pour preparation injectable 80mg/2ml Flacon', '1c. Injectables'),\n  ('Oxytocine\
+  \ Injection 10UI', 'Oxytocine Solution injectable 10U/ml ende 1ml Ampoule', '1c.\
+  \ Injectables'),\n  ('Bande Velpeau 10cmx4m', 'Bande Velpeau (cr\xEApe) 10cmx4m\
+  \ Rouleau', 'III. Mat\xE9riels, \xE9quipements, dispositifs et consommables m\xE9\
+  dicaux'),\n  ('Gants Non St\xE9riles', 'Gant d''examen non sterile latex moyen piece',\
+  \ 'III. Mat\xE9riels, \xE9quipements, dispositifs et consommables m\xE9dicaux'),\n\
+  \  ('Sac collecteur \xE0 urines', 'Poche collecteur d''urine avec valve de vidange\
+  \ adulte', 'III. Mat\xE9riels, \xE9quipements, dispositifs et consommables m\xE9\
+  dicaux'),\n  ('Set de perfusion', 'Trousse de perfusion Piece', 'III. Mat\xE9riels,\
+  \ \xE9quipements, dispositifs et consommables m\xE9dicaux')\n) v(produit, moh_ligne,\
+  \ section)),\nreason_map AS (SELECT * FROM (VALUES\n  ('Expired', 'PERIMEE'),\n\
+  \  ('Damaged', 'DETERIOREE'), ('Deteriorated', 'DETERIOREE'), ('Broken', 'DETERIOREE'),\n\
+  \  ('Lost', 'PERDUE'), ('Stolen', 'PERDUE')\n) v(raison, classe)),\ntest_pt AS (\
+  \   -- test-patient filter (patients linked to a dispensing); keep ON on production\n\
+  \  SELECT p.patient_uuid FROM patients p\n  WHERE COALESCE(p.family_name, '') ~*\
+  \ '^(SYNTH-|E2E|QA|TEST|DEMO)' OR COALESCE(p.given_name, '') ~* '^(SYNTH-|E2E|QA|TEST|DEMO)'\n\
+  ),\nit AS (\n  SELECT i.stock_item_id AS item,\n         COALESCE(i.common_name,\
+  \ i.drug_name) AS produit,\n         COALESCE(m.moh_ligne, COALESCE(i.common_name,\
+  \ i.drug_name)) AS dci,\n         CASE WHEN m.produit IS NOT NULL THEN 'oui' ELSE\
+  \ 'non rattach\xE9' END AS ligne,\n         COALESCE(m.section,\n           CASE\
+  \ WHEN COALESCE(i.common_name, i.drug_name) ~* 'vaccin' THEN '1b. Vaccins'\n   \
+  \             WHEN COALESCE(i.common_name, i.drug_name) ~* 'injection|injectable|perfusion|ampoule'\
+  \ OR i.dispensing_unit IN ('Ampoule(s)', 'Baxter') THEN '1c. Injectables'\n    \
+  \            WHEN COALESCE(i.common_name, i.drug_name) ~* 'r\xE9actif|reactif|reagent|test\
+  \ rapide|abbot' THEN 'II. R\xE9actifs de laboratoire'\n                WHEN i.dispensing_unit\
+  \ IN ('Pi\xE8ce', 'Rouleau', 'Paire') THEN 'III. Mat\xE9riels, \xE9quipements, dispositifs\
+  \ et consommables m\xE9dicaux'\n                ELSE '1a. Comprim\xE9s et autres\
+  \ non injectables' END) AS section\n  FROM stock_items i\n  LEFT JOIN moh_map m\
+  \ ON m.produit = COALESCE(i.common_name, i.drug_name)\n  WHERE COALESCE(i.voided,\
+  \ false) = false\n),\ntx0 AS (\n  SELECT t.stock_item_id AS item, t.stock_batch_id\
+  \ AS batch,\n         CASE WHEN t.location ~ 'Rx-DISP-(\\d)' THEN 'Dispensation\
+  \ Box ' || substring(t.location from 'Rx-DISP-(\\d)')\n              WHEN t.location\
+  \ ~ '\\(Rx-DISP\\)' THEN 'Dispensation (Rx-DISP)'\n              WHEN t.location\
+  \ ~ '\\(Rx\\)' THEN 'Pharmacie centrale (Rx)'\n              ELSE t.location END\
+  \ AS lieu,\n         CASE WHEN t.is_patient_dispense THEN t.transaction_date::date\n\
+  \              ELSE (COALESCE(t.operation_date, t.transaction_date) + interval '3\
+  \ hours')::date END AS d,\n         t.quantity::numeric AS qty,\n         (COALESCE(t.location,\
+  \ '') ~ '\\(Rx(-DISP(-[0-9]+)?)?\\)') AS in_chain,\n         CASE WHEN t.is_patient_dispense\
+  \ THEN 'disp'\n              WHEN t.operation_type_code = 'receipt' THEN 'rec'\n\
+  \              WHEN t.operation_type_code = 'stockissue' THEN CASE WHEN t.quantity\
+  \ >= 0 THEN 'iss_in'\n                   WHEN COALESCE(o.destination, '') ~ '\\\
+  (Rx(-DISP(-[0-9]+)?)?\\)' THEN 'iss_int' ELSE 'iss_ext' END\n              WHEN\
+  \ t.operation_type_code = 'initial' THEN 'init'\n              WHEN t.operation_type_code\
+  \ = 'stocktake' THEN 'take'\n              WHEN t.operation_type_code = 'adjustment'\
+  \ THEN COALESCE(rm.classe, 'AUTRE')\n              ELSE 'autre_mvt' END AS kind\n\
+  \  FROM stock_transactions t\n  LEFT JOIN stock_operations o ON o.stock_operation_id\
+  \ = t.stock_operation_id\n  LEFT JOIN concepts c ON c.concept_id = o.reason_concept_id\n\
+  \  LEFT JOIN reason_map rm ON rm.raison = c.name\n  WHERE t.stock_item_id IS NOT\
+  \ NULL\n    AND COALESCE(o.voided, false) = false\n    AND NOT (t.is_patient_dispense\
+  \ AND t.patient_uuid IN (SELECT patient_uuid FROM test_pt))\n),\ntx AS (   -- every\
+  \ movement counts once for its own location and, if that location is in the pharmacy\
+  \ chain, once for the hospital\n  SELECT tx0.item, tx0.batch, s.scope, tx0.d, tx0.qty,\
+  \ tx0.kind\n  FROM tx0 CROSS JOIN LATERAL (VALUES (tx0.lieu, true), ('TOUS LES LIEUX',\
+  \ tx0.in_chain)) s(scope, ok)\n  WHERE s.ok\n),\nmon AS (\n  SELECT item, scope,\
+  \ date_trunc('month', d)::date AS m,\n         SUM(qty) AS net,\n         SUM(qty)\
+  \ FILTER (WHERE kind = 'rec') AS recue,\n         -SUM(qty) FILTER (WHERE kind =\
+  \ 'disp') AS consommee,\n         -SUM(qty) FILTER (WHERE kind = 'iss_int') AS sorties_int,\n\
+  \         -SUM(qty) FILTER (WHERE kind = 'iss_ext') AS sorties_ext,\n         -SUM(qty)\
+  \ FILTER (WHERE kind IN ('disp', 'iss_ext') OR (scope <> 'TOUS LES LIEUX' AND kind\
+  \ = 'iss_int')) AS distrib,\n         SUM(qty) FILTER (WHERE kind = 'iss_in') AS\
+  \ entrees,\n         SUM(qty) FILTER (WHERE kind = 'init') AS initial,\n       \
+  \  -SUM(qty) FILTER (WHERE kind = 'PERDUE') AS perdue,\n         -SUM(qty) FILTER\
+  \ (WHERE kind = 'DETERIOREE') AS deterioree,\n         -SUM(qty) FILTER (WHERE kind\
+  \ = 'PERIMEE') AS perimee,\n         SUM(qty) FILTER (WHERE kind = 'AUTRE') AS autres,\n\
+  \         SUM(qty) FILTER (WHERE kind = 'take') AS ecart\n  FROM tx GROUP BY item,\
+  \ scope, date_trunc('month', d)\n),\nlast_m AS (SELECT GREATEST((SELECT cur_m FROM\
+  \ cfg), (SELECT MAX(m) FROM mon)) AS m),\ngrid AS (\n  SELECT r.item, r.scope, gs::date\
+  \ AS m\n  FROM (SELECT item, scope, MIN(m) AS m0 FROM mon GROUP BY item, scope)\
+  \ r\n  CROSS JOIN LATERAL generate_series(r.m0, (SELECT m FROM last_m), interval\
+  \ '1 month') gs\n),\nbal AS (\n  SELECT g.item, g.scope, g.m,\n         COALESCE(x.recue,\
+  \ 0) AS recue, COALESCE(x.consommee, 0) AS consommee, COALESCE(x.sorties_int, 0)\
+  \ AS sorties_int, COALESCE(x.sorties_ext, 0) AS sorties_ext, COALESCE(x.distrib,\
+  \ 0) AS distrib,\n         COALESCE(x.entrees, 0) AS entrees, COALESCE(x.initial,\
+  \ 0) AS initial, COALESCE(x.perdue, 0) AS perdue,\n         COALESCE(x.deterioree,\
+  \ 0) AS deterioree, COALESCE(x.perimee, 0) AS perimee, COALESCE(x.autres, 0) AS\
+  \ autres,\n         COALESCE(x.ecart, 0) AS ecart,\n         SUM(COALESCE(x.net,\
+  \ 0)) OVER w - COALESCE(x.net, 0) AS debut,\n         SUM(COALESCE(x.net, 0)) OVER\
+  \ w AS fin,\n         SUM(COALESCE(x.distrib, 0)) OVER w6 / NULLIF(COUNT(*) OVER\
+  \ w6, 0) AS cmm\n  FROM grid g LEFT JOIN mon x ON x.item = g.item AND x.scope =\
+  \ g.scope AND x.m = g.m\n  WINDOW w AS (PARTITION BY g.item, g.scope ORDER BY g.m),\n\
+  \         w6 AS (PARTITION BY g.item, g.scope ORDER BY g.m ROWS BETWEEN 5 PRECEDING\
+  \ AND CURRENT ROW)\n),\ndly AS (SELECT item, scope, d, SUM(qty) AS net FROM tx GROUP\
+  \ BY item, scope, d),\ndays AS (\n  SELECT r.item, r.scope, gs::date AS d\n  FROM\
+  \ (SELECT item, scope, MIN(d) AS d0 FROM dly GROUP BY item, scope) r\n  CROSS JOIN\
+  \ LATERAL generate_series(r.d0, (SELECT today FROM cfg), interval '1 day') gs\n\
+  ),\ndbal AS (\n  SELECT dd.item, dd.scope, dd.d,\n         SUM(COALESCE(y.net, 0))\
+  \ OVER (PARTITION BY dd.item, dd.scope ORDER BY dd.d) AS b\n  FROM days dd LEFT\
+  \ JOIN dly y ON y.item = dd.item AND y.scope = dd.scope AND y.d = dd.d\n),\ndflag\
+  \ AS (\n  SELECT item, scope, d, b,\n         MAX(CASE WHEN b > 0 THEN 1 ELSE 0\
+  \ END) OVER (PARTITION BY item, scope ORDER BY d) AS held\n  FROM dbal\n),\nrupt\
+  \ AS (\n  SELECT item, scope, date_trunc('month', d)::date AS m, COUNT(*) FILTER\
+  \ (WHERE held = 1 AND b <= 0) AS jours\n  FROM dflag GROUP BY item, scope, date_trunc('month',\
+  \ d)\n),\nrupt_lieux AS (SELECT item, m, SUM(jours) AS jours FROM rupt WHERE scope\
+  \ <> 'TOUS LES LIEUX' GROUP BY item, m),\nbmon AS (\n  SELECT item, scope, batch,\
+  \ date_trunc('month', d)::date AS m, SUM(qty) AS net\n  FROM tx WHERE batch IS NOT\
+  \ NULL GROUP BY item, scope, batch, date_trunc('month', d)\n),\nbgrid AS (\n  SELECT\
+  \ r.item, r.scope, r.batch, gs::date AS m\n  FROM (SELECT item, scope, batch, MIN(m)\
+  \ AS m0 FROM bmon GROUP BY item, scope, batch) r\n  CROSS JOIN LATERAL generate_series(r.m0,\
+  \ (SELECT m FROM last_m), interval '1 month') gs\n),\nbclose AS (\n  SELECT g.item,\
+  \ g.scope, g.batch, g.m,\n         SUM(COALESCE(x.net, 0)) OVER (PARTITION BY g.item,\
+  \ g.scope, g.batch ORDER BY g.m) AS fin\n  FROM bgrid g LEFT JOIN bmon x ON x.item\
+  \ = g.item AND x.scope = g.scope AND x.batch = g.batch AND x.m = g.m\n),\nbexp AS\
+  \ (\n  SELECT c.item, c.scope, c.m,\n         SUM(c.fin) FILTER (WHERE c.fin > 0\
+  \ AND b.expiration > ((c.m + interval '1 month')::date - 1)\n                  \
+  \            AND b.expiration <= ((c.m + interval '1 month')::date - 1) + interval\
+  \ '3 months') AS lt3,\n         SUM(c.fin) FILTER (WHERE c.fin > 0 AND b.expiration\
+  \ >= c.m AND b.expiration <= ((c.m + interval '1 month')::date - 1)) AS perimee_stock,\n\
+  \         SUM(c.fin) FILTER (WHERE c.fin > 0 AND b.expiration <= ((c.m + interval\
+  \ '1 month')::date - 1)) AS perimee_cumul\n  FROM bclose c JOIN stock_batches b\
+  \ ON b.stock_batch_id = c.batch\n  GROUP BY c.item, c.scope, c.m\n)\nSELECT\n  b.m\
+  \ AS \"MOIS\",\n  it.section AS \"SECTION\",\n  it.dci AS \"DCI\",\n  it.ligne AS\
+  \ \"LIGNE MODELE MOH\",\n  it.produit AS \"PRODUIT UVL\",\n  b.scope AS \"LIEU\"\
+  ,\n  b.debut AS \"QUANTITE AU DEBUT DU MOIS\",\n  b.recue AS \"QUANTITE RECUE DURANT\
+  \ LE MOIS\",\n  b.distrib AS \"QUANTITE CONSOMMEE / DISTRIBUEE\",\n  b.consommee\
+  \ AS \"DONT DISPENSEE AUX PATIENTS\",\n  CASE WHEN b.scope = 'TOUS LES LIEUX' THEN\
+  \ b.sorties_ext ELSE b.sorties_int + b.sorties_ext END AS \"DONT SORTIES VERS D'AUTRES\
+  \ SERVICES OU LIEUX\",\n  b.sorties_int AS \"TRANSFERTS INTERNES SORTANTS (VERS\
+  \ UN LIEU DE LA PHARMACIE)\",\n  b.entrees AS \"TRANSFERTS INTERNES ENTRANTS (DEPUIS\
+  \ UN LIEU DE LA PHARMACIE)\",\n  'non enregistr\xE9'::text AS \"SORTIES VERS COMMUNAUTE\"\
+  ,\n  b.initial AS \"STOCK INITIAL SAISI\",\n  b.perdue AS \"QUANTITE PERDUE OU VOLEE\"\
+  ,\n  b.deterioree AS \"QUANTITE DETERIOREE (ENDOMMAGEE, CASSEE)\",\n  b.perimee\
+  \ AS \"QUANTITE PERIMEE (SORTIES, MOTIF EXPIRE)\",\n  b.autres AS \"AUTRES AJUSTEMENTS\
+  \ (NET)\",\n  b.ecart AS \"ECART D'INVENTAIRE\",\n  b.fin AS \"QUANTITE FIN DU MOIS\"\
+  ,\n  COALESCE(e.lt3, 0) AS \"QUANTITE A DUREE DE VIE < 3 MOIS\",\n  COALESCE(e.perimee_stock,\
+  \ 0) AS \"QUANTITE PERIMEE EN STOCK\",\n  COALESCE(e.perimee_cumul, 0) AS \"QUANTITE\
+  \ PERIMEE ENCORE EN STOCK (CUMUL)\",\n  COALESCE(r.jours, 0) AS \"NB DE JOURS DE\
+  \ RUPTURE DE STOCK\",\n  CASE WHEN b.scope = 'TOUS LES LIEUX' THEN COALESCE(rl.jours,\
+  \ 0) END AS \"JOURS-LIEUX EN RUPTURE (SOMME DES LIEUX)\",\n  ROUND(b.cmm, 1) AS\
+  \ \"CMM / DMM (MOYENNE MENSUELLE SUR 6 MOIS)\",\n  CASE WHEN b.cmm > 0 THEN ROUND(b.fin\
+  \ / b.cmm, 1) END AS \"MOIS DE STOCK (FIN DE MOIS / CMM)\"\nFROM bal b\nJOIN it\
+  \ ON it.item = b.item\nLEFT JOIN bexp e ON e.item = b.item AND e.scope = b.scope\
+  \ AND e.m = b.m\nLEFT JOIN rupt r ON r.item = b.item AND r.scope = b.scope AND r.m\
+  \ = b.m\nLEFT JOIN rupt_lieux rl ON rl.item = b.item AND rl.m = b.m\nWHERE b.debut\
+  \ <> 0 OR b.fin <> 0 OR b.recue <> 0 OR b.consommee <> 0 OR b.sorties_int <> 0 OR\
+  \ b.sorties_ext <> 0 OR b.entrees <> 0 OR b.initial <> 0\n   OR b.perdue <> 0 OR\
+  \ b.deterioree <> 0 OR b.perimee <> 0 OR b.autres <> 0 OR b.ecart <> 0\nORDER BY\
+  \ b.m DESC, it.section, it.dci, (b.scope <> 'TOUS LES LIEUX'), b.scope"
+params: null
+template_params: null
+filter_select_enabled: true
+fetch_values_predicate: null
+extra: null
+normalize_columns: false
+always_filter_main_dttm: false
+uuid: a9f46733-feb1-4e8a-9e5d-8673109c0e2b
+metrics:
+- metric_name: count
+  verbose_name: COUNT(*)
+  metric_type: count
+  expression: COUNT(*)
+  description: null
+  d3format: null
+  currency: null
+  extra: null
+  warning_text: null
+columns:
+- column_name: QUANTITE A DUREE DE VIE < 3 MOIS
+  verbose_name: QUANTITE A DUREE DE VIE < 3 MOIS
+  is_dttm: false
+  is_active: true
+  type: DECIMAL
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: NB DE JOURS DE RUPTURE DE STOCK
+  verbose_name: NB DE JOURS DE RUPTURE DE STOCK
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: JOURS-LIEUX EN RUPTURE (SOMME DES LIEUX)
+  verbose_name: JOURS-LIEUX EN RUPTURE (SOMME DES LIEUX)
+  is_dttm: false
+  is_active: true
+  type: DECIMAL
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: QUANTITE PERIMEE ENCORE EN STOCK (CUMUL)
+  verbose_name: QUANTITE PERIMEE ENCORE EN STOCK (CUMUL)
+  is_dttm: false
+  is_active: true
+  type: DECIMAL
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: QUANTITE PERIMEE (SORTIES, MOTIF EXPIRE)
+  verbose_name: QUANTITE PERIMEE (SORTIES, MOTIF EXPIRE)
+  is_dttm: false
+  is_active: true
+  type: DECIMAL
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: QUANTITE AU DEBUT DU MOIS
+  verbose_name: QUANTITE AU DEBUT DU MOIS
+  is_dttm: false
+  is_active: true
+  type: DECIMAL
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: QUANTITE RECUE DURANT LE MOIS
+  verbose_name: QUANTITE RECUE DURANT LE MOIS
+  is_dttm: false
+  is_active: true
+  type: DECIMAL
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: TRANSFERTS INTERNES ENTRANTS (DEPUIS UN LIEU DE LA PHARMACIE)
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: DECIMAL
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: TRANSFERTS INTERNES SORTANTS (VERS UN LIEU DE LA PHARMACIE)
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: DECIMAL
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: CMM / DMM (MOYENNE MENSUELLE SUR 6 MOIS)
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: DECIMAL
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: MOIS DE STOCK (FIN DE MOIS / CMM)
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: DECIMAL
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: DONT SORTIES VERS D'AUTRES SERVICES OU LIEUX
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: DECIMAL
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: QUANTITE DETERIOREE (ENDOMMAGEE, CASSEE)
+  verbose_name: QUANTITE DETERIOREE (ENDOMMAGEE, CASSEE)
+  is_dttm: false
+  is_active: true
+  type: DECIMAL
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: QUANTITE PERIMEE EN STOCK
+  verbose_name: QUANTITE PERIMEE EN STOCK
+  is_dttm: false
+  is_active: true
+  type: DECIMAL
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: QUANTITE PERDUE OU VOLEE
+  verbose_name: QUANTITE PERDUE OU VOLEE
+  is_dttm: false
+  is_active: true
+  type: DECIMAL
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: QUANTITE FIN DU MOIS
+  verbose_name: QUANTITE FIN DU MOIS
+  is_dttm: false
+  is_active: true
+  type: DECIMAL
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: AUTRES AJUSTEMENTS (NET)
+  verbose_name: AUTRES AJUSTEMENTS (NET)
+  is_dttm: false
+  is_active: true
+  type: DECIMAL
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: STOCK INITIAL SAISI
+  verbose_name: STOCK INITIAL SAISI
+  is_dttm: false
+  is_active: true
+  type: DECIMAL
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: SORTIES VERS COMMUNAUTE
+  verbose_name: SORTIES VERS COMMUNAUTE
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: LIGNE MODELE MOH
+  verbose_name: LIGNE MODELE MOH
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: QUANTITE CONSOMMEE / DISTRIBUEE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: DECIMAL
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: DONT DISPENSEE AUX PATIENTS
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: DECIMAL
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: ECART D'INVENTAIRE
+  verbose_name: ECART D'INVENTAIRE
+  is_dttm: false
+  is_active: true
+  type: DECIMAL
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: PRODUIT UVL
+  verbose_name: PRODUIT UVL
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: MOIS
+  verbose_name: MOIS
+  is_dttm: true
+  is_active: true
+  type: DATE
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: DCI
+  verbose_name: DCI
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: SECTION
+  verbose_name: SECTION
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: LIEU
+  verbose_name: LIEU
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: ''
+  description: null
+  python_date_format: null
+  extra: null
+version: 1.0.0
+database_uuid: 44c13a30-0c14-402c-b81f-1c93972f5fbc

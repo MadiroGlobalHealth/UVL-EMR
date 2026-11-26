@@ -1,0 +1,49 @@
+slice_name: "Contr\xF4le qualit\xE9 \u2013 consultations hors des 4 services (Fiche\
+  \ 15)"
+description: "Indicateur de qualit\xE9: consultations enregistr\xE9es dans un lieu\
+  \ qui n'est pas l'un des 4 services de la Fiche 15 (Accueil-Triage, Bureau m\xE9\
+  dical, Laboratoire...). \xC0 corriger \xE0 la saisie."
+certified_by: null
+certification_details: null
+viz_type: table
+params:
+  datasource: 56__table
+  viz_type: table
+  query_mode: raw
+  groupby: []
+  time_grain_sqla: P1D
+  temporal_columns_lookup:
+    MOIS: true
+  all_columns:
+  - MOIS
+  - LIEU
+  - CONSULTATIONS
+  - CAS NON PRECISE (NOUVEAU OU ANCIEN)
+  percent_metrics: []
+  adhoc_filters:
+  - expressionType: SIMPLE
+    subject: MOIS
+    operator: TEMPORAL_RANGE
+    comparator: previous calendar month
+    clause: WHERE
+    sqlExpression: null
+    isExtra: false
+    isNew: false
+    datasourceWarning: false
+    filterOptionName: filter_905b_q
+  order_by_cols:
+  - '["MOIS", false]'
+  - '["LIEU", true]'
+  row_limit: 10000
+  server_page_length: 25
+  order_desc: true
+  table_timestamp_format: smart_date
+  show_cell_bars: false
+  color_pn: false
+  include_search: false
+  extra_form_data: {}
+query_context: null
+cache_timeout: null
+uuid: bb338338-18b3-44f2-afd4-6935942556ec
+version: 1.0.0
+dataset_uuid: 276ffa56-7b15-4305-a948-7d1d44ea5f4d

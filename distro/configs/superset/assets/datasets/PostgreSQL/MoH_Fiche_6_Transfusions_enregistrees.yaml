@@ -1,0 +1,165 @@
+table_name: "MoH Fiche 6 Transfusions enregistr\xE9es"
+main_dttm_col: MOIS
+description: "UVL-EMR \xB7 Minist\xE8re \xAB Fiche 6 \xBB, bloc 1 seul: transfusions\
+  \ ENREGISTR\xC9ES (formulaire d'accouchement, suivi hospitalier) par sexe et tranche\
+  \ d'\xE2ge. Les demandes de sang, les poches et les complications ne sont pas enregistr\xE9\
+  es (aucun formulaire)."
+default_endpoint: null
+offset: 0
+cache_timeout: null
+schema: public
+sql: "-- Fiche 6 (MoH, #909), bloc 1 seul (the product owner: transfusion requests,\
+  \ bags and complications are not recorded, no form yet): suivi des transfusions,\
+  \ par sexe et groupe d'\xE2ge (TRANSFUSIONS ENREGISTREES, pas les demandes)\n--\
+  \ Rows = 18 age bands + TOTAL, columns M / F / Total (orientation of the template\
+  \ block is uncertain: bands as rows assumed).\n-- Counts patients with a transfusion\
+  \ RECORDED in a visit and month: Delivery Registration 'Blood Transfusion' = Yes\
+  \ (c96bac89-..., encounter type cbe294b9-...),\n-- or IPD Monitoring form transfusion\
+  \ volume (8e5f6ff4-...) > 0 or transfusion type (db98c93f-...) filled. The Ministry\
+  \ counts REQUESTS (demandes): requests are not recorded.\nWITH pt AS (\n    SELECT\
+  \ p.patient_uuid, p.gender, p.birthdate\n    FROM patients p\n    WHERE COALESCE(p.person_voided,\
+  \ false) = false\n      AND NOT (COALESCE(p.family_name, '') ~* '^(SYNTH-|E2E|QA|TEST|DEMO)'\n\
+  \            OR COALESCE(p.given_name,  '') ~* '^(SYNTH-|E2E|QA|TEST|DEMO)')\n),\n\
+  ev AS (\n    SELECT DISTINCT DATE_TRUNC('month', e.encounter_datetime)::date AS\
+  \ mois,\n           CASE e.location_uuid WHEN '44c3efb0-2583-4c80-a79e-1f756a03c0a1'\
+  \ THEN 'Consultation externe' WHEN '9D062929-CC4F-7A51-C700-2B968AADEC34' THEN 'Urgences'\
+  \ WHEN 'e1f4ab17-6dc5-4249-cf38-5bae7dbe9c64' THEN 'Ophtalmologie' WHEN 'f2a5bc28-7ed6-435a-da49-6cbf8ecfad75'\
+  \ THEN 'Dentisterie' ELSE COALESCE(e.location, 'Non renseign\xE9') END AS service,\n\
+  \           e.patient_uuid, COALESCE(e.visit_uuid, e.encounter_uuid) AS vis, pt.gender\
+  \ AS sexe,\n           CASE WHEN a.dd IS NULL THEN NULL WHEN a.dd <= 28 THEN 1 WHEN\
+  \ a.m < 12 THEN 2 WHEN a.m < 60 THEN 3 WHEN a.y <= 9 THEN 4 WHEN a.y <= 14 THEN\
+  \ 5 WHEN a.y <= 17 THEN 6 WHEN a.y <= 19 THEN 7 WHEN a.y <= 64 THEN 8 + (a.y::int\
+  \ - 20) / 5 WHEN a.y <= 70 THEN 17 ELSE 18 END AS b\n    FROM observations o\n \
+  \   JOIN encounters e ON e.encounter_uuid = o.encounter_uuid\n    JOIN pt ON pt.patient_uuid\
+  \ = e.patient_uuid\n    LEFT JOIN visits v ON v.visit_uuid = e.visit_uuid\n    CROSS\
+  \ JOIN LATERAL (SELECT e.encounter_datetime::date - COALESCE(pt.birthdate, v.patient_birthdate)\
+  \ AS dd, DATE_PART('year', AGE(e.encounter_datetime::date, COALESCE(pt.birthdate,\
+  \ v.patient_birthdate))) AS y, DATE_PART('year', AGE(e.encounter_datetime::date,\
+  \ COALESCE(pt.birthdate, v.patient_birthdate))) * 12 + DATE_PART('month', AGE(e.encounter_datetime::date,\
+  \ COALESCE(pt.birthdate, v.patient_birthdate))) AS m) a\n    WHERE COALESCE(o.obs_voided,\
+  \ false) = false\n      AND COALESCE(e.encounter_voided, false) = false\n      AND\
+  \ COALESCE(v.visit_voided, false) = false\n      AND e.location_uuid IS DISTINCT\
+  \ FROM '450be362-59a7-4ccd-964d-ebd930a8b30f'\n      AND ((o.question_uuid = 'c96bac89-a0ad-41e3-8af5-ff6653d5622e'\
+  \ AND o.answer_coded_uuid = '2f20b5d3-ce71-4b89-a3b4-388f416fc62e')\n        OR\
+  \ (o.question_uuid = '8e5f6ff4-8512-4603-80d1-bfc556b3cfee' AND o.answer_numeric\
+  \ > 0)\n        OR (o.question_uuid = 'db98c93f-1775-4442-9171-9560c7952790' AND\
+  \ NULLIF(TRIM(o.answer_text), '') IS NOT NULL))\n),\nbands (b, tranche) AS (\n \
+  \   VALUES\n        (1, '0-28 jours'),\n        (2, '29 jours-11 mois'),\n     \
+  \   (3, '12-59 mois'),\n        (4, '5-9 ans'),\n        (5, '10-14 ans'),\n   \
+  \     (6, '15-17 ans'),\n        (7, '18-19 ans'),\n        (8, '20-24 ans'),\n\
+  \        (9, '25-29 ans'),\n        (10, '30-34 ans'),\n        (11, '35-39 ans'),\n\
+  \        (12, '40-44 ans'),\n        (13, '45-49 ans'),\n        (14, '50-54 ans'),\n\
+  \        (15, '55-59 ans'),\n        (16, '60-64 ans'),\n        (17, '65-70 ans'),\n\
+  \        (18, '71 ans et +')\n),\nms AS (SELECT DISTINCT mois, service FROM ev)\n\
+  SELECT ms.mois AS \"MOIS\", ms.service AS \"SERVICE\", bands.tranche AS \"TRANCHE\
+  \ D'AGE\",\n       COUNT(ev.vis) FILTER (WHERE ev.sexe = 'M') AS \"M\",\n      \
+  \ COUNT(ev.vis) FILTER (WHERE ev.sexe = 'F') AS \"F\",\n       COUNT(ev.vis) AS\
+  \ \"TOTAL\",\n       bands.b AS \"ORDRE\"\nFROM ms\nCROSS JOIN bands\nLEFT JOIN\
+  \ ev ON ev.mois = ms.mois AND ev.service = ms.service AND ev.b = bands.b\nGROUP\
+  \ BY ms.mois, ms.service, bands.tranche, bands.b\nORDER BY ms.mois DESC, ms.service,\
+  \ bands.b\n"
+params: null
+template_params: null
+filter_select_enabled: true
+fetch_values_predicate: null
+extra: null
+normalize_columns: false
+always_filter_main_dttm: false
+uuid: 3e068fa6-a6e6-49af-91c2-683a97794540
+metrics:
+- metric_name: count
+  verbose_name: COUNT(*)
+  metric_type: count
+  expression: COUNT(*)
+  description: null
+  d3format: null
+  currency: null
+  extra: null
+  warning_text: null
+columns:
+- column_name: TRANCHE D'AGE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: MOIS
+  verbose_name: null
+  is_dttm: true
+  is_active: true
+  type: DATE
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: TOTAL
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: SERVICE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: ORDRE
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: INTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: F
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: M
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+version: 1.0.0
+database_uuid: 44c13a30-0c14-402c-b81f-1c93972f5fbc

@@ -1,7 +1,7 @@
-slice_name: Consultations – origine des patients × cas déclaré
-description:
-certified_by:
-certification_details:
+slice_name: "Consultations \u2013 origine des patients \xD7 cas d\xE9clar\xE9"
+description: null
+certified_by: null
+certification_details: null
 viz_type: pivot_table_v2
 params:
   datasource: 29__table
@@ -25,9 +25,9 @@ params:
   - expressionType: SIMPLE
     subject: MOIS
     operator: TEMPORAL_RANGE
-    comparator: previous calendar month
+    comparator: No filter
     clause: WHERE
-    sqlExpression:
+    sqlExpression: null
     isExtra: false
     isNew: false
     datasourceWarning: false
@@ -45,8 +45,9 @@ params:
   combineMetric: false
   show_cell_bars: false
   extra_form_data: {}
-query_context:
-cache_timeout:
+  annotation_layers: []
+query_context: null
+cache_timeout: null
 uuid: 88888980-ce12-40ef-9179-217c10bb2721
 version: 1.0.0
 dataset_uuid: cca54217-3d2b-4dd1-b512-e06ac744971d

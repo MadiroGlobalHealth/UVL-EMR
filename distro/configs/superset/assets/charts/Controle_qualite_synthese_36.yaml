@@ -25,7 +25,7 @@ params:
   - expressionType: SIMPLE
     subject: MOIS
     operator: TEMPORAL_RANGE
-    comparator: previous calendar month
+    comparator: No filter
     clause: WHERE
     sqlExpression: null
     isExtra: false
@@ -40,6 +40,7 @@ params:
   show_cell_bars: false
   color_pn: true
   extra_form_data: {}
+  annotation_layers: []
 query_context: null
 cache_timeout: null
 uuid: 9e4bd27a-1198-4a19-b06e-17511f50089c

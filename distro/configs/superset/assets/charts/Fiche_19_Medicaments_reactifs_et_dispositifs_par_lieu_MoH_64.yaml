@@ -1,0 +1,81 @@
+slice_name: "Fiche 19 \u2013 M\xE9dicaments, r\xE9actifs et dispositifs, par lieu\
+  \ (MoH)"
+description: "Fiche 19 (7.1) par lieu: pharmacie centrale et boxes de dispensation.\
+  \ Consomm\xE9e/distribu\xE9e d'un lieu = sa dispensation + ses sorties vers d'autres\
+  \ lieux; les transferts internes sortants et entrants sont visibles ici. CMM/DMM\
+  \ = moyenne mensuelle sur les 6 derniers mois."
+certified_by: null
+certification_details: null
+viz_type: table
+params:
+  datasource: 49__table
+  viz_type: table
+  query_mode: raw
+  groupby: []
+  time_grain_sqla: P1D
+  temporal_columns_lookup:
+    MOIS: true
+  all_columns:
+  - MOIS
+  - SECTION
+  - DCI
+  - PRODUIT UVL
+  - LIEU
+  - QUANTITE AU DEBUT DU MOIS
+  - QUANTITE RECUE DURANT LE MOIS
+  - QUANTITE CONSOMMEE / DISTRIBUEE
+  - DONT DISPENSEE AUX PATIENTS
+  - DONT SORTIES VERS D'AUTRES SERVICES OU LIEUX
+  - TRANSFERTS INTERNES SORTANTS (VERS UN LIEU DE LA PHARMACIE)
+  - TRANSFERTS INTERNES ENTRANTS (DEPUIS UN LIEU DE LA PHARMACIE)
+  - STOCK INITIAL SAISI
+  - QUANTITE PERDUE OU VOLEE
+  - QUANTITE DETERIOREE (ENDOMMAGEE, CASSEE)
+  - QUANTITE PERIMEE (SORTIES, MOTIF EXPIRE)
+  - AUTRES AJUSTEMENTS (NET)
+  - ECART D'INVENTAIRE
+  - QUANTITE FIN DU MOIS
+  - QUANTITE A DUREE DE VIE < 3 MOIS
+  - QUANTITE PERIMEE EN STOCK
+  - NB DE JOURS DE RUPTURE DE STOCK
+  - CMM / DMM (MOYENNE MENSUELLE SUR 6 MOIS)
+  - MOIS DE STOCK (FIN DE MOIS / CMM)
+  percent_metrics: []
+  adhoc_filters:
+  - expressionType: SIMPLE
+    subject: MOIS
+    operator: TEMPORAL_RANGE
+    comparator: previous calendar month
+    clause: WHERE
+    sqlExpression: null
+    isExtra: false
+    isNew: false
+    datasourceWarning: false
+    filterOptionName: filter_910_f19l
+  - expressionType: SIMPLE
+    subject: LIEU
+    operator: '!='
+    comparator: TOUS LES LIEUX
+    clause: WHERE
+    sqlExpression: null
+    isExtra: false
+    isNew: false
+    datasourceWarning: false
+    filterOptionName: filter_910_f19l_0
+  order_by_cols:
+  - '["SECTION",true]'
+  - '["DCI",true]'
+  - '["LIEU",true]'
+  row_limit: 10000
+  server_page_length: 25
+  order_desc: true
+  table_timestamp_format: smart_date
+  show_cell_bars: false
+  color_pn: false
+  include_search: true
+  extra_form_data: {}
+query_context: null
+cache_timeout: null
+uuid: 05a8ee0d-47a9-4a65-bcaf-84ebedbf911e
+version: 1.0.0
+dataset_uuid: a9f46733-feb1-4e8a-9e5d-8673109c0e2b

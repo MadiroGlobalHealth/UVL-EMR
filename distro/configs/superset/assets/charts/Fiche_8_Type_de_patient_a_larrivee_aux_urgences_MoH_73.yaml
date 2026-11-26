@@ -1,0 +1,60 @@
+slice_name: "Fiche 8 \u2013 Type de patient \xE0 l'arriv\xE9e aux urgences (MoH)"
+description: "Fiche 8 du Minist\xE8re, service des urgences: patients d\xE9bout, couch\xE9\
+  s, d\xE9c\xE9d\xE9s \xE0 l'arriv\xE9e."
+certified_by: null
+certification_details: null
+viz_type: table
+params:
+  datasource: 55__table
+  viz_type: table
+  query_mode: raw
+  groupby: []
+  time_grain_sqla: P1D
+  temporal_columns_lookup:
+    MOIS: true
+  all_columns:
+  - MOIS
+  - SERVICE
+  - "D\xC9BOUT"
+  - "COUCH\xC9S"
+  - "D\xC9C\xC9D\xC9S"
+  - TOTAL
+  - "NON RENSEIGN\xC9"
+  - DONT ATTRIBUT DE VISITE
+  percent_metrics: []
+  adhoc_filters:
+  - expressionType: SIMPLE
+    subject: MOIS
+    operator: TEMPORAL_RANGE
+    comparator: previous calendar month
+    clause: WHERE
+    sqlExpression: null
+    isExtra: false
+    isNew: false
+    datasourceWarning: false
+    filterOptionName: filter_910b_f8u
+  - expressionType: SIMPLE
+    subject: SERVICE
+    operator: ==
+    comparator: Urgences
+    clause: WHERE
+    sqlExpression: null
+    isExtra: false
+    isNew: false
+    datasourceWarning: false
+    filterOptionName: filter_910b_f8u_1
+  order_by_cols:
+  - '["MOIS", false]'
+  row_limit: 10000
+  server_page_length: 25
+  order_desc: true
+  table_timestamp_format: smart_date
+  show_cell_bars: false
+  color_pn: false
+  include_search: false
+  extra_form_data: {}
+query_context: null
+cache_timeout: null
+uuid: 80d1d456-b017-4e06-924a-5b6632fb0e4d
+version: 1.0.0
+dataset_uuid: d0141e8e-dc23-4d22-80e5-4bfc203f8786

@@ -88,7 +88,7 @@ params:
   - expressionType: SIMPLE
     subject: MOIS
     operator: TEMPORAL_RANGE
-    comparator: previous calendar month
+    comparator: No filter
     clause: WHERE
     sqlExpression: null
     isExtra: false
@@ -103,6 +103,7 @@ params:
   show_cell_bars: false
   color_pn: true
   extra_form_data: {}
+  annotation_layers: []
 query_context: '{"datasource":{"id":24,"type":"table"},"force":false,"queries":[{"filters":[{"col":"MOIS","op":"TEMPORAL_RANGE","val":"previous
   calendar month"}],"extras":{"time_grain_sqla":"P1D","having":"","where":""},"applied_time_extras":{},"columns":["MOIS","SERVICE","0-28
   jours H","0-28 jours F","29 jours-11 mois H","29 jours-11 mois F","12-59 mois H","12-59
