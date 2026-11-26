@@ -42,6 +42,7 @@ otherwise reach Flink as base64.
 
 ## 6. Kafka topics
 `CREATE_TOPICS` lists the `emr.openmrs.stockmgmt_*` and `erp.public.account_*` topics (they are also auto-created).
+It must also list `emr.openmrs.bed_patient_assignment_map`: production has no bed assignment yet, so Debezium never creates that topic, and the Flink job `bed_assignments` then restarts in a loop (« Failed to list subscribed topic partitions ») and never reaches RUNNING. Seen at the switch back to production on 26 Nov 2026; added to the VM's `.env` then. Any source table that can be empty needs its topic in `CREATE_TOPICS`.
 
 ## 7. Kafka Connect task watchdog (cron on the analytics VM)
 Script: `scripts/connect-task-watchdog.sh`, installed as `/home/ubuntu/ANALYTICS/uvl-analytics/connect-task-watchdog.sh`.
