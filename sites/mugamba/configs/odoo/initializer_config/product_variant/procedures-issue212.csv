@@ -24,7 +24,7 @@ id,name,categ_id/id,type,purchase_ok,sale_ok,invoice_policy
 "init.eb2faf60-0143-48c7-8cee-3d0d6fec8b48","Medical Visit",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
 "init.89dbc90b-24bc-4c1c-b0a6-9adce52d29bd","Blood Transfusion",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
 "init.47279985-44a6-40de-9f00-a113e333b91c","Lipomectomy",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
-"init.f1d8a52b-c61b-41f5-82f7-ed5cea982932","Specimen Collection",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
+"init.f1d8a52b-c61b-41f5-82f7-ed5cea982932","Prélèvement veineux",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
 "init.e4b471d9-81d6-48c4-8b97-20fdeeeac280","C-Spine X-ray",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
 "init.0c6e5f9a-75cf-444c-9415-6c2ac870392c","T-Spine X-ray",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
 "init.30cdefe7-775b-4302-b165-f2540fa207da","L-Spine X-ray",init.categ_services_procedure_orders,service,FALSE,TRUE,Ordered quantities
