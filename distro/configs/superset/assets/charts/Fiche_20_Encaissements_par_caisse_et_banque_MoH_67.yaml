@@ -1,0 +1,51 @@
+slice_name: "Fiche 20 \u2013 Encaissements par caisse et banque (MoH)"
+description: "Fiche 20 (7.3): encaissements du mois par journal (caisse, banque),\
+  \ paiements valid\xE9s \xE0 la date r\xE9elle. Soldes d'ouverture et de cl\xF4ture:\
+  \ non enregistr\xE9."
+certified_by: null
+certification_details: null
+viz_type: table
+params:
+  datasource: 46__table
+  viz_type: table
+  query_mode: raw
+  groupby: []
+  time_grain_sqla: P1D
+  temporal_columns_lookup:
+    MOIS: true
+  all_columns:
+  - MOIS
+  - JOURNAL
+  - TYPE
+  - NB DE PAIEMENTS
+  - MONTANT ENCAISSE
+  - DONT PAIEMENTS NON RAPPROCHES D'UNE FACTURE
+  - SOLDE A L'OUVERTURE
+  - SOLDE A LA CLOTURE
+  percent_metrics: []
+  adhoc_filters:
+  - expressionType: SIMPLE
+    subject: MOIS
+    operator: TEMPORAL_RANGE
+    comparator: previous calendar month
+    clause: WHERE
+    sqlExpression: null
+    isExtra: false
+    isNew: false
+    datasourceWarning: false
+    filterOptionName: filter_910_f20j
+  order_by_cols:
+  - '["JOURNAL",true]'
+  row_limit: 10000
+  server_page_length: 25
+  order_desc: true
+  table_timestamp_format: smart_date
+  show_cell_bars: false
+  color_pn: false
+  include_search: true
+  extra_form_data: {}
+query_context: null
+cache_timeout: null
+uuid: f3cbeb51-3704-484c-bc72-9722cab066c3
+version: 1.0.0
+dataset_uuid: 436e93f9-6d81-4361-8d15-1cc3ce9db066

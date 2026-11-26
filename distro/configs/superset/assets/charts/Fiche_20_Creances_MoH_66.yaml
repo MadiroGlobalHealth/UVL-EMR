@@ -1,0 +1,49 @@
+slice_name: "Fiche 20 \u2013 Cr\xE9ances (MoH)"
+description: "Fiche 20 (7.3) bloc 3: cr\xE9ances par cr\xE9ancier (payeur de la facture):\
+  \ d\xE9but du mois, augmentation, diminution, fin du mois."
+certified_by: null
+certification_details: null
+viz_type: table
+params:
+  datasource: 47__table
+  viz_type: table
+  query_mode: raw
+  groupby: []
+  time_grain_sqla: P1D
+  temporal_columns_lookup:
+    MOIS: true
+  all_columns:
+  - MOIS
+  - CREANCIER
+  - CREANCE AU DEBUT DU MOIS
+  - AUGMENTATION DE LA CREANCE
+  - DIMINUTION DE LA CREANCE
+  - CREANCE A LA FIN DU MOIS
+  - STATUT
+  percent_metrics: []
+  adhoc_filters:
+  - expressionType: SIMPLE
+    subject: MOIS
+    operator: TEMPORAL_RANGE
+    comparator: previous calendar month
+    clause: WHERE
+    sqlExpression: null
+    isExtra: false
+    isNew: false
+    datasourceWarning: false
+    filterOptionName: filter_910_f20c
+  order_by_cols:
+  - '["ORDRE",true]'
+  row_limit: 10000
+  server_page_length: 25
+  order_desc: true
+  table_timestamp_format: smart_date
+  show_cell_bars: false
+  color_pn: false
+  include_search: true
+  extra_form_data: {}
+query_context: null
+cache_timeout: null
+uuid: 828a1e41-1b92-4043-af82-e0bce8041e77
+version: 1.0.0
+dataset_uuid: 7b302cf8-67e6-41c3-9d41-f86a2aeeac7e

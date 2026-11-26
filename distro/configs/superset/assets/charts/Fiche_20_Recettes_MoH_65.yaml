@@ -1,0 +1,54 @@
+slice_name: "Fiche 20 \u2013 Recettes (MoH)"
+description: "Fiche 20 (7.3): recettes du compte m\xE9dicaments et du compte fonctionnement\
+  \ par ligne du mod\xE8le; montants factur\xE9s, encaiss\xE9s (esp\xE8ces/banque).\
+  \ Les lignes \xAB non enregistr\xE9 \xBB (soldes, d\xE9penses, subsides, dettes,\
+  \ loyers) ne sont pas dans Odoo: montants vides, jamais 0."
+certified_by: null
+certification_details: null
+viz_type: table
+params:
+  datasource: 48__table
+  viz_type: table
+  query_mode: raw
+  groupby: []
+  time_grain_sqla: P1D
+  temporal_columns_lookup:
+    MOIS: true
+  all_columns:
+  - MOIS
+  - COMPTE
+  - SECTION
+  - LIBELLE
+  - MONTANT FACTURE
+  - MONTANT ENCAISSE DANS LE MOIS
+  - DONT ESPECES (CAISSE)
+  - DONT BANQUE
+  - ENCAISSE A CE JOUR SUR LES FACTURES DU MOIS
+  - STATUT
+  percent_metrics: []
+  adhoc_filters:
+  - expressionType: SIMPLE
+    subject: MOIS
+    operator: TEMPORAL_RANGE
+    comparator: previous calendar month
+    clause: WHERE
+    sqlExpression: null
+    isExtra: false
+    isNew: false
+    datasourceWarning: false
+    filterOptionName: filter_910_f20r
+  order_by_cols:
+  - '["ORDRE",true]'
+  row_limit: 10000
+  server_page_length: 25
+  order_desc: true
+  table_timestamp_format: smart_date
+  show_cell_bars: false
+  color_pn: false
+  include_search: true
+  extra_form_data: {}
+query_context: null
+cache_timeout: null
+uuid: d4387b7d-ecfb-43a9-9a8c-938ce2c30248
+version: 1.0.0
+dataset_uuid: 91fd2e3a-e274-40f2-a08c-b445b8274f8e
