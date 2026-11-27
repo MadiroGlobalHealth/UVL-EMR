@@ -23,7 +23,13 @@ description: "UVL-EMR \xB7 PBF register \xAB ACCOUCHEMENTS \xBB (Superset virtua
   \ \xAB Mode of delivery \xBB 38eca4cd answers Dystocic b08d3e60-2e3c-4d23-906c-9e36cd222bea\
   \ /\n    Eutocic 3de182b6-f7fe-4185-a7b5-89237593c1f1; older form versions saved\
   \ those answers under\n    \xAB Other delivery procedures performed \xBB 6af027e5-8737-4ce0-8343-79b024cd1989\
-  \ (still read).\n  * DEROULEMENT: \xAB Delivery complications \xBB 5d214371-cf09-4589-b357-de8b091b66d3\
+  \ (still read).\n    Forceps and ventouse are dystocic deliveries (product owner,\
+  \ 24 Nov 2026): \xAB Dystocique (forceps) \xBB,\n    \xAB Dystocique (ventouse)\
+  \ \xBB. Read from the \xAB Mode of delivery \xBB answers Forceps fd601163\u2026\
+  \ / Vacuum\n    extraction 628fd5bc\u2026 (form of 24 Nov 2026, #896, removed by\
+  \ #922) and from the free text\n    \xAB Dystocia (specify type) \xBB fc343f72\u2026\
+  \ (forceps: \xAB forc\u2026 \xBB; ventouse: \xAB ventous\u2026 \xBB / \xAB vacu\u2026\
+  \ \xBB).\n  * DEROULEMENT: \xAB Delivery complications \xBB 5d214371-cf09-4589-b357-de8b091b66d3\
   \ (all answers).\n  * ISSUE NOUVEAU-NE: \xAB Stillbirth type \xBB 52325f44-b6dd-470b-a672-97fefbd119e1\
   \ (frais / mac\xE9r\xE9),\n    else \xAB Newborn status during postpartum monitoring\
   \ \xBB 238652d6-4aca-451a-9c8e-8336cea6fff4,\n    else \xAB Pregnancy outcome \xBB\
@@ -65,17 +71,24 @@ sql: "WITH dlv_enc AS (\n    SELECT DISTINCT ON (e.visit_uuid)\n        e.encoun
   \         '52325f44-b6dd-470b-a672-97fefbd119e1')\n    ORDER BY o.visit_uuid, o.question_uuid,\
   \ o.obs_date_time DESC, o.obs_id DESC\n),\ndlv_mode AS (\n    SELECT\n        o.visit_uuid,\n\
   \        BOOL_OR(o.answer_coded_uuid = '4a8e5f2a-da35-4a5d-aefb-ffabe41e6783') AS\
-  \ caesarean,\n        BOOL_OR(o.answer_coded_uuid = 'b08d3e60-2e3c-4d23-906c-9e36cd222bea')\
+  \ caesarean,\n        BOOL_OR(o.answer_coded_uuid IN ('b08d3e60-2e3c-4d23-906c-9e36cd222bea',\
+  \ 'fd601163-7e6f-4e26-91bc-28f94f76ac7f', '628fd5bc-250d-43fa-b285-e31d8888ebf3'))\
   \ AS dystocic,\n        BOOL_OR(o.answer_coded_uuid = '3de182b6-f7fe-4185-a7b5-89237593c1f1')\
-  \ AS eutocic\n    FROM observations o\n    WHERE o.question_uuid IN ('38eca4cd-21ab-4689-a18b-202a50d34569',\n\
-  \                              '6af027e5-8737-4ce0-8343-79b024cd1989')\n      AND\
+  \ AS eutocic,\n        BOOL_OR(o.answer_coded_uuid = 'fd601163-7e6f-4e26-91bc-28f94f76ac7f'\n\
+  \                OR (o.question_uuid = 'fc343f72-be55-4eba-a376-c92d5a78dbb4' AND\
+  \ o.answer_text ~* 'forc')) AS forceps,\n        BOOL_OR(o.answer_coded_uuid = '628fd5bc-250d-43fa-b285-e31d8888ebf3'\n\
+  \                OR (o.question_uuid = 'fc343f72-be55-4eba-a376-c92d5a78dbb4' AND\
+  \ o.answer_text ~* 'ventous|vacu')) AS ventouse\n    FROM observations o\n    WHERE\
+  \ o.question_uuid IN ('38eca4cd-21ab-4689-a18b-202a50d34569',\n                \
+  \              '6af027e5-8737-4ce0-8343-79b024cd1989',\n                       \
+  \       'fc343f72-be55-4eba-a376-c92d5a78dbb4')\n      AND COALESCE(o.obs_voided,\
+  \ false) = false\n      AND o.visit_uuid IN (SELECT visit_uuid FROM dlv_enc)\n \
+  \   GROUP BY o.visit_uuid\n),\ndlv_compl AS (\n    SELECT\n        o.visit_uuid,\n\
+  \        STRING_AGG(DISTINCT o.answer_coded, '; ') AS complications\n    FROM observations\
+  \ o\n    WHERE o.question_uuid = '5d214371-cf09-4589-b357-de8b091b66d3'\n      AND\
   \ COALESCE(o.obs_voided, false) = false\n      AND o.visit_uuid IN (SELECT visit_uuid\
-  \ FROM dlv_enc)\n    GROUP BY o.visit_uuid\n),\ndlv_compl AS (\n    SELECT\n   \
-  \     o.visit_uuid,\n        STRING_AGG(DISTINCT o.answer_coded, '; ') AS complications\n\
-  \    FROM observations o\n    WHERE o.question_uuid = '5d214371-cf09-4589-b357-de8b091b66d3'\n\
-  \      AND COALESCE(o.obs_voided, false) = false\n      AND o.visit_uuid IN (SELECT\
-  \ visit_uuid FROM dlv_enc)\n    GROUP BY o.visit_uuid\n),\ncsection AS (\n    SELECT\
-  \ e.visit_uuid\n    FROM orders r\n    JOIN encounters e ON e.encounter_uuid = r.encounter_uuid\n\
+  \ FROM dlv_enc)\n    GROUP BY o.visit_uuid\n),\ncsection AS (\n    SELECT e.visit_uuid\n\
+  \    FROM orders r\n    JOIN encounters e ON e.encounter_uuid = r.encounter_uuid\n\
   \    WHERE r.concept_uuid IN ('86a76e88-fde2-4bc8-9da1-80064bf35fbb',\n        \
   \                     '455d4174-42ba-4819-89b5-f574e54baa42',\n                \
   \             '6060ba72-90a2-4ed1-9232-d0bc97c607e2')\n      AND COALESCE(r.voided,\
@@ -139,8 +152,11 @@ sql: "WITH dlv_enc AS (\n    SELECT DISTINCT ON (e.visit_uuid)\n        e.encoun
   \ THEN 'M\xE9decin'\n        WHEN '96e75bb2-8f26-4a10-99f8-7af041672b62' THEN 'Sage-femme'\n\
   \        WHEN 'b5c4b807-d3de-40cd-aae9-178df9b40535' THEN 'Autre'\n        ELSE\
   \ by_.answer\n    END AS \"ACCOUCHE PAR\",\n    CASE\n        WHEN cs.visit_uuid\
-  \ IS NOT NULL OR m.caesarean THEN 'C\xE9sarienne'\n        WHEN m.dystocic THEN\
-  \ 'Dystocique'\n        WHEN m.eutocic THEN 'Eutocique'\n    END AS \"TYPE D'ACCOUCHEMENT\"\
+  \ IS NOT NULL OR m.caesarean THEN 'C\xE9sarienne'\n        WHEN m.dystocic OR m.forceps\
+  \ OR m.ventouse THEN 'Dystocique'\n            || CASE WHEN m.forceps AND m.ventouse\
+  \ THEN ' (forceps, ventouse)'\n                    WHEN m.forceps THEN ' (forceps)'\n\
+  \                    WHEN m.ventouse THEN ' (ventouse)'\n                    ELSE\
+  \ '' END\n        WHEN m.eutocic THEN 'Eutocique'\n    END AS \"TYPE D'ACCOUCHEMENT\"\
   ,\n    c.complications AS \"DEROULEMENT\",\n    nn.issues AS \"ISSUE NOUVEAU-NE\"\
   ,\n    NULLIF(TRIM(SUBSTRING(b.visit_attributes FROM '(?:^|/ )Payer: ((?:[^/]|/(?!\
   \ ))*)')), '') AS \"ASSURANCE\",\n    NULLIF(TRIM(SUBSTRING(b.person_attributes\

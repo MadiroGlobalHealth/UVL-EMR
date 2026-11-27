@@ -1,4 +1,4 @@
-slice_name: "Consultations \u2013 \xE2ge \xD7 sexe \xD7 cas calcul\xE9"
+slice_name: "Consultations \u2013 nouveaux et anciens cas par service (d\xE9clar\xE9)"
 description: null
 certified_by: null
 certification_details: null
@@ -7,11 +7,9 @@ params:
   datasource: 29__table
   viz_type: pivot_table_v2
   groupbyColumns:
-  - CAS_CALCULE
-  - SEXE
+  - CAS_DECLARE
   groupbyRows:
-  - ORDRE_AGE
-  - TRANCHE D'AGE
+  - SERVICE
   time_grain_sqla: P1D
   temporal_columns_lookup:
     MOIS: true
@@ -20,7 +18,7 @@ params:
     sqlExpression: SUM("CONSULTATIONS")
     label: Consultations
     hasCustomLabel: true
-    optionName: metric_5de3c7b230
+    optionName: metric_b336f7b47c
   metricsLayout: COLUMNS
   adhoc_filters:
   - expressionType: SIMPLE
@@ -32,7 +30,7 @@ params:
     isExtra: false
     isNew: false
     datasourceWarning: false
-    filterOptionName: filter_c41
+    filterOptionName: filter_c42
   row_limit: 10000
   order_desc: true
   aggregateFunction: Sum
@@ -49,6 +47,6 @@ params:
   annotation_layers: []
 query_context: null
 cache_timeout: null
-uuid: 8e7baea9-3bea-41cd-8b69-9516ffda914c
+uuid: 0c3f8540-7473-4cb7-8b0c-ae839772a0ec
 version: 1.0.0
 dataset_uuid: cca54217-3d2b-4dd1-b512-e06ac744971d

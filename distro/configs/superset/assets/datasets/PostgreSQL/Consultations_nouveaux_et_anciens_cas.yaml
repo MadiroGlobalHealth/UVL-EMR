@@ -1,13 +1,11 @@
 table_name: Consultations nouveaux et anciens cas
 main_dttm_col: MOIS
 description: |
-  UVL-EMR · Consultations ambulatoires : nouveaux et anciens cas, âge, sexe, origine (#854). One row per MOIS × SERVICE × age band × sex × declared case × computed case × SITUATION × province (counts only, no patient data).
+  UVL-EMR · Consultations ambulatoires : nouveaux et anciens cas, âge, sexe, origine (#854). One row per MOIS × SERVICE × age band × sex × declared case × SITUATION × province (counts only, no patient data).
   Rows are the outpatient consultation encounters of the PBF consultation register (#586) and of Fiche 15 (#242): same filters, same SERVICE, same MoH age bands, same SITUATION. CONSULTATIONS summed over a month and a service equals Fiche 15 « TOTAL » (checked on production, Oct and Nov 2026).
-  Two definitions of « nouveau cas » are shown side by side, because the product owner has not chosen yet:
-    * CAS_DECLARE = what staff declared (visit attribute « Case Type », else the consultation form answer): « Nouveau cas (déclaré) » / « Ancien cas (déclaré) » / « Non renseigné ». Same rule as NOUVEAU_CAS in the register and in Fiche 15.
-    * CAS_CALCULE = computed from the history: « Nouveau cas (calculé) » is the patient's first outpatient consultation on record (ranked by encounter date and id), « Ancien cas (calculé) » any later one. The history in the analytics database starts on 8 Sep 2025 and holds outpatient consultations only, so a patient first seen before that date, or only as an inpatient, is counted new.
-    * CAS_CALCULE_ANNEE = same, within the calendar year (the Ministry's « nouveau cas de l'année »). In the dataset, in no chart yet.
-  The two disagree for about one consultation in five (69 of 309 consultations in Oct and Nov 2026).
+  « Nouveau cas » is the yes/no answer the staff gave (product owner, 23 Nov 2026, #961):
+    * CAS_DECLARE = visit attribute « Case Type », else the consultation form answer: « Nouveau cas (déclaré) » / « Ancien cas (déclaré) » / « Non renseigné ». Same rule as NOUVEAU_CAS in the register and in Fiche 15.
+  No case type is calculated from the patient's history.
   PROVINCE_NORM = the patient's address province upper-cased and trimmed, the spellings folded to BURUNGA, GITEGA, BUJUMBURA, BURURI, MATANA, MWARO; anything else « AUTRE (à vérifier) », empty « Non renseigné ». Origin by health centre or district is not recorded anywhere.
   Month filter: temporal column MOIS. Service filter: SERVICE. Test patients excluded as in the register (SYNTH- / E2E / QA / TEST / DEMO, voided persons, the « Locations test » location).
 default_endpoint:
@@ -45,9 +43,7 @@ sql: |-
   x AS (
       SELECT
           c.*,
-          ob.case_obs,
-          ROW_NUMBER() OVER (PARTITION BY c.patient_uuid ORDER BY c.encounter_datetime, c.encounter_id) AS rang_vie,
-          ROW_NUMBER() OVER (PARTITION BY c.patient_uuid, DATE_PART('year', c.d) ORDER BY c.encounter_datetime, c.encounter_id) AS rang_annee
+          ob.case_obs
       FROM opd c
       LEFT JOIN ob ON ob.encounter_uuid = c.encounter_uuid
   ),
@@ -93,8 +89,6 @@ sql: |-
           WHEN 'Follow-Up Case' THEN 'Ancien cas (déclaré)'
           ELSE 'Non renseigné'
       END AS "CAS_DECLARE",
-      CASE WHEN y.rang_vie = 1 THEN 'Nouveau cas (calculé)' ELSE 'Ancien cas (calculé)' END AS "CAS_CALCULE",
-      CASE WHEN y.rang_annee = 1 THEN 'Nouveau cas de l''année (calculé)' ELSE 'Ancien cas de l''année (calculé)' END AS "CAS_CALCULE_ANNEE",
       COALESCE(CASE NULLIF(TRIM(SUBSTRING(y.visit_attributes FROM '(?:^|/ )Patient location: ([^/]*)')), '')
           WHEN 'Outside Burundi' THEN 'Hors Burundi'
           WHEN 'Outside Province' THEN 'Hors Province'
@@ -114,7 +108,7 @@ sql: |-
       END AS "PROVINCE_NORM",
       COUNT(*) AS "CONSULTATIONS"
   FROM y
-  GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+  GROUP BY 1, 2, 3, 4, 5, 6, 7, 8
   ORDER BY 1 DESC, 2, 3, 4
 params:
 template_params:
@@ -198,30 +192,6 @@ columns:
   extra: {}
 - column_name: CAS_DECLARE
   verbose_name: Cas déclaré par le personnel
-  is_dttm: false
-  is_active: true
-  type: STRING
-  advanced_data_type:
-  groupby: true
-  filterable: true
-  expression: ''
-  description:
-  python_date_format:
-  extra: {}
-- column_name: CAS_CALCULE
-  verbose_name: Cas calculé (première consultation connue)
-  is_dttm: false
-  is_active: true
-  type: STRING
-  advanced_data_type:
-  groupby: true
-  filterable: true
-  expression: ''
-  description:
-  python_date_format:
-  extra: {}
-- column_name: CAS_CALCULE_ANNEE
-  verbose_name: Cas calculé dans l'année
   is_dttm: false
   is_active: true
   type: STRING
