@@ -404,9 +404,7 @@ position:
     - ROW-m6-c0
     - ROW-m6-c1
     - ROW-m6-c2
-    - ROW-m6-c3
     - ROW-m6-c4
-    - ROW-m6-c5
     parents:
     - ROOT_ID
     - GRID_ID
@@ -438,14 +436,7 @@ position:
     - TAB-m6-consultations
     - ROW-m6-c0
     meta:
-      code: "**Nouveau cas ou ancien cas : deux d\xE9finitions c\xF4te \xE0 c\xF4\
-        te.**\n\n\xAB D\xE9clar\xE9 \xBB est ce que le personnel a indiqu\xE9 \xE0\
-        \ la consultation. \xAB Calcul\xE9 \xBB est la premi\xE8re consultation connue\
-        \ du patient (l'historique commence le 8 septembre 2025) ; toute consultation\
-        \ suivante est un ancien cas. Les deux divergent pour environ une consultation\
-        \ sur cinq : la d\xE9finition retenue reste \xE0 choisir par le propri\xE9\
-        taire du produit. Filtres : mois et service. L'origine par centre de sant\xE9\
-        \ ou par district n'est pas enregistr\xE9e."
+      code: "**Nouveau cas ou ancien cas : la r\u00e9ponse du personnel.**\n\nNouveau cas ou ancien cas = la case oui/non coch\u00e9e par le personnel \u00e0 la consultation (attribut de visite \u00ab Case Type \u00bb, sinon la r\u00e9ponse du formulaire de consultation), comme dans le registre des consultations et la Fiche 15. \u00ab Non renseign\u00e9 \u00bb = pas de r\u00e9ponse. Filtres : mois et service. L'origine par centre de sant\u00e9 ou par district n'est pas enregistr\u00e9e."
       height: 22
       width: 12
   ROW-m6-c1:
@@ -474,7 +465,7 @@ position:
       chartId: 46
       width: 12
       height: 40
-      sliceName: "Consultations \u2013 cas d\xE9clar\xE9 contre cas calcul\xE9"
+      sliceName: "Consultations \u2013 nouveaux et anciens cas par service (d\u00e9clar\u00e9)"
       uuid: 0c3f8540-7473-4cb7-8b0c-ae839772a0ec
   ROW-m6-c2:
     type: ROW
@@ -504,34 +495,6 @@ position:
       height: 80
       sliceName: "Consultations \u2013 \xE2ge \xD7 sexe \xD7 cas d\xE9clar\xE9"
       uuid: 811a172c-2fe2-4455-bc1f-d6d99ad7aade
-  ROW-m6-c3:
-    type: ROW
-    id: ROW-m6-c3
-    children:
-    - CHART-m6-c3-41
-    parents:
-    - ROOT_ID
-    - GRID_ID
-    - TABS-m6
-    - TAB-m6-consultations
-    meta:
-      background: BACKGROUND_TRANSPARENT
-  CHART-m6-c3-41:
-    type: CHART
-    id: CHART-m6-c3-41
-    children: []
-    parents:
-    - ROOT_ID
-    - GRID_ID
-    - TABS-m6
-    - TAB-m6-consultations
-    - ROW-m6-c3
-    meta:
-      chartId: 41
-      width: 12
-      height: 80
-      sliceName: "Consultations \u2013 \xE2ge \xD7 sexe \xD7 cas calcul\xE9"
-      uuid: 8e7baea9-3bea-41cd-8b69-9516ffda914c
   ROW-m6-c4:
     type: ROW
     id: ROW-m6-c4
@@ -560,34 +523,6 @@ position:
       height: 70
       sliceName: "Consultations \u2013 origine des patients \xD7 cas d\xE9clar\xE9"
       uuid: 88888980-ce12-40ef-9179-217c10bb2721
-  ROW-m6-c5:
-    type: ROW
-    id: ROW-m6-c5
-    children:
-    - CHART-m6-c5-44
-    parents:
-    - ROOT_ID
-    - GRID_ID
-    - TABS-m6
-    - TAB-m6-consultations
-    meta:
-      background: BACKGROUND_TRANSPARENT
-  CHART-m6-c5-44:
-    type: CHART
-    id: CHART-m6-c5-44
-    children: []
-    parents:
-    - ROOT_ID
-    - GRID_ID
-    - TABS-m6
-    - TAB-m6-consultations
-    - ROW-m6-c5
-    meta:
-      chartId: 42
-      width: 12
-      height: 70
-      sliceName: "Consultations \u2013 origine des patients \xD7 cas calcul\xE9"
-      uuid: 94ec2559-5ad2-49b2-8a41-41347117a988
   TAB-m6-diagnostics:
     type: TAB
     id: TAB-m6-diagnostics
@@ -1531,8 +1466,6 @@ metadata:
     - 36
     - 37
     - 40
-    - 41
-    - 42
     - 43
     - 44
     - 45
@@ -1595,8 +1528,6 @@ metadata:
     - 31
     - 34
     - 40
-    - 41
-    - 42
     - 43
     - 44
     - 45
