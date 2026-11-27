@@ -3893,4 +3893,81 @@
         </rollback>
     </changeSet>
 
+    <!--
+        #959 - an old BP07 result keeps every value of its group in « Résultat antérieur : … ».
+
+        urine_examination_keep_old_results-20261125 (#950) built the comment from the seven #209
+        components only. Some old groups also hold a member that was never one of the seven (on
+        UAT a numeric « Globules rouges »), which no current BP07 member shows either, so its value
+        was still stored but no longer visible with the result.
+
+        For each old group with that comment, every non-voided child with a value (coded, text or
+        numeric) whose concept is neither a current member of BP07 nor the comment, and whose name
+        is not already in the comment, is appended as « ; <French name> : <value> ». Numbers use the
+        French decimal comma (2,5). Running it again appends nothing: the name is then in the
+        comment. Only the comment's text changes; the obs it lists are not touched.
+
+        CONTINUE, not MARK_RAN: on a fresh server the comments only exist after #950's changeset
+        has run, one start after the comment concept is created.
+    -->
+    <changeSet id="urine_examination_old_results_other_members-20261127" author="Joshua">
+        <preConditions onFail="CONTINUE">
+            <sqlCheck expectedResult="1">
+                SELECT CASE WHEN COUNT(*) &gt; 0 THEN 1 ELSE 0 END
+                  FROM obs g
+                  JOIN concept bp ON bp.concept_id = g.concept_id AND bp.uuid = 'ac930dc2-3328-4225-98af-f387787b04e9'
+                  JOIN concept cm ON cm.uuid = 'b2fe23ad-3273-4943-ae6f-6c77795f3334'
+                  JOIN obs cmt ON cmt.obs_group_id = g.obs_id AND cmt.concept_id = cm.concept_id AND cmt.voided = 0
+                              AND cmt.value_text LIKE 'Résultat antérieur : %'
+                  JOIN obs ch ON ch.obs_group_id = g.obs_id AND ch.voided = 0 AND ch.concept_id &lt;&gt; cm.concept_id
+                             AND (ch.value_coded IS NOT NULL OR ch.value_text IS NOT NULL OR ch.value_numeric IS NOT NULL)
+                 WHERE g.voided = 0
+                   AND NOT EXISTS (SELECT 1 FROM concept_set s WHERE s.concept_set = bp.concept_id AND s.concept_id = ch.concept_id)
+                   AND LOCATE(CONCAT(COALESCE((SELECT cn.name FROM concept_name cn
+                                                WHERE cn.concept_id = ch.concept_id AND cn.locale = 'fr' AND cn.voided = 0
+                                                ORDER BY cn.locale_preferred DESC LIMIT 1),
+                                              (SELECT cn.name FROM concept_name cn
+                                                WHERE cn.concept_id = ch.concept_id AND cn.voided = 0
+                                                ORDER BY cn.locale_preferred DESC LIMIT 1)), ' : '), cmt.value_text) = 0
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            Add to the « Résultat antérieur » comment of old BP07 results the values of their other members, such as « Globules rouges » (#959).
+        </comment>
+        <sql>
+            UPDATE obs c
+              JOIN (SELECT cmt.obs_id AS comment_id,
+                           GROUP_CONCAT(CONCAT(' ; ', ln.name, ' : ',
+                                               COALESCE(COALESCE((SELECT cn.name FROM concept_name cn
+                                                                   WHERE cn.concept_id = ch.value_coded AND cn.locale = 'fr' AND cn.voided = 0
+                                                                   ORDER BY cn.locale_preferred DESC LIMIT 1),
+                                                                 (SELECT cn.name FROM concept_name cn
+                                                                   WHERE cn.concept_id = ch.value_coded AND cn.voided = 0
+                                                                   ORDER BY cn.locale_preferred DESC LIMIT 1)),
+                                                        ch.value_text, REPLACE(CAST(ch.value_numeric AS CHAR), '.', ',')))
+                                        ORDER BY ch.obs_id SEPARATOR '') AS extra
+                      FROM obs g
+                      JOIN concept bp ON bp.concept_id = g.concept_id AND bp.uuid = 'ac930dc2-3328-4225-98af-f387787b04e9'
+                      JOIN concept cm ON cm.uuid = 'b2fe23ad-3273-4943-ae6f-6c77795f3334'
+                      JOIN obs cmt ON cmt.obs_group_id = g.obs_id AND cmt.concept_id = cm.concept_id AND cmt.voided = 0
+                                  AND cmt.value_text LIKE 'Résultat antérieur : %'
+                      JOIN obs ch ON ch.obs_group_id = g.obs_id AND ch.voided = 0 AND ch.concept_id &lt;&gt; cm.concept_id
+                                 AND (ch.value_coded IS NOT NULL OR ch.value_text IS NOT NULL OR ch.value_numeric IS NOT NULL)
+                      JOIN (SELECT c0.concept_id,
+                                   COALESCE((SELECT cn.name FROM concept_name cn
+                                              WHERE cn.concept_id = c0.concept_id AND cn.locale = 'fr' AND cn.voided = 0
+                                              ORDER BY cn.locale_preferred DESC LIMIT 1),
+                                            (SELECT cn.name FROM concept_name cn
+                                              WHERE cn.concept_id = c0.concept_id AND cn.voided = 0
+                                              ORDER BY cn.locale_preferred DESC LIMIT 1)) AS name
+                              FROM concept c0) ln ON ln.concept_id = ch.concept_id
+                     WHERE g.voided = 0
+                       AND NOT EXISTS (SELECT 1 FROM concept_set s WHERE s.concept_set = bp.concept_id AND s.concept_id = ch.concept_id)
+                       AND LOCATE(CONCAT(ln.name, ' : '), cmt.value_text) = 0
+                     GROUP BY cmt.obs_id) x ON x.comment_id = c.obs_id
+               SET c.value_text = CONCAT(c.value_text, x.extra);
+        </sql>
+        <rollback/>
+    </changeSet>
+
 </databaseChangeLog>
