@@ -293,6 +293,14 @@ MFP's « BANDE ADHESIVE 8CM » (N° 38 of the device list), 80% of at most 2,740
 changed. The other adhesive lines of the list (« SPARADRAP », « LEUCOPLASTE », « ELASTOPLASTE »)
 were not retained by the answer.
 
+### « Vaccinostyl » (#960, 27 Nov 2026)
+
+« Vaccinostyl », the blood lancet added on 25 Nov 2026 (#953), is MFP's « VACCINOSTYLE » (N° 550
+of the device list, 100 BIF, 70%, read `high`). It is matched `exact` with ref « N:550 », so its
+row in `mfp-issue184.csv` is now 70% of at most 100 BIF per unit (`amount`), like the other
+matched devices: 290 products have a ceiling. A new consumable gets its matching row with its
+coverage row, then `scripts/mfp-ceiling.py` sets the ceiling.
+
 ## Format
 
 One row per plan and product (the pair is unique):
