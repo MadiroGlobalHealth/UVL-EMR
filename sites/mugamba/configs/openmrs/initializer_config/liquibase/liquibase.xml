@@ -3893,4 +3893,160 @@
         </rollback>
     </changeSet>
 
+    <!--
+        #371 - the stool examination (BP06) shows the paper result form: parts 1 (macroscopic) and
+        3 (parasitological).
+
+        The product owner sent the hospital's paper form on 25 Nov 2026. Part 2 was not sent and is
+        not built; its fields can take sort weights 8 to 30. concepts/stool_examination_371.csv
+        creates the sixteen fields, conceptsets/stool_examination_371.csv makes them the members of
+        BP06 (6a310ab5-5178-4e5e-9112-3d60ecc6a60f) in the order of the form, with the existing
+        "Stool examination comment" (20b58e2e-6f70-410f-a866-d5fb1b29d42d) last.
+
+        The eleven components BP06 had since #388 (uvl-labtests, parasites graded none / rare /
+        few / many, appearance, colour, quality, occult blood, Entamoeba form) are not on the paper
+        form. Removing them is done here because the Initializer adds set members but never removes
+        one. Their old results are kept: each stays on its obs group, and the second changeset
+        copies them as one line of text into the comment, because the Results page and the lab app
+        read a set only through its current members.
+    -->
+    <changeSet id="stool_examination_remove_old_components-20261127" author="Joshua">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT CASE WHEN COUNT(*) &gt; 0 THEN 1 ELSE 0 END FROM concept_set s
+                  JOIN concept p ON p.concept_id = s.concept_set
+                  JOIN concept m ON m.concept_id = s.concept_id
+                 WHERE p.uuid = '6a310ab5-5178-4e5e-9112-3d60ecc6a60f'
+                   AND m.uuid IN ('175fc676-c513-4b8f-bd62-91ea6b3ddaa1', '159362AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+                                  'f9ef91ad-5217-4dbd-b995-46306f2e8f84', '167351AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+                                  '71acd51d-ff8b-458c-b565-6d54c928f902', '167363AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+                                  '167349AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', '167348AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+                                  '163640AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', '163641AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+                                  '162654AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            Remove the eleven #388 components from BP06 Stool examination; the paper-form fields replace them (#371). The concepts and any result recorded on them stay.
+        </comment>
+        <sql>
+            DELETE s FROM concept_set s
+              JOIN concept p ON p.concept_id = s.concept_set
+              JOIN concept m ON m.concept_id = s.concept_id
+             WHERE p.uuid = '6a310ab5-5178-4e5e-9112-3d60ecc6a60f'
+               AND m.uuid IN ('175fc676-c513-4b8f-bd62-91ea6b3ddaa1', '159362AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+                              'f9ef91ad-5217-4dbd-b995-46306f2e8f84', '167351AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+                              '71acd51d-ff8b-458c-b565-6d54c928f902', '167363AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+                              '167349AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', '167348AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+                              '163640AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', '163641AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+                              '162654AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+        </sql>
+        <rollback/>
+    </changeSet>
+
+    <!--
+        BP06 results entered before this change: show them on the Results page and in the lab app.
+
+        A BP06 result is a group obs of BP06. Its members that are no longer members of the set
+        (the eleven components above, and the HS08 / shared comment members removed on 7 Oct 2026)
+        would not show. Nothing is converted: the old answers (graded none / rare / few / many, CIEL
+        colours and qualities) are not the paper form's choices, and mapping them would invent data.
+        Each such group gets one comment (20b58e2e-6f70-410f-a866-d5fb1b29d42d) whose text lists
+        the old components and answers: « Résultat antérieur : Ascaris lumbricoides ... : Rare ; ... ».
+        The old member obs are not touched.
+
+        Unlike #950, the comment concept already existed, so a group may already hold a comment
+        typed by the lab. That text is appended (« ; Commentaire : ... ») and the typed comment is
+        voided as the new one's previous version, as OpenMRS does when a result is edited (#415).
+        The #415 groups (« Résultat antérieur (liste unique) : ... ») only hold a comment and are
+        left as they are.
+
+        The comment concept is already on UAT and production, so MARK_RAN is enough: no result can
+        be entered on the old components once the first changeset has run. group_concat_max_len is
+        raised because eleven French CIEL names exceed the 1024-character default.
+    -->
+    <changeSet id="stool_examination_keep_old_results-20261127" author="Joshua">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT CASE WHEN COUNT(*) &gt; 0 THEN 1 ELSE 0 END
+                  FROM obs g
+                  JOIN concept bp ON bp.concept_id = g.concept_id AND bp.uuid = '6a310ab5-5178-4e5e-9112-3d60ecc6a60f'
+                  JOIN concept cm ON cm.uuid = '20b58e2e-6f70-410f-a866-d5fb1b29d42d'
+                 WHERE g.voided = 0
+                   AND EXISTS (SELECT 1 FROM obs ch
+                                WHERE ch.obs_group_id = g.obs_id AND ch.voided = 0 AND ch.concept_id &lt;&gt; cm.concept_id
+                                  AND NOT EXISTS (SELECT 1 FROM concept_set s
+                                                   WHERE s.concept_set = bp.concept_id AND s.concept_id = ch.concept_id))
+                   AND NOT EXISTS (SELECT 1 FROM obs ch
+                                    WHERE ch.obs_group_id = g.obs_id AND ch.voided = 0 AND ch.concept_id = cm.concept_id
+                                      AND ch.value_text LIKE 'Résultat antérieur : %')
+            </sqlCheck>
+        </preConditions>
+        <comment>
+            Keep the BP06 results recorded before the paper-form fields visible: one comment per old result group, listing the old components and answers, and any comment typed before (#371).
+        </comment>
+        <sql>
+            SET SESSION group_concat_max_len = 65535;
+
+            INSERT INTO obs (person_id, concept_id, encounter_id, order_id, obs_datetime, location_id,
+                             obs_group_id, value_text, status, previous_version, creator, date_created, voided, uuid)
+            SELECT g.person_id, cm.concept_id, g.encounter_id, g.order_id, g.obs_datetime, g.location_id,
+                   g.obs_id,
+                   CONCAT('Résultat antérieur : ',
+                          (SELECT GROUP_CONCAT(CONCAT(COALESCE((SELECT cn.name FROM concept_name cn
+                                         WHERE cn.concept_id = ch.concept_id AND cn.locale = 'fr' AND cn.voided = 0
+                                         ORDER BY cn.locale_preferred DESC LIMIT 1),
+                                       (SELECT cn.name FROM concept_name cn
+                                         WHERE cn.concept_id = ch.concept_id AND cn.voided = 0
+                                         ORDER BY cn.locale_preferred DESC LIMIT 1)), ' : ',
+                                                      COALESCE(COALESCE((SELECT cn.name FROM concept_name cn
+                                         WHERE cn.concept_id = ch.value_coded AND cn.locale = 'fr' AND cn.voided = 0
+                                         ORDER BY cn.locale_preferred DESC LIMIT 1),
+                                       (SELECT cn.name FROM concept_name cn
+                                         WHERE cn.concept_id = ch.value_coded AND cn.voided = 0
+                                         ORDER BY cn.locale_preferred DESC LIMIT 1)), ch.value_text, ch.value_numeric))
+                                               ORDER BY ch.obs_id SEPARATOR ' ; ')
+                             FROM obs ch
+                            WHERE ch.obs_group_id = g.obs_id AND ch.voided = 0 AND ch.concept_id &lt;&gt; cm.concept_id
+                              AND NOT EXISTS (SELECT 1 FROM concept_set s
+                                               WHERE s.concept_set = g.concept_id AND s.concept_id = ch.concept_id)),
+                          COALESCE(CONCAT(' ; Commentaire : ', oc.value_text), '')),
+                   g.status, oc.obs_id, 1, NOW(), 0, UUID()
+              FROM obs g
+              JOIN concept bp ON bp.concept_id = g.concept_id AND bp.uuid = '6a310ab5-5178-4e5e-9112-3d60ecc6a60f'
+              JOIN concept cm ON cm.uuid = '20b58e2e-6f70-410f-a866-d5fb1b29d42d'
+              LEFT JOIN obs oc ON oc.obs_id = (SELECT MAX(x.obs_id) FROM obs x
+                                                WHERE x.obs_group_id = g.obs_id AND x.concept_id = cm.concept_id AND x.voided = 0)
+             WHERE g.voided = 0
+               AND EXISTS (SELECT 1 FROM obs ch
+                            WHERE ch.obs_group_id = g.obs_id AND ch.voided = 0 AND ch.concept_id &lt;&gt; cm.concept_id
+                              AND NOT EXISTS (SELECT 1 FROM concept_set s
+                                               WHERE s.concept_set = g.concept_id AND s.concept_id = ch.concept_id))
+               AND NOT EXISTS (SELECT 1 FROM obs ch
+                                WHERE ch.obs_group_id = g.obs_id AND ch.voided = 0 AND ch.concept_id = cm.concept_id
+                                  AND ch.value_text LIKE 'Résultat antérieur : %');
+
+            UPDATE obs oc
+              JOIN obs n ON n.previous_version = oc.obs_id AND n.concept_id = oc.concept_id AND n.voided = 0
+                        AND n.value_text LIKE 'Résultat antérieur : %'
+              JOIN concept cm ON cm.concept_id = oc.concept_id AND cm.uuid = '20b58e2e-6f70-410f-a866-d5fb1b29d42d'
+               SET oc.voided = 1,
+                   oc.voided_by = 1,
+                   oc.date_voided = NOW(),
+                   oc.void_reason = '#371 kept in the earlier-result comment of BP06'
+             WHERE oc.voided = 0;
+        </sql>
+        <rollback>
+            <sql>
+                DELETE n FROM obs n
+                  JOIN concept cm ON cm.concept_id = n.concept_id AND cm.uuid = '20b58e2e-6f70-410f-a866-d5fb1b29d42d'
+                  JOIN obs g ON g.obs_id = n.obs_group_id
+                  JOIN concept bp ON bp.concept_id = g.concept_id AND bp.uuid = '6a310ab5-5178-4e5e-9112-3d60ecc6a60f'
+                 WHERE n.value_text LIKE 'Résultat antérieur : %';
+                UPDATE obs
+                   SET voided = 0, voided_by = NULL, date_voided = NULL, void_reason = NULL
+                 WHERE void_reason = '#371 kept in the earlier-result comment of BP06';
+            </sql>
+        </rollback>
+    </changeSet>
+
 </databaseChangeLog>
