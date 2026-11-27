@@ -6,8 +6,9 @@ description: "UVL-EMR \xB7 \xAB PBF \u2013 Synth\xE8se mensuelle \xBB (#241). On
   \ counting rules are those of the registers #586\u2013#589, see their SQL for the\
   \ sources:\n  1. Consultations per SERVICE (month of the consultation); 2. Journ\xE9\
   es d'hospitalisation =\n  sum of DUREE per ward (month of exit; open stays not counted);\
-  \ 3. Accouchements per type;\n  4. Chirurgie per PBF level. ASSURANCE = visit \xAB\
-  \ Payer \xBB, else \xAB Sans assurance \xBB.\n(Full annotated SQL: e2e/superset/<register>.annotated.sql;\
+  \ 3. Accouchements per type (forceps and ventouse\n  count as Dystocique, product\
+  \ owner 24 Nov 2026);\n  4. Chirurgie per PBF level. ASSURANCE = visit \xAB Payer\
+  \ \xBB, else \xAB Sans assurance \xBB.\n(Full annotated SQL: e2e/superset/<register>.annotated.sql;\
   \ stored SQL is comment-free for speed, 17 Nov 2026.)"
 default_endpoint: null
 offset: 0
@@ -62,20 +63,22 @@ sql: "WITH pt AS (\n    SELECT p.patient_uuid\n    FROM patients p\n    WHERE CO
   \           BOOL_OR(o.answer_coded_uuid = '4a8e5f2a-da35-4a5d-aefb-ffabe41e6783'\n\
   \                   OR (o.question_uuid = '753be061-2a1e-46de-8575-5a1b5a08725e'\n\
   \                       AND o.answer_coded_uuid IN ('79a559a9-c7aa-4006-98c2-02c530f6f7db',\
-  \ '90a3cdc3-342e-456f-8154-5e6802166584'))) AS cs,\n           BOOL_OR(o.answer_coded_uuid\
-  \ = 'b08d3e60-2e3c-4d23-906c-9e36cd222bea'\n                   AND o.question_uuid\
-  \ <> '753be061-2a1e-46de-8575-5a1b5a08725e') AS dys,\n           BOOL_OR(o.answer_coded_uuid\
-  \ = '3de182b6-f7fe-4185-a7b5-89237593c1f1'\n                   AND o.question_uuid\
-  \ <> '753be061-2a1e-46de-8575-5a1b5a08725e') AS eut\n    FROM observations o\n \
-  \   WHERE o.question_uuid IN ('38eca4cd-21ab-4689-a18b-202a50d34569', '6af027e5-8737-4ce0-8343-79b024cd1989',\n\
-  \                              '753be061-2a1e-46de-8575-5a1b5a08725e')\n      AND\
-  \ COALESCE(o.obs_voided, false) = false\n      AND o.visit_uuid IN (SELECT visit_uuid\
-  \ FROM dv)\n    GROUP BY o.visit_uuid\n),\ndord AS (\n    SELECT DISTINCT e.visit_uuid\n\
-  \    FROM orders r JOIN encounters e ON e.encounter_uuid = r.encounter_uuid\n  \
-  \  WHERE r.concept_uuid IN ('86a76e88-fde2-4bc8-9da1-80064bf35fbb', '455d4174-42ba-4819-89b5-f574e54baa42',\n\
-  \                             '6060ba72-90a2-4ed1-9232-d0bc97c607e2')\n      AND\
-  \ COALESCE(r.voided, false) = false\n      AND e.visit_uuid IN (SELECT visit_uuid\
-  \ FROM dv)\n),\na AS (\n    SELECT date_trunc('month', d.encounter_datetime)::date\
+  \ '90a3cdc3-342e-456f-8154-5e6802166584'))) AS cs,\n           BOOL_OR((o.answer_coded_uuid\
+  \ IN ('b08d3e60-2e3c-4d23-906c-9e36cd222bea', 'fd601163-7e6f-4e26-91bc-28f94f76ac7f',\
+  \ '628fd5bc-250d-43fa-b285-e31d8888ebf3')\n                    OR (o.question_uuid\
+  \ = 'fc343f72-be55-4eba-a376-c92d5a78dbb4' AND o.answer_text ~* 'forc|ventous|vacu'))\n\
+  \                   AND o.question_uuid <> '753be061-2a1e-46de-8575-5a1b5a08725e')\
+  \ AS dys,\n           BOOL_OR(o.answer_coded_uuid = '3de182b6-f7fe-4185-a7b5-89237593c1f1'\n\
+  \                   AND o.question_uuid <> '753be061-2a1e-46de-8575-5a1b5a08725e')\
+  \ AS eut\n    FROM observations o\n    WHERE o.question_uuid IN ('38eca4cd-21ab-4689-a18b-202a50d34569',\
+  \ '6af027e5-8737-4ce0-8343-79b024cd1989',\n                              '753be061-2a1e-46de-8575-5a1b5a08725e',\
+  \ 'fc343f72-be55-4eba-a376-c92d5a78dbb4')\n      AND COALESCE(o.obs_voided, false)\
+  \ = false\n      AND o.visit_uuid IN (SELECT visit_uuid FROM dv)\n    GROUP BY o.visit_uuid\n\
+  ),\ndord AS (\n    SELECT DISTINCT e.visit_uuid\n    FROM orders r JOIN encounters\
+  \ e ON e.encounter_uuid = r.encounter_uuid\n    WHERE r.concept_uuid IN ('86a76e88-fde2-4bc8-9da1-80064bf35fbb',\
+  \ '455d4174-42ba-4819-89b5-f574e54baa42',\n                             '6060ba72-90a2-4ed1-9232-d0bc97c607e2')\n\
+  \      AND COALESCE(r.voided, false) = false\n      AND e.visit_uuid IN (SELECT\
+  \ visit_uuid FROM dv)\n),\na AS (\n    SELECT date_trunc('month', d.encounter_datetime)::date\
   \ AS mois,\n           CASE WHEN o.visit_uuid IS NOT NULL OR m.cs THEN 'C\xE9sarienne'\n\
   \                WHEN m.dys THEN 'Dystocique'\n                WHEN m.eut THEN 'Eutocique'\
   \ END AS categorie,\n           NULLIF(TRIM(SUBSTRING(d.visit_attributes FROM '(?:^|/\
